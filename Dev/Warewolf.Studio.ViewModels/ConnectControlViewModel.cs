@@ -25,6 +25,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.AntiCorruptionLayer;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -55,7 +56,7 @@ namespace Warewolf.Studio.ViewModels
             ToggleConnectionStateCommand = new DelegateCommand(CheckVersionConflict);
             if (Server.UpdateRepository != null)
             {
-                Server.UpdateRepository.ServerSaved +=UpdateRepositoryOnServerSaved;
+                Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
             ShouldUpdateActiveEnvironment = false;
         }
@@ -75,7 +76,17 @@ namespace Warewolf.Studio.ViewModels
             var idx = Servers.IndexOf(currentServer);
             Servers.Remove(currentServer);
             var updatedServer = Server.FetchServer(savedServerID);
-            Servers.Insert(idx,updatedServer);
+            if (updatedServer == null)
+            {
+                return;
+            }
+            if (idx == -1)
+            {
+                idx = Servers.Count - 1;
+            }
+            Servers.Insert(idx, updatedServer);
+            
+            
         }
 
         public void LoadServers()
@@ -90,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 Servers = new ObservableCollection<IServer>();
             }
-            
+            RemoveServerDisconnect();
             Servers.Clear();
             Servers.AddRange(servers);
             SetupServerDisconnect();
@@ -260,38 +271,8 @@ namespace Warewolf.Studio.ViewModels
                 if (value != null)
                 {
                     var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                    if (value.ResourceName != null && value.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
-                    {
-                        if (mainViewModel != null && ShouldUpdateActiveEnvironment)
-                        {
-                            mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);                            
-                        }
-                        mainViewModel?.NewServerSource(string.Empty);
-                        IsConnected = false;
-                        AllowConnection = false;
-                        OnPropertyChanged(()=>SelectedConnection);
-                    }
-                    else
-                    {
-                        _selectedConnection = value;
-                        AllowConnection = true;
-                        if (_selectedConnection.EnvironmentID == Guid.Empty &&
-                            (_selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostLabel)
-                                    || _selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostConnectedLabel)
-                                    ))
-                        {
-                            AllowConnection = false;
-                        }
-                        IsConnected = _selectedConnection.IsConnected&& _selectedConnection.HasLoaded;
-                    }
-                    if (mainViewModel != null)
-                    {
-                        if (_selectedConnection.IsConnected && ShouldUpdateActiveEnvironment && !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
-                        {
-                            mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
-                            mainViewModel.SetActiveServer(_selectedConnection);
-                        }
-                    }
+                    UpdateBasedOnSelection(value, mainViewModel);
+                    SetActiveEnvironment(mainViewModel);
                     OnPropertyChanged(() => SelectedConnection);
                     SelectedEnvironmentChanged?.Invoke(this, value.EnvironmentID);
                     var delegateCommand = EditConnectionCommand as DelegateCommand;
@@ -299,6 +280,58 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
+        private void UpdateBasedOnSelection(IServer value, IShellViewModel mainViewModel)
+        {
+            if (value.ResourceName != null && value.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
+            {
+                NewServer(mainViewModel);
+            }
+            else
+            {
+                _selectedConnection = value;
+                AllowConnection = true;
+                DisallowConnectionForLocalhost();
+                IsConnected = _selectedConnection.IsConnected && _selectedConnection.HasLoaded;
+            }
+        }
+
+        private void SetActiveEnvironment(IShellViewModel mainViewModel)
+        {
+            if (mainViewModel != null)
+            {
+                if (_selectedConnection.IsConnected && ShouldUpdateActiveEnvironment &&
+                    !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
+                {
+                    mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
+                    mainViewModel.SetActiveServer(_selectedConnection);
+                }
+            }
+        }
+
+        private void DisallowConnectionForLocalhost()
+        {
+            if (_selectedConnection.EnvironmentID == Guid.Empty &&
+                (_selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostLabel)
+                 || _selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostConnectedLabel)
+                    ))
+            {
+                AllowConnection = false;
+            }
+        }
+
+        private void NewServer(IShellViewModel mainViewModel)
+        {
+            if (mainViewModel != null && ShouldUpdateActiveEnvironment)
+            {
+                mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
+            }
+            mainViewModel?.NewServerSource(string.Empty);
+            IsConnected = false;
+            AllowConnection = false;
+            OnPropertyChanged(() => SelectedConnection);
+        }
+
         public ICommand EditConnectionCommand { get; private set; }
         public ICommand ToggleConnectionStateCommand { get; private set; }
         public bool IsConnected
