@@ -129,7 +129,6 @@ namespace Warewolf.Studio.ViewModels
                 }
                 IsLoading = false;
             }, OnError);
-            WebClient = new WarewolfWebClient(new WebClient { Credentials = CredentialCache.DefaultCredentials });
         }
 
         public bool IsLoading
@@ -599,7 +598,17 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public IWarewolfWebClient WebClient { get; set; }
+        public IWarewolfWebClient WebClient
+        {
+            get
+            {
+                return _webClient ?? CustomContainer.Get<IWarewolfWebClient>();
+            }
+            set
+            {
+                _webClient = value;
+            }
+        }
 
         private void SetOutputs(IDebugState outPutState)
         {
@@ -1666,6 +1675,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isLoading;
         private bool _isValid;
         private bool _dirty;
+        private IWarewolfWebClient _webClient;
 
         private int GetNewTestNumber(string testName)
         {

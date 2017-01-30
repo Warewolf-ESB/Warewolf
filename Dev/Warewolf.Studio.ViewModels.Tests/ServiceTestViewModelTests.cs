@@ -44,7 +44,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 	[TestClass]
 	public partial class ServiceTestViewModelTests
 	{
-		[TestMethod]
+
+        [TestInitialize]
+        public void Init()
+        {
+            CustomContainer.Register(new Mock<IWarewolfWebClient>().Object);
+        }
+
+        [TestMethod]
 		[Owner("Hagashen Naidu")]
 		[TestCategory("TestFrameworkViewModel_Constructor")]
 		[ExpectedException(typeof(ArgumentNullException))]
