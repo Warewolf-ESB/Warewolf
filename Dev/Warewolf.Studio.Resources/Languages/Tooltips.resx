@@ -488,7 +488,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Removes performance counters</value>
   </data>
   <data name="ServiceViewInBrowserTooltip" xml:space="preserve">
-    <value>Execute this flow as a REST api</value>
+    <value>Execute this flow as a REST API</value>
   </data>
   <data name="ServiceTestStopSelectedTestTooltip" xml:space="preserve">
     <value>Stop this test</value>
