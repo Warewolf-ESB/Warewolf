@@ -11,20 +11,12 @@ namespace Warewolf.UITests.ODBCSource
         [TestMethod]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
-        public void Open_ODBCSource_From_ExplorerContextMenu_UITests()
-        {
-            UIMap.Select_NewODBCSource_From_ExplorerContextMenu();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "ODBC server combobox is enabled");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
-        }
-
-        [TestMethod]
-        [TestCategory("Database Sources")]
-        // ReSharper disable once InconsistentNaming
-        public void Create_ODBCSource_UITests()
+        public void Create_ODBCSource_From_ExplorerContextMenu_UITests()
         {
             UIMap.Select_NewODBCSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "ODBC Source Tab does not exist");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "ODBC server combobox is enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
             UIMap.Select_ExcelFiles_From_DB_Source_Wizard_Database_Combobox();
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);

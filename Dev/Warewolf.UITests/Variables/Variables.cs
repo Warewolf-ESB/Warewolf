@@ -72,7 +72,7 @@ namespace Warewolf.UITests
         [TestMethod]
         public void Recordsets_Usage_in_Debug_Input()
         {
-            UIMap.Open_Assign_Tool_Large_View();
+            UIMap.Open_AssignTool_LargeView();
             UIMap.Enter_Recordset_values();
             Mouse.Move(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox, new Point(10, 10));
             Mouse.Click();

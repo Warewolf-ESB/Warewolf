@@ -46,7 +46,7 @@ Scenario: Deploy is successfull
 	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 @DeployTab
-Scenario: Conflicting resources on Source and Destination server
+Scenario: Conflicting resources on Source and Destination server cancel deploy
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected	
@@ -55,8 +55,21 @@ Scenario: Conflicting resources on Source and Destination server
 	 When I click Cancel on Resource exists in the destination server popup
 	 And I deploy 
 	 Then Resource exists in the destination server popup is shown
-	 | # | Source Resource         | Destination Resource |
-	 | 1 | Control Flow - Sequence | DifferentNameSameID  |
+	 | # | Source Resource                  | Destination Resource |
+	 | 1 | Examples\Control Flow - Sequence | Examples\\Control Flow - Sequence  |
+	 Then deploy is not successfull
+
+Scenario: Conflicting resources on Source and Destination server OK deploy
+	 Given I have deploy tab opened
+	 And selected Source Server is "localhost"
+	 And source is connected	
+	 Then I select Destination Server as "DestinationServer" with SameName confilcts
+	 And I select "Control Flow - Sequence" from Source Server
+	 When I click OK on Resource exists in the destination server popup
+	 And I deploy 
+	 Then Resource exists in the destination server popup is shown
+	 | # | Source Resource                  | Destination Resource |
+	 | 1 | Examples\Control Flow - Sequence | Examples\\Control Flow - Sequence  |
 	 Then deploy is successfull
 	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
@@ -130,7 +143,7 @@ Scenario: Deploying items from one server to the next with the same name
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 Then I select Destination Server as "DestinationServer" with SameName confilcts
+	 Then I select Destination Server as "DestinationServer" with SameName different ID confilcts
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
 	 And I select "Control Flow - Sequence" from Source Server

@@ -9,21 +9,17 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
         [TestCategory("Database Tools")]
-        public void SQLBulkInsertToolSmallViewUITest()
+        public void SQLBulkInsertTool_Small_And_Large_Then_QVIView_UITest()
         {
+            // Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.SmallViewContentCustom.DatabaseComboBox.Exists, "Database combobox does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.SmallViewContentCustom.EditSourceButton.Exists, "EditSourceButton does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.SmallViewContentCustom.RefreshTableButton.Exists, "RefreshTableButton does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.SmallViewContentCustom.SmallDataGridTable.Exists, "SmallDataGridTable does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.SmallViewContentCustom.TableNameComboBox.Exists, "TableNameComboBox does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.SmallViewContentCustom.ResultComboBox.Exists, "ResultComboBox does not exist on SQL bulk insert large view.");
-        }
-
-        [TestMethod]
-        [TestCategory("Database Tools")]
-        public void SQLBulkInsertToolLargeViewUITest()
-        {
-            UIMap.Open_SQLBulkInsertTool_LargeView();
+            // Large View
+            UIMap.SqlBulkInsertTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.Exists, "Database combobox does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.ItemButton.Exists, "ItemButton does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox.Exists, "TableNameComboBox does not exist on SQL bulk insert large view.");
@@ -39,33 +35,23 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.KeepIdentityCheckBox.Exists, "KeepIdentityCheckBox does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.ResultComboBox.Exists, "ResultComboBox does not exist on SQL bulk insert large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom does not exist on SQL bulk insert large view.");
+            // QVI View
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.QVIToggleButton.Exists, "QVI Toggle Button on the design surface does not exist");
+            UIMap.Open_SQLBulkInsertToolQvi_LargeView();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.QuickVariableInputContentPane.Exists, "QVI Content Pane on SQLBulkInsert Tool is not open");
         }
 
         [TestMethod]
         [TestCategory("Database Tools")]
-        public void SqlBulkInsertTest_OpenLargeViewAndEnterAnInvalidBatchAndTimeoutSizeAndClickDone_CorrectingErrorsAndClickDoneWillReturnToSmallView_UITest()
+        public void Confirm_ErrorMessage_On_NoDB_Or_TableSelection_Then_NewSource_UITest()
         {
-            UIMap.Open_SQLBulkInsertTool_LargeView();
+            // Confirm Error Message on No Database or table selection
+            UIMap.SqlBulkInsertTool_ChangeView_With_DoubleClick();
             UIMap.Click_SqlBulkInsert_Done_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Errors.Exists, "Error Pane does not exist");
             UIMap.Select_DatabaseAndTable_From_BulkInsert_Tool();
-            Point newPoint;
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem2.TryGetClickablePoint(out newPoint), "Unable to click on Tree Item 2");
             UIMap.Click_SqlBulkInsert_Done_Button();
-        }
-
-        [TestMethod]
-        [TestCategory("Database Tools")]
-        public void SQLBulkInsertTool_OpenQVIUITest()
-        {
-            UIMap.Open_SQLBulkInsertToolQvi_LargeView();
-        }
-
-        [TestMethod]
-        [TestCategory("Database Tools")]
-        public void Click_SQLBulkInsertTool_LargeView_NewSource_UITests()
-        {
-            UIMap.Open_SQLBulkInsertTool_LargeView();
+            // New Source
             UIMap.Click_NewSource_From_SqlBulkInsertTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "Server Combobox is disabled new Sql Server Source wizard tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");

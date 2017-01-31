@@ -33,12 +33,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             UpdateManagerProxy = new UpdateProxy(controllerFactory, environmentConnection);
         }
 
-        public event ServerSaved ServerSaved;
-
-        public void FireServerSaved()
+        public void FireServerSaved(Guid savedServerID)
         {
             var handler = ServerSaved;
-            handler?.Invoke();
+            handler.Invoke(savedServerID);
         }
 
         private IUpdateManager UpdateManagerProxy { get; set; }
@@ -46,7 +44,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void Save(IServerSource serverSource)
         {
             UpdateManagerProxy.SaveServerSource(serverSource, GlobalConstants.ServerWorkspaceID);
-            ServerSaved?.Invoke();
+            FireServerSaved(serverSource.ID);
         }
 
         public void Save(IPluginSource source)
@@ -202,6 +200,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             return UpdateManagerProxy.TestWcfServiceSource(wcfServerSource);
         }
+
+        public Action<Guid> ServerSaved { get; set; }
 
         #region Implementation of IStudioUpdateManager
 

@@ -292,11 +292,13 @@ namespace Warewolf.Studio.ViewModels
         void Save(IServerSource source)
         {
             _updateManager.Save(source);
+            
         }
         public override void Save()
         {
             SaveConnection();
             ConnectControlSingleton.Instance.ReloadServer();
+            
         }
 
         public override IServerSource ToModel()

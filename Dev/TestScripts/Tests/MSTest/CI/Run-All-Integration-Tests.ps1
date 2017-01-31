@@ -44,24 +44,28 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
 $TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\Dev2.IntegrationTests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\Dev2.IntegrationTests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Dev2.IntegrationTests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests\bin\Debug\Dev2.IntegrationTests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Dev2.IntegrationTests.dll"
 }

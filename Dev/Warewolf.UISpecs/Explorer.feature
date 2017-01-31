@@ -39,9 +39,6 @@ Scenario: Opening Workflow local and remote using right click
  Scenario: Deleting a Resource localhost
    Given The Warewolf Studio is running
    When I Create New Workflow using shortcut
-   And I Filter the Explorer with "GenericResource"
-   And I Drag Explorer workflow Onto Workflow Design Surface
-   And I Save With Ribbon Button And Dialog As "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I Filter the Explorer with "LocalWorkflowWithRemoteSubworkflowToDelete"
    And I RightClick Explorer Localhost First Item
    And I Select Delete From Explorer Context Menu
@@ -66,7 +63,6 @@ Scenario: Opening Workflow local and remote using right click
    Given The Warewolf Studio is running
    When I Select RemoteConnectionIntegration From Explorer
    And I Click Explorer Connect Remote Server Button
-   And I Wait For Explorer First Remote Server Spinner
    And I Click New Workflow Ribbon Button
    And I Filter the Explorer with "GenericResource"
    And I Drag Explorer Remote GenericResource Onto Workflow Design Surface
