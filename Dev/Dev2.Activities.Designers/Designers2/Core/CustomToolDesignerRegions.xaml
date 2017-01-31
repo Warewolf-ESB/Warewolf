@@ -562,7 +562,7 @@
                                                 TextTrimming="CharacterEllipsis"
                                                 VerticalAlignment="Center"
                                                 Padding="3,0"
-                                                ToolTip="{Binding OutputColumn.ColumnName}">                               
+                                                ToolTip="{Binding Path=Name}">                               
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
