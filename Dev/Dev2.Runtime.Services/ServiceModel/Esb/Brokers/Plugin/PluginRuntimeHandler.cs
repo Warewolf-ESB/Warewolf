@@ -303,17 +303,50 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     var serviceConstructor = new ServiceConstructor();
                     var parameterInfos = info.GetParameters().ToList();
                     parameterInfos.ForEach(parameterInfo =>
-                        serviceConstructor.Parameters.Add(
-                            new ConstructorParameter
-                            {
-                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                                EmptyToNull = false,
-                                IsRequired = !parameterInfo.IsOptional,
-                                Name = parameterInfo.Name,
-                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName,
-                                ShortTypeName = parameterInfo.ParameterType.FullName
+                    {
+                        var constructorParameter = new ConstructorParameter
+                        {
+                            DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                            EmptyToNull = false,
+                            IsRequired = !parameterInfo.IsOptional,
+                            Name = parameterInfo.Name,
+                            TypeName = parameterInfo.ParameterType.AssemblyQualifiedName,
+                            ShortTypeName = parameterInfo.ParameterType.FullName,                                
 
-                            }));
+                        };
+                    var returnType = parameterInfo.ParameterType;
+                        if (returnType.IsPrimitive || returnType == typeof(decimal) || returnType == typeof(string))
+                        {
+                            constructorParameter.IsObject = false;
+                            constructorParameter.Dev2ReturnType = "returns " + returnType.Name;
+
+                        }
+                        else
+                        {
+                            var enumerableType = GetEnumerableType(returnType);
+                            if (enumerableType != null)
+                            {
+                                if (enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
+                                {
+                                    constructorParameter.IsObject = false;
+                                    constructorParameter.Dev2ReturnType = "returns " + returnType.Name;
+                                }
+                                else
+                                {
+                                    var jObject = GetPropertiesJObject(enumerableType);
+                                    constructorParameter.Dev2ReturnType = jObject.ToString(Formatting.None);
+                                    constructorParameter.IsObject = true;
+                                }
+                            }
+                            else
+                            {
+                                var jObject = GetPropertiesJObject(returnType);
+                                constructorParameter.Dev2ReturnType = jObject.ToString(Formatting.None);
+                                constructorParameter.IsObject = true;
+                            }
+                        }
+                        serviceConstructor.Parameters.Add(constructorParameter);
+                    });
                     serviceMethodList.Add(serviceConstructor);
                 });
             }

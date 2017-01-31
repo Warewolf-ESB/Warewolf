@@ -10,5 +10,6 @@ namespace Dev2.Runtime.ServiceModel.Data
     public class ConstructorParameter : MethodParameter, IConstructorParameter
     {
         public string ShortTypeName { get; set; }
+        
     }
 }

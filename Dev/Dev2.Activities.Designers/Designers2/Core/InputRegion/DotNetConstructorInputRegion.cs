@@ -132,10 +132,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 {
                     EmptyIsNull = parameter.EmptyToNull,
                     RequiredField = parameter.IsRequired,
-                    TypeName = parameter.TypeName
+                    TypeName = parameter.TypeName,
+                    IntellisenseFilter = parameter.IsObject?enIntellisensePartType.JsonObject : enIntellisensePartType.All
                 } as IServiceInput).ToList();
-                var serviceInputs = Inputs.Select(p => new ServiceInput(p.Name, p.Value));
-                _datatalistMapper.MapInputsToDatalist(serviceInputs);
+                _datatalistMapper.MapInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
                 IsEnabled = true;
             }
