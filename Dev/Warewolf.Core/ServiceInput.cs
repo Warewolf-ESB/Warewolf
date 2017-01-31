@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Util;
 
@@ -100,9 +101,6 @@ namespace Warewolf.Core
         {            
         }
     
-
-    #region Implementation of IDbInput
-
         public string Name
         {
             get
@@ -155,6 +153,7 @@ namespace Warewolf.Core
         }
         public string TypeName { get; set; }
 
-        #endregion
+        public enIntellisensePartType IntellisenseFilter { get; set; }
+
     }
 }
