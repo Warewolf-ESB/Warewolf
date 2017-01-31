@@ -74,6 +74,7 @@ namespace Dev2.Activities
                 var warewolfEvalResult = dataObject.Environment.EvalForJson(existingObj);
                 var existingObject = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
                 pluginExecutionDto = new PluginExecutionDto(existingObject);
+                ObjectResult = pluginExecutionDto.ObjectString;
             }
             else
             {
@@ -104,20 +105,23 @@ namespace Dev2.Activities
                         var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == pluginExecutionDto.Args.PluginConstructor.ID);
                         if(serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
                         {
-                            MockConstructorExecution(dataObject, serviceTestStep, pluginExecutionDto);
-                            DebugStateForConstructorInputsOutputs(dataObject, update, true);
+                            var start = DateTime.Now;
+                            MockConstructorExecution(dataObject, serviceTestStep, ref pluginExecutionDto);
+                            DebugStateForConstructorInputsOutputs(dataObject, update, true,start);
                         }
                         else
                         {
-                            RegularConstructorExecution(dataObject, appDomain, pluginExecutionDto);
-                            DebugStateForConstructorInputsOutputs(dataObject, update, false);
+                            var start = DateTime.Now;
+                            RegularConstructorExecution(dataObject, appDomain, ref pluginExecutionDto);
+                            DebugStateForConstructorInputsOutputs(dataObject, update, false,start);
 
                         }
                     }
                     else
                     {
-                        RegularConstructorExecution(dataObject, appDomain, pluginExecutionDto);
-                        DebugStateForConstructorInputsOutputs(dataObject, update,false);
+                        var start = DateTime.Now;
+                        RegularConstructorExecution(dataObject, appDomain,ref pluginExecutionDto);
+                        DebugStateForConstructorInputsOutputs(dataObject, update,false,start);
                     }
 
                     var index = 0;
@@ -220,6 +224,7 @@ namespace Dev2.Activities
             {
                 foreach(var serviceTestOutput in serviceTestStep.StepOutputs)
                 {
+                    var start = DateTime.Now;
                     if(dev2MethodInfo.IsObject)
                     {
                         var jContainer = JToken.Parse(serviceTestOutput.Value) as JContainer
@@ -235,12 +240,12 @@ namespace Dev2.Activities
                     }
                     dev2MethodInfo.MethodResult = serviceTestOutput.Value;                                       
                     MethodsToRun[index].MethodResult = serviceTestOutput.Value;
-                    DispatchDebugStateForMethod(MethodsToRun[index], dataObject, 0,true);
+                    DispatchDebugStateForMethod(MethodsToRun[index], dataObject, 0,true,start);
                 }
             }
         }
 
-        private static void MockConstructorExecution(IDSFDataObject dataObject, IServiceTestStep serviceTestStep, PluginExecutionDto pluginExecutionDto)
+        private static void MockConstructorExecution(IDSFDataObject dataObject, IServiceTestStep serviceTestStep, ref PluginExecutionDto pluginExecutionDto)
         {
             if(!string.IsNullOrEmpty(serviceTestStep.StepOutputs?[0].Variable))
             {
@@ -263,24 +268,25 @@ namespace Dev2.Activities
 
         private void RegularMethodExecution(Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto pluginExecutionDto, IDev2MethodInfo dev2MethodInfo, int i,int update,IDSFDataObject dataObject)
         {
-            PluginExecutionDto result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo);
-            ObjectResult = result.ObjectString;
+            var start = DateTime.Now;
+            IDev2MethodInfo result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo);
             var pluginAction = MethodsToRun[i];
-            pluginAction.MethodResult = result.Args.MethodsToRun?[i].MethodResult;
-            AssignMethodResult(pluginAction, update, dataObject);
+            pluginAction.MethodResult = result.MethodResult;
+            AssignMethodResult(pluginAction, update, dataObject,start);
         }
 
-        private void RegularConstructorExecution(IDSFDataObject dataObject, Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto pluginExecutionDto)
+        private void RegularConstructorExecution(IDSFDataObject dataObject, Isolated<PluginRuntimeHandler> appDomain, ref PluginExecutionDto pluginExecutionDto)
         {
             pluginExecutionDto = PluginServiceExecutionFactory.ExecuteConstructor(appDomain, pluginExecutionDto);
+            ObjectResult = pluginExecutionDto.ObjectString;           
             if(!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
             {
                 var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
                 dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
-            }
+            }            
         }
 
-        private void AssignMethodResult(IPluginAction pluginAction,int update, IDSFDataObject dataObject)
+        private void AssignMethodResult(IPluginAction pluginAction,int update, IDSFDataObject dataObject,DateTime start)
         {
             {
                 if (pluginAction.IsObject)
@@ -327,7 +333,7 @@ namespace Dev2.Activities
                         }
                     }
                 }
-                DispatchDebugStateForMethod(pluginAction, dataObject, update,false);                
+                DispatchDebugStateForMethod(pluginAction, dataObject, update,false,start);                
             }
         }
 
@@ -391,7 +397,7 @@ namespace Dev2.Activities
                 {
                     if(!dataObject.IsDebugMode())
                     {
-                        var serviceTestSteps = serviceTestStep?.Children;
+                        var serviceTestSteps = serviceTestStep.Children;
                         foreach(var serviceTestTestStep in serviceTestSteps)
                         {
                             UpdateForRegularActivity(dataObject, serviceTestTestStep);
@@ -439,10 +445,12 @@ namespace Dev2.Activities
 
         #endregion
 
-        private void DispatchDebugStateForMethod(IPluginAction action, IDSFDataObject dataObject, int update,bool isMock)
+        private void DispatchDebugStateForMethod(IPluginAction action, IDSFDataObject dataObject, int update,bool isMock,DateTime start)
         {
             var debugState = PopulateDebugStateWithDefaultValues(dataObject);
             debugState.ID = action.ID;
+            debugState.StartTime = start;
+            debugState.EndTime = DateTime.Now;
             debugState.DisplayName = action.Method;
             debugState.ErrorMessage = string.Empty;
             debugState.IsSimulation = false;
@@ -466,8 +474,6 @@ namespace Dev2.Activities
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = StateType.All,
                 ActualType = GetType().Name,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now,
                 ActivityType = ActivityType.Step,
                 DisplayName = DisplayName,
                 IsSimulation = false,
@@ -486,9 +492,11 @@ namespace Dev2.Activities
             return debugState;
         }
 
-        private void DebugStateForConstructorInputsOutputs(IDSFDataObject dataObject, int update, bool isMock)
+        private void DebugStateForConstructorInputsOutputs(IDSFDataObject dataObject, int update, bool isMock, DateTime start)
         {
             var debugState = PopulateDebugStateWithDefaultValues(dataObject);
+            debugState.StartTime = start;
+            debugState.EndTime = DateTime.Now;
             if (Constructor != null)
             {
                 debugState.DisplayName = Constructor.ConstructorName;
