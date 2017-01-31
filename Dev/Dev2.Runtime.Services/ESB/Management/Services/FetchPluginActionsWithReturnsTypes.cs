@@ -83,7 +83,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                             ,
                             IsObject = x.IsObject
                             ,
-                            Dev2ReturnType = x.Dev2ReturnType
+                            Dev2ReturnType = x.Dev2ReturnType,
+                            IntellisenseFilter = x.IsObject ? enIntellisensePartType.JsonObject : enIntellisensePartType.All
 
                         } as IServiceInput).ToList(),
                         Method = a.Name,
