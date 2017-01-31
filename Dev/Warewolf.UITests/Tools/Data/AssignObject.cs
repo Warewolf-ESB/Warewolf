@@ -11,7 +11,7 @@ namespace Warewolf.UITests.Tools.Data
     {
         [TestMethod]
         [TestCategory("Data Tools")]
-        public void AssignObject_Small_And_LargeView_Then_QVIView_UITest()
+        public void AssignObjectTool_Small_And_Large_Then_QVIView_UITest()
         {
             // Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.SmallView.Exists, "Small view does not exist on assign object tool small view after dragging tool in from the toolbox.");
@@ -21,10 +21,9 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.Open_AssignObject_Large_Tool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.LargeView.OnError.Exists, "On Error Pane not exist on assign object tool large view after dragging tool in from the toolbox.");
             // QVI View
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.OpenQuickVariableInput.Exists, "QVI Togle Button on Assign Object Tool does not exist.");
             UIMap.Open_AssignObject_QVI_LargeView();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.QuickVariableInputContent.Exists, "QVI on assign object is not open");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.QuickVariableInputContent.QviSplitOnCombobox.Exists, "QviSplitOnCombobox on assign object does not exist");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.QuickVariableInputContent.PreviewCustom.Exists, "Qvi PreviewCustom on assign object does not exist");
         }
 
         #region Additional test attributes
