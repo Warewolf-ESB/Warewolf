@@ -9,19 +9,15 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("Tools")]
-        public void ForEachTool_SmallViewUITest()
+        public void ForEachTool_Small_And_LargeView_UITest()
         {
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ForEachTypeComboBox.Exists, "Type dropdown does not exist on for each on the design surface.");
+            //Small View
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ForEachTypeComboBox.Exists, "Type Dropdown does not exist on the design surface.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.FromIntellisenseTextbox.Textbox.Exists, "Start textbox in in range foreach on the design surface does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.DropActivityHere.Exists, "Activity drop box does not exist on for each.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ToIntellisenseTextbox.Textbox.Exists, "End textbox in in range foreach on the design surface does not exist.");
-        }
-
-        [TestMethod]
-		[TestCategory("Tools")]
-        public void ForEachTool_OpenLargeViewUITest()
-        {
-            UIMap.Open_ForEach_Large_View();
+            //Large View
+            UIMap.Open_ForEach_LargeView();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.TypeCombobox.Exists, "ForEach large view type combobox does not exist after double clicking tool to open large view.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.ForEachFromIntellisenseTextbox.Exists, "Foreach from textbox does not exist after openning large view with a double click.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.LargeView.ToIntellisenseTextbox.Exists, "For each to textbox does not exist after double click openning large view.");
@@ -32,27 +28,21 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DragADecisionIntoForEachExpectNotAddedToForEach_UITest()
+        public void Drag_Decision_And_SwitchTools_Into_ForEachActivityDrop_ExpectError_UITest()
         {
-            UIMap.Drag_Toolbox_Decision_Onto_Foreach_LargeTool();
+            UIMap.Drag_Toolbox_Decision_Onto_Foreach();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            UIMap.Click_Drop_Not_Allowed_MessageBox_OK();
+            UIMap.Click_DropNotAllowed_MessageBox_OK();
+            UIMap.Drag_Toolbox_Switch_Onto_Foreach();
+            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
+            UIMap.Click_DropNotAllowed_MessageBox_OK();
         }
 
         [TestMethod]
 		[TestCategory("Tools")]
-        public void DragASwitchIntoForEachExpectNotAddedToForEach_UITest()
+        public void Drag_Assigntool_Into_ForEachActivityDrop_ExpectSuccess_UITest()
         {
-            UIMap.Drag_Toolbox_ASwitch_Onto_Foreach_LargeTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            UIMap.Click_Drop_Not_Allowed_MessageBox_OK();
-        }
-
-        [TestMethod]
-		[TestCategory("Tools")]
-        public void DragAnAssignIntoForEachExpectAddedToForEach_UITest()
-        {
-            UIMap.Drag_Toolbox_AssignObject_Onto_Foreach_LargeTool();
+            UIMap.Drag_Toolbox_AssignObject_Onto_Foreach();
         }
 
         #region Additional test attributes

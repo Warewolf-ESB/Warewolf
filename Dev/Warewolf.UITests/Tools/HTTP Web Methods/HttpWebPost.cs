@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HTTPWebPostTool_LargeView_UITest()
+        public void HTTPWebPOSTTool_Small_And_LargeView_UITest()
         {
             //Small View
             UIMap.WebPostTool_ChangeView_With_DoubleClick();
@@ -31,7 +31,7 @@ namespace Warewolf.UITests.Tools
 
         [TestMethod]
         [TestCategory("HTTP Tools")]
-        public void HTTPWebPostTool_GenerateOutputs_And_TestInputs_UITest()
+        public void HTTPWebPOSTTool_GenerateOutputs_And_TestInputs_UITest()
         {
             UIMap.Select_POSTWebTool_Source_From_SourceCombobox();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPost.LargeView.GenerateOutputsButton.Enabled, "Web POST tool large view generate outputs button is not enabled after selecting a source.");
