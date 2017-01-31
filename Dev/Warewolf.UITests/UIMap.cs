@@ -4258,10 +4258,8 @@ namespace Warewolf.UITests
         [Then(@"I Click New Source Button From SQLBulkInsert Tool")]
         public void Click_NewSource_From_SqlBulkInsertTool()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.Exists, "Database Combobox does not exist");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.NewDatabaseSource);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "New DBSource Tab does not exist after clicking the new source item on SQL Bulk Insert tool.");
         }
 
         [Given(@"I Click New Source Button From ExchangeSend Tool")]
@@ -6699,20 +6697,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathMove.LargeViewContentCustom.OverwriteCheckBox.Exists, "OverwriteCheckBox does not exist on the design surface");
         }
 
-        [When(@"I Open MySql Database Tool Large View")]
-        public void Open_MySql_Database_Tool_Large_View()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase, new Point(238, 15));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.Exists, "My SQL Database connector tool large view does not exist after openning it with a double click.");
-        }
-
-        [When(@"I Collapse MySql Database Tool Large View to Small View With Double Click")]
-        public void Collapse_MySql_Database_Tool_Large_View_to_Small_View_With_Double_Click()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.Exists, "Cannot collapse tool large view to small view because large view does not exist.");
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase, new Point(238, 15));
-        }
-
         [When(@"I Open NumberFormat Toolbox Large View")]
         public void Open_NumberFormat_Toolbox_Large_View()
         {
@@ -6725,46 +6709,50 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FormatNumber.LargeViewContentCustom.NumberInputComboBox.Exists, "NumberInput combobox does not exist after opening  Format Number tool large view");
         }
 
-        [When(@"I Open ODBC Tool Large View")]
-        public void Open_ODBC_Tool_Large_View()
+        [When(@"I Double Click MySqlDatabase Tool to Change View")]
+        public void MySqlDatabaseTool_ChangeView_With_DoubleClick()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom, new Point(145, 5));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.LargeView.Exists, "ODBC tool large view does not exist on the design surface.");
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase, new Point(238, 15));
         }
 
-        [When(@"I Collapse ODBC Tool Large View to Small View With Double Click")]
-        public void Collapse_ODBC_Tool_Large_View_to_Small_View_With_Double_Click()
+        [When(@"I Double Click ODBCDatabase Tool to Change View")]
+        public void ODBCDatabaseTool_ChangeView_With_DoubleClick()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.LargeView.Exists, "Cannot collapse tool large view to small view because large view does not exist.");
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom, new Point(145, 5));
         }
 
-        [When(@"I Open Oracle Tool Large View")]
-        public void Open_Oracle_Tool_Large_View()
+        [When(@"I Double Click OracleDatabase Tool to Change View")]
+        public void OracleDatabaseTool_ChangeView_With_DoubleClick()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom, new Point(145, 5));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom.LargeView.Exists, "Oracle tool large view does not exist on the design surface.");
         }
 
-        [When(@"I Collapse Oracle Tool Large View to Small View With Double Click")]
-        public void Collapse_Oracle_Tool_Large_View_to_Small_View_With_Double_Click()
+        [When(@"I Double Click PostgreSqlDatabase Tool to Change View")]
+        public void PostgreSqlDatabaseTool_ChangeView_With_DoubleClick()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom.LargeView.Exists, "Cannot collapse tool large view to small view because large view does not exist.");
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.OracleDatabaseActCustom, new Point(145, 5));
-        }
-
-        [When(@"I Open Postgre Tool Large View")]
-        public void Open_Postgre_Tool_Large_View()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom, new Point(145, 5));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.Exists, "Postgre tool large view does not exist on the design surface.");
-        }
-
-        [When(@"I Collapse Postgre Tool Large View to Small View With Double Click")]
-        public void Collapse_Postgre_Tool_Large_View_to_Small_View_With_Double_Click()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.Exists, "Cannot collapse tool large view to small view because large view does not exist.");
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom, new Point(173, 14));
+        }
+        
+        [When(@"I Double Click SqlServerDatabase Tool to Change View")]
+        public void SqlServerDatabaseTool_ChangeView_With_DoubleClick()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(145, 5));
+        }
+
+        [Given(@"I Double Click SqlBulkInsert Tool to Change View")]
+        [When(@"I Double Click SqlBulkInsert Tool to Change View")]
+        [Then(@"I Double Click SqlBulkInsert Tool to Change View")]
+        public void SqlBulkInsertTool_ChangeView_With_DoubleClick()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert, new Point(157, 6));
+        }
+
+        [Given(@"I Open SQL Bulk Insert Tool Qvi Large View")]
+        [When(@"I Open SQL Bulk Insert Tool Qvi Large View")]
+        [Then(@"I Open SQL Bulk Insert Tool Qvi Large View")]
+        public void Open_SQLBulkInsertToolQvi_LargeView()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.QVIToggleButton.Pressed = true;
         }
 
         [When(@"I Open PostWeb RequestTool Large View")]
@@ -6990,50 +6978,6 @@ namespace Warewolf.UITests
         public void Open_SortRecords_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SortRecords, new Point(114, 13));
-        }
-
-        [Given(@"I Open SQL Bulk Insert Tool Large View")]
-        [When(@"I Open SQL Bulk Insert Tool Large View")]
-        [Then(@"I Open SQL Bulk Insert Tool Large View")]
-        public void Open_SQLBulkInsertTool_LargeView()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert, new Point(157, 6));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.Exists, "Sql Bulk Insert large view on the design surface does not exist");
-        }
-
-        [Given(@"I Open SQL Bulk Insert Tool Qvi Large View")]
-        [When(@"I Open SQL Bulk Insert Tool Qvi Large View")]
-        [Then(@"I Open SQL Bulk Insert Tool Qvi Large View")]
-        public void Open_SQLBulkInsertToolQvi_LargeView()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.OpenQuickVariableInpToggleButton.Pressed = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.Exists, "Sql Bulk Insert Qvi window on the design surface does not exist");
-        }
-
-        [Given(@"I Open Sql Server Tool Large View")]
-        [When(@"I Open Sql Server Tool Large View")]
-        [Then(@"I Open Sql Server Tool Large View")]
-        public void Open_SqlServerTool_LargeView()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(145, 5));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.Exists, "SQL Server tool large view does not exist on the design surface.");
-        }
-
-        [Given(@"I Collapse Sql Server Tool Large View to Small View With Double Click")]
-        [When(@"I Collapse Sql Server Tool Large View to Small View With Double Click")]
-        [Then(@"I Collapse Sql Server Tool Large View to Small View With Double Click")]
-        public void Collapse_Sql_Server_Tool_Large_View_to_Small_View_With_Double_Click()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.Exists, "Cannot collapse tool large view to small view because large view does not exist.");
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(145, 5));
-        }
-
-        [Given(@"I Open Sql Server Tool small View")]
-        [When(@"I Open Sql Server Tool small View")]
-        [Then(@"I Open Sql Server Tool small View")]
-        public void Open_Sql_Server_Tool_small_View()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(253, 18));
         }
 
         [Given(@"I Open Switch Tool Large View")]
@@ -7743,7 +7687,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.TestingDB);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.TableNameComboBox.Enabled, "Table combobox is not Enabled after selecting the database");
         }
 
         [When(@"I Select DeleteRow FromContextMenu")]
