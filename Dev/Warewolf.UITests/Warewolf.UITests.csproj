@@ -107,11 +107,10 @@
     <Compile Include="Tools\Storage Dropbox\List Contents.cs" />
     <Compile Include="Tools\Storage Dropbox\Upload.cs" />
     <Compile Include="Tools\Start Node.cs" />
-    <Compile Include="Tools\Recordset\CountTest.cs" />
-    <Compile Include="Tools\Recordset\DeleteRecordTest.cs" />
-    <Compile Include="Tools\Recordset\LengthTest.cs" />
-    <Compile Include="Tools\Recordset\SortTest.cs" />
-    <Compile Include="Tools\Recordset\UniqueRecordsTests.cs" />
+    <Compile Include="Tools\Recordset\Count.cs" />
+    <Compile Include="Tools\Recordset\Delete.cs" />
+    <Compile Include="Tools\Recordset\Sort.cs" />
+    <Compile Include="Tools\Recordset\UniqueRecords.cs" />
     <Compile Include="Tools\Sharepoint\Copy File.cs" />
     <Compile Include="Tools\Sharepoint\Delete File.cs" />
     <Compile Include="Tools\Sharepoint\Read List Item.cs" />
@@ -133,7 +132,7 @@
     <Compile Include="Tools\HTTP Web Methods\HttpWebPut.cs" />
     <Compile Include="Tools\HTTP Web Methods\HttpWebDelete.cs" />
     <Compile Include="Tabs and Panes\PinUnpinPanes.cs" />
-    <Compile Include="Tools\Loop Constructs\Selectandapply.cs" />
+    <Compile Include="Tools\Loop Constructs\SelectAndApply.cs" />
     <Compile Include="Tools\Loop Constructs\ForEach.cs" />
     <Compile Include="Tools\Scripting\Ruby.cs" />
     <Compile Include="Tools\Scripting\Python.cs" />
