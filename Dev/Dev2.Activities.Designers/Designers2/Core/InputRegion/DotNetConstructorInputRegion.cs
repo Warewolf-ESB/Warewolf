@@ -133,7 +133,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     EmptyIsNull = parameter.EmptyToNull,
                     RequiredField = parameter.IsRequired,
                     TypeName = parameter.TypeName,
-                    IntellisenseFilter = parameter.IsObject?enIntellisensePartType.JsonObject : enIntellisensePartType.All
+                    IntellisenseFilter = parameter.IsObject ? enIntellisensePartType.JsonObject : enIntellisensePartType.All,
+                    IsObject = parameter.IsObject,
+                    Dev2ReturnType = parameter.Dev2ReturnType,
+                    ShortTypeName = parameter.ShortTypeName,
                 } as IServiceInput).ToList();
                 _datatalistMapper.MapInputsToDatalist(Inputs);
                 IsInputsEmptyRows = Inputs.Count < 1;
@@ -175,11 +178,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public IToolRegion CloneRegion()
         {
-
-            //var inputs2 = new List<IServiceInput>(Inputs.Select(a=> new ServiceInput(a.Name,a.Value)
-            //{
-            //    EmptyIsNull = a.EmptyToNull, TypeName = a.TypeName 
-            //}));
             var inputs2 = Inputs.ToArray().Clone() as List<IServiceInput>;
 
             return new DotNetConstructorInputRegionClone
