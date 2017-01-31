@@ -29,5 +29,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             get;
             set;
         }
+
+        public bool IsObject { get; set; }
+        public string Dev2ReturnType { get; set; }
     }
 }

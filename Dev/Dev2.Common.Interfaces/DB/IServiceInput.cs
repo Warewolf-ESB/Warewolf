@@ -7,5 +7,6 @@
         bool RequiredField { get; set; }
         bool EmptyIsNull { get; set; }
         string TypeName { get; set; }
+        enIntellisensePartType IntellisenseFilter { get; set; }
     }
 }
