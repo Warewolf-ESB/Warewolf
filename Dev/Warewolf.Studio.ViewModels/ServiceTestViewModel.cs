@@ -5,7 +5,6 @@ using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
@@ -549,7 +548,6 @@ namespace Warewolf.Studio.ViewModels
             if (outputs != null && outputs.Count > 0)
             {
                 var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                serviceTestOutputs.CollectionChanged += StepOutputsOnCollectionChanged;
                 foreach (var output in outputs)
                 {
                     var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
@@ -575,7 +573,7 @@ namespace Warewolf.Studio.ViewModels
                             AssertOp = assertOp,
                             AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
                         };
-                        
+
                         serviceTestOutputs.Add(serviceTestOutput);
                     }
                 }
@@ -2053,6 +2051,8 @@ namespace Warewolf.Studio.ViewModels
             ViewModelUtils.RaiseCanExecuteChanged(RunAllTestsInBrowserCommand);
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestCommand);
             ViewModelUtils.RaiseCanExecuteChanged(RunSelectedTestInBrowserCommand);
+            _dirty = IsDirty;
+            OnPropertyChanged(() => IsDirty);
             OnPropertyChanged(() => DisplayName);
             SetDisplayName(_dirty);
         }
@@ -2116,18 +2116,39 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                 }
-                DettachPropertyChangedOnTheStepOutputs(_selectedServiceTest);
-               
-                
+
+                if (_selectedServiceTest?.TestSteps != null)
+                {
+                    var serviceTestSteps = _selectedServiceTest?.TestSteps.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                    foreach (var serviceTestStep in serviceTestSteps)
+                    {
+                        if (serviceTestStep?.StepOutputs != null)
+                        {
+                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                            {
+                                ((ServiceTestOutput)serviceTestOutput).PropertyChanged -= OnStepOutputPropertyChanges;
+                            }
+                        }
+                    }
+                }
                 _selectedServiceTest = value;
                 _selectedServiceTest.IsTestLoading = true;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
-          
+
                 if (_selectedServiceTest?.TestSteps != null)
                 {
-                    _selectedServiceTest.TestSteps.CollectionChanged += TestStepsOnCollectionChanged;
+                    var serviceTestSteps = _selectedServiceTest?.TestSteps.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                    foreach (var serviceTestStep in serviceTestSteps)
+                    {
+                        if (serviceTestStep?.StepOutputs != null)
+                        {
+                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
+                            {
+                                ((ServiceTestOutput)serviceTestOutput).PropertyChanged += OnStepOutputPropertyChanges;
+                            }
+                        }
+                    }
                 }
-                AttachPropertyChangedOnTheStepOutPuts(_selectedServiceTest);
 
                 SetSelectedTestUrl();
                 SetDuplicateTestTooltip();
@@ -2136,108 +2157,6 @@ namespace Warewolf.Studio.ViewModels
                 if (_selectedServiceTest != null)
                 {
                     _selectedServiceTest.IsTestLoading = false;
-                }
-            }
-        }
-
-        private void TestStepsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (var newItem in e.NewItems)
-                {
-                    var serviceTestStep = newItem as IServiceTestStep;
-                    AttachPropertyChangeEvent(serviceTestStep);
-                }
-            }
-
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                foreach (var newItem in e.OldItems)
-                {
-                    var serviceTestStep = newItem as IServiceTestStep;
-                    DetachPropertyChangeEvent(serviceTestStep);
-                }
-            }
-        }
-
-        private void AttachPropertyChangedOnTheStepOutPuts(IServiceTestModel model)
-        {
-            if (model?.TestSteps != null)
-            {
-                model.TestSteps.CollectionChanged+= TestStepsOnCollectionChanged;
-                var serviceTestSteps = model?.TestSteps.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
-                foreach (var serviceTestStep in serviceTestSteps)
-                {
-                    AttachPropertyChangeEvent(serviceTestStep);
-                }
-            }
-        }
-
-        
-
-        private void AttachPropertyChangeEvent(IServiceTestStep serviceTestStep)
-        {
-            if (serviceTestStep?.StepOutputs != null)
-            {
-                serviceTestStep.StepOutputs.CollectionChanged+= StepOutputsOnCollectionChanged;
-                foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
-                {
-                    ((ServiceTestOutput)serviceTestOutput).PropertyChanged += OnStepOutputPropertyChanges;
-                }
-            }
-        }
-
-        private void StepOutputsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (var newItem in e.NewItems)
-                {
-                    var serviceTestStep = newItem as IServiceTestOutput;
-                    var serviceTestOutput  = (ServiceTestOutput)serviceTestStep;
-                    if(serviceTestOutput != null)
-                    {
-                        serviceTestOutput.PropertyChanged += OnStepOutputPropertyChanges;
-                    }
-                }
-            }
-
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                foreach (var newItem in e.OldItems)
-                {
-                    var serviceTestStep = newItem as IServiceTestOutput;
-                    var serviceTestOutput = (ServiceTestOutput)serviceTestStep;
-                    if (serviceTestOutput != null)
-                    {
-                        serviceTestOutput.PropertyChanged -= OnStepOutputPropertyChanges;
-                    }
-                }
-            }
-        }
-
-        private void DettachPropertyChangedOnTheStepOutputs(IServiceTestModel model)
-        {
-            if (model?.TestSteps != null)
-            {
-                model.TestSteps.CollectionChanged -= TestStepsOnCollectionChanged;
-                var serviceTestSteps = model?.TestSteps.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
-                foreach (var serviceTestStep in serviceTestSteps)
-                {
-                    DetachPropertyChangeEvent(serviceTestStep);
-                }
-            }
-        }
-
-        private void DetachPropertyChangeEvent(IServiceTestStep serviceTestStep)
-        {
-            if (serviceTestStep?.StepOutputs != null)
-            {
-                serviceTestStep.StepOutputs.CollectionChanged -= StepOutputsOnCollectionChanged;
-                foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
-                {
-                    ((ServiceTestOutput)serviceTestOutput).PropertyChanged -= OnStepOutputPropertyChanges;
                 }
             }
         }

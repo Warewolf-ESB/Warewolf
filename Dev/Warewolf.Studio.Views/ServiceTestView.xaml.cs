@@ -1,9 +1,12 @@
 ﻿using System.Activities.Presentation;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.UI;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
@@ -44,7 +47,7 @@ namespace Warewolf.Studio.Views
                         var wd = dt?.WorkflowDesignerViewModel;
                         var designer = node as WorkflowViewElement;
                         var modelItem = designer.ModelItem;
-                        if (wd!=null && wd.IsTestView && modelItem != null)
+                        if (wd != null && wd.IsTestView && modelItem != null)
                         {
                             wd.ItemSelectedAction?.Invoke(modelItem);
                         }
@@ -63,8 +66,9 @@ namespace Warewolf.Studio.Views
         }
         private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
-            var textBox = sender as CheckBox;
-            if (textBox != null)
+            var control = sender as ToggleButton;
+
+            if (control != null)
             {
                 RefreshCommands(e);
             }
@@ -111,6 +115,26 @@ namespace Warewolf.Studio.Views
             e.Handled = true;
         }
 
-       
+        private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as IntellisenseTextBox;
+            if (textBox != null)
+                RefreshCommands(e);
+            if(textBox == null)
+            {
+                var box = sender as TextBox;
+                if (box != null)
+                {
+                    RefreshCommands(e);
+                }
+            }
+        }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var routedEventArgs = new RoutedEventArgs(e.RoutedEvent);
+            RefreshCommands(routedEventArgs);
+            e.Handled = true;
+        }
     }
 }
