@@ -458,6 +458,10 @@ namespace Dev2.FindMissingStrategies
                     {
                         foreach (var pluginAction in maAct.MethodsToRun)
                         {
+                            if(pluginAction?.Inputs != null)
+                            {
+                                results.AddRange(InternalFindMissing(pluginAction.Inputs));
+                            }
                             if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
                                 results.Add(pluginAction.OutputVariable);
                         }
