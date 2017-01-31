@@ -515,10 +515,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testSteps = value;
+                
                 OnPropertyChanged(() => TestSteps);
             }
         }
 
+       
         public IServiceTestStep SelectedTestStep
         {
             get { return _selectedTestStep; }

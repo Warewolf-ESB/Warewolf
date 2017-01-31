@@ -16,13 +16,14 @@ namespace Warewolf.UITests
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "First 'Hello World' test does not exist as expected.");
-            UIMap.Click_Create_New_Tests(true,4);
+            UIMap.Click_Create_New_Tests(true, 4);
             UIMap.Click_Test_Run_Button(4);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Failing.Exists, "Test failing icon is not displayed after running a failing test.");
             UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             UIMap.Click_Delete_Test_Button(4);
             UIMap.Click_MessageBox_Yes();
         }
+       
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
@@ -92,7 +93,7 @@ namespace Warewolf.UITests
             UIMap.Click_Duplicate_Test_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
         }
-        
+
         #region Additional test attributes
 
         [TestInitialize()]

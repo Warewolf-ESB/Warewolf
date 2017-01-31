@@ -1246,6 +1246,11 @@ namespace Warewolf.UITests
             Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
         }
 
+        public void Enter_Value_Into_theAssertValueTextBox(string newValue, int instanceNumber)
+        {
+          //  MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.
+        }
+
         public void Drag_From_Explorer_Onto_DesignSurface(string ServicePath)
         {
             Filter_Explorer(ServicePath);
@@ -1607,7 +1612,8 @@ namespace Warewolf.UITests
             Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
         }
 
-        private void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
+
+        public void Assert_Display_Text_ContainStar(string control, bool containsStar, int instance = 1)
         {
             WpfList testsListBox = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList;
             var test = GetCurrentTest(instance);
@@ -4564,6 +4570,11 @@ namespace Warewolf.UITests
         public void SetConstructorAssertValue(string value)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell1.AssertValue_NamePEdit.Text = value;
+        }
+
+        public void SetConstructorVariable(string value)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell.AssertValue_humanEdit.Text = value;
         }
 
         public void Click_TestViewDotNet_DLL_Constructor_DeleteButton()
