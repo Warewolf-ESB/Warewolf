@@ -26,6 +26,7 @@ namespace Dev2.Common.Interfaces
 
         Task<bool> Connect(IServer connection);
         event SelectedServerChanged SelectedEnvironmentChanged;
-        void LoadNewServers();
+        //void LoadNewServers();
+        void LoadServers();
     }
 }

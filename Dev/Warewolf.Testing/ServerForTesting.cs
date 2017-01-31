@@ -285,5 +285,10 @@ namespace Warewolf.Testing
         {
             throw new NotImplementedException();
         }
+
+        public IServer FetchServer(Guid savedServerID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

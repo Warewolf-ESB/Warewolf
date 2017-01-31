@@ -6,6 +6,8 @@ namespace Warewolf.UITests.WebSource
     [CodedUITest]
     public class WebSourceTests
     {
+        const string SourceName = "CodedUITestWebServiceSource";
+
         [TestMethod]
         [TestCategory("Web Source")]
         // ReSharper disable once InconsistentNaming
@@ -17,22 +19,16 @@ namespace Warewolf.UITests.WebSource
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Enabled, "Anonymous Radio button is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User Radio button is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Enabled, "Default Query Textbox is not enabled");
-            UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
-        }
-
-        [TestMethod]
-        [TestCategory("Web Source")]
-        // ReSharper disable once InconsistentNaming
-        public void Create_WebSource_UITests()
-        {
-            UIMap.Click_NewWebSource_From_ExplorerContextMenu();
             UIMap.Click_UserButton_On_WebServiceSourceTab();
             UIMap.Enter_TextIntoAddress_On_WebServiceSourceTab();
             UIMap.Enter_RunAsUser_On_WebServiceSourceTab();
             UIMap.Enter_DefaultQuery_On_WebServiceSourceTab();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button not enabled");
             UIMap.Click_NewWebSource_TestConnectionButton();
-            UIMap.Click_NewWebSource_CancelConnectionButton();
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
         }
 
         #region Additional test attributes
