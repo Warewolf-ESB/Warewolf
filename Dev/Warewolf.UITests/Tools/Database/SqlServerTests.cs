@@ -8,7 +8,7 @@ namespace Warewolf.UITests.Tools
     {
         [TestMethod]
         [TestCategory("Database Tools")]
-        public void SQLServerDatabaseTool_Small_And_LargeView_Then_NewSource_UITestSqlServerTool_LargeView_UITest()
+        public void SQLServerDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
             // Small View
             UIMap.SqlServerDatabaseTool_ChangeView_With_DoubleClick();
