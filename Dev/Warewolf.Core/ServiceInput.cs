@@ -157,6 +157,15 @@ namespace Warewolf.Core
         public bool IsObject { get; set; }
         public string Dev2ReturnType { get; set; }
         public string ShortTypeName { get; set; }
-        public string FullName => Name + $"({ShortTypeName ?? ""})";
+        public string FullName
+        {
+            get
+            {
+                var type = ShortTypeName == null ? "" : "(" + ShortTypeName + ")";
+                if (string.IsNullOrEmpty(Name)) return "";
+                var fullName = Name + type;
+                return fullName;
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@
                     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
                     xmlns:netDllEnhanced="clr-namespace:Dev2.Activities.Designers2.Net_Dll_Enhanced"
                     xmlns:actionRegion="clr-namespace:Dev2.Activities.Designers2.Core.ActionRegion"
+                    xmlns:inputRegion="clr-namespace:Dev2.Activities.Designers2.Core.InputRegion"
                     mc:Ignorable="d"
                     x:Class="CustomToolDesignerRegions"
                     d:DataContext="{d:DesignInstance core1:CustomToolWithRegionBase}">
@@ -559,10 +560,18 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
                                     <TextBlock Text="{Binding Path=FullName}"
                                                 TextTrimming="CharacterEllipsis"
                                                 VerticalAlignment="Center"
                                                 Padding="3,0"
+                                               Grid.Column="0"
                                                 ToolTip="{Binding Path=FullName}">                               
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
@@ -571,8 +580,16 @@
                                 </MultiBinding>
                             </AutomationProperties.AutomationId>
                                     </TextBlock>
+                                    <Button Width="Auto" 
+                                            Content="..." 
+                                            HorizontalAlignment="Right" 
+                                            Grid.Column="1"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=DataContext.InputArea.ViewObjectResult}"
+                                            CommandParameter="{Binding .}"
+                                            Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                 </Grid>
                             </DataTemplate>
+
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
