@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -600,7 +599,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IWarewolfWebClient WebClient
         {
-            get
+            private get
             {
                 return _webClient ?? CustomContainer.Get<IWarewolfWebClient>();
             }
