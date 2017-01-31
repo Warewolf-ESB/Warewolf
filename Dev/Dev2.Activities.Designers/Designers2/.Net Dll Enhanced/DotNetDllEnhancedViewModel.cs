@@ -364,7 +364,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             OutputsRegion.IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(OutputsRegion.ObjectResult);
                         }
 
-                        ClearToolRegionErrors();
+                        //ClearToolRegionErrors();
                     }
                 };
                 ConstructorRegion.SomethingChanged += (sender, args) =>
