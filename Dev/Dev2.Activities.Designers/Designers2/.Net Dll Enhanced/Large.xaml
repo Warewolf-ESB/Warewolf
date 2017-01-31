@@ -318,7 +318,7 @@
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
 
-                                                        <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
+                                                        <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" ToolTip="{Binding ObjectResult}"/>
                                                         <CheckBox x:Name="IsObjectCheckBox" 
                                                                   Grid.Column="1"
                                                                   IsChecked="{Binding IsObject}" 
