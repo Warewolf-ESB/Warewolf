@@ -12,23 +12,14 @@ namespace Warewolf.UITests
         [TestMethod]
         [TestCategory("Exchange Source")]
         // ReSharper disable once InconsistentNaming
-        public void Open_ExchangeSource_From_ExplorerContextMenu_UITests()
+        public void Create_ExchangeSource_From_ExplorerContextMenu_UITests()
         {
             UIMap.Select_NewExchangeSource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.Exists, "Exchange Source Tab does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.AutoDiscoverUrlTxtBox.Exists, "Host textbox does not exist after opening Email source tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.UserNameTextBox.Exists, "Username textbox does not exist after opening Email source tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.PasswordTextBox.Exists, "Password textbox does not exist after opening Email source tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.Exists, "Port textbox does not exist after opening Email source tab");
-            UIMap.Click_Close_ExchangeSource_Tab();
-        }
-
-        [TestMethod]
-        [TestCategory("Exchange Source")]
-        // ReSharper disable once InconsistentNaming
-        public void Create_ExchangeSource_UITests()
-        {
-            UIMap.Select_NewExchangeSource_From_ExplorerContextMenu();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.Exists, "Exchange Source Tab does not exist.");
             UIMap.Enter_Text_Into_Exchange_Tab();
             UIMap.Click_ExchangeSource_TestConnection_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.ItemImage.Exists, "Connection test Failed");
@@ -36,6 +27,7 @@ namespace Warewolf.UITests
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            UIMap.Click_Close_ExchangeSource_Tab();
         }
 
         #region Additional test attributes
