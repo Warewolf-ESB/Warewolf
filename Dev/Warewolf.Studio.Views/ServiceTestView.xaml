@@ -439,7 +439,7 @@
 																	Header="Value"
 																	HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
 																	d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
-                                                <DataGridTemplateColumn.CellTemplate>
+                                                <DataGridTemplateColumn.CellTemplate >
                                                     <DataTemplate>
                                                         <!--<TextBox Margin="1,0,1,1" 
                                                                  AcceptsReturn="True"
@@ -462,7 +462,6 @@
 						                                    Margin="0,0,1,1"
 						                                    AcceptsReturn="True"
 						                                    MaxHeight="80"
-                                                            
 						                                    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
 						                                    Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
 						                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
@@ -636,6 +635,7 @@
                                                                             <DataTemplate>
                                                                                 <TextBox Margin="1,0,1,1"
                                                                                          Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                                         TextChanged="AutoCompleteBox_OnTextChanged"
                                                                                          ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertVariableTooltip}"
                                                                                          IsEnabled="{Binding Path=CanEditVariable}">
                                                                                     <i:Interaction.Behaviors>
@@ -661,6 +661,8 @@
 																							    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertRadioButtonTooltip}" 
 																							    Content="Assert" 
 																							    Margin="8,-3,0,0"
+                                                                                                Checked="ToggleButton_OnChecked"
+																                            	Unchecked="ToggleButton_OnChecked"
 																							    IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
 																							    AutomationProperties.AutomationId="{Binding Path=DataContext.Data.Description, StringFormat=UI_AssertRadioButton_{0}_AutoID}">
                                                                                         <i:Interaction.Behaviors>
@@ -671,6 +673,8 @@
 																							    ToolTip="{x:Static languages:Tooltips.ServiceTestStepMockRadioButtonTooltip}" 
 																							    Content="Mock" 
 																							    Margin="0,-3,0,0"
+                                                                                                Checked="ToggleButton_OnChecked"
+																                            	Unchecked="ToggleButton_OnChecked"
 																							    IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.MockSelected}"
                                                                                                 AutomationProperties.AutomationId="{Binding Path=DataContext.Data.Description, StringFormat=UI_MockRadioButton_{0}_AutoID}">
                                                                                         <i:Interaction.Behaviors>
@@ -684,6 +688,7 @@
                                                                             <DataTemplate>
                                                                                 <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
 																					        Margin="1,0,1,1"
+                                                                                            SelectionChanged="Selector_OnSelectionChanged"
 																					        IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
 																					        ItemsSource="{Binding Path=AssertOps}"
 																					        SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
@@ -712,17 +717,7 @@
                                                                                     <StackPanel Grid.Column="0"
 																							    Grid.ColumnSpan="2" 
 																							    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                                                                        <!--<TextBox Margin="1,0,1,1"
-																							    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																							    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertValueTooltip}"
-																							    IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
-																							    Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                                                                AutomationProperties.AutomationId="{Binding Path=Value, StringFormat=UI_AssertValue_{0}_AutoID}">
-                                                                                            <i:Interaction.Behaviors>
-                                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                            </i:Interaction.Behaviors>
-                                                                                        </TextBox>-->
-
+                                                                                    
                                                                                         <ui:IntellisenseTextBox 
 						                                                                            AllowMultilinePaste="True"
 						                                                                            AllowUserCalculateMode="True"
@@ -731,6 +726,7 @@
 						                                                                            VerticalScrollBarVisibility="Auto"
 						                                                                            TextWrapping="Wrap"
 						                                                                            Margin="0,0,1,1"
+                                                                                                     TextChanged="AutoCompleteBox_OnTextChanged"
 						                                                                            AcceptsReturn="True"
 						                                                                            MaxHeight="80"
 						                                                                            Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -748,6 +744,7 @@
 
                                                                                     <TextBox Margin="1,0,1,1"
 																					        Grid.Column="0"
+                                                                                            TextChanged="AutoCompleteBox_OnTextChanged"
 																					        Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 																					        ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertFromTooltip}"
 																					        Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
@@ -760,6 +757,7 @@
 
                                                                                     <TextBox Margin="1,0,1,1"
 																						    Grid.Column="1"
+                                                                                            TextChanged="AutoCompleteBox_OnTextChanged"
 																						    Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 																						    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertToTooltip}"
 																						    Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
@@ -871,16 +869,7 @@
                                                             <StackPanel Grid.Column="0"
 																	    Grid.ColumnSpan="2" 
 																	    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                                                <!--<TextBox Margin="1,0,1,1"
-																	    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																	    ToolTip="{x:Static languages:Tooltips.ServiceTestOutputValueTooltip}"
-																	    IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
-																	    Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-																	    AutomationProperties.AutomationId="UI_AssertValue_AutoID">
-                                                                    <i:Interaction.Behaviors>
-                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestOutputValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                    </i:Interaction.Behaviors>
-                                                                </TextBox>-->
+                                                             
                                                                 <ui:IntellisenseTextBox 
 						                                                            AllowMultilinePaste="True"
 						                                                            AllowUserCalculateMode="True"
@@ -888,6 +877,7 @@
 						                                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
 						                                                            VerticalScrollBarVisibility="Auto"
 						                                                            TextWrapping="Wrap"
+                                                                                     TextChanged="AutoCompleteBox_OnTextChanged"
 						                                                            Margin="0,0,1,1"
 						                                                            AcceptsReturn="True"
 						                                                            MaxHeight="80"
