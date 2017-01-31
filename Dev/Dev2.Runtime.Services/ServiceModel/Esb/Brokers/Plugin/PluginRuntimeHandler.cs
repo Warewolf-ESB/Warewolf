@@ -76,10 +76,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 try
                 {
-                    instance = Activator.CreateInstance(type, constructorArgs);
-                }
-                catch (Exception)
-                {
                     var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
                     if (types != null)
                     {
@@ -89,6 +85,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                             instance = constructorInfo.Invoke(constructorArgs.ToArray());
                         }
                     }
+                }
+                catch (Exception)
+                {
+                    instance = Activator.CreateInstance(type, constructorArgs);
+
+
                 }
             }
             else
@@ -118,18 +120,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        public PluginExecutionDto Run(PluginExecutionDto dto, IDev2MethodInfo dev2MethodInfo)
+        public IDev2MethodInfo Run(PluginExecutionDto dto,IDev2MethodInfo dev2MethodInfo)
         {
             try
             {
-                dto = ExecuteConstructor(dto);
                 var args = dto.Args;
                 Assembly loadedAssembly;
                 var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
                 if (!tryLoadAssembly)
                     throw new Exception(args.AssemblyName + "Not found");
                 ExecutePlugin(dto, args, loadedAssembly, dev2MethodInfo);
-                return dto;
+                return dev2MethodInfo;
             }
             catch (Exception e)
             {
@@ -181,7 +182,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 return;
             }
             var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
-            ExecuteSingleMethod(type, instance, InvokeMethodsAction, loadedAssembly, dev2MethodInfo);
+            ExecuteSingleMethod(type, instance, InvokeMethodsAction, loadedAssembly, dev2MethodInfo);            
             objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
         }
 

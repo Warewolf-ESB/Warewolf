@@ -599,7 +599,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IWarewolfWebClient WebClient
         {
-            get
+            private get
             {
                 return _webClient ?? CustomContainer.Get<IWarewolfWebClient>();
             }
