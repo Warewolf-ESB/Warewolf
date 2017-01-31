@@ -591,7 +591,7 @@ namespace Dev2.Studio.Dock
                     else
                     {
                         var sourceView = model.WorkSurfaceViewModel as IStudioTab;
-                        if (sourceView != null && sourceView.IsDirty)
+                        if (sourceView != null)
                         {
                             CloseCurrent(e, model);
                         }

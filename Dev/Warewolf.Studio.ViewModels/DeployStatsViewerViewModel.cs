@@ -156,27 +156,38 @@ namespace Warewolf.Studio.ViewModels
         public void CheckDestinationPersmisions()
         {
             _destinationItems = _destination.SelectedEnvironment?.AsList();
-            if (_destinationItems?.Count > 0 && _items?.Count > 0)
+            if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment==null || !_destination.SelectedEnvironment.IsConnected)
             {
                 foreach (var currentItem in _items)
                 {
-                    var explorerItemViewModel = _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
+                    currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
+                }
+            }
+            else
+            {
+                if (_items?.Count > 0)
+                {
+                    foreach (var currentItem in _items)
                     {
-                        if (explorerItemViewModel != null)
+                        var explorerItemViewModel =
+                            _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
                         {
-                            if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
+                            if (explorerItemViewModel != null)
                             {
-                                if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
+                                if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
                                 {
-                                    currentItem.CanDeploy = explorerItemViewModel.CanEdit;
+                                    if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
+                                    {
+                                        currentItem.CanDeploy = explorerItemViewModel.CanContribute;
+                                    }
+                                    else
+                                        currentItem.CanDeploy = true;
                                 }
-                                else
-                                    currentItem.CanDeploy = true;
                             }
+                            else
+                                currentItem.CanDeploy = true;
                         }
-                        else                        
-                            currentItem.CanDeploy = true;
-                    }                    
+                    }
                 }
             }
         }
