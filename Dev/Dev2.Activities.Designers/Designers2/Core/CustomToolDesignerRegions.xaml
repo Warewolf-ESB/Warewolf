@@ -507,7 +507,6 @@
                                     Height="Auto"
                                    BorderBrush="Transparent"
                                    Background="Transparent"
-                                   AutoGenerateColumns="False"
                                     Margin="3,0,3,0"
                                    AutoGenerateColumns="False"
                                    Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
