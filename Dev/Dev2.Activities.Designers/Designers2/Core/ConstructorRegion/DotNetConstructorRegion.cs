@@ -79,6 +79,8 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 Errors.Add(e.Message);
             }
         }
+       
+
 
         IPluginConstructor Method
         {

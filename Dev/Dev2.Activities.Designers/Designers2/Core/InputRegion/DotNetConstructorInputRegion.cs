@@ -11,6 +11,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
+using Dev2.Common.Utils;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
@@ -27,6 +29,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private ICollection<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
         private readonly IActionInputDatatalistMapper _datatalistMapper;
+        private RelayCommand _viewObjectResult;
 
         // ReSharper disable once UnusedMember.Global
         public DotNetConstructorInputRegion()
@@ -144,7 +147,23 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
             OnPropertyChanged("Inputs");
         }
+        public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
+        public RelayCommand ViewObjectResult
+        {
+            get
+            {
+                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                {
+                    var serviceInput = item as IServiceInput;
+                    ViewJsonObjects(serviceInput);
+                },o => true));
+            }
+        }
+        private void ViewJsonObjects(IServiceInput input)
+        {
+            JsonObjectsView?.ShowJsonString(JSONUtils.Format(JSONUtils.Format(input.Dev2ReturnType)));
+        }
         public bool IsInputsEmptyRows
         {
             get

@@ -299,8 +299,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsNotNull(methodInfo);
             methodInfo.Invoke(inputRegion, new object[] { });
             //---------------Test Result -----------------------
-            Assert.AreEqual("John", inputRegion.Inputs.ToList()[0].Value);
-            Assert.AreEqual("Stones", inputRegion.Inputs.ToList()[1].Value);
+            Assert.AreEqual("[[name]]", inputRegion.Inputs.ToList()[0].Value);
+            Assert.AreEqual("[[surname]]", inputRegion.Inputs.ToList()[1].Value);
 
         }
 

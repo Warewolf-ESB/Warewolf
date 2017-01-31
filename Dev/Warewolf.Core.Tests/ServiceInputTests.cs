@@ -65,6 +65,42 @@ namespace Warewolf.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ServiceInput_Constructor")]
+        public void ServiceInput_FullName_NameAndNullShortTypeName()
+        {
+            //------------Setup for test--------------------------
+            const string mappingTo = "mapTo";
+            //------------Execute Test---------------------------
+            var serviceOutputMapping = new ServiceInput("", mappingTo)
+            {
+                Name = "name",
+            };
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceOutputMapping);
+            Assert.AreEqual("name", serviceOutputMapping.FullName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ServiceInput_Constructor")]
+        public void ServiceInput_FullName_NullNameAndShortTypeName()
+        {
+            //------------Setup for test--------------------------
+            const string mappingTo = "mapTo";
+            //------------Execute Test---------------------------
+            var serviceOutputMapping = new ServiceInput("", mappingTo)
+            {
+                ShortTypeName = "name"
+            };
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serviceOutputMapping);
+            Assert.AreEqual("", serviceOutputMapping.FullName);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceInput_Constructor")]
         public void ServiceInput_Constructor_EmptyValue_ShouldStillConsturct()

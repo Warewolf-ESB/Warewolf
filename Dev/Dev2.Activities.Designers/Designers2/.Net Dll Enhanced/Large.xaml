@@ -257,11 +257,19 @@
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
                                                                     <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                                                        <TextBlock Text="{Binding Path=Name}"
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="*" />
+                                                                            <ColumnDefinition Width="*" />
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <Grid.RowDefinitions>
+                                                                            <RowDefinition Height="*"/>
+                                                                        </Grid.RowDefinitions>
+                                                                        <TextBlock Text="{Binding Path=FullName}"
+                                                                                   Grid.Column="0"
                                                                                     TextTrimming="CharacterEllipsis"
                                                                                     VerticalAlignment="Center"
                                                                                     Padding="3,0"
-                                                                                    ToolTip="{Binding OutputColumn.ColumnName}">
+                                                                                    ToolTip="{Binding Path=FullName}">
                                                                         <AutomationProperties.AutomationId>
                                                                             <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
                                                                                 <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
@@ -269,6 +277,13 @@
                                                                             </MultiBinding>
                                                                         </AutomationProperties.AutomationId>
                                                                         </TextBlock>
+                                                                        <Button Width="Auto" 
+                                                                                Content="..." 
+                                                                                HorizontalAlignment="Right" 
+                                                                                Grid.Column="1"
+                                                                                Command="{Binding ElementName=LargeDataGrid, Path=DataContext.ViewObjectResult}"
+                                                                                CommandParameter="{Binding .}"
+                                                                                Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                                     </Grid>
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellTemplate>
