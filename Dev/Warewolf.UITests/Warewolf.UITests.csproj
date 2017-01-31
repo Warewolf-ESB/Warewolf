@@ -159,10 +159,10 @@
     <Compile Include="Tools\Data\Data Merge.cs" />
     <Compile Include="Tools\Email\SMTP_Send.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Zip.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Write.cs" />
+    <Compile Include="Tools\File, FTP, FTPS + SFTP\Write File.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Unzip.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Rename.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Read.cs" />
+    <Compile Include="Tools\File, FTP, FTPS + SFTP\Read File.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Read Folder.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Move.cs" />
     <Compile Include="Tools\File, FTP, FTPS + SFTP\Delete.cs" />
