@@ -395,6 +395,46 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             Assert.IsTrue(fields.Contains("[[errSvc]]"));
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataGridActivityFindMissingStrategy_GetActivityFields")]
+        public void DataGridActivityFindMissingStrategy_GetActivityFields_DsfEnhancedDotNetDllActivityWithMethodWithInputs_ShouldReturnResults()
+        {
+            //------------Setup for test--------------------------
+            Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
+            IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
+            var activity = new DsfEnhancedDotNetDllActivity
+            {
+                ObjectName = "[[@Home]]",
+                ConstructorInputs = new List<IServiceInput>
+                {
+                    new ServiceInput("name", "[[name]]")
+                },
+                MethodsToRun = new List<IPluginAction>
+                {
+                    new PluginAction { OutputVariable = "[[name1]]" , Inputs = new List<IServiceInput>()
+                    {
+                        new ServiceInput("name","[[name2]]")
+                    } },
+                    new PluginAction { OutputVariable = "[[@nameObj]]" }
+                },
+                OnErrorVariable = "[[err]]",
+                OnErrorWorkflow = "[[errSvc]]",
+                IsObject = true
+            };
+            //------------Execute Test---------------------------
+            var fields = strategy.GetActivityFields(activity);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(7, fields.Count);
+            Assert.IsTrue(fields.Contains("[[@Home]]"));
+            Assert.IsTrue(fields.Contains("[[name]]"));
+            Assert.IsTrue(fields.Contains("[[name1]]"));
+            Assert.IsTrue(fields.Contains("[[name2]]"));
+            Assert.IsTrue(fields.Contains("[[@nameObj]]"));
+            Assert.IsTrue(fields.Contains("[[err]]"));
+            Assert.IsTrue(fields.Contains("[[errSvc]]"));
+        }
+
         
         [TestMethod]
         [Owner("Hagashen Naidu")]
