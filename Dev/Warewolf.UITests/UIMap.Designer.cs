@@ -51515,15 +51515,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public DestinationFileOrFolderComboBox DestinationFileOrFolderComboBox
+        public DestinationPrivateKeyComboBox DestinationPrivateKeyComboBox
         {
             get
             {
-                if ((this.mDestinationFileOrFolderComboBox == null))
+                if ((this.mDestinationPrivateKeyComboBox == null))
                 {
-                    this.mDestinationFileOrFolderComboBox = new DestinationFileOrFolderComboBox(this);
+                    this.mDestinationPrivateKeyComboBox = new DestinationPrivateKeyComboBox(this);
                 }
-                return this.mDestinationFileOrFolderComboBox;
+                return this.mDestinationPrivateKeyComboBox;
             }
         }
         
@@ -51583,7 +51583,7 @@ namespace Warewolf.UITests
         
         private WpfEdit mDestinationPasswordEdit;
         
-        private DestinationFileOrFolderComboBox mDestinationFileOrFolderComboBox;
+        private DestinationPrivateKeyComboBox mDestinationPrivateKeyComboBox;
         
         private WpfCheckBox mOverwriteCheckBox;
         
@@ -51776,10 +51776,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DestinationFileOrFolderComboBox : WpfComboBox
+    public class DestinationPrivateKeyComboBox : WpfComboBox
     {
         
-        public DestinationFileOrFolderComboBox(UITestControl searchLimitContainer) : 
+        public DestinationPrivateKeyComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -52306,15 +52306,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public FileNameComboBox FileNameComboBox
+        public PrivateKeyComboBox2 PrivateKeyComboBox
         {
             get
             {
-                if ((this.mFileNameComboBox == null))
+                if ((this.mPrivateKeyComboBox == null))
                 {
-                    this.mFileNameComboBox = new FileNameComboBox(this);
+                    this.mPrivateKeyComboBox = new PrivateKeyComboBox2(this);
                 }
-                return this.mFileNameComboBox;
+                return this.mPrivateKeyComboBox;
             }
         }
         
@@ -52350,7 +52350,7 @@ namespace Warewolf.UITests
         
         private WpfEdit mPasswordEdit;
         
-        private FileNameComboBox mFileNameComboBox;
+        private PrivateKeyComboBox2 mPrivateKeyComboBox;
         
         private ResultComboBox41 mResultComboBox;
         
@@ -52431,10 +52431,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FileNameComboBox : WpfComboBox
+    public class PrivateKeyComboBox2 : WpfComboBox
     {
         
-        public FileNameComboBox(UITestControl searchLimitContainer) : 
+        public PrivateKeyComboBox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -53802,13 +53802,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public PrivateKeyComboBox2 PrivateKeyComboBox
+        public PrivateKeyComboBox3 PrivateKeyComboBox
         {
             get
             {
                 if ((this.mPrivateKeyComboBox == null))
                 {
-                    this.mPrivateKeyComboBox = new PrivateKeyComboBox2(this);
+                    this.mPrivateKeyComboBox = new PrivateKeyComboBox3(this);
                 }
                 return this.mPrivateKeyComboBox;
             }
@@ -53852,7 +53852,7 @@ namespace Warewolf.UITests
         
         private WpfEdit mPasswordEdit;
         
-        private PrivateKeyComboBox2 mPrivateKeyComboBox;
+        private PrivateKeyComboBox3 mPrivateKeyComboBox;
         
         private ResultComboBox45 mResultComboBox;
         
@@ -53933,10 +53933,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PrivateKeyComboBox2 : WpfComboBox
+    public class PrivateKeyComboBox3 : WpfComboBox
     {
         
-        public PrivateKeyComboBox2(UITestControl searchLimitContainer) : 
+        public PrivateKeyComboBox3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -54322,13 +54322,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public FileNameComboBox1 FileNameComboBox
+        public FileNameComboBox FileNameComboBox
         {
             get
             {
                 if ((this.mFileNameComboBox == null))
                 {
-                    this.mFileNameComboBox = new FileNameComboBox1(this);
+                    this.mFileNameComboBox = new FileNameComboBox(this);
                 }
                 return this.mFileNameComboBox;
             }
@@ -54362,13 +54362,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public PrivateKeyComboBox3 PrivateKeyComboBox
+        public PrivateKeyComboBox4 PrivateKeyComboBox
         {
             get
             {
                 if ((this.mPrivateKeyComboBox == null))
                 {
-                    this.mPrivateKeyComboBox = new PrivateKeyComboBox3(this);
+                    this.mPrivateKeyComboBox = new PrivateKeyComboBox4(this);
                 }
                 return this.mPrivateKeyComboBox;
             }
@@ -54400,13 +54400,13 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private FileNameComboBox1 mFileNameComboBox;
+        private FileNameComboBox mFileNameComboBox;
         
         private UserNameComboBox5 mUserNameComboBox;
         
         private WpfEdit mPasswordEdit;
         
-        private PrivateKeyComboBox3 mPrivateKeyComboBox;
+        private PrivateKeyComboBox4 mPrivateKeyComboBox;
         
         private ResultComboBox47 mResultComboBox;
         
@@ -54415,10 +54415,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FileNameComboBox1 : WpfComboBox
+    public class FileNameComboBox : WpfComboBox
     {
         
-        public FileNameComboBox1(UITestControl searchLimitContainer) : 
+        public FileNameComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -54487,10 +54487,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PrivateKeyComboBox3 : WpfComboBox
+    public class PrivateKeyComboBox4 : WpfComboBox
     {
         
-        public PrivateKeyComboBox3(UITestControl searchLimitContainer) : 
+        public PrivateKeyComboBox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -54743,13 +54743,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public FileNameComboBox2 FileNameComboBox
+        public FileNameComboBox1 FileNameComboBox
         {
             get
             {
                 if ((this.mFileNameComboBox == null))
                 {
-                    this.mFileNameComboBox = new FileNameComboBox2(this);
+                    this.mFileNameComboBox = new FileNameComboBox1(this);
                 }
                 return this.mFileNameComboBox;
             }
@@ -54769,17 +54769,17 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private FileNameComboBox2 mFileNameComboBox;
+        private FileNameComboBox1 mFileNameComboBox;
         
         private ResultComboBox48 mResultComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FileNameComboBox2 : WpfComboBox
+    public class FileNameComboBox1 : WpfComboBox
     {
         
-        public FileNameComboBox2(UITestControl searchLimitContainer) : 
+        public FileNameComboBox1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -54927,13 +54927,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public FileNameComboBox3 FileNameComboBox
+        public FileNameComboBox2 FileNameComboBox
         {
             get
             {
                 if ((this.mFileNameComboBox == null))
                 {
-                    this.mFileNameComboBox = new FileNameComboBox3(this);
+                    this.mFileNameComboBox = new FileNameComboBox2(this);
                 }
                 return this.mFileNameComboBox;
             }
@@ -55023,13 +55023,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public PrivateKeyComboBox4 PrivateKeyComboBox
+        public PrivateKeyComboBox5 PrivateKeyComboBox
         {
             get
             {
                 if ((this.mPrivateKeyComboBox == null))
                 {
-                    this.mPrivateKeyComboBox = new PrivateKeyComboBox4(this);
+                    this.mPrivateKeyComboBox = new PrivateKeyComboBox5(this);
                 }
                 return this.mPrivateKeyComboBox;
             }
@@ -55061,7 +55061,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private FileNameComboBox3 mFileNameComboBox;
+        private FileNameComboBox2 mFileNameComboBox;
         
         private OverwriteRadioButton mOverwriteRadioButton;
         
@@ -55075,7 +55075,7 @@ namespace Warewolf.UITests
         
         private WpfEdit mPasswordEdit;
         
-        private PrivateKeyComboBox4 mPrivateKeyComboBox;
+        private PrivateKeyComboBox5 mPrivateKeyComboBox;
         
         private ResultComboBox49 mResultComboBox;
         
@@ -55084,10 +55084,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FileNameComboBox3 : WpfComboBox
+    public class FileNameComboBox2 : WpfComboBox
     {
         
-        public FileNameComboBox3(UITestControl searchLimitContainer) : 
+        public FileNameComboBox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -55246,10 +55246,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PrivateKeyComboBox4 : WpfComboBox
+    public class PrivateKeyComboBox5 : WpfComboBox
     {
         
-        public PrivateKeyComboBox4(UITestControl searchLimitContainer) : 
+        public PrivateKeyComboBox5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -55990,13 +55990,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public FileNameComboBox4 FileNameComboBox
+        public FileNameComboBox3 FileNameComboBox
         {
             get
             {
                 if ((this.mFileNameComboBox == null))
                 {
-                    this.mFileNameComboBox = new FileNameComboBox4(this);
+                    this.mFileNameComboBox = new FileNameComboBox3(this);
                 }
                 return this.mFileNameComboBox;
             }
@@ -56028,7 +56028,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private FileNameComboBox4 mFileNameComboBox;
+        private FileNameComboBox3 mFileNameComboBox;
         
         private ContentsComboBox1 mContentsComboBox;
         
@@ -56037,10 +56037,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class FileNameComboBox4 : WpfComboBox
+    public class FileNameComboBox3 : WpfComboBox
     {
         
-        public FileNameComboBox4(UITestControl searchLimitContainer) : 
+        public FileNameComboBox3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -56264,13 +56264,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public PrivateKeyComboBox5 PrivateKeyComboBox
+        public PrivateKeyComboBox6 PrivateKeyComboBox
         {
             get
             {
                 if ((this.mPrivateKeyComboBox == null))
                 {
-                    this.mPrivateKeyComboBox = new PrivateKeyComboBox5(this);
+                    this.mPrivateKeyComboBox = new PrivateKeyComboBox6(this);
                 }
                 return this.mPrivateKeyComboBox;
             }
@@ -56377,7 +56377,7 @@ namespace Warewolf.UITests
         
         private WpfEdit mPasswordEdit;
         
-        private PrivateKeyComboBox5 mPrivateKeyComboBox;
+        private PrivateKeyComboBox6 mPrivateKeyComboBox;
         
         private NewNameComboBox mNewNameComboBox;
         
@@ -56468,10 +56468,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PrivateKeyComboBox5 : WpfComboBox
+    public class PrivateKeyComboBox6 : WpfComboBox
     {
         
-        public PrivateKeyComboBox5(UITestControl searchLimitContainer) : 
+        public PrivateKeyComboBox6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -57108,13 +57108,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public PrivateKeyComboBox6 PrivateKeyComboBox
+        public PrivateKeyComboBox7 PrivateKeyComboBox
         {
             get
             {
                 if ((this.mPrivateKeyComboBox == null))
                 {
-                    this.mPrivateKeyComboBox = new PrivateKeyComboBox6(this);
+                    this.mPrivateKeyComboBox = new PrivateKeyComboBox7(this);
                 }
                 return this.mPrivateKeyComboBox;
             }
@@ -57237,7 +57237,7 @@ namespace Warewolf.UITests
         
         private WpfEdit mPasswordEdit;
         
-        private PrivateKeyComboBox6 mPrivateKeyComboBox;
+        private PrivateKeyComboBox7 mPrivateKeyComboBox;
         
         private DestinationComboBox4 mDestinationComboBox;
         
@@ -57330,10 +57330,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PrivateKeyComboBox6 : WpfComboBox
+    public class PrivateKeyComboBox7 : WpfComboBox
     {
         
-        public PrivateKeyComboBox6(UITestControl searchLimitContainer) : 
+        public PrivateKeyComboBox7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -57969,27 +57969,27 @@ namespace Warewolf.UITests
             }
         }
         
-        public PrivateKeyComboBox7 PrivateKeyComboBox
+        public PrivateKeyComboBox8 PrivateKeyComboBox
         {
             get
             {
                 if ((this.mPrivateKeyComboBox == null))
                 {
-                    this.mPrivateKeyComboBox = new PrivateKeyComboBox7(this);
+                    this.mPrivateKeyComboBox = new PrivateKeyComboBox8(this);
                 }
                 return this.mPrivateKeyComboBox;
             }
         }
         
-        public ZipNameComboBox ZipNameComboBox
+        public DestinationComboBox6 DestinationComboBox
         {
             get
             {
-                if ((this.mZipNameComboBox == null))
+                if ((this.mDestinationComboBox == null))
                 {
-                    this.mZipNameComboBox = new ZipNameComboBox(this);
+                    this.mDestinationComboBox = new DestinationComboBox6(this);
                 }
-                return this.mZipNameComboBox;
+                return this.mDestinationComboBox;
             }
         }
         
@@ -58109,9 +58109,9 @@ namespace Warewolf.UITests
         
         private WpfEdit mPasswordEdit;
         
-        private PrivateKeyComboBox7 mPrivateKeyComboBox;
+        private PrivateKeyComboBox8 mPrivateKeyComboBox;
         
-        private ZipNameComboBox mZipNameComboBox;
+        private DestinationComboBox6 mDestinationComboBox;
         
         private ZipDestinationUsernComboBox mZipDestinationUsernComboBox;
         
@@ -58204,10 +58204,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class PrivateKeyComboBox7 : WpfComboBox
+    public class PrivateKeyComboBox8 : WpfComboBox
     {
         
-        public PrivateKeyComboBox7(UITestControl searchLimitContainer) : 
+        public PrivateKeyComboBox8(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -58241,10 +58241,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ZipNameComboBox : WpfComboBox
+    public class DestinationComboBox6 : WpfComboBox
     {
         
-        public ZipNameComboBox(UITestControl searchLimitContainer) : 
+        public DestinationComboBox6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -58671,15 +58671,15 @@ namespace Warewolf.UITests
             }
         }
         
-        public ZipNameComboBox1 ZipNameComboBox
+        public DestinationComboBox7 DestinationComboBox
         {
             get
             {
-                if ((this.mZipNameComboBox == null))
+                if ((this.mDestinationComboBox == null))
                 {
-                    this.mZipNameComboBox = new ZipNameComboBox1(this);
+                    this.mDestinationComboBox = new DestinationComboBox7(this);
                 }
-                return this.mZipNameComboBox;
+                return this.mDestinationComboBox;
             }
         }
         
@@ -58699,7 +58699,7 @@ namespace Warewolf.UITests
         #region Fields
         private FileOrFolderComboBox10 mFileOrFolderComboBox;
         
-        private ZipNameComboBox1 mZipNameComboBox;
+        private DestinationComboBox7 mDestinationComboBox;
         
         private ResultComboBox56 mResultComboBox;
         #endregion
@@ -58742,10 +58742,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class ZipNameComboBox1 : WpfComboBox
+    public class DestinationComboBox7 : WpfComboBox
     {
         
-        public ZipNameComboBox1(UITestControl searchLimitContainer) : 
+        public DestinationComboBox7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
