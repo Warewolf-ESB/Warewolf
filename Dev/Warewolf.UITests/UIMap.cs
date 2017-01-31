@@ -1180,8 +1180,19 @@ namespace Warewolf.UITests
             var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
             if (deleteFirstResourceButton.Enabled)
             {
-                Mouse.Click(deleteFirstResourceButton);
-                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                var isViewChecked = FindViewPermissionsCheckbox(
+                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
+
+                var isExecuteChecked = FindExecutePermissionsCheckbox(
+                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
+
+                if (isViewChecked && isExecuteChecked)
+                {
+                    Click_Close_Settings_Tab_Button();
+                    return;
+                }
             }
             Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
             Click_Close_Settings_Tab_Button();
@@ -1196,8 +1207,19 @@ namespace Warewolf.UITests
             var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
             if (deleteFirstResourceButton.Enabled)
             {
-                Mouse.Click(deleteFirstResourceButton);
-                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                var isViewChecked = FindViewPermissionsCheckbox(
+                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
+
+                var isExecuteChecked = FindExecutePermissionsCheckbox(
+                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
+
+                if (isViewChecked && isExecuteChecked)
+                {
+                    Click_Close_Settings_Tab_Button();
+                    return;
+                }
             }
             Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
             Click_Close_Settings_Tab_Button();
@@ -9277,6 +9299,26 @@ namespace Warewolf.UITests
                 Assert.IsTrue(publicRadioButton.Selected);
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(publicRadioButton.Selected);
+            }
+        }
+
+        [Given(@"I set AuthenticationType to Public")]
+        [When(@"I set AuthenticationType to Public")]
+        [Then(@"I set AuthenticationType to Public")]
+        public void ChangeServerAuthenticationTypeToPublic()
+        {
+            Click_Deploy_Tab_Source_Server_Edit_Button();
+            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+            if(!publicRadioButton.Selected)
+            {
+                publicRadioButton.Selected = true;
+                Click_Server_Source_Wizard_Test_Connection_Button();
+                Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Click_Close_Server_Source_Wizard_Tab_Button();
+            }
+            else
+            {
+                Click_Close_Server_Source_Wizard_Tab_Button();                
             }
         }
 

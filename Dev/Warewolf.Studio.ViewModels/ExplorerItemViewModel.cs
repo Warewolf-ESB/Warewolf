@@ -716,6 +716,7 @@ namespace Warewolf.Studio.ViewModels
             CanViewApisJson = true;
             CanViewSwagger = true;
             CanDebugInputs = true;
+            CanContribute = false;
             CanDebugStudio = true;
             CanDebugBrowser = true;
         }
@@ -724,6 +725,7 @@ namespace Warewolf.Studio.ViewModels
         {
             CanView = !isDeploy;
             CanShowDependencies = true;
+            CanContribute = false;
             CanShowVersions = true;
             CanViewApisJson = true;
             CanViewSwagger = true;            
@@ -732,6 +734,7 @@ namespace Warewolf.Studio.ViewModels
         private void SetNonePermissions()
         {
             CanRename = false;
+            CanContribute = false;
             CanEdit = false;
             CanDuplicate = false;
             CanDebugInputs = false;
@@ -763,6 +766,7 @@ namespace Warewolf.Studio.ViewModels
             CanViewRunAllTests = true;
             CanDelete = true;
             CanCreateFolder = true;
+            CanContribute = true;
             CanDeploy = true;
             CanCreateWorkflowService = true;
             CanCreateSource = true;
@@ -790,6 +794,7 @@ namespace Warewolf.Studio.ViewModels
             CanDelete = true;
             CanCreateFolder = true;
             CanShowDependencies = true;
+            CanContribute = true;
             CanCreateWorkflowService = true;
             CanCreateSource = true;
             CanShowVersions = true;
@@ -1465,6 +1470,9 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
+        public bool CanContribute { get; set; }
+
         public bool CanView
         {
             get
