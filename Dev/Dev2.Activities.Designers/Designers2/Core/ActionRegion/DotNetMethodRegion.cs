@@ -29,6 +29,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
         private RelayCommand _viewObjectResult;
+        private RelayCommand _viewObjectForServiceInputResult;
         private IPluginAction _selectedMethod;
         private readonly IPluginServiceModel _model;
         private ICollection<IPluginAction> _methodsToRun;
@@ -245,6 +246,18 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
+        public RelayCommand ViewObjectResultForParameterInput
+        {
+            get
+            {
+                return _viewObjectForServiceInputResult ?? (_viewObjectForServiceInputResult = new RelayCommand(item =>
+                {
+                    var serviceInput = item as ServiceInput;
+                    ViewObjectsResultForParameterInput(serviceInput);
+                }, CanRunCommand));
+            }
+        }
+
         private bool CanRunCommand(object obj)
         {
             return true;
@@ -253,6 +266,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private void ViewJsonObjects()
         {
             JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
+        }
+
+        private void ViewObjectsResultForParameterInput(IServiceInput input)
+        {
+            JsonObjectsView?.ShowJsonString(JSONUtils.Format(input.Dev2ReturnType));
         }
 
         public string ObjectName

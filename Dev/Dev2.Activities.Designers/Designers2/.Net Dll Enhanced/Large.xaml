@@ -281,7 +281,7 @@
                                                                                 Content="..." 
                                                                                 HorizontalAlignment="Right" 
                                                                                 Grid.Column="1"
-                                                                                Command="{Binding ElementName=LargeDataGrid, Path=DataContext.ViewObjectResult}"
+                                                                                Command="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=DataContext.ViewObjectResultForParameterInput}"
                                                                                 CommandParameter="{Binding .}"
                                                                                 Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                                     </Grid>
