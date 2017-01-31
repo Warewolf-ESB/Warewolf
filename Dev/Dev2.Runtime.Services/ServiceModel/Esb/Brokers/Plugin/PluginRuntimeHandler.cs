@@ -118,7 +118,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        public PluginExecutionDto Run(PluginExecutionDto dto,IDev2MethodInfo dev2MethodInfo)
+        public PluginExecutionDto Run(PluginExecutionDto dto, IDev2MethodInfo dev2MethodInfo)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         public PluginExecutionDto ExecuteConstructor(PluginExecutionDto dto)
         {
-            if(!dto.Args.PluginConstructor.IsExistingObject)
+            if (!dto.Args.PluginConstructor.IsExistingObject)
             {
                 dto = CreateInstance(dto.Args);
             }
@@ -166,7 +166,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
         }
 
-        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly,IDev2MethodInfo dev2MethodInfo)
+        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
         {
 
             VerifyArgument.IsNotNull("objectToRun", objectToRun);
@@ -177,7 +177,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
             if (objectToRun.IsStatic)
             {
-                ExecuteSingleMethod(type, null, InvokeMethodsAction, loadedAssembly,dev2MethodInfo);
+                ExecuteSingleMethod(type, null, InvokeMethodsAction, loadedAssembly, dev2MethodInfo);
                 return;
             }
             var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
@@ -219,15 +219,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         private void ExecuteSingleMethod(Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
         {
-            if(dev2MethodInfo.Parameters != null)
+            if (dev2MethodInfo.Parameters != null)
             {
                 var typeList = BuildTypeList(dev2MethodInfo.Parameters, loadedAssembly);
                 var valuedTypeList = new List<object>();
                 // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach(var methodParameter in dev2MethodInfo.Parameters)
+                foreach (var methodParameter in dev2MethodInfo.Parameters)
                 {
                     var a = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, loadedAssembly);
-                    if(a != null)
+                    if (a != null)
                     {
                         var item = a.FirstOrDefault();
                         valuedTypeList.Add(item);
@@ -345,7 +345,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                     if (returnType.IsPrimitive || returnType == typeof(decimal) || returnType == typeof(string))
                     {
-                        serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
+                        serviceMethod.Dev2ReturnType = $"return: {returnType.Name}";
                         serviceMethod.IsObject = false;
 
                     }
@@ -376,7 +376,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                             serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
                             serviceMethod.IsObject = true;
                         }
-                       
+
                     }
                     var parameterInfos = info.GetParameters().ToList();
                     parameterInfos.ForEach(parameterInfo =>

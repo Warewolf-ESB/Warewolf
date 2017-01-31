@@ -529,6 +529,7 @@
                                                         TextWrapping="Wrap"
                                                         WrapInBrackets="False"
                                                         ToolTip="{x:Static languages:Tooltips.InputDefaultValueToolTip}"
+                                                        IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                         Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                     <i:Interaction.Behaviors>
