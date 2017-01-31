@@ -1042,10 +1042,9 @@ namespace Warewolf.UITests
         [Given(@"I Click Debug Ribbon Button")]
         [When(@"I Click Debug Ribbon Button")]
         [Then(@"I Click Debug Ribbon Button")]
-        public void Click_Debug_Ribbon_Button()
+        public void Click_DebugRibbonButton_From_Sidebar()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
-            Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
         }
 
         [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
@@ -2417,7 +2416,7 @@ namespace Warewolf.UITests
 
         public void Debug_Workflow_With_Ribbon_Button()
         {
-            Click_Debug_Ribbon_Button();
+            Click_DebugRibbonButton_From_Sidebar();
             Click_DebugInput_Debug_Button();
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
@@ -2873,7 +2872,7 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign Object";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.EnsureClickable(new Point(155, 22));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.AssignObject, new Point(13, 17));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.UISacdVerticalConnectoCustom);
         }
         public void Drag_Toolbox_AssignObject_Onto_Sequence_SmallTool()
         {
@@ -3122,15 +3121,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.DoneButton, new Point(18, 10));
         }
 
-        [Given(@"I Click Base Convert Large View Done Button")]
-        [When(@"I Click Base Convert Large View Done Button")]
-        [Then(@"I Click Base Convert Large View Done Button")]
-        public void Click_Base_Convert_Large_View_Done_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.DoneButton, new Point(36, 11));
-            Assert.AreEqual("SomeData", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text, "Base convert small view row1 variable textbox does not contain text SomeData.");
-        }
-
         [Given(@"I Click Calculate Large View Done Button")]
         [When(@"I Click Calculate Large View Done Button")]
         [Then(@"I Click Calculate Large View Done Button")]
@@ -3145,7 +3135,6 @@ namespace Warewolf.UITests
         [Then(@"I Click Cancel DebugInput Window")]
         public void Click_Cancel_DebugInput_Window()
         {
-            Assert.IsTrue(MainStudioWindow.DebugInputDialog.CancelButton.Enabled, "CancelButton is not enabled after clicking RunDebug from Menu.");
             Mouse.Click(MainStudioWindow.DebugInputDialog.CancelButton, new Point(26, 13));
         }
 
@@ -4006,7 +3995,6 @@ namespace Warewolf.UITests
         public void Open_ExplorerFirstItem_From_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
-            Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Open.Exists);
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
         }
 
@@ -4246,7 +4234,6 @@ namespace Warewolf.UITests
         public void Click_NewSourceButton_From_COMDLLPluginTool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.NewSourceButton);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.Exists, "New COM Plugin source wizard tab does not exist after clicking new source from COM DLL Tool");
         }
 
         [Given(@"I Click New Source Button From DotNetDLLPlugin Tool")]
@@ -4255,7 +4242,6 @@ namespace Warewolf.UITests
         public void Click_NewSourceButton_From_DotNetDLLPluginTool()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourceButton);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists, "New DotNet Plugin source wizard tab does not exist after clicking new source from DotNet DLL Tool");
         }
 
         [Given(@"I Click New Source Button From SQLBulkInsert Tool")]
@@ -5418,9 +5404,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
-        [Given(@"I Make Workflow Saveable")]
-        [When(@"I Make Workflow Saveable")]
-        [Then(@"I Make Workflow Saveable")]
+        [Given(@"I Make Workflow Savable")]
+        [When(@"I Make Workflow Savable")]
+        [Then(@"I Make Workflow Savable")]
         public void Make_Workflow_Savable_By_Dragging_Start()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node does not Exist");
@@ -5428,6 +5414,19 @@ namespace Warewolf.UITests
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode);
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savable was unsucessful.");
+        }
+        [Given(@"I Make Workflow Savable And Then Save")]
+        [When(@"I Make Workflow Savable And Then Save")]
+        [Then(@"I Make Workflow Savable And Then Save")]
+        public void Make_Workflow_Savable_Then_Save()
+        {
+            var startNode = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode;
+            Assert.IsTrue(startNode.Exists, "Start Node does not Exist");
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(307, 128));
+            Mouse.StartDragging(startNode);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savable was unsucessful.");
+            Keyboard.SendKeys(startNode, "S", (ModifierKeys.Control));
         }
 
         [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
@@ -5751,7 +5750,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(303, 126));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.FlowTools.Switch, new Point(22, 30));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(303, 126));
-            Assert.IsTrue(DecisionOrSwitchDialog.DoneButton.Exists, "Decision dialog done button does not exist");
         }
 
         [When(@"I Drag Toolbox System Information Onto DesignSurface")]
@@ -5927,7 +5925,7 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Enter SomeData Into Base Convert Large View Row1 Value Textbox")]
-        public void Enter_SomeData_Into_Base_Convert_Large_View_Row1_Value_Textbox()
+        public void Enter_SomeData_Into_BaseConvertTool_Row1ValueTextbox()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text = "SomeData";
         }
@@ -6045,7 +6043,7 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Open Assign Tool Large View")]
-        public void Open_Assign_Tool_Large_View()
+        public void Open_AssignTool_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, new Point(145, 5));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign tool large view on the design surface does not exist");
@@ -6143,25 +6141,26 @@ namespace Warewolf.UITests
         public void Open_AssignObject_QVI_LargeView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.OpenQuickVariableInput.Pressed = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.QuickVariableInputContent.Exists, "QVI on assign object is not open");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.QuickVariableInputContent.QviSplitOnCombobox.Exists, "QviSplitOnCombobox on assign object does not exist");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.QuickVariableInputContent.PreviewCustom.Exists, "Qvi PreviewCustom on assign object does not exist");
         }
 
         [When(@"I Open Base Conversion Tool Large View")]
-        public void Open_Base_Conversion_Tool_Large_View()
+        public void Open_BaseConvertTool_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert, new Point(160, 15));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Enabled, "Base convert large view row 1 data testbox does not exist.");
+        }
+
+        [Given(@"I Click Base Convert Large View Done Button")]
+        [When(@"I Click Base Convert Large View Done Button")]
+        [Then(@"I Click Base Convert Large View Done Button")]
+        public void Click_BaseConvertTool_LargeView_DoneButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.DoneButton, new Point(36, 11));
         }
 
         [When(@"I Open Base Conversion Tool Qvi Large View")]
-        public void Open_Base_Conversion_Tool_Qvi_Large_View()
+        public void Open_BaseConvertTool_Qvi_LargeView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.OpenQuickVariableInpToggleButton.Pressed = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.Exists, "Base Conversion QVI Window does not exist on the design surface");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent.Exists, "QVI on BaseConvert is not open");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent.Exists, "QVI on BaseConvert is not open");
         }
 
         [When(@"I Open Calculate Tool Large View")]
@@ -6174,20 +6173,15 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Open Case Conversion Tool Large View")]
-        public void Open_Case_Conversion_Tool_Large_View()
+        public void Open_CaseConvertTool_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert, new Point(136, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.DoneButton.Exists, "Done Button does not exist after opening Case Convert large view");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.LargeViewContentCustom.SmallDataGridTable.Exists, "Inputs grid does not exist after opening Case Convert large view");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.LargeViewContentCustom.OnErrorCustom.Exists, "OnErrorCustom group does not exist after opening Case Convert large view");
         }
 
         [When(@"I Open Case Conversion Tool Qvi Large View")]
-        public void Open_Case_Conversion_Tool_Qvi_Large_View()
+        public void Open_CaseConvertTool_Qvi_LargeView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.OpenQuickVariableInpToggleButton.Pressed = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.Exists, "Case Conversion QVI Window does not exist on the design surface");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.QuickVariableInputContent.Exists, "QVI on CaseConvert is not open");
         }
 
         [When(@"I Open CMD Line Tool Large View")]
@@ -6905,11 +6899,18 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.LargeView.OnErrorPane.Exists, "Select and apply OnError pane does not exist after openning tool large view with double click.");
         }
 
-        [When(@"I Open Sequence Large tool View")]
-        public void Open_Sequence_Large_tool_View()
+        [When(@"I Open Sequence Tool Large View")]
+        public void Open_SequenceTool_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence, new Point(139, 12));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.Exists, "SequenceLargeView does not exist after opening Sequence tool large view");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.Exists, "SequenceLargeView does not exist after double clicking Sequence Tool Header");
+        }
+        [When(@"I Open Sequence Tool Small View")]
+        public void Open_SequenceTool_SmallView()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence, new Point(139, 12));
+
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceSmallView.Exists, "SequenceSmallView does not exist after double clicking Sequence Tool Header");
         }
 
         [When(@"I Open Sharepoint Copy Tool Large View")]
@@ -9142,35 +9143,13 @@ namespace Warewolf.UITests
         public void Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyDirectoryButton);
-            Assert.IsTrue(ChooseDLLWindow.Exists, "Choose DLL Window did not open after clicking Assembly Diretory Button");
-        }
-        [When(@"I Expand The First Node in the Choose DLL Dialog Tree")]
-        public void Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree()
-        {
-            Assert.IsTrue(ChooseDLLWindow.DLLDataTree.CDrive.Exists);
-            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.Expander, new Point(17, 6));
-        }
-        [When(@"I Select First C Drive Item in the Choose DLL Dialog Tree")]
-        public void Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree()
-        {
-            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.FirstItem, new Point(83, 9));
         }
 
-        [When(@"I Select First GAC Item In The Choose DLL Dialog Tree")]
-        public void Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree()
-        {
-            #region Variable Declarations
-            WpfTreeItem uIItemTreeItem = this.ChooseDLLWindow.DLLDataTree.GAC.FirstItem;
-            #endregion
-
-            // Click 'GAC' ->  tree item
-            Mouse.Click(uIItemTreeItem, new Point(68, 6));
-        }
         public void Select_DLLAssemblyFile_From_ChooseDLLWindow(string fileName)
         {
-            Expand_The_First_Node_in_the_Choose_DLL_Dialog_Tree();
             ChooseDLLWindow.FilterTextBox.Text = fileName.Replace(@"C:\", "");
-            Select_First_C_Drive_Item_In_The_Choose_DLL_Dialog_Tree();
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive, new Point(11, 14));
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.CDrive.FirstItem, new Point(69, 34));
             Assert.AreEqual(fileName, ChooseDLLWindow.FilesTextBox.Text);
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
@@ -9187,19 +9166,22 @@ namespace Warewolf.UITests
             Mouse.Click(SelectFilesWindow.SelectButton);
         }
 
-        public void Select_GACAssemblyFile_From_ChooseDLLWindow()
+        public void Select_GACAssemblyFile_From_ChooseDLLWindow(string filter)
         {
-            ChooseDLLWindow.FilterTextBox.Text = "Build";
-            Select_First_GAC_Item_In_The_Choose_DLL_Dialog_Tree();
-            Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text));
+            if (string.IsNullOrEmpty(ChooseDLLWindow.FilterTextBox.Text) == false)
+            {
+                Mouse.Click(ChooseDLLWindow.FilterTextBox.ClearSearchButton);
+            }
+            ChooseDLLWindow.FilterTextBox.Text = filter;
+            Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem, new Point(122, 6));
+            Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text), "Files Textbox is empty.");
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
 
-        public void Select_AssemblyFile_From_COMPluginDataTree()
+        public void Select_AssemblyFile_From_COMPluginDataTree(string filter)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Text = "Microsoft";
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Nodes[0], new Point(112, 19));
-            Assert.IsFalse(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.AssemblyNameTextBox.Text));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Text = filter;
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Nodes[1]);
         }
 
         public void Select_Attachments_From_SelectFilesWindow()
@@ -9380,7 +9362,7 @@ namespace Warewolf.UITests
 
         public void Enter_TextIntoOAuthKey_On_OAuthSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "irrelevant";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "test";
         }
 
         public void Click_OAuthSource_AuthoriseButton()

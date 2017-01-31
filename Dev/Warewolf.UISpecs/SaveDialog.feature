@@ -5,21 +5,20 @@ Feature: SaveDialog
 	I want to give the workflow a name and location
 	
 Scenario: Create WorkFlow In Folder Opens Save Dialog With Folder Already Selected 
-		Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
+	Given The Warewolf Studio is running
+	And I Create New Workflow using shortcut
 	And I RightClick Explorer Localhost First Item
 	Then I Select NewWorkflow From Explorer Context Menu
-	And I Make Workflow Saveable
+	And I Make Workflow Savable
 	And I Click Save Ribbon Button to Open Save Dialog
 	Then I Enter Service Name Into Save Dialog As "TestService"
 	And I Click SaveDialog Save Button
 	And "TestService" Resource Exists In Windows Directory "C:\ProgramData\Warewolf\Resources\Unit Tests"
 
 Scenario: Filter Save Dialog Close And ReOpen Clears The Filter
-		Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
-	And I Make Workflow Saveable
-	And I Save Workflow Using Shortcut
+	Given The Warewolf Studio is running
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "Hello World"
 	And Filtered Item Exists
 	And I Click SaveDialog CancelButton
@@ -29,10 +28,9 @@ Scenario: Filter Save Dialog Close And ReOpen Clears The Filter
 
 
 Scenario: Create New Folder In Localhost Then Open Context Menu Server From Save Dialog
-		Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
-	And I Make Workflow Saveable
-	And I Save Workflow Using Shortcut
+	Given The Warewolf Studio is running
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "Created Another Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New Folder From SaveDialog Context Menu
@@ -41,10 +39,9 @@ Scenario: Create New Folder In Localhost Then Open Context Menu Server From Save
 	And Context Menu Has Two Items
 
 Scenario: Create New Folder In Localhost From Save Dialog Then Delete In Main Explorer
-		Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
-	And I Make Workflow Saveable
-	And I Save Workflow Using Shortcut
+	Given The Warewolf Studio is running
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "I_Will_Delete_This_Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New Folder From SaveDialog Context Menu
@@ -57,10 +54,9 @@ Scenario: Create New Folder In Localhost From Save Dialog Then Delete In Main Ex
 	And Folder Is Removed From Explorer
 
 Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Creates The Folder
-		Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
-	And I Make Workflow Saveable
-	And I Save Workflow Using Shortcut
+	Given The Warewolf Studio is running
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "New Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New Folder From SaveDialog Context Menu
@@ -69,10 +65,9 @@ Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Cre
 	And Explorer Contain Item "New Folder"
 
 Scenario: Create New Folder In Localhost Server From Save Dialog
-		Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
-	And I Make Workflow Saveable
-	And I Save Workflow Using Shortcut
+	Given The Warewolf Studio is running
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "New Created Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New Folder From SaveDialog Context Menu
@@ -83,10 +78,9 @@ Scenario: Create New Folder In Localhost Server From Save Dialog
 	Then Explorer Contain Item "New Created Folder"
 
 Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
-		Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
-	And I Make Workflow Saveable
-	And I Save Workflow Using Shortcut
+	Given The Warewolf Studio is running
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "Acceptance Tests"
 	And I Create New Folder Item using Shortcut 
 	And I Name New Sub Folder as "New Created Sub Folder"
@@ -96,9 +90,8 @@ Scenario: Create New Folder In Existing Folder As A Sub Folder From Save Dialog
 
 Scenario: Rename Resource From Save Dialog
 	Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
-	And I Make Workflow Saveable
-	And I Save Workflow Using Shortcut
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "ResourceToRename"
 	And I RightClick Save Dialog Localhost First Item
 	And I Select Rename From SaveDialog Context Menu
@@ -109,9 +102,8 @@ Scenario: Rename Resource From Save Dialog
 
 Scenario: Delete Resource From Save Dialog
 	Given The Warewolf Studio is running
-	And I Click New Workflow Ribbon Button
-	And I Make Workflow Saveable
-	And I Save Workflow Using Shortcut
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "ResourceToDelete"
 	And I RightClick Save Dialog Localhost First Item
 	And I Select Delete From SaveDialog Context Menu
