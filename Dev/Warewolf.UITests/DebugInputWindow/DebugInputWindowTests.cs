@@ -8,8 +8,10 @@ namespace Warewolf.UITests.DebugInputWindow
     {
         [TestMethod]
         [TestCategory("Debug Input")]
-        public void DebugInputWindow_InputDataTab()
+        public void DebugInputWindow_Validation_UITest()
         {
+            UIMap.Click_DebugRibbonButton_From_Sidebar();
+            Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.Exists, "Debug Input window does not exist after clicking debug ribbon button.");
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.DebugF6Button.Exists, "Debug button in Debug Input window does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.CancelButton.Exists, "Cancel Debug Input Window button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Exists, "Remember Checkbox does not exist in the Debug Input window.");
@@ -29,7 +31,6 @@ namespace Warewolf.UITests.DebugInputWindow
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Click_Debug_Ribbon_Button();
         }
 
         UIMap UIMap

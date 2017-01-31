@@ -48,6 +48,10 @@ if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.*.Tests.dll") {
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") {
 	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
 }
+if ($TestAssemblyPath -eq "") {
+	Write-Host Cannot find Warewolf.*.Tests.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.Tests
+	exit 1
+}
 $TestAssembliesList = ''
 foreach ($file in Get-ChildItem $TestAssembliesPath -Filter Warewolf.*.Tests.dll ) {
 	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll") {

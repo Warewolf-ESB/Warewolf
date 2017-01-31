@@ -48,8 +48,8 @@ namespace Dev2.Common.Interfaces
     public interface IStudioUpdateManager : IStudioUpdateManagerSave, IStudioUpdateManagerTest
     {
         string TestConnection(IWcfServerSource wcfServerSource);
-        event ServerSaved ServerSaved;
-        void FireServerSaved();
+        Action<Guid> ServerSaved { get; set; }
+        void FireServerSaved(Guid savedServerID);
 
         void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment);
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -279,9 +280,24 @@ namespace Warewolf.Studio.ViewModels
                     var sourceEnv = Source.Environments.First();
                     var sourceEnvServer = sourceEnv.Server;
                     var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
+                    var destEnv = Destination.ConnectControlViewModel.SelectedConnection as Server;
+                    if (ConflictItems != null)
+                    {
+                        foreach (var conflictItem in ConflictItems)
+                        {
+                            if (destEnv != null)
+                            {
+                                var task = Task.Run(async () => await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
+                                    conflictItem.DestinationId, conflictItem.DestinationName,
+                                    conflictItem.SourceName));
+                                task.Wait();
+                            }
+
+                        }
+                    }
                     if (supportsDirectServerDeploy)
                     {
-                        var destEnv = Destination.ConnectControlViewModel.SelectedConnection as Server;
+                        
                         if (destEnv != null)
                         {
                             var destConnection = new Connection
@@ -297,7 +313,6 @@ namespace Warewolf.Studio.ViewModels
                     }
                     else
                     {
-                        
                         _shell.DeployResources(sourceEnvServer.EnvironmentID, destinationEnvironmentId, notfolders, Destination.DeployTests);
                     }
                     DeploySuccessfull = true;

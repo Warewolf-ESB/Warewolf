@@ -19,37 +19,44 @@ if ($Args.Count -gt 0) {
         }
     }
 }
+if ($TestList.StartsWith(",")) {
+	$TestList = $TestList -replace "^.", " /Tests:"
+} 
 
 # Find test assembly
 $TestAssemblyPath = ""
-if ($TestList.StartsWith(",")) {
-	$TestList = $TestList -replace "^.", " /Tests:"
-} elseif (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests"
+if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot"
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssembliesPath = "$PSScriptRoot\..\..\..\..\.."
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll"
+}
+if ($TestAssemblyPath -eq "") {
+	Write-Host Cannot find Warewolf.Studio.ViewModels.Tests.dll at $PSScriptRoot\Warewolf.Studio.ViewModels.Tests\bin\Debug or $PSScriptRoot
+	exit 1
 }
 
 # Create full VSTest argument string.
-$FullArgsList = " `"$TestAssembliesPath\Warewolf.Studio.ViewModels.Tests.dll`" /logger:trx" + $TestList
+$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
