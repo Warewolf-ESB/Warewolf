@@ -57,7 +57,7 @@ namespace Warewolf.UITests
         public void AssertStudioIsRunning()
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");            
-            Keyboard.SendKeys(MainStudioWindow, "{Tab}", ModifierKeys.None);
+            Keyboard.SendKeys(MainStudioWindow, "{Tab}", ModifierKeys.None);    
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
             TryClickMessageBoxOK();
 #if !DEBUG
@@ -848,6 +848,7 @@ namespace Warewolf.UITests
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = ServiceName;
             Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
+            Playback.Wait(500);
             Assert.IsTrue(ServicePickerDialog.OK.Enabled, "Service picker dialog OK button is not enabled.");
             Click_Service_Picker_Dialog_OK();
         }
@@ -1200,6 +1201,7 @@ namespace Warewolf.UITests
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
             }
             Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+            Click_Close_Settings_Tab_Button();
         }
 
         [Then(@"I validate I can Deploy ""(.*)""")]
@@ -1793,17 +1795,6 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
-            //bool controlAvailable = MainStudioWindow.SideMenuBar.SaveButton.Enabled;
-            //try
-            //{
-            //    MainStudioWindow.SideMenuBar.SaveButton.WaitForControlCondition(uicontrol => uicontrol.State == ControlStates.Unavailable, WaitForSave * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
-            //    controlAvailable = MainStudioWindow.SideMenuBar.SaveButton.Enabled;
-            //}
-            //catch (UITestControlNotAvailableException)
-            //{
-            //    controlAvailable = false;
-            //}
-            //Assert.IsFalse(controlAvailable, "Save ribbon button is still enabled after clicking it and waiting for " + WaitForSave + "ms.");
         }
 
         public void DeleteAssign_FromContextMenu()
@@ -8028,7 +8019,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Selected source server in deploy is not localhost (Connected).");
         }
 
+        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
         [When(@"I Select RemoteConnectionIntegration From Explorer")]
+        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {            
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;

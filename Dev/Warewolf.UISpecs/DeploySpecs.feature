@@ -74,7 +74,6 @@ Scenario: Deploy is enabled when I change server after validation thrown
   Given The Warewolf Studio is running
   When I Click Deploy Ribbon Button
   And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
-  And I Select LocalhostConnected From Deploy Tab Destination Server Combobox 
   And I filter for "Hello world" on the source filter
   And Deploy Button is enabled  "false"
   And The deploy validation message is "Source and Destination cannot be the same."
@@ -151,7 +150,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Then I Click Deploy version conflicts MessageBox OK
 	And I Click Deploy conflicts MessageBox OK
 	And I Click Deploy Successful MessageBox OK
-	And I Select Connected RemoteConnectionIntegration From Explorer
+	And I Select RemoteConnectionIntegration From Explorer
 	And I Click Explorer Connect Remote Server Button
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
