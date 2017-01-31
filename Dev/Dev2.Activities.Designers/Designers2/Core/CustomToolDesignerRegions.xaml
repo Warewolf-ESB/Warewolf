@@ -508,6 +508,7 @@
                                    BorderBrush="Transparent"
                                    Background="Transparent"
                                     Margin="3,0,3,0"
+                                   AutoGenerateColumns="False"
                                    Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -558,11 +559,11 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
-                                    <TextBlock Text="{Binding Path=Name}"
+                                    <TextBlock Text="{Binding Path=FullName}"
                                                 TextTrimming="CharacterEllipsis"
                                                 VerticalAlignment="Center"
                                                 Padding="3,0"
-                                                ToolTip="{Binding Path=Name}">                               
+                                                ToolTip="{Binding Path=FullName}">                               
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
