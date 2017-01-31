@@ -1098,6 +1098,39 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void ViewObjectResult_GivenObjectServiceInput_ShouldObjectPopup()
+        {
+            //---------------Set up test pack-------------------
+            var serviceModel = new Mock<IPluginServiceModel>();
+            serviceModel.Setup(model => model.GetActionsWithReturns(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>()))
+                        .Returns(new List<IPluginAction>()
+                        {
+                            new PluginAction()
+                        });
+            var dsfEnhancedDotNetDllActivity = new DsfEnhancedDotNetDllActivity();
+            var modelItem = ModelItemUtils.CreateModelItem(dsfEnhancedDotNetDllActivity);
+            var pluginSourceRegion = new Mock<ISourceToolRegion<IPluginSource>>();
+            pluginSourceRegion.Setup(region => region.SelectedSource).Returns(new PluginSourceDefinition());
+            var nameSpaceRegion = new Mock<INamespaceToolRegion<INamespaceItem>>();
+            nameSpaceRegion.Setup(region => region.SelectedNamespace).Returns(new NamespaceItem());
+            var shellVm = new Mock<IShellViewModel>();
+            var mock = new Mock<IJsonObjectsView>();
+            mock.Setup(view => view.ShowJsonString(It.IsAny<string>()));
+            CustomContainer.Register(shellVm.Object);
+            CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => mock.Object);
+            //---------------Execute Test ----------------------
+            var dotNetMethodRegion = new DotNetMethodRegion(serviceModel.Object, modelItem, pluginSourceRegion.Object, nameSpaceRegion.Object);
+
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(dotNetMethodRegion.JsonObjectsView);
+            Assert.IsTrue(dotNetMethodRegion.ViewObjectResultForParameterInput.CanExecute(null));
+            dotNetMethodRegion.ViewObjectResultForParameterInput.Execute(new ServiceInput() {Dev2ReturnType = "Object"});
+            mock.Verify(view => view.ShowJsonString(It.IsAny<string>()));
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void RefreshMethodsCommand_GivenThrowsError_ShouldAddErrors()
         {
             //---------------Set up test pack-------------------
