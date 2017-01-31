@@ -18,6 +18,7 @@ namespace Dev2.Common.Interfaces
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
+        void EditServer(IServerSource serverSource);
         void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key = null);

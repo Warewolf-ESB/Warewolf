@@ -8,22 +8,16 @@ namespace Warewolf.UITests.Tools.Control_Flow
     {
         [TestMethod]
         [TestCategory("Tools")]
-        public void DecisionTool_LargeView_UITest()
+        public void DecisionTool_LargeViewResize_UITest()
         {
+            //Large View
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.Table.Exists, "Table does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.RequireAllDecisionsToBeTrueCheckbox.Exists, "Require All Decisions To Be True Checkbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.DisplayTextbox.Exists, "Display Textbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.TrueArmTextbox.Exists, "True Arm Textbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.FalseArmTextbox.Exists, "False Arm Textbox does not exist on decision large view after dragging tool in from the toolbox.");
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Done button does not exist on decision large view after dragging tool in from the toolbox.");
-            UIMap.Click_Decision_Dialog_Cancel_Button();
-        }
-
-
-        [TestMethod]
-        [TestCategory("Tools")]
-        public void DecisionTool_LargeViewResize_UITest()
-        {
+            //Resized Decision Tool Window
             var sizeBefore = UIMap.DecisionOrSwitchDialog.LargeView.Height;
             UIMap.Resize_Decision_LargeTool();
             Assert.IsTrue(UIMap.DecisionOrSwitchDialog.LargeView.Height > sizeBefore);
@@ -68,7 +62,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
 
         [TestMethod]
 		[TestCategory("Tools")]
-        public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed_UITest()
+        public void CopyDecisions_With_ContextMenu_And_Paste_UITest()
         {
             UIMap.Click_Decision_Dialog_Done_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision.Exists, "Decision on the design surface does not exist after dragging in from the toolbox and clicking done on the dialog.");
