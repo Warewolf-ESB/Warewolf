@@ -39,7 +39,6 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 // ReSharper disable MemberCanBeProtected.Global
@@ -453,24 +452,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             Dev2Logger.Debug("Execution Result [ " + executePayload + " ]");
             if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {
-                if (dataObject.ReturnType == EmitionTypes.JSON)
+
+                if (executePayload.IsJSON())
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                }
-                else if (dataObject.ReturnType == EmitionTypes.XML)
+                }else if (executePayload.IsXml())
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                    try
-                    {
-                        var xml = JsonConvert.DeserializeXNode(executePayload, "DataList");
-                        executePayload = xml?.ToString() ?? "";
-                    }
-                    catch(Exception)
-                    {
-                        //if error leave the payload alone
-                    }
-                    
-                }
+                }                
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
@@ -705,7 +694,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     else
                     {
-                        results.Add(string.Format("{0}={1}", arg, txt));
+                        results.Add($"{arg}={txt}");
                     }
                 }
 
@@ -738,22 +727,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Dev2Logger.Error(errors.MakeDisplayReady());
             }
             return string.Empty;
-        }
-
-        static string CleanupHtml(string result)
-        {
-            var html = result;
-
-            html = html.Replace("&amp;amp;", "&");
-            html = html.Replace("&lt;", "<").Replace("&gt;", ">");
-            html = html.Replace("lt;", "<").Replace("gt;", ">");
-            html = html.Replace("&amp;gt;", ">").Replace("&amp;lt;", "<");
-            html = html.Replace("&amp;amp;amp;lt;", "<").Replace("&amp;amp;amp;gt;", ">");
-            html = html.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
-            html = html.Replace("&<", "<").Replace("&>", ">");
-            html = html.Replace("&quot;", "\"");
-
-            return html;
         }
 
         protected static string GetServiceName(ICommunicationContext ctx)
