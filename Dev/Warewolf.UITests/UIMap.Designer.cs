@@ -30596,19 +30596,19 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfToggleButton OpenQuickVariableInpToggleButton
+        public WpfToggleButton QVIToggleButton
         {
             get
             {
-                if ((this.mOpenQuickVariableInpToggleButton == null))
+                if ((this.mQVIToggleButton == null))
                 {
-                    this.mOpenQuickVariableInpToggleButton = new WpfToggleButton(this);
+                    this.mQVIToggleButton = new WpfToggleButton(this);
                     #region Search Criteria
-                    this.mOpenQuickVariableInpToggleButton.SearchProperties[WpfToggleButton.PropertyNames.HelpText] = "Open Quick Variable Input";
-                    this.mOpenQuickVariableInpToggleButton.WindowTitles.Add("Warewolf");
+                    this.mQVIToggleButton.SearchProperties[WpfToggleButton.PropertyNames.HelpText] = "Open Quick Variable Input";
+                    this.mQVIToggleButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mOpenQuickVariableInpToggleButton;
+                return this.mQVIToggleButton;
             }
         }
         
@@ -30651,16 +30651,35 @@ namespace Warewolf.UITests
                 return this.mSmallViewContentCustom;
             }
         }
+        
+        public WpfCustom QuickVariableInputContentPane
+        {
+            get
+            {
+                if ((this.mQuickVariableInputContentPane == null))
+                {
+                    this.mQuickVariableInputContentPane = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mQuickVariableInputContentPane.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
+                    this.mQuickVariableInputContentPane.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
+                    this.mQuickVariableInputContentPane.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mQuickVariableInputContentPane;
+            }
+        }
         #endregion
         
         #region Fields
-        private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        private WpfToggleButton mQVIToggleButton;
         
         private WpfButton mDoneButton;
         
         private LargeViewContentCustom10 mLargeViewContentCustom;
         
         private SmallViewContentCustom10 mSmallViewContentCustom;
+        
+        private WpfCustom mQuickVariableInputContentPane;
         #endregion
     }
     
@@ -30967,7 +30986,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewDatabaseSource = new WpfListItem(this);
                     #region Search Criteria
-                    this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""ServerType"":""SqlDatabase"",""Server"":null,""DatabaseName"":null,""Port"":0,""AuthenticationType"":""Windows"",""UserID"":null,""Password"":null,""DataList"":null,""ConnectionString"":""Data Source=;Initial Catalog=;Integrated Security=SSPI;"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""14ed3477-771a-42d2-bbb2-524f34a6d290"",""ResourceType"":""DbSource"",""ResourceName"":""New Database Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
                     this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
