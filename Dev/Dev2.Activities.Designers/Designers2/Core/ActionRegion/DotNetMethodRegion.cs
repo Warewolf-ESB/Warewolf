@@ -38,20 +38,23 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private IList<string> _errors;
         private bool _isMethodExpanded;
         private readonly IShellViewModel _shellViewModel;
+        private readonly IActionInputDatatalistMapper _datatalistMapper;
 
         public DotNetMethodRegion()
         {
             ToolRegionName = "DotNetMethodRegion";
         }
 
-        internal DotNetMethodRegion(IShellViewModel shellViewModel)
+        internal DotNetMethodRegion(IShellViewModel shellViewModel, IActionInputDatatalistMapper datatalistMapper)
         {
             VerifyArgument.IsNotNull(nameof(shellViewModel), shellViewModel);
+            VerifyArgument.IsNotNull(nameof(datatalistMapper), datatalistMapper);
             _shellViewModel = shellViewModel;
+            _datatalistMapper = datatalistMapper;
         }
 
         public DotNetMethodRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
-            : this(CustomContainer.Get<IShellViewModel>())
+            : this(CustomContainer.Get<IShellViewModel>(), new ActionInputDatatalistMapper())
         {
             try
             {
@@ -172,6 +175,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
+
+                _datatalistMapper.MapInputsToDatalist(value?.Inputs);
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
                 OnPropertyChanged("IsVoid");
@@ -380,6 +385,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
+
                 _methodsToRun = value;
                 OnPropertyChanged();
             }
@@ -458,7 +464,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                         return serviceInput;
                     }).ToList(),
                     FullName = SelectedMethod.FullName,
-                    Method = SelectedMethod.Method,                    
+                    Method = SelectedMethod.Method,
                 }
             };
         }
