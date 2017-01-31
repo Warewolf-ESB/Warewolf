@@ -10,5 +10,6 @@ namespace Dev2.Common.Interfaces
         string TypeName { get; set; }
         bool IsObject { get; set; }
         string Dev2ReturnType { get; set; }
+        string ShortTypeName { get; set; }
     }
 }

@@ -32,5 +32,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public bool IsObject { get; set; }
         public string Dev2ReturnType { get; set; }
+        public string ShortTypeName { get; set; }
     }
 }
