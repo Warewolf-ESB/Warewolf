@@ -226,6 +226,7 @@
                                                                                             AllowUserInsertLine="True"
                                                                                             MaxHeight="80"
                                                                                             Margin="0,0,1,1"
+                                                                                            FilterType="{Binding IntellisenseFilter}"
                                                                                             TextWrapping="Wrap"
                                                                                             WrapInBrackets="False"
                                                                                             ToolTip="{x:Static languages:Tooltips.InputDefaultValueToolTip}"
