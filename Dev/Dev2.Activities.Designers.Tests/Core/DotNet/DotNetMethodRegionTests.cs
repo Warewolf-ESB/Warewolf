@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Core.ConstructorRegion;
 using Dev2.Activities.Designers2.Core.InputRegion;
@@ -63,7 +64,14 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
         [TestCategory("DotNetMethodRegion_Constructor")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DotNetMethodRegion_Constructor_IsNew_ValidateShellVmDependencies()
-            => new DotNetMethodRegion(default(IShellViewModel));
+            => new DotNetMethodRegion(default(IShellViewModel), new ActionInputDatatalistMapper());
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DotNetMethodRegion_Constructor")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void DotNetMethodRegion_Constructor_IsNew_ValidateMapperVmDependencies()
+            => new DotNetMethodRegion(new Mock<IShellViewModel>().Object, default(IActionInputDatatalistMapper));
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
