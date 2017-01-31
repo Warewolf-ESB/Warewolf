@@ -451,9 +451,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 IsEnabled = IsEnabled,
                 SelectedMethod = SelectedMethod == null ? null : new PluginAction
                 {
-                    Inputs = SelectedMethod?.Inputs?.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
+                    Inputs = SelectedMethod?.Inputs?.Select(a =>
+                    {
+                        var serviceInput = new ServiceInput(a.Name, a.Value) as IServiceInput;
+                        serviceInput.IntellisenseFilter = a.IntellisenseFilter;
+                        return serviceInput;
+                    }).ToList(),
                     FullName = SelectedMethod.FullName,
-                    Method = SelectedMethod.Method
+                    Method = SelectedMethod.Method,                    
                 }
             };
         }

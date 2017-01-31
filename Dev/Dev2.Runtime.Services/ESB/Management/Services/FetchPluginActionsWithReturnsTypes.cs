@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Method = a.Name,
                         Variables = a.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
                         Dev2ReturnType = a.Dev2ReturnType,
-                        IsObject = a.IsObject,
+                        IsObject = a.IsObject,                        
                         IsVoid = a.IsVoid
                     } as IPluginAction).ToList();
                     return serializer.SerializeToBuilder(new ExecuteMessage
