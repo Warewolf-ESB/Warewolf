@@ -176,7 +176,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set
             {
 
-                _datatalistMapper.MapInputsToDatalist(value?.Inputs);
+                _datatalistMapper?.MapInputsToDatalist(value?.Inputs);
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
                 OnPropertyChanged("IsVoid");
