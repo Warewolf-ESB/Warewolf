@@ -2450,8 +2450,33 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//---------------Test Result -----------------------
 			Assert.AreEqual("My WF - Tests", testFrameworkViewModel.DisplayName);
 		}
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsValid_GivenNoSelectecTest_ShouldBeValid()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            var testFrameworkViewModel = new ServiceTestViewModel(CreateResourceModel(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid()) { TestName = "NameOne", NameForDisplay = "NameOne" };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = null;
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("IsValidName", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodInfo);
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] { });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(true, bool.Parse(invoke.ToString()));
+        }
 
-		private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
+       
+        private IContextualResourceModel CreateResourceModelWithSingleScalarInput()
 		{
 			var resourceModel = CreateResourceModel();
 			var dataListViewModel = new DataListViewModel();
