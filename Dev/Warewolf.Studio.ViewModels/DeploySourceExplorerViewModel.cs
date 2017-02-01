@@ -7,6 +7,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Infrastructure;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels
@@ -54,7 +55,7 @@ namespace Warewolf.Studio.ViewModels
             }
             IsRefreshing = false;
             ShowConnectControl = false;
-
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
             ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
             IsDeploy = true;
         }
@@ -164,6 +165,25 @@ namespace Warewolf.Studio.ViewModels
             {
                 env.IsVisible = false;
             }
+            if (SearchText != null)
+            {
+                environmentViewModel?.Filter(SearchText);
+            }
+
+            //var windowsGroupPermission = environmentViewModel?.Server?.Permissions?[0];
+            //if (windowsGroupPermission != null)
+                //environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
+
+            //var permissions = environmentViewModel?.Server?.GetPermissions(environmentViewModel.ResourceId);
+            //if (permissions != null)
+            //{
+            //    if (environmentViewModel.Children != null)
+            //        foreach (var explorerItemViewModel in environmentViewModel.Children.Flatten(model => model.Children))
+            //        {
+            //            explorerItemViewModel.SetPermissions((Permissions)permissions, true);
+            //        }
+            //}
+
             OnPropertyChanged(() => Environments);
         }
 

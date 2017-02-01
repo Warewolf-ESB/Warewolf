@@ -716,6 +716,7 @@ namespace Warewolf.Studio.ViewModels
             CanViewApisJson = true;
             CanViewSwagger = true;
             CanDebugInputs = true;
+            CanContribute = false;
             CanDebugStudio = true;
             CanDebugBrowser = true;
         }
@@ -724,6 +725,7 @@ namespace Warewolf.Studio.ViewModels
         {
             CanView = !isDeploy;
             CanShowDependencies = true;
+            CanContribute = false;
             CanShowVersions = true;
             CanViewApisJson = true;
             CanViewSwagger = true;            
@@ -732,6 +734,7 @@ namespace Warewolf.Studio.ViewModels
         private void SetNonePermissions()
         {
             CanRename = false;
+            CanContribute = false;
             CanEdit = false;
             CanDuplicate = false;
             CanDebugInputs = false;
@@ -763,6 +766,7 @@ namespace Warewolf.Studio.ViewModels
             CanViewRunAllTests = true;
             CanDelete = true;
             CanCreateFolder = true;
+            CanContribute = true;
             CanDeploy = true;
             CanCreateWorkflowService = true;
             CanCreateSource = true;
@@ -790,6 +794,7 @@ namespace Warewolf.Studio.ViewModels
             CanDelete = true;
             CanCreateFolder = true;
             CanShowDependencies = true;
+            CanContribute = true;
             CanCreateWorkflowService = true;
             CanCreateSource = true;
             CanShowVersions = true;
@@ -1056,7 +1061,7 @@ namespace Warewolf.Studio.ViewModels
                     _isSelected = value;
 
                     OnPropertyChanged(() => IsSelected);
-                    if (_isSelected)
+                    if (_isSelected && _shellViewModel!=null)
                     {
                         _shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
                         _shellViewModel.SetActiveServer(Server);
@@ -1420,12 +1425,17 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _canDeploy = value;
-                if(!_canDeploy)
-                    IsResourceChecked = _canDeploy;
-                IsResourceCheckedEnabled = _canDeploy;
+                if (_canDeploy != value)
+                {
+                    _canDeploy = value;
+                    if (!_canDeploy)
+                    {
+                        IsResourceChecked = false;
+                    }
+                    IsResourceCheckedEnabled = _canDeploy;
 
-                DeployTooltip = _canDeploy ? Resources.Languages.Tooltips.DeployToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                    DeployTooltip = _canDeploy ? Resources.Languages.Tooltips.DeployToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                }
             }
         }
 
@@ -1465,6 +1475,9 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
+        public bool CanContribute { get; set; }
+
         public bool CanView
         {
             get
