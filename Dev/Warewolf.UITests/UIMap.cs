@@ -8167,6 +8167,11 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
         }
 
+        public void Save_Button_IsEnabled()
+        {
+            MainStudioWindow.SideMenuBar.SaveButton.EnsureClickable();
+        }
+
         [Then(@"Test Tab Is Open")]
         [Given(@"Test Tab Is Open")]
         [When(@"Test Tab Is Open")]

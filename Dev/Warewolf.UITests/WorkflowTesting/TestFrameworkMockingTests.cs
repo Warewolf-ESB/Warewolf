@@ -122,6 +122,22 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.RandomTreeItem.Exists);
         }
 
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void CreateTestFromDebugOutputDontSaveCreateAnotherTestFromDebugOutput()
+        {
+            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
+            UIMap.Enter_Dice_Roll_Values();
+            UIMap.Save_With_Ribbon_Button_And_Dialog("RandomWFForSaveButtonState");
+            UIMap.Press_F6();
+            UIMap.Click_Create_Test_From_Debug();
+            UIMap.Click_New_Workflow_Tab();
+            UIMap.Click_Create_Test_From_Debug();
+            UIMap.Click_MessageBox_OK();
+            UIMap.Save_Button_IsEnabled();
+        }
+
 
         #region Additional test attributes
 
