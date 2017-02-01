@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools.Scripting
         [TestCategory("Tools")]
         public void RubyScriptTool_Small_And_LargeView_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.Exists, "Ruby tool on the design surface does not exist");
             //Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ScriptIntellisenseCombobox.Exists, "Ruby script textbox does not exist after dragging on tool from the toolbox.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Ruby.SmallView.ResultIntellisenseCombobox.Exists, "Ruby result textbox does not exist after dragging on tool from the toolbox.");
