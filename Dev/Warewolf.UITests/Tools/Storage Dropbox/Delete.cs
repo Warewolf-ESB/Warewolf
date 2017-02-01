@@ -18,7 +18,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
         [TestCategory("Dropbox Tools")]
         public void Dropbox_DeleteTool_LargeView()
         {
-            UIMap.Open_DropboxDeleteTool_LargeView();
+            UIMap.DropboxDeleteTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete.LargeViewContent.SourceCombobox.Exists, "Source combobox does not exist on Dropbox Delete tool large view after openning the large view with a double click.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete.LargeViewContent.EditSourceButton.Exists, "Edit Source Button does not exist on Dropbox Delete tool large view after openning the large view with a double click.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete.LargeViewContent.NewSourceButton.Exists, "New Source Button does not exist on Dropbox Delete tool large view after openning the large view with a double click.");
@@ -33,7 +33,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
         [TestCategory("Dropbox Tools")]
         public void NewSource_From_DropboxDeleteTool_UITest()
         {
-            UIMap.Open_DropboxDeleteTool_LargeView();
+            UIMap.DropboxDeleteTool_ChangeView_With_DoubleClick();
             UIMap.Click_NewSourceButton_From_DropboxDeleteTool();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton.Enabled, "Authorise button is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.ServerTypeComboBox.Enabled, "Server Type Combobox is not enabled");

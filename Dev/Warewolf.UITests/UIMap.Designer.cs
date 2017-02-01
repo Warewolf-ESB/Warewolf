@@ -211,6 +211,18 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
+        
+        public UIWarewolfDEV2DYLANDELWindow UIWarewolfDEV2DYLANDELWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2DYLANDELWindow == null))
+                {
+                    this.mUIWarewolfDEV2DYLANDELWindow = new UIWarewolfDEV2DYLANDELWindow();
+                }
+                return this.mUIWarewolfDEV2DYLANDELWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -241,6 +253,8 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
+        
+        private UIWarewolfDEV2DYLANDELWindow mUIWarewolfDEV2DYLANDELWindow;
         #endregion
     }
     
@@ -19701,22 +19715,6 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton TestButton
-        {
-            get
-            {
-                if ((this.mTestButton == null))
-                {
-                    this.mTestButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
-                    this.mTestButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTestButton;
-            }
-        }
-        
         public WpfButton NewSourceButton
         {
             get
@@ -19745,19 +19743,116 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfButton CancelButton
+        public WpfButton ActionRefreshButton
         {
             get
             {
-                if ((this.mCancelButton == null))
+                if ((this.mActionRefreshButton == null))
                 {
-                    this.mCancelButton = new WpfButton(this);
+                    this.mActionRefreshButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mCancelButton.SearchProperties[WpfButton.PropertyNames.Name] = "Cancel";
-                    this.mCancelButton.WindowTitles.Add("Warewolf");
+                    this.mActionRefreshButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ActionRefreshButton";
+                    this.mActionRefreshButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
-                return this.mCancelButton;
+                return this.mActionRefreshButton;
+            }
+        }
+        
+        public WpfButton ClassNameRefreshButton
+        {
+            get
+            {
+                if ((this.mClassNameRefreshButton == null))
+                {
+                    this.mClassNameRefreshButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mClassNameRefreshButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "NamespaceRefreshButton";
+                    this.mClassNameRefreshButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mClassNameRefreshButton;
+            }
+        }
+        
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceEditButton";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
+        
+        public WpfCustom OnErrorPane
+        {
+            get
+            {
+                if ((this.mOnErrorPane == null))
+                {
+                    this.mOnErrorPane = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mOnErrorPane.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.OnError";
+                    this.mOnErrorPane.SearchProperties[WpfControl.PropertyNames.Name] = "On Error";
+                    this.mOnErrorPane.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mOnErrorPane;
+            }
+        }
+        
+        public WpfTable OutputsMappingDataGrid
+        {
+            get
+            {
+                if ((this.mOutputsMappingDataGrid == null))
+                {
+                    this.mOutputsMappingDataGrid = new WpfTable(this);
+                    #region Search Criteria
+                    this.mOutputsMappingDataGrid.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsMappingDataGrid";
+                    this.mOutputsMappingDataGrid.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mOutputsMappingDataGrid;
+            }
+        }
+        
+        public WpfCheckBox OutputToObjectCheckBox
+        {
+            get
+            {
+                if ((this.mOutputToObjectCheckBox == null))
+                {
+                    this.mOutputToObjectCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mOutputToObjectCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "IsObjectCheckBox";
+                    this.mOutputToObjectCheckBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mOutputToObjectCheckBox;
+            }
+        }
+        
+        public WpfEdit RecordSetTextBox
+        {
+            get
+            {
+                if ((this.mRecordSetTextBox == null))
+                {
+                    this.mRecordSetTextBox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mRecordSetTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "RecordSetTextBox";
+                    this.mRecordSetTextBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mRecordSetTextBox;
             }
         }
         #endregion
@@ -19775,13 +19870,23 @@ namespace Warewolf.UITests
         
         private WpfButton mDoneButton;
         
-        private WpfButton mTestButton;
-        
         private WpfButton mNewSourceButton;
         
         private LargeDataGridTable mLargeDataGridTable;
         
-        private WpfButton mCancelButton;
+        private WpfButton mActionRefreshButton;
+        
+        private WpfButton mClassNameRefreshButton;
+        
+        private WpfButton mEditSourceButton;
+        
+        private WpfCustom mOnErrorPane;
+        
+        private WpfTable mOutputsMappingDataGrid;
+        
+        private WpfCheckBox mOutputToObjectCheckBox;
+        
+        private WpfEdit mRecordSetTextBox;
         #endregion
     }
     
@@ -30986,7 +31091,7 @@ namespace Warewolf.UITests
                 {
                     this.mNewDatabaseSource = new WpfListItem(this);
                     #region Search Criteria
-                    this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""ServerType"":""SqlDatabase"",""Server"":null,""DatabaseName"":null,""Port"":0,""AuthenticationType"":""Windows"",""UserID"":null,""Password"":null,""DataList"":null,""ConnectionString"":""Data Source=;Initial Catalog=;Integrated Security=SSPI;"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""14ed3477-771a-42d2-bbb2-524f34a6d290"",""ResourceType"":""DbSource"",""ResourceName"":""New Database Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Name] = "NewDatabaseSource";
                     this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
@@ -110623,6 +110728,76 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2DYLANDELWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2DYLANDELWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\DYLAN.DELPORT)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDsfDotNetDllActivityCustom UIDsfDotNetDllActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfDotNetDllActivityCustom == null))
+                {
+                    this.mUIDsfDotNetDllActivityCustom = new UIDsfDotNetDllActivityCustom(this);
+                }
+                return this.mUIDsfDotNetDllActivityCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDsfDotNetDllActivityCustom mUIDsfDotNetDllActivityCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDsfDotNetDllActivityCustom : WpfCustom
+    {
+        
+        public UIDsfDotNetDllActivityCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DotNetDllDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DotNet DLL(DotNetDllDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+                    this.mUILargeViewContentCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+                    this.mUILargeViewContentCustom.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUILargeViewContentCustom;
         #endregion
     }
 }
