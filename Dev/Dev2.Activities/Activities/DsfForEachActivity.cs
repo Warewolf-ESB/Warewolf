@@ -947,7 +947,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
-            TestHelper.UpdateDebugStateWithAssertions(dataObject,serviceTestTestSteps,_childUniqueID);            
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject,serviceTestTestSteps,_childUniqueID);            
         }        
 
         #region GetForEachInputs/Outputs

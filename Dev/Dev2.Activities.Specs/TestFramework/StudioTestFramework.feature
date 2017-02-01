@@ -1091,6 +1091,7 @@ Scenario: Run Selected Test passed with assign teststep Passes
 	And I run the test
 	Then test result is Failed
 
+
 #Data Category
 Scenario: Test WF with Assign
 	Given I have a workflow "AssignTestWF"

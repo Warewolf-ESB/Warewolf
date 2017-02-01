@@ -1015,8 +1015,14 @@
   <data name="PluginServiceRefreshHelp" xml:space="preserve">
     <value>Refresh the available actions.</value>
   </data>
+  <data name="PluginServiceRefreshConstructorHelp" xml:space="preserve">
+    <value>Refresh the available constructors.</value>
+  </data>
   <data name="PluginServiceSelectActionHelp" xml:space="preserve">
     <value>Select the method in the DLL you want to execute. You can provide a namespace filter above if you want.</value>
+  </data>
+  <data name="PluginServiceSelectConstructorHelp" xml:space="preserve">
+    <value>Select the constructor in the DLL you want to execute. You can provide a namespace filter above if you want.</value>
   </data>
   <data name="PluginServiceSelectNamespaceHelp" xml:space="preserve">
     <value>Select a namespace if it exists to filter the actions you can perform.</value>

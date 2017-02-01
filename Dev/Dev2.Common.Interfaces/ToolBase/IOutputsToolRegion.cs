@@ -6,10 +6,9 @@ namespace Dev2.Common.Interfaces.ToolBase
 {
     public interface IOutputsToolRegion : IToolRegion
     {
-
         ICollection<IServiceOutputMapping> Outputs { get; set; }
         bool OutputMappingEnabled { get; set; }
-        bool IsOutputsEmptyRows { get; }
+        bool IsOutputsEmptyRows { get; set; }
         string RecordsetName { get; set; }
         bool IsObject { get; set; }
         string ObjectName { get; set; }

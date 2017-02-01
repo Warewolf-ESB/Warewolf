@@ -17,27 +17,58 @@ namespace Dev2.Activities.Designers2.Core
             {
                 foreach (var serviceInput in inputs)
                 {
-
+                    if (!string.IsNullOrEmpty(serviceInput.Value))
+                    {
+                        continue;
+                    }
                     if (DataListSingleton.ActiveDataList != null)
                     {
-                        if (DataListSingleton.ActiveDataList.ScalarCollection != null)
+                        if (!serviceInput.IsObject)
                         {
-                            var value = serviceInput?.Name;
-                            if(value != null)
+                            if (DataListSingleton.ActiveDataList.ScalarCollection != null)
                             {
-                                value = value.Split('(').First().TrimEnd(' ');
-                                var alreadyExists = DataListSingleton.ActiveDataList.ScalarCollection.Count(model => model.Name.Equals(value, StringComparison.InvariantCulture));
-                                if (alreadyExists < 1)
+                                var value = serviceInput?.Name;
+                                if (value != null)
                                 {
-                                    var variable = DataListUtil.AddBracketsToValueIfNotExist(value);
-                                    serviceInput.Value = variable;
-                                }
-                                else
-                                {
-                                    var variable = DataListUtil.AddBracketsToValueIfNotExist(value);
-                                    serviceInput.Value = variable;
+                                    value = value.Split('(').First().TrimEnd(' ');
+                                    var alreadyExists = DataListSingleton.ActiveDataList.ScalarCollection.Count(model => model.Name.Equals(value, StringComparison.InvariantCulture));
+                                    if (alreadyExists < 1)
+                                    {
+                                        var variable = DataListUtil.AddBracketsToValueIfNotExist(value);
+                                        serviceInput.Value = variable;
+                                    }
+                                    else
+                                    {
+                                        var variable = DataListUtil.AddBracketsToValueIfNotExist(value);
+                                        serviceInput.Value = variable;
+                                    }
                                 }
                             }
+                        }
+                        else
+                        {
+                            if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                            {
+                                var value = serviceInput?.Name;
+                                if (value != null)
+                                {
+                                    value = value.Split('(').First().TrimEnd(' ');
+                                    var alreadyExists = DataListSingleton.ActiveDataList.ComplexObjectCollection.Count(model => model.Name.Equals(value, StringComparison.InvariantCulture));
+                                    if (alreadyExists < 1)
+                                    {
+                                        var objectName = "@" + value;
+                                        var variable = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                                        serviceInput.Value = variable;
+                                    }
+                                    else
+                                    {
+                                        var objectName = "@" + value;
+                                        var variable = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                                        serviceInput.Value = variable;
+                                    }
+                                }
+                            }
+
                         }
                     }
 

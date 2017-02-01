@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             try
             {
                 Errors = new List<string>();
-                LabelWidth = 70;
+                LabelWidth = 74;
                 ToolRegionName = "DotNetNamespaceRegion";
                 _modelItem = modelItem;
                 _model = model;
@@ -58,8 +58,9 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                     IsRefreshing = true;
                     if (_source.SelectedSource != null)
                     {
-                        Namespaces = model.GetNameSpaces(_source.SelectedSource);
+                        Namespaces = _modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity) ? _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource) : _model.GetNameSpaces(_source.SelectedSource);
                     }
+
                     IsRefreshing = false;
                 }, CanRefresh);
 
@@ -71,6 +72,8 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 Errors.Add(e.Message);
             }
         }
+
+        public bool IsNewPluginNamespace { get; set; }
         INamespaceItem Namespace
         {
             get
@@ -94,12 +97,12 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 OnPropertyChanged();
             }
         }
-
+        public bool I { get; set; }
         public string NamespaceDisplayText
         {
             get
             {
-                if(ToolRegionName.ToUpper().Contains("DOTNET"))
+                if (ToolRegionName.ToUpper().Contains("DOTNET"))
                 {
                     return "Namespace/Class";
                 }
@@ -123,8 +126,6 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             {
                 _errors.Add(e.Message);
                 Errors = _errors;
-
-
             }
             finally
             {
@@ -136,11 +137,18 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         {
             if (_source?.SelectedSource != null)
             {
-                Namespaces = _model.GetNameSpaces(_source.SelectedSource);
-
-
-                IsNamespaceEnabled = true;
-                IsEnabled = true;
+                if (_modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity))
+                {
+                    Namespaces = _model.GetNameSpacesWithJsonRetunrs(_source.SelectedSource);
+                    IsNamespaceEnabled = true;
+                    IsEnabled = true;
+                }
+                else
+                {
+                    Namespaces = _model.GetNameSpaces(_source.SelectedSource);
+                    IsNamespaceEnabled = true;
+                    IsEnabled = true;
+                }
             }
         }
 
@@ -169,6 +177,8 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 OnPropertyChanged();
             }
         }
+        
+
         public ICollection<INamespaceItem> Namespaces
         {
             get
