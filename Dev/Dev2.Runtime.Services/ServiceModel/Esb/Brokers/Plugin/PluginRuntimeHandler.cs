@@ -120,7 +120,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        public IDev2MethodInfo Run(PluginExecutionDto dto, IDev2MethodInfo dev2MethodInfo)
+        public IDev2MethodInfo Run(IDev2MethodInfo dev2MethodInfo, PluginExecutionDto dto, out string objectString)
         {
             try
             {
@@ -130,6 +130,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 if (!tryLoadAssembly)
                     throw new Exception(args.AssemblyName + "Not found");
                 ExecutePlugin(dto, args, loadedAssembly, dev2MethodInfo);
+                objectString = dto.ObjectString;
                 return dev2MethodInfo;
             }
             catch (Exception e)

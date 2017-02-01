@@ -153,7 +153,7 @@ namespace Dev2.Activities
                         index++;
                     }
                     
-                }                
+                }                                                
             }
             catch(Exception e)
             {
@@ -195,16 +195,17 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    var passed = resultList.All(runResult => runResult.RunTestResult == RunResult.TestPassed);
-                    if (passed)
+                    var failed = resultList.Any(runResult => runResult.RunTestResult == RunResult.TestFailed);
+                    if (failed)
                     {
-                        testRunResult.Message = Messages.Test_PassedResult;
-                        testRunResult.RunTestResult = RunResult.TestPassed;
+                        testRunResult.Message = string.Join(Environment.NewLine, testRunResults.Select(result => result.Message));
+                        testRunResult.RunTestResult = RunResult.TestFailed;
                     }
                     else
                     {
-                        testRunResult.Message = Messages.Test_FailureResult;
-                        testRunResult.RunTestResult = RunResult.TestFailed;
+                        testRunResult.Message = Messages.Test_PassedResult;
+                        testRunResult.RunTestResult = RunResult.TestPassed;
+                        
                     }
                 }
             }
@@ -269,10 +270,19 @@ namespace Dev2.Activities
         private void RegularMethodExecution(Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto pluginExecutionDto, IDev2MethodInfo dev2MethodInfo, int i,int update,IDSFDataObject dataObject)
         {
             var start = DateTime.Now;
-            IDev2MethodInfo result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo);
+            pluginExecutionDto.ObjectString = ObjectResult;
+            string objString;
+            IDev2MethodInfo result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo,out objString);
+            pluginExecutionDto.ObjectString = objString;
+            ObjectResult = objString;
             var pluginAction = MethodsToRun[i];
             pluginAction.MethodResult = result.MethodResult;
             AssignMethodResult(pluginAction, update, dataObject,start);
+            if (!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
+            {
+                var jToken = JToken.Parse(ObjectResult) as JContainer ?? ObjectResult.DeserializeToObject();
+                dataObject.Environment.AddToJsonObjects(ObjectName, jToken);
+            }
         }
 
         private void RegularConstructorExecution(IDSFDataObject dataObject, Isolated<PluginRuntimeHandler> appDomain, ref PluginExecutionDto pluginExecutionDto)
@@ -550,7 +560,7 @@ namespace Dev2.Activities
             if (!string.IsNullOrEmpty(ObjectName))
             {
                 DebugItem debugItem = new DebugItem();
-                AddDebugItem(new DebugEvalResult(ObjectName, "", env, update,isMock), debugItem);
+                AddDebugItem(new DebugEvalResult(ObjectName, "", env, update,false,false,isMock), debugItem);
                 debugItems.Add(debugItem);
             }
 

@@ -512,10 +512,13 @@ namespace Warewolf.Studio.ViewModels
                             }
                         }
                         SetStepIcon(childStep.ActivityType, childStep);
-                        parent.Children.Add(childStep);
-                        if (childItem.Children != null && childItem.Children.Count > 0)
+                        if (childStep.StepOutputs != null && childStep.StepOutputs.Count > 0 && parent.ActivityType==typeof(DsfEnhancedDotNetDllActivity).Name)
                         {
-                            AddChildDebugItems(childItemContent, childItem, childStep);
+                            parent.Children.Add(childStep);
+                            if (childItem.Children != null && childItem.Children.Count > 0)
+                            {
+                                AddChildDebugItems(childItemContent, childItem, childStep);
+                            }
                         }
                     }
                     else
@@ -946,7 +949,10 @@ namespace Warewolf.Studio.ViewModels
                     AddEnhancedDotNetDllConstructor(dotNetDllActivity, testStep);
                     foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
                     {
-                        AddEnhancedDotNetDllMethod(pluginAction, testStep);
+                        if (!pluginAction.IsVoid)
+                        {
+                            AddEnhancedDotNetDllMethod(pluginAction, testStep);
+                        }
                     }
                 }
                 else
@@ -959,10 +965,14 @@ namespace Warewolf.Studio.ViewModels
                     }
                     foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
                     {
-                        IServiceTestStep actionExists = exists.Children.FirstOrDefault(step => step.UniqueId == pluginAction.ID);
-                        if (actionExists != null)
+                        if (!pluginAction.IsVoid)
                         {
-                            AddEnhancedDotNetDllMethod(pluginAction, exists);
+                            IServiceTestStep actionExists = exists.Children.FirstOrDefault(step => step.UniqueId == pluginAction.ID);
+                            if (actionExists != null)
+                            {
+
+                                AddEnhancedDotNetDllMethod(pluginAction, exists);
+                            }
                         }
                     }
                 }

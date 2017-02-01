@@ -11,6 +11,11 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
 // ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable CollectionNeverUpdated.Local
 
 namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 {
@@ -21,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         private readonly INamespaceToolRegion<INamespaceItem> _namespace;
         private bool _isEnabled;
 
-        readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
+        private readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         private Action _sourceChangedAction;
         private IPluginConstructor _selectedConstructor;
         private readonly IPluginServiceModel _model;
@@ -312,13 +317,6 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
 
             OnPropertyChanged("SelectedConstructor");
-        }
-
-
-        private void StorePreviousValues(string constructorName)
-        {
-            _previousRegions.Remove(constructorName);
-            _previousRegions[constructorName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
         private void RestorePreviousValues(IPluginConstructor value)

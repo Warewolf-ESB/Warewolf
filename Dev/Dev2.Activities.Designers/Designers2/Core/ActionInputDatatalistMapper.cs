@@ -17,7 +17,10 @@ namespace Dev2.Activities.Designers2.Core
             {
                 foreach (var serviceInput in inputs)
                 {
-
+                    if (!string.IsNullOrEmpty(serviceInput.Value))
+                    {
+                        continue;
+                    }
                     if (DataListSingleton.ActiveDataList != null)
                     {
                         if (!serviceInput.IsObject)

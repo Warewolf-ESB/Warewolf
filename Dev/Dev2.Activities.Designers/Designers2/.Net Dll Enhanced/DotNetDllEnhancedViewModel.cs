@@ -476,7 +476,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     var collection = new ObservableCollection<IPluginAction>();
                     collection.CollectionChanged += MethodsToRunListOnCollectionChanged;
                     collection.AddRange(actions);
-
                     MethodsToRunList = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
                 }
                 else
@@ -484,7 +483,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     var actions = new ObservableCollection<IPluginAction>();
                     actions.CollectionChanged += MethodsToRunListOnCollectionChanged;
                     actions.AddRange(pluginActions);
-
                     var regionCollections = BuildRegionsFromActions(pluginActions);
                     MethodsToRunList = regionCollections;
                 }
