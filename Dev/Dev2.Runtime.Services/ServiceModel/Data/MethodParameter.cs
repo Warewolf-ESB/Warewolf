@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -16,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     /// A Method Parameter
     /// </summary>
     [Serializable]
-    public class MethodParameter
+    public class MethodParameter : IMethodParameter
     {
         public string Name { get; set; }
         public bool EmptyToNull { get; set; }
@@ -28,5 +29,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             get;
             set;
         }
+
+        public bool IsObject { get; set; }
+        public string Dev2ReturnType { get; set; }
+        public string ShortTypeName { get; set; }
     }
 }

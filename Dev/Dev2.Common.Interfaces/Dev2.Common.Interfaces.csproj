@@ -235,9 +235,11 @@
     <Compile Include="IComputerName.cs" />
     <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IConnection.cs" />
+    <Compile Include="IConstructorParameter.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
     <Compile Include="IDatabaseSourceViewModel.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
+    <Compile Include="IDev2MethodInfo.cs" />
     <Compile Include="IDLLChooser.cs" />
     <Compile Include="IDllListing.cs" />
     <Compile Include="IDropboxExecutor.cs" />
@@ -283,6 +285,7 @@
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
+    <Compile Include="IMethodParameter.cs" />
     <Compile Include="INamespaceItem.cs" />
     <Compile Include="INetworkStateChangedEventArgs.cs" />
     <Compile Include="Infrastructure\Communication\IExecuteMessage.cs" />
@@ -312,6 +315,7 @@
     <Compile Include="IPerformanceCountersByMachine.cs" />
     <Compile Include="IPerformanceCountersByResource.cs" />
     <Compile Include="IPluginAction.cs" />
+    <Compile Include="IPluginConstructor.cs" />
     <Compile Include="IPluginService.cs" />
     <Compile Include="IPluginServiceModel.cs" />
     <Compile Include="IPluginSource.cs" />
@@ -405,6 +409,7 @@
     <Compile Include="ToolBase\ExchangeEmail\IExchangeServiceViewModel.cs" />
     <Compile Include="ToolBase\ExchangeEmail\IExchangeSource.cs" />
     <Compile Include="ToolBase\IActionToolRegion.cs" />
+    <Compile Include="ToolBase\IConstructorRegion.cs" />
     <Compile Include="ToolBase\ICustomToolViewModelWithRegionBase.cs" />
     <Compile Include="ToolBase\IGenerateInputArea.cs" />
     <Compile Include="ToolBase\IGenerateOutputArea.cs" />

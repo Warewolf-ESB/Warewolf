@@ -243,7 +243,6 @@
       <DependentUpon>ToolboxView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TreeUtils.cs" />
-    <Compile Include="WidthConverter.cs" />
     <Compile Include="ActivityDefaultWindow.xaml.cs">
       <DependentUpon>ActivityDefaultWindow.xaml</DependentUpon>
     </Compile>

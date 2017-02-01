@@ -78,6 +78,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
@@ -171,6 +174,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
+    <Compile Include="Designers2\.Net Dll Enhanced\DotNetDllDesigner.xaml.cs">
+      <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net Dll Enhanced\DotNetDllEnhancedViewModel.cs" />
+    <Compile Include="Designers2\.Net Dll Enhanced\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net Dll Enhanced\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\ComDLL\ComDllDesigner.xaml.cs">
       <DependentUpon>ComDllDesigner.xaml</DependentUpon>
     </Compile>
@@ -253,13 +266,17 @@
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DotNetMethodRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\WcfActionRegion.cs" />
     <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DotNetConstructorInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\CloneInputRegion\WcfInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\ConstructorRegion\DotNetConstructorRegion.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
+    <Compile Include="Designers2\Core\DotNetActionsWidthConverter.cs" />
     <Compile Include="Designers2\Core\DropboxSourceManager.cs" />
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
     <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
@@ -268,11 +285,13 @@
     <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
     <Compile Include="Designers2\Core\IActionInputDatatalistMapper.cs" />
     <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DotNetConstructorInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
     <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
     <Compile Include="Designers2\Core\IScriptChooser.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageComPluginServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageEnhancedPluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWcfServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
@@ -1222,6 +1241,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Designers2\.Net Dll Enhanced\DotNetDllDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\.Net Dll Enhanced\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\.Net Dll Enhanced\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\ComDLL\ComDllDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -83,14 +83,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.And("I Click New DotNetPluginSource Explorer Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select NewPluginSource FromExplorerContextMenu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.And("I Type \"C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\System.Numerics.dll\" into" +
                     " Plugin Source Wizard Assembly Textbox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
  testRunner.And("I Save Valid Service With Ribbon Button And Dialog As \"UITestingPluginSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("I Click Close DotNetPlugin Source Tab", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Close Plugin Source Wizard Tab Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.And("I Drag DotNet DLL Connector Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15

@@ -614,7 +614,7 @@ namespace Warewolf.Storage.Tests
 
             _environment.AssignJson(new AssignValue(PersonNameExpression, "Sanele"), 0);
             evalJContainer = _environment.EvalJContainer(PersonNameExpression);
-            Assert.IsNull(evalJContainer);
+            Assert.IsNotNull(evalJContainer);
         }
 
         [TestMethod]

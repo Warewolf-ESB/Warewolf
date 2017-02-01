@@ -26,7 +26,7 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities
 {
     [TestClass]
-    public class TestHelperTests
+    public class ServiceTestHelperTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject,serviceTestTestSteps, "");
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject,serviceTestTestSteps, "");
             //------------Assert Results-------------------------
             Assert.IsNull(serviceTestStepTO.Result);
         }
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Activities
             var dsfDataObject = GetDataObject(true, Guid.Empty, "Test1");
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject,null, "");
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject,null, "");
         }
 
 
@@ -72,7 +72,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, "");
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, "");
             //------------Assert Results-------------------------
             Assert.IsNull(serviceTestStepTO.Result);
         }
@@ -90,7 +90,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.NewGuid().ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.NewGuid().ToString());
             //------------Assert Results-------------------------
             Assert.IsNull(serviceTestStepTO.Result);
         }
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNull(serviceTestStepTO.Result);
         }
@@ -126,7 +126,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNull(serviceTestStepTO.Result);
         }
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNull(serviceTestStepTO.Result);
         }
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNull(serviceTestStepTO.Result);
         }
@@ -180,7 +180,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNull(serviceTestStepTO.Result);
         }
@@ -206,7 +206,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid,serviceTestStepTO.Result.RunTestResult);
@@ -234,7 +234,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid,serviceTestStepTO.Result.RunTestResult);
@@ -263,7 +263,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid,serviceTestStepTO.Result.RunTestResult);
@@ -293,7 +293,7 @@ namespace Dev2.Tests.Activities
             //------------Assert Preconditions-------------------
             Assert.IsNull(serviceTestStepTO.Result);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, Guid.Empty.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid,serviceTestStepTO.Result.RunTestResult);
@@ -328,7 +328,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestPassed,serviceTestStepTO.Result.RunTestResult);
@@ -363,7 +363,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestPassed,serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
@@ -398,7 +398,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestFailed,serviceTestStepTO.Result.RunTestResult);
@@ -433,7 +433,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestFailed,serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
@@ -468,7 +468,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid,serviceTestStepTO.Result.RunTestResult);
@@ -503,7 +503,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
@@ -538,7 +538,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestFailed,serviceTestStepTO.Result.RunTestResult);
@@ -573,7 +573,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestFailed, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
@@ -608,7 +608,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid,serviceTestStepTO.Result.RunTestResult);
@@ -643,7 +643,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestInvalid, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
@@ -678,7 +678,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.TestPassed,serviceTestStepTO.Result.RunTestResult);
@@ -713,7 +713,7 @@ namespace Dev2.Tests.Activities
             var debugState = new DebugState { ID = uniqueID };
             TestDebugMessageRepo.Instance.AddDebugItem(dsfDataObject.ResourceID, dsfDataObject.TestName, debugState);
             //------------Execute Test---------------------------
-            TestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dsfDataObject, serviceTestTestSteps, uniqueID.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(serviceTestStepTO.Result);
             Assert.AreEqual(RunResult.None, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);

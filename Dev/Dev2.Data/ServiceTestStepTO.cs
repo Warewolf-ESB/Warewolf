@@ -15,6 +15,12 @@ namespace Dev2.Data
             StepOutputs = outputs;
         }
 
+        public ServiceTestStepTO()
+        {
+            StepOutputs = new ObservableCollection<IServiceTestOutput>();
+            Children = new ObservableCollection<IServiceTestStep>();
+        }
+
         public Guid UniqueId { get; set; }
         public string ActivityType { get; set; }
         public StepType Type { get; set; }

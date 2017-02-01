@@ -24,7 +24,10 @@ namespace Dev2.Common.Interfaces
         public IList<IServiceInput> Inputs { get; set; }
         public IList<IServiceOutputMapping> OutputMappings { get; set; }
         public string Path { get; set; }
+        public IPluginConstructor Constructor { get; set; }
+        public INamespaceItem Namespace { get; set; }
         public IPluginAction Action { get; set; }
+        public List<IPluginAction> Actions { get; set; }
 
         #endregion
 
@@ -55,15 +58,23 @@ namespace Dev2.Common.Interfaces
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(PluginServiceDefinition other)
         {
-            if(ReferenceEquals(null, other))
+            if (ReferenceEquals(null, other))
             {
                 return false;
             }
-            if(ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
-            return string.Equals(Name, other.Name) && Id.Equals(other.Id) && Equals(Source, other.Source) && string.Equals(Path, other.Path) && Equals(Action, other.Action);
+
+            return string.Equals(Name, other.Name)
+                && Id.Equals(other.Id)
+                && Equals(Source, other.Source)
+                && string.Equals(Path, other.Path)
+                && Equals(Action, other.Action)
+                && Equals(Constructor, other.Constructor)
+                && Equals(Namespace, other.Namespace)
+                && Equals(Actions, other.Actions);
         }
 
         /// <summary>
@@ -75,15 +86,15 @@ namespace Dev2.Common.Interfaces
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            if(ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if(obj.GetType() != GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }

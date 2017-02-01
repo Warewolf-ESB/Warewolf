@@ -138,6 +138,110 @@
         </Setter>
     </Style>
 
+    <Style x:Key="TransparentActivityDataGridStyle" TargetType="{x:Type DataGrid}">
+        <Setter Property="HeadersVisibility" Value="None"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="MinHeight" Value="53"/>
+        <Setter Property="MaxHeight" Value="53"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGrid}">
+                    <Border Background="{TemplateBinding Background}"
+					        BorderBrush="{TemplateBinding BorderBrush}"
+					        BorderThickness="{TemplateBinding BorderThickness}"
+					        Padding="{TemplateBinding Padding}"
+					        SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                            <ScrollViewer.Template>
+                                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Button Width="{Binding CellsPanelHorizontalOffset,
+										                        RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+										        Command="{x:Static DataGrid.SelectAllCommand}"
+										        Focusable="false"
+										        Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle,
+										                                                      TypeInTargetAssembly={x:Type DataGrid}}}"
+										        Visibility="{Binding HeadersVisibility,
+										                             ConverterParameter={x:Static DataGridHeadersVisibility.All},
+										                             Converter={x:Static DataGrid.HeadersVisibilityConverter},
+										                             RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                        <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
+                                            Grid.Row="0" Grid.Column="1"
+										                                Visibility="{Binding HeadersVisibility,
+										                                                     ConverterParameter={x:Static DataGridHeadersVisibility.Column},
+										                                                     Converter={x:Static DataGrid.HeadersVisibilityConverter},
+										                                                     RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+										                        Grid.Row="1"
+										                        Grid.ColumnSpan="2" Grid.Column="0"
+                                            CanContentScroll="{TemplateBinding CanContentScroll}"/>
+                                        <ScrollBar x:Name="PART_VerticalScrollBar"
+										           Grid.Row="1"
+										           Grid.Column="2"
+                                                   Margin="0,2,0,0"
+										           Maximum="{TemplateBinding ScrollableHeight}"
+										           Orientation="Vertical"
+										           ViewportSize="{TemplateBinding ViewportHeight}"
+										           Visibility="{TemplateBinding VerticalScrollBarVisibility}"
+										           Value="{Binding VerticalOffset,
+										                           Mode=OneWay,
+										                           RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <Grid Grid.Row="2" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <ScrollBar x:Name="PART_HorizontalScrollBar"
+											           Grid.Column="1"
+											           Maximum="{TemplateBinding ScrollableWidth}"
+											           Orientation="Horizontal"
+											           ViewportSize="{TemplateBinding ViewportWidth}"
+											           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+											           Value="{Binding HorizontalOffset,
+											                           Mode=OneWay,
+											                           RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </Grid>
+                                    </Grid>
+                                </ControlTemplate>
+                            </ScrollViewer.Template>
+                            <ItemsPresenter Margin="0,1,0,1" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </ScrollViewer>
+
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="IsTabStop" Value="False"/>
+                    <Setter Property="Height" Value="25"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource BrushMouseOver}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="ActivityMultiLineIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" >
         <!--<Setter Property="attachedProperties:WizardEngineAttachedProperties.DontOpenWizard" Value="true"/>-->
         <Setter Property="AllowUserInsertLine" Value="True"/>

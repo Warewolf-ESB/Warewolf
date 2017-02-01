@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
@@ -17,39 +17,51 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// Used to execute plugins properly ;)
     /// INFO : http://stackoverflow.com/questions/2008691/pass-and-execute-delegate-in-separate-appdomain
     /// </summary>
-    public static class PluginServiceExecutionFactory
+    public static partial class PluginServiceExecutionFactory
     {
         #region Private Methods
 
-        private static Isolated<PluginRuntimeHandler> CreateInvokeAppDomain()
-        {
-            Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>();
-            return isolated;
-        }
 
         #endregion
 
         #region Public Interface
 
-        public static IOutputDescription TestPlugin(PluginInvokeArgs args,out string serializedResult)
+        public static IDev2MethodInfo InvokePlugin(Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto dto,IDev2MethodInfo dev2MethodInfo,out string objString)
         {
-
-            using (var runtime = CreateInvokeAppDomain())
-            {
-                return runtime.Value.Test(args,out serializedResult);
-            }
-
+            string objectString;
+            var invokePlugin = appDomain.Value.Run(dev2MethodInfo,dto,out objectString);
+            objString = objectString;
+            return invokePlugin;
         }
 
-        public static object InvokePlugin(PluginInvokeArgs args)
+        public static PluginExecutionDto ExecuteConstructor(Isolated<PluginRuntimeHandler> appDomain,PluginExecutionDto dto)
         {
+            return appDomain.Value.ExecuteConstructor(dto);
+        }
 
+        public static Isolated<PluginRuntimeHandler> CreateAppDomain()
+        {
+            return CreateInvokeAppDomain();
+            
+        }
+
+
+        /// <summary>
+        /// Gets the Constructors.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public static ServiceConstructorList GetConstructors(string assemblyLocation, string assemblyName, string fullName)
+        {
             using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.Run(args);
+                return runtime.Value.ListConstructors(assemblyLocation, assemblyName, fullName);
             }
-           
         }
+
+        #endregion
 
         /// <summary>
         /// Gets the methods.
@@ -58,23 +70,21 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <param name="fullName">The full name.</param>
         /// <returns></returns>
-        public static ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName)
+        public static ServiceMethodList GetMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.ListMethods(assemblyLocation, assemblyName, fullName);
-            }           
+                return runtime.Value.ListMethodsWithReturns(assemblyLocation, assemblyName, fullName);
+            }
         }
 
-        public static NamespaceList GetNamespaces(PluginSource pluginSource)
+        public static NamespaceList GetNamespacesWithJsonObjects(PluginSource pluginSource)
         {
             using (var runtime = CreateInvokeAppDomain())
             {
-                return runtime.Value.FetchNamespaceListObject(pluginSource);
-            }            
+                return runtime.Value.FetchNamespaceListObjectWithJsonObjects(pluginSource);
+            }
         }
-
-        #endregion
-
+        
     }
 }

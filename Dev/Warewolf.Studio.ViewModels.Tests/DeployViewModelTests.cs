@@ -204,8 +204,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             var localhost = new Mock<IServer>();
             localhost.Setup(a => a.ResourceName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
+            localhost.SetupGet(server => server.IsConnected).Returns(true);
 
             var otherServer = new Mock<IServer>();
+            otherServer.Setup(server => server.IsConnected).Returns(true);
             otherServer.Setup(a => a.ResourceName).Returns("OtherServer");
             otherServer.SetupGet(server => server.CanDeployFrom).Returns(true);
 
@@ -227,6 +229,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             
             deployDestinationViewModel.Environments.First().Children = destinationViewModel;
             deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
+            deployDestinationViewModel.SelectedEnvironment.Connect();
             sourceExplorerItem.First().IsResourceChecked = true;
 
             var stat = new DeployStatsViewerViewModel(sourceExplorerItem, deployDestinationViewModel);
