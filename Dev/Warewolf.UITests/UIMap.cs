@@ -48,9 +48,6 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Playback.PlaybackError -= OnError;
-            Playback.PlaybackError += OnError;
-            Mouse.MouseDragSpeed = 350;
         }
 
         [Given("The Warewolf Studio is running")]
@@ -135,72 +132,12 @@ namespace Warewolf.UITests
             }
         }
 
-        int OnErrorHandlerNonce = 0;
-        public void OnError(object sender, PlaybackErrorEventArgs e)
-        {
-            e.Result = PlaybackErrorOptions.Retry;
-            try
-            {
-                Console.WriteLine("On Retry " + OnErrorHandlerNonce + ":");
-                if (OnErrorHandlerNonce > 3) return;
-                OnErrorHandlerNonce++;
-                var type = e.Error.GetType().ToString();
-                var messageText = type + "\n" + e.Error.Message;
-                switch (type)
-                {
-                    case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
-                        UITestControlNotFoundExceptionHandler(type, messageText, e.Error as UITestControlNotFoundException);
-                        break;
-                    default:
-                        Console.WriteLine(messageText);
-                        break;
-                }
-            }
-            catch (Exception innerError)
-            {
-                Console.WriteLine("Exception inside OnError: " + innerError.Message);
-            }
-#if DEBUG
-            throw e.Error;
-#endif
-        }
-
-        void UITestControlNotFoundExceptionHandler(string type, string message, UITestControlNotFoundException e)
-        {
-            var exceptionSource = e.ExceptionSource;
-            if (exceptionSource is UITestControl)
-            {
-                UITestControl parent = (exceptionSource as UITestControl).Container;
-                var parentExists = ControlExistsNow(parent);
-                while (parent != null && !parentExists)
-                {
-                    parent = parent.Container;
-                    if (parent != null)
-                    {
-                        parentExists = ControlExistsNow(parent);
-                    }
-                }
-                if (parent != null && parentExists && parent != MainStudioWindow)
-                {
-                    string parentProperties = string.Empty;
-                    parent.SearchProperties.ToList().ForEach(prop => { parentProperties += prop.PropertyName + ": \'" + prop.PropertyValue + "\'\n"; });
-                    var messageText = message + "\n" + "Search actually failed at: " + parent.FriendlyName + "\n" + parentProperties;
-                    Console.WriteLine(messageText);
-                    parent.DrawHighlight();
-                }
-            }
-        }
-
         public bool ControlExistsNow(UITestControl thisControl)
         {
             Playback.PlaybackSettings.MaximumRetryCount = _strictMaximumRetryCount;
             Playback.PlaybackSettings.SearchTimeout = _strictSearchTimeout;
-            Playback.PlaybackError -= OnError;
-            OnErrorHandlerNonce = 4;
             bool controlExists = false;
             controlExists = thisControl.TryFind();
-            OnErrorHandlerNonce = 0;
-            Playback.PlaybackError += OnError;
             Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
             Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             return controlExists;

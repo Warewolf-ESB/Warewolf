@@ -20,7 +20,7 @@ if ($Args.Count -gt 0) {
     }
 }
 if ($TestList.StartsWith(",")) {
-	$TestList = $TestList -replace "^.", " /Tests:"
+	$TestList = $TestList -replace "^.", " /test:"
 }
 
 # Find test assemblies
