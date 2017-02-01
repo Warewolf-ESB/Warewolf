@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Media;
@@ -43,8 +42,7 @@ namespace Dev2.ViewModels
                     NotifyOfPropertyChange(() => DisplayName);
                 }
             };
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel);
-            DebugOutputViewModel.IsTestView = true;
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
         }
 
         public override bool HasVariables => false;
@@ -139,26 +137,6 @@ namespace Dev2.ViewModels
         {
             var parent = FindParentWindow((FrameworkElement)View);
             parent?.Close();
-//
-//            var dockManager = (XamDockManager)((FrameworkElement)((FrameworkElement)View)?.Parent)?.Parent;
-//            var panes = dockManager?.Panes;
-//            if (panes != null)
-//            {
-//                if (panes.Count == 1)
-//                {
-//                    var parent = FindParentWindow((FrameworkElement)View);
-//                    parent?.Close();
-//                }
-//                else
-//                {
-//                    if (dockManager.ActivePane != null)
-//                    {
-//                        dockManager.ActivePane.CloseAction = PaneCloseAction.RemovePane;
-//                        dockManager.ActivePane.ExecuteCommand(ContentPaneCommands.Close);
-//                    }
-//                }
-//            }
-            
         }
 
         public bool DoDeactivate(bool showMessage)
@@ -196,7 +174,7 @@ namespace Dev2.ViewModels
             }
             else
             {
-                ViewModel.UpdateHelpDescriptor(String.Empty);
+                ViewModel.UpdateHelpDescriptor(string.Empty);
                 if (ViewModel.CanSave)
                 {
                     ViewModel.Save();
