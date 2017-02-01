@@ -16,6 +16,9 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
 // ReSharper disable ExplicitCallerInfoArgument
 

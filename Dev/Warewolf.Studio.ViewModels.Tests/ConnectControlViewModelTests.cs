@@ -8,7 +8,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Core.Tests.Environments;
 using Dev2.Interfaces;
-using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
