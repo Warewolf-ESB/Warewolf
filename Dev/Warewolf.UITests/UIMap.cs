@@ -3335,6 +3335,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Debug Output GenericResource Name")]
         public void Click_Debug_Output_GenericResource_Name()
         {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DrawHighlight();
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.ServiceTreeItem.GenericResourceButton, new Point(24, 8));
             Assert.AreEqual("GenericResource", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Workflow1ciremoteText.DisplayText, "GenericResource remote workflow tab is not open.");
         }
@@ -8102,6 +8103,11 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Debug Output New Test button not enabled.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
+        }
+
+        public void Save_Button_IsEnabled()
+        {
+            MainStudioWindow.SideMenuBar.SaveButton.EnsureClickable();
         }
 
         [Then(@"Test Tab Is Open")]
