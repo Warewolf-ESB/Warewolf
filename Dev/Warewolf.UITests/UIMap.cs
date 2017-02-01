@@ -764,9 +764,7 @@ namespace Warewolf.UITests
 
         public void Select_FirstItem_From_ServicePicker_Tree()
         {
-            var firstItem = ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1;
-            Mouse.Click(firstItem);
-
+            Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
         }
 
         [Given(@"I Double Click Resource On The Service Picker")]
@@ -1854,16 +1852,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.Exists, "Assert Json tab does not exist in the debug input window.");
         }
 
-        [Given(@"I Click DotNet DLL Large View Generate Outputs")]
-        [When(@"I Click DotNet DLL Large View Generate Outputs")]
-        [Then(@"I Click DotNet DLL Large View Generate Outputs")]
-        public void Click_DotNet_DLL_Large_View_Generate_Outputs()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton, new Point(7, 7));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton.Exists);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.DoneButton.Exists);
-        }
-
         [Given(@"I Click New Web Source Test Connection Button")]
         [When(@"I Click New Web Source Test Connection Button")]
         [Then(@"I Click New Web Source Test Connection Button")]
@@ -1902,10 +1890,9 @@ namespace Warewolf.UITests
             Mouse.Click(ServicePickerDialog.OK, new Point(52, 10));
         }
 
-        public void Click_Service_Picker_Dialog_Cancel()
+        public void Click_ServicePickerDialog_CancelButton()
         {
             Mouse.Click(ServicePickerDialog.Cancel, new Point(57, 6));
-            Assert.IsFalse(ControlExistsNow(ServicePickerDialog), "Service picker dialog still exists after clicking cancel button.");
         }
 
         public void Click_Service_Picker_Dialog_Refresh_Button()
@@ -2403,8 +2390,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
-            Point newPoint;
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.TryGetClickablePoint(out newPoint), "HelloWorldWorkFlow still exists on design surface after deleting with context menu.");
         }
 
         public void Delete_Assign_With_Context_Menu_On_Unpinned_Tab()
@@ -2859,14 +2844,6 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "testuser";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
-        }
-
-        [Given(@"I Click DotNet DLL Large View Test Cancel Done Button")]
-        [When(@"I Click DotNet DLL Large View Test Cancel Done Button")]
-        [Then(@"I Click DotNet DLL Large View Test Cancel Done Button")]
-        public void WhenIClickDotNetDLLLargeViewTestCancelDoneButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CancelButton);
         }
 
         public void Drag_Toolbox_AssignObject_Onto_Sequence_LargeTool()
@@ -3526,23 +3503,6 @@ namespace Warewolf.UITests
         public void Click_Deploy_Tab_WarewolfStore_Item()
         {
             Mouse.Click(MainStudioWindow.ComboboxListItemAsWarewolfStore, new Point(214, 9));
-        }
-
-        [Given(@"I Click DotNet DLL Large View Done Button")]
-        [When(@"I Click DotNet DLL Large View Done Button")]
-        [Then(@"I Click DotNet DLL Large View Done Button")]
-        public void Click_DotNet_DLL_Large_View_Done_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.DoneButton, new Point(33, 11));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.SmallView.Exists, "DotNet DLL small view does not exist after clicking done on large view.");
-        }
-
-        [Given(@"I Click DotNet DLL Large View Test Inputs Button")]
-        [When(@"I Click DotNet DLL Large View Test Inputs Button")]
-        [Then(@"I Click DotNet DLL Large View Test Inputs Button")]
-        public void Click_DotNet_DLL_Large_View_Test_Inputs_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.TestButton, new Point(21, 11));
         }
 
         [Given(@"I Click Duplicate From Duplicate Dialog")]
@@ -5583,8 +5543,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(304, 126));
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.ResourceTools.Service, new Point(50, 5));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(304, 126));
-            Assert.IsTrue(ServicePickerDialog.Exists, "Service picker does not exist on the Design Surface");
-            Assert.IsTrue(ServicePickerDialog.Cancel.Exists, "Service picker dialog cancel button does not exist");
         }
 
         [Given(@"I Drag Toolbox Sharepoint CopyFile Onto DesignSurface")]
@@ -6591,63 +6549,50 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.DoneButton, new Point(35, 6));
         }
 
-        [When(@"I Open DotNet DLL Connector Tool Large View")]
-        public void Open_DotNetDLLConnectorTool_LargeView()
+        [When(@"I Double Click DotNetDLL Tool to Change View")]
+        public void DotNetDLLTool_ChangeView_With_DoubleClick()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll, new Point(238, 16));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.Exists, "DotNet DLL tool large view does not exist after double clicking tool small view.");
-        }
-
-        [When(@"I Collapse DotNet DLL Connector Tool Large View to Small View With Double Click")]
-        public void Collapse_DotNet_DLL_Connector_Tool_Large_View_to_Small_View_With_Double_Click()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.Exists, "Cannot collapse DotNet DLL tool to small view, large view does not exist.");
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll, new Point(238, 16));
         }
 
-        [When(@"I Collapse Com DLL Connector Tool Large View to Small View With Double Click")]
-        public void Collapse_Com_DLL_Connector_Tool_Large_View_to_Small_View_With_Double_Click()
+        [When(@"I Double Click ComDLL Tool to Change View")]
+        public void ComDLLTool_ChangeView_With_DoubleClick()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.Exists, "Cannot collapse DotNet DLL tool to small view, large view does not exist.");
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll, new Point(238, 16));
         }
 
-        [When(@"I Collapse WCF Service Connector Tool Large View to Small View With Double Click")]
-        public void Collapse_WCF_Service_Connector_Tool_Large_View_to_Small_View_With_Double_Click()
+        [When(@"I Double Click WCFService Tool to Change View")]
+        public void WCFServiceTool_ChangeView_With_DoubleClick()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.Exists, "Cannot collapse WCF Service tool to small view, large view does not exist.");
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService, new Point(238, 16));
         }
 
-        [When(@"I Open Dropbox Delete Tool Large View")]
-        public void Open_DropboxDeleteTool_LargeView()
+        [When(@"I Double Click DropboxDelete Tool to Change View")]
+        public void DropboxDeleteTool_ChangeView_With_DoubleClick()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete, new Point(174, 12));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete.LargeViewContent.Exists, "Tool large does not exist after openning it with a double click.");
         }
 
-        [When(@"I Open Dropbox List Contents Tool Large View")]
-        public void Open_DropboxListContentsTool_LargeView()
+        [When(@"I Double Click DropboxListContents Tool to Change View")]
+        public void DropboxListContentsTool_ChangeView_With_DoubleClick()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList, new Point(166, 9));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList.LargeViewContent.Exists, "Tool large does not exist after openning it with a double click.");
         }
 
-        [When(@"I Open Dropbox Upload Tool Large View")]
-        public void Open_DropboxUploadTool_LargeView()
+        [When(@"I Double Click DropboxUpload Tool to Change View")]
+        public void DropboxUploadTool_ChangeView_With_DoubleClick()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload, new Point(151, 8));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload.LargeViewContent.Exists, "Tool large does not exist after openning it with a double click.");
         }
 
-        [When(@"I Open DropboxDownload Large View")]
-        public void Open_DropboxDownload_LargeView()
+        [When(@"I Double Click DropboxDownload Tool to Change View")]
+        public void DropboxDownloadTool_ChangeView_With_DoubleClick()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload, new Point(174, 14));
         }
 
-        [When(@"I Open Exchange Send Tool Large View")]
-        public void Open_ExchangeSendTool_LargeView()
+        [When(@"I Double Click ExchangeSend Tool to Change View")]
+        public void ExchangeSendTool_ChangeView_With_DoubleClick()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail, new Point(168, 11));
         }
