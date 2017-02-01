@@ -200,7 +200,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             if (explorerItemViewModel.ResourceType == @"ServerSource" || explorerItemViewModel.IsServer)
                             {
-                                server.UpdateRepository.FireServerSaved();
+                                server.UpdateRepository.FireServerSaved(explorerItemViewModel.ResourceId);
                             }
                             parent?.RemoveChild(explorerItemViewModel);
                         }                        

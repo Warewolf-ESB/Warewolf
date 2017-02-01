@@ -63,7 +63,6 @@ Scenario: Opening Workflow local and remote using right click
    Given The Warewolf Studio is running
    When I Select RemoteConnectionIntegration From Explorer
    And I Click Explorer Connect Remote Server Button
-   And I Wait For Explorer First Remote Server Spinner
    And I Click New Workflow Ribbon Button
    And I Filter the Explorer with "GenericResource"
    And I Drag Explorer Remote GenericResource Onto Workflow Design Surface

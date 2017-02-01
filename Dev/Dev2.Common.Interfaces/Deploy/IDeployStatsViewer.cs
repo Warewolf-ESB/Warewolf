@@ -7,6 +7,9 @@ namespace Dev2.Common.Interfaces.Deploy
     {
         public string SourceName { get; set; }
         public string DestinationName { get; set; }
+        public Guid SourceId { get; set; }
+        public Guid DestinationId { get; set; }
+        
     }
     public interface IDeployStatsViewerViewModel
     {

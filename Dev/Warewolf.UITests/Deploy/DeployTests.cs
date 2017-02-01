@@ -94,9 +94,26 @@ namespace Warewolf.UITests
             UIMap.Select_localhost_From_Deploy_Tab_Source_Server_Combobox();
         }
 
+        [TestMethod]
+        [TestCategory("Deploy")]
+        public void Change_Server_Details_From_DeployDestination_And_Save_Persists_Changes()
+        {            
+            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            UIMap.Click_Edit_Deploy_Destination_Server_Button();
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.TabDescription.DisplayText.Contains("*"));
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected);
+            UIMap.Select_Server_Authentication_Public();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.TabDescription.DisplayText.Contains("*"));
+            UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+            UIMap.Click_Edit_Deploy_Destination_Server_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected);
+        }    
+
         #region Additional test attributes
 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();

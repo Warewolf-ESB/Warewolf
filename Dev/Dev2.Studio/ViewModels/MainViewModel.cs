@@ -62,6 +62,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views;
+using Warewolf.Studio.AntiCorruptionLayer;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 
 // ReSharper disable CatchAllClause
@@ -678,7 +679,14 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenResource(Guid resourceId, IServer server)
         {
-            OpenResource(resourceId, server.EnvironmentID);
+            var svr = server as Server;
+            var environmentModel = svr?.EnvironmentModel;
+            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            if (contextualResourceModel != null)
+            {
+                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+            }
+            //OpenResource(resourceId, server.EnvironmentID);
         }
         public void OpenResource(Guid resourceId, Guid environmentId)
         {
@@ -844,7 +852,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditServer(IServerSource selectedServer)
         {
-            _worksurfaceContextManager.EditServer(selectedServer);
+            _worksurfaceContextManager.EditServer(selectedServer,LocalhostServer);
         }
 
         public void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)

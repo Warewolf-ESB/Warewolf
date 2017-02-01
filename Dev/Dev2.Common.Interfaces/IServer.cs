@@ -51,6 +51,7 @@ namespace Dev2.Common.Interfaces
 
         IList<IServer> GetAllServerConnections();
         Dictionary<string, string> GetServerInformation();
+        IServer FetchServer(Guid savedServerID);
     }
 
     public delegate void PermissionsChanged(PermissionsChangedArgs args);
