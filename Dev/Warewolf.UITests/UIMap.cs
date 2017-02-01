@@ -47,7 +47,6 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
-            Mouse.MouseDragSpeed = 350;
         }
 
         [Given("The Warewolf Studio is running")]
