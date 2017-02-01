@@ -591,7 +591,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var variable = debugItem.ResultsList.First().Variable.Replace("[[", "").Replace("]]", "");
                     var value = debugItem.ResultsList.First().Value;
-                    var serviceTestInput = SelectedServiceTest.Inputs.FirstOrDefault(input => input.Variable.Equals(variable));
+                    var serviceTestInput = SelectedServiceTest?.Inputs?.FirstOrDefault(input => input.Variable.Equals(variable));
                     if (serviceTestInput != null)
                     {
                         serviceTestInput.Value = value;
@@ -1680,6 +1680,7 @@ namespace Warewolf.Studio.ViewModels
             AddAndSelectTest(testModel);
 
         }
+
         private bool _canAddFromDebug;
         private bool _isLoading;
         private bool _isValid;
@@ -1771,7 +1772,7 @@ namespace Warewolf.Studio.ViewModels
 
                 return string.IsNullOrEmpty(ErrorMessage);
             }
-            return false;
+            return true;
         }
         private static bool NameHasInvalidCharacters(string name)
         {
