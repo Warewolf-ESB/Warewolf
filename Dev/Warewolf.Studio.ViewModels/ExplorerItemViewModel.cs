@@ -1061,7 +1061,7 @@ namespace Warewolf.Studio.ViewModels
                     _isSelected = value;
 
                     OnPropertyChanged(() => IsSelected);
-                    if (_isSelected)
+                    if (_isSelected && _shellViewModel!=null)
                     {
                         _shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
                         _shellViewModel.SetActiveServer(Server);
@@ -1425,12 +1425,17 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _canDeploy = value;
-                if(!_canDeploy)
-                    IsResourceChecked = _canDeploy;
-                IsResourceCheckedEnabled = _canDeploy;
+                if (_canDeploy != value)
+                {
+                    _canDeploy = value;
+                    if (!_canDeploy)
+                    {
+                        IsResourceChecked = false;
+                    }
+                    IsResourceCheckedEnabled = _canDeploy;
 
-                DeployTooltip = _canDeploy ? Resources.Languages.Tooltips.DeployToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                    DeployTooltip = _canDeploy ? Resources.Languages.Tooltips.DeployToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                }
             }
         }
 
