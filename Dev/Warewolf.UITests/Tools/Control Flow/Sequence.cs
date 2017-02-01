@@ -10,7 +10,8 @@ namespace Warewolf.UITests.Tools.Control_Flow
 		[TestCategory("Tools")]
         public void Sequence_DraggingNonDecision_Allowed_LargeView_UITest()
         {
-            UIMap.Open_SequenceTool_LargeView();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.Exists, "Sequence on the design surface does not exist");
+            UIMap.SequenceTool_ChangeView_With_DoubleClick();
             UIMap.Drag_Toolbox_AssignObject_Onto_Sequence_LargeTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.MultiAssignObject.Exists, "Multi Assign Object Tool does not exist.");
         }
@@ -28,12 +29,12 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void Sequence_DraggingSwitch_NotAllowed_BothViews_UITest()
         {
             //Large View
-            UIMap.Open_SequenceTool_LargeView();
+            UIMap.SequenceTool_ChangeView_With_DoubleClick();
             UIMap.Drag_Toolbox_Switch_Onto_Sequence_LargeTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
             UIMap.Click_DropNotAllowed_MessageBox_OK();
             //Small View
-            UIMap.Open_SequenceTool_SmallView();
+            UIMap.SequenceTool_ChangeView_With_DoubleClick();
             UIMap.Drag_Toolbox_Switch_Onto_Sequence_SmallTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
             UIMap.Click_DropNotAllowed_MessageBox_OK();
@@ -44,12 +45,12 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void Sequence_DraggingDecision_NotAllowed_BothViews_UITest()
         {        
             //Large View 
-            UIMap.Open_SequenceTool_LargeView();
+            UIMap.SequenceTool_ChangeView_With_DoubleClick();
             UIMap.Drag_Toolbox_Decision_Onto_Sequence_LargeTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
             UIMap.Click_DropNotAllowed_MessageBox_OK();
             //Small View
-            UIMap.Open_SequenceTool_SmallView();
+            UIMap.SequenceTool_ChangeView_With_DoubleClick();
             UIMap.Drag_Toolbox_Decision_Onto_Sequence_SmallTool();
             Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
             UIMap.Click_DropNotAllowed_MessageBox_OK();
