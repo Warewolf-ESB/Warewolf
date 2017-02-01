@@ -278,15 +278,54 @@ namespace Dev2.Activities.Designers.Tests.Core
             dataListItems.Add(secondDataListItem);
 
             DataListSingleton.SetDataList(dataListViewModel);
-
-
-
-
+            
             var id = Guid.NewGuid();
             var act = new DsfEnhancedDotNetDllActivity() { SourceId = id };
             var modelItem = ModelItemUtils.CreateModelItem(act);
             var actionRegion = new Mock<IConstructorRegion<IPluginConstructor>>();
             actionRegion.Setup(region => region.SelectedConstructor).Returns(ValueFunctionWithTypes);
+
+            //---------------Assert Precondition----------------
+
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            Assert.AreEqual(4, countBefore);
+            //---------------Execute Test ----------------------
+            var inputRegion = new DotNetConstructorInputRegion(modelItem, actionRegion.Object);
+
+            var methodInfo = typeof(DotNetConstructorInputRegion).GetMethod("UpdateOnActionSelection", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(methodInfo);
+            methodInfo.Invoke(inputRegion, new object[] { });
+            //---------------Test Result -----------------------
+            Assert.AreEqual("John", inputRegion.Inputs.ToList()[0].Value);
+            Assert.AreEqual("Stones", inputRegion.Inputs.ToList()[1].Value);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void UpdateOnActionSelection_GivenHasInputsWithDataTypes_ShouldWriteToActiveDatalistAndPopulatesInputNoValues()
+        {
+            //---------------Set up test pack-------------------
+            var eventAggregator = new Mock<IEventAggregator>();
+
+            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
+            var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+
+            dataListItems.Add(dataListItem);
+            dataListItems.Add(secondDataListItem);
+
+            DataListSingleton.SetDataList(dataListViewModel);
+            
+            var id = Guid.NewGuid();
+            var act = new DsfEnhancedDotNetDllActivity() { SourceId = id };
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var actionRegion = new Mock<IConstructorRegion<IPluginConstructor>>();
+            actionRegion.Setup(region => region.SelectedConstructor).Returns(ValueFunctionWithTypesNoValues);
 
             //---------------Assert Precondition----------------
 
@@ -326,6 +365,19 @@ namespace Dev2.Activities.Designers.Tests.Core
                 {
                     new ConstructorParameter() {Name = "[[name]]", Value = "John"},
                     new ConstructorParameter() {Name = "[[surname]]", Value = "Stones"},
+                },
+            };
+        }
+
+        private IPluginConstructor ValueFunctionWithTypesNoValues()
+        {
+            return new PluginConstructor()
+            {
+                ConstructorName = ".ctor",
+                Inputs = new List<IConstructorParameter>
+                {
+                    new ConstructorParameter() {Name = "[[name]]"},
+                    new ConstructorParameter() {Name = "[[surname]]"},
                 },
             };
         }
