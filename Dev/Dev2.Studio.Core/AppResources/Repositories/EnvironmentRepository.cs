@@ -78,7 +78,7 @@ namespace Dev2.Studio.Core
         #region CTOR
 
         // Singleton instance only
-        protected EnvironmentRepository()
+        public EnvironmentRepository()
             : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppSettings.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
@@ -359,7 +359,7 @@ namespace Dev2.Studio.Core
                     var res = Environments.FirstOrDefault(a => a.ID == newEnv.ID);
                     if (res != null)
                     {
-                        res.Name = newEnv.Name;
+                        res.Name = newEnv.Name;                        
                     }
                 }
 
@@ -528,7 +528,19 @@ namespace Dev2.Studio.Core
                 var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
                 if (servers != null)
                 {
-                    result.AddRange(from connection in servers where !string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress) select CreateEnvironmentModel(connection));
+                    foreach (var connection in servers)
+                    {
+                        var existingEnvironment = Environments.FirstOrDefault(model => model.ID == connection.ResourceID);
+                        if (existingEnvironment != null && existingEnvironment.IsConnected)
+                        {
+                            //existingEnvironment.Disconnect();
+                        }
+                        if (!string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress))
+                        {
+                            var environmentModel = CreateEnvironmentModel(connection);                            
+                            result.Add(environmentModel);
+                        }
+                    }
                 }
             }
 

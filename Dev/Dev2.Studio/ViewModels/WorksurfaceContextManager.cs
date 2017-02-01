@@ -55,7 +55,7 @@ namespace Dev2.Studio.ViewModels
     {
         void Handle(RemoveResourceAndCloseTabMessage message);
         void Handle(NewTestFromDebugMessage message, IWorkSurfaceKey workSurfaceKey = null);
-        void EditServer(IServerSource selectedServer);
+        void EditServer(IServerSource selectedServer, IServer activeServer);
         void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
         void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey workSurfaceKey = null);
@@ -188,15 +188,15 @@ namespace Dev2.Studio.ViewModels
 
         IServer ActiveServer => _mainViewModel.ActiveServer;
 
-        public void EditServer(IServerSource selectedServer)
+        public void EditServer(IServerSource selectedServer, IServer activeServer)
         {
-            var viewModel = new ManageNewServerViewModel(new ManageNewServerSourceModel(_mainViewModel.ActiveServer.UpdateRepository, _mainViewModel.ActiveServer.QueryProxy, @""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedServer, _mainViewModel.AsyncWorker, new ExternalProcessExecutor());
+            var viewModel = new ManageNewServerViewModel(new ManageNewServerSourceModel(activeServer.UpdateRepository, activeServer.QueryProxy, @""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedServer, _mainViewModel.AsyncWorker, new ExternalProcessExecutor());
             var vm = new SourceViewModel<IServerSource>(_mainViewModel.EventPublisher, viewModel, _mainViewModel.PopupProvider, new ManageServerControl());
 
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
-            workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+            workSurfaceKey.EnvironmentID = activeServer.EnvironmentID;
             workSurfaceKey.ResourceID = selectedServer.ID;
-            workSurfaceKey.ServerID = ActiveServer.ServerID;
+            workSurfaceKey.ServerID = activeServer.ServerID;
             var key = workSurfaceKey as WorkSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
 
@@ -301,7 +301,7 @@ namespace Dev2.Studio.ViewModels
             var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
             testViewModel.RunAllTestsInBrowserCommand.Execute(null);
         }
-
+        
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var pluginSourceViewModel = new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker);
@@ -1096,7 +1096,9 @@ namespace Dev2.Studio.ViewModels
                 Name = connection.ResourceName
             };
 
-            EditServer(selectedServer);
+            
+
+            EditServer(selectedServer, ActiveServer);
         }
 
         public void EditResource(IOAuthSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)

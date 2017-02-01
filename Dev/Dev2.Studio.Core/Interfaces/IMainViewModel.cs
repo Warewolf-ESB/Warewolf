@@ -56,14 +56,11 @@ namespace Dev2.Interfaces
         AuthorizeCommand<string> NewWcfSourceCommand { get; }
         IExplorerViewModel ExplorerViewModel { get; set; }
 
-        void EditServer(IServerSource serverSource);
-
         void DisplayDialogForNewVersion();
 
         Task<bool> CheckForNewVersion();
 
         bool ShowDeleteDialogForFolder(string folderBeingDeleted);
         IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
-        
     }
 }

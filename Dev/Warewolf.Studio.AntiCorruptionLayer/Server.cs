@@ -43,7 +43,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             ResourceName = EnvironmentConnection.DisplayName;
             EnvironmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
             EnvironmentConnection.ItemAddedMessageAction += ItemAdded;
-            _environmentModel = environmentModel;
+            _environmentModel = environmentModel;            
         }
 
         public bool CanDeployTo => _environmentModel.IsAuthorizedDeployTo;
@@ -200,6 +200,13 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return environmentModels.Select(environmentModel => new Server(environmentModel)).Cast<IServer>().ToList();
         }
 
+        public IServer FetchServer(Guid savedServerID)
+        {            
+            var environmentModels = EnvironmentRepository.Instance.ReloadAllServers();
+            var requiredEnv = environmentModels.FirstOrDefault(model => model.ID == savedServerID);
+            return new Server(requiredEnv);
+        }
+
         public IList<IServer> GetAllServerConnections()
         {            
             var environmentModels = EnvironmentRepository.Instance.ReloadAllServers();
@@ -266,6 +273,8 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IExplorerRepository ProxyLayer => _proxyLayer;
         public IEnvironmentConnection EnvironmentConnection { get; set; }
+
+        public IEnvironmentModel EnvironmentModel => _environmentModel;
 
         #endregion
 

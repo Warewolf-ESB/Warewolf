@@ -130,6 +130,10 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
+                if (value?.Count == 0)
+                {
+                    
+                }
                 _environments = value;
                 OnPropertyChanged(() => Environments);
             }
@@ -285,10 +289,10 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
-        protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)
+        protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
             localhostEnvironment.Connect();
-            await localhostEnvironment.Load(isDeploy);
+            await localhostEnvironment.Load(true,true);
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
         }
 
