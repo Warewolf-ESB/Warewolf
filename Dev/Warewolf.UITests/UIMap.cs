@@ -6542,48 +6542,60 @@ namespace Warewolf.UITests
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath, new Point(113, 12));
         }
 
+        [Given(@"I Open Assign Tool QVI View")]
         [When(@"I Open Assign Tool QVI View")]
+        [Then(@"I Open Assign Tool QVI View")]
         public void Open_AssignTool_QVIView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.OpenQuickVariableInpToggleButton.Pressed = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.Exists, "QVI on assign is not open");
         }
 
+        [Given(@"I Open AssignObject QVI View")]
         [When(@"I Open AssignObject QVI View")]
+        [Then(@"I Open AssignObject QVI View")]
         public void Open_AssignObject_QVIView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AssignObject.OpenQuickVariableInput.Pressed = true;
         }
 
+        [Given(@"I Open Base Conversion Tool QVI View")]
         [When(@"I Open Base Conversion Tool QVI View")]
+        [Then(@"I Open Base Conversion Tool QVI View")]
         public void Open_BaseConvertTool_QVIView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.OpenQuickVariableInpToggleButton.Pressed = true;
         }
 
+        [Given(@"I Open Case Conversion Tool QVI View")]
         [When(@"I Open Case Conversion Tool QVI View")]
+        [Then(@"I Open Case Conversion Tool QVI View")]
         public void Open_CaseConvertTool_QVIView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.OpenQuickVariableInpToggleButton.Pressed = true;
         }
 
+        [Given(@"I Open Data Merge Tool QVI View")]
         [When(@"I Open Data Merge Tool QVI View")]
+        [Then(@"I Open Data Merge Tool QVI View")]
         public void Open_DataMergeTool_QVIView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.QVIToggleButton.Pressed = true;
         }
 
+        [Given(@"I Open Data Split Tool QVI View")]
         [When(@"I Open Data Split Tool QVI View")]
+        [Then(@"I Open Data Split Tool QVI View")]
         public void Open_DataSplitTool_QVIView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataSplit.OpenQuickVariableInpToggleButton.Pressed = true;
         }
 
+        [Given(@"I Open Json Tool QVI View")]
         [When(@"I Open Json Tool QVI View")]
+        [Then(@"I Open Json Tool QVI View")]
         public void Open_JSONTool_QVIView()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.OpenQuickVariableInpToggleButton.Pressed = true;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.Exists, "JSON QVI window does not exist on the design surface");
         }
 
         [Given(@"I Open SQL Bulk Insert Tool QVI View")]
