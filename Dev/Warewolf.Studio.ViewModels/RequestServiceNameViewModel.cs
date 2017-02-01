@@ -106,7 +106,7 @@ namespace Warewolf.Studio.ViewModels
                 if (executeCommand == null)
                 {
                     var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
-                    environmentViewModel.RefreshCommand.Execute(null);
+                    environmentViewModel?.RefreshCommand.Execute(null);
                     CloseView();
                     ViewResult = MessageBoxResult.OK;
                 }
