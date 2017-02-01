@@ -20,7 +20,14 @@ namespace Warewolf.Studio.ViewModels
         {
             ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
             ConnectControlViewModel.ServerConnected+=ServerConnected;
+            ConnectControlViewModel.ServerDisconnected+=ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
+        }
+
+        private void ServerDisconnected(object sender, IServer server)
+        {
+            if (SelectedEnvironment != null) ServerStateChanged?.Invoke(this, SelectedEnvironment.Server);
         }
 
         private void ServerConnected(object sender, IServer server)

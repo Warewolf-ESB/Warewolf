@@ -45,6 +45,7 @@ namespace Dev2.Common.Interfaces
         bool CanDebugBrowser { get; set; }
         bool CanCreateSchedule { get; set; }
         bool CanViewRunAllTests { get; set; }
+        bool CanContribute { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 
