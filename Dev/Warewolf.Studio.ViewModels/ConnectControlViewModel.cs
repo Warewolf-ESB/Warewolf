@@ -195,6 +195,11 @@ namespace Warewolf.Studio.ViewModels
                 IsLoading = false;
                 IsConnecting = false;
                 Disconnect(SelectedConnection);
+                var localhostServer = Servers.FirstOrDefault(server => server.EnvironmentID == Guid.Empty);
+                if (localhostServer != null)
+                {
+                    SelectedConnection = localhostServer;
+                }
                 IsConnected = false;
             }
             else
@@ -427,11 +432,6 @@ namespace Warewolf.Studio.ViewModels
                 connection.Disconnect();
                 OnPropertyChanged(() => connection.IsConnected);
                 ServerDisconnected?.Invoke(this, connection);
-                foreach (var server in Servers)
-                {
-                    if (!server.IsConnected && server.EnvironmentID != Guid.Empty)
-                        server.DisplayName = SelectedConnection.ResourceName;
-                }
             }
         }
         

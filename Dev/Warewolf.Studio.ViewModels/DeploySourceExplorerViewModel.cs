@@ -7,7 +7,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Common.Interfaces.Security;
 
 // ReSharper disable InconsistentNaming
 
