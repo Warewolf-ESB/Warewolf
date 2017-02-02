@@ -20031,10 +20031,7 @@ namespace Warewolf.UITests
                 {
                     this.mHumalClassListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mHumalClassListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "{\"AssemblyLocation\":\"C:\\\\ProgramData\\\\Warewolf\\\\Resources\\\\Dlls\\\\TestingDotnetDll" +
-                        "Cascading.dll\",\"AssemblyName\":\"\",\"FullName\":\"TestingDotnetDllCascading.Human\",\"M" +
-                        "ethodName\":null,\"JsonObject\":\"{\\\"Name\\\":\\\"\\\",\\\"PersonFood\\\":\\\"\\\",\\\"SurName\\\":\\\"\\" +
-                        "\"}\"}";
+                    this.mHumalClassListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
                     this.mHumalClassListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
