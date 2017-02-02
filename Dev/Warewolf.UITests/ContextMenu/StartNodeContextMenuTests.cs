@@ -9,7 +9,7 @@ namespace Warewolf.UITests.ContextMenu
         [TestMethod]
         public void CodedUIShowStartNodeContextMenuItems()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.DisplayStartNodeContextMenu();
             Assert.IsFalse(UIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.TestEditorMenuItem.Enabled, "Test Editor must be disabled on a new workflow");
             Assert.IsTrue(UIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugInputsMenuItem.Enabled, "Debug Inputs must be enabled on a new workflow");

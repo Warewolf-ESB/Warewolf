@@ -8,15 +8,9 @@ namespace Warewolf.UITests
     {
         [TestMethod]
         [TestCategory("Settings")]
-        public void ResettingPerfomanceCounter()
+        public void Reset_Then_Configure_PerfomanceCounter_UITest()
         {
             UIMap.Click_Reset_Perfomance_Counter();
-        }
-
-        [TestMethod]
-        [TestCategory("Settings")]
-        public void ConfigureSettingPerfomanceCounter()
-        {
             UIMap.Click_Select_Resource_Button();
             var serviceName = "Hello World";
             UIMap.Select_First_Service_From_Service_Picker_Dialog(serviceName);

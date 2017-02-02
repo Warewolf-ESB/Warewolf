@@ -16,7 +16,7 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void StepsWithoutOutputsShouldBeMarkedInvalid()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Save_With_Ribbon_Button_And_Dialog("AssignWorkflow");
             UIMap.Press_F6();
@@ -41,7 +41,7 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugButtonDisabledForUnsavedWorkflows()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Make_Workflow_Savable_By_Dragging_Start();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
         }
@@ -50,7 +50,7 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void NestedWorkflowCreatsATestStepAfterClickingCreateTestFromDebugButton()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Filter_Explorer(DiceRoll);
             UIMap.Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
             UIMap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
@@ -101,7 +101,7 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugOutputDeleteTestButDontCloseTestTabGoBackAndCreateTestAgain()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
             UIMap.Enter_Dice_Roll_Values();
             UIMap.Save_With_Ribbon_Button_And_Dialog(RandomNewWorkFlow);
@@ -122,7 +122,7 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugOutputDontSaveCreateAnotherTestFromDebugOutput()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
             UIMap.Enter_Dice_Roll_Values();
             UIMap.Save_With_Ribbon_Button_And_Dialog("RandomWFForSaveButtonState");

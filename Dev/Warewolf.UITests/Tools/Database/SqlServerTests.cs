@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Database Tools")]
         public void SQLServerDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.Exists, "SQLServer database tool does not exist after dragging in from the toolbox");
             // Small View
             UIMap.SqlServerDatabaseTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.SmallView.Exists, "SQL Server database connector tool small view does not exist after collapsing large view with a double click.");
@@ -38,7 +39,7 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface();
         }
         
