@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools.Recordset
         [TestCategory("Recordset Tools")]
         public void UniqueRecordsTool_Small_And_LargeView_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique.Exists, "Unique tool on the design surface does not exist");
             //Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique.SmallViewContentCustom.InFieldsComboBox.Exists, "InFields Combobox does not exist on design surface");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Unique.SmallViewContentCustom.ReturnFieldsComboBox.Exists, "ReturnFields Combobox does not exist on design surface");
@@ -30,7 +31,7 @@ namespace Warewolf.UITests.Tools.Recordset
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_Unique_Records_Onto_DesignSurface();
         }
 

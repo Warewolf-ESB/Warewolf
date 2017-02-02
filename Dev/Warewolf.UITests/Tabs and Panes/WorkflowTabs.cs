@@ -12,15 +12,10 @@ namespace Warewolf.UITests.Workflow
         {
             UIMap.Create_New_Workflow_Using_Shortcut();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow exists after creating it with shortcut");
+            UIMap.Make_Workflow_Savable_By_Dragging_Start();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savable was unsucessful.");
         }
 
-        [TestMethod]
-        [TestCategory("Tabs and Panes")]
-        public void Unsaved_Workflow_Name_Asterisk()
-        {
-            UIMap.Create_New_Workflow_Using_Shortcut();
-            UIMap.Make_Workflow_Savable_By_Dragging_Start();
-        }
 
         #region Additional test attributes
 

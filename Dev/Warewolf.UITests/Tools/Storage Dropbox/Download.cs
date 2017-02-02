@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
         [TestCategory("Dropbox Tools")]
         public void DropboxDownloadTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload.Exists, "Dropbox download tool does not exist on design surface after dragging in from the toolbox.");
             //Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload.SmallViewContent.LocalFileIntellisenseCombobox.Textbox.Exists, "Local file path textbox does not exist on Dropbox download tool small view after dragging in from the toolbox.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload.SmallViewContent.DropboxFileIntellisenseCombobox.Textbox.Exists, "Dropbox file path textbox does not exist on Dropbox download tool small view after dragging in from the toolbox.");
@@ -37,7 +38,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_Dropbox_Download_Onto_DesignSurface();
         }
 
