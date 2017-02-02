@@ -73089,6 +73089,39 @@ namespace Warewolf.UITests
                 return this.mServiceTreeItem;
             }
         }
+        
+        public WpfTreeItem AssignOnDebugOutput
+        {
+            get
+            {
+                if ((this.mAssignOnDebugOutput == null))
+                {
+                    this.mAssignOnDebugOutput = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mAssignOnDebugOutput.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+                    this.mAssignOnDebugOutput.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAssignOnDebugOutput;
+            }
+        }
+        
+        public WpfTreeItem DecisionOnDebugOutput
+        {
+            get
+            {
+                if ((this.mDecisionOnDebugOutput == null))
+                {
+                    this.mDecisionOnDebugOutput = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mDecisionOnDebugOutput.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+                    this.mDecisionOnDebugOutput.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+                    this.mDecisionOnDebugOutput.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mDecisionOnDebugOutput;
+            }
+        }
         #endregion
         
         #region Fields
@@ -73097,6 +73130,10 @@ namespace Warewolf.UITests
         private SubWorkflow mSubWorkflow;
         
         private ServiceTreeItem mServiceTreeItem;
+        
+        private WpfTreeItem mAssignOnDebugOutput;
+        
+        private WpfTreeItem mDecisionOnDebugOutput;
         #endregion
     }
     
