@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Unlimited.Framework.DynamicServices.DynamicServiceObjectBase">
+    <Position X="5.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CQoUAIAEAACgAAAAAYAEAAQCUCgADEAAwKAAARIACEA=</HashCode>
+      <FileName>DynamicServices\Objects\Base\DynamicServiceObjectBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Unlimited.Framework.DynamicServices.DynamicService">
+    <Position X="2.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACCAAIIAAAAAAAEAAAAAAAAAAAAAAQAAAEAAAAEA=</HashCode>
+      <FileName>DynamicServices\Objects\DynamicService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Unlimited.Framework.DynamicServices.Source">
+    <Position X="9.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAIAAAAAAAECAAAAAABAASAAQAAAAEA=</HashCode>
+      <FileName>DynamicServices\Objects\Source.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

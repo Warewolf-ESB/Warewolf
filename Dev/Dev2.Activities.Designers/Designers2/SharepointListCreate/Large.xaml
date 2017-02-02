@@ -1,0 +1,269 @@
+﻿<core:ActivityDesignerTemplate x:Class="Dev2.Activities.Designers2.SharepointListCreate.Large"
+                               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                               xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                               xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
+                               xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+                               xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+                               xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+                               xmlns:sharepointListCreate="clr-namespace:Dev2.Activities.Designers2.SharepointListCreate"
+                               xmlns:fa="http://schemas.fontawesome.io/icons/"
+                               xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                               xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+                               xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               Width="350"
+                               MinWidth="350"
+                               MinHeight="380"
+                               Height="350"
+                               MaxWidth="Infinity"
+                               MaxHeight="Infinity"
+                               mc:Ignorable="d"
+                               d:DesignWidth="280"
+                               d:DataContext="{d:DesignInstance sharepointListCreate:SharepointListCreateDesignerViewModel}">
+
+    <core:ActivityDesignerTemplate.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </core:ActivityDesignerTemplate.Resources>
+
+    <core:ActivityDesignerTemplate.RightButtons>
+        <core:ActivityDesignerButton x:Name="DoneButton"
+                                     Content="Done"
+                                     Margin="0,0,7,12"
+                                     IsValidatedBefore="True"
+                                     IsClosedAfter="True"
+                                     Style="{StaticResource ActivityDesignerButtonStyle}" />
+    </core:ActivityDesignerTemplate.RightButtons>
+    <Grid Margin="{StaticResource ElementBorder}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
+            <ComboBox Grid.Column="1"
+                      Grid.Row="0"
+                      x:Name="InitialFocusElement"
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                      ItemsSource="{Binding SharepointServers}"
+                      DisplayMemberPath="ResourceName"
+                      Margin="{StaticResource ControlBorderRight}"
+                      IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
+                      SelectedItem="{Binding SelectedSharepointServer, Mode=TwoWay}"
+                      ToolTip="{x:Static languages:Tooltips.SharepointToolTipServer}"
+                      attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedSharepointServerFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Database_AutoID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointHelpServer}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button Grid.Column="2"
+                    Grid.Row="0"
+                    Content="..."
+                    Command="{Binding EditSharepointServerCommand}"
+                    ToolTip="Edit Sharepoint Server Source"
+                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditDatabaseCommand_AutoID}" >
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointEditServerHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="List" Margin="{StaticResource ControlBorderTop}" />
+            <ComboBox Grid.Column="1"
+                      Grid.Row="1"
+                      Margin="{StaticResource ControlBorderTopRight}"
+                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+                      ItemsSource="{Binding Lists}"
+                      IsEnabled="{Binding IsRefreshing,Converter={StaticResource InverseBooleanConverter}}"
+                      DisplayMemberPath="FullName"
+                      SelectedItem="{Binding SelectedList, Mode=TwoWay}"
+                      ToolTip="{x:Static languages:Tooltips.SharepointToolTipList}"
+                      attachedProperties:FocusSetter.IsFocused="{Binding IsSelectedListFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_TableName_AutoID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointHelpList}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ComboBox>
+            <Button Grid.Column="2"
+                    Grid.Row="1"
+                    Margin="{StaticResource ControlBorderTop}"
+                    Command="{Binding RefreshListsCommand}"
+                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                    ToolTip="Refresh Lists"
+                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RefreshTablesCommand_AutoID}" >
+                <Button.Content>
+                    <fa:FontAwesome Icon="Refresh" FontSize="16" />
+                </Button.Content>
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointRefreshListHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <customControls:CircularProgressBar Grid.Column="2" 
+                                                Grid.Row="1"
+                                                Height="22" 
+                                                Width="22"
+                                                Margin="0,0,2,0"
+                                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+            <Grid Grid.Row="2"
+                  Grid.Column="0"
+                  Margin="{StaticResource ControlBorderTop}"
+                  Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <controls:Dev2DataGrid x:Name="SmallDataGrid"
+                                       Margin="0"
+                                       ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Style="{StaticResource ActivityMapppingDataGridStyle}">
+                    <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="*"
+                                        MinWidth="125"
+                                        Header="[[Variable]]"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ui:IntellisenseTextBox DefaultText="[[Recordset(*).field]]"
+                                                            AllowMultilinePaste="True"
+                                                            AcceptsReturn="True"
+                                                            AllowUserInsertLine="True"
+                                                            WrapInBrackets="False"
+                                                            MaxHeight="52"
+                                                            Margin="0,0,1,1"
+                                                            TextWrapping="Wrap"
+                                                            ToolTip="{x:Static languages:Tooltips.SharepointToolTipToVariable}"
+                                                            Text="{Binding VariableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                        <i:Interaction.Behaviors>
+                                            <core1:HelpSetter Text="{x:Static languages:Tooltips.SharepointToolTipToVariable}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                            <errors:ErrorsSetter Source="{Binding}"
+                                                                 SourcePropertyName="VariableName"
+                                                                 SourcePropertyValue="{Binding VariableName, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                                <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                <Binding Path="IndexNumber" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </ui:IntellisenseTextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="SizeToCells"
+                                                MinWidth="65"
+                                                Header="To Field"
+                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="4" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="*"
+                                                   ToolTip="Required"
+                                                   VerticalAlignment="Top"
+                                                   Margin="0"
+                                                   Visibility="{Binding IsRequired, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <TextBlock Grid.Column="1" 
+                                                   Text="{Binding FieldName}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   VerticalAlignment="Center"
+                                                   Padding="3,0"
+                                                   ToolTip="{Binding FieldName}">                               
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="SizeToCells"
+                                                MinWidth="65"
+                                                Header="Type"
+                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                        <TextBlock Text="{Binding Type}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   VerticalAlignment="Center"
+                                                   Padding="3,0"
+                                                   ToolTip="{Binding Type}">
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                                    <Binding Path="IndexNumber" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </controls:Dev2DataGrid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Result" />
+            <ui:IntellisenseTextBox Grid.Column="1"
+                                    DefaultText="[[CreateSuccess]]"
+                                    WrapInBrackets="True"
+                                    AllowUserInsertLine="False"
+                                    Text="{Binding ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    ToolTip="{x:Static languages:Tooltips.SharepointInsertToolTipResult}"
+                                    attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.SharepointInsertHelpResult}" DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="Result"
+                                         SourcePropertyValue="{Binding ModelItem.Result, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+        </Grid>
+
+        <errors:OnError Grid.Row="2"
+                        Grid.ColumnSpan="2" />
+    </Grid>
+</core:ActivityDesignerTemplate>

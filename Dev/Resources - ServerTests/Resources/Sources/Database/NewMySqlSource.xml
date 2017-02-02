@@ -1,0 +1,22 @@
+
+<Source ID="97d6272e-15a1-483f-afdb-a076f602604f" Name="NewMySqlSource" ResourceType="MySqlDatabase" IsValid="false" ServerType="MySqlDatabase" Type="DbSource" ConnectionString="Server=rsaklfsvrgendev;Database=test;Uid=root;Pwd=admin;" ServerVersion="0.0.6168.35815" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>NewMySqlSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2016-11-20T20:23:24.8732392+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="97d6272e-15a1-483f-afdb-a076f602604f" VersionId="876ced33-79e3-48ee-99a6-e9be2f971058" />
+</Source>

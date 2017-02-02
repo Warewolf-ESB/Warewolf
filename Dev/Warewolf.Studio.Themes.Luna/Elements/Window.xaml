@@ -1,0 +1,89 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+
+    <ResourceDictionary.MergedDictionaries>
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  Brushes  -->
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WarewolfLightCharcoal}" />
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+
+    <!--  *********************************  Borderless Window Style  *********************************  -->
+
+    <Style x:Key="WindowBorderlessStyle" TargetType="Window">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
+    </Style>
+    
+    <Style x:Key="SwitchMainWindowStyle" TargetType="Window" BasedOn="{StaticResource WindowBorderlessStyle}">
+        <Setter Property="Height" Value="280"/>
+        <Setter Property="MinHeight" Value="280"/>
+        <Setter Property="Width" Value="425"/>
+        <Setter Property="MinWidth" Value="425"/>
+    </Style>
+
+    <Style x:Key="SwitchCaseWindowStyle" TargetType="Window" BasedOn="{StaticResource WindowBorderlessStyle}">
+        <Setter Property="Height" Value="110"/>
+        <Setter Property="MinHeight" Value="110"/>
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="MinWidth" Value="400"/>
+    </Style>
+
+    <Style x:Key="WindowBorderlessResizeStyle" TargetType="Window">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
+    </Style>
+    
+    <Style x:Key="DecisionWindowStyle" TargetType="Window" BasedOn="{StaticResource WindowBorderlessResizeStyle}">
+        <Setter Property="Height" Value="390"/>
+        <Setter Property="MinHeight" Value="390"/>
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="MinWidth" Value="400"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+    </Style>
+
+    <Style x:Key="ModalDialogStyle" TargetType="Window">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="WindowStyle" Value="None" />
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="ShowInTaskbar" Value="True" />
+        <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}" />
+        <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
+        <Setter Property="Template" Value="{DynamicResource ModalTemplateKey}" />
+    </Style>
+
+    <ControlTemplate x:Key="ModalTemplateKey" TargetType="Window">
+        <Border x:Name="PART_Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+            <Grid>
+                <AdornerDecorator>
+                    <ContentPresenter />
+                </AdornerDecorator>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+</ResourceDictionary>

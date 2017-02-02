@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3C4AC14C-4134-48A6-A9EA-9D47218E05C5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Activities.Designers.Tests</RootNamespace>
+    <AssemblyName>Dev2.Activities.Designers.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Warewolf.Tests\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <None Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </None>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Dev2.Core.Tests\TestUtils.cs">
+      <Link>TestUtils.cs</Link>
+    </None>
+    <Compile Include="AggregateCalculate\AggregateCalculateDesignerViewModelTests.cs" />
+    <Compile Include="Calculate\CalculateDesignerViewModelTest.cs" />
+    <Compile Include="CaseConvert\CaseConvertDesignerViewModelTests.cs" />
+    <Compile Include="CEventHelperTests.cs" />
+    <Compile Include="Core\ActivityDesignerViewModelExentionTests.cs" />
+    <Compile Include="Core\Database\DatabaseSourceRegionTest.cs" />
+    <Compile Include="Core\Database\DatabaseActionRegionTest.cs" />
+    <Compile Include="Core\Database\DatabaseInputRegionTest.cs" />
+    <Compile Include="Core\Database\ManageDatabaseServiceInputViewModelTests.cs" />
+    <Compile Include="Core\ComDll\ComDllActionRegionTest.cs" />
+    <Compile Include="Core\ComDll\ComNamespaceRegionTest.cs" />
+    <Compile Include="Core\ComDll\ComDllSourceRegionTest.cs" />
+    <Compile Include="Core\DotNetConstructorInputRegionTests.cs" />
+    <Compile Include="Core\DotNetInputRegionTests.cs" />
+    <Compile Include="Core\DotNet\DotNetMethodRegionTests.cs" />
+    <Compile Include="Core\DotNet\DotNetSourceRegionTest.cs" />
+    <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
+    <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />
+    <Compile Include="Core\DropboxSourceManagerTests.cs" />
+    <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
+    <Compile Include="Core\ScriptChooserTests.cs" />
+    <Compile Include="Core\WcfInputRegionTests.cs" />
+    <Compile Include="Core\WebDeleteInputRegionTest.cs" />
+    <Compile Include="Core\WebInputRegionTest.cs" />
+    <Compile Include="Core\WebOutputsRegion.cs" />
+    <Compile Include="Core\WebPutInputRegionTest.cs" />
+    <Compile Include="Core\WebPostInputRegionTest.cs" />
+    <Compile Include="Core\WebSourceRegionTest.cs" />
+    <Compile Include="CountRecords\CountRecordsDesignerViewModelTests.cs" />
+    <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />
+    <Compile Include="Decision\DecisionTests.cs" />
+    <Compile Include="ComDll\ComDllViewModelTests.cs" />
+    <Compile Include="DeleteRecords\DeleteRecordsDesignerViewModelTests.cs" />
+    <Compile Include="DeleteRecords\TestDeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="DotNetDll\DotNetDllEnhancedViewModelTests.cs" />
+    <Compile Include="DotNetDll\DotNetDllViewModelTests.cs" />
+    <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
+    <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />
+    <Compile Include="DropBox2016\DropboxFiles\DropboxFileListViewModelTest.cs" />
+    <Compile Include="DropBox2016\TestResourceCatalog.cs" />
+    <Compile Include="DropBox2016\Upload\DropBoxUploadViewModelTest.cs" />
+    <Compile Include="CreateJsonDesignerViewModelTests\CreateJsonDesignerViewModelTests.cs" />
+    <Compile Include="MultiAssignObjectTests\MultiAssignObjectViewModelTests.cs" />
+    <Compile Include="MySql\TestMySqlViewModel.cs" />
+    <Compile Include="RabbitMQ\Consume\RabbitMQConsumeDesignerViewModelTest.cs" />
+    <Compile Include="RabbitMQ\Publish\RabbitMQPublishDesignerViewModelTest.cs" />
+    <Compile Include="Exchange\Email\ExchangeEmailDesignerViewModelTests.cs" />
+    <Compile Include="ODBC\TestODBCServerViewModel.cs" />
+    <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
+    <Compile Include="DeleteRecordsNullHandler\DeleteRecordsNullHandlerDesignerViewModelTests.cs" />
+    <Compile Include="RecordsLengthNullHandler\RecordsLengthNullHandlerDesignerViewModelTests.cs" />
+    <Compile Include="DeleteRecordsNullHandler\TestDeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="RecordsLengthNullHandler\TestRecordsLengthnullHandlerDesignerViewModel.cs" />
+    <Compile Include="DataMerge\DataMergeDesignerViewModelTests.cs" />
+    <Compile Include="DataSplit\DataSplitDesignerViewModelSplitTests.cs" />
+    <Compile Include="Designers2\Core\Credentials\CredentialsActivityDesignerViewModelTests.cs" />
+    <Compile Include="Designers2\Core\Credentials\TestCredentialsActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\FileActivityDesigner\FileActivityDesignerViewModelTests.cs" />
+    <Compile Include="Designers2\Core\FileActivityDesigner\TestFileActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestValidationActivityDesignerCollectionViewModel.cs" />
+    <Compile Include="Designers2\Core\VariableUtilsTests.cs" />
+    <Compile Include="ExecuteCommandLine\CommandLineDesignerViewModelTests.cs" />
+    <Compile Include="GatherSystemInformation\GatherSystemInformationDesignerViewModelTests.cs" />
+    <Compile Include="ReadFolder\ReadFolderDesignerViewModelTests.cs" />
+    <Compile Include="ReadFolder\TestReadFolderDesignerViewModel.cs" />
+    <Compile Include="RecordsLength\RecordsLengthDesignerViewModelTests.cs" />
+    <Compile Include="RecordsLength\TestCountRecordsDesignerViewModel.cs" />
+    <Compile Include="Rename\RenameDesignerViewModelTests.cs" />
+    <Compile Include="Rename\TestRenameDesignerViewModel.cs" />
+    <Compile Include="ReadFile\ReadFileDesignerViewModelTests.cs" />
+    <Compile Include="ReadFile\TestReadFileDesignerViewModel.cs" />
+    <Compile Include="Delete\DeleteDesignerViewModelTests.cs" />
+    <Compile Include="Delete\TestDeleteDesignerViewModel.cs" />
+    <Compile Include="Move\MoveDesignerViewModelTests.cs" />
+    <Compile Include="Move\TestMoveDesignerViewModel.cs" />
+    <Compile Include="Copy\CopyDesignerViewModelTests.cs" />
+    <Compile Include="Copy\TestCopyDesignerViewModel.cs" />
+    <Compile Include="CountRecordsNullHandler\CountRecordsDesignerViewModelTests.cs" />
+    <Compile Include="CountRecordsNullHandler\TestCountRecordsDesignerViewModel.cs" />
+    <Compile Include="Create\CreateDesignerViewModelTests.cs" />
+    <Compile Include="Create\TestCreateDesignerViewModel.cs" />
+    <Compile Include="DateTimeDifference\DateTimeDifferenceDesignerViewModelTests.cs" />
+    <Compile Include="DateTimeDifference\TestDateTimeDifferenceDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\Controls\Dev2DataGridTests.cs" />
+    <Compile Include="Designers2\Core\Stubs\ActivityDesignerCollectionViewModelDerived.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerViewModelTests.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestActivity.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestActivityDesignerCollectionViewModelItemsInitialized.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestActivityDesignerViewModel.cs" />
+    <Compile Include="DateTimeTests\DateTimeViewModelTests.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModelTests.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerButtonTests.cs" />
+    <Compile Include="BaseConvert\BaseConvertTests.cs" />
+    <Compile Include="Email\EmailDesignerViewModelTests.cs" />
+    <Compile Include="Email\TestEmailDesignerViewModel.cs" />
+    <Compile Include="FindIndex\FindIndexDesignerViewModelTests.cs" />
+    <Compile Include="FindIndex\TestFindIndexDesignerViewModel.cs" />
+    <Compile Include="FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaTests.cs" />
+    <Compile Include="Foreach\ForeachDesignerViewModelTests.cs" />
+    <Compile Include="Foreach\TestForeachDesignerViewModel.cs" />
+    <Compile Include="FormatNumber\FormatNumberDesignerViewModelTests.cs" />
+    <Compile Include="FormatNumber\TestFormatNumberDesignerViewModel.cs" />
+    <Compile Include="GetWebRequestTests\GetWebRequestViewModelTests.cs" />
+    <Compile Include="MultiAssignTests\MultiAssignViewModelTests.cs" />
+    <Compile Include="Preview\PreviewViewModelTests.cs" />
+    <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.ValidationErrors.cs" />
+    <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.Constructor.cs" />
+    <Compile Include="QuickVariableInput\QuickVariableInputViewModelMock.cs" />
+    <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.AddCommand.cs" />
+    <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.Preview.cs" />
+    <Compile Include="QuickVariableInput\QuickVariableInputViewModelTests.ClearCommand.cs" />
+    <Compile Include="Random\RandomDesignerViewModelTests.cs" />
+    <Compile Include="Random\TestRandomDesignerViewModel.cs" />
+    <Compile Include="Replace\ReplaceDesignerViewModelTests.cs" />
+    <Compile Include="Script_Python\PythonDesignerViewModelTests.cs" />
+    <Compile Include="Script_Python\TestScriptDesignerViewModel.cs" />
+    <Compile Include="Script_Ruby\RubyDesignerViewModelTests.cs" />
+    <Compile Include="Script_Ruby\TestScriptDesignerViewModel.cs" />
+    <Compile Include="Script_Javascript\JavaScriptDesignerViewModelTests.cs" />
+    <Compile Include="Script_Javascript\TestScriptDesignerViewModel.cs" />
+    <Compile Include="Script\ScriptDesignerViewModelTests.cs" />
+    <Compile Include="Script\TestScriptDesignerViewModel.cs" />
+    <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
+    <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileCopyViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileDownLoadViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileMoveViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointFileUploadViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharePointReadFolderViewModelTests.cs" />
+    <Compile Include="Sharepoint\SharepointReadListTests.cs" />
+    <Compile Include="Sharepoint\SharepointDesignerViewModelBaseTests.cs" />
+    <Compile Include="SortRecords\SortRecordsDesignerViewModelTests.cs" />
+    <Compile Include="SortRecords\TestSortRecordsDesignerViewModel.cs" />
+    <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
+    <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
+    <Compile Include="SqlServer\TestSqlServerViewModel.cs" />
+    <Compile Include="TestToolBaseViewModel.cs" />
+    <Compile Include="Unzip\UnzipDesignerViewModelTests.cs" />
+    <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />
+    <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />
+    <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
+    <Compile Include="WCFEndPoint\WcfEndPointViewModelTests.cs" />
+    <Compile Include="WebGetTool\TestWebGetViewModel.cs" />
+    <Compile Include="WebDeleteTool\TestWebDeleteViewModel.cs" />
+    <Compile Include="WebPutTool\TestWebPutViewModel.cs" />
+    <Compile Include="WebPostTool\TestWebPostViewModel.cs" />
+    <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
+    <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />
+    <Compile Include="XPath\XPathDesignerViewModelTests.cs" />
+    <Compile Include="Zip\ZipDesignerViewModelTests.cs" />
+    <Compile Include="Zip\TestZipDesignerViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
+      <Project>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</Project>
+      <Name>Dev2.Studio.Core.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
+      <Project>{62247A80-2266-4295-A8F6-A05507E2796E}</Project>
+      <Name>Dev2.Studio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestingDotnetDllCascading\TestingDotnetDllCascading.csproj">
+      <Project>{a4f1daa7-9eab-4e46-9e73-bae87179f737}</Project>
+      <Name>TestingDotnetDllCascading</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
+      <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
+      <Name>Warewolf.Testing</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Dev2.Studio\App.config">
+      <Link>App.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingBrush x:Key="DropboxIcon" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<DrawingGroup.Children>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 0,8.47729L 0,8.51331L 8.66533,15.6933L 21.336,7.59601L 12.5413,0L 0,8.47729 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 0,22.8785L 0,22.9146L 12.5413,31.3879L 21.336,23.7919L 8.66533,15.6932L 0,22.8785 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 21.336,23.7924L 30.1253,31.3871L 42.6667,22.9137L 42.6667,22.879L 34.004,15.6937L 21.336,23.7924 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 21.336,7.59601L 34.004,15.6933L 42.6667,8.51196L 42.6667,8.47864L 30.1253,0L 21.336,7.59601 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 12.5412,33.0012L 8.77053,30.4518L 8.77053,33.3105L 21.3585,41.1279L 33.9492,33.3105L 33.9492,30.4518L 30.1745,33.0012L 21.3585,25.4279L 12.5412,33.0012 Z "/>
+				</DrawingGroup.Children>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+
+    <DrawingImage x:Key="Dropbox" >
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 0,8.47729L 0,8.51331L 8.66533,15.6933L 21.336,7.59601L 12.5413,0L 0,8.47729 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 0,22.8785L 0,22.9146L 12.5413,31.3879L 21.336,23.7919L 8.66533,15.6932L 0,22.8785 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 21.336,23.7924L 30.1253,31.3871L 42.6667,22.9137L 42.6667,22.879L 34.004,15.6937L 21.336,23.7924 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 21.336,7.59601L 34.004,15.6933L 42.6667,8.51196L 42.6667,8.47864L 30.1253,0L 21.336,7.59601 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 12.5412,33.0012L 8.77053,30.4518L 8.77053,33.3105L 21.3585,41.1279L 33.9492,33.3105L 33.9492,30.4518L 30.1745,33.0012L 21.3585,25.4279L 12.5412,33.0012 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="DropboxSource">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 0,8.47729L 0,8.51331L 8.66533,15.6933L 21.336,7.59601L 12.5413,0L 0,8.47729 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 0,22.8785L 0,22.9146L 12.5413,31.3879L 21.336,23.7919L 8.66533,15.6932L 0,22.8785 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 21.336,23.7924L 30.1253,31.3871L 42.6667,22.9137L 42.6667,22.879L 34.004,15.6937L 21.336,23.7924 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 21.336,7.59601L 34.004,15.6933L 42.6667,8.51196L 42.6667,8.47864L 30.1253,0L 21.336,7.59601 Z "/>
+					<GeometryDrawing Brush="#FF007EE5" Geometry="F1 M 12.5412,33.0012L 8.77053,30.4518L 8.77053,33.3105L 21.3585,41.1279L 33.9492,33.3105L 33.9492,30.4518L 30.1745,33.0012L 21.3585,25.4279L 12.5412,33.0012 Z "/>
+					<GeometryDrawing Brush="#FFEC6300" Geometry="M 18.4544,29.2159C 18.4544,22.8492 23.6024,17.6758 29.9624,17.6758C 36.3091,17.6758 41.4571,22.8492 41.4571,29.2159C 41.4571,35.5892 36.3091,40.7479 29.9624,40.7479C 23.6024,40.7479 18.4544,35.5892 18.4544,29.2159 Z "/>
+					<GeometryDrawing Brush="#FF333333" Geometry="M 24.28,27.3187L 24.28,31.1013L 28.064,31.1013L 28.064,34.8893L 31.8453,34.8893L 31.8453,31.1013L 35.632,31.1013L 35.632,27.3187L 31.8453,27.3187L 31.8453,23.5347L 28.064,23.5347L 28.064,27.3187L 24.28,27.3187 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+</ResourceDictionary>

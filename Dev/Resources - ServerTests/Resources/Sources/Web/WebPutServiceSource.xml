@@ -1,0 +1,9 @@
+
+<Source ID="0fb49fec-e454-4357-a06f-08f329558b18" Name="WebPutServiceSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6169.30938" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>WebPutServiceSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-21T17:23:26.9875401+02:00" Reason="" User="DEV2\nkosinathi.sangweni" VersionNumber="3" ResourceId="0fb49fec-e454-4357-a06f-08f329558b18" VersionId="065ae8f1-19ca-4a34-ab6f-f828a00935c1" />
+</Source>

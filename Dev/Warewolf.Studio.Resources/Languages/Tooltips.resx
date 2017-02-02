@@ -1,0 +1,2149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ZipToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the destination. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ZipToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Zip action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ZipToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source.
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ZipToolTipForceoverwrite" xml:space="preserve">
+    <value>If a file already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="ZipToolTipFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To zip a file or folder, put the full path of what you want zipped in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="ZipToolTipDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are zipping to here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="ZipToolTipCompressiontype" xml:space="preserve">
+    <value>The system will try and match your zipping requirements as far as possible.
+None creates the new file with the content and adds no compression - fastest.
+Partial attempts some compression.
+Normal will apply standard compression.
+Max will compress the zipped file as much as possible - slowest.</value>
+  </data>
+  <data name="ZipToolTipArchivePassword" xml:space="preserve">
+    <value>Specify the password needed to open the zip file here.
+Leaving the Archive Password blank will result in no password being required to open the file.</value>
+  </data>
+  <data name="XPathToolTipXPath" xml:space="preserve">
+    <value>Xpath notation describing the route to the data in the XML input.</value>
+  </data>
+  <data name="XPathToolTipXML" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To traverse an XML document and return information from it, enter the raw XML in here.</value>
+  </data>
+  <data name="XpathToolTipResults" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the result of the Xpath expression.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.</value>
+  </data>
+  <data name="WriteFileToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="WriteFileToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Write action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="WriteFileToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="WriteFileToolTipFilename" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To write content to a file, put the full path and file name in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="WriteFileToolTipContents" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the contents you want written to the file in here.</value>
+  </data>
+  <data name="WorkflowDesignerSecurityToolTipNone" xml:space="preserve">
+    <value>You are not authorized to edit this resource</value>
+  </data>
+  <data name="WindowsAuthenticationToolTip" xml:space="preserve">
+    <value>Connect using the logged on users credentials</value>
+  </data>
+  <data name="WebRequestToolTipURL" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To traverse and retrieve the raw response from a webpage, enter it in here.</value>
+  </data>
+  <data name="WebRequestToolTipTimeOut" xml:space="preserve">
+    <value>The length of time to wait for a web request to complete before failing</value>
+  </data>
+  <data name="WebRequestToolTipResult" xml:space="preserve">
+    <value>Only a single variable goes in here.
+Returns the response text of the web get request.</value>
+  </data>
+  <data name="WebRequestToolTipHeader" xml:space="preserve">
+    <value>To supply additional header information in your get request, put the header info in here.</value>
+  </data>
+  <data name="WebInsertToolTipColumn" xml:space="preserve">
+    <value>Test data for the execution</value>
+  </data>
+  <data name="ViewSwaggerToolTip" xml:space="preserve">
+    <value>View Swagger source for the current resource</value>
+  </data>
+  <data name="ViewJsonObjectTooltip" xml:space="preserve">
+    <value>Click to see the JSON representation of this object.</value>
+  </data>
+  <data name="ViewApisJsonTooltip" xml:space="preserve">
+    <value>View APIs.json url and content</value>
+  </data>
+  <data name="UserNameToolTip" xml:space="preserve">
+    <value>Enter the user name you want to connect with</value>
+  </data>
+  <data name="UserAuthenticationToolTip" xml:space="preserve">
+    <value>Connect using a specific account</value>
+  </data>
+  <data name="UnzipToolTipZipname" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To unzip a file, put the full path and zip file name in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="UnzipToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="UnzipToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Unzip action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="UnzipToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="UnzipToolTipForceoverwrite" xml:space="preserve">
+    <value>If a file or folder already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="UnzipToolTipDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are unzipping to here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="UnzipToolTipArchivePassword" xml:space="preserve">
+    <value>Specify the password needed to open the zip file here.
+Leaving the Archive Password blank will result in no archive password being used to open the file.</value>
+  </data>
+  <data name="UniqueToolTipReturnFields" xml:space="preserve">
+    <value>Which fields from the recordset would you like returned when a Unique combination is found? 
+Use a comma separated list of the fields.
+Where multiple rows are the same, the first one will be deemed Unique.</value>
+  </data>
+  <data name="UniqueToolTipResults" xml:space="preserve">
+    <value>Returns the unique combinations into the variables specified. 
+If there are multiple fields being returned, there should be multiple Results fields specified. 
+Use a comma to separate the variables.</value>
+  </data>
+  <data name="UniqueToolTipInFields" xml:space="preserve">
+    <value>To identify unique information in a recordset, put the comma separated fields that need to be unique in here.</value>
+  </data>
+  <data name="TreatNullAsZeroToolTip" xml:space="preserve">
+    <value>No recordset will be treated as a recordset with no records</value>
+  </data>
+  <data name="ToolboxSearchToolTip" xml:space="preserve">
+    <value>Search filter for your tools</value>
+  </data>
+  <data name="ToolboxClearSearchTooltip" xml:space="preserve">
+    <value>Clear the filter box</value>
+  </data>
+  <data name="ActionDeleteSelectedActionEnabledTooltip" xml:space="preserve">
+    <value>Delete this Action</value>
+  </data>
+  <data name="TestsDeleteSelectedTestEnabledTooltip" xml:space="preserve">
+    <value>Delete this test</value>
+  </data>
+  <data name="ActionDeleteSelectedTestDisabledTooltip" xml:space="preserve">
+    <value>Cannot delete an empty action</value>
+  </data>
+  <data name="TestsDeleteSelectedTestDisabledTooltip" xml:space="preserve">
+    <value>Cannot delete an enabled test</value>
+  </data>
+  <data name="TestEditorToolTip" xml:space="preserve">
+    <value>View the current tests for this resource</value>
+  </data>
+  <data name="SystemInformationToolTipSysInfoType" xml:space="preserve">
+    <value>Select the type of system information you would like to use.</value>
+  </data>
+  <data name="SystemInformationToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the type of system information selected.</value>
+  </data>
+  <data name="StartNodeDebugStudioToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F6]</value>
+  </data>
+  <data name="StartNodeDebugInputsToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F5]</value>
+  </data>
+  <data name="StartNodeDebugBrowserToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service [F7]</value>
+  </data>
+  <data name="SqlBulkInsertToolTipUseInternalTransaction" xml:space="preserve">
+    <value>When specified, each batch of the bulk-copy operation will occur within a transaction.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipTimeout" xml:space="preserve">
+    <value>The number of seconds you would like the operation to complete in.
+All batches in total must complete within this time period.
+The default is 0 which will be no time constraint.
+If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
+Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted.</value>
+  </data>
+  <data name="SQLBulkInsertToolTipTable" xml:space="preserve">
+    <value>Select a table to perform the bulk insert into.
+If the table schema has changed or recently added to the source, click the refresh button.</value>
+  </data>
+  <data name="SQLBulkInsertToolTipSkipblankrows" xml:space="preserve">
+    <value>Blank records will not be added to the SQL table.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or the record numbers with errors.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipKeepTableLock" xml:space="preserve">
+    <value>Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipKeepIdentity" xml:space="preserve">
+    <value>Preserve source identity values. When not specified, identity values are assigned by the destination.</value>
+  </data>
+  <data name="SQLBulkInsertToolTipInputData" xml:space="preserve">
+    <value>To bulk insert data into a table, put the data to insert in here.
+Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipInputColumn" xml:space="preserve">
+    <value>To bulk insert data into a table, put the data to insert in here.
+Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipFireTriggers" xml:space="preserve">
+    <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipDatabase" xml:space="preserve">
+    <value>Select a preconfigured database source or "New Database Source..." to add a new one.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipCheckConstraints" xml:space="preserve">
+    <value>Check constraints while data is being inserted. By default, constraints are not checked.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipBatchSize" xml:space="preserve">
+    <value>The number of rows you would like to insert at a time.
+The default is 0 which will do everything in 1 batch.
+If you specify 50, then 50 rows will be bulk inserted at a time.</value>
+  </data>
+  <data name="SortToolTipSortOrderType" xml:space="preserve">
+    <value>Select the order of the sorting.
+Forward will go 1-9 then a-Z.
+Backward will go Z-a then 9-1.</value>
+  </data>
+  <data name="SortToolTipSortField" xml:space="preserve">
+    <value>To Sort a recordset enter the field in the recordset you would like to sort on.
+To sort on more than one field, perform the sort action for each field you would like to sort on, 
+ending with the priority sort.</value>
+  </data>
+  <data name="ShowHideVersionsTooltip" xml:space="preserve">
+    <value>Show or hide the versions of this resource</value>
+  </data>
+  <data name="SharePointUploadPathToolTip" xml:space="preserve">
+    <value>Enter SharePoint server upload folder path</value>
+  </data>
+  <data name="SharepointToolTipToVariable" xml:space="preserve">
+    <value>To read list item data into a variable, put the variable here.</value>
+  </data>
+  <data name="SharepointToolTipServer" xml:space="preserve">
+    <value>Select a preconfigured SharePoint server source or "New SharePoint Server Source..." to add a new one.</value>
+  </data>
+  <data name="SharepointToolTipList" xml:space="preserve">
+    <value>Select a list to read from.
+If the list has changed or recently added to the source, click the refresh button.</value>
+  </data>
+  <data name="SharepointToolTipFieldToFilterOn" xml:space="preserve">
+    <value>Select the field you want to match on.</value>
+  </data>
+  <data name="SharepointSourceUserNameTooltip" xml:space="preserve">
+    <value>The username used to connect to SharePoint</value>
+  </data>
+  <data name="SharepointSourceTestTooltip" xml:space="preserve">
+    <value>Test the connection to the SharePoint server</value>
+  </data>
+  <data name="SharepointSourceServerNameTooltip" xml:space="preserve">
+    <value>SharePoint URL</value>
+  </data>
+  <data name="SharepointSourcePasswordTooltip" xml:space="preserve">
+    <value>Password for the username used to connect to SharePoint</value>
+  </data>
+  <data name="SharepointSourceCancelTestTooltip" xml:space="preserve">
+    <value>Cancel the test connection to the SharePoint server</value>
+  </data>
+  <data name="SharePointReadFolderInputPathToolTip" xml:space="preserve">
+    <value>Enter SharePoint server folder or
+file path</value>
+  </data>
+  <data name="SharepointInsertToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="SharePointFilePathToolTip" xml:space="preserve">
+    <value>Enter SharePoint server file path</value>
+  </data>
+  <data name="SharePointDownloadPathToolTip" xml:space="preserve">
+    <value>Enter SharePoint server download file path</value>
+  </data>
+  <data name="SharepointDelteToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the number of items deleted.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipWindowsGroup" xml:space="preserve">
+    <value>Select Windows Group</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipView" xml:space="preserve">
+    <value>Open and inspect resources</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipExecute" xml:space="preserve">
+    <value>Run and Debug workflows</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipDeployTo" xml:space="preserve">
+    <value>Deploy resources to this server</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipDeployFrom" xml:space="preserve">
+    <value>Deploy resources off this server</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipContribute" xml:space="preserve">
+    <value>Edit, Create and Delete workflows and services</value>
+  </data>
+  <data name="SettingsSecurityServerToolTipAdministrator" xml:space="preserve">
+    <value>Amend security and admin tasks</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipWindowsGroup" xml:space="preserve">
+    <value>Select Windows Group</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipView" xml:space="preserve">
+    <value>Open and inspect this resource</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipResource" xml:space="preserve">
+    <value>Click the Ellipsis to add a resource</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipExecute" xml:space="preserve">
+    <value>Run and Debug this workflow</value>
+  </data>
+  <data name="SettingsSecurityResourceToolTipContribute" xml:space="preserve">
+    <value>Edit and Delete this workflow</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipWfNotFound" xml:space="preserve">
+    <value>Number of times a workflow was requested and it didn't exist.</value>
+  </data>
+  <data name="SettingsPerfCounterServerTooltipTotalErrors" xml:space="preserve">
+    <value>Total number of errors on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipReqPerSec" xml:space="preserve">
+    <value>Number of requests per second on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipNotAuthErrors" xml:space="preserve">
+    <value>Authorization failures on this server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipConcurrentReq" xml:space="preserve">
+    <value>Number of concurrent requests on the server.</value>
+  </data>
+  <data name="SettingsPerfCounterServerToolTipAvgExecTime" xml:space="preserve">
+    <value>Average execution time of all resources.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipTotErrors" xml:space="preserve">
+    <value>Total number of errors of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipResource" xml:space="preserve">
+    <value>Resource picker</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipReqPerSec" xml:space="preserve">
+    <value>Number of requests per second of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipConReq" xml:space="preserve">
+    <value>Number of concurrent requests of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterResourceToolTipAvgExecTime" xml:space="preserve">
+    <value>Average execution time of this resource.</value>
+  </data>
+  <data name="SettingsPerfCounterRemoveResourceTooltip" xml:space="preserve">
+    <value>Removes performance counters</value>
+  </data>
+  <data name="ServiceViewInBrowserTooltip" xml:space="preserve">
+    <value>Execute this flow as a REST API</value>
+  </data>
+  <data name="ServiceTestStopSelectedTestTooltip" xml:space="preserve">
+    <value>Stop this test</value>
+  </data>
+  <data name="ServiceTestStepOptionsForValueTooltip" xml:space="preserve">
+    <value>The Value of the item you want to assert</value>
+  </data>
+  <data name="ServiceTestStepMockRadioButtonTooltip" xml:space="preserve">
+    <value>Mock this step</value>
+  </data>
+  <data name="ServiceTestStepDeleteStepTooltip" xml:space="preserve">
+    <value>Remove this step</value>
+  </data>
+  <data name="ServiceTestStepAssertVariableTooltip" xml:space="preserve">
+    <value>Tool result item to Assert</value>
+  </data>
+  <data name="ServiceTestStepAssertValueTooltip" xml:space="preserve">
+    <value>The Value of the item you want to assert</value>
+  </data>
+  <data name="ServiceTestStepAssertToTooltip" xml:space="preserve">
+    <value>The Value of the item you want to assert</value>
+  </data>
+  <data name="ServiceTestStepAssertRadioButtonTooltip" xml:space="preserve">
+    <value>Assert this step</value>
+  </data>
+  <data name="ServiceTestStepAssertOpsTooltip" xml:space="preserve">
+    <value>The type of Assert you want to make</value>
+  </data>
+  <data name="ServiceTestStepAssertFromTooltip" xml:space="preserve">
+    <value>The Value of the item you want to assert from</value>
+  </data>
+  <data name="ServiceTestRunSelectedTestTooltip" xml:space="preserve">
+    <value>Run this test [F5]</value>
+  </data>
+  <data name="ServiceTestRunSelectedTestInBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser to execute this test externaly</value>
+  </data>
+  <data name="ServiceTestRunAllTestTooltip" xml:space="preserve">
+    <value>Run all tests [F6]</value>
+  </data>
+  <data name="ServiceTestRunAllTestsInBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser to view the tests for this workflow [F7]</value>
+  </data>
+  <data name="ServiceTestPendingTooltip" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="ServiceTestPassedTooltip" xml:space="preserve">
+    <value>Passed</value>
+  </data>
+  <data name="ServiceTestOutputVariableTooltip" xml:space="preserve">
+    <value>The output you want to make the assert on</value>
+  </data>
+  <data name="ServiceTestOutputValueTooltip" xml:space="preserve">
+    <value>Output value to test against</value>
+  </data>
+  <data name="ServiceTestOutputToTooltip" xml:space="preserve">
+    <value>The Value of the item you want to assert to</value>
+  </data>
+  <data name="ServiceTestOutputFromTooltip" xml:space="preserve">
+    <value>The Value of the item you want to assert from</value>
+  </data>
+  <data name="ServiceTestNoErrorExpectedTooltip" xml:space="preserve">
+    <value>The test expects no error</value>
+  </data>
+  <data name="ServiceTestNewTestTooltip" xml:space="preserve">
+    <value>Create a new test</value>
+  </data>
+  <data name="ServiceTestNewTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>Please save this test before duplicating it</value>
+  </data>
+  <data name="ServiceTestNeverRunTooltip" xml:space="preserve">
+    <value>The test has never run before</value>
+  </data>
+  <data name="ServiceTestInvalidTooltip" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="ServiceTestInputValueTooltip" xml:space="preserve">
+    <value>Input value to test against</value>
+  </data>
+  <data name="ServiceTestFailingTooltip" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="ServiceTestErrorExpectedTooltip" xml:space="preserve">
+    <value>The test expects an error</value>
+  </data>
+  <data name="ServiceTestErrorContainsTextTooltip" xml:space="preserve">
+    <value>Assert that the error contains some particular text</value>
+  </data>
+  <data name="ServiceTestEnableRunSelectedTestTooltip" xml:space="preserve">
+    <value>Enable or Ignore this test</value>
+  </data>
+  <data name="ServiceTestDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>Duplicate this test</value>
+  </data>
+  <data name="ServiceTestDoneButtonTooltip" xml:space="preserve">
+    <value>Accept these results and continue</value>
+  </data>
+  <data name="ServiceTestDisabledDuplicateSelectedTestTooltip" xml:space="preserve">
+    <value>You do not have permissions to duplicate a test</value>
+  </data>
+  <data name="ServiceTestCancelButtonTooltip" xml:space="preserve">
+    <value>Cancel the test execution and return to mappings</value>
+  </data>
+  <data name="ServiceTestActionTooltip" xml:space="preserve">
+    <value>Test the procedure or function</value>
+  </data>
+  <data name="ServerVersionTooltip" xml:space="preserve">
+    <value>View the version of this server</value>
+  </data>
+  <data name="ServerSourceDialogsTestToolTip" xml:space="preserve">
+    <value>Test the connection to the server using these credentials</value>
+  </data>
+  <data name="ServerSourceDialogPublicToolTip" xml:space="preserve">
+    <value>Connect using Public credentials only</value>
+  </data>
+  <data name="ServerSourceDialogProtocolToolTip" xml:space="preserve">
+    <value>Select the protocol you want to connect on</value>
+  </data>
+  <data name="ServerSourceDialogAddressToolTip" xml:space="preserve">
+    <value>Enter the IP address, domain name or computer name of the server you want to connect to</value>
+  </data>
+  <data name="ServerSourceDialogAddressPortTooltip" xml:space="preserve">
+    <value>Enter the port on the server</value>
+  </data>
+  <data name="SequenceTooltipSequence" xml:space="preserve">
+    <value>To execute a set of Activities in sequence put them in the order you want them executed.
+To execute more than one item in a loop construct etc. put the activities in a sequence first 
+and then put the sequence into the loop construct.
+Error handling operates as a catch all for all items in the sequence.</value>
+  </data>
+  <data name="SelectAndApplyDataSourceToolTip" xml:space="preserve">
+    <value>Only collections go in here.
+You can use the (*) or () notation for record sets or objects.</value>
+  </data>
+  <data name="SelectAndApplyAliasToolTip" xml:space="preserve">
+    <value>Specify an alias for the selected data. 
+This needs to conform to variable notation.</value>
+  </data>
+  <data name="ScriptingToolTipScript" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To run a programming script, put the script you want to execute in here.</value>
+  </data>
+  <data name="ScriptingToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the output of the script, if any.</value>
+  </data>
+  <data name="ScriptingToolTipLanguageType" xml:space="preserve">
+    <value>What type of scripting language do you want to use?</value>
+  </data>
+  <data name="ScriptingToolTipIncludeFile" xml:space="preserve">
+    <value>This allows you to include .js files as external script sources.</value>
+  </data>
+  <data name="ScriptingToolTipEscapeScript" xml:space="preserve">
+    <value>Check this box if you want to ignore Escape Sequences ('\t', '\n' etc).</value>
+  </data>
+  <data name="ScheduleToolTip" xml:space="preserve">
+    <value>Schedule a service to run</value>
+  </data>
+  <data name="SchedulerStatusAltTooltipTrigger" xml:space="preserve">
+    <value>Enable or Disable the schedule</value>
+  </data>
+  <data name="SchedulerSettingsToolTipWorkFlow" xml:space="preserve">
+    <value>Select a workflow to be triggered</value>
+  </data>
+  <data name="SchedulerSettingsToolTipUsername" xml:space="preserve">
+    <value>Schedule should execute as this user</value>
+  </data>
+  <data name="SchedulerSettingsToolTipRun" xml:space="preserve">
+    <value>Allows a missed trigger to be executed</value>
+  </data>
+  <data name="SchedulerSettingsToolTipPassword" xml:space="preserve">
+    <value>Schedule will use this password for the above username</value>
+  </data>
+  <data name="SchedulerSettingsToolTipName" xml:space="preserve">
+    <value>What name do you want to give this Schedule?</value>
+  </data>
+  <data name="SchedulerSettingsToolTipHistoryRecords" xml:space="preserve">
+    <value>How much History should the system keep?</value>
+  </data>
+  <data name="SchedulerNewScheduleTooltipTrigger" xml:space="preserve">
+    <value>Create a new scheduled task</value>
+  </data>
+  <data name="SchedulerDeleteTooltipTrigger" xml:space="preserve">
+    <value>Delete this scheduled task</value>
+  </data>
+  <data name="SaveButtonTooltip" xml:space="preserve">
+    <value>Save the Resource</value>
+  </data>
+  <data name="RunAllTestsToolTip" xml:space="preserve">
+    <value>Run all tests in browser for this resource</value>
+  </data>
+  <data name="RollbackTooltip" xml:space="preserve">
+    <value>Rool back to this version</value>
+  </data>
+  <data name="ReplaceToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the count of the number of replacements.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ReplaceToolTipReplaceWith" xml:space="preserve">
+    <value>Put the replacement information in here.</value>
+  </data>
+  <data name="ReplaceToolTipInFields" xml:space="preserve">
+    <value>Only variables go in here.
+To search and replace a string, put the variable containing the string to search in here.</value>
+  </data>
+  <data name="ReplaceToolTipFind" xml:space="preserve">
+    <value>Put the information you are looking for in here.</value>
+  </data>
+  <data name="RenameToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="RenameToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Rename action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="RenameToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="RenameToolTipNewName" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path and new name of the resource here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="RenameToolTipForceoverwrite" xml:space="preserve">
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="RenameToolTipFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To rename a file or folder, put the full path and file or folder name in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="RenameItemTooltip" xml:space="preserve">
+    <value>Rename resource</value>
+  </data>
+  <data name="RenameFolderTooltip" xml:space="preserve">
+    <value>Rename folder</value>
+  </data>
+  <data name="ReadLocalFolderToolTipFolder" xml:space="preserve">
+    <value>Enter local file or folder path</value>
+  </data>
+  <data name="ReadFolderToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ReadFolderToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the content of the folder specified. 
+Each item found will be returned as a separate result so this tool is best used with a recordset.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ReadFolderToolTipRead" xml:space="preserve">
+    <value>Files will only return files.
+Folders will only return folders.
+Files and Folders will return everything.</value>
+  </data>
+  <data name="ReadFolderToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ReadFolderToolTipFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To read the content of a folder, put the full path in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="ReadFileToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ReadFileToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the content of the file.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ReadFileToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ReadFileToolTipFilename" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To upload a file, put the full path and file name in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="RandomToolTipType" xml:space="preserve">
+    <value>The type of random information to generate.
+Letters: Alphabetical letters only.
+Numbers: Numbers only.
+Letters and Numbers: A random combination of letters and numbers.
+GUID: A randomly generated Globally Unique Identifier.</value>
+  </data>
+  <data name="RandomToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the randomly generated result.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="RandomToolTipRangeTo" xml:space="preserve">
+    <value>To generate a random number put the highest/largest number you would like in here.</value>
+  </data>
+  <data name="RandomToolTipRangeFrom" xml:space="preserve">
+    <value>To generate a random number put the lowest/smallest number you would like in here.</value>
+  </data>
+  <data name="RandomToolTipLength" xml:space="preserve">
+    <value>Determines the character length to generate.</value>
+  </data>
+  <data name="RabbitMQToolTipTimeOut" xml:space="preserve">
+    <value>How long you want the Consumer to delay when checking for messages in the queue.</value>
+  </data>
+  <data name="RabbitMQToolTipSource" xml:space="preserve">
+    <value>Select a preconfigured RabbitMQ source or add a new one.</value>
+  </data>
+  <data name="RabbitMQToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.</value>
+  </data>
+  <data name="RabbitMQToolTipResponse" xml:space="preserve">
+    <value>Put response variables here.</value>
+  </data>
+  <data name="RabbitMQToolTipReQueue" xml:space="preserve">
+    <value>Requeue the response in the Queue.</value>
+  </data>
+  <data name="RabbitMQToolTipQueueName" xml:space="preserve">
+    <value>Provide a name of the Queue you want to consume from.</value>
+  </data>
+  <data name="RabbitMQToolTipPrefetch" xml:space="preserve">
+    <value>Provide number of processes that can run concurrently.</value>
+  </data>
+  <data name="RabbitMQToolTipMessage" xml:space="preserve">
+    <value>The message you want to publish goes in here.</value>
+  </data>
+  <data name="RabbitMQToolTipIsExclusive" xml:space="preserve">
+    <value>Make the queue exclusive so that it's accessable only inside the current connection.</value>
+  </data>
+  <data name="RabbitMQToolTipIsDurable" xml:space="preserve">
+    <value>Make the queue durable to back up Queue incase of a crash.</value>
+  </data>
+  <data name="RabbitMQToolTipIsAutoDelete" xml:space="preserve">
+    <value>Make the queue auto-delete to delete queue after Consumer are done with it.</value>
+  </data>
+  <data name="RabbitMQToolTipAcknowledge" xml:space="preserve">
+    <value>Aknowledge message after consume?</value>
+  </data>
+  <data name="QuickVariableVariableListToolTip" xml:space="preserve">
+    <value>The rough data with the variables in it</value>
+  </data>
+  <data name="QuickVariableSuffixWithToolTip" xml:space="preserve">
+    <value>Adds this to end of the variables</value>
+  </data>
+  <data name="QuickVariableSplitAndAtToolTip" xml:space="preserve">
+    <value>Criteria for splitting the above data</value>
+  </data>
+  <data name="QuickVariableReplaceToolTip" xml:space="preserve">
+    <value>Replaces existing variables in the tool</value>
+  </data>
+  <data name="QuickVariablePrefixWithToolTip" xml:space="preserve">
+    <value>Adds this to the front of the variables</value>
+  </data>
+  <data name="QuickVariableAppendToolTip" xml:space="preserve">
+    <value>Append to existing variables</value>
+  </data>
+  <data name="PluginServiceSelectNamespaceToolTip" xml:space="preserve">
+    <value>Select a namespace to help find the correct action.</value>
+  </data>
+  <data name="PluginServiceSelectActionToolTip" xml:space="preserve">
+    <value>Select method to execute.</value>
+  </data>
+  <data name="PluginServiceSelectConstructorToolTip" xml:space="preserve">
+    <value>Select constructor to execute.</value>
+  </data>
+  <data name="PasswordToolTip" xml:space="preserve">
+    <value>Enter the corresponding password</value>
+  </data>
+  <data name="OpenVersionTooltip" xml:space="preserve">
+    <value>Open this version</value>
+  </data>
+  <data name="NoPermissionsToolTip" xml:space="preserve">
+    <value>You do not have permissions to execute this command</value>
+  </data>
+  <data name="StartNodeNotConnectedToolTip" xml:space="preserve">
+    <value>Connect the Start node to the first tool or service in your flow</value>
+  </data>
+  <data name="NewWebSourceTooltip" xml:space="preserve">
+    <value>Create a new web source</value>
+  </data>
+  <data name="NewSharepointSourceTooltip" xml:space="preserve">
+    <value>Create a new sharepoint source</value>
+  </data>
+  <data name="NewServiceTooltip" xml:space="preserve">
+    <value>Create a new service [CTRL+W]</value>
+  </data>
+  <data name="NewServerSourceTooltip" xml:space="preserve">
+    <value>Create a new server source</value>
+  </data>
+  <data name="NewRabbitMqSourceTooltip" xml:space="preserve">
+    <value>Create a new rabbitmq source</value>
+  </data>
+  <data name="NewPluginSourceTooltip" xml:space="preserve">
+    <value>Create a new plugin source</value>
+  </data>
+  <data name="NewFolderTooltip" xml:space="preserve">
+    <value>Create a new folder</value>
+  </data>
+  <data name="NewExchangeSourceTooltip" xml:space="preserve">
+    <value>Create a new exchange source</value>
+  </data>
+  <data name="NewEmailSourceTooltip" xml:space="preserve">
+    <value>Create a new email source</value>
+  </data>
+  <data name="NewDropboxSourceTooltip" xml:space="preserve">
+    <value>Create a new dropbox source</value>
+  </data>
+  <data name="NewSqlServerSourceTooltip" xml:space="preserve">
+    <value>Create a new Microsoft SQL Server source</value>
+  </data>
+  <data name="NewMySqlSourceTooltip" xml:space="preserve">
+    <value>Create a new MySQL database source</value>
+  </data>
+  <data name="NewPostgreSqlSourceTooltip" xml:space="preserve">
+    <value>Create a new PostgreSQL database source</value>
+  </data>
+  <data name="NewOracleSourceTooltip" xml:space="preserve">
+    <value>Create a new Oracle database source</value>
+  </data>
+  <data name="NewOdbcSourceTooltip" xml:space="preserve">
+    <value>Create a new ODBC database source</value>
+  </data>
+  <data name="NewComPluginSourceTooltip" xml:space="preserve">
+    <value>Create a new com plugin source</value>
+  </data>
+  <data name="NativeActivityToolTipPuterrorinthisvariable" xml:space="preserve">
+    <value>If an error occurs the error message will be placed into this variable as well the result variable.
+If left empty the result will still be placed in the result variable. This will cause the error to be handled</value>
+  </data>
+  <data name="NativeActivityToolTipEndtheworkflow" xml:space="preserve">
+    <value>To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
+If you have also called a web service / Warewolf workflow, that will finish executing first.
+If the workflow is nested, the calling workflow will resume.</value>
+  </data>
+  <data name="NativeActivityToolTipCallthiswebservice" xml:space="preserve">
+    <value>If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
+E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]</value>
+  </data>
+  <data name="MoveToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="MoveToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Move action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="MoveToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="MoveToolTipForceoverwrite" xml:space="preserve">
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="MoveToolTipFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To Move a file or folder, put the full path and file or folder name to move in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="MoveToolTipDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are moving to here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="MenuWebServiceToolTip" xml:space="preserve">
+    <value>Create a new web source</value>
+  </data>
+  <data name="MenuSettingsToolTip" xml:space="preserve">
+    <value>Configure settings</value>
+  </data>
+  <data name="MenuSchedulerToolTip" xml:space="preserve">
+    <value>Schedule a service to run</value>
+  </data>
+  <data name="MenuSaveToolTip" xml:space="preserve">
+    <value>Save this tab [CTRL+S]</value>
+  </data>
+  <data name="MenuPluginToolTip" xml:space="preserve">
+    <value>Create a new plugin source</value>
+  </data>
+  <data name="MenuNewServiceToolTip" xml:space="preserve">
+    <value>Create a new service [CTRL+W]</value>
+  </data>
+  <data name="MenuLockToolTip" xml:space="preserve">
+    <value>Lock / unlock the menu</value>
+  </data>
+  <data name="MenuHelpToolTip" xml:space="preserve">
+    <value>Knowledge Base</value>
+  </data>
+  <data name="MenuDownloadToolTip" xml:space="preserve">
+    <value>A new version of Warewolf is available for download</value>
+  </data>
+  <data name="MenuDeployToolTip" xml:space="preserve">
+    <value>Move resources between Warewolf servers [CTRL+D]</value>
+  </data>
+  <data name="MenuDatabaseToolTip" xml:space="preserve">
+    <value>Create a new database source</value>
+  </data>
+  <data name="MappingsObjectOutputTooltip" xml:space="preserve">
+    <value>Check this to put the output into an object</value>
+  </data>
+  <data name="MappingsObjectNameTooltip" xml:space="preserve">
+    <value>The @name of the object you want to put the result into</value>
+  </data>
+  <data name="ManageWebSourceViewInBrowserTooltip" xml:space="preserve">
+    <value>Open this URL in your default browser</value>
+  </data>
+  <data name="ManageWebSourceUserNameTooltip" xml:space="preserve">
+    <value>The name of the account</value>
+  </data>
+  <data name="ManageWebSourceTestTooltip" xml:space="preserve">
+    <value>Test the webservice source connection</value>
+  </data>
+  <data name="ManageWebSourcePasswordTooltip" xml:space="preserve">
+    <value>The account password</value>
+  </data>
+  <data name="ManageWebSourceHostNameTooltip" xml:space="preserve">
+    <value>The base URL of the webservice</value>
+  </data>
+  <data name="ManageWebSourceDefaultQueryTooltip" xml:space="preserve">
+    <value>Optional default query</value>
+  </data>
+  <data name="ManageWebSourceCancelTestTooltip" xml:space="preserve">
+    <value>Cancel the test execution</value>
+  </data>
+  <data name="ManageWebServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the webservice host you want to use</value>
+  </data>
+  <data name="ManageWebServiceRequestBodyTooltip" xml:space="preserve">
+    <value>The body of the request</value>
+  </data>
+  <data name="ManageWebServicePasteTooltip" xml:space="preserve">
+    <value>Paste a customized response instead</value>
+  </data>
+  <data name="ManageWebServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a webservice</value>
+  </data>
+  <data name="ManageWebServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected webservice host connection</value>
+  </data>
+  <data name="ManageWebPasteResponseTooltip" xml:space="preserve">
+    <value>Paste the full response in here</value>
+  </data>
+  <data name="ManageWcfServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the Source you want to use</value>
+  </data>
+  <data name="ManageWcfServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a Wcf Service</value>
+  </data>
+  <data name="ManageWcfServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected source connection</value>
+  </data>
+  <data name="ManageWcfEndpointTooltip" xml:space="preserve">
+    <value>Enter Endpoint Url</value>
+  </data>
+  <data name="ManageRabbitMQVirtualHostTooltip" xml:space="preserve">
+    <value>Virtual host for the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQUserNameTooltip" xml:space="preserve">
+    <value>User name for the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQPortTooltip" xml:space="preserve">
+    <value>Port used by the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQPasswordTooltip" xml:space="preserve">
+    <value>Password for the RabbitMQ server</value>
+  </data>
+  <data name="ManageRabbitMQHostTooltip" xml:space="preserve">
+    <value>RabbitMQ server name</value>
+  </data>
+  <data name="ManagePublishTooltip" xml:space="preserve">
+    <value>Publish the test message</value>
+  </data>
+  <data name="ManagePluginSourceRefreshTooltip" xml:space="preserve">
+    <value>Refresh the available files and GAC entries</value>
+  </data>
+  <data name="ManagePluginSourceFilterGACTooltip" xml:space="preserve">
+    <value>Filter for the GAC you want to select</value>
+  </data>
+  <data name="ManagePluginSourceFilterAssemblyTooltip" xml:space="preserve">
+    <value>Filter for the dll you want to select</value>
+  </data>
+  <data name="ManagePluginSourceFilesGACTooltip" xml:space="preserve">
+    <value>The full path of the GAC you would like to select</value>
+  </data>
+  <data name="ManagePluginSourceFilesAssemblyTooltip" xml:space="preserve">
+    <value>The full path of the Assembly you would like to select</value>
+  </data>
+  <data name="ManagePluginSourceFilesConfigTooltip" xml:space="preserve">
+    <value>The full path of the Config File you would like to select</value>
+  </data>
+  <data name="ManagePluginSourceSelectGACTooltip" xml:space="preserve">
+    <value>Add the selected GAC to the plugin</value>
+  </data>
+  <data name="ManagePluginSourceSelectAssemblyTooltip" xml:space="preserve">
+    <value>Add the selected Assembly to the plugin</value>
+  </data>
+  <data name="ManagePluginSourceSelectConfigFileTooltip" xml:space="preserve">
+    <value>Add the selected Config File to the plugin</value>
+  </data>
+  <data name="ManagePluginSourceClearSearchTooltip" xml:space="preserve">
+    <value>Clear the filter criteria</value>
+  </data>
+  <data name="ManagePluginSourceAssemblyNameTooltip" xml:space="preserve">
+    <value>The full path of the DLL you want to use</value>
+  </data>
+  <data name="ManagePluginSourceConfigFileTooltip" xml:space="preserve">
+    <value>The full path of the Config file you want to use</value>
+  </data>
+  <data name="ManagePluginSourceGacAssemblyNameTooltip" xml:space="preserve">
+    <value>The GAC name of the DLL you want to use</value>
+  </data>
+  <data name="ManagePluginSourceGacAssemblyNameButtonTooltip" xml:space="preserve">
+    <value>Click the elipses [...] to select an assembly from the GAC</value>
+  </data>
+  <data name="ManagePluginSourceConfigFileDisabledTooltip" xml:space="preserve">
+    <value>You cannot select a Config file without an Assembly selected</value>
+  </data>
+  <data name="ManagePluginSourceAssemblyNameButtonTooltip" xml:space="preserve">
+    <value>Click the elipses [...] to select an assembly from the Dll</value>
+  </data>
+  <data name="ManagePluginSourceConfigFileButtonTooltip" xml:space="preserve">
+    <value>Click the elipses [...] to select a Config File</value>
+  </data>
+  <data name="ManagePluginSourceConfigFileButtonDisabledTooltip" xml:space="preserve">
+    <value>You cannot select a Config file without an Assemble selected</value>
+  </data>
+  <data name="ManagePluginServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the plugin you want to use</value>
+  </data>
+  <data name="ManagePluginServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a plugin</value>
+  </data>
+  <data name="ManagePluginServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected plugin source connection</value>
+  </data>
+  <data name="ManageOdbcServiceActionsTooltip" xml:space="preserve">
+    <value>ManageOdbcServiceActionsTooltip</value>
+  </data>
+  <data name="ManageOAuthTypeTooltip" xml:space="preserve">
+    <value>Select the provider you want to use</value>
+  </data>
+  <data name="ManageOAuthKeyTooltip" xml:space="preserve">
+    <value>The application key provided by the app</value>
+  </data>
+  <data name="ManageOAuthAuthoriseTooltip" xml:space="preserve">
+    <value>Validate the key with the provider</value>
+  </data>
+  <data name="ManageExchangeServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the connection you want to use</value>
+  </data>
+  <data name="ManageExchangeServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to an exchange server</value>
+  </data>
+  <data name="ManageExchangeServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected connection source</value>
+  </data>
+  <data name="ManageEmailUserNameTooltip" xml:space="preserve">
+    <value>Email account name of the sender</value>
+  </data>
+  <data name="ManageEmailToTooltip" xml:space="preserve">
+    <value>Email address to send the test email to</value>
+  </data>
+  <data name="ManageEmailTimeoutTooltip" xml:space="preserve">
+    <value>Timeout in seconds when trying to send email</value>
+  </data>
+  <data name="ManageEmailSendTooltip" xml:space="preserve">
+    <value>Send the test email</value>
+  </data>
+  <data name="ManageEmailPortTooltip" xml:space="preserve">
+    <value>Port used by the mail server</value>
+  </data>
+  <data name="ManageEmailPasswordTooltip" xml:space="preserve">
+    <value>Password of the account</value>
+  </data>
+  <data name="ManageEmailHostNameTooltip" xml:space="preserve">
+    <value>Email Server Name</value>
+  </data>
+  <data name="ManageEmailFromTooltip" xml:space="preserve">
+    <value>Email address of the sending account</value>
+  </data>
+  <data name="ManageEmailEnableSslYesTooltip" xml:space="preserve">
+    <value>Does the server require SSL?</value>
+  </data>
+  <data name="ManageEmailEnableSslNoTooltip" xml:space="preserve">
+    <value>Does the server require SSL?</value>
+  </data>
+  <data name="ManageEmailAttachmentFilterTooltip" xml:space="preserve">
+    <value>Filter for the file you want to attach</value>
+  </data>
+  <data name="ManageEmailAttachmentDriveNameTooltip" xml:space="preserve">
+    <value>The full path of the files you would like to attach</value>
+  </data>
+  <data name="ManageEmailAttachmentCancelTooltip" xml:space="preserve">
+    <value>Cancel changes and close window</value>
+  </data>
+  <data name="ManageEmailAttachmentAttachTooltip" xml:space="preserve">
+    <value>Attach the selected files to the email</value>
+  </data>
+  <data name="ManageEmailAttachmentAddDriveTooltip" xml:space="preserve">
+    <value>Select the files you want to attach</value>
+  </data>
+  <data name="ManageDbSourceUserNameTooltip" xml:space="preserve">
+    <value>Account Name</value>
+  </data>
+  <data name="ManageDbSourceTestTooltip" xml:space="preserve">
+    <value>Test the connection to the database server</value>
+  </data>
+  <data name="ManageDbSourceServerTypeTooltip" xml:space="preserve">
+    <value>Select the type of database you want to connect to</value>
+  </data>
+  <data name="ManageDbSourceServerNameTooltip" xml:space="preserve">
+    <value>The name or URL of the server that hosts the database</value>
+  </data>
+  <data name="ManageDbSourcePasswordTooltip" xml:space="preserve">
+    <value>Password for the account</value>
+  </data>
+  <data name="ManageDbSourceDatabaseTooltip" xml:space="preserve">
+    <value>Select the database you want to use</value>
+  </data>
+  <data name="ManageDbSourceCancelTestTooltip" xml:space="preserve">
+    <value>Cancel the execution of the test</value>
+  </data>
+  <data name="ManageDbServiceTestActionTooltip" xml:space="preserve">
+    <value>Test the procedure or function</value>
+  </data>
+  <data name="ManageDbServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the database you want to use</value>
+  </data>
+  <data name="ManageDbServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a database</value>
+  </data>
+  <data name="ManageDbServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected database source</value>
+  </data>
+  <data name="ManageDbServiceActionsTooltip" xml:space="preserve">
+    <value>Select the procedure or function you want to perform on the database</value>
+  </data>
+  <data name="LoggingViewStudioFileLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogOffTooltip" xml:space="preserve">
+    <value>No Studio logging.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogFatalTooltip" xml:space="preserve">
+    <value>Log Studio Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogErrorTooltip" xml:space="preserve">
+    <value>Log Studio Error and Studio Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioFileLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogOffTooltip" xml:space="preserve">
+    <value>No logging</value>
+  </data>
+  <data name="LoggingViewStudioEventLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogFatalTooltip" xml:space="preserve">
+    <value>Log Fatal events</value>
+  </data>
+  <data name="LoggingViewStudioEventLogErrorTooltip" xml:space="preserve">
+    <value>Log Studio Error and Studio Fatal events.</value>
+  </data>
+  <data name="LoggingViewStudioEventLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogOffTooltip" xml:space="preserve">
+    <value>No logging.</value>
+  </data>
+  <data name="LoggingViewServerFileLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogFatalTooltip" xml:space="preserve">
+    <value>Log Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogErrorTooltip" xml:space="preserve">
+    <value>Log Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerFileLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogWarnTooltip" xml:space="preserve">
+    <value>Log Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogTraceTooltip" xml:space="preserve">
+    <value>Log Trace, Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogOffTooltip" xml:space="preserve">
+    <value>No logging</value>
+  </data>
+  <data name="LoggingViewServerEventLogInfoTooltip" xml:space="preserve">
+    <value>Log Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogFatalTooltip" xml:space="preserve">
+    <value>Log Fatal events</value>
+  </data>
+  <data name="LoggingViewServerEventLogErrorTooltip" xml:space="preserve">
+    <value>Log Error and Fatal events.</value>
+  </data>
+  <data name="LoggingViewServerEventLogDebugTooltip" xml:space="preserve">
+    <value>Log Debug, Info, Warning, Error and Fatal events.</value>
+  </data>
+  <data name="LengthToolTipResult" xml:space="preserve">
+    <value>Only variables go in here. Returns a number specifying the highest index / max index in the recordset.</value>
+  </data>
+  <data name="LengthToolTipRecordset" xml:space="preserve">
+    <value>To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]</value>
+  </data>
+  <data name="InputEmptyIsNullToolTip" xml:space="preserve">
+    <value>Use NULL when empty.</value>
+  </data>
+  <data name="InputDefaultValueToolTip" xml:space="preserve">
+    <value>Hard coded values or variables.</value>
+  </data>
+  <data name="FormatNumberToolTipRoundvalue" xml:space="preserve">
+    <value>At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand.</value>
+  </data>
+  <data name="FormatNumberToolTipRoundType" xml:space="preserve">
+    <value>How would you like to round the number?
+None: No rounding is done
+Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
+Up: 1-9 all round up
+Down: 1-9 all round down</value>
+  </data>
+  <data name="FormatNumberToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the formatted number.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="FormatNumberToolTipNumber" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To format a number, put the number in here.</value>
+  </data>
+  <data name="FormatNumberToolTipDecimalsToShow" xml:space="preserve">
+    <value>How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15.</value>
+  </data>
+  <data name="ForEachToolTipForEachType" xml:space="preserve">
+    <value>Generally Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+[[Customer(2).ID]],
+[[Customer(3).ID]].
+* in Range allows you to input a range of indexes.
+* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+* in Recordset will execute every index in the given recordset.
+* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... up to the number you specify.
+No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.</value>
+  </data>
+  <data name="FindToolTipTo" xml:space="preserve">
+    <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
+  </data>
+  <data name="FindToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the indexes of the successful matches.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+If there are multiple results and a scalar is used, then each result will be separated with a comma.</value>
+  </data>
+  <data name="FindToolTipRequireAllMatchesToBeTrue" xml:space="preserve">
+    <value>Will only return rows that match all of the criteria if selected.</value>
+  </data>
+  <data name="FindToolTipRequireAllFieldsToMatch" xml:space="preserve">
+    <value>Will only return rows where each field specified meets the match criteria if selected.</value>
+  </data>
+  <data name="FindToolTipMatch" xml:space="preserve">
+    <value>Match data</value>
+  </data>
+  <data name="FindToolTipLookForMatchType" xml:space="preserve">
+    <value>Select the type of information you want to match on.</value>
+  </data>
+  <data name="FindToolTipInFields" xml:space="preserve">
+    <value>To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here.</value>
+  </data>
+  <data name="FindToolTipFrom" xml:space="preserve">
+    <value>The value that the search will start at, this must be a number, date or time and must be the same type as the "To" type.</value>
+  </data>
+  <data name="FindIndexToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the index(s) of the found string.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record. 
+If you are finding All Occurrences and using a scalar, the results will be comma separated.</value>
+  </data>
+  <data name="FindIndexToolTipInField" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the character index(s) of a string inside another string, put the string to be searched here.</value>
+  </data>
+  <data name="FindIndexToolTipIndexType" xml:space="preserve">
+    <value>Select which index(s) you would like found.</value>
+  </data>
+  <data name="FindIndexToolTipDirectionType" xml:space="preserve">
+    <value>Select the direction to search in.</value>
+  </data>
+  <data name="FindIndexToolTipCharacters" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put  the index of the string you are looking for in here.</value>
+  </data>
+  <data name="ExplorerSearchToolTip" xml:space="preserve">
+    <value>Filter the connected resources</value>
+  </data>
+  <data name="ExplorerRefreshToolTip" xml:space="preserve">
+    <value>Refresh the connected resources</value>
+  </data>
+  <data name="ExplorerItemExecuteToolTip" xml:space="preserve">
+    <value>You have execute permission on this item. Click to execute</value>
+  </data>
+  <data name="ExplorerItemEditToolTip" xml:space="preserve">
+    <value>You have view permission on this item. Click to open</value>
+  </data>
+  <data name="ExplorerClearSearchTooltip" xml:space="preserve">
+    <value>Clear the filter on connected resources</value>
+  </data>
+  <data name="ExpandCollapseAllToolTip" xml:space="preserve">
+    <value>Expand or collapse all execution nodes.</value>
+  </data>
+  <data name="EmailToolTipTo" xml:space="preserve">
+    <value>List the email addresses you want to send to separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
+  </data>
+  <data name="EmailToolTipSubject" xml:space="preserve">
+    <value>Enter the subject for your email.</value>
+  </data>
+  <data name="EmailToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the send action.</value>
+  </data>
+  <data name="EmailToolTipPriorityType" xml:space="preserve">
+    <value>Select the message priority.</value>
+  </data>
+  <data name="EmailToolTipPassword" xml:space="preserve">
+    <value>Enter the password, if there is one, for the account you are sending from.</value>
+  </data>
+  <data name="EmailToolTipMailSource" xml:space="preserve">
+    <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
+  </data>
+  <data name="EmailToolTipFromAddress" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To send an email, enter the email address of the account you want to send from.
+If you are on a domain, you still need to provide the email address of the account you are sending from.
+If you leave it blank, the account used to setup the Email Source will be used.</value>
+  </data>
+  <data name="EmailToolTipCc" xml:space="preserve">
+    <value>List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
+  </data>
+  <data name="EmailTooltipBodyCheckbox" xml:space="preserve">
+    <value>Sets the body type to HTML (Checked) or plain text (Unchecked)</value>
+  </data>
+  <data name="EmailToolTipBody" xml:space="preserve">
+    <value>The main body of the email goes in here.</value>
+  </data>
+  <data name="EmailToolTipBcc" xml:space="preserve">
+    <value>List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
+  </data>
+  <data name="EmailToolTipAttachments" xml:space="preserve">
+    <value>Enter the path to the attachments you want to send separated by a semicolon ;</value>
+  </data>
+  <data name="DuplicateToolTip" xml:space="preserve">
+    <value>Duplicate the current resource</value>
+  </data>
+  <data name="DuplicateCheckBoxTooltip" xml:space="preserve">
+    <value>Duplicated items will reference each other (checked) or leave the dependancy on the origional item (unchecked)</value>
+  </data>
+  <data name="DuplicateButtonTooltip" xml:space="preserve">
+    <value>Duplicate the Resource(s)</value>
+  </data>
+  <data name="DropBoxToolTipNewSource" xml:space="preserve">
+    <value>Create a New Dropbox connection.</value>
+  </data>
+  <data name="DropBoxToolTipLocalSource" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+The file must be available on the local file system.</value>
+  </data>
+  <data name="DropBoxToolTipEditSource" xml:space="preserve">
+    <value>Edit the Dropbox connection properties.</value>
+  </data>
+  <data name="DropboxSourceToolTip" xml:space="preserve">
+    <value>Select the Dropbox source that the file operation will be performed on.</value>
+  </data>
+  <data name="DropboxReadFoldersToolTip" xml:space="preserve">
+    <value>Just get the folders</value>
+  </data>
+  <data name="DropboxReadFilesToolTip" xml:space="preserve">
+    <value>Just get the files</value>
+  </data>
+  <data name="DropboxReadFilesFoldersToolTip" xml:space="preserve">
+    <value>Get the files and folders</value>
+  </data>
+  <data name="DropboxOperationToolTip" xml:space="preserve">
+    <value>Select the operation that you wish to perform. Read from a file on Dropbox.</value>
+  </data>
+  <data name="DropBoxFileListRecursiveToolTip" xml:space="preserve">
+    <value>Get the sub folders information as well.</value>
+  </data>
+  <data name="DropBoxFileListFileNameToolTip" xml:space="preserve">
+    <value>The folder on Dropbox to list</value>
+  </data>
+  <data name="DropBoxDownloadToolTipLocalDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+This is the name of the file that will be read from Dropbox.
+NOTE: The file path must use "/" to identify folders and not "\".</value>
+  </data>
+  <data name="DropBoxDeleteFileNameTooltip" xml:space="preserve">
+    <value>The file or folder you want to delete on Dropbox</value>
+  </data>
+  <data name="DotNetPluginServiceSelectNamespaceToolTip" xml:space="preserve">
+    <value>Select a ClassName or a fully qualified ClassName(Namespace+ClassName) to help find the correct action.</value>
+  </data>
+  <data name="DotNetInsertToolTipColumn" xml:space="preserve">
+    <value>Hard coded values or variables.</value>
+  </data>
+  <data name="DisabledToolTip" xml:space="preserve">
+    <value>Cannot execute this command on an unsaved workflow</value>
+  </data>
+  <data name="DeployToolTip" xml:space="preserve">
+    <value>Move current resource between Warewolf servers</value>
+  </data>
+  <data name="DeploySelectDependenciesTooltip" xml:space="preserve">
+    <value>Automatically select dependent resources. WARNING: Overwriting Sources on the destination is not recommended.</value>
+  </data>
+  <data name="DeployCommandTooltip" xml:space="preserve">
+    <value>Click to Deploy to source server resources to the destination server.</value>
+  </data>
+  <data name="DependenciesToolTip" xml:space="preserve">
+    <value>View which resources are dependant on the current resource</value>
+  </data>
+  <data name="DeleteVariableListObjectTooltip" xml:space="preserve">
+    <value>Click to delete unused variable of this object.</value>
+  </data>
+  <data name="DeleteToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="DeleteToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the Delete action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DeleteToolTipRecords" xml:space="preserve">
+    <value>* in Recordset will execute every index in the given recordset.</value>
+  </data>
+  <data name="DeleteToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="DeleteToolTipFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To Delete a file or folder, put the full path and file or folder name to delete in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="DeleteItemTooltip" xml:space="preserve">
+    <value>Delete the resource</value>
+  </data>
+  <data name="DeleteFolderTooltip" xml:space="preserve">
+    <value>Delete the folder and its resources</value>
+  </data>
+  <data name="DebugToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service  [F5] or [F6] or [F7]</value>
+  </data>
+  <data name="DebugStudioToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service</value>
+  </data>
+  <data name="DebugOutputViewAddNewTestUnsavedToolTip" xml:space="preserve">
+    <value>You can only create a test once the workflow is saved</value>
+  </data>
+  <data name="DebugOutputViewAddNewTestToolTip" xml:space="preserve">
+    <value>Create a new test</value>
+  </data>
+  <data name="DebugOutputSearchToolTip" xml:space="preserve">
+    <value>Filter the debug output information</value>
+  </data>
+  <data name="DebugOutputOptionsToolTip" xml:space="preserve">
+    <value>Adjust the debug output</value>
+  </data>
+  <data name="DebugOutputClearSearchTooltip" xml:space="preserve">
+    <value>Clear the filter box</value>
+  </data>
+  <data name="DebugInputsToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service</value>
+  </data>
+  <data name="DebugBrowserToolTip" xml:space="preserve">
+    <value>Run and debug your workflow service</value>
+  </data>
+  <data name="DbInsertToolTipColumn" xml:space="preserve">
+    <value>This data is used for testing and not at run time.</value>
+  </data>
+  <data name="DateTimeToolTipTimeType" xml:space="preserve">
+    <value>Select the unit of time to add or subtract. This is ignored if the unit is blank or 0.</value>
+  </data>
+  <data name="DateTimeToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the formatted and/or added/subtracted date time.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DateTimeToolTipOutputformat" xml:space="preserve">
+    <value>Describe the format you would like the date time to be returned in.
+Leaving this field blank will assume the same as the Input Format.
+To include text or non-date information use 'around the text you want to escape'. 
+e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
+  </data>
+  <data name="DateTimeToolTipInputformat" xml:space="preserve">
+    <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+Leaving this field blank will assume the system date time format.
+To escape text or non-date information use 'around the text you want to escape'. 
+e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
+  </data>
+  <data name="DateTimeToolTipDatetime" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To format a date time, or to add/subtract from a date time, put it in here.
+Leaving this field blank will give you the system date time.</value>
+  </data>
+  <data name="DateTimeToolTipAddtime" xml:space="preserve">
+    <value>Put a positive or negative number here to add or subtract from the input date time.
+Leave this field blank if you do not want to change the date time.</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the difference in time between the two date times.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipOutputType" xml:space="preserve">
+    <value>Select the unit of time to output the difference in.</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipInputFormat" xml:space="preserve">
+    <value>The format of the eg. yyyy-dd-mm</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipDatetime2" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
+Leaving this field blank will give you the system date time.</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipDatetime1" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
+Leaving this field blank will give you the system date time.</value>
+  </data>
+  <data name="DataSplitToolTipWithtype" xml:space="preserve">
+    <value>Select where you would like to split the data.</value>
+  </data>
+  <data name="DataSplitToolTipUsing" xml:space="preserve">
+    <value>For Index use the number of characters that this split will use. 
+For Char put any characters or combination of characters you would like.
+Not applicable to New Line, Tab or End</value>
+  </data>
+  <data name="DataSplitToolTipString" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To split a value into one or more variables, put the value in here.
+You can process entire file content or just trim the white space from a variable.</value>
+  </data>
+  <data name="DataSplitToolTipSkipBlankRows" xml:space="preserve">
+    <value>For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards.</value>
+  </data>
+  <data name="DataSplitToolTipResults" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the split data in the pattern as described by the results.
+The variable pattern will be repeated until the end of the input data.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DataSplitToolTipProcessDirection" xml:space="preserve">
+    <value>Default direction to process is forward or left to right (reading direction). 
+Selecting Backwards will process from the end of the data (right) to the beginning (left).</value>
+  </data>
+  <data name="DataSplitToolTipInclude" xml:space="preserve">
+    <value>If you would like the data or item you are splitting on to be included in the result data, select this checkbox.</value>
+  </data>
+  <data name="DataSplitToolTipEscape" xml:space="preserve">
+    <value>If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. 
+e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters.</value>
+  </data>
+  <data name="DataMergeToolTipWithtype" xml:space="preserve">
+    <value>Select the type of merge you would like between each piece of merged data, if any.</value>
+  </data>
+  <data name="DataMergeToolTipUsing" xml:space="preserve">
+    <value>For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.
+For Char put any characters or combination of characters you would like.
+Not applicable to New Line or Tab</value>
+  </data>
+  <data name="DataMergeToolTipResult" xml:space="preserve">
+    <value>Only variables go in here. Returns the merged string.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DataMergeToolTipPadding" xml:space="preserve">
+    <value>If Index is being used and there is extra space between the data supplied and the number of index characters, 
+you can specify what makes up the padding e.g. 0 for numbers or blank space for text.</value>
+  </data>
+  <data name="DataMergeToolTipInput" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To join two or more pieces of data together list them in the order you would like them joined. 
+If you use recordset (*) notation, the list will be repeated for every record.</value>
+  </data>
+  <data name="DataMergeToolTipAlignType" xml:space="preserve">
+    <value>For Index you can specify if your data is aligned to the right or left.
+E.g. Text is normally left and numbers normally right.</value>
+  </data>
+  <data name="DataListVariableInputTooltip" xml:space="preserve">
+    <value>The variable name you want to declare, without the [[ ]] braces</value>
+  </data>
+  <data name="DataListOutputCheckBoxTooltip" xml:space="preserve">
+    <value>Will return this variable as a response</value>
+  </data>
+  <data name="DataListInputCheckBoxTooltip" xml:space="preserve">
+    <value>Allows this variable to be passed into the service</value>
+  </data>
+  <data name="CreateToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="CreateToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Create action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CreateToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to perform this action. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="CreateToolTipForceOverWrite" xml:space="preserve">
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="CreateToolTipFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To create a file or folder, put the full path and file or folder name here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="CreateJSONToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the inputs in JSON format.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CreateJSONToolTipName" xml:space="preserve">
+    <value>The JSON variable name will default to the Warewolf variable name in the Data column. 
+Array and Object names will default to the recordset name used. 
+Object data names will be the field names of the recordset.</value>
+  </data>
+  <data name="CreateJSONToolTipInput" xml:space="preserve">
+    <value>To create JSON data, enter the Name and Data of the JSON variables. 
+To create JSON Arrays use a single recordset field with a star for every record e.g.[[rec(*).name]] 
+To create JSON Objects, use a comma separated list of recordset fields, or, just the recordset name to use the whole recordset. 
+e.g.  [[rec(*).surname]], [[rec(*).name]], [[rec(*).middle]] or simply [[rec(*)]]</value>
+  </data>
+  <data name="CountToolTipResult" xml:space="preserve">
+    <value>Only variables go in here. 
+Returns a number specifying how many records/indexes are in the recordset.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset() will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CountToolTipRecordset" xml:space="preserve">
+    <value>To Count the number of records/indexes in a recordset, put the name in here.</value>
+  </data>
+  <data name="CopyUrlToolTip" xml:space="preserve">
+    <value>Copy the current resource Url</value>
+  </data>
+  <data name="ErrorsAdornerCopyToClipboardTooltip" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
+  <data name="CopyToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source.
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="CopyToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Copy action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CopyToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. 
+By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="CopyToolTipForceoverwrite" xml:space="preserve">
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+  </data>
+  <data name="CopyToolTipFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To copy a file or folder, put the full path and file or folder name here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="CopyToolTipDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are copying to here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="ConnectControlToggleConnectionToolTip" xml:space="preserve">
+    <value>Connect / disconnect the selected server</value>
+  </data>
+  <data name="ConnectControlEditConnectionToolTip" xml:space="preserve">
+    <value>Edit the selected server</value>
+  </data>
+  <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
+    <value>Select the Warewolf server you want to use or click New Remote Server...</value>
+  </data>
+  <data name="CommentToolTipComment" xml:space="preserve">
+    <value>Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
+You can connect comments into the process flow and they will simply be skipped during execution. 
+However, they will appear in the debug output.</value>
+  </data>
+  <data name="ComManagePluginSourceRefreshTooltip" xml:space="preserve">
+    <value>Refresh the available COM DLL</value>
+  </data>
+  <data name="ComManagePluginSourceFilterTooltip" xml:space="preserve">
+    <value>Filter for the COM DLL you want </value>
+  </data>
+  <data name="ComManagePluginSourceClearSearchTooltip" xml:space="preserve">
+    <value>Clear the filter criteria</value>
+  </data>
+  <data name="ComManagePluginSourceAssemblyNameTooltip" xml:space="preserve">
+    <value>The programmatic identifier you want to use</value>
+  </data>
+  <data name="ComManagePluginServiceSourcesTooltip" xml:space="preserve">
+    <value>Select the COM plugin you want to use</value>
+  </data>
+  <data name="ComManagePluginServiceNewSourceTooltip" xml:space="preserve">
+    <value>Create a new connection to a COM DLL</value>
+  </data>
+  <data name="ComManagePluginServiceEditSourceTooltip" xml:space="preserve">
+    <value>Edits the selected COM plugin source connection</value>
+  </data>
+  <data name="CMDLineToolTipResult" xml:space="preserve">
+    <value>Returns the output of the execution if any. Varies depending on what was executed.</value>
+  </data>
+  <data name="CMDLineToolTipPrioritytype" xml:space="preserve">
+    <value>The process priority for execution. 
+Very helpful for long running processes that need/don’t need to be resource intensive.</value>
+  </data>
+  <data name="CMDLineToolTipCMD" xml:space="preserve">
+    <value>Any variable and/or data goes in here. 
+To execute a command line action or actions, enter them in here. 
+Acts like a batch file. Any user driven task will simply be ignored.</value>
+  </data>
+  <data name="ClearVariableListFilterTooltip" xml:space="preserve">
+    <value>Click to clear the filter text.</value>
+  </data>
+  <data name="CaseConversionToolTipTextInput" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To convert the case of some text, put the variable containing the text here.</value>
+  </data>
+  <data name="CaseConversionToolTipConvertToCasetype" xml:space="preserve">
+    <value>Select the type of conversion you would like to make.</value>
+  </data>
+  <data name="CancelButtonTooltip" xml:space="preserve">
+    <value>Cancel this action</value>
+  </data>
+  <data name="CalculateToolTipResult" xml:space="preserve">
+    <value>Returns the calculation result.</value>
+  </data>
+  <data name="CalculateToolTipFx" xml:space="preserve">
+    <value>Excel like calculation</value>
+  </data>
+  <data name="CalculateForAggregatesToolTipResult" xml:space="preserve">
+    <value>Returns the calculation result.</value>
+  </data>
+  <data name="CalculateForAggregatesToolTipFx" xml:space="preserve">
+    <value>Excel like calculation</value>
+  </data>
+  <data name="BaseConversionToolTipTotype" xml:space="preserve">
+    <value>Select the type of data you are converting to.
+e.g. If the data is Binary and you would like Text, then select Text here.</value>
+  </data>
+  <data name="BaseConversionToolTipFromtype" xml:space="preserve">
+    <value>Select the type of data you are converting from.
+e.g. If the data is Binary and you would like Text, then select Binary here.</value>
+  </data>
+  <data name="BaseConversionToolTipBaseInput" xml:space="preserve">
+    <value>Any variable and data goes in here.
+To convert Text, Hex, Binary and Base64, put the data to be converted in here.</value>
+  </data>
+  <data name="AssignToolTipVariable" xml:space="preserve">
+    <value>Only variables go in here.
+To assign a value to a variable, put the variable here.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="AssignToolTipNewValue" xml:space="preserve">
+    <value>To assign a value to a variable, put the value in here.
+= as the first character for maths e.g. =[[qty]]*[[price]]</value>
+  </data>
+  <data name="AssignObjectToolTipVariable" xml:space="preserve">
+    <value>Only objects go in here. To assign a value to an object, put the object path in here.</value>
+  </data>
+  <data name="AnonymousAuthenticationToolTip" xml:space="preserve">
+    <value>Connect using anonymous security credentials</value>
+  </data>
+  <data name="SftpPrivateKeyValueTooltip" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To create a SFTP Key, put the full path and file or folder name here.</value>
+  </data>
+  <data name="DropBoxDownloadFileNameTooltip" xml:space="preserve">
+    <value>Any variable and/or data goes in here.	This is the name of the file that will be downloaded from Dropbox.	NOTE: The file path must use "/" to identify folders and not "\".</value>
+  </data>
+  <data name="Tool_Javascript" xml:space="preserve">
+    <value>Tags: javascript script JSON JS</value>
+  </data>
+  <data name="Tool_WebMethod_Put" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Post" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Get" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Delete" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_Utility_Xpath" xml:space="preserve">
+    <value>Tags: xml</value>
+  </data>
+  <data name="Tool_Utility_Web_Request" xml:space="preserve">
+    <value>Tags: header page content html</value>
+  </data>
+  <data name="Tool_Utility_Sys_Info" xml:space="preserve">
+    <value>Tags: date time format disk cpu memory ram resource language region user roles name domain computer hardware physical user port system virtual ip</value>
+  </data>
+  <data name="Tool_Utility_Random" xml:space="preserve">
+    <value>Tags: guid generate </value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Publish" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Consume" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_Utility_Format_Number" xml:space="preserve">
+    <value>Tags: decimal round</value>
+  </data>
+  <data name="Tool_Utility_Date_Time" xml:space="preserve">
+    <value>Tags: year month week day hour second split format add subtract</value>
+  </data>
+  <data name="Tool_Utility_Date_Time_Diff" xml:space="preserve">
+    <value>Tags: year month week day hour second split format compare datepart part</value>
+  </data>
+  <data name="Tool_Utility_Create_JSON" xml:space="preserve">
+    <value>Tags: object</value>
+  </data>
+  <data name="Tool_Utility_Comment" xml:space="preserve">
+    <value>Tags: note</value>
+  </data>
+  <data name="Tool_Utility_Calculate" xml:space="preserve">
+    <value>Tags: add subtract minus maths divide power compute excel exel math times multiply plus equal equals sum</value>
+  </data>
+  <data name="Tool_Utility_Aggregate_Calculate" xml:space="preserve">
+    <value>Tags: function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv math</value>
+  </data>
+  <data name="Tool_SharePoint_Upload_File" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Update_List_Item" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Read_List_Item" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Read_Folder" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Move_File" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Download_File" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_List_Item" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_File" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Create_List_Item" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Copy_File" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_Scripting_Script" xml:space="preserve">
+    <value>Tags: javascript python ruby</value>
+  </data>
+  <data name="Tool_Scripting_CMD_Script" xml:space="preserve">
+    <value>Tags: command line shell</value>
+  </data>
+  <data name="Tool_Resources_WCF" xml:space="preserve">
+    <value>Tags: source connector header</value>
+  </data>
+  <data name="Tool_Resources_Service" xml:space="preserve">
+    <value>Tags: source connector header</value>
+  </data>
+  <data name="Tool_Resources_Dot_net_DLL" xml:space="preserve">
+    <value>Tags: source connector header</value>
+  </data>
+  <data name="Tool_Resources_Com_DLL" xml:space="preserve">
+    <value>Tags: source connector header</value>
+  </data>
+  <data name="Tool_Recordset_Unique_Records" xml:space="preserve">
+    <value>Tags: distinct</value>
+  </data>
+  <data name="Tool_Recordset_Sort" xml:space="preserve">
+    <value>Tags: order by</value>
+  </data>
+  <data name="Tool_Recordset_Length" xml:space="preserve">
+    <value>Tags: max index</value>
+  </data>
+  <data name="Tool_Recordset_Find_Records" xml:space="preserve">
+    <value>Tags: search</value>
+  </data>
+  <data name="Tool_Recordset_Delete" xml:space="preserve">
+    <value>Tags: remove</value>
+  </data>
+  <data name="Tool_Recordset_Count" xml:space="preserve">
+    <value>Tags: total</value>
+  </data>
+  <data name="Tool_LoopConstruct_Select_and_Apply" xml:space="preserve">
+    <value>Tags: repeat update function</value>
+  </data>
+  <data name="Tool_LoopConstruct_For_Each" xml:space="preserve">
+    <value>Tags: repeat while</value>
+  </data>
+  <data name="Tool_Flow_Switch" xml:space="preserve">
+    <value>Tags: match branch case</value>
+  </data>
+  <data name="Tool_Flow_Sequence" xml:space="preserve">
+    <value>Tags: consolidate cleanup group nest</value>
+  </data>
+  <data name="Tool_Flow_Decision" xml:space="preserve">
+    <value>Tags: assert is match true false</value>
+  </data>
+  <data name="Tool_File_Zip" xml:space="preserve">
+    <value>Tags: archive directory folder</value>
+  </data>
+  <data name="Tool_File_Write_File" xml:space="preserve">
+    <value>Tags: append overwrite content data set</value>
+  </data>
+  <data name="Tool_File_Unzip" xml:space="preserve">
+    <value>Tags: directory folder</value>
+  </data>
+  <data name="Tool_File_Rename" xml:space="preserve">
+    <value>Tags: directory folder</value>
+  </data>
+  <data name="Tool_File_Read_Folder" xml:space="preserve">
+    <value>Tags: directory</value>
+  </data>
+  <data name="Tool_File_Read_File" xml:space="preserve">
+    <value>Tags: open get content data</value>
+  </data>
+  <data name="Tool_File_Move" xml:space="preserve">
+    <value>Tags: directory folder</value>
+  </data>
+  <data name="Tool_File_Delete" xml:space="preserve">
+    <value>Tags: remove directory folder</value>
+  </data>
+  <data name="Tool_File_Create" xml:space="preserve">
+    <value>Tags: new directory folder</value>
+  </data>
+  <data name="Tool_File_Copy" xml:space="preserve">
+    <value>Tags: duplicate directory folder</value>
+  </data>
+  <data name="Tool_Email_SMTP_Send" xml:space="preserve">
+    <value>Tags: source</value>
+  </data>
+  <data name="Tool_Email_Exchange_Send" xml:space="preserve">
+    <value>Tags: source</value>
+  </data>
+  <data name="Tool_Dropbox_Upload" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_Dropbox_List_Contents" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_Dropbox_Download" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_Dropbox_Delete" xml:space="preserve">
+    <value>Tags: source connector</value>
+  </data>
+  <data name="Tool_Database_SQL_Server" xml:space="preserve">
+    <value>Tags: stored procedure function data source microsoft</value>
+  </data>
+  <data name="Tool_Database_SQL_Bulk_Insert" xml:space="preserve">
+    <value>Tags: source microsoft</value>
+  </data>
+  <data name="Tool_Database_PostgreSQL" xml:space="preserve">
+    <value>Tags: stored procedure function data source connector</value>
+  </data>
+  <data name="Tool_Database_Oracle" xml:space="preserve">
+    <value>Tags: stored procedure function data source</value>
+  </data>
+  <data name="Tool_Database_ODBC" xml:space="preserve">
+    <value>Tags: source</value>
+  </data>
+  <data name="Tool_Database_MySQL" xml:space="preserve">
+    <value>Tags: stored procedure function data source</value>
+  </data>
+  <data name="Tool_Data_Replace" xml:space="preserve">
+    <value>Tags: find</value>
+  </data>
+  <data name="Tool_Data_Find_Index" xml:space="preserve">
+    <value>Tags: search string position</value>
+  </data>
+  <data name="Tool_Data_Data_Split" xml:space="preserve">
+    <value>Tags: csv file seperated value index chars new line tab</value>
+  </data>
+  <data name="Tool_Data_Data_Merge" xml:space="preserve">
+    <value>Tags: csv join concatenate seperated value index chars new line tab</value>
+  </data>
+  <data name="Tool_Data_Case_Convert" xml:space="preserve">
+    <value>Tags: upper lower title camel sentence</value>
+  </data>
+  <data name="Tool_Data_Base_Convert" xml:space="preserve">
+    <value>Tags: text binary base 64 base64 hex</value>
+  </data>
+  <data name="Tool_Data_Assign" xml:space="preserve">
+    <value>Tags: declare setup variable set</value>
+  </data>
+  <data name="Tool_Data_Assign_Object" xml:space="preserve">
+    <value>Tags: json array declare setup variable set</value>
+  </data>
+  <data name="Tool_Ruby" xml:space="preserve">
+    <value>Tags: ruby script</value>
+  </data>
+  <data name="Tool_Python" xml:space="preserve">
+    <value>Tags: python script</value>
+  </data>
+</root>

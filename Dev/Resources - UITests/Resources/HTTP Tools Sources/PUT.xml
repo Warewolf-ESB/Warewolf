@@ -1,0 +1,9 @@
+
+<Source ID="b69d9560-52a7-4711-8d11-deb187baba89" Name="PUT" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld:9810/api/products/Put;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerVersion="0.0.6165.17686" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>PUT</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2016-11-18T11:52:54.0178388+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b69d9560-52a7-4711-8d11-deb187baba89" VersionId="8bd1ccfc-6113-450e-821f-49a1f522a154" />
+</Source>

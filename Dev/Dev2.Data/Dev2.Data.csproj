@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Data</RootNamespace>
+    <AssemblyName>Dev2.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Charsets, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\IKVM.OpenJDK.Charsets.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Core, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\IKVM.OpenJDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Text, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\IKVM.OpenJDK.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.Util, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\IKVM.OpenJDK.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.API, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\IKVM.OpenJDK.XML.API.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.Runtime, Version=7.2.4630.5, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\IKVM.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Calculations.XamCalculationManager.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Calculations.XamCalculationManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="policy.2.3.FSharp.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2014.4.6.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="saxon9he, Version=9.7.0.10, Culture=neutral, PublicKeyToken=e1fdd002d5083fe6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\saxon9he.dll</HintPath>
+    </Reference>
+    <Reference Include="saxon9he-api, Version=9.7.0.10, Culture=neutral, PublicKeyToken=e1fdd002d5083fe6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\saxon9he-api.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Compile Include="DataListConversionUtils.cs" />
+    <Compile Include="DataListItem.cs" />
+    <Compile Include="DataListModel.cs" />
+    <Compile Include="DataListTO.cs" />
+    <Compile Include="Decisions\Operations\DecisionUtils.cs" />
+    <Compile Include="Decisions\Operations\IsNotNull.cs" />
+    <Compile Include="Decisions\Operations\IsNull.cs" />
+    <Compile Include="Decisions\Operations\NotBetween.cs" />
+    <Compile Include="Decisions\Operations\NotContains.cs" />
+    <Compile Include="Decisions\Operations\NotEndsWith.cs" />
+    <Compile Include="Decisions\Operations\NotRegex.cs" />
+    <Compile Include="Decisions\Operations\NotStartsWith.cs" />
+    <Compile Include="Dev2Column.cs" />
+    <Compile Include="enDev2ColumnArgumentDirection.cs" />
+    <Compile Include="Enums\enForEachType.cs" />
+    <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
+    <Compile Include="IComplexObject.cs" />
+    <Compile Include="IDataListModel.cs" />
+    <Compile Include="IIndexIterator.cs" />
+    <Compile Include="IndexIterator.cs" />
+    <Compile Include="IndexList.cs" />
+    <Compile Include="Interfaces\ICommon.cs" />
+    <Compile Include="Interfaces\ICommonRecordSetUtil.cs" />
+    <Compile Include="Interfaces\ICommonScalarUtil.cs" />
+    <Compile Include="Interfaces\IDataListItem.cs" />
+    <Compile Include="Interfaces\IParserHelper.cs" />
+    <Compile Include="ListIndexIterator.cs" />
+    <Compile Include="ListOfIndex.cs" />
+    <Compile Include="OptomizedObservableCollection.cs" />
+    <Compile Include="Parsers\XPathParser.cs" />
+    <Compile Include="PathOperations\Enums\WriteType.cs" />
+    <Compile Include="PathOperations\Enums\ReadTypes.cs" />
+    <Compile Include="PathOperations\Extension\PathExtensions.cs" />
+    <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
+    <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
+    <Compile Include="PulseLogger.cs" />
+    <Compile Include="RecordSet.cs" />
+    <Compile Include="ReverseIndexIterator.cs" />
+    <Compile Include="Scalar.cs" />
+    <Compile Include="ScalarNameComparer.cs" />
+    <Compile Include="ServiceModel\ComPluginSource.cs" />
+    <Compile Include="ServiceModel\Connection.cs" />
+    <Compile Include="ServiceModel\RabbitMQSource.cs" />
+    <Compile Include="ServiceModel\OauthSource.cs" />
+    <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
+    <Compile Include="ServiceModel\PluginSource.cs" />
+    <Compile Include="ServiceModel\ResourceBase.cs" />
+    <Compile Include="ServiceModel\SharepointSource.cs" />
+    <Compile Include="ServiceModel\VersionInfo.cs" />
+    <Compile Include="ServiceModel\WebSource.cs" />
+    <Compile Include="ServiceModel\EmailSource.cs" />
+    <Compile Include="ServiceModel\Resource.cs" />
+    <Compile Include="ServiceModel\ResourceForTree.cs" />
+    <Compile Include="ServiceTestInputTO.cs" />
+    <Compile Include="ServiceTestModelTO.cs" />
+    <Compile Include="ServiceTestOutputTO.cs" />
+    <Compile Include="ServiceTestStepTO.cs" />
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Builders\DataListIntellisenseBuilder.cs" />
+    <Compile Include="Builders\DefinitionBuilder.cs" />
+    <Compile Include="Builders\RecordSetCollectionBuilder.cs" />
+    <Compile Include="Decisions\Dev2DataListDecisionHandler.cs" />
+    <Compile Include="Decisions\Operations\Dev2DecisionFactory.cs" />
+    <Compile Include="Decisions\Operations\enDecisionType.cs" />
+    <Compile Include="Decisions\Operations\IDecisionOperation.cs" />
+    <Compile Include="Decisions\Operations\IsAlphanumeric.cs" />
+    <Compile Include="Decisions\Operations\IsBase64.cs" />
+    <Compile Include="Decisions\Operations\IsBetween.cs" />
+    <Compile Include="Decisions\Operations\IsBinary.cs" />
+    <Compile Include="Decisions\Operations\IsContains.cs" />
+    <Compile Include="Decisions\Operations\IsDate.cs" />
+    <Compile Include="Decisions\Operations\IsEmail.cs" />
+    <Compile Include="Decisions\Operations\IsEndsWith.cs" />
+    <Compile Include="Decisions\Operations\IsEqual.cs" />
+    <Compile Include="Decisions\Operations\IsError.cs" />
+    <Compile Include="Decisions\Operations\IsGreaterThan.cs" />
+    <Compile Include="Decisions\Operations\IsGreaterThanOrEqual.cs" />
+    <Compile Include="Decisions\Operations\IsHex.cs" />
+    <Compile Include="Decisions\Operations\IsLessThan.cs" />
+    <Compile Include="Decisions\Operations\IsLessThanOrEqual.cs" />
+    <Compile Include="Decisions\Operations\IsNotAlphanumeric.cs" />
+    <Compile Include="Decisions\Operations\IsNotBase64.cs" />
+    <Compile Include="Decisions\Operations\IsNotBinary.cs" />
+    <Compile Include="Decisions\Operations\IsNotDate.cs" />
+    <Compile Include="Decisions\Operations\IsNotEmail.cs" />
+    <Compile Include="Decisions\Operations\IsNotEqual.cs" />
+    <Compile Include="Decisions\Operations\IsNotError.cs" />
+    <Compile Include="Decisions\Operations\IsNotHex.cs" />
+    <Compile Include="Decisions\Operations\IsNotNumeric.cs" />
+    <Compile Include="Decisions\Operations\IsNotText.cs" />
+    <Compile Include="Decisions\Operations\IsNotXml.cs" />
+    <Compile Include="Decisions\Operations\IsNumeric.cs" />
+    <Compile Include="Decisions\Operations\IsRegEx.cs" />
+    <Compile Include="Decisions\Operations\IsStartsWith.cs" />
+    <Compile Include="Decisions\Operations\IsText.cs" />
+    <Compile Include="Decisions\Operations\IsXml.cs" />
+    <Compile Include="PathOperations\ActivityIOFactory.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOBroker.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOPath.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOPathUtils.cs" />
+    <Compile Include="PathOperations\Dev2FileSystemProvider.cs" />
+    <Compile Include="PathOperations\Dev2FTPProvider.cs" />
+    <Compile Include="PathOperations\enActivityPathType.cs" />
+    <Compile Include="PathOperations\Enums\enPathType.cs" />
+    <Compile Include="PathOperations\Interfaces\IActivityIOOperationsEndPoint.cs" />
+    <Compile Include="PathOperations\Interfaces\IActivityIOPath.cs" />
+    <Compile Include="PathOperations\Interfaces\IActivityOperationsBroker.cs" />
+    <Compile Include="PathOperations\Interfaces\IFileWrite.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathAuth.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathCertVerify.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathInput.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathOutput.cs" />
+    <Compile Include="PathOperations\Interfaces\IPathOverwrite.cs" />
+    <Compile Include="PathOperations\Interfaces\IRepository.cs" />
+    <Compile Include="PathOperations\Interfaces\IRepositoryItem.cs" />
+    <Compile Include="PathOperations\Interfaces\IUnZip.cs" />
+    <Compile Include="PathOperations\Interfaces\IZip.cs" />
+    <Compile Include="PathOperations\TO\Dev2CRUDOperationTO.cs" />
+    <Compile Include="PathOperations\TO\Dev2PutOperationTO.cs" />
+    <Compile Include="PathOperations\TO\Dev2PutRawOperationTO.cs" />
+    <Compile Include="PathOperations\TO\Dev2UnZipOperationTO.cs" />
+    <Compile Include="PathOperations\TO\Dev2ZipOperationTO.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2DecisionMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DataListMergeFrequency.cs" />
+    <Compile Include="Enums\Dev2ArgumentType.cs" />
+    <Compile Include="Enums\enActionType.cs" />
+    <Compile Include="Enums\enDataListMergeTypes.cs" />
+    <Compile Include="Enums\enForEachExecutionType.cs" />
+    <Compile Include="Enums\enIndexFinderDirection.cs" />
+    <Compile Include="Enums\enIndexFinderOccurrence.cs" />
+    <Compile Include="Enums\enIntellisenseErrorCode.cs" />
+    <Compile Include="Enums\enIntellisenseResultType.cs" />
+    <Compile Include="Enums\enMergeAlignment.cs" />
+    <Compile Include="Enums\enMergeType.cs" />
+    <Compile Include="Enums\enRecordsetIndexType.cs" />
+    <Compile Include="Enums\enRoundingType.cs" />
+    <Compile Include="Enums\enSystemTags.cs" />
+    <Compile Include="Enums\enTranslationDepth.cs" />
+    <Compile Include="Enums\enTranslationTypes.cs" />
+    <Compile Include="Exceptions\Dev2DataLanguageParseError.cs" />
+    <Compile Include="Factories\DataListFactory.cs" />
+    <Compile Include="Factories\Dev2OperationsFactory.cs" />
+    <Compile Include="Factories\IntellisenseFactory.cs" />
+    <Compile Include="Interfaces\IDataListCompiler.cs" />
+    <Compile Include="Interfaces\IDataListVerifyPart.cs" />
+    <Compile Include="Interfaces\IDataListVerifyPartDuplicationParser.cs" />
+    <Compile Include="Interfaces\IDev2DataLangaugeParseError.cs" />
+    <Compile Include="Interfaces\IDev2DataLanguageIntellisensePart.cs" />
+    <Compile Include="Interfaces\IDev2DataLanguageParser.cs" />
+    <Compile Include="Interfaces\IDev2IndexFinder.cs" />
+    <Compile Include="Interfaces\IDev2LanguageParser.cs" />
+    <Compile Include="Interfaces\IDev2NumberFormatter.cs" />
+    <Compile Include="Interfaces\IDev2ReplaceOperation.cs" />
+    <Compile Include="Interfaces\IDev2StudioDataLanguageParser.cs" />
+    <Compile Include="Interfaces\IInputLanguageDefinition.cs" />
+    <Compile Include="Interfaces\IIntellisenseFilterOpsTO.cs" />
+    <Compile Include="Interfaces\IIntellisenseResult.cs" />
+    <Compile Include="Interfaces\IRecordSetCollection.cs" />
+    <Compile Include="Interfaces\IRecordSetDefinition.cs" />
+    <Compile Include="Interfaces\IRecordsetScopingObject.cs" />
+    <Compile Include="Interfaces\IRecsetSearch.cs" />
+    <Compile Include="Interfaces\ISystemTag.cs" />
+    <Compile Include="MathOperations\EvaluationFunctionTO.cs" />
+    <Compile Include="MathOperations\Function.cs" />
+    <Compile Include="MathOperations\FunctionEvaluator.cs" />
+    <Compile Include="MathOperations\FunctionRepository.cs" />
+    <Compile Include="MathOperations\Interfaces\IEvaluationFunction.cs" />
+    <Compile Include="MathOperations\Interfaces\IFunction.cs" />
+    <Compile Include="MathOperations\Interfaces\IFunctionEvaluator.cs" />
+    <Compile Include="MathOperations\MathOpsFactory.cs" />
+    <Compile Include="Operations\Dev2IndexFinder.cs" />
+    <Compile Include="Operations\Dev2MergeOperations.cs" />
+    <Compile Include="Interfaces\IDev2MergeOperations.cs" />
+    <Compile Include="Operations\Dev2NumberFormatter.cs" />
+    <Compile Include="Operations\Dev2ReplaceOperation.cs" />
+    <Compile Include="Parsers\DataListDuplicationParser.cs" />
+    <Compile Include="Parsers\Dev2DataLanguageParser.cs" />
+    <Compile Include="Parsers\InputLanguageParser.cs" />
+    <Compile Include="Parsers\LanguageParser.cs" />
+    <Compile Include="Parsers\OutputLanguageParser.cs" />
+    <Compile Include="DataListConstants.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2Decision.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2DecisionStack.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2Switch.cs" />
+    <Compile Include="SystemTemplates\Models\IDev2DataModel.cs" />
+    <Compile Include="SystemTemplates\Models\Dev2ModelType.cs" />
+    <Compile Include="SystemTemplates\Models\IDev2FlowModel.cs" />
+    <Compile Include="TO\DataListVerifyPart.cs" />
+    <Compile Include="TO\DateTimeVerifyPart.cs" />
+    <Compile Include="TO\Dev2DataLanguageIntellisensePart.cs" />
+    <Compile Include="TO\Dev2Definition.cs" />
+    <Compile Include="TO\ErrorResultTO.cs" />
+    <Compile Include="TO\FormatNumberTO.cs" />
+    <Compile Include="TO\InputDefinition.cs" />
+    <Compile Include="TO\IntellisenseFilterOpsTO.cs" />
+    <Compile Include="TO\IntellisenseResult.cs" />
+    <Compile Include="TO\OutputTO.cs" />
+    <Compile Include="TO\ParseTO.cs" />
+    <Compile Include="TO\RecordSetCollection.cs" />
+    <Compile Include="TO\RecordSetDefinition.cs" />
+    <Compile Include="TO\SearchTO.cs" />
+    <Compile Include="TO\SystemTag.cs" />
+    <Compile Include="TO\UpsertTO.cs" />
+    <Compile Include="Translators\EmitionTypes.cs" />
+    <Compile Include="Translators\DatalistFormat.cs" />
+    <Compile Include="Translators\TranslationConstants.cs" />
+    <Compile Include="Util\CommonDataUtils.cs" />
+    <Compile Include="Util\CommonRecordSetUtil.cs" />
+    <Compile Include="Util\CommonScalarUtil.cs" />
+    <Compile Include="Util\DataListCleaningUtils.cs" />
+    <Compile Include="Util\DataListUtil.cs" />
+    <Compile Include="Util\ParserHelperUtil.cs" />
+    <Compile Include="Util\Scrubber.cs" />
+    <Compile Include="Util\ScrubType.cs" />
+    <Compile Include="Util\XmlHelper.cs" />
+    <Compile Include="WarewolfIterator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
+      <Project>{52F26184-CB50-4D82-B8A2-83F73D2B5011}</Project>
+      <Name>Dev2.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
+      <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
+      <Name>Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
+      <Project>{d7a04a3f-ddbd-497c-a311-efd2016830df}</Project>
+      <Name>Warewolf.Sharepoint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
+      <Name>WarewolfParserInterop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

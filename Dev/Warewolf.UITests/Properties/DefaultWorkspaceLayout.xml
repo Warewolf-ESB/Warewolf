@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xamDockManager version="15.1.20151.2055">
+  <contentPanes>
+    <contentPane name="Toolbox" location="DockedLeft" lastActivatedTime="2000-01-01T00:00:00.0000000Z" />
+    <contentPane name="Explorer" location="DockedLeft" lastActivatedTime="2000-01-01T00:00:00.0000000Z" />
+    <contentPane name="Variables" location="DockedRight" lastActivatedTime="2000-01-01T00:00:00.0000000Z" />
+    <contentPane name="OutputPane" location="DockedRight" />
+    <contentPane name="Help" location="DockedLeft" />
+  </contentPanes>
+  <panes>
+    <splitPane name="SplitPaneDockedRight" splitterOrientation="Horizontal" location="DockedRight" extent="250">
+      <contentPane name="Variables" />
+      <contentPane name="OutputPane" />
+    </splitPane>
+    <splitPane name="SplitPaneDockedLeft" splitterOrientation="Horizontal" location="DockedLeft" extent="250">
+      <contentPane name="Explorer" />
+      <contentPane name="Toolbox" />
+      <contentPane name="Help" />
+    </splitPane>
+  </panes>
+  <documents splitterOrientation="Vertical">
+    <splitPane name="DockCentre" splitterOrientation="Vertical">
+      <tabGroup name="TabManager" selectedIndex="-1" />
+    </splitPane>
+  </documents>
+  <MenuExpanded>False</MenuExpanded>
+  <MenuPanelOpen>False</MenuPanelOpen>
+  <MenuPanelLockedOpen>False</MenuPanelLockedOpen>
+</xamDockManager>

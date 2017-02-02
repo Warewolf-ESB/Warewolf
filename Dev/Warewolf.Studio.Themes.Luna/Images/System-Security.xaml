@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="System-Security-Enabled">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFEC6300" Geometry="M 236.5,-480.062C 236.5,-482.401 238.391,-484.301 240.725,-484.301C 243.056,-484.301 244.945,-482.401 244.945,-480.062C 244.945,-477.722 243.056,-475.828 240.725,-475.828C 238.391,-475.828 236.5,-477.722 236.5,-480.062 Z " />
+                    <GeometryDrawing Brush="#FFF4F2EE" Geometry="M 238.483,-480.924L 238.483,-479.535L 239.872,-479.535L 239.872,-478.144L 241.263,-478.144L 241.263,-479.535L 242.652,-479.535L 242.652,-480.924L 241.263,-480.924L 241.263,-482.314L 239.872,-482.314L 239.872,-480.924L 238.483,-480.924 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="System-Security-Disabled">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF606160" Geometry="M 236.5,-480.062C 236.5,-482.401 238.391,-484.301 240.725,-484.301C 243.056,-484.301 244.945,-482.401 244.945,-480.062C 244.945,-477.722 243.056,-475.828 240.725,-475.828C 238.391,-475.828 236.5,-477.722 236.5,-480.062 Z " />
+                    <GeometryDrawing Brush="#FFF4F2EE" Geometry="M 238.483,-480.924L 238.483,-479.535L 239.872,-479.535L 239.872,-478.144L 241.263,-478.144L 241.263,-479.535L 242.652,-479.535L 242.652,-480.924L 241.263,-480.924L 241.263,-482.314L 239.872,-482.314L 239.872,-480.924L 238.483,-480.924 Z " />
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
+</ResourceDictionary>

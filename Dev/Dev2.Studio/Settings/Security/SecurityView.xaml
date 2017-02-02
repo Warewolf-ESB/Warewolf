@@ -1,0 +1,552 @@
+﻿<UserControl x:Class="Dev2.Settings.Security.SecurityView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Dev2.Settings.Security"
+            xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:security="clr-namespace:Dev2.Services.Security;assembly=Dev2.Infrastructure"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance local:SecurityViewModel}">
+
+    <UserControl.Resources>
+
+        <Style x:Key="PermissionsGridTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
+            <Setter Property="FontWeight" Value="{StaticResource DefaultFontWeight}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="AcceptsReturn" Value="False" />
+            <Setter Property="Width" Value="Auto" />
+        </Style>
+
+        <Style x:Key="PermissionsGridWindowsGroupButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Content" Value="..." />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="Command" Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="Visibility" Value="{Binding DataContext.Visibility, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="CommandParameter" Value="{Binding}" />
+            <Setter Property="AutomationProperties.AutomationId">
+                <Setter.Value>
+                    <MultiBinding StringFormat="UI_Security_Row{1}_PickWindowsGroupButton" Converter="{StaticResource DataGridRowNumberConverter}">
+                        <Binding />
+                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PermissionsGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
+            <Setter Property="Content" Value="..." />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <Setter Property="CommandParameter" Value="{Binding}" />
+            <Setter Property="AutomationProperties.AutomationId">
+                <Setter.Value>
+                    <MultiBinding StringFormat="UI_Security_Row{1}_PickResourceButton" Converter="{StaticResource DataGridRowNumberConverter}">
+                        <Binding />
+                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    <Grid Margin="{StaticResource ElementBorderTop}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="8" />
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" 
+                            Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                            Background="{StaticResource WareWolfMenuBrush}" 
+                            HorizontalAlignment="Stretch" 
+                            Orientation="Horizontal">
+                <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Server Permissions</TextBlock>
+            </StackPanel>
+            
+            <ig:XamGrid Grid.Row="1"
+                        x:Name="ServerPermissionsDataGrid"
+                        AutoGenerateColumns="False"
+                        ColumnSorting="ServerColumnSorting"
+                        ItemsSource="{Binding ServerPermissions}">
+                
+                <ig:XamGrid.Columns>
+                    <ig:TemplateColumn x:Name="WindowsGroupColumn" Key="WindowsGroup" HeaderText="Windows Group" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch"
+                                        d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=WindowsGroupColumn, Path=ActualWidth}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding Path=WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             IsEnabled="{Binding Path=CanChangeName}"
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}"
+                                             ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipWindowsGroup}">
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityServerHelpWindowsGroup}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddWindowsGroupTextBox_AutoID">
+                                                <Binding Path="WindowsGroup" FallbackValue="New" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </TextBox>
+                                    <Button Grid.Column="1"
+                                            Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
+                                            IsEnabled="{Binding Path=CanChangeName}"
+                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipWindowsGroup}">
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddWindowsGroupButton_AutoID">
+                                                <Binding Path="WindowsGroup" FallbackValue="New" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityServerBrowseHelpWindowsGroup}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+                                    <Path Grid.ColumnSpan="2"
+                                          Grid.Column="0"
+                                          Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="DeployToColumn" Key="DeployTo" HeaderText="Deploy To" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch"
+                                       d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=DeployToColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=DeployTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding Path=EnableCellEditing}"
+                                              ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipDeployTo}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityServerHelpDeployTo}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_DeployToPermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="DeployFromColumn" Key="DeployFrom" HeaderText="Deploy From" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=DeployFromColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=DeployFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding Path=EnableCellEditing}"
+                                              ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipDeployFrom}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityServerHelpDeployFrom}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_DeployFromPermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="AdministratorColumn" Key="Administrator" HeaderText="Administrator" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=AdministratorColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=Administrator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding Path=EnableCellEditing}"
+                                              ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipAdministrator}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityServerHelpAdministrator}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_AdministratorPermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="ViewColumn" Key="View" HeaderText="View" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ViewColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          IsEnabled="{Binding Path=EnableCellEditing}"
+                                          ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipView}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityServerHelpView}"
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ViewPermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="ExecuteColumn" Key="Execute" HeaderText="Execute" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ExecuteColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          IsEnabled="{Binding Path=EnableCellEditing}"
+                                          ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipExecute}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityServerHelpExecute}"
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ExecutePermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="ContributeColumn" Key="Contribute" HeaderText="Contribute" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ContributeColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          IsEnabled="{Binding Path=EnableCellEditing}"
+                                          ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipContribute}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityServerHelpContribute}"
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ContributePermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn Key="RemoveRow" HeaderStyle="{StaticResource EmptyHeaderCellControlStyle}" Width="Auto" MinimumWidth="20" HorizontalContentAlignment="Center" IsResizable="False">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Button AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
+                                        Command="{Binding Path=RemoveRow}"
+                                        ToolTip="Removes Permissions">
+                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
+                                           Height="15"
+                                           Width="15" />
+                                </Button>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                </ig:XamGrid.Columns>
+                <ig:XamGrid.SortingSettings>
+                    <ig:SortingSettings AllowSorting="True" AllowMultipleColumnSorting="True" ShowSortIndicator="False"/>
+                </ig:XamGrid.SortingSettings>
+            </ig:XamGrid>
+        </Grid>
+
+        <GridSplitter Grid.Row="1"
+                      Background="#C1C3C5"
+                      HorizontalAlignment=" Stretch"
+                      VerticalAlignment="Center"
+                      Height="8" />
+
+        <Grid Grid.Row="2"
+              Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" 
+                            Width="{Binding ElementName=GridContainer, Path=ActualWidth}"
+                            Background="{StaticResource WareWolfMenuBrush}" 
+                            HorizontalAlignment="Stretch" 
+                            Orientation="Horizontal">
+                <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Resource Permissions</TextBlock>
+            </StackPanel>
+
+            <ig:XamGrid Grid.Row="1"
+                        x:Name="ResourcePermissionsDataGrid"
+                        AutoGenerateColumns="False"
+                        ColumnSorting="ResourceColumnSorting"
+                        ItemsSource="{Binding ResourcePermissions}">
+                <ig:XamGrid.Columns>
+                    <ig:TemplateColumn x:Name="ResourceNameColumn" Key="ResourceName" HeaderText="Resources" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ResourceNameColumn, Path=ActualWidth}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding Path=ResourceName, Mode=TwoWay}"
+                                               ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipResource}">
+                                      <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityResourceHelpResource}"
+                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                    </i:Interaction.Behaviors>
+                                    <AutomationProperties.AutomationId>
+                                        <MultiBinding StringFormat="UI_{0}_AddResourceTextBox_AutoID">
+                                            <Binding Path="ResourceName" FallbackValue="New" />
+                                        </MultiBinding>
+                                    </AutomationProperties.AutomationId>
+                                    </TextBlock>
+                                    <Button Grid.Column="1"
+                                            Style="{StaticResource PermissionsGridResourceButtonStyle}"
+                                            IsEnabled="{Binding Path=EnableCellEditing}"
+                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipResource}">
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
+                                                <Binding Path="ResourceName" FallbackValue="New" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityResourceBrowseHelpResources}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+                                    <Path Grid.ColumnSpan="2"
+                                          Grid.Column="0"
+                                          Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="ResourceWindowsGroupColumn" Key="WindowsGroup" HeaderText="Windows Group" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ResourceWindowsGroupColumn, Path=ActualWidth}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding Path=WindowsGroup, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                             Style="{StaticResource PermissionsGridTextBoxStyle}"
+                                             IsEnabled="{Binding Path=EnableCellEditing}"
+                                             ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipWindowsGroup}">
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityResourceHelpWindowsGroup}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsTextBox_AutoID">
+                                                <Binding Path="WindowsGroup" FallbackValue="New" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                    </TextBox>
+                                    <Button Grid.Column="1"
+                                            Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
+                                            IsEnabled="{Binding Path=EnableCellEditing}"
+                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipWindowsGroup}">
+                                        <AutomationProperties.AutomationId>
+                                            <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsButton_AutoID">
+                                                <Binding Path="WindowsGroup" FallbackValue="New" />
+                                            </MultiBinding>
+                                        </AutomationProperties.AutomationId>
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityResourceBrowseHelpWindowsGroup}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </i:Interaction.Behaviors>
+                                    </Button>
+                                    <Path Grid.ColumnSpan="2"
+                                          Grid.Column="0"
+                                          Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="ResourceViewColumn" Key="View" HeaderText="View" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ResourceViewColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=View, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding Path=EnableCellEditing}"
+                                              ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipView}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityResourceHelpView}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ViewPermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="ResourceExecuteColumn" Key="Execute" HeaderText="Execute" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ResourceExecuteColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=Execute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding Path=EnableCellEditing}"
+                                              ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipExecute}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityResourceHelpExecute}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ExecutePermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn x:Name="ResourceContributeColumn" Key="Contribute" HeaderText="Contribute" Width="Auto" MinimumWidth="30" HorizontalContentAlignment="Stretch">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="{Binding ElementName=ResourceContributeColumn, Path=ActualWidth}">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <CheckBox IsChecked="{Binding Path=Contribute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{Binding Path=EnableCellEditing}"
+                                              ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipContribute}">
+                                            <i:Interaction.Behaviors>
+                                                <core:HelpSetter Text="{x:Static languages:HelpText.SettingsSecurityResourceHelpContribute}"
+                                                              DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                            </i:Interaction.Behaviors>
+                                            <AutomationProperties.AutomationId>
+                                                <MultiBinding StringFormat="UI_{0}_ContributePermissionCheckBox_AutoID">
+                                                    <Binding Path="WindowsGroup" FallbackValue="New" />
+                                                </MultiBinding>
+                                            </AutomationProperties.AutomationId>
+                                        </CheckBox>
+                                    </StackPanel>
+                                    <Path Visibility="{Binding Path=IsDeleted, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                          Data="M0,0.5 L1,0.5"
+                                          Stretch="Fill"
+                                          Stroke="Red"
+                                          StrokeThickness="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                    <ig:TemplateColumn Key="RemoveRow" HeaderStyle="{StaticResource EmptyHeaderCellControlStyle}" Width="Auto" MinimumWidth="20" HorizontalContentAlignment="Center" IsResizable="False">
+                        <ig:TemplateColumn.ItemTemplate>
+                            <DataTemplate>
+                                <Button AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
+                                        Command="{Binding Path=RemoveRow}"
+                                        ToolTip="Removes Permissions">
+                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
+                                           Height="15"
+                                           Width="15" />
+                                </Button>
+                            </DataTemplate>
+                        </ig:TemplateColumn.ItemTemplate>
+                    </ig:TemplateColumn>
+                </ig:XamGrid.Columns>
+                <ig:XamGrid.SortingSettings>
+                    <ig:SortingSettings AllowSorting="True" AllowMultipleColumnSorting="True" ShowSortIndicator="False"/>
+                </ig:XamGrid.SortingSettings>
+            </ig:XamGrid>
+        </Grid>
+    </Grid>
+</UserControl>

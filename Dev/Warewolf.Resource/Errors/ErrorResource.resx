@@ -1,0 +1,1304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DirectoryDoesNotExist" xml:space="preserve">
+    <value>Directory -  {0} does not exist in your variable list</value>
+  </data>
+  <data name="DirectoryNotFound" xml:space="preserve">
+    <value>Directory not found {0}</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>File {0} not found </value>
+  </data>
+  <data name="ResultOpeningClosingBracketMismatch" xml:space="preserve">
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="SingleResultAllowed" xml:space="preserve">
+    <value>The result field only allows a single result</value>
+  </data>
+  <data name="CanNotBeEmpty" xml:space="preserve">
+    <value>{0} cannot be empty</value>
+  </data>
+  <data name="AttachmentInvalidFormat" xml:space="preserve">
+    <value>Attachments is not in the valid format: {0}</value>
+  </data>
+  <data name="BCCAddressInvalidFormat" xml:space="preserve">
+    <value>BCC address is not in the valid format: {0}</value>
+  </data>
+  <data name="BlankResultVariable" xml:space="preserve">
+    <value>Blank result variable</value>
+  </data>
+  <data name="BlankUSINGValue" xml:space="preserve">
+    <value>The 'Using' value cannot be blank.</value>
+  </data>
+  <data name="BodyMustHaveMember" xml:space="preserve">
+    <value>Body must have Member</value>
+  </data>
+  <data name="CannotBeVariable" xml:space="preserve">
+    <value>Cannot be a variable</value>
+  </data>
+  <data name="CannotCommaSeperateRecordset" xml:space="preserve">
+    <value>Cannot specify a Recordset as part of a comma separated list of expressions</value>
+  </data>
+  <data name="CannotExecuteCMDFromTool" xml:space="preserve">
+    <value>Cannot execute CMD from tool.</value>
+  </data>
+  <data name="CannotExecuteExplorerFromTool" xml:space="preserve">
+    <value>Cannot execute explorer from tool.</value>
+  </data>
+  <data name="CannotLocateRootDataList" xml:space="preserve">
+    <value>Fatal Error : Cannot locate Root DataList for resumption!</value>
+  </data>
+  <data name="CCAddressInvalidFormat" xml:space="preserve">
+    <value>CC address is not in the valid format: {0}</value>
+  </data>
+  <data name="ColumnDoesNotAlloNull" xml:space="preserve">
+    <value>The column {0} does not allow NULL. Please check your mappings to ensure you have mapped data into it.</value>
+  </data>
+  <data name="ColumnSetAsIdentityKeepIdentityIsFalse" xml:space="preserve">
+    <value>The column {0} is an IDENTITY and you have the Keep Identity option disabled. Either enable it or remove the mapping.</value>
+  </data>
+  <data name="ColumnSetAsIdentityKeepIdentityIsTrue" xml:space="preserve">
+    <value>The column {0} is an IDENTITY and you have the Keep Identity option enabled. Either disable this option or map data.</value>
+  </data>
+  <data name="ConvertOptionDoesNotExist" xml:space="preserve">
+    <value>Convert option does not exist</value>
+  </data>
+  <data name="CSVInvalidCharecters" xml:space="preserve">
+    <value>Invalid characters have been entered in the CSV Numbers</value>
+  </data>
+  <data name="DataSourceEmpty" xml:space="preserve">
+    <value>DataSource cannot be empty</value>
+  </data>
+  <data name="DecimalsNotValid" xml:space="preserve">
+    <value>Decimals to show is not valid</value>
+  </data>
+  <data name="DropBoxCallerHasNoPermission" xml:space="preserve">
+    <value>The caller does not have the required permissions</value>
+  </data>
+  <data name="DropBoxCannotLocateSpecifiedFiles" xml:space="preserve">
+    <value>Cannot locate the file/s specified. Please confirm that the correct file location has been entered.</value>
+  </data>
+  <data name="DropBoxConfirmCorrectFileDestination" xml:space="preserve">
+    <value>Please confirm that the correct file destination has been entered</value>
+  </data>
+  <data name="DropBoxConfirmCorrectFileLocation" xml:space="preserve">
+    <value>Please confirm that the correct file location has been entered</value>
+  </data>
+  <data name="DropboxCorrectFileName" xml:space="preserve">
+    <value>Please specify a correct Dropbox file name</value>
+  </data>
+  <data name="DropBoxDestinationFileAlreadyExist" xml:space="preserve">
+    <value>Destination File already exists and overwrite is set to false</value>
+  </data>
+  <data name="DropBoxFilePathMissing" xml:space="preserve">
+    <value>Please specify the path of file in Dropbox</value>
+  </data>
+  <data name="DropBoxPathContainsColon" xml:space="preserve">
+    <value>Path contains a colon (\":\") that is not part of a volume identifier (for example, \"c:\")</value>
+  </data>
+  <data name="DropBoxSpecifiedPathExceedMaxLength" xml:space="preserve">
+    <value>The specified path, file name, or both exceed the system-defined maximum length</value>
+  </data>
+  <data name="EmptyScript" xml:space="preserve">
+    <value>Empty script to execute</value>
+  </data>
+  <data name="EnsureValueIsInteger" xml:space="preserve">
+    <value>Please ensure that the {0} is an integer value.</value>
+  </data>
+  <data name="ExpectedLambdaExpresion" xml:space="preserve">
+    <value>Value must be a lambda expression</value>
+  </data>
+  <data name="ExpressionMustBeCommaSeperated" xml:space="preserve">
+    <value>Problem with input: expressions must be comma separated</value>
+  </data>
+  <data name="ForEachWithNoContentError" xml:space="preserve">
+    <value>Cannot execute a For Each with no content</value>
+  </data>
+  <data name="FROMAddressInvalidFormat" xml:space="preserve">
+    <value>FROM address is not in the valid format: {0}</value>
+  </data>
+  <data name="FROMAndTORequired" xml:space="preserve">
+    <value>From and to Must be populated</value>
+  </data>
+  <data name="HeadersAreNull" xml:space="preserve">
+    <value>Headers Are Null</value>
+  </data>
+  <data name="IntegerOrDecimaExpectedForEnd" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for End</value>
+  </data>
+  <data name="IntegerOrDecimaExpectedForStart" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for Start</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>Invalid {0}</value>
+  </data>
+  <data name="InvalidActivity" xml:space="preserve">
+    <value>Invalid activity</value>
+  </data>
+  <data name="InvalidCalculate" xml:space="preserve">
+    <value>Invalid Calculate</value>
+  </data>
+  <data name="InvalidEmailSource" xml:space="preserve">
+    <value>Invalid Email Source</value>
+  </data>
+  <data name="InvalidRecordset" xml:space="preserve">
+    <value>Invalid recordset:</value>
+  </data>
+  <data name="InvalidResultTypeFromWarewolfStorage" xml:space="preserve">
+    <value>Invalid result type was encountered from warewolfstorage</value>
+  </data>
+  <data name="InvalidSortField" xml:space="preserve">
+    <value>Sort field is invalid. You may only sort on a single RecordSet columns</value>
+  </data>
+  <data name="InvalidTimeOutSecondsText" xml:space="preserve">
+    <value>Value {0} for TimeoutSecondsText could not be interpreted as a numeric value.</value>
+  </data>
+  <data name="IsBetweenDataTypeMismatch" xml:space="preserve">
+    <value>IsBetween Numeric and DateTime mis-match</value>
+  </data>
+  <data name="IsBlank" xml:space="preserve">
+    <value>{0} is blank</value>
+  </data>
+  <data name="IsRequired" xml:space="preserve">
+    <value>{0} is Required</value>
+  </data>
+  <data name="LocalInputPathEmpty" xml:space="preserve">
+    <value>Local input path is not set</value>
+  </data>
+  <data name="MultipleVariablesInResultField" xml:space="preserve">
+    <value>Multiple variables in result field.</value>
+  </data>
+  <data name="MustHaveBody" xml:space="preserve">
+    <value>Must have body</value>
+  </data>
+  <data name="NoActionsInSelectedDB" xml:space="preserve">
+    <value>The selected database does not contain actions to perform</value>
+  </data>
+  <data name="NoMethodSelected" xml:space="preserve">
+    <value>No Method Selected</value>
+  </data>
+  <data name="NoNamespaceSelected" xml:space="preserve">
+    <value>No Namespace Selected.</value>
+  </data>
+  <data name="NoOutPuts" xml:space="preserve">
+    <value>There are no outputs</value>
+  </data>
+  <data name="NoProcessFound" xml:space="preserve">
+    <value>No process found matching the search criteria</value>
+  </data>
+  <data name="NoRecordSet" xml:space="preserve">
+    <value>No recordset given</value>
+  </data>
+  <data name="NoWebResponse" xml:space="preserve">
+    <value>No Web Response received</value>
+  </data>
+  <data name="NullESBChannel" xml:space="preserve">
+    <value>FATAL ERROR : Null ESB channel!!</value>
+  </data>
+  <data name="NullRecordSet" xml:space="preserve">
+    <value>Recordset is null {0}</value>
+  </data>
+  <data name="NullScalarValue" xml:space="preserve">
+    <value>Scalar value {{{0}}} is NULL</value>
+  </data>
+  <data name="OneVariableAccepted" xml:space="preserve">
+    <value>Can only accept one variable</value>
+  </data>
+  <data name="OnlyScalarRecordsetCommaSeperated" xml:space="preserve">
+    <value>Can only have a scalar, a RecordSet or a RecordSet with column qualification as input</value>
+  </data>
+  <data name="PADDINGMustBeSingleCharecter" xml:space="preserve">
+    <value>'Padding' must be a single character</value>
+  </data>
+  <data name="PositiveIntegerRequired" xml:space="preserve">
+    <value>Please enter a positive integer for the {0}</value>
+  </data>
+  <data name="ProblemsWithIterators" xml:space="preserve">
+    <value>Problems with Iterators for: {0}</value>
+  </data>
+  <data name="QueryIsNull" xml:space="preserve">
+    <value>Query is Null</value>
+  </data>
+  <data name="RabbitQueueNameAndMessageRequired" xml:space="preserve">
+    <value>Failure: Queue Name and Message are required.</value>
+  </data>
+  <data name="RabbitQueueNameRequired" xml:space="preserve">
+    <value>Failure: Queue Name is required.</value>
+  </data>
+  <data name="RabbitQueueNotFound" xml:space="preserve">
+    <value>Queue {0} not found</value>
+  </data>
+  <data name="RabbitSourceHasBeenDeleted" xml:space="preserve">
+    <value>Failure: Source has been deleted.</value>
+  </data>
+  <data name="RangeFromOne" xml:space="preserve">
+    <value>{0} must be a whole number from 1 onwards.</value>
+  </data>
+  <data name="RequiredRecordSetName" xml:space="preserve">
+    <value>Value must be a recordset name</value>
+  </data>
+  <data name="RequiredRecordSetNameONLY" xml:space="preserve">
+    <value>Must only be a recordset name</value>
+  </data>
+  <data name="RequiredVaraibleNameONLY" xml:space="preserve">
+    <value>Please insert only variables into Fields To Search</value>
+  </data>
+  <data name="RoundingNotValid" xml:space="preserve">
+    <value>Rounding decimal places is not valid</value>
+  </data>
+  <data name="SameParentAndChildDataListId" xml:space="preserve">
+    <value>Parent and Child DataList IDs are the same, aborting resumption!</value>
+  </data>
+  <data name="ScalarsNotAllowed" xml:space="preserve">
+    <value>Scalars are not allowed. Please check the following: {0}</value>
+  </data>
+  <data name="ScriptingErrorReturningValue" xml:space="preserve">
+    <value>There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result</value>
+  </data>
+  <data name="ServerInputPathEmpty" xml:space="preserve">
+    <value>Server input path {0} is not set</value>
+  </data>
+  <data name="InvalidSource" xml:space="preserve">
+    <value>Please select valid source</value>
+  </data>
+  <data name="StarNotationNotAllowed" xml:space="preserve">
+    <value>The Star notation is not accepted in the {0}.</value>
+  </data>
+  <data name="SupplyDestinationName" xml:space="preserve">
+    <value>Must supply a Destination Name</value>
+  </data>
+  <data name="SupplySourceName" xml:space="preserve">
+    <value>Must supply a Source Name</value>
+  </data>
+  <data name="TimeMustBeNumeric" xml:space="preserve">
+    <value>Add Time amount must be numeric</value>
+  </data>
+  <data name="ToAddressInvalidFormat" xml:space="preserve">
+    <value>TO address is not in the valid format: {0}</value>
+  </data>
+  <data name="UnableToParseSourceName" xml:space="preserve">
+    <value>Unable to parse the Source Name</value>
+  </data>
+  <data name="UserInputRequired" xml:space="preserve">
+    <value>The process required user input.</value>
+  </data>
+  <data name="USINGMustBeARealNumber" xml:space="preserve">
+    <value>The 'Using' value must be a real number.</value>
+  </data>
+  <data name="ValueTimeOutOutOfRange" xml:space="preserve">
+    <value>Value of TimeoutSecondsText out of range: please specify a value between 0 and {0}.</value>
+  </data>
+  <data name="VariableInputError" xml:space="preserve">
+    <value>Error with variables in input.</value>
+  </data>
+  <data name="WebRequestError" xml:space="preserve">
+    <value>Error getting web request</value>
+  </data>
+  <data name="BrokerConversionInvalid" xml:space="preserve">
+    <value>Base Conversion Broker was expecting [{0}] but the data was not in this format</value>
+  </data>
+  <data name="CannotDeleteSystemFiles" xml:space="preserve">
+    <value>Not allowed to delete system files/directories. {0}</value>
+  </data>
+  <data name="CharEnumeratorNotSupported" xml:space="preserve">
+    <value>CharEnumerator is not supported for this operation type!</value>
+  </data>
+  <data name="CouldntCreateMapper" xml:space="preserve">
+    <value>Couldn't create a mapper for '{0}'.</value>
+  </data>
+  <data name="CouldntCreateNavigator" xml:space="preserve">
+    <value>Couldn't create a navigator for the path '", path.ToString(), "</value>
+  </data>
+  <data name="DataTypeMismatch" xml:space="preserve">
+    <value>Data of type '{0}' expected, data of type '{1}' received.</value>
+  </data>
+  <data name="DependencyInormationMalformed" xml:space="preserve">
+    <value>Dependency information is malformed</value>
+  </data>
+  <data name="DependencyMissing" xml:space="preserve">
+    <value>Dependency information could not be retrieved</value>
+  </data>
+  <data name="ExpectedEnumerationTypeParameter" xml:space="preserve">
+    <value>Generic parameter T must be an enumeration type.</value>
+  </data>
+  <data name="FailedToAuthenticateUser" xml:space="preserve">
+    <value>Failed to authenticate with user [ {0} ] for resource [ {1} ] </value>
+  </data>
+  <data name="InvalidLength" xml:space="preserve">
+    <value>Length must be greater than or equal to zero if the type is Letters or LettersAndNumbers</value>
+  </data>
+  <data name="InvalidTimeOut" xml:space="preserve">
+    <value>Invalid time out. The timeout must be a valid variable or positive integer number.</value>
+  </data>
+  <data name="LocalPathRequired" xml:space="preserve">
+    <value>Please enter local path</value>
+  </data>
+  <data name="MethodNotImplemented" xml:space="preserve">
+    <value>The method or operation is not implemented.</value>
+  </data>
+  <data name="NoPermissionToExecuteTool" xml:space="preserve">
+    <value>You do not have permissions to View or Execute this resource.</value>
+  </data>
+  <data name="NothingToSplit" xml:space="preserve">
+    <value>Cannot find anything to split on!</value>
+  </data>
+  <data name="NullTokenzeString" xml:space="preserve">
+    <value>Null or empty tokenize string!</value>
+  </data>
+  <data name="NumberOfResultsMismatch" xml:space="preserve">
+    <value>The number of results for the paths representing the {0}  expression didn't match.</value>
+  </data>
+  <data name="OpeningClosingBracketMismatch" xml:space="preserve">
+    <value>Invalid expression: opening and closing brackets don't match.</value>
+  </data>
+  <data name="OutputDecriptionInvalid" xml:space="preserve">
+    <value>Invalid output description {0}.</value>
+  </data>
+  <data name="PathMismatch" xml:space="preserve">
+    <value>Path of type '{0}' expected, path of type '{1}' received.</value>
+  </data>
+  <data name="PropertyMusHaveAValue" xml:space="preserve">
+    <value>{0} must have a value</value>
+  </data>
+  <data name="ServerSourceNotFound" xml:space="preserve">
+    <value>Server source not found. This service will not execute.</value>
+  </data>
+  <data name="ServerVersionsIncompatiable" xml:space="preserve">
+    <value>Server version {0} is incompatible with version {1}</value>
+  </data>
+  <data name="SharepointServerPathRequired" xml:space="preserve">
+    <value>Please enter SharePoint Server path From</value>
+  </data>
+  <data name="SharepointServerPathToRequired" xml:space="preserve">
+    <value>Please enter SharePoint Server path To</value>
+  </data>
+  <data name="SharepointServerRequired" xml:space="preserve">
+    <value>Please Select a SharePoint Server</value>
+  </data>
+  <data name="SourceDirectoryDoesNotExist" xml:space="preserve">
+    <value>Source directory does not exist or could not be found: {0}</value>
+  </data>
+  <data name="ToAddressRequired" xml:space="preserve">
+    <value>Please supply a To address in order to Test.</value>
+  </data>
+  <data name="ValidateBeforeMinimising" xml:space="preserve">
+    <value>{0} must be validated before minimising</value>
+  </data>
+  <data name="VariableListStringRequired" xml:space="preserve">
+    <value>Variable List String cannot be blank/empty</value>
+  </data>
+  <data name="AssemblyCreationError" xml:space="preserve">
+    <value>Compilation Error Creating Assembly</value>
+  </data>
+  <data name="GridsplitterOnlyWorksInGrids" xml:space="preserve">
+    <value>Gridsplitter only works in grid</value>
+  </data>
+  <data name="MathConverterAcceptsDoubles" xml:space="preserve">
+    <value>Converter only accepts doubles</value>
+  </data>
+  <data name="WebServiceDescriptionInvalid" xml:space="preserve">
+    <value>Invalid Web Service Description</value>
+  </data>
+  <data name="WebServiceNotFound" xml:space="preserve">
+    <value>Web Service Not Found</value>
+  </data>
+  <data name="CalculationManagerIsNull" xml:space="preserve">
+    <value>Calculation Manager is currently null</value>
+  </data>
+  <data name="CannotRemoveNullListOfFunctions" xml:space="preserve">
+    <value>Cannot remove null List of functions</value>
+  </data>
+  <data name="CannotSaveNullListOfFunctions" xml:space="preserve">
+    <value>Cannot Save a Null list of functions</value>
+  </data>
+  <data name="ErrorInDev2IndexFinder" xml:space="preserve">
+    <value>Error In Dev2IndexFinder</value>
+  </data>
+  <data name="ExpressionCannotBeNull" xml:space="preserve">
+    <value>Expression cannot be null</value>
+  </data>
+  <data name="FunctionCannotBeNull" xml:space="preserve">
+    <value>Function cannot be null</value>
+  </data>
+  <data name="FunctionEvaluationError" xml:space="preserve">
+    <value>Function evaluation Error</value>
+  </data>
+  <data name="NothingToEvaluate" xml:space="preserve">
+    <value>Nothing to Evaluate</value>
+  </data>
+  <data name="StartIndexNotANumber" xml:space="preserve">
+    <value>The start index specified was not a number.</value>
+  </data>
+  <data name="UnableToCreateDefinedFunction" xml:space="preserve">
+    <value>Unable to create the defined function</value>
+  </data>
+  <data name="DestinationDirectoryCannotBeAChild" xml:space="preserve">
+    <value>Destination directory cannot be a child of the source directory</value>
+  </data>
+  <data name="DestinationDirectoryExist" xml:space="preserve">
+    <value>Destination directory already exists and overwrite is set to false</value>
+  </data>
+  <data name="DestinationFileAlreadyExists" xml:space="preserve">
+    <value>Destination file already exists and overwrite is set to false</value>
+  </data>
+  <data name="DestinationMustBeADirectory" xml:space="preserve">
+    <value>Destination must be a directory</value>
+  </data>
+  <data name="ErrorInDev2MergeOperations" xml:space="preserve">
+    <value>Error In Dev2MergeOperations</value>
+  </data>
+  <data name="FileExistInDestinationFolder" xml:space="preserve">
+    <value>The following file(s) exist in the destination folder and overwrite is set to false:- {0}</value>
+  </data>
+  <data name="FileWithSameNameExist" xml:space="preserve">
+    <value>A file with the same name exists on the destination and overwrite is set to false</value>
+  </data>
+  <data name="InvalidArchivePassword" xml:space="preserve">
+    <value>Invalid archive password</value>
+  </data>
+  <data name="InvalidCloseRegion" xml:space="preserve">
+    <value>Invalid region detected: An open [[ without a related close ]]</value>
+  </data>
+  <data name="InvalidOpenRegion" xml:space="preserve">
+    <value>Invalid region detected: A close ]] without a related open [[</value>
+  </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>Invalid Path. Please ensure that the path provided is an absolute path, if you intended to access the local file system.</value>
+  </data>
+  <data name="RecursiveDirectoryCreateFailed" xml:space="preserve">
+    <value>Recursive Directory Create Failed For [ {0} ]</value>
+  </data>
+  <data name="RoundingDecimalPlaceBetween" xml:space="preserve">
+    <value>Rounding decimal places must be between {0} and {1}.</value>
+  </data>
+  <data name="SourceAndDestinationNOTFilesOrDirectory" xml:space="preserve">
+    <value>Source and destination need to be both files or directories</value>
+  </data>
+  <data name="SourceCannotBeAnEmptyString" xml:space="preserve">
+    <value>Source cannot be an empty string</value>
+  </data>
+  <data name="SourceMustBeAFile" xml:space="preserve">
+    <value>Source must be a file</value>
+  </data>
+  <data name="ValueCannotBeNull" xml:space="preserve">
+    <value>The value cannot be null.</value>
+  </data>
+  <data name="VariableIsMissing" xml:space="preserve">
+    <value>Variable [[]] is missing a name</value>
+  </data>
+  <data name="XPathProvidedNotValid" xml:space="preserve">
+    <value>The XPath expression provided is not valid</value>
+  </data>
+  <data name="BadResource" xml:space="preserve">
+    <value>Bad Resource. Cannot determine its type.</value>
+  </data>
+  <data name="ConnectionTimedOut" xml:space="preserve">
+    <value>Connection timed out.</value>
+  </data>
+  <data name="CouldNotDelete" xml:space="preserve">
+    <value>Could not delete {0}. Please check the path exists.</value>
+  </data>
+  <data name="FileNotCreated" xml:space="preserve">
+    <value>File was not created</value>
+  </data>
+  <data name="FormatNameCannotBeNull" xml:space="preserve">
+    <value>FormatName cannot be null or empty string.</value>
+  </data>
+  <data name="IncorrectOperandType" xml:space="preserve">
+    <value>Incorrect type of argument or operand.</value>
+  </data>
+  <data name="IncorrectUsernameAndPassword" xml:space="preserve">
+    <value>Incorrect user name and password for {0}</value>
+  </data>
+  <data name="PathIsInIncorrectFormat" xml:space="preserve">
+    <value>The path is in the incorrect format.</value>
+  </data>
+  <data name="RecordsetsHaveDifferntSizes" xml:space="preserve">
+    <value>You appear to have recordsets of different sizes</value>
+  </data>
+  <data name="InvalidScriptingContext" xml:space="preserve">
+    <value>Invalid scripting context</value>
+  </data>
+  <data name="SaveToFolderOrRootOnly" xml:space="preserve">
+    <value>Can only save to folders or root</value>
+  </data>
+  <data name="CannotBeNull" xml:space="preserve">
+    <value>Cannot be null</value>
+  </data>
+  <data name="CannotDeleteFileWithoutFilename" xml:space="preserve">
+    <value>Can't delete a file if no filename is passed.</value>
+  </data>
+  <data name="CannotDoSwitchOnNullType" xml:space="preserve">
+    <value>Cannot do switch on null type argument if no default implementation provided</value>
+  </data>
+  <data name="CannotFindGroup" xml:space="preserve">
+    <value>Cannot find group</value>
+  </data>
+  <data name="CannotHaveDuplicateFields" xml:space="preserve">
+    <value>Cannot have duplicate fields to search</value>
+  </data>
+  <data name="CannotHaveIndexsForRecordsets" xml:space="preserve">
+    <value>Cannot have index's for recordsets in this field</value>
+  </data>
+  <data name="CannotHaveScalars" xml:space="preserve">
+    <value>Cannot have any scalars in this field</value>
+  </data>
+  <data name="CanOnlyExecuteWorkflowsFromWebBrowser" xml:space="preserve">
+    <value>Can only execute workflows from web browser</value>
+  </data>
+  <data name="ContainsInvalidCharecters" xml:space="preserve">
+    <value>'Name' contains invalid characters</value>
+  </data>
+  <data name="ContainsLeadingOrTrailingWhitespace" xml:space="preserve">
+    <value>'Name' contains leading or trailing whitespace characters.</value>
+  </data>
+  <data name="CopyToFailedArrayTooSmall" xml:space="preserve">
+    <value>CopyTo() failed:  supplied array was too small</value>
+  </data>
+  <data name="CouldNotLocateAssembly" xml:space="preserve">
+    <value>Could not locate Assembly [{0}]</value>
+  </data>
+  <data name="CouldNotLocateManagementService" xml:space="preserve">
+    <value>Could not locate management service [{0}]</value>
+  </data>
+  <data name="CouldNotLocateService" xml:space="preserve">
+    <value>Could not locate service with ID [{0}]</value>
+  </data>
+  <data name="CouldNotRetrieveStringsFromExpression" xml:space="preserve">
+    <value>Could not retrieve list of strings from expression {0}</value>
+  </data>
+  <data name="DirectoryIsRequired" xml:space="preserve">
+    <value>Directory is required and not provided</value>
+  </data>
+  <data name="DomainOrUsernameOrPasswordMissing" xml:space="preserve">
+    <value>Domain or Username or Password is missing</value>
+  </data>
+  <data name="EmptyValuesPassed" xml:space="preserve">
+    <value>Empty values passed.</value>
+  </data>
+  <data name="EnumeratorNotStarted" xml:space="preserve">
+    <value>The enumerator has not been started.</value>
+  </data>
+  <data name="EnumeratorReachedTheEnd" xml:space="preserve">
+    <value>The enumerator has reached the end of the collection.</value>
+  </data>
+  <data name="ErrorConnectingToServer" xml:space="preserve">
+    <value>Error connecting to server. Please check your network connection.</value>
+  </data>
+  <data name="ErrorEnumeratingDirectory" xml:space="preserve">
+    <value>Error enumerating directory.</value>
+  </data>
+  <data name="ErrorRetrievingShapeFromServiceOutput" xml:space="preserve">
+    <value>Error retrieving shape from service output.</value>
+  </data>
+  <data name="FailedToFetchResoureListAsJSONModel" xml:space="preserve">
+    <value>Failed to fetch resource list as JSON model</value>
+  </data>
+  <data name="FailedToLoadManagementService" xml:space="preserve">
+    <value>Failed to load management service [{0}]</value>
+  </data>
+  <data name="FilePathOrUsernameOrPasswordMissing" xml:space="preserve">
+    <value>FilePath or Username or Password is missing</value>
+  </data>
+  <data name="FolderWasNotFound" xml:space="preserve">
+    <value>Folder was not found after adding</value>
+  </data>
+  <data name="InvalidExpression" xml:space="preserve">
+    <value>is not a valid expression</value>
+  </data>
+  <data name="InvalidOutputPath" xml:space="preserve">
+    <value>Output path is invalid.</value>
+  </data>
+  <data name="InvalidPartID" xml:space="preserve">
+    <value>Invalid PartID</value>
+  </data>
+  <data name="InvalidRequestID" xml:space="preserve">
+    <value>Invalid RequestID</value>
+  </data>
+  <data name="InvalidUrl" xml:space="preserve">
+    <value>Invalid URL to execute for logging</value>
+  </data>
+  <data name="InvalidUser" xml:space="preserve">
+    <value>Invalid User</value>
+  </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>Value is invalid.</value>
+  </data>
+  <data name="InvalidVariableList" xml:space="preserve">
+    <value>Invalid variable list. Please ensure that your variable list has valid entries</value>
+  </data>
+  <data name="InvalidVersion" xml:space="preserve">
+    <value>Invalid Version found</value>
+  </data>
+  <data name="InvalidWorkflow" xml:space="preserve">
+    <value>Invalid workflow selected</value>
+  </data>
+  <data name="ItemWithNameAlreadyExists" xml:space="preserve">
+    <value>An item with this name already exists in this folder.</value>
+  </data>
+  <data name="MalformedService" xml:space="preserve">
+    <value>Malformed Service [{0}] it contains multiple actions</value>
+  </data>
+  <data name="MultipleResourcesFound" xml:space="preserve">
+    <value>Multiple Resources found for Resource ID: {0}</value>
+  </data>
+  <data name="MustBeRealNumber" xml:space="preserve">
+    <value>must be a real number</value>
+  </data>
+  <data name="MustBeSingleCharacter" xml:space="preserve">
+    <value>Must be a single character</value>
+  </data>
+  <data name="MustBeWholeNumber" xml:space="preserve">
+    <value>Must be a whole number</value>
+  </data>
+  <data name="NoContractFound" xml:space="preserve">
+    <value>No contract found for end point</value>
+  </data>
+  <data name="NoParameter" xml:space="preserve">
+    <value>No parameter values provided.</value>
+  </data>
+  <data name="NoResourceIdInTheIncomingData" xml:space="preserve">
+    <value>No resourceId was found in the incoming data</value>
+  </data>
+  <data name="NoResourceName" xml:space="preserve">
+    <value>No resource name given</value>
+  </data>
+  <data name="NullServiceIDOrWorkspaceID" xml:space="preserve">
+    <value>Null or empty ServiceID or WorkspaceID</value>
+  </data>
+  <data name="NullServiceManager" xml:space="preserve">
+    <value>Null Service Manager</value>
+  </data>
+  <data name="OperatorNeedToBeSpecified" xml:space="preserve">
+    <value>Operator need to be specified</value>
+  </data>
+  <data name="PositiveNumberRequired" xml:space="preserve">
+    <value>The value must be non-negative.</value>
+  </data>
+  <data name="RecordsetDoesNotHaveRow" xml:space="preserve">
+    <value>Recordset does not have the row</value>
+  </data>
+  <data name="ResourceIdIsNull" xml:space="preserve">
+    <value>ResourceId is empty or null</value>
+  </data>
+  <data name="ResourceIdNotAGUID" xml:space="preserve">
+    <value>ResourceId is not a GUID</value>
+  </data>
+  <data name="ResourceNameAndTypeMissing" xml:space="preserve">
+    <value>ResourceName and Type are missing from the request</value>
+  </data>
+  <data name="ResourceNotFound" xml:space="preserve">
+    <value>Resource {0} not found</value>
+  </data>
+  <data name="ServiceDoesNotExist" xml:space="preserve">
+    <value>Service does not exist</value>
+  </data>
+  <data name="ServiceIsNull" xml:space="preserve">
+    <value>Empty or null service passed in</value>
+  </data>
+  <data name="ServiceNotFound" xml:space="preserve">
+    <value>Service not found</value>
+  </data>
+  <data name="SupplyAtLeastOne" xml:space="preserve">
+    <value>Please supply at least one of the following: {0}</value>
+  </data>
+  <data name="UnableToContactServer" xml:space="preserve">
+    <value>Unable to contact Server</value>
+  </data>
+  <data name="UnexpectedPropertyName" xml:space="preserve">
+    <value>Unexpected property name encountered</value>
+  </data>
+  <data name="UnexpectedResourceType" xml:space="preserve">
+    <value>Unexpected Resource Type</value>
+  </data>
+  <data name="UserDoesNotExistOnTheMachine" xml:space="preserve">
+    <value>User {0} does not exist on the machine.</value>
+  </data>
+  <data name="VariableIsNull" xml:space="preserve">
+    <value>Variable is null</value>
+  </data>
+  <data name="NoObjectName" xml:space="preserve">
+    <value>Please enter an 'Object Name' as 'Is Object' has been selected.</value>
+  </data>
+  <data name="ArgumentsNotAllowedToBeNull" xml:space="preserve">
+    <value>The following arguments are not allowed to be null: {0}</value>
+  </data>
+  <data name="CannotDeleteFileWithoughtDirectory" xml:space="preserve">
+    <value>Can't delete a file if no directory is passed.</value>
+  </data>
+  <data name="EmptySecuritySettingsPassed" xml:space="preserve">
+    <value>Empty Security Settings passed.</value>
+  </data>
+  <data name="ErrorBuildingSettingsGraph" xml:space="preserve">
+    <value>Error building settings graph from '{0}'.</value>
+  </data>
+  <data name="ErrorCastingBaseObject" xml:space="preserve">
+    <value>Error casting base Object to {0}</value>
+  </data>
+  <data name="ErrorDuringCancelCallback" xml:space="preserve">
+    <value>The following error occurred while executing the cancel callback '{0}'.</value>
+  </data>
+  <data name="ErrorDuringSaveCallback" xml:space="preserve">
+    <value>The following error occurred while executing the save callback '{0}'.</value>
+  </data>
+  <data name="ErrorGettingResourceDefinition" xml:space="preserve">
+    <value>Error getting resource definition for: {0}</value>
+  </data>
+  <data name="ErrorLoadingResource" xml:space="preserve">
+    <value>Error loading resource with ID:{0}"</value>
+  </data>
+  <data name="ErrorParsingInput" xml:space="preserve">
+    <value>Error parsing '{0}' input.</value>
+  </data>
+  <data name="ErrorRetrievingDBSourceForResource" xml:space="preserve">
+    <value>Error retrieving DBSource for resource ID:{0} and Name:{1}</value>
+  </data>
+  <data name="ErrorWritingLoggingConfiguration" xml:space="preserve">
+    <value>Error writing logging configuration.</value>
+  </data>
+  <data name="FailedToBuildFutureReceipt" xml:space="preserve">
+    <value>Failed to build future receipt for [{0} ] Value [ {1} ]</value>
+  </data>
+  <data name="FailedToConnectWithConnectionString" xml:space="preserve">
+    <value>Failed to connect with the following connection string: '{0}'</value>
+  </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>No such file exists on the server.</value>
+  </data>
+  <data name="InvalidArguments" xml:space="preserve">
+    <value>Invalid arguments passed in.</value>
+  </data>
+  <data name="InvalidCommand" xml:space="preserve">
+    <value>Invalid {0} expected</value>
+  </data>
+  <data name="InvalidEnumerator" xml:space="preserve">
+    <value>The enumerator is not valid because the dictionary changed.</value>
+  </data>
+  <data name="InvalidOutputFormat" xml:space="preserve">
+    <value>Output format in service action {0} is invalid.</value>
+  </data>
+  <data name="InvalidSecuritySettings" xml:space="preserve">
+    <value>The security settings are not valid.</value>
+  </data>
+  <data name="InvalidSqlConnection" xml:space="preserve">
+    <value>Invalid {0} Connection</value>
+  </data>
+  <data name="ItemAlreadyExistInPath" xml:space="preserve">
+    <value>There is an item that exists with the same name and path</value>
+  </data>
+  <data name="ItemToDeleteWasNull" xml:space="preserve">
+    <value>Item to delete was null</value>
+  </data>
+  <data name="NoTextForObject" xml:space="preserve">
+    <value>There is no text for object '{0}'.</value>
+  </data>
+  <data name="NoUserNameAndPassword" xml:space="preserve">
+    <value>No username and password provided,</value>
+  </data>
+  <data name="NoValueProvided" xml:space="preserve">
+    <value>Novalue Provided for: {0}</value>
+  </data>
+  <data name="NoValueProvidedForParameter" xml:space="preserve">
+    <value>No value provided for {0} parameter.</value>
+  </data>
+  <data name="NullArgument" xml:space="preserve">
+    <value>The argument must not be null or empty and must contain non-whitespace characters must</value>
+  </data>
+  <data name="NullExecutingUser" xml:space="preserve">
+    <value>Null Executing User</value>
+  </data>
+  <data name="ParentCannotBeNull" xml:space="preserve">
+    <value>The parent cannot be null.</value>
+  </data>
+  <data name="PleaseConnectFirst" xml:space="preserve">
+    <value>Please connect first.</value>
+  </data>
+  <data name="RemoteServerIDNull" xml:space="preserve">
+    <value>Remote Server ID Empty</value>
+  </data>
+  <data name="RequestedFolderDoesNotExistOnServer" xml:space="preserve">
+    <value>Requested folder does not exist on server. Folder: {0}</value>
+  </data>
+  <data name="SchedulerErrorEnumeratingGroups" xml:space="preserve">
+    <value>Scheduler Error Enumerating Groups:{0}</value>
+  </data>
+  <data name="ServiceExecutionError" xml:space="preserve">
+    <value>Service Execution Error: {0}</value>
+  </data>
+  <data name="StringTooLong" xml:space="preserve">
+    <value>String too long</value>
+  </data>
+  <data name="TypeConflict" xml:space="preserve">
+    <value>Compilation Error: There is a {0} with the same name.</value>
+  </data>
+  <data name="ValueNotSupplied" xml:space="preserve">
+    <value>{0} value not supplied.</value>
+  </data>
+  <data name="BackSlashFormatError" xml:space="preserve">
+    <value>A \'\\\' character must be followed by a \' or preceded by a \\.</value>
+  </data>
+  <data name="BadFormatForSFTP" xml:space="preserve">
+    <value>Bad format for SFTP. Path {0}. Please correct path.</value>
+  </data>
+  <data name="CannorParseInputDateTimeWithGivenFormat" xml:space="preserve">
+    <value>Could not parse input datetime with given input format (if you left the input format blank then even after trying default datetime formats from other cultures)</value>
+  </data>
+  <data name="CannotDeleteRootPath" xml:space="preserve">
+    <value>You may not delete the root path</value>
+  </data>
+  <data name="CannotUpdateAWorkspaceItemFromAnotherWorkspace" xml:space="preserve">
+    <value>Cannot update a workspace item from another workspace</value>
+  </data>
+  <data name="CouldNotEvaluateDecisionData" xml:space="preserve">
+    <value>Could not evaluate decision data - No decision function found for [{0}]</value>
+  </data>
+  <data name="DataListErrors" xml:space="preserve">
+    <value>Could not populate decision model - DataList Errors!</value>
+  </data>
+  <data name="EmptyLoggingSettingsPassed" xml:space="preserve">
+    <value>Empty Logging Settings passed.</value>
+  </data>
+  <data name="ErrorConnectingToSFTP" xml:space="preserve">
+    <value>Error connecting to SFTP location {0}.</value>
+  </data>
+  <data name="ErrorGettingResources" xml:space="preserve">
+    <value>Error getting resources</value>
+  </data>
+  <data name="ErrorLoadingTypes" xml:space="preserve">
+    <value>Error loading types.</value>
+  </data>
+  <data name="ErrorReadingSettingsConfiguration" xml:space="preserve">
+    <value>Error reading settings configuration :</value>
+  </data>
+  <data name="ErrorWhileFormattingANumber" xml:space="preserve">
+    <value>An error occurred while formatting a number, an invalid value of '{0}' was returned from the rounding function.</value>
+  </data>
+  <data name="ErrorWritingSettings" xml:space="preserve">
+    <value>Error writing settings.</value>
+  </data>
+  <data name="ErrorWritingSettingsConfiguration" xml:space="preserve">
+    <value>Error writing settings configuration.</value>
+  </data>
+  <data name="FailedToDeleteChildItems" xml:space="preserve">
+    <value>Failed to delete child items</value>
+  </data>
+  <data name="FailedToFindResource" xml:space="preserve">
+    <value>Failed to Find Resource</value>
+  </data>
+  <data name="FailedToRenameResource" xml:space="preserve">
+    <value>Failed to Rename Resource</value>
+  </data>
+  <data name="InvalidModelDataSent" xml:space="preserve">
+    <value>Could not evaluate decision data - Invalid model data sent!</value>
+  </data>
+  <data name="InvalidSharepointServerSent" xml:space="preserve">
+    <value>Invalid SharePoint server sent {0}.</value>
+  </data>
+  <data name="InvalidSharepointServerSource" xml:space="preserve">
+    <value>Invalid SharePoint server source</value>
+  </data>
+  <data name="InvalidSyntaxCreatingVariable" xml:space="preserve">
+    <value>Invalid syntax - You need to close ( ]] ) your variable list reference</value>
+  </data>
+  <data name="InvalidWorkspaceItemDefinition" xml:space="preserve">
+    <value>Invalid workspace item definition</value>
+  </data>
+  <data name="ItemsSourcepropertyIsNotEmpty" xml:space="preserve">
+    <value>ItemsSource property is not empty. This control is being associated with a region, but the control is already bound to something else. If you did not explicitly set the control's ItemSource property, this exception may be caused by a change in the value of the inherited RegionManager attached property.</value>
+  </data>
+  <data name="ItemToAddIsNull" xml:space="preserve">
+    <value>Item to add was null</value>
+  </data>
+  <data name="ItemToRenameIsNull" xml:space="preserve">
+    <value>Item to rename was null</value>
+  </data>
+  <data name="MalformedExpression" xml:space="preserve">
+    <value>An error occurred while parsing '{0}' It appears to be malformed</value>
+  </data>
+  <data name="NoDataListIDsent" xml:space="preserve">
+    <value>Could not evaluate decision data - no DataList ID sent!</value>
+  </data>
+  <data name="NoModelDataSent" xml:space="preserve">
+    <value>Could not evaluate decision data - No model data sent!</value>
+  </data>
+  <data name="NoResourceIdSentToServer" xml:space="preserve">
+    <value>No resourceId sent to server</value>
+  </data>
+  <data name="NoResourceSelected" xml:space="preserve">
+    <value>No Resource Selected</value>
+  </data>
+  <data name="NoSharepointListNameSet" xml:space="preserve">
+    <value>No SharePoint list name set</value>
+  </data>
+  <data name="NoSharepointServerSet" xml:space="preserve">
+    <value>No SharePoint server set</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>{0} not found</value>
+  </data>
+  <data name="NoVersionNumberSentToServer" xml:space="preserve">
+    <value>No versionNumber sent to server</value>
+  </data>
+  <data name="NullPopupController" xml:space="preserve">
+    <value>Null Popup Controller</value>
+  </data>
+  <data name="OnlyUserResourcesCanBeAdded" xml:space="preserve">
+    <value>Only user resources can be added from this repository</value>
+  </data>
+  <data name="PermissionsPassedNotValid" xml:space="preserve">
+    <value>The permissions passed is not a valid list of permissions. Error: {0}</value>
+  </data>
+  <data name="RecordsetIndexContainsInvalidCharecters" xml:space="preserve">
+    <value>Recordset index ({0}) contains invalid character(s)</value>
+  </data>
+  <data name="RecordsetIndexNotGreaterThanZero" xml:space="preserve">
+    <value>Recordset index {0} is not greater than zero</value>
+  </data>
+  <data name="RepositoryDoesNotRequireLoading" xml:space="preserve">
+    <value>This repository does not require loading. It is intended to be added to at runtime</value>
+  </data>
+  <data name="RequestedFolderAlreadyExists" xml:space="preserve">
+    <value>Requested folder already exists on server.</value>
+  </data>
+  <data name="ResourceAlreadyLoaded" xml:space="preserve">
+    <value>Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded from file '{2}'.</value>
+  </data>
+  <data name="ResourceHasUnrecognizedFormatting" xml:space="preserve">
+    <value>Resource has unrecognized formatting, this Warewolf Server may be to outdated to read this resource.</value>
+  </data>
+  <data name="ServerconnectionDropped" xml:space="preserve">
+    <value>Server connection has dropped during execution of command.</value>
+  </data>
+  <data name="ServerDisconnected" xml:space="preserve">
+    <value>Server: {0} has disconnected.</value>
+  </data>
+  <data name="ServerDisconnectedHeader" xml:space="preserve">
+    <value>Disconnected Server</value>
+  </data>
+  <data name="ServerReconnectForActions" xml:space="preserve">
+    <value>Please reconnect before performing any actions</value>
+  </data>
+  <data name="ToServiceDefinitionDoesNotRupportResourcesOfTypeSource" xml:space="preserve">
+    <value>ToServiceDefinition doesn't support resources of type source. Sources are meant to be managed through the Web API.</value>
+  </data>
+  <data name="UnexpectedCharacterAtIndex" xml:space="preserve">
+    <value>Unexpected character at index {0} of format</value>
+  </data>
+  <data name="UnexpectedValueAtIndex" xml:space="preserve">
+    <value>Unexpected value at index {0}.</value>
+  </data>
+  <data name="UnrecognisedFormatPart" xml:space="preserve">
+    <value>Unrecognised format part {0}.</value>
+  </data>
+  <data name="valuesAreMissing" xml:space="preserve">
+    <value>Values are missing</value>
+  </data>
+  <data name="ViewModelTypeMustContainAParameterlessContructor" xml:space="preserve">
+    <value>ViewModel type must contain a parameter less constructor.</value>
+  </data>
+  <data name="ViewModelTypeMustInheritFromSettingsViewModelBase" xml:space="preserve">
+    <value>ViewModel type must inherit from SettingsViewModelBase.</value>
+  </data>
+  <data name="ViewTypeMustContainAParameterlessContructor" xml:space="preserve">
+    <value>View type must contain a parameter less constructor.</value>
+  </data>
+  <data name="ViewTypeMustInheritFromUserControl" xml:space="preserve">
+    <value>View type must inherit from UserControl.</value>
+  </data>
+  <data name="DataMergeInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Input' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="CommandLineInvalidExpressionErrorTest" xml:space="preserve">
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="CredentialsPasswordNotNullErrorTest" xml:space="preserve">
+    <value>Password Cannot be null</value>
+  </data>
+  <data name="CredentialsUsernameInvalidExpressionErrorTest" xml:space="preserve">
+    <value>Username - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="CredentialsUsernameNotNullErrorTest" xml:space="preserve">
+    <value>Username Cannot be null</value>
+  </data>
+  <data name="DataMergeUsingNullErrorTest" xml:space="preserve">
+    <value>'Using' Cannot be null</value>
+  </data>
+  <data name="DataSplitInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Results' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="DataSplitStringToSplitErrorTest" xml:space="preserve">
+    <value>'String to Split' Cannot be null</value>
+  </data>
+  <data name="DataSplitUsingNullErrorTest" xml:space="preserve">
+    <value>'Using' must be a real number</value>
+  </data>
+  <data name="DecisionDisplayTextNotNullErrorTest" xml:space="preserve">
+    <value>'DisplayText' Cannot be null</value>
+  </data>
+  <data name="DecisionFalseArmTextNotNullErrorTest" xml:space="preserve">
+    <value>'FalseArmText' Cannot be null</value>
+  </data>
+  <data name="DecisionTrueArmTextNotNullErrorTest" xml:space="preserve">
+    <value>'TrueArmText' Cannot be null</value>
+  </data>
+  <data name="EmailAttachmentsInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Attachments' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="EmailBccInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Bcc' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="EmailCcInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'Cc' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="EmailFromAccountInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'From Account' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="EmailPasswordNotNullErrorTest" xml:space="preserve">
+    <value>'Password' Cannot be null</value>
+  </data>
+  <data name="EmailSourceNotNullErrorTest" xml:space="preserve">
+    <value>'Email Source' Cannot be null</value>
+  </data>
+  <data name="EmailToInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'To' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="FileActivityLabelInvalidExpressionErrorTest" xml:space="preserve">
+    <value>Label - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="FileActivityLabelNotNullErrorTest" xml:space="preserve">
+    <value>Label Cannot be null</value>
+  </data>
+  <data name="FileActivityLabelNotValidErrorTest" xml:space="preserve">
+    <value>Please supply a valid Label</value>
+  </data>
+  <data name="FindRecordsFromNotNullErrorTest" xml:space="preserve">
+    <value>'From' Cannot be null</value>
+  </data>
+  <data name="FindRecordsInFieldsNotNullErrorTest" xml:space="preserve">
+    <value>'In Field(s)' Cannot be null</value>
+  </data>
+  <data name="FindRecordsInFieldsResultNotNullErrorTest" xml:space="preserve">
+    <value>'Result' Cannot be null</value>
+  </data>
+  <data name="FindRecordsInFieldsScalarNotAllowedErrorTest" xml:space="preserve">
+    <value>'In Field(s)' Cannot have any scalars in this field</value>
+  </data>
+  <data name="FindRecordsToNotNullErrorTest" xml:space="preserve">
+    <value>'To' Cannot be null</value>
+  </data>
+  <data name="QuickVariableInputListStringNotNullErrorTest" xml:space="preserve">
+    <value>Variable List String cannot be blank/empty</value>
+  </data>
+  <data name="RabbitMqMessageNotNullErrorTest" xml:space="preserve">
+    <value>'Message' Cannot be null</value>
+  </data>
+  <data name="RabbitMqQueueNameNotNullErrorTest" xml:space="preserve">
+    <value>'Queue Name' Cannot be null</value>
+  </data>
+  <data name="RabbitMqSourceNotNullErrorTest" xml:space="preserve">
+    <value>'RabbitMQ Source' Cannot be null</value>
+  </data>
+  <data name="RandomIntegerForEndErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for End from {0} to {1}.</value>
+  </data>
+  <data name="RandomIntegerForStartErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for Start from {0} to {1}.</value>
+  </data>
+  <data name="RandomPositiveIntegerErrorTest" xml:space="preserve">
+    <value>Please enter a positive integer for the Length.</value>
+  </data>
+  <data name="RandomPositiveIntegerForEndErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for End</value>
+  </data>
+  <data name="RandomPositiveIntegerForStartErrorTest" xml:space="preserve">
+    <value>Please ensure that you have entered an integer or decimal number for Start</value>
+  </data>
+  <data name="UniqueResultCannotBeScalarErrorTest" xml:space="preserve">
+    <value>Scalars are not allowed. Please check the following: 'Result'</value>
+  </data>
+  <data name="XPathInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'XPath' is not a valid expression</value>
+  </data>
+  <data name="XPathResultsNotNullErrorTest" xml:space="preserve">
+    <value>'Results' Cannot be null</value>
+  </data>
+  <data name="XPathXmlInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'XML' is not a valid expression</value>
+  </data>
+  <data name="XPathXmlNotNullErrorTest" xml:space="preserve">
+    <value>'XML' Cannot be null</value>
+  </data>
+  <data name="XPathXmlRecordsetIndexErrorTest" xml:space="preserve">
+    <value>'XML' - Recordset index -1 is not greater than zero</value>
+  </data>
+  <data name="IsSingeRecordSortFieldInvalidErrorTest" xml:space="preserve">
+    <value>Sort field is invalid. You may only sort on a single RecordSet columns</value>
+  </data>
+  <data name="IsSingeValueResultFieldInvalidErrorTest" xml:space="preserve">
+    <value>The result field only allows a single result</value>
+  </data>
+  <data name="IsValidExpressionRuleErrorTest" xml:space="preserve">
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="IsValidExpressionRuleIndexZeroErrorTest" xml:space="preserve">
+    <value>MyRecSet - Recordset index -1 is not greater than zero</value>
+  </data>
+  <data name="IsValidExpressionRuleInvalidCharactersErrorTest" xml:space="preserve">
+    <value>Variable name [[res#]] contains invalid character(s)</value>
+  </data>
+  <data name="ScheduledResourceInvalidUserPermissionErrorTest" xml:space="preserve">
+    <value>This Workflow requires that you have Execute permission on the 'bob' Workflow. 
+Please contact your Warewolf System Administrator.</value>
+  </data>
+  <data name="ScheduledResourceLogOnAsBatchErrorTest" xml:space="preserve">
+    <value>This task requires that the user account specified has 'Log On As Batch' job rights. 
+Please contact your Windows System Administrator.</value>
+  </data>
+  <data name="InvalidMovePermissionErrorMessage" xml:space="preserve">
+    <value>You do not have permission to move this item. Contribute permission is required to move an item.</value>
+  </data>
+  <data name="NotAuthorizedToAdministratorException" xml:space="preserve">
+    <value>Administrator rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToContributeException" xml:space="preserve">
+    <value>Contribute rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToCreateException" xml:space="preserve">
+    <value>Create rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToDeployFromException" xml:space="preserve">
+    <value>DeployFrom  rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToDeployToException" xml:space="preserve">
+    <value>DeployTo rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToExecuteException" xml:space="preserve">
+    <value>Execute rights required to perfom this action.</value>
+  </data>
+  <data name="NotAuthorizedToViewException" xml:space="preserve">
+    <value>View rights required to perfom this action.</value>
+  </data>
+  <data name="ServiceNotAuthorizedExceptionHeader" xml:space="preserve">
+    <value>Not Authorized</value>
+  </data>
+  <data name="JSONIncompatibleConversionError" xml:space="preserve">
+    <value>Cannot convert given JSON to target type</value>
+  </data>
+</root>

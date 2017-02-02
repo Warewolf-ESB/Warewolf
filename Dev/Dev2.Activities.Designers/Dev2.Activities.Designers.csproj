@@ -1,0 +1,2264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Activities</RootNamespace>
+    <AssemblyName>Dev2.Activities.Designers</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FontAwesome.WPF, Version=4.5.0.37524, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.WPF.4.5.0.8\lib\net40\FontAwesome.WPF.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FsLexYacc.Runtime, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FsLexYacc.Runtime.6.1.0\lib\net40\FsLexYacc.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Menus.XamMenu.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2188, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Editors.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.Editors.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v15.1, Version=15.1.20151.2055, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\InfragisticsWPF4.v15.1.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Composition, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop">
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Design.Interaction">
+      <HintPath>%vs140comntools%\..\IDE\PublicAssemblies\Microsoft.Windows.Design.Interaction.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="policy.2.3.FSharp.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Compile Include="Adorners\AdornerToggleButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
+    <Compile Include="Designers2\.Net Dll Enhanced\DotNetDllDesigner.xaml.cs">
+      <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net Dll Enhanced\DotNetDllEnhancedViewModel.cs" />
+    <Compile Include="Designers2\.Net Dll Enhanced\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net Dll Enhanced\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\ComDllDesigner.xaml.cs">
+      <DependentUpon>ComDllDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\ComDllViewModel.cs" />
+    <Compile Include="Designers2\ComDLL\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ComDLL\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net DLL\DotNetDllViewModel.cs" />
+    <Compile Include="Designers2\.Net DLL\DotNetDllDesigner.xaml.cs">
+      <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net DLL\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\.Net DLL\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\AggregateCalculate.xaml.cs">
+      <DependentUpon>AggregateCalculate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\AggregateCalculateDesignerViewModel.cs" />
+    <Compile Include="Designers2\AggregateCalculate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\AggregateCalculate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\BaseConvert\BaseConvertDesignerViewModel.cs" />
+    <Compile Include="Designers2\BaseConvert\BaseConvertDesigner.xaml.cs">
+      <DependentUpon>BaseConvertDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\BaseConvert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\BaseConvert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Calculate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Calculate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Calculate\CalculateDesigner.xaml.cs">
+      <DependentUpon>CalculateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Calculate\CalculateDesignerViewModel.cs" />
+    <Compile Include="Designers2\CaseConvert\CaseConvertDesigner.xaml.cs">
+      <DependentUpon>CaseConvertDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CaseConvert\CaseConvertDesignerViewModel.cs" />
+    <Compile Include="Designers2\CaseConvert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CaseConvert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CommandLine\CommandLineDesigner.xaml.cs">
+      <DependentUpon>CommandLineDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CommandLine\CommandLineDesignerViewModel.cs" />
+    <Compile Include="Designers2\CommandLine\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CommandLine\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Comment\CommentDesigner.xaml.cs">
+      <DependentUpon>CommentDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Comment\CommentDesignerViewModel.cs" />
+    <Compile Include="Designers2\Comment\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ActionInputDatatalistMapper.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\ComActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DotNetMethodRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\WcfActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerObservableViewModel_TDev2TO.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DatabaseInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DotNetConstructorInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\DotNetInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\CloneInputRegion\WcfInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\ConstructorRegion\DotNetConstructorRegion.cs" />
+    <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
+    <Compile Include="Designers2\Core\CEventHelper.cs" />
+    <Compile Include="Designers2\Core\DotNetActionsWidthConverter.cs" />
+    <Compile Include="Designers2\Core\DropboxSourceManager.cs" />
+    <Compile Include="Designers2\Core\ErrorRegion.cs" />
+    <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
+    <Compile Include="Designers2\Core\FindDependencyParent.cs" />
+    <Compile Include="Designers2\Core\GenerateInputsRegion.cs" />
+    <Compile Include="Designers2\Core\GenerateOutputsRegion.cs" />
+    <Compile Include="Designers2\Core\IActionInputDatatalistMapper.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DatabaseInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DotNetConstructorInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\DotNetInputRegion.cs" />
+    <Compile Include="Designers2\Core\InputRegion\WcfInputRegion.cs" />
+    <Compile Include="Designers2\Core\IScriptChooser.cs" />
+    <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageComPluginServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageEnhancedPluginServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageWcfServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
+    <Compile Include="Designers2\Core\NamespaceRegion\ComNamespaceRegion.cs" />
+    <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
+    <Compile Include="Designers2\Core\OutputsRegion.cs" />
+    <Compile Include="Designers2\Core\ScriptChooser.cs" />
+    <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\ComSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\DotNetSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\ExchangeSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\WcfSourceRegion.cs" />
+    <Compile Include="Designers2\Core\Source\WebSourceRegion.cs" />
+    <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
+    <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Delete\WebDeleteInputRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Delete\WebDeleteRegionClone.cs" />
+    <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
+    <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
+    <Compile Include="Designers2\Core\Web\Put\WebPutRegionClone.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecords\Large.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\Small.xaml.cs" />
+    <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CreateJSON\CreateJsonDesigner.xaml.cs">
+      <DependentUpon>CreateJsonDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\CreateJSON\CreateJsonDesignerViewModel.cs" />
+    <Compile Include="Designers2\CreateJSON\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTime\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Decision\DecisionDesignerViewModel.cs" />
+    <Compile Include="Designers2\Decision\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml.cs">
+      <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\DeleteRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.xaml.cs">
+      <DependentUpon>DropBoxDeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Download\DropBoxDownloadDesigner.xaml.cs">
+      <DependentUpon>DropBoxDownloadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Download\DropBoxDownloadViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\Download\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Download\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.xaml.cs">
+      <DependentUpon>DropBoxFileListDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesignerViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\DropboxFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\DropboxFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Upload\DropBoxUploadDesigner.xaml.cs">
+      <DependentUpon>DropBoxUploadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Upload\DropBoxUploadViewModel.cs" />
+    <Compile Include="Designers2\DropBox2016\Upload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DropBox2016\Upload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesigner.xaml.cs">
+      <DependentUpon>RabbitMQConsumeDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Consume\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesigner.xaml.cs">
+      <DependentUpon>RabbitMQPublishDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesignerViewModel.cs" />
+    <Compile Include="Designers2\RabbitMQ\Publish\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeEmail\ExchangeEmailDesignerViewModel.cs" />
+    <Compile Include="Designers2\ExchangeEmail\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeEmail\ExchangeEmailDesigner.xaml.cs">
+      <DependentUpon>ExchangeEmailDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeEmail\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Foreach\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FormatNumber\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml.cs">
+      <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesignerViewModel.cs" />
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssignObject\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssignObject\MultiAssignObjectDesigner.xaml.cs">
+      <DependentUpon>MultiAssignObjectDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssignObject\MultiAssignObjectDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssignObject\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Random\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\ODBCDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\ODBC\ODBCDatabaseDesigner.xaml.cs">
+      <DependentUpon>ODBCDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ODBC\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\OracleDatabaseDesigner.xaml.cs">
+      <DependentUpon>OracleDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Oracle\OracleDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\Oracle\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\PostgreSqlDatabaseDesigner.xaml.cs">
+      <DependentUpon>PostgreSqlDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\PostgreSql\PostgreSqlDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\PostgreSql\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.xaml.cs">
+      <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLengthNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLengthNullHandler\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Copy\CopyDesigner.xaml.cs">
+      <DependentUpon>CopyDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Copy\CopyDesignerViewModel.cs" />
+    <Compile Include="Designers2\Copy\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Copy\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ActivityCollectionDesigner.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel_TDev2TO.cs" />
+    <Compile Include="Designers2\Core\ActivityCollectionDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerTemplate.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerToggle.cs" />
+    <Compile Include="Designers2\Core\Controls\Dev2DataGrid.xaml.cs">
+      <DependentUpon>Dev2DataGrid.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Core\Errors\ErrorsAdorner.xaml.cs">
+      <DependentUpon>ErrorsAdorner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\Errors\OnError.xaml.cs">
+      <DependentUpon>OnError.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\FileActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\Adorners\AdornerControl.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerButton.cs" />
+    <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
+    <Compile Include="Designers2\Core\Errors\ErrorsSetter.cs" />
+    <Compile Include="Designers2\Core\Help\HelpSetter.cs" />
+    <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
+    <Compile Include="Designers2\Core\IClosable.cs" />
+    <Compile Include="Designers2\Core\IsItemDragged.cs" />
+    <Compile Include="Designers2\Core\ZIndexPosition.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml.cs">
+      <DependentUpon>CountRecordsDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Create\CreateDesigner.xaml.cs">
+      <DependentUpon>CreateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Create\CreateDesignerViewModel.cs" />
+    <Compile Include="Designers2\Create\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Create\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\DataMergeDesigner.xaml.cs">
+      <DependentUpon>DataMergeDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\DataMergeDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DataMerge\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\DataSplitDesigner.xaml.cs">
+      <DependentUpon>DataSplitDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\DataSplitDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DataSplit\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml.cs">
+      <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
+      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml.cs">
+      <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Delete\DeleteDesigner.xaml.cs">
+      <DependentUpon>DeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Delete\DeleteDesignerViewModel.cs" />
+    <Compile Include="Designers2\Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Email\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Email\EmailDesigner.xaml.cs">
+      <DependentUpon>EmailDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Email\EmailDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Email\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\FindIndexDesigner.xaml.cs">
+      <DependentUpon>FindIndexDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\FindIndexDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindIndex\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml.cs">
+      <DependentUpon>FindRecordsMultipleCriteriaDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FindRecordsMultipleCriteria\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Foreach\ForeachDesigner.xaml.cs">
+      <DependentUpon>ForeachDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Foreach\ForeachDesignerViewModel.cs" />
+    <Compile Include="Designers2\Foreach\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FormatNumber\FormatNumberDesigner.xaml.cs">
+      <DependentUpon>FormatNumberDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\FormatNumber\FormatNumberDesignerViewModel.cs" />
+    <Compile Include="Designers2\FormatNumber\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\GatherSystemInformationDesigner.xaml.cs">
+      <DependentUpon>GatherSystemInformationDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GatherSystemInformation\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesigner.xaml.cs">
+      <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Move\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Move\MoveDesigner.xaml.cs">
+      <DependentUpon>MoveDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Move\MoveDesignerViewModel.cs" />
+    <Compile Include="Designers2\Move\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssign\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MultiAssign\MultiAssignDesigner.xaml.cs">
+      <DependentUpon>MultiAssignDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ActivityDesigner.cs" />
+    <Compile Include="Designers2\Core\ActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssign\MultiAssignDesignerViewModel.cs" />
+    <Compile Include="Designers2\MultiAssign\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AttachedProperties\FocusSetter.cs" />
+    <Compile Include="AttachedProperties\WizardEngineAttachedProperties.cs" />
+    <Compile Include="Designers2\Random\RandomDesigner.xaml.cs">
+      <DependentUpon>RandomDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Random\RandomDesignerViewModel.cs" />
+    <Compile Include="Designers2\Random\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\CredentialsActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFile\ReadFileDesigner.xaml.cs">
+      <DependentUpon>ReadFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFile\ReadFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolder\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolder\ReadFolderDesigner.xaml.cs">
+      <DependentUpon>ReadFolderDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolder\ReadFolderDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFolder\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml.cs">
+      <DependentUpon>RecordsLengthDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\RecordsLength\RecordsLengthDesignerViewModel.cs" />
+    <Compile Include="Designers2\RecordsLength\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Rename\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Rename\RenameDesigner.xaml.cs">
+      <DependentUpon>RenameDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Rename\RenameDesignerViewModel.cs" />
+    <Compile Include="Designers2\Rename\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Replace\ReplaceDesigner.xaml.cs">
+      <DependentUpon>ReplaceDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Replace\ReplaceDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Replace\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Replace\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\PythonDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Python\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Python\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\RubyDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Ruby\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Ruby\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script_Javascript\JavaScriptDesignerViewModel.cs" />
+    <Compile Include="Designers2\Script_Javascript\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script\ScriptDesigner.xaml.cs">
+      <DependentUpon>ScriptDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Script\ScriptDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Script\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Script\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\SelectAndApplyDesigner.xaml.cs">
+      <DependentUpon>SelectAndApplyDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\SelectAndApplyDesignerViewModel.cs" />
+    <Compile Include="Designers2\SelectAndApply\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\SequenceDesigner.xaml.cs">
+      <DependentUpon>SequenceDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\SequenceDesignerViewModel.cs" />
+    <Compile Include="Designers2\Sequence\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\VerticalConnector.xaml.cs">
+      <DependentUpon>VerticalConnector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Service\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Service\MappingManager.cs" />
+    <Compile Include="Designers2\Service\ServiceDesigner.xaml.cs">
+      <DependentUpon>ServiceDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Service\ServiceDesignerViewModel.cs" />
+    <Compile Include="Designers2\Service\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Service\ValidationMemoManager.cs" />
+    <Compile Include="Designers2\SharePointCopyFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointCopyFile\SharePointCopyFileDesigner.xaml.cs">
+      <DependentUpon>SharePointCopyFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointCopyFile\SharePointCopyFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointCopyFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\SharePointDeleteFileDesigner.xaml.cs">
+      <DependentUpon>SharePointDeleteFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointDeleteFile\SharePointDeleteFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointDeleteFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\SharePointFileDownLoadDesigner.xaml.cs">
+      <DependentUpon>SharePointFileDownLoadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileDownload\SharePointFileDownLoadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointFileDownload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\SharePointFileUploadDesigner.xaml.cs">
+      <DependentUpon>SharePointFileUploadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointFileUpload\SharePointFileUploadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointFileUpload\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\SharePointReadFolderDesigner.xaml.cs">
+      <DependentUpon>SharePointReadFolderDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointFolderRead\SharePointReadFolderDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointFolderRead\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListCreate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListCreate\SharepointListCreateDesigner.xaml.cs">
+      <DependentUpon>SharepointListCreateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListCreate\SharepointListCreateDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListCreate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\SharepointListDeleteDesigner.xaml.cs">
+      <DependentUpon>SharepointListDeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListDelete\SharepointListDeleteDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListDelete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListRead\SharepointListDesignerViewModelBase.cs" />
+    <Compile Include="Designers2\SharepointListRead\SharepointListReadDesigner.xaml.cs">
+      <DependentUpon>SharepointListReadDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListRead\SharepointListReadDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListRead\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListRead\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\SharepointListUpdateDesigner.xaml.cs">
+      <DependentUpon>SharepointListUpdateDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharepointListUpdate\SharepointListUpdateDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharepointListUpdate\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\SharePointMoveFileDesigner.xaml.cs">
+      <DependentUpon>SharePointMoveFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SharePointMoveFile\SharePointMoveFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\SharePointMoveFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\SortRecordsDesigner.xaml.cs">
+      <DependentUpon>SortRecordsDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\SortRecords\SortRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\SqlBulkInsert\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlBulkInsert\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesigner.xaml.cs">
+      <DependentUpon>SqlBulkInsertDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlBulkInsert\SqlBulkInsertDesignerViewModel.cs" />
+    <Compile Include="Designers2\GatherSystemInformation\GatherSystemInformationDesignerViewModel.cs" />
+    <Compile Include="Designers2\MySqlDatabase\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MySqlDatabase\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MySqlDatabase\MySqlDatabaseDesigner.xaml.cs">
+      <DependentUpon>MySqlDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\MySqlDatabase\MySqlDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\SqlServerDatabase\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesigner.xaml.cs">
+      <DependentUpon>SqlServerDatabaseDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlServerDatabase\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesignerViewModel.cs" />
+    <Compile Include="Designers2\Switch\ConfigureSwitch.xaml.cs">
+      <DependentUpon>ConfigureSwitch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Switch\ConfigureSwitchArm.xaml.cs">
+      <DependentUpon>ConfigureSwitchArm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Switch\SwitchDesignerViewModel.cs" />
+    <Compile Include="Designers2\UniqueRecords\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesigner.xaml.cs">
+      <DependentUpon>UniqueRecordsDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\UniqueRecords\UniqueRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\UniqueRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Unzip\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Unzip\UnzipDesigner.xaml.cs">
+      <DependentUpon>UnzipDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Unzip\UnzipDesignerViewModel.cs" />
+    <Compile Include="Designers2\Unzip\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml.cs">
+      <DependentUpon>WcfEndPointDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WCFEndPoint\WcfEndPointViewModel.cs" />
+    <Compile Include="Designers2\Core\IServiceInputBuilder.cs" />
+    <Compile Include="Designers2\Web Service Put\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\ServiceInputBuilder.cs" />
+    <Compile Include="Designers2\Web Service Put\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\WebPutDesigner.xaml.cs">
+      <DependentUpon>WebPutDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Put\WebServicePutViewModel.cs" />
+    <Compile Include="Designers2\Web Service Delete\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Delete\WebServiceDeleteViewModel.cs" />
+    <Compile Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml.cs">
+      <DependentUpon>WebDeleteDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\WebServiceGetDesigner.xaml.cs">
+      <DependentUpon>WebGetDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Get\WebServiceGetViewModel.cs" />
+    <Compile Include="Designers2\Web Service Post\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\WebPostDesigner.xaml.cs">
+      <DependentUpon>WebPostDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Web Service Post\WebServicePostViewModel.cs" />
+    <Compile Include="Designers2\WriteFile\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\WriteFileDesigner.xaml.cs">
+      <DependentUpon>WriteFileDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\WriteFile\WriteFileDesignerViewModel.cs" />
+    <Compile Include="Designers2\WriteFile\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\XPath\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\XPath\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\XPath\XPathDesigner.xaml.cs">
+      <DependentUpon>XPathDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\XPath\XPathDesignerViewModel.cs" />
+    <Compile Include="Designers2\Zip\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Zip\ZipDesigner.xaml.cs">
+      <DependentUpon>ZipDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\Zip\ZipDesignerViewModel.cs" />
+    <Compile Include="Designers2\Zip\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Preview\PreviewRequestedEventArgs.cs" />
+    <Compile Include="Preview\PreviewView.xaml.cs">
+      <DependentUpon>PreviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Preview\PreviewViewModel.cs" />
+    <Compile Include="Properties\ActivityResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ActivityResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Designers2\Core\QuickVariableInput\QuickVariableInputView.xaml.cs">
+      <DependentUpon>QuickVariableInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Core\QuickVariableInput\QuickVariableInputViewModel.cs" />
+    <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
+    <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
+    <Compile Include="Utils\DropEnabledActivityDesignerUtils.cs" />
+    <EmbeddedResource Include="Properties\ActivityResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ActivityResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
+      <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
+      <Name>Dev2.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Name>Dev2.Intellisense</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9c43d5a2-fefd-4632-9bf2-ee0e4c05bebc}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
+      <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
+      <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
+      <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
+      <Name>Warewolf.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
+      <Project>{1BD5CC42-66C7-4A1B-AF1F-E6F2D4372B44}</Project>
+      <Name>Warewolf.Studio.CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Designers2\.Net Dll Enhanced\DotNetDllDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\.Net Dll Enhanced\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\.Net Dll Enhanced\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ComDLL\ComDllDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ComDLL\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ComDLL\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\.Net DLL\DotNetDllDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\.Net DLL\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\.Net DLL\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\AggregateCalculate\AggregateCalculate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\AggregateCalculate\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\AggregateCalculate\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\BaseConvert\BaseConvertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\BaseConvert\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\BaseConvert\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Calculate\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Calculate\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Calculate\CalculateDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CaseConvert\CaseConvertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CaseConvert\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CaseConvert\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CommandLine\CommandLineDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CommandLine\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CommandLine\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Comment\CommentDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Comment\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Core\CustomToolDesignerRegions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecordsNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\CountRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CreateJSON\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CreateJSON\CreateJsonDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CreateJSON\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTimeDifference\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTime\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Decision\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DeleteRecordsNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Delete\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Delete\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Download\DropBoxDownloadDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Download\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Download\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\DropboxFile\DropBoxFileListDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\DropboxFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\DropboxFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Upload\DropBoxUploadDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Upload\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DropBox2016\Upload\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ExchangeEmail\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ExchangeEmail\ExchangeEmailDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ExchangeEmail\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\FindIndex\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Foreach\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\FormatNumber\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GatherSystemInformation\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\RabbitMQConsumeDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Consume\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish\RabbitMQPublishDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\RabbitMQ\Publish\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MultiAssignObject\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MultiAssignObject\MultiAssignObjectDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MultiAssignObject\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Random\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ODBC\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ODBC\ODBCDatabaseDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ODBC\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Oracle\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Oracle\OracleDatabaseDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Oracle\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\PostgreSql\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\PostgreSql\PostgreSqlDatabaseDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\PostgreSql\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLengthNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLengthNullHandler\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Copy\CopyDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Copy\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Copy\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Core\Controls\Dev2DataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Core\Errors\ErrorsAdorner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Core\Errors\OnError.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\CountRecordsNullHandler\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Create\CreateDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Create\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Create\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DataMerge\DataMergeDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DataMerge\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DataMerge\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DataSplit\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DataSplit\DataSplitDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DataSplit\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DateTimeDifference\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DateTime\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DeleteRecordsNullHandler\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Delete\DeleteDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Delete\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Delete\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Email\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Email\EmailDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Email\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FindIndex\FindIndexDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FindIndex\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FindRecordsMultipleCriteria\FindRecordsMultipleCriteriaDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FindRecordsMultipleCriteria\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\FindRecordsMultipleCriteria\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Foreach\ForeachDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Foreach\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\FormatNumber\FormatNumberDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\FormatNumber\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GatherSystemInformation\GatherSystemInformationDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\GatherSystemInformation\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\GetWebRequestDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequestWithTimeout\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Move\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Move\MoveDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Move\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MultiAssign\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\MultiAssign\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Random\RandomDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Random\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFile\ReadFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFolder\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFolder\ReadFolderDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ReadFolder\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\RecordsLengthDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\RecordsLength\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Rename\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Rename\RenameDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Rename\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Replace\ReplaceDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Replace\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Replace\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Script_Python\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Python\ScriptDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Python\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Ruby\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Ruby\ScriptDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Ruby\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\ScriptDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script_Javascript\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script\ScriptDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Script\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Script\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SelectAndApply\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SelectAndApply\SelectAndApplyDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SelectAndApply\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Sequence\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Sequence\SequenceDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Sequence\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Sequence\VerticalConnector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Service\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Service\ServiceDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Service\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointCopyFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointCopyFile\SharePointCopyFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointCopyFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointDeleteFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointDeleteFile\SharePointDeleteFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointDeleteFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileDownload\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileDownload\SharePointFileDownLoadDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileDownload\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileUpload\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileUpload\SharePointFileUploadDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointFileUpload\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointFolderRead\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointFolderRead\SharePointReadFolderDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointFolderRead\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointListCreate\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListCreate\SharepointListCreateDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListCreate\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListDelete\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListDelete\SharepointListDeleteDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListDelete\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListRead\SharepointListReadDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointListRead\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointListRead\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharepointListUpdate\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListUpdate\SharepointListUpdateDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharepointListUpdate\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SharePointMoveFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointMoveFile\SharePointMoveFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SharePointMoveFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SortRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SortRecords\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SortRecords\SortRecordsDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SqlBulkInsert\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SqlBulkInsert\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\SqlBulkInsert\SqlBulkInsertDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MySqlDatabase\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MySqlDatabase\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\MySqlDatabase\MySqlDatabaseDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SqlServerDatabase\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SqlServerDatabase\SqlServerDatabaseDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\SqlServerDatabase\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Switch\ConfigureSwitch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Switch\ConfigureSwitchArm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\UniqueRecords\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\UniqueRecords\UniqueRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\UniqueRecords\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Unzip\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Unzip\UnzipDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Unzip\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WCFEndPoint\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WCFEndPoint\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WCFEndPoint\WcfEndPointDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Put\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Put\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Put\WebPutDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Delete\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Delete\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Delete\WebDeleteDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Get\WebGetDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Get\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Get\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Web Service Post\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Post\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Web Service Post\WebPostDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\WriteFile\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WriteFile\WriteFileDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\WriteFile\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\XPath\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\XPath\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\XPath\XPathDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Zip\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Zip\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Zip\ZipDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\MultiAssign\MultiAssignDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Preview\PreviewView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\Core\QuickVariableInput\QuickVariableInputView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Resize_Grip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Themes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Designers2\DropBox2016\dropbox-windows.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

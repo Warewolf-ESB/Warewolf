@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<DrawingImage x:Key="System-WebService-Debug">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+				<GeometryDrawing Brush="#FF333333" Geometry="M 262.827,-506.75L 261.063,-506.75L 261.053,-506.769"/>
+					<GeometryDrawing Brush="#FFEC6300" Geometry="M 256.907,-499.519C 256.907,-501.858 258.796,-503.758 261.132,-503.758C 263.463,-503.758 265.352,-501.858 265.352,-499.519C 265.352,-497.179 263.463,-495.285 261.132,-495.285C 258.796,-495.285 256.907,-497.179 256.907,-499.519 Z "/>
+					<GeometryDrawing Brush="#FF333333" Geometry="M 259.723,-501.636L 263.239,-499.519L 259.723,-497.402L 259.723,-501.636 Z "/>
+		</DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+</DrawingImage>
+	</ResourceDictionary>

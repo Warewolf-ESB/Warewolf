@@ -1,0 +1,95 @@
+﻿%{
+    open LanguageAST
+    open DataStorage
+%}
+
+
+
+// Regular tokens
+%token OPENLANGUAGE CLOSELANGAUGE OPENBRACKET CLOSEDBRACKET STAR DOT ATIDF
+%token <string> INT   
+%token <string> FLOAT
+%token <string> STRING    
+%token <string> VARNAME    
+
+// Misc tokens
+%token EOF
+
+// This is the type of the data produced by a successful reduction of the 'start'
+// symbol:
+%start start   
+%type <LanguageAST.LanguageExpression> start  
+%type <LanguageAST.LanguageExpression> langExpression   
+%type <LanguageAST.RecordSetColumnIdentifier> recset 
+%type <DataStorage.WarewolfAtom> atom   
+%type <LanguageAST.ScalarIdentifier> scalar
+
+%%
+
+// These are the rules of the grammar along with the F# code of the 
+// actions executed as rules are reduced.  
+start: langExpression	{$1}
+
+langExpression : 
+	| atom {WarewolfAtomExpression $1}
+	| scalar {  ScalarExpression $1 }	
+	| recset { RecordSetExpression $1 }
+	| recsetName { RecordSetNameExpression $1 }
+	| variableExpression { ComplexExpression $1 }
+	| jsonIdentifierExpression { JsonIdentifierExpression $1 }
+	| OPENLANGUAGE {WarewolfAtomExpression (DataString "[[")}
+	| CLOSELANGAUGE {WarewolfAtomExpression (DataString "]]")}
+	| OPENBRACKET {WarewolfAtomExpression (DataString "(")}
+	| CLOSEDBRACKET {WarewolfAtomExpression (DataString ")")}
+	| STAR {WarewolfAtomExpression (DataString "*")}
+	| DOT {WarewolfAtomExpression (DataString ".")}
+	| ATIDF {WarewolfAtomExpression (DataString "@")}
+variableExpression 	:
+	| langExpression  variableExpression   {   $1::$2}
+	| scalar {  [ScalarExpression $1] }	
+	| recset { [RecordSetExpression $1] }
+	| EOF {[]}
+	| atom {[WarewolfAtomExpression $1]}
+recset : 
+    |OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = tryParseRecsetName($2); Column = tryParseColumn($7); Index =tryParseIndex($4) ;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = tryParseRecsetName($2); Column = tryParseColumn($7); Index =Star ;}}
+    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = tryParseRecsetName($2); Column = tryParseColumn($6); Index =Last ;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT VARNAME CLOSELANGAUGE {{Name = tryParseRecsetName($2); Column = tryParseColumn($7); Index = IndexExpression $4 ;}}
+
+jsonIdentifierExpression : 
+	|OPENLANGUAGE ATIDF VARNAME CLOSELANGAUGE { NameExpression  {Name= $3} }
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =tryParseIndex($5) ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =Star  ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE { IndexNestedNameExpression {ObjectName = $3 ; Next=Terminal ; Index =Last  ;}}
+    |OPENLANGUAGE ATIDF VARNAME DOT nestedJsonIdentifier CLOSELANGAUGE { NestedNameExpression { ObjectName = $3; Next = $5; }}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET index CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index =tryParseIndex($5) ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index =Star ;}}
+    |OPENLANGUAGE ATIDF VARNAME OPENBRACKET CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $7; Index =Last ;}}
+	|OPENLANGUAGE ATIDF VARNAME OPENBRACKET langExpression CLOSEDBRACKET DOT nestedJsonIdentifier CLOSELANGAUGE {IndexNestedNameExpression { ObjectName = $3; Next = $8; Index = IndexExpression $5 ;}}
+
+nestedJsonIdentifier : 
+    | VARNAME  { NameExpression  {Name= $1} }
+	| VARNAME OPENBRACKET index CLOSEDBRACKET { IndexNestedNameExpression {ObjectName = $1 ; Next=Terminal ; Index =tryParseIndex($3)  } }
+	| VARNAME OPENBRACKET STAR CLOSEDBRACKET { IndexNestedNameExpression {ObjectName = $1 ; Next=Terminal ; Index =Star  } }
+	| VARNAME OPENBRACKET CLOSEDBRACKET { IndexNestedNameExpression {ObjectName = $1 ; Next=Terminal ; Index =Last  } }
+	| VARNAME OPENBRACKET index CLOSEDBRACKET DOT nestedJsonIdentifier { IndexNestedNameExpression {ObjectName = $1 ; Next=$6 ; Index =tryParseIndex($3)  } }
+	| VARNAME OPENBRACKET STAR CLOSEDBRACKET DOT nestedJsonIdentifier { IndexNestedNameExpression {ObjectName = $1 ; Next=$6 ; Index =Star  } }
+	| VARNAME OPENBRACKET CLOSEDBRACKET DOT nestedJsonIdentifier { IndexNestedNameExpression {ObjectName = $1 ; Next=$5 ; Index =Last  } }
+	| VARNAME DOT nestedJsonIdentifier { NestedNameExpression {ObjectName = $1; Next = $3;} } 
+
+recsetName : 
+    |OPENLANGUAGE VARNAME OPENBRACKET CLOSEDBRACKET CLOSELANGAUGE{{Name = tryParseRecsetName($2);Index = Last;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET index CLOSEDBRACKET CLOSELANGAUGE{{Name = tryParseRecsetName($2); Index = $4;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET STAR CLOSEDBRACKET CLOSELANGAUGE{{Name = tryParseRecsetName($2); Index = Star;}}
+	|OPENLANGUAGE VARNAME OPENBRACKET langExpression CLOSEDBRACKET CLOSELANGAUGE{{Name = tryParseRecsetName($2);Index = IndexExpression $4;}}
+index :
+	| INT {IntIndex ( System.Int32.Parse (  $1))}
+intindex :
+	| INT {IndexExpression ( WarewolfAtomExpression ( tryParseAtom $1))}
+scalar : 
+	|OPENLANGUAGE VARNAME CLOSELANGAUGE {$2}
+atom : 
+	| FLOAT {   tryFloatParseAtom $1 }
+	|  INT {  tryParseAtom $1 }
+	| VARNAME {  DataString $1 }   	   
+	| STRING {  DataString $1 } 

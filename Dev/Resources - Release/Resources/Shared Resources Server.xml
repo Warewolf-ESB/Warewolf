@@ -1,0 +1,10 @@
+
+<Source ID="f17a9dac-819e-40a5-91ac-2eb96e27d2df" Name="Shared Resources Server" ResourceType="Server" IsValid="false" ConnectionString="AppServerUri=https://store.warewolf.io:3143;WebServerPort=3143;AuthenticationType=Public" Type="Dev2Server" ServerVersion="0.0.5786.20328" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Shared Resources Server</DisplayName>
+  <Category>Shared Resources Server</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>Dev2Server</TypeOf>
+  <VersionInfo DateTimeStamp="2015-11-04T13:51:02.1105308+02:00" ResourceId="f17a9dac-819e-40a5-91ac-2eb96e27d2df" VersionId="00000000-0000-0000-0000-000000000000" />
+</Source>

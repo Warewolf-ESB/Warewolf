@@ -1,0 +1,75 @@
+﻿<Window x:Class="Dev2.Studio.Views.Workflow.DsfActivityDropWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
+    xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
+    Title="{Binding Title}"
+        Icon="{Binding ImageSource, Converter={StaticResource StringToResourceConverter}}"
+        Width="350"
+        Height="400"
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource WindowBorderlessStyle}"
+        Closing="DsfActivityDropWindow_OnClosing"
+        MouseDown="DsfActivityDropWindow_OnMouseDown"
+        KeyUp="DsfActivityDropWindow_OnKeyUp"
+        mc:Ignorable="d"
+        ShowInTaskbar="False"
+        d:DataContext="{d:DesignInstance workflow:DsfActivityDropViewModel}"
+        AutomationProperties.AutomationId="UI_SelectServiceWindow_AutoID">
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CancelCommand}" Key="Escape" />
+    </Window.InputBindings>
+
+    <i:Interaction.Behaviors>
+        <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />
+    </i:Interaction.Behaviors>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" 
+                    Grid.Column="0" 
+                    Background="{StaticResource WareWolfMenuBrush}" 
+                    HorizontalAlignment="Stretch" 
+                    Orientation="Horizontal">
+            <TextBlock Margin="5" 
+                       Text="Service" 
+                       Style="{StaticResource SourceHeader}"></TextBlock>
+        </StackPanel>
+        
+        <views:ExplorerView HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Grid.Row="1"
+                                VerticalContentAlignment="Stretch"
+                                x:Name="ExplorerView"
+                                DataContext="{Binding SingleEnvironmentExplorerViewModel}" />
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    Margin="{StaticResource ElementBorder}"
+                    HorizontalAlignment="Left">
+            <Button Content="Cancel"
+                    Command="{Binding CancelCommand}"
+                    Width="110"
+                    MaxHeight="30"
+                    AutomationProperties.AutomationId="UI_SelectServiceCancelButton_AutoID"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="{StaticResource ElementBorder}"
+                    Grid.Row="2">
+            <Button Content="OK"
+                    Command="{Binding OkCommand}"
+                    Width="110"
+                    MaxHeight="30"
+                    AutomationProperties.AutomationId="UI_SelectServiceOKButton_AutoID"/>
+        </StackPanel>
+    </Grid>
+</Window>

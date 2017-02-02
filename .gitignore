@@ -1,0 +1,71 @@
+####################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio 2017.
+####################################################################################
+# File Extensions
+####################################################################################
+*.secureconfig
+*.force
+*.usi
+*.uws
+*.suo
+*.user
+*.ide
+*.bkp
+*.cache
+*.fsi
+*.tmp
+*.dll
+*.pdb
+*.swp
+*.exe
+*.manifest
+*.log
+*.cer
+*.vssscc
+*.iml
+*.playlist
+*.sln.DotSettings
+*.sln.DotSettings.user
+
+####################################################################################
+# Visual Studio
+####################################################################################
+.vs/**
+Dev/.vs/**
+
+####################################################################################
+# Compile outputs
+####################################################################################
+obj
+bin
+/Dev/Warewolf.Tests/**
+/Dev/Warewolf.Specs/**
+/Dev/Warewolf.UIBindingTests/**
+
+####################################################################################
+# Build working directories
+####################################################################################
+/Dev/packages/**
+/Dev/TestResults/**
+/TestResults/**
+.sonarqube
+*.tmp_proj
+/TestScripts/FullVersionString
+/Dev/AcceptanceTesting.sln.DotSettings
+/DotCoverOutput/**
+/RunResharper.dotConfig
+/ResharperOutput.xml
+/DotCoverRunner.xml
+/DotCoverOutput.html
+
+####################################################################################
+# Rider
+####################################################################################
+/Dev/.idea*/**
+
+####################################################################################
+# Coded UI
+####################################################################################
+/Dev/Warewolf.UITests/UIMapEditorBackups/**
+/*.stackdump
+
