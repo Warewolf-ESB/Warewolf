@@ -32,8 +32,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
         }
 
-        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters,
-            IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs, string executeAction)
+        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs, string executeAction)
         {
             Name = name;
             SourceCode = sourceCode;
@@ -64,6 +63,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string Name { get; set; }
 
         [DataMember]
+        public string Dev2ReturnType { get; set; }
+
+        [DataMember]
         public List<MethodParameter> Parameters { get; set; }
 
         [DataMember]
@@ -74,6 +76,12 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         [DataMember]
         public string ExecuteAction { get; set; }
+
+        [DataMember]
+        public bool IsObject { get; set; }
+
+        [DataMember]
+        public bool IsVoid { get; set; }
 
         public List<MethodOutput> Outputs { get; set; }
 

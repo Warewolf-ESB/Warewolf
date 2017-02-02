@@ -1,11 +1,13 @@
 ﻿using System;
 using Dev2;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Util;
 
 namespace Warewolf.Core
 {
-    public class ServiceInput : ObservableObject,IServiceInput, IEquatable<ServiceInput>
+    [Serializable]
+    public class ServiceInput : ObservableObject, IServiceInput, IEquatable<ServiceInput>
     {
         private string _value;
         private bool _requiredField;
@@ -23,11 +25,11 @@ namespace Warewolf.Core
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(ServiceInput other)
         {
-            if(ReferenceEquals(null, other))
+            if (ReferenceEquals(null, other))
             {
                 return false;
             }
-            if(ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
@@ -43,15 +45,15 @@ namespace Warewolf.Core
         /// <param name="obj">The object to compare with the current object. </param>
         public override bool Equals(object obj)
         {
-            if(ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
-            if(ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if(obj.GetType() != GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -89,18 +91,15 @@ namespace Warewolf.Core
 
         public ServiceInput(string name, string value)
         {
-            Name = name.Replace("`","");
+            Name = name.Replace("`", "");
             Value = value;
             RequiredField = true;
             EmptyIsNull = true;
         }
 
         public ServiceInput()
-        {            
+        {
         }
-    
-
-    #region Implementation of IDbInput
 
         public string Name
         {
@@ -154,6 +153,19 @@ namespace Warewolf.Core
         }
         public string TypeName { get; set; }
 
-        #endregion
+        public enIntellisensePartType IntellisenseFilter { get; set; }
+        public bool IsObject { get; set; }
+        public string Dev2ReturnType { get; set; }
+        public string ShortTypeName { get; set; }
+        public string FullName
+        {
+            get
+            {
+                var type = ShortTypeName == null ? "" : "(" + ShortTypeName + ")";
+                if (string.IsNullOrEmpty(Name)) return "";
+                var fullName = Name + type;
+                return fullName;
+            }
+        }
     }
 }

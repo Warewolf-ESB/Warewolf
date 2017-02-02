@@ -42,10 +42,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var dbSource = serializer.Deserialize<PluginSourceDefinition>(values["source"]);
+                var containsKey = values.ContainsKey("fetchJson");
+           
                 // ReSharper disable MaximumChainedReferences
                 PluginServices services = new PluginServices();
                 var src = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
-                var methods = services.Namespaces(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList();
+                List<INamespaceItem> methods = containsKey ? services.NamespacesWithJsonObjects(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList() 
+                    : services.Namespaces(src, Guid.Empty, Guid.Empty).Select(a => a as INamespaceItem).ToList();
                 return serializer.SerializeToBuilder(new ExecuteMessage()
                 {
                     HasError = false,

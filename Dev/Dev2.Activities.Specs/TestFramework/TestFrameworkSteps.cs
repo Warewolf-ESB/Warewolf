@@ -460,6 +460,7 @@ namespace Dev2.Activities.Specs.TestFramework
             if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
                 var vm = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+                vm.WebClient = new Mock<IWarewolfWebClient>().Object;
                 Assert.IsNotNull(vm);
                 Assert.IsNotNull(vm.ResourceModel);
                 MyContext.Add("testFramework", vm);
@@ -476,6 +477,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var msg = sourceResourceRepository.FetchResourceDefinition(loadContextualResourceModel.Environment, GlobalConstants.ServerWorkspaceID, resourceId, false);
             loadContextualResourceModel.WorkflowXaml = msg.Message;
             var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+            testFramework.WebClient = new Mock<IWarewolfWebClient>().Object;
             Assert.IsNotNull(testFramework);
             Assert.IsNotNull(testFramework.ResourceModel);
             MyContext.Add("testFramework", testFramework);
@@ -1589,6 +1591,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 var executeMessage = environmentModel.ResourceRepository.SaveTests(testFrameworkFromContext.ResourceModel, serviceTestModelTos);
                 Assert.IsTrue(executeMessage.Result == SaveResult.Success || executeMessage.Result == SaveResult.ResourceUpdated);
                 testFrameworkFromContext = new ServiceTestViewModel(testFrameworkFromContext.ResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+                testFrameworkFromContext.WebClient = new Mock<IWarewolfWebClient>().Object;
                 MyContext["testFramework"] = testFrameworkFromContext;
 
             }
@@ -1622,6 +1625,7 @@ namespace Dev2.Activities.Specs.TestFramework
             contextualResource.WorkflowXaml = msg.Message;
             helloGuid = res.ID;
             var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+            serviceTestVm.WebClient = new Mock<IWarewolfWebClient>().Object;
             Assert.IsNotNull(serviceTestVm);
             Assert.IsNotNull(serviceTestVm.ResourceModel);
             MyContext.Add("testFramework", serviceTestVm);

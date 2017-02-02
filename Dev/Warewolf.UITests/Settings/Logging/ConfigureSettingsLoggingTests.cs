@@ -9,9 +9,10 @@ namespace Warewolf.UITests
     {
         [TestMethod]
         [TestCategory("Settings")]
-        public void Open_Settings_Tab_With_Ribbon_Button_Click()
+        public void Open_SettingsTab_Then_ConfigureLogging_UITest()
         {
-            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 13));
+            UIMap.Click_ConfigureSetting_From_Menu();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "Settings tab does not exist after the Configure/Setting Menu button is clicked");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.Exists, "Logging tab does not exist after the Configure/Setting Menu button is clicked");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.Enabled, "Logging tab is disabled after the Configure/Setting Menu button is clicked");
             Assert.AreEqual("SECURITY", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SECURITY.Name, "Current selected tab page is not Security after Configure/Setting Menu button is clicked");
@@ -25,17 +26,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell.ViewCheckBox.Checked, "View checkbox is Unchecked");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell.ContributeCheckBox.Checked, "Contribute checkbox is Unchecked");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Exists, "Public row does not exist");
-        }
-
-        [TestMethod]
-        [TestCategory("Settings")]
-        public void ConfigureSettingLogging()
-        {
-            UIMap.Click_ConfigureSetting_From_Menu();
             UIMap.Select_LoggingTab();
             UIMap.Click_Server_Log_File_Button();
             UIMap.Click_Studio_Log_File();
-            UIMap.Click_Close_Settings_Tab_Button();
         }
 
         #region Additional test attributes

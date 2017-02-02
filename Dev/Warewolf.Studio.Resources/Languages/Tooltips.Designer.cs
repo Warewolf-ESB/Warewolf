@@ -61,6 +61,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete this Action.
+        /// </summary>
+        public static string ActionDeleteSelectedActionEnabledTooltip {
+            get {
+                return ResourceManager.GetString("ActionDeleteSelectedActionEnabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot delete an empty action.
+        /// </summary>
+        public static string ActionDeleteSelectedTestDisabledTooltip {
+            get {
+                return ResourceManager.GetString("ActionDeleteSelectedTestDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect using anonymous security credentials.
         /// </summary>
         public static string AnonymousAuthenticationToolTip {
@@ -2933,6 +2951,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string PluginServiceSelectActionToolTip {
             get {
                 return ResourceManager.GetString("PluginServiceSelectActionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select constructor to execute..
+        /// </summary>
+        public static string PluginServiceSelectConstructorToolTip {
+            get {
+                return ResourceManager.GetString("PluginServiceSelectConstructorToolTip", resourceCulture);
             }
         }
         

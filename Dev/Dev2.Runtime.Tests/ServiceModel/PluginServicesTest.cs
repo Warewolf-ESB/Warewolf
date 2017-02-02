@@ -146,10 +146,28 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PluginServicesMethodsWithReturnsNullArgsExpectedReturnsEmptyList()
+        {
+            var services = new PluginServices();
+            var result = services.MethodsWithReturns(null, Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
         public void PluginServicesMethodsWithInvalidArgsExpectedReturnsEmptyList()
         {
             var services = new PluginServices();
             var result = services.Methods(new PluginService(), Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PluginServicesMethodsWithReturnsWithInvalidArgsExpectedReturnsEmptyList()
+        {
+            var services = new PluginServices();
+            var result = services.MethodsWithReturns(new PluginService(), Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -164,7 +182,56 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var services = new PluginServices();
             var result = services.Methods(service, workspaceID, Guid.Empty);
 
-            Assert.AreEqual(8, result.Count);
+            Assert.AreEqual(9, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PluginServicesMethodsWithReturnsWithValidArgsExpectedReturnsList()
+        {
+            var service = CreatePluginService();
+            var workspaceID = Guid.NewGuid();
+
+            EnvironmentVariables.GetWorkspacePath(workspaceID);
+
+            var services = new PluginServices();
+            var result = services.MethodsWithReturns(service, workspaceID, Guid.Empty);
+
+            Assert.AreEqual(7, result.Count);
+        }
+
+        #endregion
+
+        #region Constuctors
+
+        [TestMethod]
+        public void PluginServicesConstuctorsWithNullArgsExpectedReturnsEmptyList()
+        {
+            var services = new PluginServices();
+            var result = services.Constructors(null, Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void PluginServicesConstuctorsWithInvalidArgsExpectedReturnsEmptyList()
+        {
+            var services = new PluginServices();
+            var result = services.Constructors(new PluginService(), Guid.Empty, Guid.Empty);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        public void PluginServicesConstructorsWithValidArgsExpectedReturnsList()
+        {
+            var service = CreatePluginService();
+            var workspaceID = Guid.NewGuid();
+
+            EnvironmentVariables.GetWorkspacePath(workspaceID);
+
+            var services = new PluginServices();
+            var result = services.Constructors(service, workspaceID, Guid.Empty);
+
+            Assert.AreEqual(2, result.Count);
         }
 
         #endregion
