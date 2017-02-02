@@ -11,6 +11,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Tools")]
         public void ForEachTool_Small_And_LargeView_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.Exists, "For Each tool on the design surface does not exist");
             //Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.ForEachTypeComboBox.Exists, "Type Dropdown does not exist on the design surface.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ForEach.SmallView.FromIntellisenseTextbox.Textbox.Exists, "Start textbox in in range foreach on the design surface does not exist.");
@@ -52,7 +53,7 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_For_Each_Onto_DesignSurface();
         }
 

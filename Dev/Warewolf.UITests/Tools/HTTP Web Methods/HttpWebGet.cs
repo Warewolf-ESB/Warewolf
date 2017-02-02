@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools
         [TestCategory("HTTP Tools")]
         public void HTTPWebGETTool_Small_And_LargeView_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.Exists, "GET Web connector does not exist on the design surface after drag and drop from toolbox.");
             //Small View
             UIMap.WebGetTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.SmallView.Exists, "Web GET small view does not exist after collapsing the large view with a double click.");
@@ -52,7 +53,7 @@ namespace Warewolf.UITests.Tools
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
-            UIMap.Drag_GETWebTool_Onto_DesignSurface();
+            UIMap.Drag_HTTPGETWebTool_Onto_DesignSurface();
         }
 
         UIMap UIMap

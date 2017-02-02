@@ -8,30 +8,22 @@ namespace Warewolf.UITests.Toolbox
     {
         [TestMethod]
         [TestCategory("ToolBox")]
-        public void ClickToolboxClearButtonRemovesText()
+        public void ToolboxBehaviourCheck_ClearFilter_Then_PopUp_Then_UpdateHelpText_UITest()
         {
+            //Clear Filter
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
             UIMap.Click_Clear_Toolbox_Filter_Clear_Button();
             Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text));
-        }
-
-        [TestMethod]
-        [TestCategory("ToolBox")]
-        public void DoubleClickToolboxAssignToolShowsPopup()
-        {
-            UIMap.DoubleClick_Toolbox();
-            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
-        }
-
-        [TestMethod]
-        [TestCategory("ToolBox")]
-        public void SingleClickToolboxAssignToolUpdatesHelpText()
-        {
+            //Update Help Text
             var initialImage = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.CaptureImage();
             UIMap.SingleClick_Toolbox();
             var assignImage = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Help.HelpTextEditor.CaptureImage();
             Assert.AreNotEqual(initialImage, assignImage);
+            //PopUp
+            UIMap.DoubleClick_Toolbox();
+            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
+            UIMap.Click_MessageBox_OK();
         }
 
         #region Additional test attributes
@@ -41,7 +33,7 @@ namespace Warewolf.UITests.Toolbox
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
         }
 
         UIMap UIMap

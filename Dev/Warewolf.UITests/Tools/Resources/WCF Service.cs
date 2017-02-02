@@ -8,26 +8,27 @@ namespace Warewolf.UITests.Tools.Resources
     {
         [TestMethod]
 		[TestCategory("Resource Tools")]
-        public void WCFServiceTool_LargeViewUITest()
+        public void WCFServiceTool_Small_And_LargeView_Then_NewSource_UITest()
         {
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.ActionsCombobox.Exists, "Actions Combobox does not exist on WCFService large view after openning it by double clicking the small view.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.GenerateOutputsButton.Exists, "Generate Outputs Button does not exist on WCFService large view after openning it by double clicking the small view.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.InputsTable.Exists, "Inputs Table does not exist on WCFService tool large view after openning it by double clicking the small view.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.DoneButton.Exists, "Done button does not exist on WCFService tool large view after openning it by double clicking the small view.");
-        }
-
-        [TestMethod]
-        [TestCategory("Resource Tools")]
-        public void WCFServiceTool_SmallViewUITest()
-        {
-            UIMap.Collapse_WCF_Service_Connector_Tool_Large_View_to_Small_View_With_Double_Click();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.SmallView.Exists, "WCFService small view does not exist after double clicking tool large view.");
-        }
-
-        [TestMethod]
-        [TestCategory("Resource Tools")]
-        public void WCFNewSource_From_Tool()
-        {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.Exists, "WCF Service tool does not exist on the design surface after dragging in from the toolbox.");
+            //Small View
+            UIMap.WCFServiceTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.SmallView.Exists, "WCF Toll Small view does not exist.");
+            //Large View
+            UIMap.WCFServiceTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.SourcesCombobox.Exists, "Sources Combobox does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.EditSourceButton.Exists, "EditSource Button does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.NewButton.Exists, "NewSource Button does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.ActionsCombobox.Exists, "Actions Combobox does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.RefreshActionsButton.Exists, "RefreshActions Button does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.InputsTable.Exists, "Inputs Table does not exist on WCFService tool tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.GenerateOutputsButton.Exists, "Generate Outputs Button does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.OutputToObjectCheckbox.Exists, "OutputToObject Checkbox does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.OutputsTable.Exists, "Outputs Table does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.RecordSetTextbox.Exists, "Recordset Textbox does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.LargeView.OnErrorPanel.Exists, "OnError Pane does not exist on WCFService tool large view");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.DoneButton.Exists, "Done button does not exist on WCFService tool");
+            //New Source
             UIMap.Click_NewSourceButton_From_WCFTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Enabled, "WCF Endpoint URL Textbox is not enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
@@ -40,8 +41,8 @@ namespace Warewolf.UITests.Tools.Resources
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Drag_WCF_Service_Connector_Onto_DesignSurface();
+            UIMap.Click_NewWorkflow_RibbonButton();
+            UIMap.Drag_WCFServiceConnector_Onto_DesignSurface();
         }
 
         UIMap UIMap

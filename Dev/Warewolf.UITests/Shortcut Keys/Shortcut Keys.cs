@@ -11,18 +11,13 @@ namespace Warewolf.UITests.Workflow
         
         [TestMethod]
         [TestCategory("Shortcut Keys")]
-        public void Shortcut_Control_W_Opens_NewWorkflow()
+        public void Open_And_Save_Workflow_With_ShortcutKeys()
         {
+            //ShortCut W Opens New Workflow
             UIMap.Click_LocalHost_Once();
             UIMap.Create_New_Workflow_Using_Shortcut();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
-        }
-
-        [TestMethod]
-        [TestCategory("Shortcut Keys")]
-        public void Shortcut_Control_S_Opens_SaveWorkflow_Dialog_For_New_Workflows()
-        {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            //Short S Opens SaveWorkflow Dialog
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Save_Workflow_Using_Shortcut();
             Assert.IsTrue(UIMap.SaveDialogWindow.Exists);
@@ -74,8 +69,6 @@ namespace Warewolf.UITests.Workflow
             UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
         }
-
-
         #region Additional test attributes
 
         [TestInitialize()]

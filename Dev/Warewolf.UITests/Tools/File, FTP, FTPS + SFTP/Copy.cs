@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("File Tools")]
         public void PathCopyTool_Small_And_LargeView_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.Exists, "Copy on the design surface does not exist");
             // Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.SmallViewContentCustom.FileOrFolderComboBox.Exists, "File/Folder Combobox does not exist");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCopy.SmallViewContentCustom.DestinationComboBox.Exists, "Destination Combobox does not exist");
@@ -36,7 +37,7 @@ namespace Warewolf.UITests.Tools
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_Copy_Onto_DesignSurface();
         }
 
