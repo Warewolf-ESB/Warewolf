@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        abstract protected void Initialize(TContent value);
+        protected abstract void Initialize(TContent value);
 
         public int Depth => _parent?.Depth + 1 ?? 0;
 

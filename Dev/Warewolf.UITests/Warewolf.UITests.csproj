@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
     <Compile Include="ComPluginSource\ComPluginSourceTests.cs" />
+    <Compile Include="DebugOutputTests\DebugOutputWindowTests.cs" />
     <Compile Include="DotNetPluginSource\DotNetPluginSourceTests.cs" />
     <Compile Include="DropboxSource\DropboxSourceTests.cs" />
     <Compile Include="ODBCSource\ODBCSourceTests.cs" />

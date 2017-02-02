@@ -30,8 +30,11 @@ namespace Dev2.Studio.Core
             IsTestView = false;
         }
 
-
-        public ActivitySelectionType SelectionType { get; set; }
+        public ActivitySelectionType SelectionType
+        {
+            get;
+            set;
+        }
 
         public ObservableCollection<object> Inputs => _inputs;
 
@@ -62,11 +65,12 @@ namespace Dev2.Studio.Core
             }
         }
 
+        // ReSharper disable once CyclomaticComplexity
         protected override void Initialize(IDebugState content)
         {
-//            _inputs.Clear();
-//            _outputs.Clear();
-//            _assertResultList.Clear();
+            //            _inputs.Clear();
+            //            _outputs.Clear();
+            //            _assertResultList.Clear();
 
             if (content == null)
             {
@@ -79,7 +83,7 @@ namespace Dev2.Studio.Core
 
             Guid serverId;
             var isRemote = Guid.TryParse(content.Server, out serverId);
-            if (isRemote|| string.IsNullOrEmpty( content.Server))
+            if (isRemote || string.IsNullOrEmpty(content.Server))
             {
                 var envId = content.EnvironmentID;
 
@@ -142,6 +146,7 @@ namespace Dev2.Studio.Core
                     TestDescription = debugItemResult.MockSelected ? "Mock :" : "Assert :";
                 }
             }
+            SelectionType = ActivitySelectionType.Single;
         }
 
         protected override void OnPropertyChanged(string propertyName)
@@ -160,6 +165,7 @@ namespace Dev2.Studio.Core
             if (IsSelected)
             {
                 var content = Content;
+
                 if (Parent != null)
                 {
                     // Only show selection at the root level!
@@ -173,14 +179,23 @@ namespace Dev2.Studio.Core
                 }
                 if (!IsTestView)
                 {
-                    EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = content, SelectionType = SelectionType });
+
+                    EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs
+                    {
+                        DebugState = content,
+                        SelectionType = SelectionType
+                    });
                 }
             }
             else
             {
                 if (!IsTestView)
                 {
-                    EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = Content, SelectionType = ActivitySelectionType.Remove });
+                    EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs
+                    {
+                        DebugState = Content,
+                        SelectionType = ActivitySelectionType.Remove
+                    });
                 }
             }
 
