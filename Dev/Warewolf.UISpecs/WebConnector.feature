@@ -7,7 +7,7 @@ Feature: WebConnector
 Scenario: Create and Execute New Web GET Connector
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
-	And I Drag GETWebTool Onto DesignSurface
+	And I Drag Toolbox HTTPGETWebTool Onto DesignSurface
 	And I Select Test Source From GET Web Large View Source Combobox
 	And I Click GET Web Large View Generate Outputs
 	And I Click GET Web Large View Test Inputs Button
@@ -19,7 +19,7 @@ Scenario: Create and Execute New Web GET Connector
 Scenario: Create and Execute New Web POST Connector
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
-	When I Drag POSTWebTool Onto DesignSurface
+	When I Drag Toolbox HTTPPOSTWebTool Onto DesignSurface
 	And I Select Test Source From POST Web Large View Source Combobox
 	And I Click POST Web Large View Generate Outputs
 	And I Click POST Web Large View Test Inputs Button
@@ -29,7 +29,7 @@ Scenario: Create and Execute New Web POST Connector
 Scenario: Create and Execute New Web PUT Connector
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
-	When I Drag PUTWebTool Onto DesignSurface
+	When I Drag Toolbox HTTPPUTWebTool Onto DesignSurface
 	And I Select Test Source From PUT Web Large View Source Combobox
 	And I Click PUT Web Large View Generate Outputs
 	And I Click PUT Web Large View Test Inputs Button
@@ -39,7 +39,7 @@ Scenario: Create and Execute New Web PUT Connector
 Scenario: Create and Execute New Web DELETE Connector
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
-	When I Drag DELETEWebTool Onto DesignSurface
+	When I Drag Toolbox HTTPDELETEWebTool Onto DesignSurface
 	And I Select Test Source From DELETE Web Large View Source Combobox
 	And I Click DELETE Web Large View Generate Outputs
 	And I Click DELETE Web Large View Test Inputs Button
