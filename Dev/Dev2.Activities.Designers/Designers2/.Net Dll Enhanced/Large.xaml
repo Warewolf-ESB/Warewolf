@@ -362,12 +362,25 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Text="Variable Name" />
-                                                        <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                                                        <TextBlock Text="Output Variable" />
+                                                        <ui:IntellisenseTextBox Grid.Column="1"
+                                                                                x:Name="RecordSetTextBox" 
+                                                                                 WrapInBrackets="True"
+                                                                                FilterType="All"
+                                                                                Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                                                AutomationProperties.AutomationId="UI_TextRecSetBox_AutoID"
+                                                                                IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                                                ToolTip="{x:Static languages:Tooltips.MappingsRecordsetNameTooltip}"
+                                                                                Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                                                            
                                                             <i:Interaction.Behaviors>
                                                                 <core1:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                                <errors:ErrorsSetter Source="{Binding}"
+                                                                                     SourcePropertyName="RecordsetName"
+                                                                                     SourcePropertyValue="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}"
+                                                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                             </i:Interaction.Behaviors>
-                                                        </TextBox>
+                                                        </ui:IntellisenseTextBox>
                                                     </Grid>
                                                 </Grid>
 
@@ -378,7 +391,7 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Text="Variable Name" />
+                                                        <TextBlock Text="Output Variable" />
                                                         <ui:IntellisenseTextBox Grid.Column="1" 
                                                                                 WrapInBrackets="True"
                                                                                 Padding="3"
