@@ -149,7 +149,7 @@ namespace Warewolf.UITests.Tools.Resources
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
             UIMap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
         }
 
