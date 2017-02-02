@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Utils;
 using Dev2.Communication;
 using Dev2.Data.Util;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
@@ -30,6 +31,7 @@ namespace Dev2.Activities.Designers2.Core
         public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
         {
             ToolRegionName = "OutputsRegion";
+            Dependants = new List<IToolRegion>();
             _modelItem = modelItem;
             var serviceOutputMappings = _modelItem.GetProperty<ICollection<IServiceOutputMapping>>("Outputs");
             if (_modelItem.GetProperty("Outputs") == null||_modelItem.GetProperty<IList<IServiceOutputMapping>>("Outputs").Count ==0)
@@ -53,12 +55,21 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
+           
             IsObject = _modelItem.GetProperty<bool>("IsObject");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
+            if (!IsObject)
+            {
+                IsOutputsEmptyRows = Outputs.Count == 0;
+            }
+            else
+            {
+                IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
+            }
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            
+          
         }
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
@@ -119,6 +130,7 @@ namespace Dev2.Activities.Designers2.Core
         private string _objectResult;
         private bool _isObjectOutputUsed;
         private IShellViewModel _shellViewModel;
+        private RelayCommand _viewObjectResult;
 
         #region Implementation of IToolRegion
 
@@ -283,6 +295,32 @@ namespace Dev2.Activities.Designers2.Core
             }            
         }
 
+
+        public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
+
+        public RelayCommand ViewObjectResult
+        {
+            get
+            {
+                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                {
+                    ViewJsonObjects();
+                }, CanRunCommand));
+            }
+        }
+
+        private bool CanRunCommand(object obj)
+        {
+            return true;
+        }
+
+        private void ViewJsonObjects()
+        {
+            JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
+        }
+
+        
+
         public string ObjectName
         {
             get { return _objectName; }
@@ -300,6 +338,10 @@ namespace Dev2.Activities.Designers2.Core
                             var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
                             if (language.IsJsonIdentifierExpression)
                             {
+                                if (_shellViewModel == null)
+                                {
+                                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
+                                }
                                 _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
                             }                            
                             _modelItem.SetProperty("ObjectName", value);                            

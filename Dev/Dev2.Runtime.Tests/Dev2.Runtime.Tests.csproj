@@ -235,6 +235,7 @@
     <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
+    <Compile Include="Plugins\ServiceConstructorListTests.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
     <Compile Include="ServiceModel\ComPluginServicesTest.cs" />
@@ -253,10 +254,12 @@
     <Compile Include="Services\DeleteVersionTest.cs" />
     <Compile Include="Services\DuplicateFolderServiceTests.cs" />
     <Compile Include="Services\DuplicateResourceServiceTests.cs" />
+    <Compile Include="Services\FetchPluginActionsWithReturnsTypesTests.cs" />
     <Compile Include="Services\FetchComPluginActionsTests.cs" />
     <Compile Include="Services\FetchExplorerIDuplicatesTests.cs" />
     <Compile Include="Services\FetchExplorerItemsTest.cs" />
     <Compile Include="Services\FetchPerformanceCountersTests.cs" />
+    <Compile Include="Services\FetchPluginConstructorTests.cs" />
     <Compile Include="Services\FetchTestsForDeployTest.cs" />
     <Compile Include="Services\FetchTestsTest.cs" />
     <Compile Include="Services\FindDependenciesTests.cs" />
@@ -323,6 +326,7 @@
     <Compile Include="Services\ReloadTestsTests.cs" />
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />
+    <Compile Include="Services\SavePluginServiceTests.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
     <Compile Include="Services\DirectDeployTest.cs" />
     <Compile Include="Services\SaveTestsTest.cs" />
@@ -444,6 +448,14 @@
     <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestingDotnetDllCascading\TestingDotnetDllCascading.csproj">
+      <Project>{a4f1daa7-9eab-4e46-9e73-bae87179f737}</Project>
+      <Name>TestingDotnetDllCascading</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
       <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>

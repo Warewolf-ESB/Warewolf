@@ -11,15 +11,16 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Data.Util;
+using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
-using Unlimited.Framework.Converters.Graph;
+using Newtonsoft.Json.Linq;
+using ServiceStack.Common.Extensions;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
@@ -28,183 +29,259 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// <summary>
     /// Handler that invokes a plugin in its own app domain
     /// </summary>
-    public class PluginRuntimeHandler : MarshalByRefObject, IRuntime
+    public partial class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-        private readonly IAssemblyLoader _assemblyLoader;
 
-        // ReSharper disable once MemberCanBePrivate.Global
-        public PluginRuntimeHandler(IAssemblyLoader assemblyLoader)
+        public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
         {
-            _assemblyLoader = assemblyLoader;
-        }
-
-        public PluginRuntimeHandler()
-            : this(new AssemblyLoader())
-        {
-
-        }
-
-        string _assemblyLocation = "";
-        private readonly List<string> _loadedAssemblies = new List<string>();
-
-        /// <summary>
-        /// Runs the specified setup information.
-        /// </summary>
-        /// <param name="setupInfo">The setup information.</param>
-        /// <returns></returns>
-        public object Run(PluginInvokeArgs setupInfo)
-        {
+            VerifyArgument.IsNotNull("setupInfo", setupInfo);
             Assembly loadedAssembly;
-            _assemblyLocation = setupInfo.AssemblyLocation;
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
-            {
-                return null;
-            }
-            object pluginResult;
-            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
-            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-            var formater = setupInfo.OutputFormatter;
-            if (formater != null)
-            {
-                pluginResult = AdjustPluginResult(pluginResult, methodToRun);
-                return formater.Format(pluginResult).ToString(); 
-            }
-            pluginResult = JsonConvert.SerializeObject(pluginResult);
-            return pluginResult;
-        }
+            var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly);
+            if (!tryLoadAssembly)
+                throw new Exception(setupInfo.AssemblyName + "Not found");
 
-        
-
-        public IOutputDescription Test(PluginInvokeArgs setupInfo,out string jsonResult)
-        {
-            try
-            {
-                Assembly loadedAssembly;
-                jsonResult = null;
-                _assemblyLocation = setupInfo.AssemblyLocation;
-                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-                if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
-                {
-                    return null;
-                }
-                object pluginResult;
-                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
-
-                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-                // do formating here to avoid object serialization issues ;)
-                var dataBrowser = DataBrowserFactory.CreateDataBrowser();
-                var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
-
-                if (pluginResult != null)
-                {
-                    jsonResult = JsonConvert.SerializeObject(pluginResult);
-                    pluginResult = AdjustPluginResult(pluginResult, methodToRun);
-                    var tmpData = dataBrowser.Map(pluginResult);
-                    dataSourceShape.Paths.AddRange(tmpData);
-
-                }
-                
-                var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
-                result.DataSourceShapes.Add(dataSourceShape);
-                return result;
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
-                jsonResult = null;
-                return null;
-            }
-        }
-
-        private MethodBase ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
-        {
-            var typeList = BuildTypeList(setupInfo.Parameters);
+            var constructorArgs = new List<object>();
             var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var valuedTypeList = new List<object>();
-            foreach(var methodParameter in setupInfo.Parameters)
+            if (type.IsAbstract)//IsStatic
+            {
+                return new PluginExecutionDto(string.Empty) { IsStatic = true, Args = setupInfo };
+            }
+            if (setupInfo.PluginConstructor.Inputs != null)
+            {
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var constructorArg in setupInfo.PluginConstructor.Inputs)
+                {
+                    var setupValuesForParameters = SetupValuesForParameters(constructorArg.Value, constructorArg.TypeName, loadedAssembly);
+                    if (setupValuesForParameters != null && setupValuesForParameters.Any())
+                    {
+                        constructorArgs.Add(setupValuesForParameters.First());
+                    }
+                }
+            }
+
+            var instance = BuildInstance(setupInfo, type, constructorArgs, loadedAssembly);
+            var serializeToJsonString = instance.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { type } });
+            // ReSharper disable once PossibleNullReferenceException
+            setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
+            return new PluginExecutionDto(serializeToJsonString)
+            {
+                Args = setupInfo,
+            };
+        }
+
+        private static object BuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly)
+        {
+            object instance = new object();
+            if (setupInfo.PluginConstructor?.Inputs != null && (setupInfo.PluginConstructor == null || setupInfo.PluginConstructor.Inputs.Any()))
             {
                 try
                 {
-                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                    if(anonymousType != null)
+                    var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
+                    if (types != null)
                     {
-                        valuedTypeList.Add(anonymousType);
+                        var constructorInfo = type.GetConstructor(types.ToArray());
+                        if (constructorInfo != null)
+                        {
+                            instance = constructorInfo.Invoke(constructorArgs.ToArray());
+                        }
                     }
                 }
-                catch(Exception)
+                catch (Exception)
                 {
-                    valuedTypeList.Add(methodParameter.Value);
+                    instance = Activator.CreateInstance(type, constructorArgs);
+
+
                 }
             }
-            var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
-            if(methodToRun==null && typeList.Count == 0)
+            else
             {
-                methodToRun = type.GetMethod(setupInfo.Method);
+                instance = Activator.CreateInstance(type);
             }
-            object instance = Activator.CreateInstance(type);
-            if (methodToRun == null)
-            {
-                var constructor = type.GetConstructor(typeList.ToArray());
-                if (constructor != null)
-                {
-                    {
-                        pluginResult = constructor.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
-                        return constructor;
-                    }
-                }
-            }
-            
-
-            if(methodToRun != null)
-            {
-                pluginResult = methodToRun.Invoke(instance, BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
-                return methodToRun;
-            }
-            pluginResult = null;
-            return null;
+            return instance;
         }
 
-        // ReSharper disable once InconsistentNaming
-        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string[] tokens = args.Name.Split(",".ToCharArray());
-            Dev2Logger.Debug("Resolving : " + args.Name);
-            var directoryName = Path.GetDirectoryName(_assemblyLocation);
-            var path = Path.Combine(new[] { directoryName, tokens[0] + ".dll" });
-            var assembly = Assembly.LoadFile(path);
-            return assembly;
-        }
-        /// <summary>
-        /// Lists the namespaces.
-        /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <returns></returns>
-        public List<string> ListNamespaces(string assemblyLocation, string assemblyName)
+        public PluginExecutionDto Run(PluginExecutionDto dto)
         {
             try
             {
+                dto = ExecuteConstructor(dto);
+                var args = dto.Args;
                 Assembly loadedAssembly;
-                List<string> namespaces = new List<string>();
-                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
-                {
-                    // ensure we flush out the rubbish that GAC brings ;)
-                    namespaces = loadedAssembly.GetTypes()
-                        .Select(t => t.FullName)
-                        .Distinct()
-                        .Where(q => q.IndexOf("`", StringComparison.Ordinal) < 0
-                                    && q.IndexOf("+", StringComparison.Ordinal) < 0
-                                    && q.IndexOf("<", StringComparison.Ordinal) < 0
-                                    && !q.StartsWith("_")).ToList();
-                }
-                return namespaces;
+                var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
+                if (!tryLoadAssembly)
+                    throw new Exception(args.AssemblyName + "Not found");
+                ExecutePlugin(dto, args, loadedAssembly);
+                return dto;
             }
-            catch (BadImageFormatException e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e);
                 throw;
             }
+        }
+
+        public IDev2MethodInfo Run(IDev2MethodInfo dev2MethodInfo, PluginExecutionDto dto, out string objectString)
+        {
+            try
+            {
+                var args = dto.Args;
+                Assembly loadedAssembly;
+                var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
+                if (!tryLoadAssembly)
+                    throw new Exception(args.AssemblyName + "Not found");
+                ExecutePlugin(dto, args, loadedAssembly, dev2MethodInfo);
+                objectString = dto.ObjectString;
+                return dev2MethodInfo;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e);
+                throw;
+            }
+        }
+
+        public PluginExecutionDto ExecuteConstructor(PluginExecutionDto dto)
+        {
+            if (!dto.Args.PluginConstructor.IsExistingObject)
+            {
+                dto = CreateInstance(dto.Args);
+            }
+            return dto;
+        }
+
+        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
+        {
+
+            VerifyArgument.IsNotNull("objectToRun", objectToRun);
+            VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
+            VerifyArgument.IsNotNull("setupInfo", setupInfo);
+            var type = loadedAssembly.GetType(setupInfo.Fullname);
+            var knownBinder = new KnownTypesBinder();
+            loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
+            if (objectToRun.IsStatic)
+            {
+                RunMethods(setupInfo, type, null, InvokeMethodsAction, loadedAssembly);
+                return;
+            }
+            var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
+            RunMethods(setupInfo, type, instance, InvokeMethodsAction, loadedAssembly);
+            objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
+        }
+
+        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
+        {
+
+            VerifyArgument.IsNotNull("objectToRun", objectToRun);
+            VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
+            VerifyArgument.IsNotNull("setupInfo", setupInfo);
+            var type = loadedAssembly.GetType(setupInfo.Fullname);
+            var knownBinder = new KnownTypesBinder();
+            loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
+            if (objectToRun.IsStatic)
+            {
+                ExecuteSingleMethod(type, null, InvokeMethodsAction, loadedAssembly, dev2MethodInfo);
+                return;
+            }
+            var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
+            ExecuteSingleMethod(type, instance, InvokeMethodsAction, loadedAssembly, dev2MethodInfo);
+            objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
+        }
+
+        private object InvokeMethodsAction(MethodInfo methodToRun, object instance, List<object> valuedTypeList, Type type)
+        {
+            if (instance != null)
+            {
+
+                var result = methodToRun.Invoke(instance, BindingFlags.InvokeMethod | BindingFlags.Instance, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                return result;
+            }
+            if (valuedTypeList.Count == 0)
+            {
+                var result = methodToRun.Invoke(null, null);
+                return result;
+            }
+            else
+            {
+                var result = methodToRun.Invoke(null, BindingFlags.Static | BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
+                return result;
+
+            }
+        }
+
+        private void RunMethods(PluginInvokeArgs setupInfo, Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction, Assembly loadedAssembly)
+        {
+            if (setupInfo.MethodsToRun != null)
+            {
+                foreach (var dev2MethodInfo in setupInfo.MethodsToRun)
+                {
+                    ExecuteSingleMethod(type, instance, invokeMethodsAction, loadedAssembly, dev2MethodInfo);
+                }
+            }
+        }
+
+        private void ExecuteSingleMethod(Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
+        {
+            if (dev2MethodInfo.Parameters != null)
+            {
+                var typeList = BuildTypeList(dev2MethodInfo.Parameters, loadedAssembly);
+                var valuedTypeList = new List<object>();
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var methodParameter in dev2MethodInfo.Parameters)
+                {
+                    var a = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, loadedAssembly);
+                    if (a != null)
+                    {
+                        var item = a.FirstOrDefault();
+                        valuedTypeList.Add(item);
+                    }
+                }
+
+                var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
+
+                var methodsActionResult = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
+                var knownBinder = new KnownTypesBinder();
+                knownBinder.KnownTypes.Add(type);
+                knownBinder.KnownTypes.Add(methodsActionResult?.GetType());
+                dev2MethodInfo.MethodResult = methodsActionResult.SerializeToJsonString(knownBinder);
+            }
+        }
+
+        private static List<object> SetupValuesForParameters(string value, string typeName, Assembly loadedAssembly)
+        {
+            var valuedTypeList = new List<object>();
+            try
+            {
+                Type type;
+                try
+                {
+                    type = Type.GetType(typeName);
+                    if (type == null) throw new TypeLoadException();
+                }
+                catch (Exception)
+                {
+                    type = GetTypeFromLoadedAssembly(typeName, loadedAssembly);
+                }
+
+                var anonymousType = JsonConvert.DeserializeObject(value, type);
+                if (anonymousType != null)
+                {
+                    valuedTypeList.Add(anonymousType);
+                }
+                if (type != null && ((type.IsPrimitive && anonymousType == null) || type.FullName == typeof(string).FullName))
+                {
+                    valuedTypeList.Add(value);
+                }
+            }
+            catch (Exception)
+            {
+                valuedTypeList.Add(value);
+            }
+            return valuedTypeList;
+        }
+
+        private static Type GetTypeFromLoadedAssembly(string typeName, Assembly loadedAssembly)
+        {
+            return Type.GetType(typeName) ?? loadedAssembly.ExportedTypes.FirstOrDefault(p => p.AssemblyQualifiedName != null && p.AssemblyQualifiedName.Equals(typeName, StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>
@@ -214,7 +291,49 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <param name="fullName">The full name.</param>
         /// <returns></returns>
-        public ServiceMethodList ListMethods(string assemblyLocation, string assemblyName, string fullName)
+        public ServiceConstructorList ListConstructors(string assemblyLocation, string assemblyName, string fullName)
+        {
+            Assembly assembly;
+            var serviceMethodList = new ServiceConstructorList();
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            {
+                var type = assembly.GetType(fullName);
+                var constructors = type.GetConstructors();
+                constructors.ToList().ForEach(info =>
+                {
+                    var serviceConstructor = new ServiceConstructor();
+                    var parameterInfos = info.GetParameters().ToList();
+                    parameterInfos.ForEach(parameterInfo =>
+                    {
+                        var constructorParameter = new ConstructorParameter
+                        {
+                            DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                            EmptyToNull = false,
+                            IsRequired = !parameterInfo.IsOptional,
+                            Name = parameterInfo.Name,
+                            TypeName = parameterInfo.ParameterType.AssemblyQualifiedName,
+                            ShortTypeName = parameterInfo.ParameterType.FullName,
+
+                        };
+                        var returnType = parameterInfo.ParameterType;
+                        BuildParameter(returnType, constructorParameter);
+                        serviceConstructor.Parameters.Add(constructorParameter);
+                    });
+                    serviceMethodList.Add(serviceConstructor);
+                });
+            }
+
+            return serviceMethodList;
+        }
+
+        /// <summary>
+        /// Lists the methods.
+        /// </summary>
+        /// <param name="assemblyLocation">The assembly location.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="fullName">The full name.</param>
+        /// <returns></returns>
+        public ServiceMethodList ListMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
         {
             Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
@@ -222,46 +341,131 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
-                var constructors = type.GetConstructors();
-
-                constructors.ToList().ForEach(info =>
-                {
-                    var serviceMethod = new ServiceMethod { Name = info.Name };
-                    var parameterInfos = info.GetParameters().ToList();
-                    parameterInfos.ForEach(parameterInfo =>
-                        serviceMethod.Parameters.Add(
-                            new MethodParameter
-                            {
-                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                                EmptyToNull = false,
-                                IsRequired = true,
-                                Name = parameterInfo.Name,
-                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
-                            }));
-                    serviceMethodList.Add(serviceMethod);
-                });
-
-
                 methodInfos.ToList().ForEach(info =>
                 {
-                    var serviceMethod = new ServiceMethod { Name = info.Name };
-                    var parameterInfos = info.GetParameters().ToList();
-                    parameterInfos.ForEach(parameterInfo =>
-                        serviceMethod.Parameters.Add(
-                            new MethodParameter
+                    var serviceMethod = new ServiceMethod
+                    {
+                        Name = info.Name
+                    };
+                    var returnType = info.ReturnType;
+
+                    if (returnType.IsPrimitive || returnType == typeof(decimal) || returnType == typeof(string))
+                    {
+                        serviceMethod.Dev2ReturnType = $"return: {returnType.Name}";
+                        serviceMethod.IsObject = false;
+
+                    }
+                    else if (info.ReturnType == typeof(void))
+                    {
+                        serviceMethod.IsVoid = true;
+                    }
+                    else
+                    {
+                        var enumerableType = GetEnumerableType(returnType);
+                        if (enumerableType != null)
+                        {
+                            if (enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
                             {
-                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                                EmptyToNull = false,
-                                IsRequired = true,
-                                Name = parameterInfo.Name,
-                                TypeName = parameterInfo.ParameterType.AssemblyQualifiedName
-                            }));
+                                serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
+                                serviceMethod.IsObject = false;
+                            }
+                            else
+                            {
+                                var jObject = GetPropertiesJObject(enumerableType);
+                                serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                                serviceMethod.IsObject = true;
+                            }
+                        }
+                        else
+                        {
+                            var jObject = GetPropertiesJObject(returnType);
+                            serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                            serviceMethod.IsObject = true;
+                        }
+
+                    }
+                    var parameterInfos = info.GetParameters().ToList();
+                    foreach (var parameterInfo in parameterInfos)
+                    {
+                        var methodParameter = new MethodParameter
+                        {
+                            DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                            EmptyToNull = false,
+                            IsRequired = true,
+                            Name = parameterInfo.Name,
+                            TypeName = parameterInfo.ParameterType.AssemblyQualifiedName,
+                            ShortTypeName = parameterInfo.ParameterType.FullName
+                        };
+                        var parameterType = parameterInfo.ParameterType;
+                        BuildParameter(parameterType, methodParameter);
+                     
+                        serviceMethod.Parameters.Add(methodParameter);
+                    }
                     serviceMethodList.Add(serviceMethod);
                 });
-                
             }
 
             return serviceMethodList;
+        }
+
+        private static void BuildParameter(Type parameterType, IMethodParameter methodParameter)
+        {
+            if(parameterType.IsPrimitive || parameterType == typeof(decimal) || parameterType == typeof(string))
+            {
+                methodParameter.IsObject = false;
+                methodParameter.Dev2ReturnType = "returns " + parameterType.Name;
+            }
+            else
+            {
+                var enumerableType = GetEnumerableType(parameterType);
+                if(enumerableType != null)
+                {
+                    if(enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
+                    {
+                        methodParameter.IsObject = false;
+                        methodParameter.Dev2ReturnType = "returns " + parameterType.Name;
+                    }
+                    else
+                    {
+                        var jObject = GetPropertiesJObject(enumerableType);
+                        methodParameter.Dev2ReturnType = jObject.ToString(Formatting.None);
+                        methodParameter.IsObject = true;
+                    }
+                }
+                else
+                {
+                    var jObject = GetPropertiesJObject(parameterType);
+                    methodParameter.Dev2ReturnType = jObject.ToString(Formatting.None);
+                    methodParameter.IsObject = true;
+                }
+            }
+        }
+
+        private static JObject GetPropertiesJObject(Type returnType)
+        {
+            var properties = returnType.GetProperties()
+                .Where(propertyInfo => propertyInfo.CanWrite)
+                .ToList();
+            var jObject = new JObject();
+            foreach (var property in properties)
+            {
+                jObject.Add(property.Name, "");
+            }
+            return jObject;
+        }
+
+        static Type GetEnumerableType(Type type)
+        {
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var intType in type.GetInterfaces())
+            {
+                if (intType.IsGenericType
+                    && intType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                {
+                    return intType.GetGenericArguments()[0];
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -269,136 +473,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// </summary>
         /// <param name="pluginSource">The plugin source.</param>
         /// <returns></returns>
-        public NamespaceList FetchNamespaceListObject(PluginSource pluginSource)
+        public NamespaceList FetchNamespaceListObjectWithJsonObjects(PluginSource pluginSource)
         {
-            var interrogatePlugin = ReadNamespaces(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
+            var interrogatePlugin = ReadNamespacesWithJsonObjects(pluginSource.AssemblyLocation, pluginSource.AssemblyName);
             var namespacelist = new NamespaceList();
             namespacelist.AddRange(interrogatePlugin);
             return namespacelist;
-        }
-
-
-        /// <summary>
-        /// Adjusts the plugin result.
-        /// </summary>
-        /// <param name="pluginResult">The plugin result.</param>
-        /// <param name="methodToRun">The method automatic run.</param>
-        /// <returns></returns>
-        private object AdjustPluginResult(object pluginResult, MethodBase methodToRun)
-        {
-            object result = pluginResult;
-            var method = methodToRun as MethodInfo;
-            // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            // ReSharper disable once PossibleNullReferenceException
-            if ((method != null && method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String") && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
-            {
-                // add our special tags ;)
-                result = $"<{GlobalConstants.PrimitiveReturnValueTag}>{pluginResult}</{GlobalConstants.PrimitiveReturnValueTag}>";
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Reads the namespaces.
-        /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <returns></returns>
-        private IEnumerable<NamespaceItem> ReadNamespaces(string assemblyLocation, string assemblyName)
-        {
-            try
-            {
-                var result = new List<NamespaceItem>();
-                var list = ListNamespaces(assemblyLocation, assemblyName);
-                list.ForEach(fullName =>
-                    result.Add(new NamespaceItem
-                    {
-                        AssemblyLocation = assemblyLocation,
-                        AssemblyName = assemblyName,
-                        FullName = fullName
-                    }));
-
-                return result;
-            }
-            // ReSharper disable once RedundantCatchClause
-            catch (BadImageFormatException)
-            {
-                throw;
-            }
-        }
-
-        private Type DeriveType(string typename)
-        {
-            var type = Type.GetType(typename, true);
-            return type;
-        }
-
-        /// <summary>
-        /// Builds the type list.
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
-        private List<Type> BuildTypeList(IEnumerable<MethodParameter> parameters)
-        {
-            var typeList = new List<Type>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var methodParameter in parameters)
-            {
-                var type = DeriveType(methodParameter.TypeName);
-                typeList.Add(type);
-            }
-            return typeList;
-        }
-
-        /// <summary>
-        /// Loads the dependencies.
-        /// </summary>
-        /// <param name="asm">The asm.</param>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <exception cref="System.Exception">Could not locate Assembly [  + assemblyLocation +  ]</exception>
-        private void LoadDepencencies(Assembly asm, string assemblyLocation)
-        {
-            // load dependencies ;)
-            if (asm != null)
-            {
-                var toLoadAsm = asm.GetReferencedAssemblies();
-
-                foreach (var toLoad in toLoadAsm)
-                {
-                    var fullName = toLoad.FullName;
-                    if (_loadedAssemblies.Contains(fullName))
-                    {
-                        continue;
-                    }
-                    Assembly depAsm = null;
-                    try
-                    {
-                        depAsm = Assembly.Load(toLoad);
-                    }
-                    catch
-                    {
-                        var path = Path.GetDirectoryName(assemblyLocation);
-                        if (path != null)
-                        {
-                            var myLoad = Path.Combine(path, toLoad.Name + ".dll");
-                            depAsm = Assembly.LoadFrom(myLoad);
-                        }
-                    }
-                    if (depAsm != null)
-                    {
-                        if (!_loadedAssemblies.Contains(fullName))
-                        {
-                            _loadedAssemblies.Add(fullName);
-                        }
-                        LoadDepencencies(depAsm, assemblyLocation);
-                    }
-                }
-            }
-            else
-            {
-                throw new Exception("Could not locate Assembly [ " + assemblyLocation + " ]");
-            }
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public DotNetSourceRegion(IPluginServiceModel model, ModelItem modelItem)
         {
-            LabelWidth = 70;
+            LabelWidth = 74;
             ToolRegionName = "DotNetSourceRegion";
             SetInitialValues();
             Dependants = new List<IToolRegion>();

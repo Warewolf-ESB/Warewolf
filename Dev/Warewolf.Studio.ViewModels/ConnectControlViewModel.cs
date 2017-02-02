@@ -74,7 +74,11 @@ namespace Warewolf.Studio.ViewModels
             currentServer?.Disconnect();
             ServerDisconnected?.Invoke(this,currentServer);
             var idx = Servers.IndexOf(currentServer);
-            Servers.Remove(currentServer);
+            if (currentServer != null)
+            {
+                currentServer.NetworkStateChanged -= OnServerOnNetworkStateChanged;
+                Servers.Remove(currentServer);
+            }
             var updatedServer = Server.FetchServer(savedServerID);
             if (updatedServer == null)
             {
@@ -84,9 +88,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 idx = Servers.Count - 1;
             }
+            updatedServer.NetworkStateChanged += OnServerOnNetworkStateChanged;
             Servers.Insert(idx, updatedServer);
-            
-            
+            if (_selectedId != null && _selectedId != Guid.Empty)
+            {
+                var selectConnection = Servers.FirstOrDefault(server => server.EnvironmentID == _selectedId);
+                SelectedConnection = null;
+                SelectedConnection = selectConnection;
+            }
         }
 
         public void LoadServers()
@@ -142,7 +151,6 @@ namespace Warewolf.Studio.ViewModels
                     IsConnected = false;
                     ServerDisconnected?.Invoke(this, SelectedConnection);
                 }
-                
             }
             else
             {
@@ -153,24 +161,6 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-
-//        public void LoadNewServers()
-//        {
-//            RemoveServerDisconnect();
-//            var serverConnections = Server.GetServerConnections();
-//            
-//            Servers.AddRange(serverConnections.Where(a=> Servers.All(b => b.EnvironmentID != a.EnvironmentID)));
-//            var svrs = from serverConnection in serverConnections
-//            join server in Servers on serverConnection.EnvironmentID equals server.EnvironmentID
-//                                         select new {newServer= serverConnection,old=server};
-//            foreach (var svr in svrs)
-//            {
-//                svr.old.DisplayName = svr.newServer.DisplayName;
-//            }
-//
-//            SetupServerDisconnect();
-//            
-//        }
 
         IServer CreateNewRemoteServerEnvironment()
         {
@@ -205,6 +195,11 @@ namespace Warewolf.Studio.ViewModels
                 IsLoading = false;
                 IsConnecting = false;
                 Disconnect(SelectedConnection);
+                var localhostServer = Servers.FirstOrDefault(server => server.EnvironmentID == Guid.Empty);
+                if (localhostServer != null)
+                {
+                    SelectedConnection = localhostServer;
+                }
                 IsConnected = false;
             }
             else
@@ -227,17 +222,21 @@ namespace Warewolf.Studio.ViewModels
                 IsLoading = true;
                 IsConnecting = true;
                 await ConnectOrDisconnect();
-                Version sourceVersionNumber;
-                Version.TryParse(SelectedConnection.GetServerVersion(), out sourceVersionNumber);
-                Version destVersionNumber;
-                Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out destVersionNumber);
-                if (sourceVersionNumber != null && destVersionNumber != null)
+                if (SelectedConnection.IsConnected)
                 {
-                    if (sourceVersionNumber < destVersionNumber)
+                    Version sourceVersionNumber;
+                    Version.TryParse(SelectedConnection.GetServerVersion(), out sourceVersionNumber);
+                    Version destVersionNumber;
+                    Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out destVersionNumber);
+                    if (sourceVersionNumber != null && destVersionNumber != null)
                     {
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        popupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(), destVersionNumber.ToString());
-                        Disconnect(SelectedConnection);
+                        if (sourceVersionNumber < destVersionNumber)
+                        {
+                            var popupController = CustomContainer.Get<IPopupController>();
+                            popupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
+                                destVersionNumber.ToString());
+                            Disconnect(SelectedConnection);
+                        }
                     }
                 }
             }
@@ -433,11 +432,6 @@ namespace Warewolf.Studio.ViewModels
                 connection.Disconnect();
                 OnPropertyChanged(() => connection.IsConnected);
                 ServerDisconnected?.Invoke(this, connection);
-                foreach (var server in Servers)
-                {
-                    if (!server.IsConnected && server.EnvironmentID != Guid.Empty)
-                        server.DisplayName = SelectedConnection.ResourceName;
-                }
             }
         }
         

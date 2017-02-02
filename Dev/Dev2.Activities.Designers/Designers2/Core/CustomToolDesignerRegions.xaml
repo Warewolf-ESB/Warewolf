@@ -15,6 +15,9 @@
                     xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                     xmlns:fa="http://schemas.fontawesome.io/icons/"
                     xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                    xmlns:netDllEnhanced="clr-namespace:Dev2.Activities.Designers2.Net_Dll_Enhanced"
+                    xmlns:actionRegion="clr-namespace:Dev2.Activities.Designers2.Core.ActionRegion"
+                    xmlns:inputRegion="clr-namespace:Dev2.Activities.Designers2.Core.InputRegion"
                     mc:Ignorable="d"
                     x:Class="CustomToolDesignerRegions"
                     d:DataContext="{d:DesignInstance core1:CustomToolWithRegionBase}">
@@ -22,6 +25,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+    <core1:DotNetActionsWidthConverter x:Key="DotNetActionsWidthConverter" />
 
     <ControlTemplate x:Key="NewSelectionGrid">
         <Grid x:Name="SourcesGrid">
@@ -66,7 +70,7 @@
             </Button>
         </Grid>
     </ControlTemplate>
-    
+
     <ControlTemplate x:Key="NewActionGrid">
         <Grid x:Name="ActionsGrid" Margin="{StaticResource ControlBorderTop}" >
             <Grid.ColumnDefinitions>
@@ -261,7 +265,7 @@
                                                         Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
-    
+
     <ControlTemplate x:Key="NewDotNetNamespaceGrid">
         <Grid x:Name="ActionsGrid" 
                       Margin="{StaticResource ControlBorderTop}" >
@@ -302,7 +306,7 @@
                                                         Visibility="{Binding Path=NamespaceRegion.IsRefreshing, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </ControlTemplate>
-    
+
     <ControlTemplate x:Key="NewSelectionActionGrid">
         <Grid>
             <Grid.RowDefinitions>
@@ -354,21 +358,8 @@
             <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="2"/>
         </Grid>
     </ControlTemplate>
-    <ControlTemplate x:Key="NewDotNetSelectionNamespaceGrid">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
 
-            <Control Template="{StaticResource NewSelectionGrid}"/>
 
-            <Control Template="{StaticResource NewDotNetNamespaceGrid}" Grid.Row="1"/>
-
-            <Control Template="{StaticResource NewDotNetActionGrid}" Grid.Row="2"/>
-        </Grid>
-    </ControlTemplate>
     <ControlTemplate x:Key="NewInputsGrid">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -501,7 +492,186 @@
             </Button>
         </Grid>
     </ControlTemplate>
-   
+    <ControlTemplate x:Key="NewDotNetConstructorInputsGrid" >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" x:Name="InputsLabel" Text="Inputs - None" 
+                       Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <controls:Dev2DataGrid x:Name="LargeDataGrid"
+                                    ItemsSource="{Binding InputArea.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource TransparentActivityMapppingDataGridStyle}"
+                                    Height="Auto"
+                                   BorderBrush="Transparent"
+                                   Background="Transparent"
+                                    Margin="3,0,3,0"
+                                   AutoGenerateColumns="False"
+                                   Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+
+                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="125"
+                                            Header="Input Data or [[Variable]]"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ui:IntellisenseTextBox DefaultText="[[Variable]]"
+                                                        AllowMultilinePaste="True"
+                                                        AcceptsReturn="True"
+                                                        AllowUserInsertLine="True"
+                                                        FilterType="{Binding IntellisenseFilter}"
+                                                        MaxHeight="80"
+                                                        Margin="0,0,1,1"
+                                                        TextWrapping="Wrap"
+                                                        WrapInBrackets="False"
+                                                        ToolTip="{x:Static languages:Tooltips.InputDefaultValueToolTip}"
+                                                        IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                        Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <core:HelpSetter Text="{x:Static languages:HelpText.InputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                        <errors:ErrorsSetter Source="{Binding}"
+                                                            SourcePropertyName="Value"
+                                                            SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                            Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                    </i:Interaction.Behaviors>
+                                    <AutomationProperties.AutomationId>
+                                        <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
+                                            <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                            <Binding Path="IndexNumber" />
+                                        </MultiBinding>
+                                    </AutomationProperties.AutomationId>
+                                </ui:IntellisenseTextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="SizeToCells"
+                                            MinWidth="65"
+                                            Header="Parameter"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="{Binding Path=FullName}"
+                                                TextTrimming="CharacterEllipsis"
+                                                VerticalAlignment="Center"
+                                                Padding="3,0"
+                                               Grid.Column="0"
+                                                ToolTip="{Binding Path=FullName}">                               
+                            <AutomationProperties.AutomationId>
+                                <MultiBinding StringFormat="UI_{0}_Row{1}_OutputColumnName_AutoID">
+                                    <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
+                                    <Binding Path="IndexNumber" />
+                                </MultiBinding>
+                            </AutomationProperties.AutomationId>
+                                    </TextBlock>
+                                    <Button Width="Auto" 
+                                            Content="..." 
+                                            HorizontalAlignment="Right" 
+                                            Grid.Column="1"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=DataContext.InputArea.ViewObjectResult}"
+                                            CommandParameter="{Binding .}"
+                                            Visibility="{Binding Path=IsObject, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                </Grid>
+                            </DataTemplate>
+
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="SizeToCells"
+                                            MinWidth="90"
+                                            Header="Empty Is Null"
+                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center" ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
+                                        <i:Interaction.Behaviors>
+                                            <core:HelpSetter Text="{x:Static languages:HelpText.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                                        </i:Interaction.Behaviors>
+                                    </CheckBox>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </controls:Dev2DataGrid>
+
+        </Grid>
+    </ControlTemplate>
+    <ControlTemplate x:Key="NewDotNetConstructorOutputsGrid" >
+        <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" Margin="0,0,3,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="OutputsNoneLabel" Text="Outputs - None" HorizontalAlignment="Left" 
+                           Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+                <Grid Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="OutputsLabel" Text="Outputs" HorizontalAlignment="Left" />
+                    <Button x:Name="ViewOutputsBtn" Width="Auto" Grid.Column="1" Content="View Outputs" 
+                            HorizontalAlignment="Right" Command="{Binding OutputsRegion.ViewObjectResult}"/>
+                </Grid>
+            </Grid>
+            <!-- OBJECT NAME -->
+            <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" Visibility="{Binding OutputsRegion.IsOutputsEmptyRows, Converter={StaticResource bool2VisibilityConverter} }">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Object Name" />
+                <ui:IntellisenseTextBox Grid.Column="1" 
+                                        WrapInBrackets="True"
+                                        Padding="3"
+                                        FilterType="JsonObject"
+                                        Text="{Binding OutputsRegion.ObjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                        AutomationProperties.AutomationId="UI_TextBox_AutoID"
+                                        ToolTip="{x:Static languages:Tooltips.MappingsObjectNameTooltip}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                        <errors:ErrorsSetter Source="{Binding}"
+                                             SourcePropertyName="ObjectName"
+                                             SourcePropertyValue="{Binding OutputsRegion.ObjectName, UpdateSourceTrigger=PropertyChanged}"
+                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
+                    </i:Interaction.Behaviors>
+                </ui:IntellisenseTextBox>
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
     <ControlTemplate x:Key="NewOutputsGrid" d:DataContext="{d:DesignInstance core1:OutputsRegion}" >
         <Grid x:Name="OutputsTemplate" VerticalAlignment="Stretch" >
             <Grid.ColumnDefinitions>
@@ -671,6 +841,19 @@
         </Grid>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="NewDotNetSelectionNamespaceGrid">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Control Template="{StaticResource NewSelectionGrid}"/>
+
+            <Control Template="{StaticResource NewDotNetNamespaceGrid}" Grid.Row="1"/>
+        </Grid>
+    </ControlTemplate>
+
     <ControlTemplate x:Key="NewGenerateOutputsDataTableTemplate" d:DataContext="{d:DesignInstance core1:ManageDatabaseServiceInputViewModel}">
         <Grid x:Name="OutputsGrid" >
             <Grid.ColumnDefinitions>
@@ -762,7 +945,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="{x:Static languages:Core.InputsHeader}" FontWeight="Bold" />
-                
+
                 <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                    Grid.Row="1"
                                    ItemsSource="{Binding InputArea.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -887,7 +1070,7 @@
 
                 <Control Grid.Row="0" Template="{StaticResource NewGenerateOutputsDataTableTemplate}" 
                      Visibility="{Binding TestResultsAvailable,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
-                
+
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Button x:Name="GenerateOutputsDoneButton" 
                             HorizontalAlignment="Right" 
@@ -1145,7 +1328,7 @@
 
                 <Control Grid.Row="0" Template="{StaticResource NewGenerateResponseTemplate}" 
                          Visibility="{Binding PasteResponseVisible,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
-                
+
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource ControlBorderTop}" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Button x:Name="GenerateOutputsDoneButton" 
                             HorizontalAlignment="Right" 
@@ -1286,7 +1469,7 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </controls:Dev2DataGrid>
-                
+
                 <TextBlock Text="None"
                            Grid.Row="1" 
                            HorizontalAlignment="Center"

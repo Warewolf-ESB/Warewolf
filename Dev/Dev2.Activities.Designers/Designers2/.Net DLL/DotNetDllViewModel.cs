@@ -414,6 +414,8 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         #region Implementation of IDatabaseServiceViewModel
 
+        public IConstructorRegion<IPluginConstructor> ConstructorRegion { get; set; }
+
         public IActionToolRegion<IPluginAction> ActionRegion
         {
             get

@@ -506,12 +506,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.ClientID = dataObject.ClientID;
                 _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugState.SourceResourceID = dataObject.SourceResourceID;
-                _debugDispatcher.Write(_debugState, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
-
+                DispatchDebugState(_debugState,dataObject);
                 if (stateType == StateType.After)
                 {
                     _debugState = null;
                 }
+            }
+        }
+
+
+        protected void DispatchDebugState(IDebugState state, IDSFDataObject dataObject)
+        {
+            if (state != null)
+            {
+                _debugDispatcher.Write(state, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
             }
         }
 
@@ -651,7 +659,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject.IsServiceTestExecution)
             {
                 var serviceTestSteps = dataObject.ServiceTest?.TestSteps;
-                var stepToBeAsserted = serviceTestSteps?.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name);
+                var stepToBeAsserted = serviceTestSteps?.FirstOrDefault(step => step.Type == StepType.Assert && step.UniqueId == Guid.Parse(UniqueID) && step.ActivityType != typeof(DsfForEachActivity).Name && step.ActivityType != typeof(DsfSelectAndApplyActivity).Name && step.ActivityType != typeof(DsfSequenceActivity).Name && step.ActivityType != typeof(DsfEnhancedDotNetDllActivity).Name);
                 if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
                 {
                     if (stepToBeAsserted.Result != null)
@@ -815,7 +823,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void UpdateForRegularActivity(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        protected void UpdateForRegularActivity(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
         {
             var factory = Dev2DecisionFactory.Instance();
             var testRunResults = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory)).ToList();
@@ -1060,7 +1068,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             DispatchDebugState(dataObject, before, update);
         }
-
+        protected string GetServerName()
+        {
+            return _debugState?.Server;
+        }
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage, DateTime? startTime = null, DateTime? endTime = null)
         {
             Guid parentInstanceID;

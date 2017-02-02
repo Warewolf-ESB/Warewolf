@@ -212,6 +212,7 @@
     <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
+    <Compile Include="Activities\DsfEnhancedDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfMethodBasedActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignObjectActivity.cs" />
     <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />
@@ -310,7 +311,7 @@
     <Compile Include="Activities\SqlBulkInsert\SqlBulkCopyWrapper.cs" />
     <Compile Include="Activities\SqlBulkInsert\SqlBulkInserter.cs" />
     <Compile Include="Activities\SqlBulkInsert\ISqlBulkCopy.cs" />
-    <Compile Include="Activities\TestHelper.cs" />
+    <Compile Include="Activities\ServiceTestHelper.cs" />
     <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivity.cs" />
     <Compile Include="Activities\WebRequestDataDto.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />

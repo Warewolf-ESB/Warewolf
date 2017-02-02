@@ -165,19 +165,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(shellViewModelMock.Object);
             var popupControllerMock = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
             CustomContainer.Register(popupControllerMock.Object);
-            bool disconnectedEventRaised = false;
-            _target.ServerDisconnected =
-                (s, e) => { disconnectedEventRaised = s == _target && e == _serverMock.Object; };
-
             //act
             var canExecute = _target.ToggleConnectionStateCommand.CanExecute(null);
             _target.ToggleConnectionStateCommand.Execute(null);
 
             //assert
             Assert.IsTrue(canExecute);
-            popupControllerMock.Verify(it => it.ShowConnectServerVersionConflict("0.0.0.1", "0.0.0.6"));
+            popupControllerMock.Verify(it => it.ShowConnectServerVersionConflict("0.0.0.1", "0.0.0.6"),Times.Never());
             _serverMock.Verify(it => it.ConnectAsync());
-            Assert.IsTrue(disconnectedEventRaised);
             shellViewModelMock.Verify(it => it.SetActiveEnvironment(envId));
         }
 

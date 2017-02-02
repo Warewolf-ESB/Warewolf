@@ -515,10 +515,12 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _testSteps = value;
+                
                 OnPropertyChanged(() => TestSteps);
             }
         }
 
+       
         public IServiceTestStep SelectedTestStep
         {
             get { return _selectedTestStep; }
@@ -773,6 +775,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (!stepCompare) continue;
                 if (stepOutputs[c].To != otherStepOutputs[c].To)
+                {
+                    stepCompare = false;
+                }
+                if (!stepCompare) continue;
+                if (stepOutputs[c].Variable != otherStepOutputs[c].Variable)
                 {
                     stepCompare = false;
                 }

@@ -86,6 +86,7 @@
     <Compile Include="Explorer\DeleteExplorerResource.cs" />
     <Compile Include="SaveDialog\SaveDialogTests.cs" />
     <Compile Include="Default Layout\Default LayoutTests.cs" />
+    <Compile Include="WorkflowTesting\DotnetTestingTests.cs" />
     <Compile Include="WorkflowTesting\OtherTestFrameworkMockingTests.cs" />
     <Compile Include="ContextMenu\StartNodeContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />

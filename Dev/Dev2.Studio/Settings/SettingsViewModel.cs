@@ -70,7 +70,7 @@ namespace Dev2.Settings
             : base(eventPublisher)
         {
             Server = server;
-            server.NetworkStateChanged += ServerNetworkStateChanged;
+            Server.NetworkStateChanged += ServerNetworkStateChanged;
             Settings = new Data.Settings.Settings();
             VerifyArgument.IsNotNull("popupController", popupController);
             _popupController = popupController;
@@ -89,6 +89,14 @@ namespace Dev2.Settings
             LoadSettings();
             DisplayName = "Settings - " + Server.ResourceName;
         }
+
+        protected override void OnDispose()
+        {
+            Server.NetworkStateChanged -= ServerNetworkStateChanged;
+            base.OnDispose();
+        }
+
+
 
         public override string DisplayName
         {
@@ -233,6 +241,8 @@ namespace Dev2.Settings
 
         public void CloseView()
         {
+            Server.NetworkStateChanged -= ServerNetworkStateChanged;
+            Server = null;
         }
 
         public bool IsLoading
