@@ -2582,6 +2582,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name of the Recordset or Scalar  you want to put the result into.
+        /// </summary>
+        public static string MappingsRecordsetNameTooltip {
+            get {
+                return ResourceManager.GetString("MappingsRecordsetNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new database source.
         /// </summary>
         public static string MenuDatabaseToolTip {
