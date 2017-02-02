@@ -1,6 +1,0 @@
-﻿<Source ID="9d0d782d-b150-4771-8bb2-7d43bda05376" Version="1.0" Name="twitter_search" ResourceType="WebSource" ConnectionString="Address=http://search.twitter.com/search.json?;DefaultQuery=q=@Dev2Test;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
-    <DisplayName>twitter_search</DisplayName>
-    <Category>SYSTEM</Category>
-    <AuthorRoles></AuthorRoles>
-    <TypeOf>WebSource</TypeOf>
-</Source>
