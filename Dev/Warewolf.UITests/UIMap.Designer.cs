@@ -43,32 +43,6 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfText localhostConnectedText = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsDeployTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UISourceConnectControlCustom.UITheServerComboBoxCustom.LocalhostConnectedText;
-            #endregion
-
-            // Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.LocalhostConnectedTextExists, localhostConnectedText.Exists);
-        }
-        
-        /// <summary>
-        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod2()
-        {
-            #region Variable Declarations
-            WpfText localhostConnectedText = this.UIWarewolfDEV2SANELEMTWindow.UIConnectControlCustom.UITheServerComboBoxCustom.LocalhostConnectedText;
-            #endregion
-
-            // Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.LocalhostConnectedTextExists, localhostConnectedText.Exists);
-        }
-        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -79,30 +53,6 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
-            }
-        }
-        
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod2ExpectedValues == null))
-                {
-                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
-                }
-                return this.mAssertMethod2ExpectedValues;
             }
         }
         
@@ -278,10 +228,6 @@ namespace Warewolf.UITests
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private MessageBoxWindow mMessageBoxWindow;
@@ -324,36 +270,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
-        /// </summary>
-        public bool LocalhostConnectedTextExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod2'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod2ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
-        /// </summary>
-        public bool LocalhostConnectedTextExists = true;
         #endregion
     }
     
@@ -113373,10 +113289,24 @@ namespace Warewolf.UITests
                 return this.mUIDev2ViewModelsDeployTabPage;
             }
         }
+        
+        public UIDev2ViewModelsStudioTabPage UIDev2ViewModelsStudioTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsStudioTabPage == null))
+                {
+                    this.mUIDev2ViewModelsStudioTabPage = new UIDev2ViewModelsStudioTabPage(this);
+                }
+                return this.mUIDev2ViewModelsStudioTabPage;
+            }
+        }
         #endregion
         
         #region Fields
         private UIDev2ViewModelsDeployTabPage mUIDev2ViewModelsDeployTabPage;
+        
+        private UIDev2ViewModelsStudioTabPage mUIDev2ViewModelsStudioTabPage;
         #endregion
     }
     
@@ -113545,6 +113475,108 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mLocalhostConnectedText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ViewModelsStudioTabPage : WpfTabPage
+    {
+        
+        public UIDev2ViewModelsStudioTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.StudioTestViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInfragisticsControlsTreeItem UIInfragisticsControlsTreeItem
+        {
+            get
+            {
+                if ((this.mUIInfragisticsControlsTreeItem == null))
+                {
+                    this.mUIInfragisticsControlsTreeItem = new UIInfragisticsControlsTreeItem(this);
+                }
+                return this.mUIInfragisticsControlsTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInfragisticsControlsTreeItem mUIInfragisticsControlsTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInfragisticsControlsTreeItem : WpfTreeItem
+    {
+        
+        public UIInfragisticsControlsTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWarewolfStudioViewMoExpander UIWarewolfStudioViewMoExpander
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoExpander == null))
+                {
+                    this.mUIWarewolfStudioViewMoExpander = new UIWarewolfStudioViewMoExpander(this);
+                }
+                return this.mUIWarewolfStudioViewMoExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWarewolfStudioViewMoExpander mUIWarewolfStudioViewMoExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfStudioViewMoExpander : WpfExpander
+    {
+        
+        public UIWarewolfStudioViewMoExpander(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_.ctor _AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTable UIUI_StepOutputs_ctor_Table
+        {
+            get
+            {
+                if ((this.mUIUI_StepOutputs_ctor_Table == null))
+                {
+                    this.mUIUI_StepOutputs_ctor_Table = new WpfTable(this);
+                    #region Search Criteria
+                    this.mUIUI_StepOutputs_ctor_Table.SearchProperties[WpfTable.PropertyNames.AutomationId] = "UI_StepOutputs_.ctor _AutoID";
+                    this.mUIUI_StepOutputs_ctor_Table.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIUI_StepOutputs_ctor_Table.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI_StepOutputs_ctor_Table;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTable mUIUI_StepOutputs_ctor_Table;
         #endregion
     }
     

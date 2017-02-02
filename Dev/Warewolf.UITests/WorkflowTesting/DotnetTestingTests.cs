@@ -69,11 +69,13 @@ namespace Warewolf.UITests.WorkflowTesting
             UIMap.Expand_DotnetDll_ByClickingCheckbox(true);
             var variableFromDebug = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell.AssertValue_humanEdit.Text;
             Assert.AreEqual("[[@human]]", variableFromDebug);
+            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell1.AssertValue_NamePEdit);
             var variableValueFromDebug = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell1.AssertValue_NamePEdit.Text;
             StringAssert.Contains(variableValueFromDebug, "Name");
             StringAssert.Contains(variableValueFromDebug, "PersonFood");
             StringAssert.Contains(variableValueFromDebug, "SurName");
         }
+
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void ChangeVariableOnTheStepoutPutSetsTheDisplayNameWithAStar()
@@ -95,7 +97,7 @@ namespace Warewolf.UITests.WorkflowTesting
             Assert.AreEqual("[[@foods]]", variableFromDebug);
             var operand = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.FavouriteFoodsExpander.StepOutputs_FavouTable.ItemRow.Cell1.AssertOp_foods_AuComboBox.SelectedItem;
             var variableValueFromDebug = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.FavouriteFoodsExpander.StepOutputs_FavouTable.ItemRow.Cell2.AssertValue_id1tyEdit.Text;
-            Assert.AreEqual("Contains", operand);
+            Assert.AreEqual("=", operand);
             StringAssert.Contains(variableValueFromDebug, "$id\": \"1");
             StringAssert.Contains(variableValueFromDebug, "$type\": \"TestingDotnetDllCascading.Food");
             StringAssert.Contains(variableValueFromDebug, "FoodName\": \"Pizza");
