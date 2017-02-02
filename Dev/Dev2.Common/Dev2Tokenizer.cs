@@ -74,6 +74,7 @@ namespace Dev2.Common
         /// </returns>
         private bool CanUseEnumerator()
         {
+            // ReSharper disable once PossibleNullReferenceException
             bool result = _ops?.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count;
             return result;
         }
