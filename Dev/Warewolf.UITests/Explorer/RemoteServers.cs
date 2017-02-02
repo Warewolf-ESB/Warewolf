@@ -12,20 +12,20 @@ namespace Warewolf.UITests
         {
             UIMap.Select_RemoteConnectionIntegration_From_Explorer();
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+            Playback.Wait(2000); //This wait replaced a wait for Spinner
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists, "Remote server name does not end in (Connected) in explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected), "Remote server name still ends with (Connected) in explorer remote server dropdown list after clicking the disconnect button.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists, "Explorer did not change to localhost(Connected) after clicking disconnect button.");
             UIMap.Select_localhost_From_Explorer_Remote_Server_Dropdown_List();
         }
+
         [TestMethod]
         [TestCategory("Explorer")]
         public void Disconnected_Remote_Server_Seperately_UITest()
         {
             UIMap.Select_RemoteConnectionIntegration_From_Explorer();
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+            Playback.Wait(2000); //This wait replaced a wait for Spinner
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected.Exists, "Remote server name does not end in (Connected) in explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
             UIMap.Click_Explorer_RemoteServer_Connect_Button();
         }
@@ -44,6 +44,7 @@ namespace Warewolf.UITests
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
+            UIMap.AssertStudioIsRunning();
         }
 
         UIMap UIMap

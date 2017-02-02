@@ -43,6 +43,32 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfText localhostConnectedText = this.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsDeployTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UISourceConnectControlCustom.UITheServerComboBoxCustom.LocalhostConnectedText;
+            #endregion
+
+            // Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.LocalhostConnectedTextExists, localhostConnectedText.Exists);
+        }
+        
+        /// <summary>
+        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod2()
+        {
+            #region Variable Declarations
+            WpfText localhostConnectedText = this.UIWarewolfDEV2SANELEMTWindow.UIConnectControlCustom.UITheServerComboBoxCustom.LocalhostConnectedText;
+            #endregion
+
+            // Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
+            Assert.AreEqual(this.AssertMethod2ExpectedValues.LocalhostConnectedTextExists, localhostConnectedText.Exists);
+        }
+        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -53,6 +79,30 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
+            }
+        }
+        
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
+        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod2ExpectedValues == null))
+                {
+                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
+                }
+                return this.mAssertMethod2ExpectedValues;
             }
         }
         
@@ -211,10 +261,26 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
+        
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
+        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -241,6 +307,8 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -256,6 +324,36 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
+        /// </summary>
+        public bool LocalhostConnectedTextExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod2'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod2ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'localhost (Connected)' label equals 'True'
+        /// </summary>
+        public bool LocalhostConnectedTextExists = true;
         #endregion
     }
     
@@ -113264,6 +113362,355 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        
+        public UIConnectControlCustom UIConnectControlCustom
+        {
+            get
+            {
+                if ((this.mUIConnectControlCustom == null))
+                {
+                    this.mUIConnectControlCustom = new UIConnectControlCustom(this);
+                }
+                return this.mUIConnectControlCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        
+        private UIConnectControlCustom mUIConnectControlCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2ViewModelsDeployTabPage UIDev2ViewModelsDeployTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2ViewModelsDeployTabPage == null))
+                {
+                    this.mUIDev2ViewModelsDeployTabPage = new UIDev2ViewModelsDeployTabPage(this);
+                }
+                return this.mUIDev2ViewModelsDeployTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2ViewModelsDeployTabPage mUIDev2ViewModelsDeployTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2ViewModelsDeployTabPage : WpfTabPage
+    {
+        
+        public UIDev2ViewModelsDeployTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.DeployWorksurfaceViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsCustom : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIContentDockManagerCustom UIContentDockManagerCustom
+        {
+            get
+            {
+                if ((this.mUIContentDockManagerCustom == null))
+                {
+                    this.mUIContentDockManagerCustom = new UIContentDockManagerCustom(this);
+                }
+                return this.mUIContentDockManagerCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIContentDockManagerCustom mUIContentDockManagerCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIContentDockManagerCustom : WpfCustom
+    {
+        
+        public UIContentDockManagerCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISourceConnectControlCustom UISourceConnectControlCustom
+        {
+            get
+            {
+                if ((this.mUISourceConnectControlCustom == null))
+                {
+                    this.mUISourceConnectControlCustom = new UISourceConnectControlCustom(this);
+                }
+                return this.mUISourceConnectControlCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISourceConnectControlCustom mUISourceConnectControlCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISourceConnectControlCustom : WpfCustom
+    {
+        
+        public UISourceConnectControlCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SourceConnectControl";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UITheServerComboBoxCustom UITheServerComboBoxCustom
+        {
+            get
+            {
+                if ((this.mUITheServerComboBoxCustom == null))
+                {
+                    this.mUITheServerComboBoxCustom = new UITheServerComboBoxCustom(this);
+                }
+                return this.mUITheServerComboBoxCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UITheServerComboBoxCustom mUITheServerComboBoxCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UITheServerComboBoxCustom : WpfCustom
+    {
+        
+        public UITheServerComboBoxCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText LocalhostConnectedText
+        {
+            get
+            {
+                if ((this.mLocalhostConnectedText == null))
+                {
+                    this.mLocalhostConnectedText = new WpfText(this);
+                    #region Search Criteria
+                    this.mLocalhostConnectedText.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
+                    this.mLocalhostConnectedText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mLocalhostConnectedText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLocalhostConnectedText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIConnectControlCustom : WpfCustom
+    {
+        
+        public UIConnectControlCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ConnectControl";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UITheServerComboBoxCustom1 UITheServerComboBoxCustom
+        {
+            get
+            {
+                if ((this.mUITheServerComboBoxCustom == null))
+                {
+                    this.mUITheServerComboBoxCustom = new UITheServerComboBoxCustom1(this);
+                }
+                return this.mUITheServerComboBoxCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UITheServerComboBoxCustom1 mUITheServerComboBoxCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UITheServerComboBoxCustom1 : WpfCustom
+    {
+        
+        public UITheServerComboBoxCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText LocalhostConnectedText
+        {
+            get
+            {
+                if ((this.mLocalhostConnectedText == null))
+                {
+                    this.mLocalhostConnectedText = new WpfText(this);
+                    #region Search Criteria
+                    this.mLocalhostConnectedText.SearchProperties[WpfText.PropertyNames.Name] = "localhost (Connected)";
+                    this.mLocalhostConnectedText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mLocalhostConnectedText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mLocalhostConnectedText;
         #endregion
     }
 }
