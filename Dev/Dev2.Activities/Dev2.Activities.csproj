@@ -1,0 +1,512 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2</RootNamespace>
+    <AssemblyName>Dev2.Activities</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Jurassic">
+      <HintPath>..\Binaries\Jurassic.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices.Auth, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="Microsoft.Office.Client.Policy, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Office.Client.Policy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Client.TranslationServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Office.Client.TranslationServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.SharePoint.Tools, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Office.SharePoint.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Search.Applications, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.UserProfiles">
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="policy.2.3.FSharp.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\policy.2.3.FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RabbitMQ.Client, Version=3.6.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.6.1\lib\net45\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=102.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.DurableInstancing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <None Include="..\TestScripts\**\*.*">
+      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Compile Include="Activities\ActivityParser.cs" />
+    <Compile Include="Activities\DebugCopyException.cs" />
+    <Compile Include="Activities\DebugEvalResult.cs" />
+    <Compile Include="Activities\Debug\DebugItemServiceTestStaticDataParams.cs" />
+    <Compile Include="Activities\Debug\DebugItemWarewolfAtomListResult.cs" />
+    <Compile Include="Activities\Debug\DebugItemWarewolfAtomResult.cs" />
+    <Compile Include="Activities\Debug\DebugItemWarewolfRecordset.cs" />
+    <Compile Include="Activities\DropBox2016\DeleteActivity\DropboxDelete.cs" />
+    <Compile Include="Activities\DropBox2016\DeleteActivity\DsfDropBoxDeleteActivity.cs" />
+    <Compile Include="Activities\DropBox2016\DeleteActivity\IDropBoxDelete.cs" />
+    <Compile Include="Activities\DropBox2016\DownloadActivity\DropboxApiExceptions.cs" />
+    <Compile Include="Activities\DropBox2016\DownloadActivity\DropBoxDownLoad.cs" />
+    <Compile Include="Activities\DropBox2016\DownloadActivity\DsfDropBoxDownloadActivity.cs" />
+    <Compile Include="Activities\DropBox2016\DownloadActivity\IDropboxDownload.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxFileActivity\DsfDropboxFileListActivity.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxFileActivity\DropboxFileRead.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxDeleteSuccessResult.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxListFolderSuccesResult.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxFileActivity\IDropboxFileRead.cs" />
+    <Compile Include="Activities\DropBox2016\DropboxSoureFileValidator.cs" />
+    <Compile Include="Activities\DropBox2016\IDropboxSingleExecutor.cs" />
+    <Compile Include="Activities\DropBox2016\ILocalPathManager.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxDownloadSuccessResult.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxFailureResult.cs" />
+    <Compile Include="Activities\DropBox2016\Result\DropboxUploadSuccessResult.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadActivity.cs" />
+    <Compile Include="Activities\DropBox2016\UploadActivity\IDropBoxUpload.cs" />
+    <Compile Include="Activities\DsfAggregateCalculateActivity.cs" />
+    <Compile Include="Activities\DsfBaseActivity.cs" />
+    <Compile Include="Activities\DsfDecision.cs" />
+    <Compile Include="Activities\DsfComDllActivity.cs" />
+    <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
+    <Compile Include="Activities\DsfDotNetDllActivity.cs" />
+    <Compile Include="Activities\DsfCreateJsonActivity.cs" />
+    <Compile Include="Activities\DsfEnhancedDotNetDllActivity.cs" />
+    <Compile Include="Activities\DsfMethodBasedActivity.cs" />
+    <Compile Include="Activities\DsfMultiAssignObjectActivity.cs" />
+    <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />
+    <Compile Include="Activities\DsfODBCDatabaseActivity.cs" />
+    <Compile Include="Activities\DsfOracleDatabaseActivity.cs" />
+    <Compile Include="Activities\DsfPostgreSqlActivity.cs" />
+    <Compile Include="Activities\DsfRecordsetLengthActivity.cs" />
+    <Compile Include="Activities\DsfRecordsetNullhandlerLengthActivity.cs" />
+    <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
+    <Compile Include="Activities\Debug\DebugOutputBase.cs" />
+    <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />
+    <Compile Include="Activities\DsfPluginActivity.cs" />
+    <Compile Include="Activities\DsfDatabaseActivity.cs" />
+    <Compile Include="Activities\DsfDataMergeActivity.cs" />
+    <Compile Include="Activities\DsfDeleteRecordNullHandlerActivity.cs" />
+    <Compile Include="Activities\DsfBaseConvertActivity.cs" />
+    <Compile Include="Activities\DsfCalculateActivity.cs" />
+    <Compile Include="Activities\DsfCaseConvertActivity.cs" />
+    <Compile Include="Activities\DsfDataSplitActivity.cs" />
+    <Compile Include="Activities\DsfDateTimeActivity.cs" />
+    <Compile Include="Activities\DsfDateTimeDifferenceActivity.cs" />
+    <Compile Include="Activities\DsfExecuteCommandLineActivity.cs" />
+    <Compile Include="Activities\DsfFlowDecisionActivity.cs" />
+    <Compile Include="Activities\DsfFlowNodeActivity.cs" />
+    <Compile Include="Activities\DsfFlowSwitchActivity.cs" />
+    <Compile Include="Activities\DsfForEachItem.cs" />
+    <Compile Include="Activities\DsfGatherSystemInformationActivity.cs" />
+    <Compile Include="Activities\DsfIndexActivity.cs" />
+    <Compile Include="Activities\DsfNativeActivity.cs" />
+    <Compile Include="Activities\DsfNumberFormatActivity.cs" />
+    <Compile Include="Activities\DsfRandomActivity.cs" />
+    <Compile Include="Activities\DsfReplaceActivity.cs" />
+    <Compile Include="Activities\DsfSendEmailActivity.cs" />
+    <Compile Include="Activities\DsfSequenceActivity.cs" />
+    <Compile Include="Activities\DsfSortRecordsActivity.cs" />
+    <Compile Include="Activities\DsfCountRecordsetNullHandlerActivity.cs" />
+    <Compile Include="Activities\DsfMultiAssignActivity.cs" />
+    <Compile Include="Activities\DsfSqlBulkInsertActivity.cs" />
+    <Compile Include="Activities\DsfSqlServerDatabaseActivity.cs" />
+    <Compile Include="Activities\DsfSwitch.cs" />
+    <Compile Include="Activities\DsfUniqueActivity.cs" />
+    <Compile Include="Activities\DsfWebActivityBase.cs" />
+    <Compile Include="Activities\DsfWebDeleteActivity.cs" />
+    <Compile Include="Activities\DsfWebGetActivity.cs" />
+    <Compile Include="Activities\DsfWebGetRequestActivity.cs" />
+    <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity.cs" />
+    <Compile Include="Activities\DsfCommentActivity.cs" />
+    <Compile Include="Activities\DsfWebPostActivity.cs" />
+    <Compile Include="Activities\DsfWebPutActivity.cs" />
+    <Compile Include="Activities\DsfWebserviceActivity.cs" />
+    <Compile Include="Activities\DsfWorkflowActivity.cs" />
+    <Compile Include="Activities\DsfXPathActivity.cs" />
+    <Compile Include="Activities\EmailSender.cs" />
+    <Compile Include="Activities\Exchange\DsfExchangeEmailActivity.cs" />
+    <Compile Include="Activities\FindRecordsTO.cs" />
+    <Compile Include="Activities\GetSystemInformationHelper.cs" />
+    <Compile Include="Activities\HttpClientCredentialManager.cs" />
+    <Compile Include="Activities\IEmailSender.cs" />
+    <Compile Include="Activities\IFlowNodeActivity.cs" />
+    <Compile Include="Activities\RabbitMQ\Consume\DsfConsumeRabbitMQActivity.cs" />
+    <Compile Include="Activities\RabbitMQ\Publish\DsfPublishRabbitMQActivity.cs" />
+    <Compile Include="Activities\RecordsetOld\DsfCountRecordsetActivity.cs" />
+    <Compile Include="Activities\Scripting\DsfJavascriptActivity.cs" />
+    <Compile Include="Activities\Scripting\DsfPythonActivity.cs" />
+    <Compile Include="Activities\Scripting\DsfRubyActivity.cs" />
+    <Compile Include="Activities\SelectAndApply\DsfSelectAndApplyActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointCopyFileActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointCreateListItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointDeleteFileActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointDeleteListItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointFileDownLoadActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointFileUploadActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointMoveFileActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointReadFolderItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointReadListActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointUpdateListItemActivity.cs" />
+    <Compile Include="Activities\Sharepoint\SharepointUtils.cs" />
+    <Compile Include="Activities\SqlBulkInsert\ISqlBulkInserter.cs" />
+    <Compile Include="Activities\IWebRequestInvoker.cs" />
+    <Compile Include="Activities\ModalChecker.cs" />
+    <Compile Include="Activities\PathOperations\DsfAbstractMultipleFilesActivity.cs" />
+    <Compile Include="Activities\Scripting\DsfScriptingActivity.cs" />
+    <Compile Include="Activities\DsfActivityAbstract.cs" />
+    <Compile Include="Activities\PathOperations\DsfAbstractFileActivity.cs" />
+    <Compile Include="Activities\PathOperations\DsfPathCreate.cs" />
+    <Compile Include="Activities\PathOperations\DsfPathCopy.cs" />
+    <Compile Include="Activities\PathOperations\DsfPathDelete.cs" />
+    <Compile Include="Activities\PathOperations\DsfPathMove.cs" />
+    <Compile Include="Activities\PathOperations\DsfFolderRead.cs" />
+    <Compile Include="Activities\PathOperations\DsfFileRead.cs" />
+    <Compile Include="Activities\PathOperations\DsfFileWrite.cs" />
+    <Compile Include="Activities\PathOperations\DsfPathRename.cs" />
+    <Compile Include="Activities\PathOperations\DsfUnZip.cs" />
+    <Compile Include="Activities\PathOperations\DsfZip.cs" />
+    <Compile Include="Activities\SqlBulkInsert\MySqlBulkCopyWrapper.cs" />
+    <Compile Include="Activities\SqlBulkInsert\SqlBulkCopyWrapper.cs" />
+    <Compile Include="Activities\SqlBulkInsert\SqlBulkInserter.cs" />
+    <Compile Include="Activities\SqlBulkInsert\ISqlBulkCopy.cs" />
+    <Compile Include="Activities\ServiceTestHelper.cs" />
+    <Compile Include="Activities\WcfEndPoint\DsfWcfEndPointActivity.cs" />
+    <Compile Include="Activities\WebRequestDataDto.cs" />
+    <Compile Include="Activities\WebRequestInvoker.cs" />
+    <Compile Include="Activities\ResponseManager.cs" />
+    <Compile Include="Activities\IResponseManager.cs" />
+    <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
+    <Compile Include="BussinessLogic\RsOpIsBetween.cs" />
+    <Compile Include="BussinessLogic\RsOpIsBinary.cs" />
+    <Compile Include="BussinessLogic\RsOpIsError.cs" />
+    <Compile Include="BussinessLogic\RsOpIsHex.cs" />
+    <Compile Include="BussinessLogic\RsOpIsNoError.cs" />
+    <Compile Include="BussinessLogic\RsOpIsNotNull.cs" />
+    <Compile Include="BussinessLogic\RsOpIsNull.cs" />
+    <Compile Include="BussinessLogic\RsOpNotBase64.cs" />
+    <Compile Include="BussinessLogic\RsOpNotBetween.cs" />
+    <Compile Include="BussinessLogic\RsOpNotBinary.cs" />
+    <Compile Include="BussinessLogic\RsOpNotEndsWith.cs" />
+    <Compile Include="BussinessLogic\RsOpNotHex.cs" />
+    <Compile Include="BussinessLogic\RsOpNotRegex.cs" />
+    <Compile Include="BussinessLogic\RsOpNotStartsWith.cs" />
+    <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
+    <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\ForEachActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\MixedActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\SequenceActivityFindMissingStrategy.cs" />
+    <Compile Include="FindMissingStrategies\StaticActivityFindMissingStrategy.cs" />
+    <Compile Include="BussinessLogic\Hosting\WorkflowInstanceInfo.cs" />
+    <Compile Include="BussinessLogic\AbstractRecsetSearchValidation.cs" />
+    <Compile Include="BussinessLogic\FindRecsetOptions.cs" />
+    <Compile Include="BussinessLogic\IFindRecsetOptions.cs" />
+    <Compile Include="BussinessLogic\RsOpContains.cs" />
+    <Compile Include="BussinessLogic\RsOpEndsWith.cs" />
+    <Compile Include="BussinessLogic\RsOpEqual.cs" />
+    <Compile Include="BussinessLogic\RsOpGreaterThan.cs" />
+    <Compile Include="BussinessLogic\RsOpGreaterThanOrEqualTo.cs" />
+    <Compile Include="BussinessLogic\RsOpIsAlphanumeric.cs" />
+    <Compile Include="BussinessLogic\RsOpIsDate.cs" />
+    <Compile Include="BussinessLogic\RsOpIsEmail.cs" />
+    <Compile Include="BussinessLogic\RsOpIsNumeric.cs" />
+    <Compile Include="BussinessLogic\RsOpIsText.cs" />
+    <Compile Include="BussinessLogic\RsOpIsXML.cs" />
+    <Compile Include="BussinessLogic\RsOpLessThan.cs" />
+    <Compile Include="BussinessLogic\RsOpLessThanOrEqualTo.cs" />
+    <Compile Include="BussinessLogic\RsOpNotAlphanumeric.cs" />
+    <Compile Include="BussinessLogic\RsOpNotContains.cs" />
+    <Compile Include="BussinessLogic\RsOpNotDate.cs" />
+    <Compile Include="BussinessLogic\RsOpNotEmail.cs" />
+    <Compile Include="BussinessLogic\RsOpNotEqual.cs" />
+    <Compile Include="BussinessLogic\RsOpNotNumeric.cs" />
+    <Compile Include="BussinessLogic\RsOpNotText.cs" />
+    <Compile Include="BussinessLogic\RsOpNotXML.cs" />
+    <Compile Include="BussinessLogic\RsOpRegex.cs" />
+    <Compile Include="BussinessLogic\RsOpStartsWith.cs" />
+    <Compile Include="Enums\enSortType.cs" />
+    <Compile Include="Factories\DTOFactory.cs" />
+    <Compile Include="Interfaces\ICollectionActivity.cs" />
+    <Compile Include="Interfaces\IDev2ActivityIOMapping.cs" />
+    <Compile Include="Interfaces\IFindMissingStrategy.cs" />
+    <Compile Include="Interfaces\IOutputTOConvert.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestMockStep.cs" />
+    <Compile Include="TO\AssignObjectDTO.cs" />
+    <Compile Include="TO\ActivityDTO.cs" />
+    <Compile Include="Activities\DsfActivity.cs" />
+    <Compile Include="Activities\DsfForEachActivity.cs" />
+    <Compile Include="TO\DataMergeDTO.cs" />
+    <Compile Include="TO\DataSplitDTO.cs" />
+    <Compile Include="ImageConverter.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="TO\DataColumnMapping.cs" />
+    <Compile Include="TO\DecisionTO.cs" />
+    <Compile Include="TO\JsonMappingCompoundTo.cs" />
+    <Compile Include="TO\JsonMappingTo.cs" />
+    <Compile Include="TO\SharepointReadListTo.cs" />
+    <Compile Include="TO\SharepointSearchTo.cs" />
+    <Compile Include="TO\ValidatedObject.cs" />
+    <Compile Include="TO\XPathDTO.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="Utilities\ActivityHelper.cs" />
+    <Compile Include="Utilities\ActivityUtils.cs" />
+    <Compile Include="Utilities\FindRecordsDisplayUtil.cs" />
+    <Compile Include="Utilities\IWorkflowHelper.cs" />
+    <Compile Include="Utilities\WorkflowHelper.cs" />
+    <Compile Include="Utilities\GeneralSettings.cs" />
+    <Compile Include="Utilities\IActivityPropertyAttribute.cs" />
+    <Compile Include="Utilities\Inputs.cs" />
+    <Compile Include="Utilities\Outputs.cs" />
+    <Compile Include="Utilities\StringAttributeRefectionUtils.cs" />
+    <Compile Include="Validation\IsSingleRecordSetRule.cs" />
+    <Compile Include="Validation\IsSingleValueRuleSet.cs" />
+    <Compile Include="Validation\IsValidCalculateRule.cs" />
+    <Compile Include="Validation\IsValidExpressionRule.cs" />
+    <Compile Include="Validation\IsValidJsonCreateMappingSourceExpression.cs" />
+    <Compile Include="Validation\IsValidJsonCreateMappingSourceRule.cs" />
+    <Compile Include="Validation\ShouldNotBeVariableRule.cs" />
+    <Compile Include="Validation\VariableUtils.cs" />
+    <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
+    <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Development.Languages\Dev2.Development.Languages.csproj">
+      <Project>{33896c15-e182-4c09-ba33-99ff9a8bb44a}</Project>
+      <Name>Dev2.Development.Languages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
+      <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
+      <Name>Dev2.Instrumentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
+      <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
+      <Name>Dev2.Services.Execution</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
+      <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
+      <Name>Warewolf.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
+      <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
+      <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
+      <Project>{d7a04a3f-ddbd-497c-a311-efd2016830df}</Project>
+      <Name>Warewolf.Sharepoint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
+      <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
+      <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>WarewolfLanguageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+      <Name>WarewolfParserInterop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

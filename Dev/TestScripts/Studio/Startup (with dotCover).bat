@@ -1,0 +1,1 @@
+IF EXIST "%~dp0Startup.bat" CALL "%~dp0Startup.bat" dotcover ELSE ECHO Cannot find Startup.bat

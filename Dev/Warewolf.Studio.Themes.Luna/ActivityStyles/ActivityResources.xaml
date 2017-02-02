@@ -1,0 +1,136 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
+                    xmlns:converters1="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
+                    xmlns:converters2="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
+                    xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
+                    xmlns:converters3="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+
+    <ResourceDictionary.MergedDictionaries>
+        <luna:SharedResourceDictionary Source="ActivityStyles.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Elements/DataGrid.xaml"/>
+        <luna:SharedResourceDictionary Source="../Elements/TextBox.xaml"/>
+        <luna:SharedResourceDictionary Source="../Elements/AutoCompleteBox.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <converters:EmptyStringToBoolConverter x:Key="EmptyStringToBoolConverter" />
+    <converters3:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
+    <converters3:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterInverse" TrueValue="Collapsed" FalseValue="Visible"/>
+
+    <converters1:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
+    <converters1:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
+    <converters2:ForEachTypeToVisibilityConverter x:Key="ForEachTypeToVisibilityConverter" />
+    <converters2:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
+    <converters2:EnumDisplayNameToItemSourceConverter x:Key="EnumDisplayNameToItemSourceConverter" />
+    <converters2:FindRecordsTypeToBoolConverter x:Key="FindRecordsTypeToBoolConverter" />
+    <converters2:SplitTypeToEnabledConverter x:Key="SplitTypeToEnabledConverter" />
+    <converters2:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    <converters2:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
+
+    <interfaceImplementors:CalculateIntellisenseTextConverter x:Key="ModelTextConverter" />
+
+    <interfaceImplementors:CompositeIntellisenseProvider x:Key="DateTimeCompositeIntellisenseProvider">
+        <interfaceImplementors:DefaultIntellisenseProvider />
+        <interfaceImplementors:DateTimeIntellisenseProvider />
+    </interfaceImplementors:CompositeIntellisenseProvider>
+
+    <interfaceImplementors:CompositeIntellisenseProvider x:Key="CalculateCompositeIntellisenseProvider">
+        <interfaceImplementors:DefaultIntellisenseProvider />
+        <interfaceImplementors:CalculateIntellisenseProvider />
+    </interfaceImplementors:CompositeIntellisenseProvider>
+
+    <interfaceImplementors:CompositeIntellisenseProvider x:Key="DefaultCompositeIntellisenseProvider">
+        <interfaceImplementors:DefaultIntellisenseProvider />
+    </interfaceImplementors:CompositeIntellisenseProvider>
+
+    <Style x:Key="SpacedActivityDataGridStyle" BasedOn="{StaticResource ActivityDataGridStyle}" TargetType="{x:Type DataGrid}">
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="RowStyle" Value="{StaticResource SpacedDataGridRowStyle}"/>
+    </Style>
+
+    <Style x:Key="TransparentActivityDataGridStyle" BasedOn="{StaticResource TransparentActivityDataGridStyle}" TargetType="{x:Type DataGrid}">
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="RowStyle" Value="{StaticResource SpacedDataGridRowStyle}"/>
+    </Style>
+
+    <Style x:Key="NonSelectableActivityDataGridStyle" TargetType="{x:Type DataGrid}">
+        <Setter Property="HeadersVisibility" Value="None"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="MinHeight" Value="53"/>
+        <Setter Property="MaxHeight" Value="53"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="RowStyle" Value="{StaticResource NonSelectableDataGridRowStyle}"/>
+    </Style>
+
+    <Style x:Key="ActivityMapppingDataGridStyle" BasedOn="{StaticResource SpacedActivityDataGridStyle}" TargetType="{x:Type DataGrid}">
+        
+        <Setter Property="GridLinesVisibility" Value="All"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="CanUserReorderColumns" Value="False"/>
+        <Setter Property="MinHeight" Value="60"/>
+        <Setter Property="MaxHeight" Value="Infinity"/>
+    </Style>
+
+    <Style x:Key="TransparentActivityMapppingDataGridStyle" BasedOn="{StaticResource TransparentActivityDataGridStyle}" TargetType="{x:Type DataGrid}">
+        
+        <Setter Property="GridLinesVisibility" Value="All"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DataGridBorderBrush}"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="CanUserReorderColumns" Value="False"/>
+        <Setter Property="MinHeight" Value="60"/>
+        <Setter Property="MaxHeight" Value="Infinity"/>
+    </Style>
+
+    <Style x:Key="ActivityMapppingDataGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Background" Value="{StaticResource DataGridColumnHeaderBackgroundBrush}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Height" Value="Auto" />
+    </Style>
+    <Style x:Key="ActivityMapppingDecisionDataGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Background" Value="{StaticResource DataGridColumnHeaderBackgroundBrush}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="3,0" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="Margin" Value="0,0,0,-1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Height" Value="Auto" />
+    </Style>
+    <Style x:Key="ServiceTestAssertDataGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+        <Setter Property="Background" Value="{StaticResource DataGridColumnHeaderBackgroundBrush}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="3,0" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="Margin" Value="0,0,0,-1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushDarkForeground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Template" Value="{StaticResource ServiceTestAssertHeaderTemplate}"/>
+    </Style>
+    
+</ResourceDictionary>

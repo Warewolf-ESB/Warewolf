@@ -1,0 +1,84 @@
+﻿{
+  
+  "resourceID": "5a88a8bf-db63-437e-aa6a-537314133261",
+  "resourceType": "ComPluginService",
+  "resourceName": "PrimitiveTestWithJsonString",
+  "resourcePath": "ML-TESTING",
+  "source": {
+    "ClsId": "00000514-0000-0010-8000-00AA006D2EA4",
+    "ProgId": "PrimativesTestDLL",
+    "ResourceID": "d04b0566-5614-4b8b-bbf2-abb4b41aa522",
+    "ResourceType": "ComPluginSource",
+    "ResourceName": "PrimitivePluginTestSrc",
+    "ResourcePath": "ML-TESTING",
+    "IsValid": false,
+    "Errors": null,
+    "ReloadActions": false
+  },
+  "method": {
+    "Name": "Open",
+    "SourceCode": "",
+    "Parameters": [
+      {
+        "Name": "ConnectionString",
+        "EmptyToNull": false,
+        "IsRequired": true,
+        "Value": "ConString",
+        "DefaultValue": "",
+        "Type": "System.String",
+        "TypeName": "System.String"
+      },
+      {
+        "Name": "UserId",
+        "EmptyToNull": false,
+        "IsRequired": true,
+        "Value": "mnathz",
+        "DefaultValue": "",
+        "Type": "System.String",
+        "TypeName": "System.String"
+      },
+      {
+        "Name": "Password",
+        "EmptyToNull": false,
+        "IsRequired": true,
+        "Value": "Password",
+        "DefaultValue": "",
+        "Type": "System.String",
+        "TypeName": "System.String"
+      },
+      {
+        "Name": "Options",
+        "EmptyToNull": false,
+        "IsRequired": false,
+        "Value": -1,
+        "DefaultValue": -1,
+        "Type": "System.Int32",
+        "TypeName": "System.Int32"
+      }
+    ]
+  },
+  "recordsets": [
+    {
+      "IsScalar": true,
+      "Name": "",
+      "Alias": "",
+      "HasErrors": false,
+      "ErrorMessage": null,
+      "Fields": [
+        {
+          "Name": "message",
+          "Path": {
+            "$type": "Unlimited.Framework.Converters.Graph.String.Json.JsonPath, Dev2.Core",
+            "ActualPath": "message",
+            "DisplayPath": "message",
+            "SampleData": "Howzit__COMMA__ Samantha",
+            "OutputExpression": "[[message]]"
+          },
+          "Alias": "message",
+          "RecordsetAlias": ""
+        }
+      ]
+    }
+  ],
+  "namespace": ""
+}

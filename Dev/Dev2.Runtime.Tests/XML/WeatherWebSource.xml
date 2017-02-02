@@ -1,0 +1,6 @@
+﻿<Source ID="518edc28-e348-4a52-a900-f6aa75cfe92b" Version="1.0" Name="WeatherFranceParis" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=South%20Africa;AuthenticationType=User;UserName=user1234;Password=Password1234" Type="EmailSource" ServerID="d53bbcc5-4794-4dfa-b096-3aa815692e66">
+    <DisplayName>TestWeather</DisplayName>
+    <Category>Testing</Category>
+    <AuthorRoles/>
+    <TypeOf>WebSource</TypeOf>   
+</Source>

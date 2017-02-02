@@ -1,0 +1,26 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
+
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.AppResources.Attributes
+{
+    [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+    public sealed class TreeCategory : Attribute
+    {
+        public TreeCategory(string value)
+        {
+            Value = value;
+        }
+
+        public string Value { get; private set; }
+    }
+}

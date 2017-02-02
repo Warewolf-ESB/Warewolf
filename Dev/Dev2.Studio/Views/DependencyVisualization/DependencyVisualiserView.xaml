@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="Dev2.Studio.Views.DependencyVisualization.DependencyVisualiserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces.Scheduler.Interfaces;assembly=Dev2.Common.Interfaces"
+             xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
+             AutomationProperties.AutomationId="UI_DependencyView_AutoID">
+
+    <UserControl.Resources>
+        <converters:SimpleEnumToBoolConverter x:Key="EnumToBoolConverter"/>
+
+    </UserControl.Resources>
+
+    <i:Interaction.Behaviors>
+        <behavior:ActualSizeBindingBehavior 
+                ActualWidth="{Binding AvailableWidth, Mode=OneWayToSource}" 
+                ActualHeight="{Binding AvailableHeight, Mode=OneWayToSource}"/>
+    </i:Interaction.Behaviors>
+
+    <ScrollViewer x:Name="MyScrollViewer" 
+                  AutomationProperties.AutomationId="UI_TopScrollView_AutoID"
+                  HorizontalScrollBarVisibility="Auto" >
+        <Grid Margin="{StaticResource ElementBorder}" Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="2"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource ControlBorderBottom}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <RadioButton Grid.Row="0" Grid.Column="0" 
+                                 IsChecked="{Binding GetDependsOnMe,Mode=TwoWay,NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
+                                 x:Name="WfDependsOn"
+                                 HorizontalAlignment="Left"
+                                 Content="{Binding FavoritesLabel}"></RadioButton>
+
+                    <StackPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Nesting Levels" Margin="{StaticResource ControlBorderRight}"></TextBlock>
+                            <TextBox Grid.Column="1" Width="70" Text="{Binding NestingLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        </Grid>
+                    </StackPanel>
+
+                    <RadioButton Grid.Row="1" Grid.Column="0" 
+                                 x:Name="DependsOnWf"
+                                 Margin="0,-2,0,0"
+                                 HorizontalAlignment="Left"
+                                 IsChecked="{Binding GetDependsOnOther,Mode=TwoWay,NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" 
+                                 Content="{Binding DependantsLabel}"></RadioButton>
+
+                    <Button Grid.Column="1" Grid.Row="1"
+                            HorizontalAlignment="Right" 
+                            Margin="{StaticResource ControlBorderTop}"
+                            Content="Refresh"
+                            Style="{StaticResource ButtonOrangeStyle}"
+                            Click="ButtonBase_OnClick"
+                            Width="70"></Button>
+                </Grid>
+            </StackPanel>
+
+            <Rectangle Fill="Gray" Opacity="0.2" Grid.Row="1" ></Rectangle>
+
+
+            <ig:XamNetworkNode x:Name="Nodes" ItemsSource="{Binding AllNodes}" Grid.Row="2" NodeMouseDoubleClick="Nodes_OnNodeMouseDoubleClick">
+                <ig:XamNetworkNode.LineEndCap>
+                    <ig:LineCap>Arrow</ig:LineCap>
+                </ig:XamNetworkNode.LineEndCap>
+                <ig:XamNetworkNode.SelectionType>
+                    <ig:NetworkNodeSelectionType>Single</ig:NetworkNodeSelectionType>
+                </ig:XamNetworkNode.SelectionType>
+                <ig:XamNetworkNode.NavigationSettings>
+                    <ig:NavigationSettings AllowPan="True" AllowZoom="True" />
+                </ig:XamNetworkNode.NavigationSettings>
+                <ig:XamNetworkNode.GlobalNodeLayouts>
+                    <ig:NetworkNodeNodeLayout TargetTypeName="ExplorerItemNodeViewModel"
+                                              DisplayMemberPath="ResourceName"
+                                              ConnectionsMemberPath="Children"
+                                              ConnectionTargetMemberPath="Self"
+                                              ConnectionWeightMemberPath="Weight" 
+                                              NodeStyle="{StaticResource SpecialNodeStyle}">
+                        <ig:NetworkNodeNodeLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ToolTip="{Binding Path=ResourceName}" Background="Transparent" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                                        <ColumnDefinition Width="9*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" x:Name="ResourceImage" Height="16" Width="16"
+                                           Source="{Binding Path=ResourceType, Converter={StaticResource ResourceTypeToIconConverter}}">
+                                    </Image>
+                                    <TextBlock Grid.Column="1" FontSize="{StaticResource FontSize-Large}" 
+                                           Visibility="{Binding Path=TextVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                           Text="{Binding Path=ResourceName}">
+                                    </TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ig:NetworkNodeNodeLayout.ItemTemplate>
+                    </ig:NetworkNodeNodeLayout>
+                </ig:XamNetworkNode.GlobalNodeLayouts>
+            </ig:XamNetworkNode>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>

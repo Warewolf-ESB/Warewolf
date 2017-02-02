@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+
+    <ResourceDictionary.MergedDictionaries>
+        <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Brushes.xaml" />
+        <luna:SharedResourceDictionary Source="../Common/Styles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+
+    <!--  TextBox Brushes  -->
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfLineGrey}" />
+    <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource WarewolfWhite}" />
+    <SolidColorBrush x:Key="TextBoxDisabledBackgroundBrush" Color="{StaticResource Color_025}" />
+    <!--  DO NOT make TextBoxHoverBackgroundBrush transparent!  -->
+    <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfPanelGrey}" />
+    <Style x:Key="HyperLinkStyle" TargetType="{x:Type Hyperlink}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource TextBoxHoverBorderBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource TextBoxDisabledBackgroundBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource TextBoxFocusedBrush}" />
+            </Trigger>
+        </Style.Triggers>
+        <Setter Property="Foreground" Value="{StaticResource TextBoxFocusedBrush}" />
+        <Setter Property="TextBlock.TextDecorations" Value="{x:Null}" />
+    </Style>
+
+</ResourceDictionary>

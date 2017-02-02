@@ -1,0 +1,9 @@
+﻿<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Body>
+        <soap:Fault>
+            <faultcode>soap:Client</faultcode>
+            <faultstring>System.Web.Services.Protocols.SoapException: Server was unable to read request.</faultstring>
+            <detail/>
+        </soap:Fault>
+    </soap:Body>
+</soap:Envelope>

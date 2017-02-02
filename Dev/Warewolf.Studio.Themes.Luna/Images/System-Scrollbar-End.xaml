@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="System-Scrollbar-End">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FF333333" Geometry="M 339.833,-594.384L 331.361,-594.384L 331.361,-602.856L 339.833,-602.856L 339.833,-594.384 Z "/>
+                    <GeometryDrawing Brush="#FFEC6300" Geometry="F1 M 339.811,-598.655C 339.811,-600.994 337.92,-602.894 335.59,-602.894C 333.255,-602.894 331.366,-600.994 331.37,-598.611L 331.366,-598.611L 331.366,-594.421L 339.838,-594.421L 339.838,-598.611L 339.811,-598.655 Z "/>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>

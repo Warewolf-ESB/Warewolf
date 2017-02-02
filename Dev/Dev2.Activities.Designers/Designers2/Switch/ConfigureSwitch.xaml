@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="Dev2.Activities.Designers2.Switch.ConfigureSwitch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:switch="clr-namespace:Dev2.Activities.Designers2.Switch"
+             xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+             xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+             xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+             mc:Ignorable="d" 
+             Height="Auto" Width="Auto"
+             d:DesignHeight="200" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance switch:SwitchDesignerViewModel}">
+
+    <UserControl.Resources>
+        <luna:SharedResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Background="{StaticResource WareWolfMenuBrush}" HorizontalAlignment="Stretch" Orientation="Horizontal">
+            <TextBlock Margin="5" Text="Switch Flow" Style="{StaticResource SourceHeader}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Checks a variable and then switched the execution if it finds a matching case."/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="Variable to Switch on:" />
+
+                <ui:IntellisenseTextBox Grid.Column="1"
+                                        Grid.Row="0"
+                                        Margin="{StaticResource ControlBorderTop}"
+                                        DefaultText="[[Case Variable]]"
+                                        MinWidth="288" 
+                                        WrapInBrackets="True"                                    
+                                        HorizontalAlignment="Left"
+                                        AllowUserInsertLine="False"
+                                        x:Name="VariabletoSwitchon"
+                                        Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                        Text="{Binding SwitchVariable,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        attachedProperties:FocusSetter.IsFocused="{Binding IsDisplayTextFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Result_AutoID}"
+                                        ToolTip="{x:Static languages:Tooltips.FindToolTipResult}">
+                    <i:Interaction.Behaviors>
+                        <core:HelpSetter Text="{x:Static languages:HelpText.FindHelpResult}" DataContext="{Binding}" />
+                        <errors:ErrorsSetter Source="{Binding}"
+                                             SourcePropertyName="DisplayText"
+                                             SourcePropertyValue="{Binding DisplayText, UpdateSourceTrigger=PropertyChanged}"
+                                             Target="{Binding}" />
+                    </i:Interaction.Behaviors>
+                </ui:IntellisenseTextBox>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Display text:" Margin="{StaticResource ControlBorderTop}" />
+                <TextBox Grid.Column="1" x:Name="DisplayText" Grid.Row="1" MinWidth="288" HorizontalAlignment="Left" Margin="{StaticResource ControlBorderTop}" Text="{Binding DisplayText}"/>
+            </Grid>
+            <errors:OnError Grid.Column="0" Grid.Row="2" />
+        </Grid>
+    </Grid>
+</UserControl>

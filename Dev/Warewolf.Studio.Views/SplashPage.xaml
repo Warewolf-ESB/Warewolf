@@ -1,0 +1,125 @@
+﻿<Window x:Class="Warewolf.Studio.Views.SplashPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Title="SplashPage" 
+        Height="400"
+        Width="800"
+        ShowInTaskbar="False"
+        AllowsTransparency="True"
+        BorderThickness="0"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        mc:Ignorable="d"
+        KeyUp="SplashPage_OnKeyUp"
+        Closing="SplashPage_OnClosing"
+        d:DataContext="{d:DesignInstance Type=interfaces:ISplashViewModel, IsDesignTimeCreatable=False}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Warewolf.Studio.Themes.Luna;component/Images/newmoon.jpg"/>
+        </Grid.Background>
+        <Grid Margin="0" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Button VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource SplashPageButtonTransparentStyle}"
+                    Click="ButtonBase_OnClick" >
+                <TextBlock Text="X" FontSize="18" FontWeight="Bold" />
+            </Button>
+        </Grid>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="28*"/>
+                <RowDefinition Height="28*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+
+            <!-- WAREWOLF LOGO -->
+            <Grid Margin="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <Image Source="{StaticResource WarewolfWhiteLogo}" 
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Height="140" Width="360" />
+            </Grid>
+
+            <!-- WAREWOLF VERSIONS -->
+            <Grid Grid.Row="1" Margin="10" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="40*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Studio" FontSize="28" Style="{StaticResource SourceHeaderWhite}"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding StudioVersion}" Style="{StaticResource TextBlockWhiteStyle}"></TextBlock>
+
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Server" FontSize="28" Style="{StaticResource SourceHeaderWhite}"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ServerVersion}" Style="{StaticResource TextBlockWhiteStyle}"></TextBlock>
+            </Grid>
+
+            <!-- WAREWOLF -->
+            <Grid Grid.Row="2" VerticalAlignment="Center" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="60*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="Warewolf" Grid.Column="0" Grid.Row="1" >
+                <Hyperlink Command="{Binding WarewolfUrlCommand}" 
+                           IsEnabled="True" 
+                           NavigateUri="{Binding WarewolfUrl}" >
+                    <TextBlock Text="{Binding WarewolfUrl}" Style="{StaticResource HoverUnderlineStyle}"></TextBlock>
+                </Hyperlink>
+            </TextBlock>
+
+                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Center">
+                    <Button Content="Contributors" 
+                        Width="Auto"
+                        Command="{Binding ContributorsCommand}"
+                        Margin="{StaticResource ControlBorderRight}"
+                        Style="{StaticResource PopupRoundedCornerButtonStyle}"></Button>
+                    <Button Content="Community" 
+                        Width="Auto"
+                        Command="{Binding CommunityCommand}"
+                        Margin="{StaticResource ControlBorderRight}"
+                        Style="{StaticResource PopupRoundedCornerButtonStyle}"></Button>
+                    <Button Width="Auto"
+                        Command="{Binding ExpertHelpCommand}"
+                        Style="{StaticResource PopupRoundedCornerBlueButtonStyle}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <fa:FontAwesome Margin="5,0,2,0" Foreground="#FFF3700D" Icon="Bolt" VerticalAlignment="Center" HorizontalAlignment="Center"></fa:FontAwesome>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Expert Help</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Row="3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock Text="{Binding WarewolfCopyright}" 
+                               Foreground="White" FontSize="10"></TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

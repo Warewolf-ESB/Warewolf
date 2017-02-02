@@ -1,0 +1,187 @@
+<Service Name="TestDecisionUnsigned">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="TestDecisionUnsigned"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Unlimited.Applications.BusinessDesignStudio.Activities"
+ xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Unlimited.Framework"
+ xmlns:ufd="clr-namespace:Unlimited.Framework.DataList;assembly=Unlimited.Framework"
+ xmlns:ufi="clr-namespace:Unlimited.Framework.Interfaces;assembly=Unlimited.Framework"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;830,754&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart sap:VirtualizedContainerService.HintSize="790,714" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;0,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;60,40 340,40 340,44&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Width"&gt;776&lt;/x:Double&gt;
+        &lt;x:Double x:Key="Height"&gt;678&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID2"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;212,44&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;256,92&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;340,136 340,166 260,166 260,216.5&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="InitAssign (1)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="256,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
+          &lt;uaba:DsfMultiAssignActivity.Compiler&gt;
+            &lt;ufd:DataListCompiler /&gt;
+          &lt;/uaba:DsfMultiAssignActivity.Compiler&gt;
+          &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+            &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&gt;
+              &lt;uaba:ActivityDTO FieldName="[[FirstName]]" FieldValue="Trevorcc" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+            &lt;/scg:List&gt;
+          &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+          &lt;sap:WorkflowViewStateService.ViewState&gt;
+            &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+              &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+            &lt;/scg:Dictionary&gt;
+          &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;/uaba:DsfMultiAssignActivity&gt;
+        &lt;FlowStep.Next&gt;
+          &lt;FlowDecision x:Name="__ReferenceID3" sap:VirtualizedContainerService.HintSize="70,87"&gt;
+            &lt;FlowDecision.Condition&gt;
+              &lt;uaba:DsfFlowDecisionActivity CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DisplayName="Decision" ExpressionText="t.Eq(d.Get(&amp;quot;FirstName&amp;quot;,AmbientDataList),&amp;quot;Trevor&amp;quot;)" HasError="[HasError]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"&gt;
+                &lt;uaba:DsfFlowDecisionActivity.Compiler&gt;
+                  &lt;ufd:DataListCompiler /&gt;
+                &lt;/uaba:DsfFlowDecisionActivity.Compiler&gt;
+              &lt;/uaba:DsfFlowDecisionActivity&gt;
+            &lt;/FlowDecision.Condition&gt;
+            &lt;sap:WorkflowViewStateService.ViewState&gt;
+              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                &lt;av:Point x:Key="ShapeLocation"&gt;225,216.5&lt;/av:Point&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;70,87&lt;/av:Size&gt;
+                &lt;av:PointCollection x:Key="TrueConnector"&gt;225,260 130,260 130,414&lt;/av:PointCollection&gt;
+                &lt;av:PointCollection x:Key="FalseConnector"&gt;295,260 410,260 410,434&lt;/av:PointCollection&gt;
+                &lt;x:String x:Key="FalseLabel"&gt;IsNotTrevor&lt;/x:String&gt;
+                &lt;x:String x:Key="TrueLabel"&gt;IsTrevor&lt;/x:String&gt;
+              &lt;/scg:Dictionary&gt;
+            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;FlowDecision.True&gt;
+              &lt;FlowStep x:Name="__ReferenceID0"&gt;
+                &lt;sap:WorkflowViewStateService.ViewState&gt;
+                  &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                    &lt;av:Point x:Key="ShapeLocation"&gt;2,414&lt;/av:Point&gt;
+                    &lt;av:Size x:Key="ShapeSize"&gt;256,92&lt;/av:Size&gt;
+                  &lt;/scg:Dictionary&gt;
+                &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="TrueAssign (1)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="256,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
+                  &lt;uaba:DsfMultiAssignActivity.Compiler&gt;
+                    &lt;ufd:DataListCompiler /&gt;
+                  &lt;/uaba:DsfMultiAssignActivity.Compiler&gt;
+                  &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+                    &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&gt;
+                      &lt;uaba:ActivityDTO FieldName="[[TrueResult]]" FieldValue="Yes" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
+                        &lt;uaba:ActivityDTO.OutList&gt;
+                          &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                        &lt;/uaba:ActivityDTO.OutList&gt;
+                      &lt;/uaba:ActivityDTO&gt;
+                      &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&gt;
+                        &lt;uaba:ActivityDTO.OutList&gt;
+                          &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                        &lt;/uaba:ActivityDTO.OutList&gt;
+                      &lt;/uaba:ActivityDTO&gt;
+                    &lt;/scg:List&gt;
+                  &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+                  &lt;sap:WorkflowViewStateService.ViewState&gt;
+                    &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                      &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                    &lt;/scg:Dictionary&gt;
+                  &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;/uaba:DsfMultiAssignActivity&gt;
+              &lt;/FlowStep&gt;
+            &lt;/FlowDecision.True&gt;
+            &lt;FlowDecision.False&gt;
+              &lt;FlowStep x:Name="__ReferenceID1"&gt;
+                &lt;sap:WorkflowViewStateService.ViewState&gt;
+                  &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                    &lt;av:Point x:Key="ShapeLocation"&gt;282,434&lt;/av:Point&gt;
+                    &lt;av:Size x:Key="ShapeSize"&gt;256,92&lt;/av:Size&gt;
+                  &lt;/scg:Dictionary&gt;
+                &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="FalseAssign (1)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="256,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
+                  &lt;uaba:DsfMultiAssignActivity.Compiler&gt;
+                    &lt;ufd:DataListCompiler /&gt;
+                  &lt;/uaba:DsfMultiAssignActivity.Compiler&gt;
+                  &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+                    &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&gt;
+                      &lt;uaba:ActivityDTO FieldName="[[FalseResult]]" FieldValue="No" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
+                        &lt;uaba:ActivityDTO.OutList&gt;
+                          &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                        &lt;/uaba:ActivityDTO.OutList&gt;
+                      &lt;/uaba:ActivityDTO&gt;
+                      &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&gt;
+                        &lt;uaba:ActivityDTO.OutList&gt;
+                          &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                        &lt;/uaba:ActivityDTO.OutList&gt;
+                      &lt;/uaba:ActivityDTO&gt;
+                    &lt;/scg:List&gt;
+                  &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+                  &lt;sap:WorkflowViewStateService.ViewState&gt;
+                    &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                      &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                    &lt;/scg:Dictionary&gt;
+                  &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;/uaba:DsfMultiAssignActivity&gt;
+              &lt;/FlowStep&gt;
+            &lt;/FlowDecision.False&gt;
+          &lt;/FlowDecision&gt;
+        &lt;/FlowStep.Next&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID2&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID3&lt;/x:Reference&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,</AuthorRoles>
+  <Comment>A:/</Comment>
+  <Category>TEST</Category>
+  <Tags></Tags>
+  <HelpLink>A:/</HelpLink>
+  <UnitTestTargetWorkflowService></UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <DataList>
+    <FirstName Description="" />
+    <TrueResult Description="" />
+    <FalseResult Description="" />
+  </DataList>
+</Service>

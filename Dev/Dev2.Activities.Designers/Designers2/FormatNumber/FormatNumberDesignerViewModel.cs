@@ -1,0 +1,79 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Windows;
+using Dev2.Activities.Designers2.Core;
+using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.DataList.Contract;
+using Dev2.Interfaces;
+
+namespace Dev2.Activities.Designers2.FormatNumber
+{
+    public class FormatNumberDesignerViewModel : ActivityDesignerViewModel
+    {
+        public FormatNumberDesignerViewModel(ModelItem modelItem)
+            : base(modelItem)
+        {
+            RoundingTypes = new List<string>(Dev2EnumConverter.ConvertEnumsTypeToStringList<enRoundingType>());
+            SelectedRoundingType = string.IsNullOrEmpty(RoundingType) ? RoundingTypes[0] : RoundingType;
+            AddTitleBarLargeToggle();
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Format_Number;
+        }
+
+        public List<string> RoundingTypes { get; set; }
+
+        public string SelectedRoundingType { get { return (string)GetValue(SelectedRoundingTypeProperty); } set { SetValue(SelectedRoundingTypeProperty, value); } }
+        public static readonly DependencyProperty SelectedRoundingTypeProperty =
+        DependencyProperty.Register("SelectedRoundingType", typeof(string), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(null, OnSelectedRoundingTypeChanged));
+
+        // DO NOT bind to these properties - these are here for convenience only!!!
+        string RoundingType { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        string RoundingDecimalPlaces { set { SetProperty(value); } }
+
+        public bool IsRoundingEnabled { get { return (bool)GetValue(IsRoundingEnabledProperty); } set { SetValue(IsRoundingEnabledProperty, value); } }
+
+        public static readonly DependencyProperty IsRoundingEnabledProperty =
+           DependencyProperty.Register("IsRoundingEnabled", typeof(bool), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(false));
+
+        static void OnSelectedRoundingTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var viewModel = (FormatNumberDesignerViewModel)d;
+            var value = e.NewValue as string;
+
+            enRoundingType roundingType;
+            if(Enum.TryParse(value, out roundingType))
+            {
+                if(roundingType == enRoundingType.None)
+                {
+                    viewModel.RoundingDecimalPlaces = string.Empty;
+                    viewModel.IsRoundingEnabled = false;
+                }
+                else
+                {
+                    viewModel.IsRoundingEnabled = true;
+                }
+            }
+            viewModel.RoundingType = value;
+        }
+
+        public override void Validate()
+        {
+        }
+
+        public override void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+    }
+}

@@ -1,0 +1,70 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+    <ResourceDictionary.MergedDictionaries>
+
+        <!--<ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityDesignerStyles.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityStyles.xaml"/>-->
+        <!--  IMAGES  -->
+        <ResourceDictionary Source="Images.xaml" />
+
+        <!--  THEME ELEMENTS  -->
+
+        <luna:SharedResourceDictionary Source="Elements/Button.xaml" />
+        <ResourceDictionary Source="Elements/ComboBox.xaml" />
+        <ResourceDictionary Source="Elements/CheckBox.xaml" />
+        <ResourceDictionary Source="Elements/ContentControl.xaml" />
+        <ResourceDictionary Source="Elements/DataGrid.xaml" />
+        <ResourceDictionary Source="Elements/DataTemplatesIntellisense.xaml" />
+        <ResourceDictionary Source="Elements/Expander.xaml" />
+        <ResourceDictionary Source="Elements/GridSplitter.xaml" />
+        <ResourceDictionary Source="Elements/GroupBox.xaml" />
+        <ResourceDictionary Source="Elements/Label.xaml" />
+        <ResourceDictionary Source="Elements/ListBox.xaml" />
+        <ResourceDictionary Source="Elements/PasswordBox.xaml" />
+        <ResourceDictionary Source="Elements/ProgressBar.xaml" />
+        <ResourceDictionary Source="Elements/RadioButton.xaml" />
+        <ResourceDictionary Source="Elements/Slider.xaml" />
+        <ResourceDictionary Source="Elements/ContextMenu.xaml" />
+        <ResourceDictionary Source="Elements/MenuItem.xaml" />
+        
+        <ResourceDictionary Source="Elements/TabControl.xaml" />
+        <ResourceDictionary Source="Elements/TextBlock.xaml" />
+        <ResourceDictionary Source="Elements/TextBox.xaml" />
+        <ResourceDictionary Source="Elements/ToggleButton.xaml" />
+        <ResourceDictionary Source="Elements/ToolTip.xaml" />
+
+        <ResourceDictionary Source="Elements/AutoCompleteBox.xaml" />
+
+        <ResourceDictionary Source="Elements/TreeView.xaml" />
+        <ResourceDictionary Source="Elements/Window.xaml" />
+        <ResourceDictionary Source="Elements/TabControl.xaml" />
+        <ResourceDictionary Source="Elements/ValidationToolTip.xaml" />
+        <ResourceDictionary Source="Elements/StackPanel.xaml" />
+        <ResourceDictionary Source="Elements/XamTreeGrid.xaml" />
+
+        <!--  CUSTOMISED THEME ELEMENTS  -->
+
+        <ResourceDictionary Source="Elements/MenuBar/MenuBar.xaml" />
+        <ResourceDictionary Source="Elements/ToolBox/ToolBox.xaml" />
+<!--        <ResourceDictionary Source="Elements/DockManager/MainDockManager.xaml" />-->
+
+        <ResourceDictionary Source="Elements/Explorer/Explorer.xaml" />
+        <ResourceDictionary Source="Elements/HyperLink.xaml" />
+        <ResourceDictionary Source="Elements/xamGrid.xaml"/>
+        <ResourceDictionary Source="Elements/xamComboEditor.xaml"/>
+        <ResourceDictionary Source="Elements/xamDialogWindow.xaml"/>
+        <ResourceDictionary Source="Elements/xamNetworkNode.xaml" />
+        <ResourceDictionary Source="Elements/xamRichTextEditor.xaml"/>
+        <ResourceDictionary Source="Elements/DockManager/MainDockManager.xaml"/>
+
+        <ResourceDictionary Source="ActivityStyles/ActivityResources.xaml"/>
+        <ResourceDictionary Source="ActivityStyles/ActivityDesignerStyles.xaml"/>
+        <ResourceDictionary Source="ActivityStyles/ActivityStyles.xaml"/>
+        <ResourceDictionary Source="Common/Styles.xaml"/>
+        <ResourceDictionary Source="Common/Brushes.xaml"/>
+        <ResourceDictionary Source="Common/Color.xaml"/>
+
+
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

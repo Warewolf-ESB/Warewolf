@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Tool_Javascript" xml:space="preserve">
+    <value>javascript script JSON JS</value>
+  </data>
+  <data name="Tool_WebMethod_Put" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Post" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Get" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_WebMethod_Delete" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Utility_Xpath" xml:space="preserve">
+    <value>xml</value>
+  </data>
+  <data name="Tool_Utility_Web_Request" xml:space="preserve">
+    <value>header page content html</value>
+  </data>
+  <data name="Tool_Utility_Sys_Info" xml:space="preserve">
+    <value>date time format disk cpu memory ram resource language region user roles name domain computer hardware physical user port system</value>
+  </data>
+  <data name="Tool_Utility_Random" xml:space="preserve">
+    <value>guid generate </value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Publish" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Utility_Rabbit_MQ_Consume" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Utility_Format_Number" xml:space="preserve">
+    <value>decimal round</value>
+  </data>
+  <data name="Tool_Utility_Date_Time" xml:space="preserve">
+    <value>year month week day hour second split format add subtract</value>
+  </data>
+  <data name="Tool_Utility_Date_Time_Diff" xml:space="preserve">
+    <value>year month week day hour second split format compare datepart part</value>
+  </data>
+  <data name="Tool_Utility_Create_JSON" xml:space="preserve">
+    <value>object</value>
+  </data>
+  <data name="Tool_Utility_Comment" xml:space="preserve">
+    <value>note</value>
+  </data>
+  <data name="Tool_Utility_Calculate" xml:space="preserve">
+    <value>add subtract minus maths divide power compute excel exel math times multiply plus equal equals sum</value>
+  </data>
+  <data name="Tool_Utility_Aggregate_Calculate" xml:space="preserve">
+    <value>function sum average product count max median min var stdev concatenate choose irr counta subtotal total avedev and or isnull istext npv math</value>
+  </data>
+  <data name="Tool_SharePoint_Upload_File" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Update_List_Item" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Read_List_Item" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Read_Folder" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Move_File" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Download_File" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_List_Item" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Delete_File" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Create_List_Item" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_SharePoint_Copy_File" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Scripting_Script" xml:space="preserve">
+    <value>javascript python ruby</value>
+  </data>
+  <data name="Tool_Scripting_CMD_Script" xml:space="preserve">
+    <value>command line shell</value>
+  </data>
+  <data name="Tool_Resources_WCF" xml:space="preserve">
+    <value>source connector header</value>
+  </data>
+  <data name="Tool_Resources_Service" xml:space="preserve">
+    <value>source connector header</value>
+  </data>
+  <data name="Tool_Resources_Dot_net_DLL" xml:space="preserve">
+    <value>source connector header</value>
+  </data>
+  <data name="Tool_Resources_Com_DLL" xml:space="preserve">
+    <value>source connector header</value>
+  </data>
+  <data name="Tool_Recordset_Unique_Records" xml:space="preserve">
+    <value>distinct</value>
+  </data>
+  <data name="Tool_Recordset_Sort" xml:space="preserve">
+    <value>order by</value>
+  </data>
+  <data name="Tool_Recordset_Length" xml:space="preserve">
+    <value>max index</value>
+  </data>
+  <data name="Tool_Recordset_Find_Records" xml:space="preserve">
+    <value>search</value>
+  </data>
+  <data name="Tool_Recordset_Delete" xml:space="preserve">
+    <value>remove</value>
+  </data>
+  <data name="Tool_Recordset_Count" xml:space="preserve">
+    <value>total</value>
+  </data>
+  <data name="Tool_LoopConstruct_Select_and_Apply" xml:space="preserve">
+    <value>repeat update function</value>
+  </data>
+  <data name="Tool_LoopConstruct_For_Each" xml:space="preserve">
+    <value>repeat while</value>
+  </data>
+  <data name="Tool_Flow_Switch" xml:space="preserve">
+    <value>match branch case</value>
+  </data>
+  <data name="Tool_Flow_Sequence" xml:space="preserve">
+    <value>consolidate cleanup group nest</value>
+  </data>
+  <data name="Tool_Flow_Decision" xml:space="preserve">
+    <value>assert is match true false</value>
+  </data>
+  <data name="Tool_File_Zip" xml:space="preserve">
+    <value>archive directory folder</value>
+  </data>
+  <data name="Tool_File_Write_File" xml:space="preserve">
+    <value>append overwrite content data set</value>
+  </data>
+  <data name="Tool_File_Unzip" xml:space="preserve">
+    <value>directory folder</value>
+  </data>
+  <data name="Tool_File_Rename" xml:space="preserve">
+    <value>directory folder</value>
+  </data>
+  <data name="Tool_File_Read_Folder" xml:space="preserve">
+    <value>directory</value>
+  </data>
+  <data name="Tool_File_Read_File" xml:space="preserve">
+    <value>open get content data</value>
+  </data>
+  <data name="Tool_File_Move" xml:space="preserve">
+    <value>directory folder</value>
+  </data>
+  <data name="Tool_File_Delete" xml:space="preserve">
+    <value>remove directory folder</value>
+  </data>
+  <data name="Tool_File_Create" xml:space="preserve">
+    <value>new directory folder</value>
+  </data>
+  <data name="Tool_File_Copy" xml:space="preserve">
+    <value>duplicate directory folder</value>
+  </data>
+  <data name="Tool_Email_SMTP_Send" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="Tool_Email_Exchange_Send" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="Tool_Dropbox_Upload" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Dropbox_List_Contents" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Dropbox_Download" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Dropbox_Delete" xml:space="preserve">
+    <value>source connector</value>
+  </data>
+  <data name="Tool_Database_SQL_Server" xml:space="preserve">
+    <value>stored procedure function data source microsoft</value>
+  </data>
+  <data name="Tool_Database_SQL_Bulk_Insert" xml:space="preserve">
+    <value>source microsoft</value>
+  </data>
+  <data name="Tool_Database_PostgreSQL" xml:space="preserve">
+    <value>stored procedure function data source connector</value>
+  </data>
+  <data name="Tool_Database_Oracle" xml:space="preserve">
+    <value>stored procedure function data source</value>
+  </data>
+  <data name="Tool_Database_ODBC" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="Tool_Database_MySQL" xml:space="preserve">
+    <value>stored procedure function data source</value>
+  </data>
+  <data name="Tool_Data_Replace" xml:space="preserve">
+    <value>find</value>
+  </data>
+  <data name="Tool_Data_Find_Index" xml:space="preserve">
+    <value>search string position</value>
+  </data>
+  <data name="Tool_Data_Data_Split" xml:space="preserve">
+    <value>csv file seperated value index chars new line tab</value>
+  </data>
+  <data name="Tool_Data_Data_Merge" xml:space="preserve">
+    <value>csv join concatenate seperated value index chars new line tab</value>
+  </data>
+  <data name="Tool_Data_Case_Convert" xml:space="preserve">
+    <value>upper lower title camel sentence</value>
+  </data>
+  <data name="Tool_Data_Base_Convert" xml:space="preserve">
+    <value>text binary base 64 base64 hex</value>
+  </data>
+  <data name="Tool_Data_Assign" xml:space="preserve">
+    <value>declare setup variable set</value>
+  </data>
+  <data name="Tool_Data_Assign_Object" xml:space="preserve">
+    <value>json array declare setup variable set</value>
+  </data>
+  <data name="Tool_Ruby" xml:space="preserve">
+    <value>ruby script</value>
+  </data>
+  <data name="Tool_Python" xml:space="preserve">
+    <value>python script</value>
+  </data>
+</root>
