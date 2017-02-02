@@ -9,8 +9,8 @@ namespace Warewolf.UITests
         [TestMethod]
         public void Openning_Scheduler_Has_List_Of_Schedules_ScheduleUITest()
         {
-            UIMap.Click_Scheduler_Ribbon_Button();            
-            UIMap.Click_Close_Scheduler_Tab_Button();
+            UIMap.Click_Scheduler_RibbonButton();            
+            UIMap.Click_SchedulerTab_CloseButton();
         }
 
         #region Additional test attributes

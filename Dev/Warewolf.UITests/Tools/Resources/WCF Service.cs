@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools.Resources
 		[TestCategory("Resource Tools")]
         public void WCFServiceTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.Exists, "WCF Service tool does not exist on the design surface after dragging in from the toolbox.");
             //Small View
             UIMap.WCFServiceTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.SmallView.Exists, "WCF Toll Small view does not exist.");
@@ -40,8 +41,8 @@ namespace Warewolf.UITests.Tools.Resources
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
-            UIMap.Drag_WCF_Service_Connector_Onto_DesignSurface();
+            UIMap.Click_NewWorkflow_RibbonButton();
+            UIMap.Drag_WCFServiceConnector_Onto_DesignSurface();
         }
 
         UIMap UIMap

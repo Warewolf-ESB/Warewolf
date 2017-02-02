@@ -10,7 +10,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
 		[TestCategory("Tools")]
         public void WorkflowDesignSurface_StartNode_IsVisible_UITest()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists);
         }
 
