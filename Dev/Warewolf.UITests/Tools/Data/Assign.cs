@@ -93,7 +93,7 @@ namespace Warewolf.UITests.Tools.Data
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
         }
 

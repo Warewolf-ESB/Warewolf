@@ -30,7 +30,7 @@ namespace Warewolf.UITests.Tools.Recordset
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_Unique_Records_Onto_DesignSurface();
         }
 

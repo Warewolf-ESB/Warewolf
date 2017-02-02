@@ -13,7 +13,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinNewWorkflowWizardTabByDraggingOnly()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.UnpinnedTab), "Unpinned pane still exists after being dragged onto the central dock indicator.");
@@ -24,7 +24,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinnedPaneContextMenuItems()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             Mouse.Click(UIMap.MainStudioWindow.UnpinnedTab, MouseButtons.Right, ModifierKeys.None, new Point(14, 12));
             Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTabContextMenu.Floating.Exists, "Menu item as floating does not exist after openning unpinned tab context menu with a right click.");
@@ -39,7 +39,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinSettingsWizardTab()
         {
-            UIMap.Click_Settings_Ribbon_Button();
+            UIMap.Click_Settings_RibbonButton();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab);
         }
 
@@ -104,7 +104,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinSchedulerWizardTab()
         {
-            UIMap.Click_Scheduler_Ribbon_Button();
+            UIMap.Click_Scheduler_RibbonButton();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab);
         }
 
@@ -112,7 +112,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void AssignToolInUnpinnedWorkflowWizardTabDebugOutputUITest()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
@@ -125,7 +125,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void AssignToolInUnpinnedWorkflowWizardTabAddVariableUITest()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             const string Variable1Name = "SomeVariable";

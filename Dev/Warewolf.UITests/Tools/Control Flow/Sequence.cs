@@ -64,7 +64,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_Sequence_Onto_DesignSurface();
         }
 
