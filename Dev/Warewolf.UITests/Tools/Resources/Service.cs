@@ -41,7 +41,7 @@ namespace Warewolf.UITests.Tools.Resources
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
         }
 

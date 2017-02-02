@@ -10,7 +10,7 @@ namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
         [TestCategory("WindowsDesignSurfaceContextMenu")]
         public void CopyAndPasteWorkflowToItselfDoesNotCopy()
         {
-            UIMap.Click_New_Workflow_Ribbon_Button();
+            UIMap.Click_NewWorkflow_RibbonButton();
             UIMap.Filter_Explorer("stackoverflowTestWorkflow");
             UIMap.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF.Exists);
