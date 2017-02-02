@@ -1843,6 +1843,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void ClearSelection()
         {
             _wd.Context.Items.SetValue(new Selection());
+            if(_selectedDebugItems != null)
+            {
+                foreach(var selectedDebugItem in _selectedDebugItems)
+                {
+                    selectedDebugItem.SetProperty("IsSelected", false);
+                }
+            }
             _selectedDebugItems = new List<ModelItem>();
         }
 
