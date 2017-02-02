@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("File Tools")]
         public void ZipTool_OpenLargeViewUITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.Exists, "Zip tool does not exist after dragging in from the toolbox");
             // Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.SmallViewContentCustom.FileOrFolderComboBox.Exists, "FileOrFolder ComboBox does not exist on the design surface");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Zip.SmallViewContentCustom.DestinationComboBox.Exists, "Destination ComboBox does not exist on the design surface");

@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools.Storage_Dropbox
         [TestCategory("Dropbox Tools")]
         public void DropboxListContentsTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList.Exists, "Dropbox list contents tool does not exist on design surface after dragging in from the toolbox.");
             //Small View
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList.SmallViewContent.DropboxPathIntellisenseCombobox.Textbox.Exists, "Dropbox file path textbox does not exist on Dropbox FileList tool small view after dragging in from the toolbox.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList.SmallViewContent.ResultsIntellisenseCombobox.Textbox.Exists, "Result textbox does not exist on Dropbox FileList tool small view after dragging in from the toolbox.");

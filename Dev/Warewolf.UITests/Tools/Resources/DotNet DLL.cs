@@ -12,6 +12,7 @@ namespace Warewolf.UITests.Tools.Resources
 		[TestCategory("Resource Tools")]
         public void DotNetDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists, "DotNet DLL tool does not exist on the design surface after dragging in from the toolbox.");
             //Small View
             UIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.SmallView.Exists, "DotNet DLL tool small view does not exist after double clicking tool large view.");
@@ -151,7 +152,7 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
+            UIMap.Drag_DotNetDLLConnector_Onto_DesignSurface();
         }
 
         UIMap UIMap

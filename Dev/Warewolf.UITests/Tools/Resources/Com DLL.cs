@@ -10,6 +10,7 @@ namespace Warewolf.UITests.Tools.Resources
 		[TestCategory("Resource Tools")]
         public void ComDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.Exists, "Com DLL tool does not exist on the design surface after dragging in from the toolbox.");
             //Small View
             UIMap.ComDLLTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.SmallView.Exists, "Com DLL tool small view does not exist after double clicking tool large view.");
@@ -42,7 +43,7 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Drag_Com_DLL_Connector_Onto_DesignSurface();
+            UIMap.Drag_ComDLLConnector_Onto_DesignSurface();
         }
 
         UIMap UIMap
