@@ -152,7 +152,7 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
-            UIMap.Drag_DotNet_DLL_Connector_Onto_DesignSurface();
+            UIMap.Drag_DotNetDLLConnector_Onto_DesignSurface();
         }
 
         UIMap UIMap
