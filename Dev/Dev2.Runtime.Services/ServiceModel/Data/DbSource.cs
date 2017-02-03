@@ -20,7 +20,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class DbSource : Resource, IResourceSource
+    public class DbSource : Resource, IResourceSource, IDb
     {
         #region CTOR
 

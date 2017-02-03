@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Threading;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels
@@ -59,7 +60,7 @@ namespace Warewolf.Studio.ViewModels
             SetupCommands();
         }
 
-        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource)
+        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource,IAsyncWorker AsyncWorker)
             : base("OAuth")
         {
             if (updateManager == null)
@@ -70,17 +71,22 @@ namespace Warewolf.Studio.ViewModels
             {
                 throw new ArgumentNullException(nameof(oAuthSource));
             }
-            _oAuthSource = oAuthSource;
             _updateManager = updateManager;
             Types = new List<string>
             {
                 "Dropbox"
             };
-            // ReSharper disable once VirtualMemberCallInContructor
-            FromModel(oAuthSource);
-            SetupHeaderTextFromExisting();
-            SetupCommands();
-            SetupAuthorizeUri();
+
+
+            AsyncWorker.Start(() => updateManager.FetchSource(oAuthSource.ResourceID), source =>
+            {
+                _oAuthSource = source;
+                // ReSharper disable once VirtualMemberCallInContructor
+                FromModel(source);
+                SetupHeaderTextFromExisting();
+                SetupCommands();
+                SetupAuthorizeUri();
+            });
         }
 
         private void SetupCommands()

@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Threading;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable VirtualMemberCallInContructor
@@ -53,14 +54,16 @@ namespace Warewolf.Studio.ViewModels
             VirtualHost = "/";
         }
 
-        public ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel, IRabbitMQServiceSourceDefinition rabbitMQServiceSource)
+        public ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel, IRabbitMQServiceSourceDefinition rabbitMQServiceSource,IAsyncWorker asyncWorker)
             : this(rabbitMQSourceModel)
         {
             VerifyArgument.IsNotNull("rabbitMQServiceSource", rabbitMQServiceSource);
-
-            _rabbitMQServiceSource = rabbitMQServiceSource;
-            SetupHeaderTextFromExisting();
-            FromModel(rabbitMQServiceSource);
+            asyncWorker.Start(() => rabbitMQSourceModel.FetchSource(rabbitMQServiceSource.ResourceID), source =>
+            {
+                _rabbitMQServiceSource = source;
+                SetupHeaderTextFromExisting();
+                FromModel(source);
+            });
         }
 
         private ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel)
