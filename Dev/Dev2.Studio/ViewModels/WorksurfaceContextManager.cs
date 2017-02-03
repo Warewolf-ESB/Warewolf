@@ -90,6 +90,7 @@ namespace Dev2.Studio.ViewModels
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
         void ShowDependencies(bool dependsOnMe, IContextualResourceModel model, IServer server);
         void DisplayResourceWizard(IContextualResourceModel resourceModel);
+        void DisplayResourceWizard(IWorkSurfaceContextViewModel contextViewModel);
         void EditSqlServerSource(IContextualResourceModel resourceModel);
         void EditMySqlSource(IContextualResourceModel resourceModel);
         void EditPostgreSqlSource(IContextualResourceModel resourceModel);
