@@ -387,6 +387,23 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndIsProperty_ExpectResultsWithPropertyMethod()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var fullName = Assembly.GetExecutingAssembly().Location;
+                var dllName = Path.GetFileName(fullName);
+                var result = isolated.Value.ListMethodsWithReturns(fullName, dllName, typeof(Main).FullName);
+                Assert.IsTrue(result.Any());
+                Assert.IsTrue(result.Any(method => method.IsProperty));
+            }
+        }
+
         #endregion
 
         [TestMethod]

@@ -14,5 +14,6 @@ namespace Dev2.Common.Interfaces
         Guid ID { get; set; }
         bool HasError { get; set; }
         string ErrorMessage { get; set; }
+        bool IsProperty { get; set; }
     }
 }

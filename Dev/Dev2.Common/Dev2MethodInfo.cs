@@ -19,5 +19,6 @@ namespace Dev2.Common
         public Guid ID { get; set; }
         public bool HasError { get; set; }
         public string ErrorMessage { get; set; }
+        public bool IsProperty { get; set; }
     }
 }
