@@ -4446,7 +4446,6 @@ namespace Warewolf.UITests
         public void Expand_DotnetDll_ByClickingCheckbox(bool isChecked)
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ExpansionIndicatorCheckBox);
-            //MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ExpansionIndicatorCheckBox.Checked = isChecked;
         }
 
         public void SetConstructorAssertValue(string value)
