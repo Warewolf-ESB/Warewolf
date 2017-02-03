@@ -8805,8 +8805,10 @@ namespace Warewolf.UITests
                 Mouse.Click(ChooseDLLWindow.FilterTextBox.ClearSearchButton);
             }
             ChooseDLLWindow.FilterTextBox.Text = filter;
+            ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem.DrawHighlight();
             Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem, new Point(122, 6));
             Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text), "Files Textbox is empty.");
+            ChooseDLLWindow.SelectButton.DrawHighlight();
             Mouse.Click(ChooseDLLWindow.SelectButton);
         }
 
