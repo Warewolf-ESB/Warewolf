@@ -26,6 +26,8 @@ using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 {
@@ -546,13 +548,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        public bool IsConstructorVisible
-        {
-            get
-            {
-                return ConstructorRegion?.Constructors?.Count > 0;
-            }
-        }
+        public bool IsConstructorVisible => ConstructorRegion?.Constructors?.Count > 0;
         public bool IsActionsVisible => NamespaceRegion?.SelectedNamespace != null;
 
         public ObservableCollection<IMethodToolRegion<IPluginAction>> MethodsToRunList
@@ -722,14 +718,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         }
 
         private IPluginServiceModel Model { get; set; }
-
-        void SetRegionVisibility(bool value)
-        {
-            InputArea.IsEnabled = value;
-            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
-            ErrorRegion.IsEnabled = value;
-            SourceRegion.IsEnabled = value;
-        }
 
         #endregion
     }
