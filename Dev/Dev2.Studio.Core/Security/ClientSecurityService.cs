@@ -42,7 +42,6 @@ namespace Dev2.Security
         {
             if(args.ToState == NetworkState.Online)
             {
-                Dev2Logger.Debug("Reading Permissions from Server after online");
                 Read();
             }
         }
@@ -77,16 +76,6 @@ namespace Dev2.Security
 
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
-//            Dev2Logger.Debug("Reading Permissions from Server");
-//            var communicationController = new CommunicationController
-//            {
-//                ServiceName = "SecurityReadService"
-//            };
-//            SecuritySettingsTO securitySettingsTo = communicationController.ExecuteCommand<SecuritySettingsTO>(EnvironmentConnection, EnvironmentConnection.WorkspaceID);
-//            if(securitySettingsTo != null)
-//            {
-//                return securitySettingsTo.WindowsGroupPermissions;
-//            }
             return null;
         }
 
