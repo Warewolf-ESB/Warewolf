@@ -2444,11 +2444,11 @@ namespace Warewolf.UITests
             Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
             Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
         }
-public void Unpin_Tab_With_Drag(UITestControl Tab)
+        public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
             Mouse.StartDragging(Tab);
             Mouse.StopDragging(0, 21);
-            Playback.Wait(1000);
+            Playback.Wait(1500);
         }
 
         public void Enter_Recordset_On_Length_tool()

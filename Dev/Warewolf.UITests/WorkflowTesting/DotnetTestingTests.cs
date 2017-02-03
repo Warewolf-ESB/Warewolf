@@ -68,9 +68,8 @@ namespace Warewolf.UITests.WorkflowTesting
         {
             UIMap.Expand_DotnetDll_ByClickingCheckbox(true);
             var variableFromDebug = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell.AssertValue_humanEdit.Text;
-            Assert.AreEqual("[[@human]]", variableFromDebug);
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell1.AssertValue_NamePEdit);
-            var variableValueFromDebug = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DotnetDllTreeItem.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell1.AssertValue_NamePEdit.Text;
+            Assert.AreEqual("[[@human]]", variableFromDebug);            ;
+            var variableValueFromDebug = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIInfragisticsControlsTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.UIItemWarewolfStudioViCell.UIUI_AssertValue_id1tyComboBox.TextEdit.Text;
             StringAssert.Contains(variableValueFromDebug, "Name");
             StringAssert.Contains(variableValueFromDebug, "PersonFood");
             StringAssert.Contains(variableValueFromDebug, "SurName");
