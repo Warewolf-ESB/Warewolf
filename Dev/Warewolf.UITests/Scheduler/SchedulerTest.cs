@@ -10,7 +10,7 @@ namespace Warewolf.UITests
         public void Openning_Scheduler_Has_List_Of_Schedules_ScheduleUITest()
         {
             UIMap.Click_Scheduler_RibbonButton();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.Exists, "Scheduler tab does not exist after clicking Scheduler ribbon button.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.Exists, "Scheduler tab does not exist after clicking Scheduler ribbon button.");
         }
 
         #region Additional test attributes
