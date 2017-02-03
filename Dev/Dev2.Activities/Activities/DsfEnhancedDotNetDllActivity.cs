@@ -149,10 +149,12 @@ namespace Dev2.Activities
                         else
                         {
                             RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index, update, dataObject);
-                        }
-                        index++;
-                    }
 
+                        }
+                        if (dev2MethodInfo.HasError) break;
+                        index++;
+                     
+                    }
                 }
             }
             catch (Exception e)
@@ -273,12 +275,20 @@ namespace Dev2.Activities
             pluginExecutionDto.ObjectString = ObjectResult;
             string objString;
             IDev2MethodInfo result = PluginServiceExecutionFactory.InvokePlugin(appDomain, pluginExecutionDto, dev2MethodInfo, out objString);
+
             pluginExecutionDto.ObjectString = objString;
             ObjectResult = objString;
             var pluginAction = MethodsToRun[i];
             pluginAction.MethodResult = result.MethodResult;
             pluginAction.HasError = result.HasError;
             pluginAction.ErrorMessage = result.ErrorMessage;
+            dev2MethodInfo.HasError = result.HasError;
+            dev2MethodInfo.ErrorMessage = result.ErrorMessage;
+            if (result.HasError)
+            {
+                DispatchDebugStateForMethod(pluginAction, dataObject, update, false, start);
+                return;
+            }
             AssignMethodResult(pluginAction, update, dataObject, start);
             if (!string.IsNullOrEmpty(ObjectName) && !pluginExecutionDto.IsStatic)
             {
