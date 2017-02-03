@@ -65,7 +65,7 @@ namespace Dev2.Common.Interfaces
         void ShowDependencies(Guid resourceId, IServer server);
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
-        void OpenResource(Guid resourceId, Guid environmentId);
+        void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);
         void CloseResource(Guid resourceId, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
         void ViewSwagger(Guid resourceId, IServer server);

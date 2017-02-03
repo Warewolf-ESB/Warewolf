@@ -92,9 +92,14 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker, environment)
         {
             VerifyArgument.IsNotNull("sharePointServiceSource", sharePointServiceSource);
-            _sharePointServiceSource = sharePointServiceSource;
-            SetupHeaderTextFromExisting();
-            FromModel(sharePointServiceSource);
+
+            asyncWorker.Start(() => updateManager.FetchSource(sharePointServiceSource.Id), source =>
+            {
+                _sharePointServiceSource = source;
+                SetupHeaderTextFromExisting();
+                FromModel(source);
+            });
+
         }
 
         void SetupHeaderTextFromExisting()

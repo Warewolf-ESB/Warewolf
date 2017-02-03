@@ -8,6 +8,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -57,14 +58,17 @@ namespace Warewolf.Studio.ViewModels
             Timeout = 10000;
         }
 
-        public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, IEventAggregator aggregator, IEmailServiceSource emailServiceSource)
+        public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, IEventAggregator aggregator, IEmailServiceSource emailServiceSource,IAsyncWorker asyncWorker)
             : this(updateManager, aggregator)
         {
             VerifyArgument.IsNotNull("emailServiceSource", emailServiceSource);
-            _emailServiceSource = emailServiceSource;
-            // ReSharper disable once VirtualMemberCallInContructor
-            FromModel(emailServiceSource);
-            SetupHeaderTextFromExisting();
+            asyncWorker.Start(() => updateManager.FetchSource(emailServiceSource.Id), source =>
+            {
+                _emailServiceSource = source;
+                // ReSharper disable once VirtualMemberCallInContructor
+                FromModel(_emailServiceSource);
+                SetupHeaderTextFromExisting();
+            });
         }
 
         ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, IEventAggregator aggregator)

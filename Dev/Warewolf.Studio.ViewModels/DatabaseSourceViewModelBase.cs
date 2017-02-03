@@ -347,14 +347,18 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("dbSource", dbSource);
             PerformInitialise(updateManager, aggregator);
             _warewolfserverName = updateManager.ServerName ?? "";
-            DbSource = dbSource;
-            Item = ToSourceDefinition();
+            AsyncWorker.Start(() => updateManager.FetchDbSource(dbSource.Id, dbSource.Path), source =>
+             {
+                 DbSource = source;
+                 Item = ToSourceDefinition();
+                 GetLoadComputerNamesTask(() =>
+                 {
+                     FromModel(DbSource);
+                     SetupHeaderTextFromExisting();
+                 });
+             });
 
-            GetLoadComputerNamesTask(() =>
-            {
-                FromModel(DbSource);
-                SetupHeaderTextFromExisting();
-            });
+            
         }
 
         #region Methods
