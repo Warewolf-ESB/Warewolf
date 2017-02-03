@@ -176,8 +176,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 Errors = new List<IActionableErrorInfo>();
             }
             Errors.Clear();
-
-            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (SourceRegion.Errors.Count > 0)
             {
                 foreach (var designValidationError in SourceRegion.Errors)
@@ -369,7 +367,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 };
                 ConstructorRegion.SomethingChanged += (sender, args) =>
                 {
-                  OnPropertyChanged("IsConstructorVisible");  
+                    OnPropertyChanged("IsConstructorVisible");
                 };
 
 

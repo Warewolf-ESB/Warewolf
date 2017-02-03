@@ -491,7 +491,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 jObject.Add(property.Name, "");
             }
-            return  new JArray(jObject);
+            return new JArray(jObject);
         }
 
         static Type GetEnumerableType(Type type)
