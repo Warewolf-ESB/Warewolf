@@ -138,12 +138,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 if (e.InnerException != null)
                 {
                     dev2MethodInfo.HasError = true;
-                    dev2MethodInfo.ErrorMessage = e.Message;
-                    var actualError = dev2MethodInfo.Method + ": " + e.InnerException.Message;
-                    throw new Exception(actualError);
-                   
+                    dev2MethodInfo.ErrorMessage = e.InnerException.Message;
+                    Dev2Logger.Error(e);
+                    objectString = dto.ObjectString;
+                    return dev2MethodInfo;
                 }
-
                 dev2MethodInfo.HasError = true;
                 dev2MethodInfo.ErrorMessage = e.Message;
                 Dev2Logger.Error(e);
@@ -363,7 +362,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
-                
+
                 // ReSharper disable once CyclomaticComplexity
                 methodInfos.ToList().ForEach(info =>
                 {

@@ -7,6 +7,7 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -214,8 +215,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             ErrorResultTO err;
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
-            var message = err.FetchErrors().First();
-            Assert.AreEqual("AddFavouriteFood: Please specify favourite food", message);
+            var fieldInfo = typeof(DsfEnhancedDotNetDllActivity).GetField("_childStatesToDispatch", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(fieldInfo);
+            var value = fieldInfo.GetValue(activity) as List<IDebugState>;
+            Assert.IsNotNull(value);
+            var any = value.Any(state => state.ErrorMessage != null && (state.ErrorMessage.Equals("Please specify favourite food") && state.Name.Equals("Method") &&
+                                                                        state.DisplayName.Equals("AddFavouriteFood")));
+            Assert.IsTrue(any);
         }
 
         [TestMethod]
