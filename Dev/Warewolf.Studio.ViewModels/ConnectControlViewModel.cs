@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels
             var idx = -1;
             if (currentServer != null)
             {
-                currentServer?.Disconnect();
+                currentServer.Disconnect();
                 ServerDisconnected?.Invoke(this, currentServer);
                 idx = Servers.IndexOf(currentServer);
                 currentServer.NetworkStateChanged -= OnServerOnNetworkStateChanged;
