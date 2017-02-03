@@ -368,10 +368,10 @@
                                                                                  WrapInBrackets="True"
                                                                                 FilterType="All"
                                                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                                                AutomationProperties.AutomationId="UI_TextRecSetBox_AutoID"
+                                                                                AutomationProperties.AutomationId="UI_TextBox_AutoID"
                                                                                 IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                                                 ToolTip="{x:Static languages:Tooltips.MappingsRecordsetNameTooltip}"
-                                                                                Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                                                                                Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" >
                                                             
                                                             <i:Interaction.Behaviors>
                                                                 <core1:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
