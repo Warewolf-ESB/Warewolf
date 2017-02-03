@@ -178,21 +178,17 @@ namespace Dev2.Data.PathOperations
             }
             catch (Exception e)
             {
-                Dev2Logger.Debug(@"Exception Creating SFTP Client");
-                Dev2Logger.Debug(e.Message);
-                Dev2Logger.Debug(e.StackTrace);
-                {
-
-                }
-                if (e.Message.Contains(@"timeout"))
+                Dev2Logger.Debug(@"Exception Creating SFTP Client",e);
+                
+                if(e.Message.Contains(@"timeout"))
                 {
                     throw new Exception(ErrorResource.ConnectionTimedOut);
                 }
-                if (e.Message.Contains(@"Auth failed"))
+                if(e.Message.Contains(@"Auth failed"))
                 {
                     throw new Exception(string.Format(ErrorResource.IncorrectUsernameAndPassword, path.Path));
                 }
-                if (path.Path.Contains(@"\\"))
+                if(path.Path.Contains(@"\\"))
                 {
                     throw new Exception(string.Format(ErrorResource.BadFormatForSFTP, path.Path));
                 }
@@ -255,11 +251,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Debug(@"Exception in Put command");
-                    Dev2Logger.Debug(ex.Message);
-                    Dev2Logger.Debug(ex.StackTrace);
-
-                    Dev2Logger.Error(this, ex);
+                    Dev2Logger.Error(@"Exception in Put command",ex);
                     throw;
                 }
             }
@@ -329,9 +321,7 @@ namespace Dev2.Data.PathOperations
                         catch (Exception e)
                         {
 
-                            Dev2Logger.Debug(@"Exception WriteToSFTP");
-                            Dev2Logger.Debug(e.Message);
-                            Dev2Logger.Debug(e.StackTrace);
+                            Dev2Logger.Debug(@"Exception WriteToSFTP",e);
                             sftp.Disconnect();
                             sftp.Dispose();
                             throw new Exception(ErrorResource.FileNotCreated);
