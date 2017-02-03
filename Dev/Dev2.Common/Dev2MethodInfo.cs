@@ -17,5 +17,7 @@ namespace Dev2.Common
         public bool IsObject { get; set; }
         public bool IsVoid { get; set; }
         public Guid ID { get; set; }
+        public bool HasError { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

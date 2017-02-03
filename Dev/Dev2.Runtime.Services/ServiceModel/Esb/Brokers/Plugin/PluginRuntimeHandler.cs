@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var constructorArg in setupInfo.PluginConstructor.Inputs)
                 {
-                    var setupValuesForParameters = SetupValuesForParameters(constructorArg.Value, constructorArg.TypeName, loadedAssembly);
+                    var setupValuesForParameters = SetupValuesForParameters(constructorArg.Value, constructorArg.TypeName, constructorArg.EmptyToNull, loadedAssembly);
                     if (setupValuesForParameters != null && setupValuesForParameters.Any())
                     {
                         constructorArgs.Add(setupValuesForParameters.First());
@@ -135,6 +135,17 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             catch (Exception e)
             {
+                if (e.InnerException != null)
+                {
+                    dev2MethodInfo.HasError = true;
+                    dev2MethodInfo.ErrorMessage = e.Message;
+                    var actualError = dev2MethodInfo.Method + ": " + e.InnerException.Message;
+                    throw new Exception(actualError);
+                   
+                }
+
+                dev2MethodInfo.HasError = true;
+                dev2MethodInfo.ErrorMessage = e.Message;
                 Dev2Logger.Error(e);
                 throw;
             }
@@ -228,10 +239,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var methodParameter in dev2MethodInfo.Parameters)
                 {
-                    var a = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, loadedAssembly);
-                    if (a != null)
+                    var valuesForParameters = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, methodParameter.EmptyToNull, loadedAssembly);
+                    if (valuesForParameters != null)
                     {
-                        var item = a.FirstOrDefault();
+                        var item = valuesForParameters.FirstOrDefault();
                         valuedTypeList.Add(item);
                     }
                 }
@@ -246,7 +257,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private static List<object> SetupValuesForParameters(string value, string typeName, Assembly loadedAssembly)
+        private static List<object> SetupValuesForParameters(string value, string typeName, bool emptyIsNull, Assembly loadedAssembly)
         {
             var valuedTypeList = new List<object>();
             try
@@ -271,6 +282,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     valuedTypeList.Add(value);
                 }
+
+                if (type != null && emptyIsNull && anonymousType == null)
+                {
+                    valuedTypeList.Add(value);
+                }
             }
             catch (Exception)
             {
@@ -281,7 +297,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         private static Type GetTypeFromLoadedAssembly(string typeName, Assembly loadedAssembly)
         {
-            return Type.GetType(typeName) ?? loadedAssembly.ExportedTypes.FirstOrDefault(p => p.AssemblyQualifiedName != null && p.AssemblyQualifiedName.Equals(typeName, StringComparison.InvariantCultureIgnoreCase));
+            var typeFromLoadedAssembly = Type.GetType(typeName) ?? loadedAssembly.ExportedTypes.FirstOrDefault(p => p.AssemblyQualifiedName != null && p.AssemblyQualifiedName.Equals(typeName, StringComparison.InvariantCultureIgnoreCase));
+            if (typeFromLoadedAssembly == null)//Cater for assembly version change
+            {
+                var fullTypename = typeName.Split(',').FirstOrDefault();
+                typeFromLoadedAssembly = loadedAssembly.DefinedTypes?.FirstOrDefault(info => info.FullName.Equals(fullTypename));
+            }
+            return typeFromLoadedAssembly;
         }
 
         /// <summary>
@@ -398,7 +420,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         };
                         var parameterType = parameterInfo.ParameterType;
                         BuildParameter(parameterType, methodParameter);
-                     
+
                         serviceMethod.Parameters.Add(methodParameter);
                     }
                     serviceMethodList.Add(serviceMethod);
@@ -410,7 +432,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         private static void BuildParameter(Type parameterType, IMethodParameter methodParameter)
         {
-            if(parameterType.IsPrimitive || parameterType == typeof(decimal) || parameterType == typeof(string))
+            if (parameterType.IsPrimitive || parameterType == typeof(decimal) || parameterType == typeof(string))
             {
                 methodParameter.IsObject = false;
                 methodParameter.Dev2ReturnType = "returns " + parameterType.Name;
@@ -418,9 +440,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             else
             {
                 var enumerableType = GetEnumerableType(parameterType);
-                if(enumerableType != null)
+                if (enumerableType != null)
                 {
-                    if(enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
+                    if (enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
                     {
                         methodParameter.IsObject = false;
                         methodParameter.Dev2ReturnType = "returns " + parameterType.Name;

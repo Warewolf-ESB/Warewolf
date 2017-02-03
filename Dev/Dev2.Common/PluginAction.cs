@@ -21,6 +21,8 @@ namespace Dev2.Common.Interfaces
         public string OutputVariable { get; set; }
         public bool IsObject { get; set; }
         public bool IsVoid { get; set; }
+        public string ErrorMessage { get; set; }
+        public bool HasError { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
