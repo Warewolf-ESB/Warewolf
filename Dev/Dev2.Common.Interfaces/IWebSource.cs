@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 using Dev2.Common.Interfaces.Data;
 

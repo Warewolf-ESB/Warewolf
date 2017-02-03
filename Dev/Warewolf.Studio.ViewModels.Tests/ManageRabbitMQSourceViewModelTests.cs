@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using Dev2.Threading;
 
 // ReSharper disable InconsistentNaming
 
@@ -42,7 +43,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _changedProperties = new List<string>();
             _manageRabbitMQSourceViewModelWithTask = new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _requestServiceNameViewModelTask);
             _manageRabbitMQSourceViewModelWithTask.PropertyChanged += (sender, e) => { _changedProperties.Add(e.PropertyName); };
-            _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition = new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _rabbitMQServiceSourceDefinition.Object);
+            _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition = new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _rabbitMQServiceSourceDefinition.Object, new SynchronousAsyncWorker());
         }
 
         #endregion Test initialize
@@ -81,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             IRabbitMQServiceSourceDefinition rabbitMQServiceSourceDefinition = null;
 
             //act
-            new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, rabbitMQServiceSourceDefinition);
+            new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, rabbitMQServiceSourceDefinition, new SynchronousAsyncWorker());
         }
 
         [TestMethod]
@@ -99,7 +100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestManageRabbitMQSourceViewModel_Constructor2()
         {
             //act
-            new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _rabbitMQServiceSourceDefinition.Object);
+            new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _rabbitMQServiceSourceDefinition.Object, new SynchronousAsyncWorker());
         }
 
         #endregion Test construction

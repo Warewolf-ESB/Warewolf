@@ -33,7 +33,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             get
             {
-                var manager = new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, "") { ServerName = "Test" };
+                var manager = new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, new Mock<IQueryManager>().Object) { ServerName = "Test" };
                 var serverName = manager.ServerName;
 
                 return manager;
@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             task.Start();
 
-            return new ManageWcfSourceViewModel(new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, ""),task, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object);
+            return new ManageWcfSourceViewModel(new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, new Mock<IQueryManager>().Object),task, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object);
         }
 
         [TestMethod]

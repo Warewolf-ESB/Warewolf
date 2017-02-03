@@ -1,7 +1,6 @@
 ﻿using System;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Common.Interfaces;
 
 namespace Dev2.Common.Interfaces.Core
 {

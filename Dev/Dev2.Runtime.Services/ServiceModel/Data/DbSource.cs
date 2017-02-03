@@ -29,6 +29,12 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceType = "DbSource";
         }
 
+        public DbSource(enSourceType sourceType)
+        {
+            ResourceType = "DbSource";
+            ServerType = sourceType;
+        }
+
         public DbSource(XElement xml)
             : base(xml)
         {
