@@ -278,8 +278,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             ErrorResultTO err;
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
+            Assert.AreEqual(0, err.FetchErrors().Count);
             var methodResult = activity.MethodsToRun.Single().MethodResult;
-            Assert.AreEqual("\"Null value passed\"", methodResult);
+            Assert.AreEqual("Null value passed", methodResult);
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -342,7 +343,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             var methodResult = activity.MethodsToRun.Single().MethodResult;
-            Assert.AreEqual("\"\"", methodResult);
+            Assert.AreEqual("", methodResult);
         }
 
 
@@ -612,7 +613,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
             var methodResult = activity.MethodsToRun.Single().MethodResult;
-            Assert.AreEqual("\"Name:Micky, Surname:Mouse, FoodName:Lettuce\"", methodResult);
+            Assert.AreEqual("Name:Micky, Surname:Mouse, FoodName:Lettuce", methodResult);
         }
 
         [TestMethod]
@@ -676,7 +677,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Test Result -----------------------
             Assert.AreEqual(0, err.FetchErrors().Count);
             var methodResult = activity.MethodsToRun.Single().MethodResult;
-            Assert.AreEqual("\"Name:Micky, Surname:Mouse, FoodName:Lettuce\"", methodResult);
+            Assert.AreEqual("Name:Micky, Surname:Mouse, FoodName:Lettuce", methodResult);
         }
 
         [TestMethod]
@@ -1051,7 +1052,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var food = new Food { FoodName = "Lettuce" };
-            var human = new Human("Micky", "Mouse", food);
             var knownBinder = new KnownTypesBinder();
             knownBinder.KnownTypes.Add(type);
             var activity = new DsfEnhancedDotNetDllActivityMock();

@@ -301,45 +301,54 @@ namespace Dev2.Activities
         private void AssignMethodResult(IPluginAction pluginAction, int update, IDSFDataObject dataObject, DateTime start)
         {
             {
+                var methodResult = pluginAction.MethodResult;
+                var outputVariable = pluginAction.OutputVariable;
                 if (pluginAction.IsObject)
                 {
-                    var jContainer = JToken.Parse(pluginAction.MethodResult) as JContainer
-                                     ?? pluginAction.MethodResult.DeserializeToObject();
-                    if (!string.IsNullOrEmpty(pluginAction.OutputVariable))
+                    var jContainer = JToken.Parse(methodResult) as JContainer
+                                     ?? methodResult.DeserializeToObject();
+                    if (!string.IsNullOrEmpty(outputVariable))
                     {
-                        dataObject.Environment.AddToJsonObjects(pluginAction.OutputVariable, jContainer);
+                        dataObject.Environment.AddToJsonObjects(outputVariable, jContainer);
                     }
                 }
                 else
                 {
                     if (!pluginAction.IsVoid)
                     {
-                        JToken jObj = JToken.Parse(pluginAction.MethodResult) ?? pluginAction.MethodResult.DeserializeToObject();
-
+                        JToken jObj = JToken.Parse(methodResult) ?? methodResult.DeserializeToObject();
+                        if (!methodResult.IsJSON() && !pluginAction.IsObject)
+                        {
+                            pluginAction.MethodResult = methodResult.TrimEnd('\"').TrimStart('\"');
+                        }
                         if (jObj != null)
                         {
                             if (jObj.IsEnumerableOfPrimitives())
                             {
                                 var values = jObj.Children().Select(token => token.ToString()).ToList();
-                                if (DataListUtil.IsValueScalar(pluginAction.OutputVariable))
+                                if (DataListUtil.IsValueScalar(outputVariable))
                                 {
                                     var valueString = string.Join(",", values);
-                                    dataObject.Environment.Assign(pluginAction.OutputVariable, valueString, update);
+                                    dataObject.Environment.Assign(outputVariable, valueString, update);
                                 }
                                 else
                                 {
                                     foreach (var value in values)
                                     {
-                                        dataObject.Environment.Assign(pluginAction.OutputVariable, value, update);
+                                        dataObject.Environment.Assign(outputVariable, value, update);
                                     }
                                 }
                             }
                             else if (jObj.IsPrimitive())
                             {
                                 var value = jObj.ToString();
-                                if (!string.IsNullOrEmpty(pluginAction.OutputVariable))
+                                if (!value.IsJSON() && !pluginAction.IsObject)
                                 {
-                                    dataObject.Environment.Assign(pluginAction.OutputVariable, value, update);
+                                    value = value.TrimEnd('\"').TrimStart('\"');
+                                }
+                                if (!string.IsNullOrEmpty(outputVariable))
+                                {
+                                    dataObject.Environment.Assign(outputVariable, value, update);
                                 }
                             }
                         }
@@ -499,7 +508,8 @@ namespace Dev2.Activities
                 HasError = false,
                 Server = GetServerName() ?? "",
                 EnvironmentID = dataObject.DebugEnvironmentId,
-                SessionID = dataObject.DebugSessionID
+                SessionID = dataObject.DebugSessionID,
+
             };
             return debugState;
         }
