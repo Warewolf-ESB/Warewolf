@@ -18,5 +18,7 @@ namespace Dev2.Common.Interfaces
         string OutputVariable { get; set; }
         bool IsObject { get; set; }
         bool IsVoid { get; set; }
+        string ErrorMessage { get; set; }
+        bool HasError { get; set; }
     }
 }

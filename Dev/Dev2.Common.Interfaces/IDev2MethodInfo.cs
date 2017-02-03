@@ -12,5 +12,7 @@ namespace Dev2.Common.Interfaces
         bool IsObject { get; set; }
         bool IsVoid { get; set; }
         Guid ID { get; set; }
+        bool HasError { get; set; }
+        string ErrorMessage { get; set; }
     }
 }

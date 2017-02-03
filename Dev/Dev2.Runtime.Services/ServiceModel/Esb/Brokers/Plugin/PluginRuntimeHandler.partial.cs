@@ -417,9 +417,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 Type type;
                 try
                 {
-                    type = assembly.GetType(methodParameter.TypeName) 
-                        ?? assembly.DefinedTypes?.FirstOrDefault(info => info.AssemblyQualifiedName != null && info.AssemblyQualifiedName.Equals(methodParameter.TypeName, StringComparison.InvariantCultureIgnoreCase))
-                        ?? Type.GetType(methodParameter.TypeName);
+                    type = GetTypeFromLoadedAssembly(methodParameter.TypeName, assembly);
+
                 }
                 catch (Exception)
                 {
