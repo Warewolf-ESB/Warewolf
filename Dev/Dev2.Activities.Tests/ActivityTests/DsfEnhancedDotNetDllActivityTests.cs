@@ -255,7 +255,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                             TypeName = typeof(string).AssemblyQualifiedName,
                             IsObject = false,
                             Name = "value",
-                            Value = null,
                             EmptyIsNull = true
                         }
                     },
@@ -340,7 +339,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(activity.ConstructorInputs);
             //---------------Execute Test ----------------------
             ErrorResultTO err;
-             activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out err);
             //---------------Test Result -----------------------
             var methodResult = activity.MethodsToRun.Single().MethodResult;
             Assert.AreEqual("\"\"", methodResult);
@@ -971,6 +970,78 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var val = debugOutputs[0].ResultsList[0].Value;
             StringAssert.Contains(val, "John");
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildMethodOutputs_GivenMethodIsvoid_ShouldReturnNone()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var human = new Human("Micky", "Mouse", new Food { FoodName = "Lettuce" });
+            var knownBinder = new KnownTypesBinder();
+            knownBinder.KnownTypes.Add(type);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var mock = new Mock<IDSFDataObject>();
+            var esbChannel = new Mock<IEsbChannel>();
+            var executionEnv = new Mock<IExecutionEnvironment>();
+            var humanString = DataListUtil.ConvertModelToJson(human).ToString();
+            var newWarewolfAtomResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(humanString));
+            executionEnv.Setup(environment => environment.EvalForJson(It.IsAny<string>(), It.IsAny<bool>()))
+               .Returns(newWarewolfAtomResult);
+            var johnResult = CommonFunctions.WarewolfEvalResult
+                .NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("John"));
+            executionEnv.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Returns(johnResult);
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.Environment).Returns(executionEnv.Object);
+            activity.ConstructorInputs = new List<IServiceInput>()
+            {
+                new ServiceInput("name","John")
+                {
+                    TypeName = typeof(string).FullName,
+                    RequiredField = true
+                }
+            };
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "ToString"
+            };
+            activity.Constructor = new PluginConstructor
+            {
+                IsExistingObject = true,
+                ConstructorName = "@Human"
+            };
+            var pluginAction = new PluginAction()
+            {
+                Method = "SetNameInternal",
+                Inputs = new List<IServiceInput>(),
+                MethodResult = new Human().SerializeToJsonString(new KnownTypesBinder()
+                {
+                    KnownTypes = new List<Type>() { type }
+                }),
+                IsVoid = true
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                pluginAction
+            };
+            activity.ObjectName = "@Human";
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(DsfEnhancedDotNetDllActivity).GetMethod("BuildMethodOutputs", BindingFlags.Instance | BindingFlags.NonPublic);
+            var debugOutputs = methodInfo.Invoke(activity, new object[] { executionEnv.Object, pluginAction, 0, false }) as List<DebugItem>;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(debugOutputs);
+            Assert.AreEqual(1, debugOutputs.Count);
+
+            var val = debugOutputs[0].ResultsList[0].Value;
+            StringAssert.Contains(val, "None");
         }
 
         [TestMethod]

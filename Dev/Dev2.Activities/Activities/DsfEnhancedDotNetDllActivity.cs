@@ -526,13 +526,19 @@ namespace Dev2.Activities
 
         private string GetEvaluatedResult(IDSFDataObject dataObject, string value, bool emptyToNull, int update)
         {
-            if (emptyToNull && value == null)
+            var wareWolfNothing = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
+            var warewolfEvalResult = dataObject.Environment.Eval(value, update);
+
+            if (emptyToNull && (Equals(warewolfEvalResult, wareWolfNothing) || warewolfEvalResult == null))
             {
                 return null;
             }
-            var warewolfEvalResult = dataObject.Environment.Eval(value, update);
+            if (!emptyToNull && (Equals(warewolfEvalResult, wareWolfNothing) || warewolfEvalResult == null))
+            {
+                return string.Empty;
+            }
 
-            return warewolfEvalResult == null ? "" : ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+            return ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
 
         }
 
@@ -602,7 +608,7 @@ namespace Dev2.Activities
                 var debugItem = new DebugItem();
                 if (action.IsVoid)
                 {
-                    AddDebugItem(new DebugItemStaticDataParams("No output", ""), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams("None", ""), debugItem);
                 }
                 else
                 {
