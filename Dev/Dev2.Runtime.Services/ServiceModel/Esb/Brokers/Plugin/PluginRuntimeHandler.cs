@@ -393,12 +393,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         {
                             if (enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
                             {
-                                serviceMethod.Dev2ReturnType = GlobalConstants.PrimitiveReturnValueTag;
+                                serviceMethod.Dev2ReturnType = $"return: {returnType.Name}";
                                 serviceMethod.IsObject = false;
                             }
                             else
                             {
-                                var jObject = GetPropertiesJObject(enumerableType);
+                                var jObject = GetPropertiesJArray(enumerableType);
                                 serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
                                 serviceMethod.IsObject = true;
                             }
@@ -454,8 +454,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     else
                     {
-                        var jObject = GetPropertiesJObject(enumerableType);
-                        methodParameter.Dev2ReturnType = jObject.ToString(Formatting.None);
+                        var array = GetPropertiesJArray(enumerableType);
+                        methodParameter.Dev2ReturnType = array.ToString(Formatting.None);
                         methodParameter.IsObject = true;
                     }
                 }
@@ -479,6 +479,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 jObject.Add(property.Name, "");
             }
             return jObject;
+        }
+
+        private static JArray GetPropertiesJArray(Type returnType)
+        {
+            var properties = returnType.GetProperties()
+                .Where(propertyInfo => propertyInfo.CanWrite)
+                .ToList();
+            var jObject = new JObject();
+            foreach (var property in properties)
+            {
+                jObject.Add(property.Name, "");
+            }
+            return  new JArray(jObject);
         }
 
         static Type GetEnumerableType(Type type)
