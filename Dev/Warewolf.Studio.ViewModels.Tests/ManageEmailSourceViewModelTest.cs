@@ -7,7 +7,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Interfaces;
-
+using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.PropertyChanged += (sender, e) => { _changedProperties.Add(e.PropertyName); };
 
             _changedPropertiesSource = new List<string>();
-            _targetSource = new ManageEmailSourceViewModel(_updateManagerMock.Object,_aggregatorMock.Object,_emailServiceSourceMock.Object);
+            _targetSource = new ManageEmailSourceViewModel(_updateManagerMock.Object,_aggregatorMock.Object,_emailServiceSourceMock.Object,new SynchronousAsyncWorker());
             _targetSource.PropertyChanged += (sender, e) => { _changedPropertiesSource.Add(e.PropertyName); };
         }
 
@@ -89,7 +89,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void Test_emailServiceSourceMockNull()
         {
             //act
-            new ManageEmailSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, null);
+            new ManageEmailSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, null, new SynchronousAsyncWorker());
         }
 
         #endregion Test construction

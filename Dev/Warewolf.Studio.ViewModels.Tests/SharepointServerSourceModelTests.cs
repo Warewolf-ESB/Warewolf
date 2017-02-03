@@ -15,6 +15,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private string _serverName;
 
         private SharepointServerSourceModel _target;
+        private Mock<IQueryManager> _queryManager;
 
         #endregion Fields
 
@@ -24,8 +25,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         {
             _updateRepositoryMock = new Mock<IStudioUpdateManager>();
+            _queryManager = new Mock<IQueryManager>();
             _serverName = Guid.NewGuid().ToString();
-            _target = new SharepointServerSourceModel(_updateRepositoryMock.Object, _serverName);
+            _target = new SharepointServerSourceModel(_updateRepositoryMock.Object,_queryManager.Object, _serverName);
         }
 
         #endregion Test initialize

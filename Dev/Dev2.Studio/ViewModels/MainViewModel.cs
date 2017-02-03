@@ -962,7 +962,7 @@ namespace Dev2.Studio.ViewModels
             return workSurfaceContextViewModel;
         }
 
-        private ManageMySqlSourceViewModel ProcessMySQLDBSource(IDb def)
+        private ManageMySqlSourceViewModel ProcessMySQLDBSource(IDbSource def)
         {
             return new ManageMySqlSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, "")
@@ -971,7 +971,7 @@ namespace Dev2.Studio.ViewModels
                 , AsyncWorker);
         }
 
-        private ManagePostgreSqlSourceViewModel ProcessPostgreSQLDBSource(IDb def)
+        private ManagePostgreSqlSourceViewModel ProcessPostgreSQLDBSource(IDbSource def)
         {
             return new ManagePostgreSqlSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, "")
@@ -980,7 +980,7 @@ namespace Dev2.Studio.ViewModels
                 , AsyncWorker);
         }
 
-        private ManageOracleSourceViewModel ProcessOracleDBSource(IDb def)
+        private ManageOracleSourceViewModel ProcessOracleDBSource(IDbSource def)
         {
             return new ManageOracleSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, "Oracle")
@@ -989,7 +989,7 @@ namespace Dev2.Studio.ViewModels
                 , AsyncWorker);
         }
 
-        private ManageOdbcSourceViewModel ProcessODBCDBSource(IDb def)
+        private ManageOdbcSourceViewModel ProcessODBCDBSource(IDbSource def)
         {
             return new ManageOdbcSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository
@@ -999,7 +999,7 @@ namespace Dev2.Studio.ViewModels
                 , AsyncWorker);
         }
 
-        private ManageSqlServerSourceViewModel ProcessSQLDBSource(IDb def)
+        private ManageSqlServerSourceViewModel ProcessSQLDBSource(IDbSource def)
         {
             return new ManageSqlServerSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name)
@@ -1008,17 +1008,23 @@ namespace Dev2.Studio.ViewModels
                 , AsyncWorker);
         }
 
-        private IDb CreateDbSource(Guid resourceID, WorkSurfaceContext workSurfaceContext)
+        private IDbSource CreateDbSource(Guid resourceID, WorkSurfaceContext workSurfaceContext)
         {
             var db = new DbSource(ToenSourceType(workSurfaceContext));
             db.ResourceID = resourceID;
-            var def = new DbSourceDefinition(db, "");
+            return CreateDbSource(db);
+        }
+
+        private static IDbSource CreateDbSource(IDb db)
+        {
+            var def = new DbSourceDefinition(db);
             return def;
         }
+
         private void ProcessDBSource(WorkSurfaceKey workSurfaceKey, DatabaseSourceViewModelBase dbSourceViewModel)
         {
 
-            var vm = new SourceViewModel<IDb>(EventPublisher, dbSourceViewModel, PopupProvider, new ManageDatabaseSourceControl());
+            var vm = new SourceViewModel<IDbSource>(EventPublisher, dbSourceViewModel, PopupProvider, new ManageDatabaseSourceControl());
             var key = workSurfaceKey;
             key.EnvironmentID = ActiveEnvironment.ID;
             var workSurfaceContextViewModel = _worksurfaceContextManager.EditResource(key, vm);
@@ -1219,34 +1225,34 @@ namespace Dev2.Studio.ViewModels
 
         public void EditServer(IServerSource selectedServer)
         {
-            _worksurfaceContextManager.EditServer(selectedServer);
+            _worksurfaceContextManager.EditServer(selectedServer,ActiveServer);
         }
 
-        public void EditSqlServerResource(IDb selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditSqlServerResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.SqlServerSource, selectedSourceDefinition.Id);
             ProcessDBSource(workSurfaceKey as WorkSurfaceKey, ProcessSQLDBSource(selectedSourceDefinition));
         }
 
-        public void EditMySqlResource(IDb selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditMySqlResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MySqlSource, selectedSourceDefinition.Id);
             ProcessDBSource(workSurfaceKey as WorkSurfaceKey, ProcessMySQLDBSource(selectedSourceDefinition));
         }
 
-        public void EditPostgreSqlResource(IDb selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditPostgreSqlResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.PostgreSqlSource, selectedSourceDefinition.Id);
             ProcessDBSource(workSurfaceKey as WorkSurfaceKey, ProcessPostgreSQLDBSource(selectedSourceDefinition));
         }
 
-        public void EditOracleResource(IDb selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditOracleResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OracleSource, selectedSourceDefinition.Id);
             ProcessDBSource(workSurfaceKey as WorkSurfaceKey, ProcessOracleDBSource(selectedSourceDefinition));
         }
 
-        public void EditOdbcResource(IDb selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditOdbcResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OdbcSource, selectedSourceDefinition.Id);
             ProcessDBSource(workSurfaceKey as WorkSurfaceKey, ProcessODBCDBSource(selectedSourceDefinition));

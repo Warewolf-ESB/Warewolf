@@ -60,7 +60,7 @@ namespace Warewolf.Studio.ViewModels
             SetupCommands();
         }
 
-        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource,IAsyncWorker AsyncWorker)
+        public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource,IAsyncWorker asyncWorker)
             : base("OAuth")
         {
             if (updateManager == null)
@@ -78,7 +78,7 @@ namespace Warewolf.Studio.ViewModels
             };
 
 
-            AsyncWorker.Start(() => updateManager.FetchSource(oAuthSource.ResourceID), source =>
+            asyncWorker.Start(() => updateManager.FetchSource(oAuthSource.ResourceID), source =>
             {
                 _oAuthSource = source;
                 // ReSharper disable once VirtualMemberCallInContructor

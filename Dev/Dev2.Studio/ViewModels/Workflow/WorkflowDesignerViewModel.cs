@@ -1235,7 +1235,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
             {
                 var resourceID = ModelItemUtils.TryGetResourceID(modelItem);
-                CustomContainer.Get<IShellViewModel>().OpenResource(resourceID, parentEnvironmentID);
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                shellViewModel.OpenResource(resourceID, parentEnvironmentID,shellViewModel.ActiveServer);
             }
         }
 

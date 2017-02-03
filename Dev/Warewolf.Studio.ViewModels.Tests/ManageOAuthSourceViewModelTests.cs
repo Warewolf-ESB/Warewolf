@@ -9,6 +9,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dev2.Threading;
 using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -28,7 +29,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _oAuthSource = new Mock<IOAuthSource>();
             _oAuthSource.SetupProperty(p => p.ResourceName, "Test");
 
-            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object) { Name = "Testing OAuth" };
+            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object,new SynchronousAsyncWorker()) { Name = "Testing OAuth" };
         }
 
         [TestMethod]
@@ -55,7 +56,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestManageOAuthSourceViewModelConstructor2NullIManageOAuthSourceModel()
         {
             IManageOAuthSourceModel nullParam = null;
-            new ManageOAuthSourceViewModel(nullParam, _oAuthSource.Object);
+            new ManageOAuthSourceViewModel(nullParam, _oAuthSource.Object,new SynchronousAsyncWorker());
         }
 
         [TestMethod]
@@ -63,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestManageOAuthSourceViewModelConstructorNullIOAuthSource()
         {
             IOAuthSource nullParam = null;
-            new ManageOAuthSourceViewModel(_updateManager.Object, nullParam);
+            new ManageOAuthSourceViewModel(_updateManager.Object, nullParam, new SynchronousAsyncWorker());
         }
 
         [TestMethod]
@@ -364,7 +365,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _updateManager.Setup(u => u.Save(It.IsAny<IOAuthSource>())).Throws(new Exception("Test save exception"));
-            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object) { Name = "Testing OAuth" };
+            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object, new SynchronousAsyncWorker()) { Name = "Testing OAuth" };
             _manageOAuthSourceViewModel.Item = new DropBoxSource() { ResourceName = "testing", ResourcePath = "" };
 
             //act
