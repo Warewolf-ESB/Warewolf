@@ -514,7 +514,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
-
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null) return;
@@ -564,7 +563,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 if (value != null)
                 {
                     _methodsToRunList = value;
-                    var pluginActions = value.Where(p => p.SelectedMethod != null).Select(region => region.SelectedMethod).ToList();
+                    var pluginActions = GetActionsToRun();
                     ModelItem.SetProperty("MethodsToRun", pluginActions);
                 }
                 else
@@ -721,14 +720,11 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         private IPluginServiceModel Model { get; set; }
 
-        void SetRegionVisibility(bool value)
-        {
-            InputArea.IsEnabled = value;
-            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
-            ErrorRegion.IsEnabled = value;
-            SourceRegion.IsEnabled = value;
-        }
-
         #endregion
+
+        public void UpdateMethodInputs()
+        {
+            ModelItem.SetProperty("MethodsToRun", GetActionsToRun());
+        }
     }
 }

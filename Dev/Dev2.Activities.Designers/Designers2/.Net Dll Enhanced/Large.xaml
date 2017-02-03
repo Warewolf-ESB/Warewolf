@@ -229,6 +229,7 @@
                                                                                             FilterType="{Binding IntellisenseFilter}"
                                                                                             TextWrapping="Wrap"
                                                                                             WrapInBrackets="False"
+                                                                                            TextChanged="AutoCompleteBox_OnTextChanged"
                                                                                             ToolTip="{x:Static languages:Tooltips.InputDefaultValueToolTip}"
                                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                             Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
@@ -301,7 +302,11 @@
                                                                         <Grid.ColumnDefinitions>
                                                                             <ColumnDefinition Width="*"/>
                                                                         </Grid.ColumnDefinitions>
-                                                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center" ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
+                                                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                                  HorizontalAlignment="Center" 
+                                                                                  Checked="ToggleButton_OnChecked"
+                                                                                  Unchecked="ToggleButton_OnChecked"
+                                                                                  ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
                                                                             <i:Interaction.Behaviors>
                                                                                 <core1:HelpSetter Text="{x:Static languages:HelpText.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                                             </i:Interaction.Behaviors>
@@ -369,6 +374,7 @@
                                                                                 FilterType="All"
                                                                                 Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
                                                                                 AutomationProperties.AutomationId="UI_TextBox_AutoID"
+                                                                                TextChanged="AutoCompleteBox_OnTextChanged"
                                                                                 IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
                                                                                 ToolTip="{x:Static languages:Tooltips.MappingsRecordsetNameTooltip}"
                                                                                 Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" >
