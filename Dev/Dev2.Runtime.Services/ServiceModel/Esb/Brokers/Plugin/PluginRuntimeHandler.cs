@@ -363,14 +363,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
+                
+                // ReSharper disable once CyclomaticComplexity
                 methodInfos.ToList().ForEach(info =>
                 {
                     var serviceMethod = new ServiceMethod
                     {
                         Name = info.Name
                     };
+                    //https://msdn.microsoft.com/en-us/library/system.reflection.methodbase.isspecialname(v=vs.110).aspx
+                    if (info.IsSpecialName)
+                    {
+                        serviceMethod.IsProperty = true;
+                    }
                     var returnType = info.ReturnType;
-
                     if (returnType.IsPrimitive || returnType == typeof(decimal) || returnType == typeof(string))
                     {
                         serviceMethod.Dev2ReturnType = $"return: {returnType.Name}";

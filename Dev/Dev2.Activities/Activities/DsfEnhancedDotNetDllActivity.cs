@@ -476,6 +476,7 @@ namespace Dev2.Activities
             debugState.IsSimulation = false;
             debugState.HasError = action.HasError;
             debugState.ErrorMessage = action.ErrorMessage;
+            debugState.Name = action.IsProperty ? "Property" : "Method";
             debugState.Inputs.AddRange(BuildMethodInputs(dataObject.Environment, action, update, isMock));
             var buildMethodOutputs = BuildMethodOutputs(dataObject.Environment, action, update, isMock).ToList();
             debugState.Outputs.AddRange(buildMethodOutputs);
@@ -504,7 +505,6 @@ namespace Dev2.Activities
                 SourceResourceID = dataObject.SourceResourceID,
                 OriginalInstanceID = dataObject.OriginalInstanceID,
                 Version = string.Empty,
-                Name = GetType().Name,
                 HasError = false,
                 Server = GetServerName() ?? "",
                 EnvironmentID = dataObject.DebugEnvironmentId,
@@ -519,6 +519,7 @@ namespace Dev2.Activities
             var debugState = PopulateDebugStateWithDefaultValues(dataObject);
             debugState.StartTime = start;
             debugState.EndTime = DateTime.Now;
+            debugState.Name = "Constructor";
             if (Constructor != null)
             {
                 debugState.DisplayName = Constructor.ConstructorName;
