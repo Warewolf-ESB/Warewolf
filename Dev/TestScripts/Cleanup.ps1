@@ -1,6 +1,17 @@
 ﻿#Requires -RunAsAdministrator
-$ServerService = Get-Service "Warewolf Server"
-if ($ServerService.Status -eq "Running") {
+$Output = ""
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" 1>$Output
+taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq RUNNING" 1>$Output
+
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" 1>$Output
+taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq UNKNOWN" 1>$Output
+
+if ($Output.Contains("SUCCESS")) {
+    Write-Host $Output
+}
+
+$ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinu
+if ($ServerService -ne $null -and $ServerService.Status -eq "Running") {
     [int32]$Result = 1
     $RetryCount = 0
     while ($Result -ne 0 -and $RetryCount++ -lt 5) {
@@ -21,12 +32,15 @@ $ToClean = `
 "$env:PROGRAMDATA\Warewolf\Workspaces",
 "$env:PROGRAMDATA\Warewolf\Server Settings"
 
+[int]$ExitCode = 0
 foreach ($FileOrFolder in $ToClean) {
 	Remove-Item $FileOrFolder -Recurse -ErrorAction SilentlyContinue
 	if (Test-Path $FileOrFolder) {
 		Write-Host Cannot delete $FileOrFolder
-		sleep 10
-		exit 1
+		$ExitCode = 1
 	}	
 }
-exit 0
+if ($ExitCode -eq 1) {
+    Sleep 30
+    exit 1
+}

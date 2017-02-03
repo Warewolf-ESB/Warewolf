@@ -12,19 +12,23 @@ if ($ResourcesType -eq "") {
 	$message = "What type of resources would you like the server to start with?"
 
 	$UITest = New-Object System.Management.Automation.Host.ChoiceDescription "&UITest", `
-		"Uses the resources for running UI Tests."
+		"Uses these resources for running UI Tests."
 
 	$ServerTest = New-Object System.Management.Automation.Host.ChoiceDescription "&ServerTest", `
-		"Uses the resources for running everything except unit tests and Coded UI tests."
+		"Uses these resources for running everything except unit tests and Coded UI tests."
 
-	$options = [System.Management.Automation.Host.ChoiceDescription[]]($UITest, $ServerTest)
+	$Release = New-Object System.Management.Automation.Host.ChoiceDescription "&Release", `
+		"Uses these resources for Warewolf releases."
+
+	$options = [System.Management.Automation.Host.ChoiceDescription[]]($UITest, $ServerTest, $Release)
 
 	$result = $host.ui.PromptForChoice($title, $message, $options, 0) 
 
 	switch ($result)
 		{
-			0 {$ResourcesType = "UITest"}
-			1 {$ResourcesType = "ServerTest"}
+			0 {$ResourcesType = "UITests"}
+			1 {$ResourcesType = "ServerTests"}
+			2 {$ResourcesType = "Release"}
 		}
 }
 
@@ -72,7 +76,7 @@ if (Test-Path ((Get-Item $ServerPath).Directory.FullName + "\ServerStarted")) {
     exit 1
 }
 
-$ServerService = Get-Service "Warewolf Server"
+$ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
 if ($ServerService -eq $null) {
     if ($DotCoverPath -eq "") {
         $ServerService = New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
@@ -86,25 +90,25 @@ $CurrentDirectory = $PSScriptRoot
 $NumberOfParentsSearched = 0
 $ResourcesPath = ""
 while ($ResourcesPath -eq "" -and $NumberOfParentsSearched++ -lt 6) {
-    if (Test-Path "$CurrentDirectory\Resourses - $ResourcesType") {
-        $ResourcesPath = "$CurrentDirectory\Resourses - $ResourcesType"
-		Write-Host Using resources at $ResourcesPath
+    if (Test-Path "$CurrentDirectory\Resources - $ResourcesType") {
+        $ResourcesPath = "$CurrentDirectory\Resources - $ResourcesType"
     } else {
         $CurrentDirectory = (Get-Item $CurrentDirectory).Parent.FullName
     }
 }
-if ($ResourcesType -ne "") {
+if ($ResourcesPath -ne "") {
     Copy-Item -Path "$CurrentDirectory\Resources - $ResourcesType" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
-    Copy-Item -Path "$CurrentDirectory\Resources - Release" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
 }
 
+Write-Host Copying resources from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") into Warewolf ProgramData.
 Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
-Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - Release\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 
 if ($DotCoverPath -eq "") {
+    Write-Host Configuring service to $ServerPath
     sc.exe config "Warewolf Server" binPath= "$ServerPath"
 } else {
     $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover /TargetExecutable=\`"" + $ServerPath + "\`" /LogFile=\`"%ProgramData%\Warewolf\Server Log\dotCover.log\`" /Output=\`"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\`""
+    Write-Host Configuring service to $BinPathWithDotCover
     sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
 }
 
@@ -160,10 +164,9 @@ if (Test-Path ((Get-Item $StudioPath).Directory.FullName + "\StudioStarted")) {
 
 if ($StudioPath -ne "") {
     if ($DotCoverPath -eq "") {
-        & $StudioPath
+        Start-Process $StudioPath
     } else {
-        $BinPathWithDotCover = "`"" + $DotCoverPath + "`" cover /TargetExecutable=`"" + $ServerPath + "`" /LogFile=`"%LocalAppData%\Warewolf\Studio Logs\dotCover.log`" /Output=`"%LocalAppData%\Warewolf\Studio Logs\dotCover.dcvr`""
-        & $BinPathWithDotCover
+        Start-Process $DotCoverPath "cover /TargetExecutable=`"$StudioPath`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`" /Output=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr`""
     }
     
 	$Timeout = 60
