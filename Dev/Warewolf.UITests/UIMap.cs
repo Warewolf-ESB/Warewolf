@@ -1787,26 +1787,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
         }
 
-        public void Try_Click_Delete_Scheduler_Button()
-        {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton))
-            {
-                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton.DrawHighlight();
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton, new Point(4, 12));
-            }
-        }
-
-        public void Click_SchedulerTab_CloseButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.CloseButton);
-        }
-
-        public void Click_Scheduler_ResourcePicker()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(20, 12));
-            Assert.IsTrue(ServicePickerDialog.Exists, "Service picker dialog doesn't exist after clicking the resource picker button.");
-        }
-
         public void Click_Service_Picker_Dialog_OK()
         {
             Mouse.Click(ServicePickerDialog.OK, new Point(52, 10));
@@ -3520,7 +3500,6 @@ namespace Warewolf.UITests
         public void Click_Save_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton);
-            Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist after clicking save ribbon button.");
         }
 
         [Given(@"I Click Deploy Ribbon Button")]
@@ -3565,14 +3544,6 @@ namespace Warewolf.UITests
         public void Click_Knowledge_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.KnowledgeBaseButton, new Point(4, 8));
-        }
-
-        [When(@"I Click Scheduler Create New Task Ribbon Button")]
-        public void Click_Scheduler_NewTaskButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton, new Point(151, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EnabledRadioButton.Enabled, "Scheduler is disabled by default");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton.Exists, "Edit Schedule time buttom exist after clicking scheduler");
         }
 
         [Given(@"I Click Lock Ribbon Button")]
@@ -4502,50 +4473,37 @@ namespace Warewolf.UITests
             Mouse.Click(SaveDialogWindow.CancelButton, new Point(6, 7));
         }
 
-        [When(@"I Click Scheduler Delete Task")]
-        public void Click_Scheduler_Delete_Task()
+        [When(@"I Click Scheduler Create New Task Button")]
+        public void Click_Scheduler_NewTaskButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.DeleteTaskButton, new Point(3, 17));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.ScheduleNewTaskListItem.SchedulerNewTaskButton, new Point(151, 13));
         }
 
-        [When(@"I Delete Hello World Task")]
-        public void Click_Scheduler_Delete_Hello_World_Task()
+        public void Click_SchedulerTab_CloseButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton, new Point(3, 17));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.CloseButton);
         }
 
-        [When(@"I Click Scheduler Disable Task Radio Button")]
-        public void Click_Scheduler_Disable_Task_Radio_Button()
+        [When(@"I Click Hello World Erase Schedule Button")]
+        public void Click_HelloWorldSchedule_EraseSchedulerButton()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton.Selected = true;
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EraseScheduleButton, new Point(6, 16));
         }
 
-        [When(@"I Click Scheduler EditTrigger Button")]
-        public void Click_Scheduler_EditTrigger_Button()
+        [When(@"I Click Scheduler Enable Disable Checkbox Button")]
+        public void Click_HelloWorldSchedule_EnableOrDisableCheckbox()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton, new Point(10, 9));
-        }
-
-        [When(@"I Click Scheduler Enable Task Radio Button")]
-        public void Click_Scheduler_Enable_Task_Radio_Button()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox.Checked = true;
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EnableOrDisableCheckBox);
         }
 
         [When(@"I Click Scheduler ResourcePicker Button")]
-        public void Click_Scheduler_ResourcePicker_Button()
+        public void Click_Scheduler_ResourcePickerButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(14, 13));
         }
 
-        [When(@"I Click Scheduler RunTask")]
-        public void Click_Scheduler_RunTask()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.RunTaskCheckBox.Checked = true;
-        }
-
         [When(@"I Click Select Resource Button")]
-        public void Click_Select_Resource_Button()
+        public void Click_Select_ResourceButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton, new Point(9, 8));
         }
@@ -5707,9 +5665,9 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab")]
-        public void Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab()
+        public void Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = "integrationtester";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = @"Warewolf Administrators\IntegrationTester";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "I73573r0";
         }
 
