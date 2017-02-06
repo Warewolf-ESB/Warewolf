@@ -128,6 +128,8 @@ namespace Warewolf.UIBindingTests.WebSource
                 UserName = "IntegrationTester",
                 Password = "I73573r0"
             };
+            mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                .Returns(webServiceSourceDefinition);
             var manageWebserviceSourceViewModel = new ManageWebserviceSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object,webServiceSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
             manageWebserviceSourceControl.DataContext = manageWebserviceSourceViewModel;
             scenarioContext.Remove("viewModel");

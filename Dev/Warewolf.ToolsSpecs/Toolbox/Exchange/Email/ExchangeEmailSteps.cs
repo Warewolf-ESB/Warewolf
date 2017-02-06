@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         public ExchangeEmailSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
             this.scenarioContext = scenarioContext;
         }
 
@@ -72,7 +72,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
                 .Returns("Success")
-                .Callback((IExchangeSource source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors)=>
+                .Callback((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors)=>
             {
                 listIterator.FetchNextValue(i1);
                 listIterator.FetchNextValue(i2);
