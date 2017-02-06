@@ -732,8 +732,6 @@ namespace Dev2.Studio.ViewModels
                 AddWorkSurfaceContext(resourceModel);
                 return;
             }
-            var environmentModel = resourceModel.Environment;
-            resourceModel.WorkflowXaml = environmentModel.ResourceRepository.FetchResourceDefinition(environmentModel, GlobalConstants.ServerWorkspaceID, resourceModel.ID, true).Message;
             switch (resourceModel.ServerResourceType)
             {
                 case "SqlDatabase":
@@ -794,18 +792,11 @@ namespace Dev2.Studio.ViewModels
 
         public void EditSqlServerSource(IContextualResourceModel resourceModel)
         {
-            var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
             var def = new DbSourceDefinition
             {
-                AuthenticationType = db.AuthenticationType,
-                DbName = db.DatabaseName,
-                Id = db.ResourceID,
+                Id = resourceModel.ID,
                 Path = resourceModel.GetSavePath(),
-                Name = db.ResourceName,
-                Password = db.Password,
-                ServerName = db.Server,
-                Type = db.ServerType,
-                UserName = db.UserID
+                Name = resourceModel.ResourceName,
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SqlServerSource);
             workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
@@ -1321,7 +1312,8 @@ namespace Dev2.Studio.ViewModels
             }
 
             AddWorkspaceItem(resourceModel);
-            AddAndActivateWorkSurface(_getWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel);
+            var workSurfaceContextViewModel = _getWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel;
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
 
             OpeningWorkflowsHelper.RemoveWorkflow(workSurfaceKey);
             _mainViewModel.CanDebug = true;
