@@ -205,7 +205,7 @@
                                                            Visibility="{Binding IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                 <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                                                        ItemsSource="{Binding Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                       Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                                                       Style="{StaticResource ActivityMappingDataGridStyle}"
                                                                        Height="Auto"
                                                                        BorderBrush="Transparent"
                                                                        Margin="3,0,-3,0"
@@ -216,7 +216,7 @@
                                                         <DataGridTemplateColumn Width="*"
                                                                                 MinWidth="125"
                                                                                 Header="Input Data or [[Variable]]"
-                                                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                                                                 d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
@@ -231,7 +231,7 @@
                                                                                             WrapInBrackets="False"
                                                                                             ToolTip="{x:Static languages:Tooltips.InputDefaultValueToolTip}"
                                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                                            Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                                                            Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                                                         <i:Interaction.Behaviors>
                                                                             <core1:HelpSetter Text="{x:Static languages:HelpText.InputDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                                             <errors:ErrorsSetter Source="{Binding}"
@@ -253,7 +253,7 @@
                                                         <DataGridTemplateColumn Width="SizeToCells"
                                                                                 MinWidth="65"
                                                                                 Header="Parameter"
-                                                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                                                                 d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
@@ -293,7 +293,7 @@
                                                         <DataGridTemplateColumn Width="SizeToCells"
                                                                                 MinWidth="90"
                                                                                 Header="Empty Is Null"
-                                                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                                                                 d:DataContext="{d:DesignInstance Type=to:DataColumnMapping}">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
