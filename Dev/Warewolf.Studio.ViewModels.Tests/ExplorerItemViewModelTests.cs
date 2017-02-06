@@ -1847,6 +1847,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             child2.Setup(model => model.IsVisible).Returns(true);
             child.Setup(it => it.AsList()).Returns(new List<IExplorerItemViewModel> { child2.Object });
             _target.AddChild(child.Object);
+            _target.Children.Add(child.Object);
+            _target.Children.Add(child2.Object);
             //act
             var result = _target.AsList();
             //assert
