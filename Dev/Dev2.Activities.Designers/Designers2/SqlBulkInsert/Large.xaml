@@ -125,7 +125,7 @@
                                Grid.ColumnSpan="3"
                                x:Name="LargeDataGrid"
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               Style="{StaticResource ActivityMappingDataGridStyle}"
                                Margin="{StaticResource ControlBorderTop}">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -134,7 +134,7 @@
                 <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="Input Data or [[Variable]]"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=common:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -149,7 +149,7 @@
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsMappingFieldFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.SqlBulkInsertToolTipInputColumn}"                                                    
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:HelpText.SQLBulkInsertHelpInputData}" 
                                                       DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -172,7 +172,7 @@
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"
                                         Header="To Field"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -197,7 +197,7 @@
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"
                                         Header="Type"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

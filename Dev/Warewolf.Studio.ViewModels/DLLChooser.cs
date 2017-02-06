@@ -56,6 +56,7 @@ namespace Warewolf.Studio.ViewModels
         {
             SelectedDll = null;
             AssemblyName = string.Empty;
+            SearchTerm = string.Empty;
             PerformLoadAll();
             if (AllDllListingModels != null && AllDllListingModels.Count > 1)
             {
@@ -80,6 +81,7 @@ namespace Warewolf.Studio.ViewModels
         {
             SelectedDll = null;
             AssemblyName = string.Empty;
+            SearchTerm = string.Empty;
             PerformLoadAll();
             if (AllDllListingModels != null && AllDllListingModels.Count > 1)
             {

@@ -90,7 +90,7 @@
                         <controls:Dev2DataGrid x:Name="Headers"
                                    Grid.Row="1" 
                                    ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                   Style="{StaticResource ActivityMappingDataGridStyle}"
                                    Height="Auto"
                                    IsEnabled="{Binding InputArea.IsEnabled}"
                                    ColumnWidth="*"
@@ -101,7 +101,7 @@
                                 <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="Header"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -115,7 +115,7 @@
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
                                                     <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestHeadersTableHelp}"  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                     <errors:ErrorsSetter Source="{Binding}"
@@ -136,7 +136,7 @@
                                 <DataGridTemplateColumn Width="*"
                                             MinWidth="125"
                                             Header="Value"
-                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=interfaces:INameValue}">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -150,7 +150,7 @@
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                                 <i:Interaction.Behaviors>
                                                     <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestHeadersTableHelp}"  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                     <errors:ErrorsSetter Source="{Binding}"
