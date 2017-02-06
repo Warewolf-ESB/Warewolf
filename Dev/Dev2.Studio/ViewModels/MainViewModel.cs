@@ -823,9 +823,7 @@ namespace Dev2.Studio.ViewModels
         {
             var db = new SharepointSource { ResourceID = contextualResourceModel.ID };
 
-            var def = new SharePointServiceSourceDefinition(db)
-            {
-            };
+            var def = new SharePointServiceSourceDefinition(db);
 
             var viewModel = new SharepointServerSourceViewModel(
                 new SharepointServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""),
