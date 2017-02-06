@@ -448,6 +448,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     }
                 }
             };
+            methodRegion.PropertyChanged += DotNetMethodRegionOnPropertyChanged;
             methodRegion.ErrorsHandler += (sender, list) =>
             {
                 List<ActionableErrorInfo> errorInfos =
@@ -504,9 +505,18 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     continue;
                 }
                 var dotNetMethodRegion = new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion) { SelectedMethod = pluginAction };
+                dotNetMethodRegion.PropertyChanged += DotNetMethodRegionOnPropertyChanged;
                 regionCollections.Add(dotNetMethodRegion);
             }
             return regionCollections;
+        }
+
+        private void DotNetMethodRegionOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ObjectName")
+            {
+                ModelItem?.SetProperty("MethodsToRun", GetActionsToRun());
+            }
         }
 
         private void MethodsToRunListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -528,7 +538,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ModelItem.SetProperty("MethodsToRun", GetActionsToRun());
+            var actionsToRun = GetActionsToRun();
+            ModelItem.SetProperty("MethodsToRun", actionsToRun);
         }
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
