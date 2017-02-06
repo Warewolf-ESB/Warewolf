@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Interfaces;
@@ -52,7 +53,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.PropertyChanged += (sender, e) => { _changedProperties.Add(e.PropertyName); };
 
             _changedPropertiesSource = new List<string>();
-            _targetSource = new ManageEmailSourceViewModel(_updateManagerMock.Object,_aggregatorMock.Object,_emailServiceSourceMock.Object,new SynchronousAsyncWorker());
+            _targetSource = new ManageEmailSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _emailServiceSourceMock.Object, new SynchronousAsyncWorker());
             _targetSource.PropertyChanged += (sender, e) => { _changedPropertiesSource.Add(e.PropertyName); };
         }
 
@@ -162,6 +163,92 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.TestPassed);
         }
 
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OkCommand_GivenHasSource_ShouldSetCorrectValuesAfterLoad()
+        {
+            //---------------Set up test pack-------------------
+            const string ExpectedHostName = "HostName";
+            const string ExpectedPassword = "Password";
+            const string ExpectedUserName = "UserName";
+            const int ExpectedPort = 423423;
+            const int ExpectedTimeout = 314313;
+            const string ExpectedEmailFrom = "EmailFrom";
+            const string ExpectedEmailTo = "EmailTo@example.com";
+            const string SourceResourceName = "sourceResourceName";
+            const string ExpectedPath = "somePath";
+            const string ExpectedResourceName = "someResourceName";
+            const string ExpectedHeaderText = SourceResourceName;
+            const string ExpectedHeader = SourceResourceName + " *";
+            var updateManagerMock = new Mock<IManageEmailSourceModel>();
+            updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                .Returns(new EmailServiceSourceDefinition
+                {
+                    HostName = ExpectedHostName,
+                    EmailFrom = ExpectedEmailFrom,
+                    Port = ExpectedPort,
+                    EmailTo = ExpectedEmailTo,
+                    EnableSsl = true,
+                    Password = ExpectedPassword,
+                    ResourceName = SourceResourceName,
+                    UserName = ExpectedUserName,
+                    Timeout = ExpectedTimeout,
+
+                });
+            var requestServiceNameViewModelMock = new Mock<IRequestServiceNameViewModel>();
+            var requestServiceNameViewModelTask = Task.FromResult(requestServiceNameViewModelMock.Object);
+            var emailServiceSourceMock = new Mock<IEmailServiceSource>();
+            var aggregatorMock = new Mock<IEventAggregator>();
+            const string EmailServiceSourceResourceName = "emailServiceSourceResourceName";
+            var changedProperties = new List<string>();
+            var target = new ManageEmailSourceViewModel(updateManagerMock.Object, requestServiceNameViewModelTask, aggregatorMock.Object);
+            var changedPropertiesSource = new List<string>();
+            var targetSource = new ManageEmailSourceViewModel(updateManagerMock.Object, aggregatorMock.Object, emailServiceSourceMock.Object, new SynchronousAsyncWorker());
+            emailServiceSourceMock.SetupGet(it => it.ResourceName).Returns(EmailServiceSourceResourceName);
+            target.PropertyChanged += (sender, e) =>
+            {
+                changedProperties.Add(e.PropertyName);
+            };
+            targetSource.PropertyChanged += (sender, e) =>
+            {
+                changedPropertiesSource.Add(e.PropertyName);
+            };
+
+
+            targetSource.HostName = ExpectedHostName;
+            targetSource.Password = ExpectedPassword;
+            targetSource.UserName = ExpectedUserName;
+            targetSource.Port = ExpectedPort;
+            targetSource.Timeout = ExpectedTimeout;
+            targetSource.EnableSsl = true;
+            targetSource.EmailFrom = ExpectedEmailFrom;
+            targetSource.EmailTo = ExpectedEmailTo;
+            emailServiceSourceMock.SetupGet(it => it.ResourceName).Returns(SourceResourceName);
+            emailServiceSourceMock.SetupGet(it => it.Path).Returns(ExpectedPath);
+            emailServiceSourceMock.SetupGet(it => it.ResourceName).Returns(ExpectedResourceName);
+            targetSource.Item = emailServiceSourceMock.Object;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            targetSource.OkCommand.Execute(null);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(targetSource.TestPassed);
+            Assert.AreSame(emailServiceSourceMock.Object, targetSource.Item);
+            emailServiceSourceMock.VerifySet(it => it.HostName = ExpectedHostName);
+            emailServiceSourceMock.VerifySet(it => it.UserName = ExpectedUserName);
+            emailServiceSourceMock.VerifySet(it => it.Password = ExpectedPassword);
+            emailServiceSourceMock.VerifySet(it => it.Port = ExpectedPort);
+            emailServiceSourceMock.VerifySet(it => it.Timeout = ExpectedTimeout);
+            emailServiceSourceMock.VerifySet(it => it.EnableSsl = true);
+            emailServiceSourceMock.VerifySet(it => it.EmailFrom = ExpectedEmailFrom);
+            emailServiceSourceMock.VerifySet(it => it.EmailTo = ExpectedEmailTo);
+            emailServiceSourceMock.VerifySet(it => it.Path = ExpectedPath);
+            emailServiceSourceMock.VerifySet(it => it.ResourceName = ExpectedResourceName);
+            Assert.AreEqual(ExpectedHeaderText, targetSource.HeaderText);
+            Assert.AreEqual(ExpectedHeader, targetSource.Header);
+            updateManagerMock.Verify(it => it.Save(emailServiceSourceMock.Object));
+        }
         [TestMethod]
         public void TestOkCommandExecuteSource()
         {
@@ -857,7 +944,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _emailServiceSourceMock.VerifySet(it => it.ResourceName = expectedResourceName);
             Assert.AreEqual(expectedHeaderText, _targetSource.HeaderText);
             Assert.AreEqual(expectedHeader, _targetSource.Header);
-            _updateManagerMock.Verify(it=>it.Save(_emailServiceSourceMock.Object));
+            _updateManagerMock.Verify(it => it.Save(_emailServiceSourceMock.Object));
         }
 
         [TestMethod]
@@ -1020,7 +1107,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             var vm = new ManageEmailSourceViewModel();
             var ns = new Mock<IRequestServiceNameViewModel>();
-            Task<IRequestServiceNameViewModel> t = new Task<IRequestServiceNameViewModel>(() => ns.Object);
+            var t = new Task<IRequestServiceNameViewModel>(() => ns.Object);
             t.Start();
             vm.RequestServiceNameViewModel = t;
 

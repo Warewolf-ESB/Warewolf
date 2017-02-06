@@ -81,6 +81,8 @@ namespace Warewolf.UIBindingTests.EmailSource
                 EmailFrom = "warewolf@dev2.co.za",
                 EmailTo = "info@dev2.co.za"
             };
+            mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                .Returns(emailServiceSourceDefinition);
             var manageEmailSourceViewModel = new ManageEmailSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, emailServiceSourceDefinition,new SynchronousAsyncWorker());
             manageEmailSourceControl.DataContext = manageEmailSourceViewModel;
             ScenarioContext.Current.Remove("viewModel");
