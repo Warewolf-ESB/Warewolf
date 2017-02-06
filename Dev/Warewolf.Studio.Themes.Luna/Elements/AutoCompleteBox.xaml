@@ -913,11 +913,11 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="ActivityMapppingIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
+    <Style x:Key="ActivityMappingIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource ActivityIntellisenseTextBoxStyle}">
         <Setter Property="WrapInBrackets" Value="False"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
-    <Style x:Key="ActivityMapppingDataGridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource DatagridIntellisenseTextBoxStyle}">
+    <Style x:Key="ActivityMappingDataGridIntellisenseTextBoxStyle" TargetType="{x:Type ui:IntellisenseTextBox}" BasedOn="{StaticResource DatagridIntellisenseTextBoxStyle}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="WrapInBrackets" Value="True"/>
         <Setter Property="VerticalAlignment" Value="Center"/>

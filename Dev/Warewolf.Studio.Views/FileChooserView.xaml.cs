@@ -94,12 +94,15 @@ namespace Warewolf.Studio.Views
 
         private void DriveNameIntellisenseTextBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selection = e.AddedItems[0];
-
-            var fileChooser = DataContext as FileChooser;
-            if (fileChooser != null)
+            if (e.AddedItems.Count > 0) // make sure there is at least one item..
             {
-                fileChooser.SelectedDriveName = selection.ToString();
+                var selection = e.AddedItems[0];
+
+                var fileChooser = DataContext as FileChooser;
+                if (fileChooser != null)
+                {
+                    fileChooser.SelectedDriveName = selection.ToString();
+                }
             }
         }
     }
