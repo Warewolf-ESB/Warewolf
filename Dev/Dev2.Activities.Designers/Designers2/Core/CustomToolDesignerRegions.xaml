@@ -508,7 +508,7 @@
                                     Height="Auto"
                                    BorderBrush="Transparent"
                                    Background="Transparent"
-                                    Margin="3,0,3,0"
+                                   Margin="3,0,3,0"
                                    AutoGenerateColumns="False"
                                    Visibility="{Binding InputArea.IsInputsEmptyRows, Converter={StaticResource BoolToVisibilityConverterNegative}}">
 
@@ -541,7 +541,7 @@
                                                             SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
                                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                                     </i:Interaction.Behaviors>
-                                    <AutomationProperties.AutomationId>
+                                        <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
                                             <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
                                             <Binding Path="IndexNumber" />
