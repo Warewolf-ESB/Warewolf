@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker = asyncWorker;
             _environment = environment;
             _updateManager = updateManager;
-            _endPointUrl = String.Empty;
+            _endPointUrl = string.Empty;
 
             HeaderText = Resources.Languages.Core.WcfServiceNewHeaderLabel;
             Header = Resources.Languages.Core.WcfServiceNewHeaderLabel;

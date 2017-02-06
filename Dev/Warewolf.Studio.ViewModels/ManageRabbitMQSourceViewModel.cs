@@ -47,10 +47,10 @@ namespace Warewolf.Studio.ViewModels
 
             HeaderText = Resources.Languages.Core.RabbitMQSourceNewHeaderLabel;
             Header = Resources.Languages.Core.RabbitMQSourceNewHeaderLabel;
-            HostName = String.Empty;
+            HostName = string.Empty;
             Port = 5672;
-            UserName = String.Empty;
-            Password = String.Empty;
+            UserName = string.Empty;
+            Password = string.Empty;
             VirtualHost = "/";
         }
 
@@ -133,11 +133,11 @@ namespace Warewolf.Studio.ViewModels
                 return false;
             }
 
-            if (String.IsNullOrEmpty(HostName) ||
+            if (string.IsNullOrEmpty(HostName) ||
                 (Port >= 49152 && Port <= 65535) ||
-                String.IsNullOrEmpty(UserName) ||
-                String.IsNullOrEmpty(Password) ||
-                String.IsNullOrEmpty(VirtualHost))
+                string.IsNullOrEmpty(UserName) ||
+                string.IsNullOrEmpty(Password) ||
+                string.IsNullOrEmpty(VirtualHost))
             {
                 return false;
             }

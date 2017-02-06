@@ -71,9 +71,9 @@ namespace Warewolf.Studio.ViewModels
             _environment = environment;
             _updateManager = updateManager;
             _authenticationType = AuthenticationType.Windows;
-            _serverName = String.Empty;
-            _userName = String.Empty;
-            _password = String.Empty;
+            _serverName = string.Empty;
+            _userName = string.Empty;
+            _password = string.Empty;
             IsWindows = true;
             HeaderText = Resources.Languages.Core.SharePointServiceNewHeaderLabel;
             Header = Resources.Languages.Core.SharePointServiceNewHeaderLabel;
@@ -140,13 +140,13 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Testing)
                 return false;
-            if (String.IsNullOrEmpty(ServerName))
+            if (string.IsNullOrEmpty(ServerName))
             {
                 return false;
             }
             if (AuthenticationType == AuthenticationType.User)
             {
-                return !String.IsNullOrEmpty(UserName) && !String.IsNullOrEmpty(Password);
+                return !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password);
             }
             return true;
         }

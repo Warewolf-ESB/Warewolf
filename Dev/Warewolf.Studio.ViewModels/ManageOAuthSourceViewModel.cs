@@ -108,7 +108,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return TestPassed && !String.IsNullOrEmpty(AccessToken);
+            return TestPassed && !string.IsNullOrEmpty(AccessToken);
         }
 
         private bool CanTest()
