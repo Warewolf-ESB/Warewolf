@@ -49,9 +49,9 @@ namespace Warewolf.Studio.ViewModels
             RequestServiceNameViewModel = requestServiceNameViewModel;
             HeaderText = Resources.Languages.Core.EmailSourceNewHeaderLabel;
             Header = Resources.Languages.Core.EmailSourceNewHeaderLabel;
-            HostName = String.Empty;
-            UserName = String.Empty;
-            Password = String.Empty;
+            HostName = string.Empty;
+            UserName = string.Empty;
+            Password = string.Empty;
             EnableSend = false;
             EnableSslNo = true;
             Port = 25;
@@ -92,23 +92,26 @@ namespace Warewolf.Studio.ViewModels
 
         public override void FromModel(IEmailServiceSource emailServiceSource)
         {
-            HostName = emailServiceSource.HostName;
-            UserName = emailServiceSource.UserName;
-            Password = emailServiceSource.Password;
-            EnableSsl = emailServiceSource.EnableSsl;
-            if (EnableSsl)
+            if (emailServiceSource != null)
             {
-                EnableSslYes = EnableSsl;
+                HostName = emailServiceSource.HostName;
+                UserName = emailServiceSource.UserName;
+                Password = emailServiceSource.Password;
+                EnableSsl = emailServiceSource.EnableSsl;
+                if (EnableSsl)
+                {
+                    EnableSslYes = EnableSsl;
+                }
+                else
+                {
+                    EnableSslNo = true;
+                }
+                Port = emailServiceSource.Port;
+                Timeout = emailServiceSource.Timeout;
+                EmailFrom = emailServiceSource.EmailFrom;
+                EmailTo = emailServiceSource.EmailTo;
+                ResourceName = emailServiceSource.ResourceName;
             }
-            else
-            {
-                EnableSslNo = true;
-            }
-            Port = emailServiceSource.Port;
-            Timeout = emailServiceSource.Timeout;
-            EmailFrom = emailServiceSource.EmailFrom;
-            EmailTo = emailServiceSource.EmailTo;
-            ResourceName = emailServiceSource.ResourceName;
         }
 
         public override string Name
@@ -140,7 +143,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Testing)
                 return false;
-            if (String.IsNullOrEmpty(HostName) && String.IsNullOrEmpty(UserName) && String.IsNullOrEmpty(Password))
+            if (string.IsNullOrEmpty(HostName) && string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password))
             {
                 return false;
             }
@@ -167,7 +170,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceName = value;
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     SetupHeaderTextFromExisting();
                 }
@@ -228,7 +231,7 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _hostName)
                 {
                     _hostName = value;
-                    TestMessage = String.Empty;
+                    TestMessage = string.Empty;
 
                     OnPropertyChanged(() => HostName);
                     OnPropertyChanged(() => Header);
@@ -249,7 +252,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _userName = value;
                     EmailFrom = _userName;
-                    TestMessage = String.Empty;
+                    TestMessage = string.Empty;
 
                     OnPropertyChanged(() => UserName);
                     OnPropertyChanged(() => Header);
@@ -269,7 +272,7 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _password)
                 {
                     _password = value;
-                    TestMessage = String.Empty;
+                    TestMessage = string.Empty;
 
                     OnPropertyChanged(() => Password);
                     OnPropertyChanged(() => Header);
@@ -289,7 +292,7 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _enableSsl)
                 {
                     _enableSsl = value;
-                    TestMessage = String.Empty;
+                    TestMessage = string.Empty;
 
                     OnPropertyChanged(() => EnableSsl);
                     OnPropertyChanged(() => Header);
@@ -347,7 +350,7 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _port)
                 {
                     _port = value;
-                    TestMessage = String.Empty;
+                    TestMessage = string.Empty;
 
                     if (!_port.ToString().IsNumeric())
                     {
@@ -372,7 +375,7 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _timeout)
                 {
                     _timeout = value;
-                    TestMessage = String.Empty;
+                    TestMessage = string.Empty;
 
                     if (!_timeout.ToString().IsNumeric())
                     {
@@ -397,7 +400,7 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _emailFrom)
                 {
                     _emailFrom = value;
-                    TestMessage = String.Empty;
+                    TestMessage = string.Empty;
 
                     EnableSend = true;
                     if (!_emailFrom.IsEmail())
@@ -428,7 +431,7 @@ namespace Warewolf.Studio.ViewModels
                 if (value != _emailTo)
                 {
                     _emailTo = value;
-                    TestMessage = String.Empty;
+                    TestMessage = string.Empty;
 
                     EnableSend = true;
                     if (!_emailTo.IsEmail())
