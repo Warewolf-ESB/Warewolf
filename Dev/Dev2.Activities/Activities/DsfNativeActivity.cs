@@ -550,11 +550,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (_debugState == null)
             {
                 InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage, startTime, endTime);
-            }
-            else
-            {
-                Dev2Logger.Debug("Debug already initialised");
-            }
+            }            
 
             if (_debugState != null)
             {
