@@ -732,8 +732,6 @@ namespace Dev2.Studio.ViewModels
                 AddWorkSurfaceContext(resourceModel);
                 return;
             }
-            //var environmentModel = resourceModel.Environment;
-            //resourceModel.WorkflowXaml = environmentModel.ResourceRepository.FetchResourceDefinition(environmentModel, GlobalConstants.ServerWorkspaceID, resourceModel.ID, true).Message;
             switch (resourceModel.ServerResourceType)
             {
                 case "SqlDatabase":
@@ -1314,7 +1312,8 @@ namespace Dev2.Studio.ViewModels
             }
 
             AddWorkspaceItem(resourceModel);
-            AddAndActivateWorkSurface(_getWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel);
+            var workSurfaceContextViewModel = _getWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel;
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
 
             OpeningWorkflowsHelper.RemoveWorkflow(workSurfaceKey);
             _mainViewModel.CanDebug = true;
