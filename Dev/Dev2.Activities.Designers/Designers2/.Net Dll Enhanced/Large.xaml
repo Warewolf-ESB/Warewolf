@@ -229,6 +229,7 @@
                                                                                             FilterType="{Binding IntellisenseFilter}"
                                                                                             TextWrapping="Wrap"
                                                                                             WrapInBrackets="False"
+                                                                                            TextChanged="AutoCompleteBox_OnTextChanged"
                                                                                             ToolTip="{x:Static languages:Tooltips.InputDefaultValueToolTip}"
                                                                                             Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                                             Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
@@ -301,7 +302,11 @@
                                                                         <Grid.ColumnDefinitions>
                                                                             <ColumnDefinition Width="*"/>
                                                                         </Grid.ColumnDefinitions>
-                                                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull}" HorizontalAlignment="Center" ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
+                                                                        <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                                  HorizontalAlignment="Center" 
+                                                                                  Checked="ToggleButton_OnChecked"
+                                                                                  Unchecked="ToggleButton_OnChecked"
+                                                                                  ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}">
                                                                             <i:Interaction.Behaviors>
                                                                                 <core1:HelpSetter Text="{x:Static languages:HelpText.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                                             </i:Interaction.Behaviors>
@@ -362,12 +367,26 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Text="Variable Name" />
-                                                        <TextBox Grid.Column="1" x:Name="RecordSetTextBox" Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}" >
+                                                        <TextBlock Text="Output Variable" />
+                                                        <ui:IntellisenseTextBox Grid.Column="1"
+                                                                                x:Name="RecordSetTextBox" 
+                                                                                 WrapInBrackets="True"
+                                                                                FilterType="All"
+                                                                                Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                                                AutomationProperties.AutomationId="UI_TextBox_AutoID"
+                                                                                TextChanged="AutoCompleteBox_OnTextChanged"
+                                                                                IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+                                                                                ToolTip="{x:Static languages:Tooltips.MappingsRecordsetNameTooltip}"
+                                                                                Text="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" >
+                                                            
                                                             <i:Interaction.Behaviors>
                                                                 <core1:HelpSetter Text="{x:Static languages:HelpText.MappingsRecordsetNameHelp}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                                                <errors:ErrorsSetter Source="{Binding}"
+                                                                                     SourcePropertyName="RecordsetName"
+                                                                                     SourcePropertyValue="{Binding RecordsetName, UpdateSourceTrigger=PropertyChanged}"
+                                                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                                             </i:Interaction.Behaviors>
-                                                        </TextBox>
+                                                        </ui:IntellisenseTextBox>
                                                     </Grid>
                                                 </Grid>
 
@@ -378,7 +397,7 @@
                                                             <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Text="Variable Name" />
+                                                        <TextBlock Text="Output Variable" />
                                                         <ui:IntellisenseTextBox Grid.Column="1" 
                                                                                 WrapInBrackets="True"
                                                                                 Padding="3"

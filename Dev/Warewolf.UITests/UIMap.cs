@@ -3537,8 +3537,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Scheduler Ribbon Button")]
         public void Click_Scheduler_RibbonButton()
         {
-            Mouse.Click(MainStudioWindow.SideMenuBar.SchedulerButton, new Point(4, 12));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.Exists, "Scheduler tab does not exist after clicking Scheduler ribbon button.");
+            Mouse.Click(MainStudioWindow.SideMenuBar.SchedulerButton, new Point(4, 12));            
         }
 
         [Given(@"I Click Debug Ribbon Button")]
