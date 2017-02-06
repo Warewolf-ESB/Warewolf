@@ -48,7 +48,6 @@ namespace Dev2.Common.Interfaces
 
     public interface IShellViewModelOpen
     {
-        void OpenResource(Guid resourceId, IServer server);
         void OpenResourceAsync(Guid resourceId, IServer server);
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
     }
