@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using Dev2.Common.Interfaces.Core;
 
 namespace Dev2.Common.Interfaces
 {
@@ -108,7 +107,7 @@ namespace Dev2.Common.Interfaces
 
     public interface IManageEmailSourceModel
     {
-        EmailServiceSourceDefinition FetchSource(Guid resourceIDh);
+        IEmailServiceSource FetchSource(Guid resourceIDh);
         string TestConnection(IEmailServiceSource resource);
         void Save(IEmailServiceSource toDbSource);
         string ServerName { get; }
