@@ -79,26 +79,8 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.Properties);
             Assert.AreEqual(1, vm.Properties.Count);
         }
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DotNetDllEnhancedViewModel_Validate")]
-        public void DotNetDllEnhancedViewModel_Validate_HasErrorsIfNoSource()
-        {
-            //------------Setup for test--------------------------
-            var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.ActiveServer).Returns(new ServerForTesting(new Mock<IExplorerRepository>()));
-            CustomContainer.Register(mockShellViewModel.Object);
-            var ps = SetupEmptyMockSource();
-            //------------Execute Test---------------------------
-            var vm = new DotNetDllEnhancedViewModel(CreateModelItem(), ps.Object);
-            //------------Assert Results-------------------------
-            vm.Validate();
-
-            Assert.AreEqual(2, vm.Errors.Count);
-
-        }
+        
+       
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

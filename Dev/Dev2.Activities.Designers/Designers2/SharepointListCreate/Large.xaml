@@ -136,13 +136,13 @@
                 <controls:Dev2DataGrid x:Name="SmallDataGrid"
                                        Margin="0"
                                        ItemsSource="{Binding ModelItem.ReadListItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       Style="{StaticResource ActivityMapppingDataGridStyle}">
+                                       Style="{StaticResource ActivityMappingDataGridStyle}">
                     <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="[[Variable]]"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -156,7 +156,7 @@
                                                             TextWrapping="Wrap"
                                                             ToolTip="{x:Static languages:Tooltips.SharepointToolTipToVariable}"
                                                             Text="{Binding VariableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                            Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                            Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                         <i:Interaction.Behaviors>
                                             <core1:HelpSetter Text="{x:Static languages:Tooltips.SharepointToolTipToVariable}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                             <errors:ErrorsSetter Source="{Binding}"
@@ -177,7 +177,7 @@
                         <DataGridTemplateColumn Width="SizeToCells"
                                                 MinWidth="65"
                                                 Header="To Field"
-                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                                 d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -212,7 +212,7 @@
                         <DataGridTemplateColumn Width="SizeToCells"
                                                 MinWidth="65"
                                                 Header="Type"
-                                                HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                                 d:DataContext="{d:DesignInstance Type=interfaces:ISharepointReadListTo}">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
