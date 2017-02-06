@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         #region Implementation of IManageDatabaseSourceModel
-        public EmailServiceSourceDefinition FetchSource(Guid resourceID)
+        public IEmailServiceSource FetchSource(Guid resourceID)
         {
             var xaml = _queryProxy.FetchResourceXaml(resourceID);
             var db = new EmailSource(xaml.ToXElement());
