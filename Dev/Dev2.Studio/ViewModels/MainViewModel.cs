@@ -62,7 +62,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views;
-using Warewolf.Studio.AntiCorruptionLayer;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Interfaces.Core;
@@ -681,17 +680,6 @@ namespace Dev2.Studio.ViewModels
             ExplorerViewModel.IsRefreshing = refresh;
         }
 
-        public void OpenResource(Guid resourceId, IServer server)
-        {
-            var svr = server as Server;
-            var environmentModel = svr?.EnvironmentModel;
-            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
-            if (contextualResourceModel != null)
-            {
-                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
-            }
-            //OpenResource(resourceId, server.EnvironmentID);
-        }
         public void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
@@ -1017,7 +1005,8 @@ namespace Dev2.Studio.ViewModels
 
         private static IDbSource CreateDbSource(IDb db)
         {
-            var def = new DbSourceDefinition(db);
+            var def = new DbSourceDefinition();
+            def.Id = db.ResourceID;
             return def;
         }
 
@@ -1809,21 +1798,21 @@ namespace Dev2.Studio.ViewModels
         {
 
             SaveWorkspaceItems();
-            Task t = new Task(() =>
-            {
-
-                lock (_locker)
-                {
-                    foreach (var ctx in Items.Where(a => true).ToList())
-                    {
-                        if (!ctx.WorkSurfaceViewModel.DisplayName.ToLower().Contains("version") && ctx.IsEnvironmentConnected())
-                        {
-                            ctx.Save(true, isStudioShutdown);
-                        }
-                    }
-                }
-            });
-            t.Start();
+//            Task t = new Task(() =>
+//            {
+//
+//                lock (_locker)
+//                {
+//                    foreach (var ctx in Items.Where(a => true).ToList())
+//                    {
+//                        if (!ctx.WorkSurfaceViewModel.DisplayName.ToLower().Contains("version") && ctx.IsEnvironmentConnected())
+//                        {
+//                            ctx.Save(true, isStudioShutdown);
+//                        }
+//                    }
+//                }
+//            });
+//            t.Start();
 
         }
 
