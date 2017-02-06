@@ -1182,17 +1182,8 @@ namespace Warewolf.UITests
             var beforeClick = testRunState.Checked;
 
             Mouse.Click(testRunState);
-            //Assert.AreNotEqual(beforeClick, testRunState.Checked);
-
-            //if (beforeClick)
-            //    Assert.IsTrue(selectedTestDeleteButton.Enabled, "Delete button is disabled");
             Assert_Display_Text_ContainStar(Tab, nameContainsStar, testInstance);
             Assert_Display_Text_ContainStar(Test, nameContainsStar, testInstance);
-        }
-
-        public void Enter_Value_Into_theAssertValueTextBox(string newValue, int instanceNumber)
-        {
-            //  MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.
         }
 
         public void Drag_From_Explorer_Onto_DesignSurface(string ServicePath)
@@ -1794,26 +1785,6 @@ namespace Warewolf.UITests
         public void Click_NewWebSource_TestConnectionButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
-        }
-
-        public void Try_Click_Delete_Scheduler_Button()
-        {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton))
-            {
-                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton.DrawHighlight();
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton, new Point(4, 12));
-            }
-        }
-
-        public void Click_SchedulerTab_CloseButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.CloseButton);
-        }
-
-        public void Click_Scheduler_ResourcePicker()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(20, 12));
-            Assert.IsTrue(ServicePickerDialog.Exists, "Service picker dialog doesn't exist after clicking the resource picker button.");
         }
 
         public void Click_Service_Picker_Dialog_OK()
@@ -2741,17 +2712,6 @@ namespace Warewolf.UITests
             Assert.AreEqual("Dice1", FindSelectedResourceText(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
 
-        //public void Add_Dotnet_Dll_Source(string sourceName)
-        //{
-        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourcButton, new Point(30, 4));
-        //    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ContentDockManager.FilterTextbox.Text = "CustomMarshalers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64";
-        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.ExpansionIndicatorCheckbox, new Point(30, 4));
-        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ContentDockManager.ExplorerTree.GACTreeItem.FirstTreeItem);
-        //    Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
-        //    Save_With_Ribbon_Button_And_Dialog(sourceName);
-        //    Click_Close_DotNetDll_Tab();
-        //}
-
         public void Enter_Dice_Roll_Values()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.FromComboBox.FromTextEdit.Exists, "From textbox does not exist");
@@ -3540,7 +3500,6 @@ namespace Warewolf.UITests
         public void Click_Save_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton);
-            Assert.IsTrue(SaveDialogWindow.Exists, "Save dialog does not exist after clicking save ribbon button.");
         }
 
         [Given(@"I Click Deploy Ribbon Button")]
@@ -3585,14 +3544,6 @@ namespace Warewolf.UITests
         public void Click_Knowledge_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.KnowledgeBaseButton, new Point(4, 8));
-        }
-
-        [When(@"I Click Scheduler Create New Task Ribbon Button")]
-        public void Click_Scheduler_NewTaskButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.SchedulerListItem.CreateTaskButton.NewTaskButton, new Point(151, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EnabledRadioButton.Enabled, "Scheduler is disabled by default");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton.Exists, "Edit Schedule time buttom exist after clicking scheduler");
         }
 
         [Given(@"I Click Lock Ribbon Button")]
@@ -4522,50 +4473,37 @@ namespace Warewolf.UITests
             Mouse.Click(SaveDialogWindow.CancelButton, new Point(6, 7));
         }
 
-        [When(@"I Click Scheduler Delete Task")]
-        public void Click_Scheduler_Delete_Task()
+        [When(@"I Click Scheduler Create New Task Button")]
+        public void Click_Scheduler_NewTaskButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.DeleteTaskButton, new Point(3, 17));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.ScheduleNewTaskListItem.SchedulerNewTaskButton, new Point(151, 13));
         }
 
-        [When(@"I Delete Hello World Task")]
-        public void Click_Scheduler_Delete_Hello_World_Task()
+        public void Click_SchedulerTab_CloseButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldResourListItem.DeleteScheduleButton, new Point(3, 17));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.CloseButton);
         }
 
-        [When(@"I Click Scheduler Disable Task Radio Button")]
-        public void Click_Scheduler_Disable_Task_Radio_Button()
+        [When(@"I Click Hello World Erase Schedule Button")]
+        public void Click_HelloWorldSchedule_EraseSchedulerButton()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.DisabledRadioButton.Selected = true;
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EraseScheduleButton, new Point(6, 16));
         }
 
-        [When(@"I Click Scheduler EditTrigger Button")]
-        public void Click_Scheduler_EditTrigger_Button()
+        [When(@"I Click Scheduler Enable Disable Checkbox Button")]
+        public void Click_HelloWorldSchedule_EnableOrDisableCheckbox()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton, new Point(10, 9));
-        }
-
-        [When(@"I Click Scheduler Enable Task Radio Button")]
-        public void Click_Scheduler_Enable_Task_Radio_Button()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.UINameworkflow1ResourcListItem.StatusCheckBox.Checked = true;
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EnableOrDisableCheckBox);
         }
 
         [When(@"I Click Scheduler ResourcePicker Button")]
-        public void Click_Scheduler_ResourcePicker_Button()
+        public void Click_Scheduler_ResourcePickerButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(14, 13));
         }
 
-        [When(@"I Click Scheduler RunTask")]
-        public void Click_Scheduler_RunTask()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.RunTaskCheckBox.Checked = true;
-        }
-
         [When(@"I Click Select Resource Button")]
-        public void Click_Select_Resource_Button()
+        public void Click_Select_ResourceButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton, new Point(9, 8));
         }
@@ -5727,9 +5665,9 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab")]
-        public void Enter_LocalSchedulerAdmin_Credentials_Into_Scheduler_Tab()
+        public void Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = "integrationtester";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = @"Warewolf Administrators\IntegrationTester";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "I73573r0";
         }
 
@@ -7484,10 +7422,8 @@ namespace Warewolf.UITests
         [When(@"I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown")]
         public void Select_MSSQLSERVER_From_DB_Source_Wizard_Address_Protocol_Dropdown()
         {
-            //Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.ToggleButton, new Point(625, 11));
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText.Exists, "Microsoft SQL Server does not exist as an option in new DB source wizard type combobox.");
             Mouse.Click(MainStudioWindow.ComboboxListItemAsMicrosoftSQLServer.MicrosoftSQLServerText, new Point(118, 6));
-            //Assert.AreEqual("Microsoft SQL Server", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerTypeComboBox.MicrosoftSQLServer.DisplayText, "Microsoft SQL Server is not selected in DB source wizard.");
         }
 
         [When(@"I Select Namespace")]
@@ -7536,15 +7472,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow.Enabled, "NewWorkFlowService button is disabled.");
             Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow, new Point(79, 13));
         }
-
-        //[When(@"I Select Next From DotNet DLL Large View Action Combobox")]
-        //public void Select_Next_From_DotNet_DLL_Large_View_Action_Combobox()
-        //{
-        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox, new Point(216, 7));
-        //    Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.NextListItem, new Point(137, 7));
-        //    Assert.AreEqual("Next", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
-        //}
-
 
         [Given(@"I Select Open FromExplorerContextMenu")]
         [When(@"I Select Open FromExplorerContextMenu")]
@@ -7767,9 +7694,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled, "ClassNameComboBox is not Enabled after selecting a source");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox, new Point(119, 7));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.AssemblyLocationGACCListItem, new Point(114, 13));
-            //Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsList.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.ActionListItem1.Expander.Dev2ActivitiesDesignButton.ActionsComboBox.Enabled, "ActionsComboBox is not Enabled after selecting ClassName");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox, new Point(119, 7));
-            //Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.EqualsAction, new Point(114, 13));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.GenerateOutputsButton.Enabled, "GenerateOutputsButton is not Enabled after selecting an Action");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.LargeDataGridTable.Row1.Enabled, "InputsDataGridTable is not Enabled after selecting an Action");
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
@@ -7808,8 +7733,6 @@ namespace Warewolf.UITests
         public void Select_ToString_From_DotNet_DLL_Large_View_Action_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox, new Point(216, 7));
-            //Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.Item1, new Point(137, 7));
-            //Assert.AreEqual("ToString", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionsComboBox.SelectedItem, "System.Random is not selected in DotNet DLL tool large view namespace combobox.");
         }
 
         [When(@"I Select TSTCIREMOTE From Server Source Wizard Dropdownlist")]
