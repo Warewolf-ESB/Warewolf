@@ -1099,22 +1099,31 @@ namespace Warewolf.Studio.ViewModels
             get { return _isResource; }
             set
             {
+                bool? isResourceChecked;
+                if (IsResourceCheckedEnabled)
+                {
+                    isResourceChecked = value;
+                }
+                else
+                {
+                    isResourceChecked = false;
+                }
                 if (IsFolder)
                 {
                     if (ChildrenCount >= 1)
                     {
-                        Children.Apply(a => a.IsResourceChecked = value ?? false);
-                        _isResource = value ?? false;
+                        Children.Apply(a => a.IsResourceChecked = isResourceChecked ?? false);
+                        _isResource = isResourceChecked ?? false;
                         if (Parent.IsFolder)
-                            Parent.IsFolderChecked = value;
+                            Parent.IsFolderChecked = isResourceChecked;
                     }
                 }
                 else
                 {
                     IsResourceCheckedEnabled = CanDeploy;
-                    _isResource = value.HasValue && !IsFolder && value.Value;
+                    _isResource = isResourceChecked.HasValue && !IsFolder && isResourceChecked.Value;
                 }
-                if (value != null && (bool)value)
+                if (isResourceChecked != null && (bool)isResourceChecked)
                 {
                     IsSelected = true;
                 }
