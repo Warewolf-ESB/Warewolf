@@ -35,7 +35,7 @@ $TestSettingsFile = "$PSScriptRoot\ResourcePermissionsSecurity.testsettings"
   <Description>Run Resource Permissions Security Specs.</Description>
   <Deployment enabled="false" />
   <Execution>
-    <Timeouts testTimeout=`"180000`" />
+    <Timeouts testTimeout=`"600000`" />
   </Execution>
 </TestSettings>
 "@)
