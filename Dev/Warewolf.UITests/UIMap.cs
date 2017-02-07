@@ -1100,7 +1100,7 @@ namespace Warewolf.UITests
                     Click_Close_Settings_Tab_Button();
                     return;
                 }
-            }
+            }            
             Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
             Click_Close_Settings_Tab_Button();
         }
@@ -1108,8 +1108,11 @@ namespace Warewolf.UITests
         [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
         public void SetupPublicPermissionsForForRemoteServer(string resource)
         {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
             Select_RemoteConnectionIntegration_From_Explorer();
             Click_Explorer_RemoteServer_Connect_Button();
+            Playback.Wait(1000);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
             Click_Settings_RibbonButton();
             var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
             if (deleteFirstResourceButton.Enabled)
