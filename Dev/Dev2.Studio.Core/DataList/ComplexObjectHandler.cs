@@ -128,7 +128,18 @@ namespace Dev2.Studio.Core.DataList
 
             var objToProcess = JsonConvert.DeserializeObject(json) as JObject;
             if (objToProcess != null)
+            {
                 ProcessObjectForComplexObjectCollection(parentObj, objToProcess);
+            }
+            else
+            {
+                var arrToProcess = JsonConvert.DeserializeObject(json) as JArray;
+                if (arrToProcess != null)
+                {
+                    var child = arrToProcess.Children().FirstOrDefault();
+                    ProcessObjectForComplexObjectCollection(parentObj,child as JObject);
+                }
+            }            
         }
 
         private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
