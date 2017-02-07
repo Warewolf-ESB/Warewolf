@@ -347,6 +347,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Dockerfile">
+      <Link>Dockerfile</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="CommandLineParameters.cs" />
     <Compile Include="ServerLifecycleManager.cs" />
     <Compile Include="WebServerResources.Designer.cs" />
