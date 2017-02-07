@@ -8,6 +8,7 @@ using Dev2.Common.Interfaces.DB;
 // ReSharper disable once CheckNamespace
 namespace Dev2.Common.Interfaces
 {
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class PluginAction : IPluginAction, INotifyPropertyChanged, IEquatable<PluginAction>
     {
         public string FullName { get; set; }
@@ -21,6 +22,9 @@ namespace Dev2.Common.Interfaces
         public string OutputVariable { get; set; }
         public bool IsObject { get; set; }
         public bool IsVoid { get; set; }
+        public string ErrorMessage { get; set; }
+        public bool HasError { get; set; }
+        public bool IsProperty { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

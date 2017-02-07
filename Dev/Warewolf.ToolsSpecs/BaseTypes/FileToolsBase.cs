@@ -9,7 +9,6 @@
 */
 
 using System;
-using Dev2.Common;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
 using TechTalk.SpecFlow;
@@ -40,7 +39,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
             // ReSharper disable EmptyGeneralCatchClause
 
 
-            Dev2Logger.Debug("Cleanup");
 
             var broker = ActivityIOFactory.CreateOperationsBroker();
             string destLocation;
@@ -60,7 +58,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
                 catch (Exception)
                 {
-                    Dev2Logger.Debug("Cleanup Error");
                 //    throw;
                 }
             }
@@ -87,7 +84,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
                 catch (Exception)
                 {
-                    Dev2Logger.Debug("Cleanup Error");
                     //The file may already be deleted
                 }
             }

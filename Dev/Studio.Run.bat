@@ -10,8 +10,6 @@ if %errorLevel% == 0 (
 )
 @echo on
 
-"%~dp0TestScripts\Tests\NuGet.exe" restore "%~dp0Server.sln" -SolutionDirectory "%~dp0."
-"%~dp0TestScripts\Tests\NuGet.exe" restore "%~dp0Studio.sln" -SolutionDirectory "%~dp0."
 if not %errorlevel%==0 pause
 
 IF EXIST MSBuild (
