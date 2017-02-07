@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests
+namespace Warewolf.UITests.Scheduler
 {
     [CodedUITest]
     public class SchedulerTest
@@ -10,9 +10,9 @@ namespace Warewolf.UITests
         [TestCategory("Scheduler")]
         public void Create_SchedulerTask_From_SidebarRibbonButton_UITests()
         {
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.ScheduleNewTaskListItem.SchedulerNewTaskButton.Exists, "SchedulerNewTask Button does not exist.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.Exists, "SchedulerNewTask Tab does not exist.");
             //Assert NewScheduleTask Controls
-            UIMap.Click_Scheduler_NewTaskButton();
+            UIMap.Create_Scheduler_Using_Shortcut();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton.Exists, "EditTrigger Button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.NameTextbox.Exists, "Name Textbox does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EnabledRadioButton.Exists, "Enabled RadioButton does not exist.");
@@ -27,17 +27,17 @@ namespace Warewolf.UITests
             //Create Hello World Schedule Task
             UIMap.Click_Scheduler_ResourcePickerButton();
             Assert.IsTrue(UIMap.ServicePickerDialog.Exists, "Service Picker Window does not exist.");
-            UIMap.Filter_ServicePicker_Explorer("Hello World");
+            UIMap.Filter_ServicePicker_Explorer("GenericResource");
             UIMap.Click_Service_Picker_Dialog_First_Service_In_Explorer();
             UIMap.Click_Service_Picker_Dialog_OK();
-            Assert.AreEqual("Hello World", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.NameTextbox.Text);
+            Assert.AreEqual("GenericResource", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.NameTextbox.Text);
             UIMap.Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab();
             UIMap.Click_Save_RibbonButton();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.Exists, "Hello World schedule did not save.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.Exists, "Generic Resource schedule did not save.");
             UIMap.Click_HelloWorldSchedule_EnableOrDisableCheckbox();
             UIMap.Click_HelloWorldSchedule_EraseSchedulerButton();
             UIMap.Click_MessageBox_Yes();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.Exists, "Hello World schedule did not delete.");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.Exists, "Generic Resource schedule did not delete.");
             UIMap.Click_SchedulerTab_CloseButton();
         }
 

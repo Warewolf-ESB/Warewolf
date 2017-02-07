@@ -291,7 +291,6 @@
     <Compile Include="Designers2\Core\IScriptChooser.cs" />
     <Compile Include="Designers2\Core\ManageDatabaseServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageComPluginServiceInputViewModel.cs" />
-    <Compile Include="Designers2\Core\ManageEnhancedPluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManagePluginServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWcfServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
