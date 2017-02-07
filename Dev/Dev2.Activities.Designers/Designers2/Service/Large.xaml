@@ -16,9 +16,11 @@
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
+                               xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
                                MinWidth="350"
                                Width="350"
-                               MinHeight="200"
+                               MinHeight="240"
+                               Height="Auto"
                                mc:Ignorable="d"
                                d:DesignHeight="300"
                                d:DesignWidth="350"
@@ -91,7 +93,7 @@
                                    Grid.Row="0"
                                    ItemsSource="{Binding DataMappingViewModel.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    CanUserResizeRows="False"
-                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                   Style="{StaticResource ActivityMappingDataGridStyle}"
                                    MinHeight="53"
                                    Height="Auto"
                                    Margin="0"
@@ -105,9 +107,9 @@
                 <DataGrid.Columns>
 
                     <DataGridTemplateColumn Width="*"
-                                            MinWidth="125"
+                                            MinWidth="140"
                                             Header="Input Data or [[Variable]]"
-                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=data:IInputOutputViewModel}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -135,7 +137,7 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <ui:IntellisenseTextBox.Style>
-                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
                                                     <Setter Property="Control.BorderThickness" Value="1" />
@@ -156,7 +158,7 @@
                     <DataGridTemplateColumn Width="SizeToCells"
                                             MinWidth="65"
                                             Header="To Service"
-                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=data:IInputOutputViewModel}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -213,22 +215,22 @@
             <controls:Dev2DataGrid x:Name="OutputsDataGrid"
                                    Grid.Row="1"
                                    ItemsSource="{Binding DataMappingViewModel.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   Style="{StaticResource ActivityMapppingDataGridStyle}"
+                                   Style="{StaticResource ActivityMappingDataGridStyle}"
                                    CanUserResizeRows="False"
                                    IsEnabled="{Binding OutputMappingEnabled}"
                                    MinHeight="53"
                                    Height="Auto"
                                    Margin="0"
-                                   BorderThickness="1,0,1,1"
+                                   BorderThickness="1"
                                    Visibility="{Binding DataMappingViewModel.Outputs.Count, Converter={StaticResource IntToVisibilityConverter}}"
                                    RowStyle="{StaticResource ActivityGridRowStyle}"
                                    LoadingRow="DataGrid_LoadingRow">
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="SizeToCells"
-                                            MinWidth="90"
-                                            Header="Output From Service"
-                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                    <DataGridTemplateColumn Header="Output From Service"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            Width="Auto"
+                                            MinWidth="120"
                                             d:DataContext="{d:DesignInstance Type=data:IInputOutputViewModel}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -259,10 +261,10 @@
                     </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn Width="*"
-                                            MinWidth="125"
                                             IsReadOnly="False"
                                             Header="To [[Variable]]"
-                                            HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                            MinWidth="90"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=data:IInputOutputViewModel}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -290,7 +292,7 @@
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <ui:IntellisenseTextBox.Style>
-                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                        <Style TargetType="ui:IntellisenseTextBox" BasedOn="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Path=IsNew}" Value="True">
                                                     <Setter Property="Control.BorderThickness" Value="1" />

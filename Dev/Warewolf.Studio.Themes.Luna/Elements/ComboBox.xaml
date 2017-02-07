@@ -601,7 +601,7 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
 
     </Style>
-    <Style x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
+    <Style x:Key="ComboBoxFixedDropDownWidthStyle" TargetType="{x:Type ComboBox}">
         <Setter Property="Margin" Value="0" />
         <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
         <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
@@ -697,6 +697,208 @@
                                Width="{Binding Path=ActualWidth,
                                             RelativeSource={RelativeSource Mode=FindAncestor,
                                                       AncestorType=Grid}}"
+                               IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                               Placement="Bottom"
+                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+                            <Border x:Name="DropDownBorder"
+                                    MinWidth="{Binding ActualWidth, ElementName=MainGrid}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                    HorizontalAlignment="Stretch"
+                                    Background="{StaticResource PopupBackgroundBrush}"
+                                    BorderBrush="{StaticResource PopupBorderBrush}"
+                                    BorderThickness="1,0,1,1"
+                                    CornerRadius="0">
+                                <ScrollViewer KeyboardNavigation.IsTabStop="False" 
+                                              x:Name="DropDownScrollViewer" 
+                                              Style="{StaticResource ScrollViewerStyle}">
+                                    <Grid RenderOptions.ClearTypeHint="Enabled">
+                                        <Canvas Width="0"
+                                                Height="0"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top">
+                                            <Rectangle x:Name="OpaqueRect"
+                                                       Width="{Binding ActualWidth, ElementName=DropDownBorder}"
+                                                       Height="{Binding ActualHeight, ElementName=DropDownBorder}"
+                                                       Fill="{Binding Background, ElementName=DropDownBorder}" />
+                                        </Canvas>
+                                        <ItemsPresenter x:Name="ItemsPresenter"
+                                                        KeyboardNavigation.DirectionalNavigation="Contained"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </Grid>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                        <ToggleButton Grid.ColumnSpan="2"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      IsChecked="{Binding IsDropDownOpen,
+                                                          Mode=TwoWay,
+                                                          RelativeSource={RelativeSource TemplatedParent}}"
+                                      Style="{StaticResource ComboBoxToggleButtonStyle}"
+                                      KeyboardNavigation.IsTabStop="False"/>
+                        <ContentControl x:Name="MainTextBox"
+                                        Margin="{TemplateBinding Margin}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Foreground="{TemplateBinding Foreground}" 
+                                        Background="{StaticResource  TextBoxBackgroundBrush}"                                        
+                                        Visibility="Visible"
+                                        KeyboardNavigation.IsTabStop="False">
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              KeyboardNavigation.IsTabStop="False"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                          IsHitTestVisible="false"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" >
+                                <ContentPresenter.Resources>
+                                    <Style BasedOn="{StaticResource MainTextBlock}" TargetType="{x:Type TextBlock}" />
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                        </ContentControl>
+                        <Rectangle x:Name="normal"
+                                   Grid.ColumnSpan="2"
+                                   Stroke="{StaticResource ComboBoxBorderBrush}"
+                                   StrokeThickness="1"
+                                   Visibility="Visible" />
+                        <Rectangle x:Name="hover"
+                                   Grid.ColumnSpan="2"
+                                   Stroke="{StaticResource WareWolfOrangeBrush}"
+                                   StrokeThickness="1"
+                                   Visibility="Collapsed" />
+                        <Rectangle x:Name="focused"
+                                   Grid.ColumnSpan="2"
+                                   Stroke="{StaticResource ComboBoxFocusedBorderBrush}"
+                                   StrokeThickness="1"
+                                   Visibility="Collapsed" />
+                        <Rectangle x:Name="disabled"
+                                   Grid.ColumnSpan="2"
+                                   Fill="{StaticResource ComboBoxDisabledBackgroundBrush}"
+                                   Visibility="Collapsed" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="false">
+                            <Setter TargetName="DropDownBorder" Property="Height" Value="95" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+                            <Setter Property="Background" Value="{StaticResource ComboBoxReadOnlyBorderBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsGrouping" Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                        </Trigger>
+                        <Trigger SourceName="DropDownScrollViewer" Property="ScrollViewer.CanContentScroll" Value="false">
+                            <Setter TargetName="OpaqueRect" Property="Canvas.Top" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}" />
+                            <Setter TargetName="OpaqueRect" Property="Canvas.Left" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEditable" Value="true">
+                <Setter Property="IsTabStop" Value="false" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ComboBoxStyle" TargetType="{x:Type ComboBox}">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize-Normal}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ComboBoxItemStyle}" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+        <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid x:Name="MainGrid" SnapsToDevicePixels="true" KeyboardNavigation.IsTabStop="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="0" MinWidth="30" />
+                        </Grid.ColumnDefinitions>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="hover" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="disabled" Storyboard.TargetProperty="(UIElement.IsEnabled)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <system:Boolean>True</system:Boolean>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="focused" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="FocusedDropDown">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="focused" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <!--<Rectangle x:Name="normal"
+                                   Grid.ColumnSpan="2"
+                                   Fill="{StaticResource ComboBoxBackgroundBrush}"
+                                   Stroke="{StaticResource ComboBoxBorderBrush}"
+                                   StrokeThickness="1" />-->
+                        <!--<Rectangle x:Name="hover"
+                                   Grid.ColumnSpan="2"
+                                   Fill="{StaticResource ComboBoxHoverBackgroundBrush}"
+                                   Stroke="{StaticResource ComboBoxHoverBorderBrush}"
+                                   StrokeThickness="2"
+                                   Visibility="Visible" />-->
+                        <Popup x:Name="PART_Popup"
+                               Grid.ColumnSpan="2"
+                               Margin="1"
+                               KeyboardNavigation.IsTabStop="False"
+                               AllowsTransparency="true"
                                IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                Placement="Bottom"
                                PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">

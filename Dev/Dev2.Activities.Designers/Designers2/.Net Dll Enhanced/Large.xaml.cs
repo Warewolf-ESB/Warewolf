@@ -90,5 +90,19 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 MinHeight = 380;
             }
         }
+
+        private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
+        {
+            var dotNetDllEnhancedViewModel = DataContext as DotNetDllEnhancedViewModel;
+            dotNetDllEnhancedViewModel?.UpdateMethodInputs();
+            e.Handled = true;
+        }
+
+        private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
+        {
+            var dotNetDllEnhancedViewModel = DataContext as DotNetDllEnhancedViewModel;
+            dotNetDllEnhancedViewModel?.UpdateMethodInputs();
+            e.Handled = true;
+        }
     }
 }
