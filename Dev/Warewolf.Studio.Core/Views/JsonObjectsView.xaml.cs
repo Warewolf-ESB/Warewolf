@@ -18,7 +18,6 @@ namespace Dev2.Studio.Core.Views
         public JsonObjectsView()
         {
             InitializeComponent();
-            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
         }
 
         void JsonObjectsView_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -40,6 +39,7 @@ namespace Dev2.Studio.Core.Views
 
         public void ShowJsonString(string jsonString)
         {
+            PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
             ResponseTextbox.Text = jsonString;
             Height = 280;
             ShowDialog();
