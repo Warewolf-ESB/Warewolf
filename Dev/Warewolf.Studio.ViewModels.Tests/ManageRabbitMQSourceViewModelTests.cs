@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Threading;
 
 // ReSharper disable InconsistentNaming
@@ -28,7 +29,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private List<string> _changedProperties;
         private ManageRabbitMQSourceViewModel _manageRabbitMQSourceViewModelWithTask;
         private ManageRabbitMQSourceViewModel _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition;
-
+        private Mock<IAsyncWorker> _asyncWorkerMock;
         #endregion Fields
 
         #region Test initialize
@@ -43,7 +44,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             _changedProperties = new List<string>();
             _manageRabbitMQSourceViewModelWithTask = new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _requestServiceNameViewModelTask);
             _manageRabbitMQSourceViewModelWithTask.PropertyChanged += (sender, e) => { _changedProperties.Add(e.PropertyName); };
-            _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition = new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _rabbitMQServiceSourceDefinition.Object, new SynchronousAsyncWorker());
+            _asyncWorkerMock = new Mock<IAsyncWorker>();
+            _rabbitMQSourceModel.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+            .Returns(_rabbitMQServiceSourceDefinition.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<IRabbitMQServiceSourceDefinition>>(),
+                                            It.IsAny<Action<IRabbitMQServiceSourceDefinition>>()))
+                            .Callback<Func<IRabbitMQServiceSourceDefinition>, Action<IRabbitMQServiceSourceDefinition>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
+            _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition = new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _rabbitMQServiceSourceDefinition.Object, _asyncWorkerMock.Object);
         }
 
         #endregion Test initialize
