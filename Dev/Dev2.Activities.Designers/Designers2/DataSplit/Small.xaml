@@ -57,7 +57,7 @@
                                     Padding="2,5,2,2"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static languages:Tooltips.DataSplitToolTipString}"
-                                    Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                    Style="{StaticResource ActivityMappingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}"
                                     HorizontalAlignment="Stretch">
                 <ui:IntellisenseTextBox.DefaultText>
