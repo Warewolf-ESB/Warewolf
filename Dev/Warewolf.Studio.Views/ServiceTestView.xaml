@@ -414,7 +414,7 @@
                                     <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 															AutoGenerateColumns="False"
 															BorderThickness="0"
-															Style="{StaticResource ActivityMapppingDataGridStyle}"
+															Style="{StaticResource ActivityMappingDataGridStyle}"
 															x:Name="TestInputs">
 
                                         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -423,7 +423,7 @@
                                             <DataGridTemplateColumn Width="*"
 																	MinWidth="125"
 																	Header="Variable"
-																	HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+																	HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
 																	d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -437,7 +437,7 @@
                                             <DataGridTemplateColumn Width="*"
 																	MinWidth="125"
 																	Header="Value"
-																	HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+																	HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
 																	d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                                 <DataGridTemplateColumn.CellTemplate >
                                                     <DataTemplate>
@@ -481,7 +481,7 @@
 																	MinWidth="100"
 																	MaxWidth="100"
 																	Header="Empty Is Null"
-																	HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+																	HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
 																	d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -611,14 +611,14 @@
 																			       Grid.Column="0"
 																			       Grid.ColumnSpan="2"
 																			       ItemsSource="{Binding Path=Data.StepOutputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																			       Style="{StaticResource ActivityMapppingDataGridStyle}"
+																			       Style="{StaticResource ActivityMappingDataGridStyle}"
                                                                                    BorderBrush="{StaticResource XamGridBorderBrush}"
                                                                                    Height="Auto"
                                                                                    MaxHeight="107"
                                                                                    AutomationProperties.AutomationId="{Binding StringFormat=UI_StepOutputs_{0}_AutoID, Path=Data.StepDescription}"
                                                                                    HeadersVisibility="All" HorizontalScrollBarVisibility="Auto">
                                                                 <DataGrid.Columns>
-                                                                    <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
+                                                                    <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
                                                                         <DataGridTemplateColumn.CellTemplate>
                                                                             <DataTemplate>
                                                                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
@@ -630,7 +630,7 @@
                                                                             </DataTemplate>
                                                                         </DataGridTemplateColumn.CellTemplate>
                                                                     </DataGridTemplateColumn>
-                                                                    <DataGridTemplateColumn Width="*" MinWidth="125" Header="Result" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
+                                                                    <DataGridTemplateColumn Width="*" MinWidth="125" Header="Result" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
                                                                         <DataGridTemplateColumn.CellTemplate>
                                                                             <DataTemplate>
                                                                                 <TextBox Margin="1,0,1,1"
@@ -649,7 +649,7 @@
                                                                         </DataGridTemplateColumn.CellTemplate>
                                                                     </DataGridTemplateColumn>
 
-                                                                    <DataGridTemplateColumn Width="*" MinWidth="125" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
+                                                                    <DataGridTemplateColumn Width="*" MinWidth="125" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
                                                                         <DataGridTemplateColumn.HeaderTemplate>
                                                                             <DataTemplate>
                                                                                 <Grid>
@@ -705,7 +705,7 @@
                                                                     <DataGridTemplateColumn Width="*" 
 																						    MinWidth="125" 
 																						    Header="Value" 
-																						    HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+																						    HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
 																						    Visibility="{Binding Path=IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
                                                                         <DataGridTemplateColumn.CellTemplate>
                                                                             <DataTemplate>
@@ -802,12 +802,12 @@
                                     <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 														    AutoGenerateColumns="False"
 														    BorderThickness="0"      
-														    Style="{StaticResource ActivityMapppingDataGridStyle}"
+														    Style="{StaticResource ActivityMappingDataGridStyle}"
 														    x:Name="TestOutputsGrid">
 
                                         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                                         <DataGrid.Columns>
-                                            <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
+                                            <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
@@ -822,7 +822,7 @@
                                             <DataGridTemplateColumn Width="*"
 																    MinWidth="125"
 																    Header="Variable"
-																    HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+																    HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
 																    d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestOutput}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
@@ -837,7 +837,7 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn Width="*" MinWidth="125" Header="Assert Type" HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}">
+                                            <DataGridTemplateColumn Width="*" MinWidth="125" Header="Assert Type" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
@@ -857,7 +857,7 @@
                                             <DataGridTemplateColumn Width="*"
 																    MinWidth="125"
 																    Header="Value"
-																    HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+																    HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
 																    d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestOutput}">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>

@@ -52,7 +52,7 @@
         <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                Grid.Row="0"                                                                                            
                                ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                              
-                               Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               Style="{StaticResource ActivityMappingDataGridStyle}"
                                CanUserResizeRows="True"
                                RowStyle="{StaticResource ActivityGridRowStyle}"
                                LoadingRow="DataGrid_LoadingRow">

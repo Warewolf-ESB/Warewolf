@@ -24,6 +24,7 @@ namespace TestingDotnetDllCascading
     [Serializable]
     public class Human
     {
+        private List<Food> _favouriteFoodsProperty;
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Name { get; set; }
         public Human()
@@ -63,16 +64,31 @@ namespace TestingDotnetDllCascading
 
         public List<Food> FavouriteFoods()
         {
-            return _foods;
+            return _favouriteFoodsProperty;
         }
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private List<Food> _foods = new List<Food> { new Food { FoodName = "Pizza" }, new Food { FoodName = "Burger" }, new Food { FoodName = "Chicken" } };
+
+        public List<Food> FavouriteFoodsProperty
+        {
+            get
+            {
+                return _favouriteFoodsProperty ?? (_favouriteFoodsProperty = new List<Food> { new Food { FoodName = "Pizza" }, new Food { FoodName = "Burger" }, new Food { FoodName = "Chicken" } });
+            }
+            private set
+            {
+                _favouriteFoodsProperty = value;
+            }
+        }
         public List<int> PhoneNumbers()
         {
             var numbers = new List<int> { 1284561478, 228561478, 215561475 };
             return numbers;
         }
-        
+
+
+        public string EmptyIsNullTest(string value)
+        {
+            return value ?? "Null value passed";
+        }
 
         #region Overrides of Object
 
@@ -94,13 +110,17 @@ namespace TestingDotnetDllCascading
 
         public string AddFavouriteFood(Food food)
         {
-            _foods.Add(food);
-            return food == null ? "No food passed in" : "Success";
+            if (food == null)
+            {
+                throw new Exception("Please specify favourite food");
+            }
+            _favouriteFoodsProperty.Add(food);
+            return "Success";
         }
 
         public string RemoveFavouriteFood(Food food)
         {
-            var removeAll = _foods.RemoveAll(food1 => food1.FoodName.Equals(food.FoodName, StringComparison.InvariantCultureIgnoreCase));
+            var removeAll = _favouriteFoodsProperty.RemoveAll(food1 => food1.FoodName.Equals(food.FoodName, StringComparison.InvariantCultureIgnoreCase));
             return $"removed {removeAll} foods";
         }
 

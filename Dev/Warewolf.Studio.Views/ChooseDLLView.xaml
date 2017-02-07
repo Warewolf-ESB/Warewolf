@@ -38,7 +38,7 @@
                     Background="{StaticResource WareWolfMenuBrush}" 
                     HorizontalAlignment="Stretch" 
                     Orientation="Horizontal">
-            <TextBlock Margin="5" Text="Choose DLL" Style="{StaticResource SourceHeader}"/>
+            <TextBlock Margin="5" Text="Choose Assembly" Style="{StaticResource SourceHeader}"/>
         </StackPanel>
         <Grid Grid.Row="1" Margin="{StaticResource ElementBorder}">
             <Grid.ColumnDefinitions>

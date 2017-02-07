@@ -10,7 +10,6 @@
 
 using System;
 using System.Activities.Statements;
-using Dev2.Common;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
@@ -80,9 +79,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
                 // CI
                 scenarioContext.Add("activity", zip);
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Dev2Logger.Debug("Error Setting Up Zip",e);
+                //
             }
         }
     }

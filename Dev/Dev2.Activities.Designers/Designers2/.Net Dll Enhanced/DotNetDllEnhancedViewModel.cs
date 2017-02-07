@@ -176,8 +176,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 Errors = new List<IActionableErrorInfo>();
             }
             Errors.Clear();
-
-            Errors = Regions.SelectMany(a => a.Errors).Select(a => new ActionableErrorInfo(new ErrorInfo() { Message = a, ErrorType = ErrorType.Critical }, () => { }) as IActionableErrorInfo).ToList();
             if (SourceRegion.Errors.Count > 0)
             {
                 foreach (var designValidationError in SourceRegion.Errors)
@@ -369,7 +367,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 };
                 ConstructorRegion.SomethingChanged += (sender, args) =>
                 {
-                  OnPropertyChanged("IsConstructorVisible");  
+                    OnPropertyChanged("IsConstructorVisible");
                 };
 
 
@@ -450,6 +448,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     }
                 }
             };
+            methodRegion.PropertyChanged += DotNetMethodRegionOnPropertyChanged;
             methodRegion.ErrorsHandler += (sender, list) =>
             {
                 List<ActionableErrorInfo> errorInfos =
@@ -506,9 +505,18 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     continue;
                 }
                 var dotNetMethodRegion = new DotNetMethodRegion(Model, ModelItem, _sourceRegion, _namespaceRegion) { SelectedMethod = pluginAction };
+                dotNetMethodRegion.PropertyChanged += DotNetMethodRegionOnPropertyChanged;
                 regionCollections.Add(dotNetMethodRegion);
             }
             return regionCollections;
+        }
+
+        private void DotNetMethodRegionOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ObjectName")
+            {
+                ModelItem?.SetProperty("MethodsToRun", GetActionsToRun());
+            }
         }
 
         private void MethodsToRunListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -516,7 +524,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
-
         private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null) return;
@@ -531,7 +538,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ModelItem.SetProperty("MethodsToRun", GetActionsToRun());
+            var actionsToRun = GetActionsToRun();
+            ModelItem.SetProperty("MethodsToRun", actionsToRun);
         }
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
@@ -566,7 +574,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 if (value != null)
                 {
                     _methodsToRunList = value;
-                    var pluginActions = value.Where(p => p.SelectedMethod != null).Select(region => region.SelectedMethod).ToList();
+                    var pluginActions = GetActionsToRun();
                     ModelItem.SetProperty("MethodsToRun", pluginActions);
                 }
                 else
@@ -723,14 +731,11 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         private IPluginServiceModel Model { get; set; }
 
-        void SetRegionVisibility(bool value)
-        {
-            InputArea.IsEnabled = value;
-            OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
-            ErrorRegion.IsEnabled = value;
-            SourceRegion.IsEnabled = value;
-        }
-
         #endregion
+
+        public void UpdateMethodInputs()
+        {
+            ModelItem.SetProperty("MethodsToRun", GetActionsToRun());
+        }
     }
 }
