@@ -2429,7 +2429,7 @@ namespace Warewolf.UITests
         {
             Mouse.StartDragging(Tab);
             Mouse.StopDragging(0, 21);
-            Playback.Wait(1500);
+            Playback.Wait(2000);
         }
 
         public void Enter_Recordset_On_Length_tool()
