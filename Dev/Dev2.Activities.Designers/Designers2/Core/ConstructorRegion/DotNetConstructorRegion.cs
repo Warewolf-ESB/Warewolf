@@ -179,7 +179,6 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 OnPropertyChanged("IsConstructorEnabled");
             }
         }
-
         private void RestoreIfPrevious(IPluginConstructor value)
         {
             if (IsAPreviousValue(value) && _selectedConstructor != null)

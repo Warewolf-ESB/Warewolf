@@ -387,6 +387,42 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        public void PluginRuntimeHandler_ListMethodsWithReturns_WhenValidLocationAndIsProperty_ExpectResultsWithPropertyMethod()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var fullName = Assembly.GetExecutingAssembly().Location;
+                var dllName = Path.GetFileName(fullName);
+                var result = isolated.Value.ListMethodsWithReturns(fullName, dllName, typeof(Main).FullName);
+                Assert.IsTrue(result.Any());
+                Assert.IsTrue(result.Any(method => method.IsProperty));
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ListMethodsWithReturns")]
+        public void PluginRuntimeHandler_ListMethodsWithReturns_WhenListFoods_ExpectJSonArrayReturnType()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var fullName = Assembly.GetExecutingAssembly().Location;
+                var dllName = Path.GetFileName(fullName);
+                var result = isolated.Value.ListMethodsWithReturns(fullName, dllName, typeof(Main).FullName);
+                Assert.IsTrue(result.Any());
+                var serviceMethods = result.Where(method => !method.IsVoid);
+                var condition = serviceMethods.Any(method =>  method.Dev2ReturnType.Contains("["));
+                Assert.IsTrue(condition);
+            }
+        }
+
         #endregion
 
         [TestMethod]
@@ -701,5 +737,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         {
 
         }
+
+        public List<Main> Mains { get; set; }
     }
 }

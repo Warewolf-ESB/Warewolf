@@ -68,7 +68,7 @@
                                    VerticalScrollBarVisibility="Hidden"
                                    x:Name="LargeDataGrid"
                                    ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   Style="{StaticResource ActivityMapppingDataGridStyle}">
+                                   Style="{StaticResource ActivityMappingDataGridStyle}">
                 <i:Interaction.Behaviors>
                     <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                         <behaviors2:DataGridWatermarkModifier.WatermarkText>
@@ -83,7 +83,7 @@
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="25"
                                             Header="#"
-                                            HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
+                                            HeaderStyle="{StaticResource ActivityMappingDecisionDataGridHeaderStyle}"
                                             IsReadOnly="False"
                                             d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
                         <DataGridTemplateColumn.CellTemplate>
@@ -100,7 +100,7 @@
                     <DataGridTemplateColumn Width="*"
                                             MinWidth="100"
                                             Header="Match"
-                                            HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
+                                            HeaderStyle="{StaticResource ActivityMappingDecisionDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -149,7 +149,7 @@
                     <DataGridTemplateColumn Width="Auto"
                                             Header="MatchType"
                                             CanUserResize="False"
-                                            HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
+                                            HeaderStyle="{StaticResource ActivityMappingDecisionDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=to:DecisionTO}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -186,7 +186,7 @@
                     <DataGridTemplateColumn Width="*"
                                             MinWidth="100"
                                             Header="Match"
-                                            HeaderStyle="{StaticResource ActivityMapppingDecisionDataGridHeaderStyle}"
+                                            HeaderStyle="{StaticResource ActivityMappingDecisionDataGridHeaderStyle}"
                                             d:DataContext="{d:DesignInstance Type=to:DecisionTO}"
                                             Visibility="{Binding IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
                         <DataGridTemplateColumn.CellTemplate>

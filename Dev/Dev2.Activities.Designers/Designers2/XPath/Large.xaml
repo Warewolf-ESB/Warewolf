@@ -74,7 +74,7 @@
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static languages:Tooltips.XPathToolTipXML}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                    Style="{StaticResource ActivityMappingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.XPathHelpXML}" DataContext="{Binding}" />
@@ -91,7 +91,7 @@
                                Grid.Row="1"      
                                Margin="{StaticResource ControlBorderTop}"
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                              
-                               Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               Style="{StaticResource ActivityMappingDataGridStyle}"
                                CanUserResizeRows="True">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
