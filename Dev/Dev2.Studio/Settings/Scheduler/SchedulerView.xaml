@@ -20,6 +20,9 @@
     <UserControl.Resources>
         <converters:SimpleEnumToBoolConverter x:Key="EnumToBoolConverter"/>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding NewCommand}" Key="N" Modifiers="Ctrl" />
+    </UserControl.InputBindings>
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -58,8 +61,13 @@
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
 
-                <ListBox Grid.Column="0" Style="{StaticResource ListBoxStyle}" BorderThickness="1,0,1,1"
-                         ItemsSource="{Binding TaskList}" SelectedItem="{Binding SelectedTask}" x:Name="Schedules">
+                <ListBox Grid.Column="0" 
+                         Style="{StaticResource ListBoxStyle}" 
+                         BorderThickness="1,0,1,1"
+                         ItemsSource="{Binding TaskList}" 
+                         SelectedItem="{Binding SelectedTask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         SelectionMode="Single" 
+                         x:Name="Schedules">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
