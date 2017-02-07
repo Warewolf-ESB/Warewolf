@@ -222,8 +222,10 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
 
         private void EditDropBoxSource()
         {
-            var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
-            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSource.ResourceID,activeServer.EnvironmentID, activeServer);
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var activeServer = shellViewModel.ActiveServer;
+            if (activeServer != null)
+                shellViewModel.OpenResource(SelectedSource.ResourceID,activeServer.EnvironmentID, activeServer);
         }
 
         public void CreateOAuthSource()
