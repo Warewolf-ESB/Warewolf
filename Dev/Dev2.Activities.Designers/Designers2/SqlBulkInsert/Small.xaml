@@ -112,7 +112,7 @@
                                HeadersVisibility="None"
                                Height="78"
                                ItemsSource="{Binding ModelItem.InputMappings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource ActivityMapppingDataGridStyle}">
+                               Style="{StaticResource ActivityMappingDataGridStyle}">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
@@ -120,7 +120,7 @@
                 <DataGridTemplateColumn Width="*"
                                         MinWidth="125"
                                         Header="Input Data or [[Variable]]"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -134,7 +134,7 @@
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static languages:Tooltips.SqlBulkInsertToolTipInputColumn}"
                                                     Text="{Binding InputColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:Tooltips.SQLBulkInsertToolTipInputData}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -157,7 +157,7 @@
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="65"
                                         Header="To Field"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=dto:DataColumnMapping}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

@@ -75,7 +75,7 @@
                                 Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Tooltips.DataSplitToolTipString}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                Style="{StaticResource ActivityMappingIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
             <ui:IntellisenseTextBox.DefaultText>
                 <TextBlock Text="Data to split" VerticalAlignment="Top" Margin="0,-3,0,0"></TextBlock>
@@ -138,7 +138,7 @@
                                Grid.ColumnSpan="2"
                                x:Name="LargeDataGrid"
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Style="{StaticResource ActivityMapppingDataGridStyle}"
+                               Style="{StaticResource ActivityMappingDataGridStyle}"
                                Margin="0,3">
             <i:Interaction.Behaviors>
                 <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
@@ -155,7 +155,7 @@
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25"
                                         Header="#"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         IsReadOnly="True"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
@@ -167,7 +167,7 @@
 
                 <DataGridTemplateColumn Width="*"
                                         Header="Results"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -177,7 +177,7 @@
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.DataSplitToolTipResults}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpResult}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
@@ -200,7 +200,7 @@
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="75"
                                         Header="With"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -237,7 +237,7 @@
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="40"
                                         Header="Using"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -248,7 +248,7 @@
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.DataSplitToolTipUsing}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsAtFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpUsing}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding .}"
@@ -271,7 +271,7 @@
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="45"
                                         Header="Include"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -296,7 +296,7 @@
                 <DataGridTemplateColumn Width="SizeToCells"
                                         MinWidth="50"
                                         Header="Escape"
-                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -307,7 +307,7 @@
                                                     Text="{Binding EscapeChar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.DataSplitToolTipEscape}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsEscapeCharFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:HelpText.DataSplitHelpEscape}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"

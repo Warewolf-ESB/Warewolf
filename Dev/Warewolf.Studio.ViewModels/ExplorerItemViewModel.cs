@@ -629,13 +629,9 @@ namespace Warewolf.Studio.ViewModels
 
         public IEnumerable<IExplorerItemViewModel> AsList()
         {
-            if (Children != null)
+            if (UnfilteredChildren != null)
             {
-                return Children.Union(Children.SelectMany(a => a.AsList()));
-            }
-            if (ResourceType.Equals("Folder", StringComparison.InvariantCultureIgnoreCase) && !Children.Any())
-            {
-                
+                return UnfilteredChildren.Union(UnfilteredChildren.SelectMany(a => a.AsList()));
             }
             return new List<IExplorerItemViewModel>();
         }
