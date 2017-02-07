@@ -67,6 +67,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
+using Dev2.Studio.ActivityDesigners;
 
 // ReSharper disable CatchAllClause
 // ReSharper disable InconsistentNaming
@@ -1671,7 +1672,8 @@ namespace Dev2.Studio.ViewModels
 
         public IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel)
         {
-            var workflow = new WorkflowDesignerViewModel(resourceModel) { IsTestView = true };
+            var workflow = new WorkflowDesignerViewModel(resourceModel,false) { IsTestView = true };
+            ActivityDesignerHelper.AddDesignerAttributes(workflow);
             return workflow;
         }
 
