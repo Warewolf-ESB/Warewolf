@@ -9,6 +9,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Threading;
 using Warewolf.Studio.Core;
 
@@ -19,7 +20,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         private Mock<IManageOAuthSourceModel> _updateManager;
         private Mock<IOAuthSource> _oAuthSource;
-
+        private Mock<IAsyncWorker> _asyncWorkerMock;
         private ManageOAuthSourceViewModel _manageOAuthSourceViewModel;
 
         [TestInitialize]
@@ -27,9 +28,20 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             _updateManager = new Mock<IManageOAuthSourceModel>();
             _oAuthSource = new Mock<IOAuthSource>();
+            _asyncWorkerMock = new Mock<IAsyncWorker>();
             _oAuthSource.SetupProperty(p => p.ResourceName, "Test");
-
-            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object,new SynchronousAsyncWorker()) { Name = "Testing OAuth" };
+            _updateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+              .Returns(_oAuthSource.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<IOAuthSource>>(),
+                                            It.IsAny<Action<IOAuthSource>>()))
+                            .Callback<Func<IOAuthSource>, Action<IOAuthSource>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
+            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object, _asyncWorkerMock.Object) { Name = "Testing OAuth" };
         }
 
         [TestMethod]
