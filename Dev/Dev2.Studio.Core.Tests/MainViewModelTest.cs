@@ -2164,7 +2164,6 @@ namespace Dev2.Core.Tests
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditServer(source.Object, It.IsAny<IServer>());
             mockWM.Verify(manager => manager.EditServer(It.IsAny<IServerSource>(), It.IsAny<IServer>()));
-            MainViewModel.EditServer(source.Object);
         }
 
         [TestMethod]

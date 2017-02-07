@@ -1215,11 +1215,6 @@ namespace Dev2.Studio.ViewModels
             PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, @"", false, true, false, false, false, false);
         }
 
-        public void EditServer(IServerSource selectedServer)
-        {
-            _worksurfaceContextManager.EditServer(selectedServer, ActiveServer);
-        }
-
         public void EditSqlServerResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey = null)
         {
             workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.SqlServerSource, selectedSourceDefinition.Id);

@@ -171,7 +171,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsTrue(canExecute);
-            popupControllerMock.Verify(it => it.ShowConnectServerVersionConflict("0.0.0.1", "0.0.0.6"),Times.Never());
+            popupControllerMock.Verify(it => it.ShowConnectServerVersionConflict("0.0.0.1", "0.0.0.6"), Times.Never());
             _serverMock.Verify(it => it.ConnectAsync());
             shellViewModelMock.Verify(it => it.SetActiveEnvironment(envId));
         }
@@ -441,7 +441,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(serverEnvironmentId));
         }
 
-        
+
         [TestMethod]
         public void TestLoadServers()
         {
@@ -450,7 +450,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serverConnectionEnvironmentId = Guid.NewGuid();
             serverConnectionMock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
             serverConnectionMock.SetupGet(server => server.ResourceID).Returns(Guid.NewGuid);
-            
+
             _serverMock.Setup(server => server.FetchServer(serverConnectionEnvironmentId))
                 .Returns(serverConnectionMock.Object);
             //act
@@ -490,7 +490,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(_target.Servers.Contains(serverConnectionMock.Object));
             Assert.IsFalse(_target.IsConnected);
             Assert.IsFalse(serverDisconnectedRaised);
-            serverConnectionMock.VerifySet(it => it.DisplayName = "My display name",Times.Never);
+            serverConnectionMock.VerifySet(it => it.DisplayName = "My display name", Times.Never);
         }
 
         [TestMethod]
@@ -620,29 +620,33 @@ namespace Warewolf.Studio.ViewModels.Tests
                 repository => repository.Rename(It.IsAny<IExplorerItemViewModel>(), It.IsAny<string>())).Returns(true);
 
             var server = new ServerForTesting(mockExplorerRepository);
-            var server2 = new Server();
-            server2.EnvironmentID = serverGuid;
-            server2.EnvironmentConnection = mockEnvironmentConnection.Object;
+            var server2 = new Server
+            {
+                EnvironmentID = serverGuid,
+                EnvironmentConnection = mockEnvironmentConnection.Object
+            };
             server.EnvironmentID = serverGuid;
             server.ResourceName = "mr_J_bravo";
             mockShellViewModel.Setup(a => a.ActiveServer).Returns(server);
             mockShellViewModel.Setup(model => model.LocalhostServer).Returns(server);
 
             CustomContainer.Register<IServer>(server);
-            CustomContainer.Register<IShellViewModel>(mockShellViewModel.Object);
+            CustomContainer.Register(mockShellViewModel.Object);
 
             var environmentModel = new Mock<IEnvironmentModel>();
             environmentModel.SetupGet(a => a.Connection).Returns(mockEnvironmentConnection.Object);
             environmentModel.SetupGet(a => a.IsConnected).Returns(true);
 
             var e1 = new EnvironmentModel(serverGuid, mockEnvironmentConnection.Object);
-            var repo = new TestEnvironmentRespository(environmentModel.Object, e1);
-            repo.ActiveEnvironment = e1;
+            var repo = new TestEnvironmentRespository(environmentModel.Object, e1) { ActiveEnvironment = e1 };
             new EnvironmentRepository(repo);
 
             bool passed = false;
-            mockShellViewModel.Setup(a => a.EditServer(It.IsAny<IServerSource>()))
-                .Callback((IServerSource a) => { passed = a.ID == serverGuid; });
+            mockShellViewModel.Setup(a => a.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()))
+                .Callback((Guid id1,Guid id2,  IServer a) =>
+                {
+                    passed = a.EnvironmentID == serverGuid;
+                });
             //------------Setup for test--------------------------
             var connectControlViewModel = new ConnectControlViewModel(server, new EventAggregator());
             PrivateObject p = new PrivateObject(connectControlViewModel);
