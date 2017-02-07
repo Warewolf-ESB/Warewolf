@@ -197,7 +197,8 @@ namespace Dev2.Studio.Views
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
-                ResetToStartupView();
+                throw new Exception();
+                //ResetToStartupView();
             }
             if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
