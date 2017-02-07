@@ -958,6 +958,7 @@ namespace Warewolf.Studio.ViewModels
                     return new AsyncObservableCollection<IExplorerItemViewModel>();
                 }
                 var collection = _children;
+                UnfilteredChildren = _children;
                 return new AsyncObservableCollection<IExplorerItemViewModel>(collection.Where(a => a.IsVisible));
             }
             set
