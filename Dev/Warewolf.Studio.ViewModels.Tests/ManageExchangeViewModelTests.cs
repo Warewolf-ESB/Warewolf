@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -19,7 +20,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public ManageExchangeSourceViewModel GetViewModelWithSource()
         {
-            return new ManageExchangeSourceViewModel(new Mock<IManageExchangeSourceModel>().Object, new Mock<IEventAggregator>().Object,new ExchangeSourceDefinition()
+            var mock = new Mock<IManageExchangeSourceModel>();
+            var exchangeSourceDefinition = new ExchangeSourceDefinition()
             {
                 AutoDiscoverUrl = "test",
                 Password = "test",
@@ -27,7 +29,10 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Path = "test",
                 ResourceName = "test exchange",
                 Type = enSourceType.ExchangeSource,
-            }, new SynchronousAsyncWorker())
+            };
+            mock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                .Returns(exchangeSourceDefinition);
+            return new ManageExchangeSourceViewModel(mock.Object, new Mock<IEventAggregator>().Object,exchangeSourceDefinition, new SynchronousAsyncWorker())
             {
                 Name = "Exchange Source",
                 AutoDiscoverUrl = "test Url",
