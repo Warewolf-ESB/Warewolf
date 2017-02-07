@@ -18,14 +18,19 @@ using Dev2.Studio.Model;
 using Dev2.Threading;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Interfaces;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -170,8 +175,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
-                return server.GetServerVersion();
+                var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
+                return activeServer.GetServerVersion();
             }
         }
 
@@ -222,7 +227,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             });
         }
 
-        private void SetupProgressSpinner(List<string> messageList, string url)
+        private async void SetupProgressSpinner(List<string> messageList, string url)
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
@@ -239,13 +244,62 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 steps = StepsToFollow;
             }
+
+            var serverLogFile = await GetServerLogFile();
+            var studioLogFile = GetStudioLogFile();
             string description = "Server Version : " + ServerVersion + Environment.NewLine + " " + Environment.NewLine +
                                  "Studio Version : " + StudioVersion + Environment.NewLine + " " + Environment.NewLine +
                                  "Email Address : " + email + Environment.NewLine + " " + Environment.NewLine +                                 
                                  "Steps to follow : " + steps + Environment.NewLine + " " + Environment.NewLine +
-                                 StackTrace;
+                                 StackTrace + Environment.NewLine + " " + Environment.NewLine +
+                                 "Warewolf Studio log file : " + Environment.NewLine + " " + Environment.NewLine + 
+                                 studioLogFile + Environment.NewLine + " " + Environment.NewLine +
+                                 "Warewolf Server log file : " + Environment.NewLine + " " + Environment.NewLine + 
+                                 serverLogFile;
 
             WebServer.SendErrorOpenInBrowser(messageList, description, url);
+        }
+
+        private static async Task<string> GetServerLogFile()
+        {
+            var activeEnvironment = CustomContainer.Get<IMainViewModel>().ActiveEnvironment;
+            WebClient client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
+            var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile?numLines=10", activeEnvironment.Connection);
+            var serverLogFile = await client.DownloadStringTaskAsync(managementServiceUri);
+            return serverLogFile;
+        }
+
+        private string GetStudioLogFile()
+        {
+            string studioLogFile;
+            var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var logFile = Path.Combine(localAppDataFolder, "Warewolf", "Studio Logs", "Warewolf Studio.log");
+            if (File.Exists(logFile))
+            {
+                var numberOfLines = GlobalConstants.LogFileNumberOfLines;
+                var buffor = new Queue<string>(numberOfLines);
+                using (Stream stream = File.Open(logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    var realEnd = stream.Length - StackTrace.Length;
+                    var file = new StreamReader(stream);
+                    while (stream.Position<realEnd)
+                    {
+                        string line = file.ReadLine();
+                        if (buffor.Count >= numberOfLines)
+                        {
+                            buffor.Dequeue();
+                        }
+                        buffor.Enqueue(line);
+                    }
+                    string[] lastLines = buffor.ToArray();
+                    studioLogFile = string.Join(Environment.NewLine, lastLines);
+                }
+            }
+            else
+            {
+                studioLogFile = "Could not locate Warewolf Studio log file.";
+            }
+            return studioLogFile;
         }
 
         /// <summary>
