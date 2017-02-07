@@ -2429,7 +2429,7 @@ namespace Warewolf.UITests
         {
             Mouse.StartDragging(Tab);
             Mouse.StopDragging(0, 21);
-            Playback.Wait(1500);
+            Playback.Wait(2000);
         }
 
         public void Enter_Recordset_On_Length_tool()
@@ -5677,16 +5677,9 @@ namespace Warewolf.UITests
         [When(@"I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab")]
         public void Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab()
         {
-#if DEBUG
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = @"dev2\dylan.delport";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "P@ssword01";
-#else
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = @"Warewolf Administrators\IntegrationTester";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "I73573r0";            
-        
-#endif
-
-            }
+        }
 
         [When(@"I Enter Public As Windows Group")]
         public void Enter_Public_As_Windows_Group()
