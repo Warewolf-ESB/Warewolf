@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    internal static class OutputSetter
+    internal static class OutputVisibilitySetter
     {
         internal static void SetGenerateOutputsVisible(IGenerateInputArea inputArea, IGenerateOutputArea outputArea, Action<bool> action, bool value)
         {
