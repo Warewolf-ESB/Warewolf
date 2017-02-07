@@ -9,6 +9,11 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 // ReSharper disable ExplicitCallerInfoArgument
@@ -97,18 +102,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
                 OnPropertyChanged();
             }
         }
-        public bool I { get; set; }
-        public string NamespaceDisplayText
-        {
-            get
-            {
-                if (ToolRegionName.ToUpper().Contains("DOTNET"))
-                {
-                    return "Namespace/Class";
-                }
-                return "Namespace";
-            }
-        }
+
 
         private void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
