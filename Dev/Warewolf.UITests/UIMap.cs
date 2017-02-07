@@ -4069,6 +4069,7 @@ namespace Warewolf.UITests
         public void Click_Duplicate_From_ExplorerContextMenu(string ServiceName)
         {
             Filter_Explorer(ServiceName);
+            Assert.AreEqual(ServiceName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             Duplicate_ExplorerLocalhostFirstItem_With_ExplorerContextMenu();
         }
 
@@ -8785,10 +8786,6 @@ namespace Warewolf.UITests
 
         public void Select_GACAssemblyFile_From_ChooseDLLWindow(string filter)
         {
-            if (string.IsNullOrEmpty(ChooseDLLWindow.FilterTextBox.Text) == false)
-            {
-                Mouse.Click(ChooseDLLWindow.FilterTextBox.ClearSearchButton);
-            }
             ChooseDLLWindow.FilterTextBox.Text = filter;
             Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem, new Point(122, 6));
             Assert.IsFalse(string.IsNullOrEmpty(ChooseDLLWindow.FilesTextBox.Text), "Files Textbox is empty.");
