@@ -10,6 +10,7 @@
 
 using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable InconsistentNaming
 
 namespace Dev2.Data.Tests.DecisionsTests
 {
@@ -21,12 +22,179 @@ namespace Dev2.Data.Tests.DecisionsTests
         [TestCategory("IsBetween_HandlesType")]
         public void IsBetween_HandlesType_ReturnsIsBetweenType()
         {
-            var decisionType = enDecisionType.IsBetween;
+            const enDecisionType DecisionType = enDecisionType.IsBetween;
             //------------Setup for test--------------------------
             var isBetween = new IsBetween();
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            Assert.AreEqual(decisionType, isBetween.HandlesType());
+            Assert.AreEqual(DecisionType, isBetween.HandlesType());
         }
+
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, true is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTest_Invoke_TrueIsReturned()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "50", "2", "100" });
+
+            //assert
+            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, true is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTestLargerValueFirst_Invoke_TrueIsReturned()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "50", "100", "2" });
+
+            //assert
+            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, false is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTest_Invoke_FalseIsReturned()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "100", "2", "50" });
+
+            //assert
+            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, false is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTest_Invoke_IsFromValue_FalseIsReturned()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2", "2", "50" });
+
+            //assert
+            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, false is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTest_Invoke_IsToValue_FalseIsReturned()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "50", "2", "50" });
+
+            //assert
+            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, true is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTest_Invoke_TrueIsReturned_DateTime()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2016/10/14", "2016/10/13", "2016/10/16" });
+
+            //assert
+            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, true is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTestLargerValueFirst_Invoke_TrueIsReturned_DateTime()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2016/10/14", "2016/10/16", "2016/10/13" });
+
+            //assert
+            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, false is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTest_Invoke_FalseIsReturned_DateTime()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2016/10/17", "2016/10/13", "2016/10/16" });
+
+            //assert
+            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, false is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTest_Invoke_IsFromValue_FalseIsReturned_DateTime()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2016/10/13", "2016/10/13", "2016/10/16" });
+
+            //assert
+            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, false is expected")]
+        [Owner("Ashley Lewis")]
+        public void IsBetween_IsBetweenUnitTest_Invoke_IsToValue_FalseIsReturned_DateTime()
+        {
+            //init
+            var comparer = new IsBetween();
+
+            //exe
+            var actual = comparer.Invoke(new[] { "2016/10/16", "2016/10/13", "2016/10/16" });
+
+            //assert
+            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+
+        }        
     }
 }
