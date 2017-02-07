@@ -37,7 +37,7 @@ namespace Warewolf.UITests
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
-            Playback.PlaybackSettings.ContinueOnError = true;
+            Playback.PlaybackSettings.ContinueOnError = false;
 #if DEBUG
             Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
 #else  
