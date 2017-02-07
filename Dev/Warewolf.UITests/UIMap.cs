@@ -1128,14 +1128,16 @@ namespace Warewolf.UITests
         public void ValidateICanDeploy(string resource)
         {
             Filter_Deploy_Source_Explorer(resource);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled);
+            Playback.Wait(1000);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled, "The Deploy selection checkbox is not Enabled");
         }
 
         [Then(@"I validate I can not Deploy ""(.*)""")]
         public void ValidateICanNotDeploy(string resource)
         {
             Filter_Deploy_Source_Explorer(resource);
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled);
+            Playback.Wait(1000);
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled, "The Deploy selection checkbox is Enabled");
         }
 
         public void TryCloseDeployWizardTab()
@@ -4487,13 +4489,13 @@ namespace Warewolf.UITests
         [When(@"I Click Hello World Erase Schedule Button")]
         public void Click_HelloWorldSchedule_EraseSchedulerButton()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EraseScheduleButton, new Point(6, 16));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton, new Point(6, 16));
         }
 
         [When(@"I Click Scheduler Enable Disable Checkbox Button")]
         public void Click_HelloWorldSchedule_EnableOrDisableCheckbox()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EnableOrDisableCheckBox);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EnableOrDisableCheckBox);
         }
 
         [When(@"I Click Scheduler ResourcePicker Button")]
@@ -9066,6 +9068,13 @@ namespace Warewolf.UITests
         public void I_Expand_First_Action_Tree()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.SetActivitiesExpander.Expanded = true;
+        }
+
+        public void Create_Scheduler_Using_Shortcut()
+        {
+            var scheduleNewTaskListItem = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList;
+            Mouse.Click(scheduleNewTaskListItem, new Point(151, 13));
+            Keyboard.SendKeys(scheduleNewTaskListItem, "N", ModifierKeys.Control);
         }
     }
 }
