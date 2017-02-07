@@ -82,6 +82,18 @@ namespace Warewolf.Studio.ViewModels.Tests
                                 errorAction(ex);
                             }
                         });
+
+            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+              .Returns(_serverSourceMock.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<IServerSource>>(),
+                                            It.IsAny<Action<IServerSource>>()))
+                            .Callback<Func<IServerSource>, Action<IServerSource>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
             _updateManagerMock.Setup(it => it.GetComputerNames())
                 .Returns(new List<string> { "computerName1", "computerName2" });
             _asyncWorkerMock.Setup(
