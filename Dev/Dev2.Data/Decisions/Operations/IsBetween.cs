@@ -33,7 +33,7 @@ namespace Dev2.Data.Decisions.Operations
             DateTime[] dtVal = new DateTime[3];
 
             int pos = 0;
-
+            bool isDateTimeCompare = false;
             foreach(string c in cols)
             {
                 if(!double.TryParse(c, out dVal[pos]))
@@ -44,13 +44,12 @@ namespace Dev2.Data.Decisions.Operations
                         if (DateTime.TryParse(c, out dt))
                         {
                             dtVal[pos] = dt;
+                            isDateTimeCompare = true;
                         }
                     }
                     catch(Exception ex)
                     {
-                        
                         Dev2Logger.Error(ex);
-                        // Best effort ;)
                     }
                 }
 
@@ -60,27 +59,28 @@ namespace Dev2.Data.Decisions.Operations
 
             double left;
             double right;
-
-            if(dVal.Length == 3)
+            try
             {
+                if (isDateTimeCompare)
+                {
+                    left = dtVal[0].Ticks - dtVal[1].Ticks;
+                    right = dtVal[0].Ticks - dtVal[2].Ticks;
+                }
+                else
+                {
 
-                left = dVal[0] - dVal[1];
-                right = dVal[0] - dVal[2];
+                    left = dVal[0] - dVal[1];
+                    right = dVal[0] - dVal[2];
 
                 
+                }
             }
-            else if(dtVal.Length == 3)
+            catch(Exception e)
             {
-                left = dtVal[0].Ticks - dtVal[1].Ticks;
-                right = dtVal[0].Ticks - dtVal[2].Ticks;
-
-            }
-            else
-            {
+                Dev2Logger.Error(ErrorResource.IsBetweenDataTypeMismatch,e);
                 throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
-            }
-
-            return left > 0 && right < 0;
+            }            
+            return left > 0 && right < 0 || left < 0 && right > 0;
         }
     }
 }
