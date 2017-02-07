@@ -85,14 +85,24 @@ namespace Warewolf.Studio.ViewModels.Tests
                             exception(e);
                         }
                     });
-
+            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+            .Returns(_pluginSourceMock.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<IPluginSource>>(),
+                                            It.IsAny<Action<IPluginSource>>()))
+                            .Callback<Func<IPluginSource>, Action<IPluginSource>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
             _changedProperties = new List<string>();
-            _target = new ManagePluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, new SynchronousAsyncWorker());
+            _target = new ManagePluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object);
             _target.PropertyChanged += (sender, e) => { _changedProperties.Add(e.PropertyName); };
 
             _changedPropertiesSource = new List<string>();
          
-            _targetSource = new ManagePluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _pluginSourceMock.Object, new SynchronousAsyncWorker());
+            _targetSource = new ManagePluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _pluginSourceMock.Object, _asyncWorkerMock.Object);
             _targetSource.PropertyChanged += (sender, e) => { _changedPropertiesSource.Add(e.PropertyName); };
             
             _changedPropertiesRequestServiceNameViewModel = new List<string>();
