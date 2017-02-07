@@ -1144,7 +1144,7 @@ namespace Warewolf.UITests
         public void ValidateICanNotDeploy(string resource)
         {
             Filter_Deploy_Source_Explorer(resource);
-            Playback.Wait(1000);
+            Playback.Wait(2000);
             Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled, "The Deploy selection checkbox is Enabled");
         }
 
