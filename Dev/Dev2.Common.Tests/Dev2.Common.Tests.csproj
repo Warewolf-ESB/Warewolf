@@ -79,6 +79,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ExtensionMethodsTest.cs" />
+    <Compile Include="MapperTests.cs" />
     <Compile Include="PluginConstructorTests.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
   </ItemGroup>
