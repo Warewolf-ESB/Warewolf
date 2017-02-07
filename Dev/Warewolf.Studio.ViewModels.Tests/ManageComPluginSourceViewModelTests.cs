@@ -429,21 +429,21 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFromModelFileSystem()
         {
             //arrange
-            var expectedName = "someexpectedName";
-            var expectedPath = "someexpectedPath";
+            const string ExpectedName = "someexpectedName";
+            const string ExpectedPath = "someexpectedPath";
             var pluginSourceMock = new Mock<IComPluginSource>();
             var selectedDllMock = new Mock<IFileListing>();
-            var selectedDllName = "someSelectedDLLName";
+            const string SelectedDllName = "someSelectedDLLName";
             selectedDllMock.SetupGet(listing => listing.Name).Returns("File System");
             pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(selectedDllMock.Object);
-            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(expectedName);
-            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(expectedPath);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(ExpectedName);
+            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(ExpectedPath);
             var dllListingMock = new Mock<IDllListingModel>();
             dllListingMock.SetupGet(it => it.Name).Returns("File System");
             var dllListingChildrenMock = new Mock<IDllListingModel>();
             dllListingMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IDllListingModel>() { dllListingChildrenMock.Object });
-            dllListingChildrenMock.SetupGet(it => it.Name).Returns(selectedDllName);
+            dllListingChildrenMock.SetupGet(it => it.Name).Returns(SelectedDllName);
             _targetPluginSource.DllListings = new ObservableCollection<IDllListingModel>() { dllListingMock.Object };
 
             //act
@@ -454,7 +454,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             dllListingMock.VerifySet(it => it.IsExpanded = true);
             dllListingMock.VerifySet(it => it.IsSelected = true);
             Assert.AreSame(dllListingMock.Object, _targetPluginSource.SelectedDll);
-            Assert.AreEqual(expectedName, _targetPluginSource.Name);
         }
 
         [TestMethod]

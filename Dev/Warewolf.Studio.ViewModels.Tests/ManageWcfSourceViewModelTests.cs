@@ -26,19 +26,21 @@ namespace Warewolf.Studio.ViewModels.Tests
                 EndpointUrl = "http/test/com"
             };
 
-            return new ManageWcfSourceViewModel(UpdateManager, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), sourceModel, new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object);
+            var updateManager = new Mock<IWcfSourceModel>();
+            updateManager.Setup(model => model.ServerName).Returns("Test");
+            updateManager.Setup(model => model.FetchSource(It.IsAny<Guid>())).Returns(sourceModel);
+            var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(worker => worker.Start(It.IsAny<Func<IWcfServerSource>>(), It.IsAny<Action<IWcfServerSource>>()))
+                                                .Callback<Func<IWcfServerSource>, Action<IWcfServerSource>>((func, action) =>
+                                                {
+                                                    var wcfSource = func.Invoke();
+                                                    action(wcfSource);
+                                                });
+            var manageWcfSourceViewModel = new ManageWcfSourceViewModel(updateManager.Object, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), sourceModel, asyncWorker.Object, new Mock<IEnvironmentModel>().Object);
+            return manageWcfSourceViewModel;
         }
 
-        private static ManageWcfSourceModel UpdateManager
-        {
-            get
-            {
-                var manager = new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, new Mock<IQueryManager>().Object) { ServerName = "Test" };
-                var serverName = manager.ServerName;
-
-                return manager;
-            }
-        }
+       
 
         public ManageWcfSourceViewModel TestModel()
         {
