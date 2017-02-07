@@ -413,7 +413,7 @@ namespace Warewolf.Studio.ViewModels
 
         void ServerDisconnected(object _, IServer server)
         {
-            var environmentModel = _environments.FirstOrDefault(model => model.Server.EnvironmentID == server.EnvironmentID);
+            var environmentModel = _environments?.FirstOrDefault(model => model?.Server?.EnvironmentID == server?.EnvironmentID);
             if (environmentModel != null)
             {
                 foreach (var a in environmentModel.AsList())

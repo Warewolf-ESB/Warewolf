@@ -23,6 +23,7 @@ Scenario: Unsaved Tests Contain a Star in their Name
 	Then The "1st" Added Test "Has No" Unsaved Star
 
 Scenario: Run Passing Tests
+	Given The Warewolf Studio is running
 	When I Click New Workflow Ribbon Button
 	And I Drag Toolbox Random Onto DesignSurface
 	And I Enter Dice Roll Values
