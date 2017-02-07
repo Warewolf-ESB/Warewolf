@@ -420,7 +420,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
             set
             {
                 _generateOutputsVisible = value;
-                OutputSetter.SetGenerateOutputsVisible(ManageServiceInputViewModel.InputArea, ManageServiceInputViewModel.OutputArea, SetRegionVisibility, value);
+                OutputVisibilitySetter.SetGenerateOutputsVisible(ManageServiceInputViewModel.InputArea, ManageServiceInputViewModel.OutputArea, SetRegionVisibility, value);
                 OnPropertyChanged();
             }
         }

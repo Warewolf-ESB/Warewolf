@@ -297,7 +297,7 @@
     <Compile Include="Designers2\Core\ManageWebServiceInputViewModel.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\ComNamespaceRegion.cs" />
     <Compile Include="Designers2\Core\NamespaceRegion\DotNetNamespaceRegion.cs" />
-    <Compile Include="Designers2\Core\OutputSetter.cs" />
+    <Compile Include="Designers2\Core\OutputVisibilitySetter.cs" />
     <Compile Include="Designers2\Core\OutputsRegion.cs" />
     <Compile Include="Designers2\Core\ScriptChooser.cs" />
     <Compile Include="Designers2\Core\Source\DatabaseSourceRegion.cs" />
