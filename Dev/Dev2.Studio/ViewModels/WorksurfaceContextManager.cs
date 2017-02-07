@@ -1320,7 +1320,8 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
             if (_createDesigners)
             {
-                ActivityDesignerHelper.AddDesignerAttributes(workSurfaceContextViewModel.WorkSurfaceViewModel as WorkflowDesignerViewModel);
+                if (workSurfaceContextViewModel != null)
+                    ActivityDesignerHelper.AddDesignerAttributes(workSurfaceContextViewModel.WorkSurfaceViewModel as WorkflowDesignerViewModel);
             }
             OpeningWorkflowsHelper.RemoveWorkflow(workSurfaceKey);
             _mainViewModel.CanDebug = true;

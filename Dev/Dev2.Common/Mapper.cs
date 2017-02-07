@@ -7,7 +7,7 @@ namespace Dev2.Common
     //http://stackoverflow.com/questions/286294/object-to-object-mapper
     public class Mapper
     {
-       
+
         private static readonly Dictionary<KeyValuePair<Type, Type>, object> Maps = new Dictionary<KeyValuePair<Type, Type>, object>();
         /// <summary>
         /// 
@@ -25,13 +25,15 @@ namespace Dev2.Common
         }
 
         /// <summary>
-        /// 
+        /// Maps property from obj1 to obj2 with an option to map fields or exclude some properties
         /// </summary>
         /// <typeparam name="TMapFrom"></typeparam>
         /// <typeparam name="TMapTo"></typeparam>
         /// <param name="mapFrom"></param>
         /// <param name="mapTo"></param>
-        public static void Map<TMapFrom, TMapTo>(TMapFrom mapFrom, TMapTo mapTo)
+        /// <param name="mapFields"></param>
+        /// <param name="ignoreList"></param>
+        public static void Map<TMapFrom, TMapTo>(TMapFrom mapFrom, TMapTo mapTo, bool mapFields = true, params string[] ignoreList)
             where TMapFrom : class
             where TMapTo : class
         {
@@ -47,7 +49,6 @@ namespace Dev2.Common
             }
             var tFrom = mapFrom.GetType();
 
-            //If object not already instantiated, make it so. A parameterless constructor will need to be defined!
             if (mapTo == null)
                 mapTo = Activator.CreateInstance<TMapTo>();
 
@@ -56,12 +57,11 @@ namespace Dev2.Common
             if (!hasMap)
                 throw new ArgumentException($"No mapping exists from {tFrom.Name} to {tTo.Name}");
 
-            var mapToProperties = tTo.GetProperties();
-            var mapFromProperties = tFrom.GetProperties();
+            var mapToProperties = tTo.GetProperties().Where(info => !ignoreList.Contains(info.Name));
+            var mapFromProperties = tFrom.GetProperties().Where(info => !ignoreList.Contains(info.Name));
             var mapToFields = tTo.GetFields();
             var mapFromFields = tFrom.GetFields();
 
-            //Map properties on the same name
             var equalProps = from tP in mapToProperties
                              join fP in mapFromProperties on tP.Name equals fP.Name
                              select new
@@ -70,7 +70,6 @@ namespace Dev2.Common
                                  FromProperty = fP
                              };
 
-            //Map fields on the same name
             var equalFields = from tF in mapToFields
                               join fF in mapFromFields on tF.Name equals fF.Name
                               select new
@@ -78,34 +77,22 @@ namespace Dev2.Common
                                   ToField = tF,
                                   FromField = fF
                               };
-
-            //O(n)
             foreach (var prop in equalProps)
             {
-
-                //They have to have the same return type
                 if (prop.FromProperty.PropertyType.Name != prop.ToProperty.PropertyType.Name)
                     continue;
-
-                //Get the value from the mapFrom. Caveat: Indexing properties not supported!
                 var fromValue = prop.FromProperty.GetValue(mapFrom, null);
                 if (prop.ToProperty.CanWrite)
                     prop.ToProperty.SetValue(mapTo, fromValue, null);
             }
-
-            foreach (var field in equalFields)
-            {
-                //Fields must have the same return type
-                if (field.FromField.FieldType.Name != field.ToField.FieldType.Name)
-                    continue;
-
-                //Get the value from the mapFrom and set to the mapTo field
-                var fieldValue = field.FromField.GetValue(mapFrom);
-                field.ToField.SetValue(mapTo, fieldValue);
-            }
-
-            //If the custom mapping function is not null, call it.
-            //This will overwrite previously mapped properties
+            if (mapFields)
+                foreach (var field in equalFields)
+                {
+                    if (field.FromField.FieldType.Name != field.ToField.FieldType.Name)
+                        continue;
+                    var fieldValue = field.FromField.GetValue(mapFrom);
+                    field.ToField.SetValue(mapTo, fieldValue);
+                }
             map?.Invoke(mapFrom, mapTo);
         }
     }
