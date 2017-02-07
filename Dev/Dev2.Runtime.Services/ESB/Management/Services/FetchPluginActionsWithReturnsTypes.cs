@@ -84,6 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             IsObject = x.IsObject
                             ,
                             Dev2ReturnType = x.Dev2ReturnType,
+                            
                             IntellisenseFilter = x.IsObject ? enIntellisensePartType.JsonObject : enIntellisensePartType.All
 
                         } as IServiceInput).ToList(),
@@ -91,7 +92,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Variables = a.Parameters.Select(x => new NameValue { Name = x.Name + " (" + x.TypeName + ")", Value = "" } as INameValue).ToList(),
                         Dev2ReturnType = a.Dev2ReturnType,
                         IsObject = a.IsObject,                        
-                        IsVoid = a.IsVoid
+                        IsVoid = a.IsVoid,
+                        IsProperty = a.IsProperty
                     } as IPluginAction).ToList();
                     return serializer.SerializeToBuilder(new ExecuteMessage
                     {

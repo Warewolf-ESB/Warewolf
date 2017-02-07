@@ -69,11 +69,12 @@ namespace Warewolf.Studio.ViewModels
         void UpdateRepositoryOnServerSaved(Guid savedServerID)
         {
             var currentServer = Servers.FirstOrDefault(server => server.EnvironmentID == savedServerID);
-            currentServer?.Disconnect();
-            ServerDisconnected?.Invoke(this,currentServer);
-            var idx = Servers.IndexOf(currentServer);
+            var idx = -1;
             if (currentServer != null)
             {
+                currentServer.Disconnect();
+                ServerDisconnected?.Invoke(this, currentServer);
+                idx = Servers.IndexOf(currentServer);
                 currentServer.NetworkStateChanged -= OnServerOnNetworkStateChanged;
                 Servers.Remove(currentServer);
             }
@@ -405,7 +406,7 @@ namespace Warewolf.Studio.ViewModels
                         }
                         else
                         {
-                            ServerDisconnected.Invoke(this, connection);
+                            ServerDisconnected?.Invoke(this, connection);
                         }
                     }
                     OnPropertyChanged(() => connection.IsConnected);

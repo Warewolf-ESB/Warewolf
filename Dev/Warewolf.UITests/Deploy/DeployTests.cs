@@ -41,7 +41,7 @@ namespace Warewolf.UITests
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            Assert.AreEqual("Remote Connection Integration", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Deploy tab destination server did not disconnect after clicking disconnect button.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Deploy tab Destin server did not change to localhost(Connected) after clicking disconnect button.");
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Warewolf.UITests
             UIMap.Click_Deploy_Tab_Source_Refresh_Button();
             UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
             UIMap.Click_Deploy_Tab_Source_Refresh_Button();
-            Assert.AreEqual("Remote Connection Integration", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText + "Deploy tab destination server did not disconnect after clicking disconnect button.");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Deploy tab Source server did not change to localhost(Connected) after clicking disconnect button.");
         }
 
         [TestMethod]
@@ -68,30 +68,6 @@ namespace Warewolf.UITests
             UIMap.ClickDeployVersionConflictsMessageBoxOK();            
             UIMap.ClickDeployConflictsMessageBoxOK();
             UIMap.ClickDeploySuccessfulMessageBoxOK();
-        }
-
-        [TestMethod]
-        [TestCategory("Deploy")]
-        public void DisconnectRemoteDestinationServerUITest()
-        {
-            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote server name does not end in (Connected) in deploy destination server explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
-            UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Remote server name still ends with (Connected) in deploy destination server explorer remote server dropdown list after clicking the disconnect button.");
-            UIMap.Select_localhost_From_Deploy_Tab_Destination_Server_Combobox();
-        }
-
-        [TestMethod]
-        [TestCategory("Deploy")]
-        public void DisconnectRemoteSourceServerUITest()
-        {
-            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-            UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote server name does not end in (Connected) in deploy source server explorer remote server dropdown list after clicking the connect button and waiting for the spinner.");
-            UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Remote server name still ends with (Connected) in deploy source server explorer remote server dropdown list after clicking the disconnect button.");
-            UIMap.Select_localhost_From_Deploy_Tab_Source_Server_Combobox();
         }
 
         [TestMethod]
