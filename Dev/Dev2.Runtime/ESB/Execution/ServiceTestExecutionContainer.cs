@@ -713,10 +713,10 @@ namespace Dev2.Runtime.ESB.Execution
             var cols1 = dataObject.Environment.EvalAsList(variable, 0);
             var c1 = new WarewolfAtomIterator(cols1);
             var c2 = new WarewolfAtomIterator(value);
-            var c3 = new WarewolfAtomIterator(from);
+            var c3 = new WarewolfAtomIterator(to);
             if (opt.ArgumentCount > 2)
             {
-                c2 = new WarewolfAtomIterator(to);
+                c2 = new WarewolfAtomIterator(from);
             }
             iter.AddVariableToIterateOn(c1);
             iter.AddVariableToIterateOn(c2);
