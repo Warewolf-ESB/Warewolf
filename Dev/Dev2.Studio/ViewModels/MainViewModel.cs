@@ -158,18 +158,16 @@ namespace Dev2.Studio.ViewModels
                     {
                         EnvironmentRepository.ActiveEnvironment = value;
                     }
-                    OnActiveEnvironmentChanged();
+                    if (_activeEnvironment.Connection.IsConnected)
+                    {
+                        OnActiveEnvironmentChanged();
+                    }
                     NotifyOfPropertyChange(() => ActiveEnvironment);
-
                 }
             }
         }
 
-
-
         public IBrowserPopupController BrowserPopupController { get; }
-
-
 
         void OnActiveEnvironmentChanged()
         {
@@ -616,7 +614,7 @@ namespace Dev2.Studio.ViewModels
         public void SetActiveEnvironment(Guid environmentId)
         {
             var environmentModel = EnvironmentRepository.Get(environmentId);
-            ActiveEnvironment = environmentModel != null && (environmentModel.IsConnected || environmentModel.IsLocalHost) ? environmentModel : EnvironmentRepository.Get(Guid.Empty);
+            ActiveEnvironment = environmentModel;
             var server = ExplorerViewModel?.ConnectControlViewModel?.Servers?.FirstOrDefault(a => a.EnvironmentID == environmentId);
             if (server != null)
             {

@@ -212,6 +212,8 @@ namespace Warewolf.Studio.ViewModels
                 IsConnected = SelectedConnection.IsConnected;
                 IsConnecting = false;
                 IsLoading = false;
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                SetActiveEnvironment(mainViewModel);
             }
         }
 
@@ -300,11 +302,13 @@ namespace Warewolf.Studio.ViewModels
         {
             if (mainViewModel != null)
             {
-                if (_selectedConnection.IsConnected && ShouldUpdateActiveEnvironment &&
-                    !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
+                if (_selectedConnection?.ResourceName != null)
                 {
-                    mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
-                    mainViewModel.SetActiveServer(_selectedConnection);
+                    if (ShouldUpdateActiveEnvironment && !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
+                    {
+                        mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
+                        mainViewModel.SetActiveServer(_selectedConnection);
+                    }
                 }
             }
         }

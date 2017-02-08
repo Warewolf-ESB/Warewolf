@@ -563,6 +563,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var newEnvironmentID = Guid.NewGuid();
             var server2Mock = new Mock<IServer>();
             server2Mock.SetupGet(it => it.EnvironmentID).Returns(newEnvironmentID);
+            server1Mock.SetupGet(it => it.DisplayName).Returns("server2MockDisplayName");
 
             _serverMock.Setup(it => it.GetServerConnections())
                 .Returns(new List<IServer> { server1Mock.Object, server2Mock.Object });
