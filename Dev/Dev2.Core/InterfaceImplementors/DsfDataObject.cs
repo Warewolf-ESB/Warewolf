@@ -199,6 +199,7 @@ namespace Dev2.DynamicServices
 
         private StringBuilder _rawPayload;
         Guid _debugEnvironmentId;
+        private string _parentInstanceID;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
@@ -245,7 +246,11 @@ namespace Dev2.DynamicServices
 
         public Guid EnvironmentID { get; set; }
 
-        public string ParentInstanceID { get; set; }
+        public string ParentInstanceID
+        {
+            get { return _parentInstanceID; }
+            set { _parentInstanceID = value; }
+        }
         public Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
         public string CurrentBookmarkName { get; set; }
         public string ServiceName { get; set; }

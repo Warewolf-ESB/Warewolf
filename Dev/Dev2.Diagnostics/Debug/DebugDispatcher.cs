@@ -87,7 +87,7 @@ namespace Dev2.Diagnostics.Debug
             _shutdownRequested = true;
         }
 
-        public void Write(IDebugState debugState, bool isTestExecution, string testName, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
+        public void Write(IDebugState debugState, bool isTestExecution,bool isDebugFromWeb, string testName, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
         {
             if (debugState == null)
             {
@@ -97,6 +97,11 @@ namespace Dev2.Diagnostics.Debug
             if (isTestExecution)
             {
                 TestDebugMessageRepo.Instance.AddDebugItem(debugState.SourceResourceID, testName, debugState);
+                return;
+            }
+            if (isDebugFromWeb)
+            {
+                WebDebugMessageRepo.Instance.AddDebugItem(debugState.ClientID, debugState.SessionID, debugState);
                 return;
             }
 
