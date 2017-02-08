@@ -3040,12 +3040,15 @@ namespace Warewolf.UITests
         [Given(@"I Click Close RabbitMQ Source Tab Button")]
         [When(@"I Click Close RabbitMQ Source Tab Button")]
         [Then(@"I Click Close RabbitMQ Source Tab Button")]
-        public void Click_Close_RabbitMQ_Source_Tab_Button()
+        public void Click_Close_RabbitMQSource_Tab_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.CloseTabButton, new Point(13, 4));
         }
 
-        public void click_ExchangeSource_CloseTabButton()
+        [Given(@"I Click Close Exchange Source Tab Button")]
+        [When(@"I Click Close Exchange Source Tab Button")]
+        [Then(@"I Click Close RabExchangebitMQ Source Tab Button")]
+        public void Click_ExchangeSource_CloseTabButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.CloseButton);
         }
@@ -9081,10 +9084,6 @@ namespace Warewolf.UITests
             }
         }
 
-        public void Click_Close_ExchangeSource_Tab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander, new Point(186, 30));
-        }
         public void I_Expand_First_Action_Tree()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.SetActivitiesExpander.Expanded = true;
