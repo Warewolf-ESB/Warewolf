@@ -1,4 +1,8 @@
-﻿using Dev2.Common.Interfaces;
+﻿using System;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -20,6 +24,15 @@ namespace Warewolf.Studio.ViewModels
         }
 
         #region Implementation of IManageDatabaseSourceModel
+        public IEmailServiceSource FetchSource(Guid resourceID)
+        {
+            var xaml = _queryProxy.FetchResourceXaml(resourceID);
+            var db = new EmailSource(xaml.ToXElement());
+
+            var def = new EmailServiceSourceDefinition(db);
+            return def;
+        }
+
 
         public string TestConnection(IEmailServiceSource resource)
         {

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
 {
@@ -106,6 +107,7 @@ namespace Dev2.Common.Interfaces
 
     public interface IManageEmailSourceModel
     {
+        IEmailServiceSource FetchSource(Guid resourceIDh);
         string TestConnection(IEmailServiceSource resource);
         void Save(IEmailServiceSource toDbSource);
         string ServerName { get; }

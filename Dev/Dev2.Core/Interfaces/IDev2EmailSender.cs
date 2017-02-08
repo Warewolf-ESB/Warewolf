@@ -1,5 +1,4 @@
 ﻿using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data.TO;
 using Microsoft.Exchange.WebServices.Data;
 
@@ -9,8 +8,6 @@ namespace Dev2.Interfaces
     {
         IExchangeEmailSender EmailSender { get; set; }
         ExchangeService ExchangeService { get; set; }
-        string SendEmail(IExchangeSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
-            // ReSharper restore TooManyArguments
-            ;
+        string SendEmail(IExchange runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors);
     }
 }
