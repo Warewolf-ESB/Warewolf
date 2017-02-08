@@ -8878,7 +8878,7 @@ namespace Warewolf.UITests
         [Then(@"I set AuthenticationType to Public")]
         public void ChangeServerAuthenticationTypeToPublic()
         {
-            Click_Deploy_Tab_Source_Server_Edit_Button();
+            Click_Explorer_RemoteServer_Edit_Button();
             var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
             if (!publicRadioButton.Selected)
             {
