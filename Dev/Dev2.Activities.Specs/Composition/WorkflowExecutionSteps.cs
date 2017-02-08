@@ -100,6 +100,7 @@ namespace Dev2.Activities.Specs.Composition
         const int EnvironmentConnectionTimeout = 3000;
 
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
+        private SpecExternalProcessExecutor _externalProcessExecutor;
         private readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
         private readonly CommonSteps _commonSteps;
 
@@ -123,6 +124,7 @@ namespace Dev2.Activities.Specs.Composition
             mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockshell.Object);
+            _externalProcessExecutor = new SpecExternalProcessExecutor();
         }
 
         [Given(@"Debug states are cleared")]
@@ -1006,18 +1008,21 @@ namespace Dev2.Activities.Specs.Composition
 
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
-
-            foreach (var activity in activityList)
+            if (activityList != null)
             {
-                if (TestStartNode.Action == null)
+
+                foreach (var activity in activityList)
                 {
-                    TestStartNode.Action = activity.Value;
-                }
-                else
-                {
-                    var flowStep = new FlowStep { Action = activity.Value };
-                    flowSteps.Last().Next = flowStep;
-                    flowSteps.Add(flowStep);
+                    if (TestStartNode.Action == null)
+                    {
+                        TestStartNode.Action = activity.Value;
+                    }
+                    else
+                    {
+                        var flowStep = new FlowStep { Action = activity.Value };
+                        flowSteps.Last().Next = flowStep;
+                        flowSteps.Add(flowStep);
+                    }
                 }
             }
 
@@ -3831,6 +3836,17 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [Then(@"I Debug ""(.*)"" in Browser")]
+        public void ThenIDebugInBrowser(string urlString)
+        {
+            _externalProcessExecutor.OpenInBrowser(new Uri(urlString));
+        }
 
+        [Then(@"The Debug in Browser content contains ""(.*)""")]
+        public void ThenTheDebugInBrowserContentContains(string containedText)
+        {
+            Assert.IsTrue(_externalProcessExecutor.WebResult.First().Contains(containedText),
+                _externalProcessExecutor.WebResult.First());
+        }
     }
 }

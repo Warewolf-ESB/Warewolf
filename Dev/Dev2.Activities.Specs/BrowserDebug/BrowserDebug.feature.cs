@@ -77,11 +77,16 @@ namespace Dev2.Activities.Specs.BrowserDebug
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
-testRunner.Given("I create a new unsaved workflow with name \"Unsaved 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I have a workflow \"BlankWorkflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-   testRunner.When("\'1\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"BlankWorkflow\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
    testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 10
+   testRunner.And("I Debug \"http://localhost:3142/secure/BlankWorkflow.debug?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+   testRunner.And("The Debug in Browser content contains \"The workflow must have at least one servic" +
+                    "e or activity connected to the Start Node.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
