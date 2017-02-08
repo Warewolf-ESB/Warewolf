@@ -5,7 +5,6 @@ using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -81,9 +80,7 @@ namespace Warewolf.UIBindingTests.EmailSource
                 EmailFrom = "warewolf@dev2.co.za",
                 EmailTo = "info@dev2.co.za"
             };
-            mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
-                .Returns(emailServiceSourceDefinition);
-            var manageEmailSourceViewModel = new ManageEmailSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, emailServiceSourceDefinition,new SynchronousAsyncWorker());
+            var manageEmailSourceViewModel = new ManageEmailSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, emailServiceSourceDefinition);
             manageEmailSourceControl.DataContext = manageEmailSourceViewModel;
             ScenarioContext.Current.Remove("viewModel");
             ScenarioContext.Current.Add("viewModel", manageEmailSourceViewModel);

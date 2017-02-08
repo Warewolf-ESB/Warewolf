@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 SetActiveStates(_shellViewModel, server);
-                _shellViewModel.OpenResource(item.ResourceId,server.EnvironmentID, server);
+                _shellViewModel.OpenResource(item.ResourceId, server);
             }
         }
 

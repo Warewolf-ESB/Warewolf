@@ -982,51 +982,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        /// <summary>
-        /// Fetches the resource definition.
-        /// </summary>
-        /// <param name="targetEnv">The target env.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="resourceModelId">The resource model unique identifier.</param>
-        /// <param name="prepaireForDeployment"></param>
-        /// <returns></returns>
-        public async Task<ExecuteMessage> FetchResourceDefinitionAsyn(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)
-        {
-            var comsController = new CommunicationController { ServiceName = "FetchResourceDefinitionService" };
-            comsController.AddPayloadArgument("ResourceID", resourceModelId.ToString());
-            comsController.AddPayloadArgument("PrepairForDeployment", prepaireForDeployment.ToString());
-
-            var result = await comsController.ExecuteCommandAsync<ExecuteMessage>(targetEnv.Connection, workspaceId);
-
-            // log the trace for fetch ;)
-            if (result != null)
-                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}");
-
-            return result;
-        }
-
-        /// <summary>
-        /// Fetches the resource definition Asyncronouly.
-        /// </summary>
-        /// <param name="targetEnv">The target env.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="resourceModelId">The resource model unique identifier.</param>
-        /// <param name="prepaireForDeployment"></param>
-        /// <returns></returns>
-        public async Task<ExecuteMessage> FetchResourceDefinitionAsync(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment)
-        {
-            var comsController = new CommunicationController { ServiceName = "FetchResourceDefinitionService" };
-            comsController.AddPayloadArgument("ResourceID", resourceModelId.ToString());
-            comsController.AddPayloadArgument("PrepairForDeployment", prepaireForDeployment.ToString());
-
-            var result = await comsController.ExecuteCommandAsync<ExecuteMessage>(targetEnv.Connection, workspaceId);
-
-            // log the trace for fetch ;)
-            if (result != null)
-                Dev2Logger.Debug($"Fetched Definition For {resourceModelId} From Workspace {workspaceId}");
-
-            return result;
-        }
 
         // Do not make this method virtual.
         // A derived class should not be able to override this method.

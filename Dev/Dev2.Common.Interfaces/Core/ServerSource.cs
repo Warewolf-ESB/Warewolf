@@ -6,22 +6,6 @@ namespace Dev2.Common.Interfaces.Core
 {
     public class ServerSource : IServerSource, IEquatable<ServerSource>
     {
-        public ServerSource(IConnection connection)
-        {
-            Address = connection.Address;
-            ID = connection.ResourceID;
-            AuthenticationType = connection.AuthenticationType;
-            UserName = connection.UserName;
-            Password = connection.Password;
-            ResourcePath = "";
-            ServerName = "";
-            Name = connection.ResourceName;
-        }
-
-        public ServerSource()
-        {
-        }
-
         #region Implementation of IServerSource
 
         public string ServerName { get; set; }

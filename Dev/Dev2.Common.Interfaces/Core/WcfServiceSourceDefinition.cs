@@ -5,19 +5,6 @@ namespace Dev2.Common.Interfaces.Core
 {
     public class WcfServiceSourceDefinition : IWcfServerSource, IEquatable<WcfServiceSourceDefinition>
     {
-        public WcfServiceSourceDefinition(IWcfSource wcfsource)
-        {
-            Id = wcfsource.Id;
-            Name = wcfsource.ResourceName;
-            Path = wcfsource.GetSavePath();
-            ResourceName = wcfsource.Name;
-            EndpointUrl = wcfsource.EndpointUrl;
-        }
-
-        public WcfServiceSourceDefinition()
-        {
-        }
-
         public string ResourceName { get; set; }
         public Guid ResourceID { get; set; }
         public string EndpointUrl { get; set; }

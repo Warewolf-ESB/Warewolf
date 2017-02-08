@@ -104,7 +104,7 @@ namespace Dev2.Studio.ActivityDesigners
 {
     public static class ActivityDesignerHelper
     {
-        public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
+        static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },

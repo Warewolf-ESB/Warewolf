@@ -83,17 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 _changedPropertiesAsyncWorker.Add(args.PropertyName);
             };
-            _updateManagerMock.Setup(model => model.FetchDbSource(It.IsAny<Guid>(), It.IsAny<string>()))
-             .Returns(_dbSourceMock.Object);
-            _asyncWorkerMock.Setup(worker =>
-                                   worker.Start(
-                                            It.IsAny<Func<IDbSource>>(),
-                                            It.IsAny<Action<IDbSource>>()))
-                            .Callback<Func<IDbSource>, Action<IDbSource>>((func, action) =>
-                            {
-                                var dbSource = func.Invoke();
-                                action(dbSource);
-                            });
+
 
             _targetUpdateManagerAggregatorDbSource = new ManageOdbcSourceViewModel(
                 _updateManagerMock.Object,

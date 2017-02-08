@@ -393,7 +393,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.DebugCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId,_target.Server.EnvironmentID, _target.Server));
+            _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId, _target.Server));
             _shellViewModelMock.Verify(it => it.Debug());
         }
 
@@ -515,7 +515,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
-            _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId,_target.Server.EnvironmentID, _target.Server));
+            _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId, _target.Server));
         }
 
         [TestMethod]
@@ -529,7 +529,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.DebugCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId,_target.Server.EnvironmentID, _target.Server));
+            _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId, _target.Server));
             _shellViewModelMock.Verify(it => it.Debug());
         }
 

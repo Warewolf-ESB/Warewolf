@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
@@ -101,8 +100,6 @@ namespace Dev2.Common.Interfaces
 
 
         string ServerName { get; set; }
-
-        IWebServiceSource FetchSource(Guid id);
     }
 
     public interface INameValue: INotifyPropertyChanged

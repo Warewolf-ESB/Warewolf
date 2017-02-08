@@ -129,10 +129,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 
         private void EditDropBoxSource()
         {
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            var activeServer = shellViewModel.ActiveServer;
-            if (activeServer != null)
-                shellViewModel.OpenResource(SelectedSource.ResourceID, activeServer.EnvironmentID, activeServer);
+            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSource.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
         }
 
         public void CreateOAuthSource()

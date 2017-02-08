@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Common.Interfaces
@@ -79,7 +78,5 @@ namespace Dev2.Common.Interfaces
         void Save(ISharepointServerSource toSpSource);
 
         string ServerName { get; set; }
-
-        ISharepointServerSource FetchSource(Guid resourceID);
     }
 }
