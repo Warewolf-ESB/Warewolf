@@ -8819,6 +8819,7 @@ namespace Warewolf.UITests
                 windowsRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(windowsRadioButton.Selected);
@@ -8828,6 +8829,7 @@ namespace Warewolf.UITests
                 publicRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(publicRadioButton.Selected);
@@ -8847,6 +8849,7 @@ namespace Warewolf.UITests
                 windowsRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Select_RemoteConnectionIntegration_From_Explorer();
                 Click_Explorer_RemoteServer_Edit_Button();
@@ -8862,9 +8865,11 @@ namespace Warewolf.UITests
                 publicRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Select_RemoteConnectionIntegration_From_Explorer();
                 Click_Explorer_RemoteServer_Edit_Button();
+                Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
                 Click_Deploy_Ribbon_Button();
                 Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
