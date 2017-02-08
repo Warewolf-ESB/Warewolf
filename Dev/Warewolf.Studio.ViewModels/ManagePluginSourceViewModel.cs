@@ -112,13 +112,10 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("pluginSource", pluginSource);
-            asyncWorker.Start(() => updateManager.FetchSource(pluginSource.Id), source =>
-            {
-                _pluginSource = source;
-                ToItem();
-                FromModel(_pluginSource);
-                SetupHeaderTextFromExisting();
-            });
+            _pluginSource = pluginSource;
+            ToItem();
+            FromModel(_pluginSource);
+            SetupHeaderTextFromExisting();
         }
 
         public ManagePluginSourceViewModel() : base("PluginSource")
@@ -127,11 +124,11 @@ namespace Warewolf.Studio.ViewModels
 
         public override void FromModel(IPluginSource pluginSource)
         {
-            Name = pluginSource.Name;
-            Path = pluginSource.Path;
-            FileSystemAssemblyName = pluginSource.FileSystemAssemblyName;
-            ConfigFilePath = pluginSource.ConfigFilePath;
-            GACAssemblyName = pluginSource.GACAssemblyName;
+            Name = _pluginSource.Name;
+            Path = _pluginSource.Path;
+            FileSystemAssemblyName = _pluginSource.FileSystemAssemblyName;
+            ConfigFilePath = _pluginSource.ConfigFilePath;
+            GACAssemblyName = _pluginSource.GACAssemblyName;
         }
 
         public string FileSystemAssemblyName

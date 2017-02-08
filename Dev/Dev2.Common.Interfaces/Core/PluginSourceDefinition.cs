@@ -1,39 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 
 namespace Dev2.Common.Interfaces.Core
 {
     public class PluginSourceDefinition : IPluginSource
     {
-
-        public PluginSourceDefinition()
-        {
-                
-        }
-
-        public PluginSourceDefinition(IPlugin db)
-        {
-            SelectedDll = new DllListing { FullName = db.AssemblyLocation, Name = db.AssemblyName, Children = new Collection<IFileListing>(), IsDirectory = false };
-            Id = db.ResourceID;
-            Path = db.GetSavePath();
-            Name = db.ResourceName;
-            ConfigFilePath = db.ConfigFilePath;
-            SetAssemblyName(db);
-        }
-        
-        private void SetAssemblyName(IPlugin db)
-        {
-            if (db.AssemblyLocation.StartsWith("GAC:"))
-            {
-                GACAssemblyName = db.AssemblyLocation;
-                FileSystemAssemblyName = string.Empty;
-            }
-            else
-            {
-                FileSystemAssemblyName = db.AssemblyLocation;
-                GACAssemblyName = string.Empty;
-            }
-        }
         #region Equality members
 
         public bool Equals(IPluginSource other)

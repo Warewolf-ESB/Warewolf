@@ -10,6 +10,7 @@
 
 using Dev2.Common.Exchange;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Interfaces;
 using Microsoft.Exchange.WebServices.Data;
 using System;
@@ -45,7 +46,7 @@ namespace Dev2.Common
         public IExchangeEmailSender EmailSender { get; set; }
         public ExchangeService ExchangeService { get; set; }
 
-        public string SendEmail(IExchange runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
+        public string SendEmail(IExchangeSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
         // ReSharper restore TooManyArguments
         {
             InitializeService();

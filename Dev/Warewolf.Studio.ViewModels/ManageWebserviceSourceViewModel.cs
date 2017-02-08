@@ -110,15 +110,10 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker, executor)
         {
             VerifyArgument.IsNotNull("webServiceSource", webServiceSource);
+            _webServiceSource = webServiceSource;
             _warewolfserverName = updateManager.ServerName;
-            AsyncWorker.Start(() => updateManager.FetchSource(webServiceSource.Id), source =>
-            {
-                _webServiceSource = source;
-                // ReSharper disable once VirtualMemberCallInContructor
-                FromModel(source);
-                SetupHeaderTextFromExisting();
-            });
-
+            SetupHeaderTextFromExisting();
+            FromModel(webServiceSource);
         }
 
         public ManageWebserviceSourceViewModel() : base("WebSource")

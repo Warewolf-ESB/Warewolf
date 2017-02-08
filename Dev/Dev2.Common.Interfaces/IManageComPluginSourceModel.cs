@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
@@ -8,7 +7,5 @@ namespace Dev2.Common.Interfaces
         string ServerName { get; }
         IList<IFileListing> GetComDllListings(IFileListing listing);
         void Save(IComPluginSource toDbSource);
-
-        IComPluginSource FetchSource(Guid pluginSourceId);
     }
 }

@@ -11,25 +11,7 @@ namespace Dev2.Common.Interfaces.Core
     {
         AuthenticationType _authenticationType;
 
-        public DbSourceDefinition()
-        {
-
-        }
-
-        public DbSourceDefinition(IDb db)
-        {
-            AuthenticationType = db.AuthenticationType;
-            DbName = db.DatabaseName;
-            Id = db.ResourceID;
-            Path = db.GetSavePath();
-            Name = db.ResourceName;
-            Password = db.Password;
-            ServerName = db.Server;
-            Type = db.ServerType;
-            UserName = db.UserID;
-        }
-
-        #region Implementation of IDbSourceDefinition
+        #region Implementation of IDbSource
 
         #region Equality members
 

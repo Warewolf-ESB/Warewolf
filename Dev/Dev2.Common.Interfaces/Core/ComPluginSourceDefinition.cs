@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 
 namespace Dev2.Common.Interfaces.Core
 {
@@ -7,20 +6,6 @@ namespace Dev2.Common.Interfaces.Core
     {
         #region Equality members
 
-        public ComPluginSourceDefinition()
-        {
-            
-        }
-
-        public ComPluginSourceDefinition(IComPlugin db)
-        {
-            SelectedDll = new DllListing { Name = db.ComName, ClsId = db.ClsId, Is32Bit = db.Is32Bit, Children = new Collection<IFileListing>(), IsDirectory = false };
-                Id = db.ResourceID;
-                ResourcePath = "";
-                ClsId = db.ClsId;
-                Is32Bit = db.Is32Bit;
-                ResourceName = db.ResourceName;
-        }
         public bool Equals(IComPluginSource other)
         {
             // ReSharper disable once PossibleNullReferenceException

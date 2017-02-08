@@ -8,23 +8,6 @@ namespace Dev2.Common.Interfaces.Core
     {
         #region Implementation of IDbSource
 
-        public WebServiceSourceDefinition()
-        {
-            
-        }
-
-        public WebServiceSourceDefinition(IWebSource db)
-        {
-            AuthenticationType = db.AuthenticationType;
-            DefaultQuery = db.DefaultQuery;
-            Id = db.ResourceID;
-            Name = db.ResourceName;
-            Password = db.Password;
-            HostName = db.Address;
-            Path = db.GetSavePath();
-            UserName = db.UserName;
-        }
-
         #region Equality members
 
         /// <summary>

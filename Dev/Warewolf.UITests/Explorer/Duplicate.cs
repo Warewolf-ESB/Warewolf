@@ -31,8 +31,7 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void DuplicateFolder_And_Use_Same_Name_Shows_Error()
         {
-            const string serviceName = "DuplicateFolderNameError";
-            UIMap.Click_Duplicate_From_ExplorerContextMenu(serviceName);
+            UIMap.Click_Duplicate_From_ExplorerContextMenu("DuplicateFolderNameError");
             Assert.IsTrue(UIMap.SaveDialogWindow.ErrorLabel.Exists, "Sve Error dialog does not exist after clicking Duplicate");
             UIMap.Click_SaveDialog_CancelButton();
         }
@@ -42,13 +41,11 @@ namespace Warewolf.UITests
         public void DuplicateWorkflow_Updates_The_Workflow_Display_Name()
         {
             UIMap.Click_Duplicate_From_ExplorerContextMenu("Hello World");
-            const string newName = "HelloWorld2";
-            UIMap.Enter_Duplicate_workflow_name(newName);
+            UIMap.Enter_Duplicate_workflow_name("HelloWorld2");
             UIMap.Click_Duplicate_From_Duplicate_Dialog();
-            UIMap.Filter_Explorer(newName);
-            Assert.AreEqual(newName, UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
+            UIMap.Filter_Explorer("HelloWorld2");
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            Assert.AreEqual(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
+            Assert.AreEqual(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, "HelloWorld2");
         }
         
         #region Additional test attributes
