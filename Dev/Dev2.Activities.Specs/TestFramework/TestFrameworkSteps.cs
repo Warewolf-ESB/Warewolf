@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
@@ -48,51 +47,6 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Activities.Specs.TestFramework
 {
-    internal interface ISpecExternalProcessExecutor : IExternalProcessExecutor
-    {
-        List<string> WebResult { get; set; }
-    }
-
-    internal class SpecExternalProcessExecutor : ISpecExternalProcessExecutor
-    {
-        #region Implementation of IExternalProcessExecutor
-
-        public SpecExternalProcessExecutor()
-        {
-            WebResult = new List<string>();
-        }
-
-        public void OpenInBrowser(Uri url)
-        {
-
-            try
-            {
-                using (var client = new WebClient())
-                {
-
-
-                    client.Credentials = CredentialCache.DefaultNetworkCredentials;
-
-                    WebResult.Add(client.DownloadString(url));
-                }
-
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e);
-            }
-
-        }
-
-        #endregion
-
-        #region Implementation of ISpecExternalProcessExecutor
-
-        public List<string> WebResult { get; set; }
-
-        #endregion
-    }
-
     [Binding]
     public class StudioTestFrameworkSteps
     {

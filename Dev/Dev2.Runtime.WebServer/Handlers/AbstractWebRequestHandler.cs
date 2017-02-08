@@ -29,6 +29,7 @@ using Dev2.Data.Decision;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
@@ -61,9 +62,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             var executePayload = "";
             Guid workspaceGuid;
 
-            if(workspaceId != null)
+            if (workspaceId != null)
             {
-                if(!Guid.TryParse(workspaceId, out workspaceGuid))
+                if (!Guid.TryParse(workspaceId, out workspaceGuid))
                 {
                     workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
                 }
@@ -75,26 +76,33 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             var allErrors = new ErrorResultTO();
             IDSFDataObject dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName, WorkspaceID = workspaceGuid };
-
+            var contains = webRequest?.Variables?.AllKeys.Contains("IsDebug");
+            if (contains != null && contains.Value)
+            {
+                dataObject.IsDebug = true;
+                dataObject.IsDebugFromWeb = true;
+                dataObject.ClientID = Guid.NewGuid();
+                dataObject.DebugSessionID = Guid.NewGuid();
+            }
             // now bind any variables that are part of the path arguments ;)
             BindRequestVariablesToDataObject(webRequest, ref dataObject);
 
             // now process headers ;)
-            if(headers != null)
+            if (headers != null)
             {
                 Dev2Logger.Debug("Remote Invoke");
 
                 var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
                 var remoteId = headers.Get(HttpRequestHeader.From.ToString());
 
-                if(isRemote != null && remoteId != null)
+                if (isRemote != null && remoteId != null)
                 {
-                    if(isRemote.Equals(GlobalConstants.RemoteServerInvoke))
+                    if (isRemote.Equals(GlobalConstants.RemoteServerInvoke))
                     {
                         // we have a remote invoke ;)
                         dataObject.RemoteInvoke = true;
                     }
-                    if(isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
+                    if (isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
                     {
                         // we have a remote invoke ;)
                         dataObject.RemoteNonDebugInvoke = true;
@@ -107,25 +115,25 @@ namespace Dev2.Runtime.WebServer.Handlers
             // now set the emition type ;)
 
             int loc;
-            if((!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0))
+            if ((!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0))
             {
                 // default it to xml
                 dataObject.ReturnType = EmitionTypes.XML;
 
-                if(loc > 0)
+                if (loc > 0)
                 {
                     var typeOf = serviceName.Substring(loc + 1).ToUpper();
                     EmitionTypes myType;
-                    if(Enum.TryParse(typeOf, out myType))
+                    if (Enum.TryParse(typeOf, out myType))
                     {
                         dataObject.ReturnType = myType;
                     }
 
-                    if(typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
+                    if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
                     {
                         dataObject.IsServiceTestExecution = true;
                         var idx = serviceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
-                        if(idx > loc)
+                        if (idx > loc)
                         {
                             var testName = serviceName.Substring(idx + 1).ToUpper();
                             dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
@@ -137,7 +145,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         dataObject.ReturnType = EmitionTypes.TEST;
                     }
 
-                    if(typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+                    if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
                     {
                         dataObject.ReturnType = EmitionTypes.SWAGGER;
                     }
@@ -147,20 +155,20 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             else
             {
-                if(headers != null)
+                if (headers != null)
                 {
                     var contentType = headers.Get("Content-Type");
-                    if(string.IsNullOrEmpty(contentType))
+                    if (string.IsNullOrEmpty(contentType))
                     {
                         contentType = headers.Get("ContentType");
                     }
-                    if(!string.IsNullOrEmpty(contentType))
+                    if (!string.IsNullOrEmpty(contentType))
                     {
-                        if(contentType.ToLowerInvariant().Contains("json"))
+                        if (contentType.ToLowerInvariant().Contains("json"))
                         {
                             dataObject.ReturnType = EmitionTypes.JSON;
                         }
-                        if(contentType.ToLowerInvariant().Contains("xml"))
+                        if (contentType.ToLowerInvariant().Contains("xml"))
                         {
                             dataObject.ReturnType = EmitionTypes.XML;
                         }
@@ -172,7 +180,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
 
-            if(IsRunAllTestsRequest(webRequest, serviceName))
+            if (IsRunAllTestsRequest(webRequest, serviceName))
             {
                 // default it to xml
                 dataObject.ReturnType = EmitionTypes.TEST;
@@ -181,20 +189,20 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             else
             {
-                if(headers != null)
+                if (headers != null)
                 {
                     var contentType = headers.Get("Content-Type");
-                    if(string.IsNullOrEmpty(contentType))
+                    if (string.IsNullOrEmpty(contentType))
                     {
                         contentType = headers.Get("ContentType");
                     }
-                    if(!string.IsNullOrEmpty(contentType) && !dataObject.IsServiceTestExecution)
+                    if (!string.IsNullOrEmpty(contentType) && !dataObject.IsServiceTestExecution)
                     {
-                        if(contentType.ToLowerInvariant().Contains("json"))
+                        if (contentType.ToLowerInvariant().Contains("json"))
                         {
                             dataObject.ReturnType = EmitionTypes.JSON;
                         }
-                        if(contentType.ToLowerInvariant().Contains("xml"))
+                        if (contentType.ToLowerInvariant().Contains("xml"))
                         {
                             dataObject.ReturnType = EmitionTypes.XML;
                         }
@@ -205,16 +213,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                     dataObject.ReturnType = EmitionTypes.XML;
                 }
             }
-            if(dataObject.ServiceName == null)
+            if (dataObject.ServiceName == null)
             {
                 dataObject.ServiceName = serviceName;
             }
             IResource resource = null;
             Guid resourceID;
-            if(Guid.TryParse(serviceName, out resourceID))
+            if (Guid.TryParse(serviceName, out resourceID))
             {
                 resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, resourceID);
-                if(resource != null)
+                if (resource != null)
                 {
                     dataObject.ServiceName = resource.ResourceName;
                     dataObject.ResourceID = resource.ResourceID;
@@ -223,21 +231,21 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             else
             {
-                if(!string.IsNullOrEmpty(dataObject.ServiceName))
+                if (!string.IsNullOrEmpty(dataObject.ServiceName))
                 {
                     resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
-                    if(resource != null)
+                    if (resource != null)
                     {
                         dataObject.ResourceID = resource.ResourceID;
                         dataObject.SourceResourceID = resource.ResourceID;
                     }
                 }
             }
-            if(IsRunAllTestsRequest(webRequest, serviceName))
+            if (IsRunAllTestsRequest(webRequest, serviceName))
             {
                 var pathOfAllResources = GetForAllResources(webRequest);
                 dataObject.ResourceID = Guid.Empty;
-                if(string.IsNullOrEmpty(pathOfAllResources))
+                if (string.IsNullOrEmpty(pathOfAllResources))
                 {
                     var resources = ResourceCatalog.Instance.GetResources(GlobalConstants.ServerWorkspaceID);
                     dataObject.TestsResourceIds = resources.Select(p => p.ResourceID).ToList();
@@ -253,7 +261,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var esbEndpoint = new EsbServicesEndpoint();
             dataObject.EsbChannel = esbEndpoint;
             var canExecute = true;
-            if(ServerAuthorizationService.Instance != null && dataObject.ReturnType != EmitionTypes.TEST)
+            if (ServerAuthorizationService.Instance != null && dataObject.ReturnType != EmitionTypes.TEST)
             {
                 var authorizationService = ServerAuthorizationService.Instance;
                 var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
@@ -262,28 +270,28 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             // Build EsbExecutionRequest - Internal Services Require This ;)
             var esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
-            foreach(string key in webRequest.Variables)
+            foreach (string key in webRequest.Variables)
             {
                 esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
             }
-            Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] for User [ "+user?.Identity?.Name+" : "+user?.Identity?.AuthenticationType+" : "+ user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + dataObject.RawPayload + " ]");
+            Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + dataObject.RawPayload + " ]");
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-            if(canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
+            if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
             {
                 ErrorResultTO errors = null;
                 Thread.CurrentPrincipal = user;
                 var userPrinciple = user;
-                if(dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
+                if (dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
                 {
-                    if(dataObject.TestsResourceIds?.Any() ?? false)
+                    if (dataObject.TestsResourceIds?.Any() ?? false)
                     {
-                        foreach(var testsResourceId in dataObject.TestsResourceIds)
+                        foreach (var testsResourceId in dataObject.TestsResourceIds)
                         {
                             var allTests = TestCatalog.Instance.Fetch(testsResourceId);
                             var taskList = new List<Task>();
                             var testResults = new List<IServiceTestModelTO>();
-                            foreach(var test in allTests)
+                            foreach (var test in allTests)
                             {
                                 dataObject.ResourceID = testsResourceId;
                                 var dataObjectClone = dataObject.Clone();
@@ -299,9 +307,9 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                             var objArray = new List<JObject>();
-                            foreach(var testRunResult in testResults)
+                            foreach (var testRunResult in testResults)
                             {
-                                if(testRunResult != null)
+                                if (testRunResult != null)
                                 {
                                     var resObj = BuildTestResultForWebRequest(testRunResult);
                                     objArray.Add(resObj);
@@ -317,7 +325,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         var allTests = TestCatalog.Instance.Fetch(dataObject.ResourceID);
                         var taskList = new List<Task>();
                         var testResults = new List<IServiceTestModelTO>();
-                        foreach(var test in allTests.Where(to => to.Enabled))
+                        foreach (var test in allTests.Where(to => to.Enabled))
                         {
                             var dataObjectClone = dataObject.Clone();
                             dataObjectClone.Environment = new ExecutionEnvironment();
@@ -329,9 +337,9 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                         formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                         var objArray = new List<JObject>();
-                        foreach(var testRunResult in testResults)
+                        foreach (var testRunResult in testResults)
                         {
-                            if(testRunResult != null)
+                            if (testRunResult != null)
                             {
                                 var resObj = BuildTestResultForWebRequest(testRunResult);
                                 objArray.Add(resObj);
@@ -348,16 +356,16 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
                 allErrors.MergeErrors(errors);
             }
-            else if(!canExecute)
+            else if (!canExecute)
             {
                 allErrors.AddError("Executing a service externally requires View and Execute permissions");
             }
 
-            if(dataObject.IsServiceTestExecution)
+            if (dataObject.IsServiceTestExecution)
             {
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var result = serializer.Deserialize<ServiceTestModelTO>(esbExecuteRequest.ExecuteResult);
-                if(result != null)
+                if (result != null)
                 {
                     var resObj = BuildTestResultForWebRequest(result);
                     executePayload = serializer.Serialize(resObj);
@@ -370,37 +378,44 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
-
-            foreach(var error in dataObject.Environment.Errors.Union(dataObject.Environment.AllErrors))
+            if (dataObject.IsDebugFromWeb)
             {
-                if(error.Length > 0)
+                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                var fetchDebugItems = DebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
+                var serialize = serializer.Serialize(fetchDebugItems);
+                return new StringResponseWriter(serialize, formatter.ContentType);
+            }
+
+            foreach (var error in dataObject.Environment.Errors.Union(dataObject.Environment.AllErrors))
+            {
+                if (error.Length > 0)
                 {
                     allErrors.AddError(error, true);
                 }
             }
 
-            if(!dataObject.Environment.HasErrors())
+            if (!dataObject.Environment.HasErrors())
             {
-                if(!esbExecuteRequest.WasInternalService)
+                if (!esbExecuteRequest.WasInternalService)
                 {
                     dataObject.DataListID = executionDlid;
                     dataObject.WorkspaceID = workspaceGuid;
                     dataObject.ServiceName = serviceName;
 
-                    if(!dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke)
+                    if (!dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke)
                     {
-                        if(resource?.DataList != null)
+                        if (resource?.DataList != null)
                         {
-                            if(dataObject.ReturnType == EmitionTypes.JSON)
+                            if (dataObject.ReturnType == EmitionTypes.JSON)
                             {
                                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                                 executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                             }
-                            else if(dataObject.ReturnType == EmitionTypes.XML)
+                            else if (dataObject.ReturnType == EmitionTypes.XML)
                             {
                                 executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                             }
-                            else if(dataObject.ReturnType == EmitionTypes.SWAGGER)
+                            else if (dataObject.ReturnType == EmitionTypes.SWAGGER)
                             {
                                 formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
                                 executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
@@ -419,13 +434,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                     executePayload = string.Empty;
                     var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
 
-                    if(msg != null)
+                    if (msg != null)
                     {
                         executePayload = msg.Message.ToString();
                     }
 
                     // out fail safe to return different types of data from services ;)
-                    if(string.IsNullOrEmpty(executePayload))
+                    if (string.IsNullOrEmpty(executePayload))
                     {
                         executePayload = esbExecuteRequest.ExecuteResult.ToString();
                     }
@@ -433,7 +448,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             else
             {
-                if(dataObject.ReturnType == EmitionTypes.XML)
+                if (dataObject.ReturnType == EmitionTypes.XML)
                 {
                     executePayload =
                         "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
@@ -456,10 +471,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if (executePayload.IsJSON())
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                }else if (executePayload.IsXml())
+                }
+                else if (executePayload.IsXml())
                 {
                     formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                }                
+                }
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
@@ -528,7 +544,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             else if (result.Result.RunTestResult == RunResult.TestFailed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_FailureResult);
-                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine,""));
+                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
             }
             else if (result.Result.RunTestResult == RunResult.TestInvalid)
             {

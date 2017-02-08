@@ -144,9 +144,8 @@ namespace Dev2.Tests
         public void DsfDataObject_Clone_NormalClone_FullDuplicationForProperties()
         {
             //------------Setup for test--------------------------
-            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
             Guid wfInstanceID = Guid.NewGuid();
-
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
             dataObject.BookmarkExecutionCallbackID = Guid.NewGuid();
             dataObject.CurrentBookmarkName = "def";
             dataObject.DataList = new StringBuilder("<x/>");
@@ -195,6 +194,7 @@ namespace Dev2.Tests
             dataObject.StopExecution = false;
             dataObject.IsServiceTestExecution = true;
             dataObject.TestName = "Test 1";
+            dataObject.IsDebugFromWeb = true;
             dataObject.SourceResourceID = Guid.NewGuid();
             dataObject.ServiceTest = new ServiceTestModelTO {TestName = "Test Mock"};
             var threadsToDispose = new Dictionary<int, List<Guid>>();
@@ -209,7 +209,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(62, properties.Length);
+            Assert.AreEqual(63, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -266,6 +266,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.SourceResourceID, clonedObject.SourceResourceID);
             Assert.AreEqual(dataObject.TestName, clonedObject.TestName);
             Assert.AreEqual(dataObject.IsServiceTestExecution, clonedObject.IsServiceTestExecution);
+            Assert.AreEqual(dataObject.IsDebugFromWeb, clonedObject.IsDebugFromWeb);
             Assert.AreNotEqual(dataObject.ServiceTest, clonedObject.ServiceTest);
             Assert.AreEqual(dataObject.ServiceTest.TestName, clonedObject.ServiceTest.TestName);
         }

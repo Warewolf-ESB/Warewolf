@@ -205,6 +205,56 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("WebServerController_Execute")]
+        public void WebServerController_ExecuteDotDebug_Get_InvokesWebGetRequestHandler()
+        {
+            //------------Setup for test--------------------------
+            const string requestUrl = "http://http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=7af4273a-4e31-4559-be7d-eecfb4c1b10e";
+            var requestVariables = new NameValueCollection
+            {
+                    {"isPublic",true.ToString()},
+                    {"IsDebug",true.ToString() },
+                    {"servicename","HelloWorld.debug" }
+
+
+            };
+
+            var controller = new TestWebServerController(HttpMethod.Get, requestUrl);
+            //------------Execute Test---------------------------
+            controller.ExecuteSecureWorkflow("HelloWorld.debug");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("WebServerController_Execute")]
+        public void WebServerController_ExecuteDotDebug_Post_InvokesWebPostRequestHandler()
+        {
+            //------------Setup for test--------------------------
+            const string requestUrl = "http://http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=7af4273a-4e31-4559-be7d-eecfb4c1b10e";
+            var requestVariables = new NameValueCollection
+            {
+                    {"isPublic",true.ToString()},
+                    {"IsDebug",true.ToString() },
+                    {"servicename","HelloWorld.debug" }
+
+
+            };
+
+            var controller = new TestWebServerController(HttpMethod.Post, requestUrl);
+            //------------Execute Test---------------------------
+            controller.ExecuteSecureWorkflow("HelloWorld.debug");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebPostRequestHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("WebServerController_Execute")]
         public void WebServerControllerPublic_ExecuteGivenTestsRun_Get_InvokesWebPostRequestHandler()
         {
             //------------Setup for test--------------------------
