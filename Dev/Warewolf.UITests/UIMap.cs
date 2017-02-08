@@ -3521,7 +3521,7 @@ namespace Warewolf.UITests
         public void Click_Deploy_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
-            Playback.Wait(500);
+            Playback.Wait(1000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
         }
 
@@ -3975,6 +3975,7 @@ namespace Warewolf.UITests
         public void Select_Deploy_From_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.DeployItem, new Point(57, 11));
+            Playback.Wait(1000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "DeployTab does not exist after clicking Deploy");
         }
 
@@ -8179,7 +8180,7 @@ namespace Warewolf.UITests
         [Then(@"Deploy Button Is Enabled")]
         public void ThenDeployButtonIsEnabled()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, "Deploy button is not enabled");
         }
 
         [Then(@"Deploy Version Conflict Window Shows")]
@@ -8835,8 +8836,9 @@ namespace Warewolf.UITests
         [Then(@"I change Server Authentication From Deploy And Validate Changes From Explorer")]
         public void ChangeServerAuthenticationFromDeployAndValidateChangesFromExplorer()
         {
-            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
             var windowsRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
+            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+
             if (publicRadioButton.Selected)
             {
                 windowsRadioButton.Selected = true;
@@ -8845,9 +8847,12 @@ namespace Warewolf.UITests
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Select_RemoteConnectionIntegration_From_Explorer();
                 Click_Explorer_RemoteServer_Edit_Button();
-                Assert.IsTrue(windowsRadioButton.Selected);
+                Playback.Wait(1000);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
+                Click_Deploy_Ribbon_Button();
+                Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(windowsRadioButton.Selected);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
             }
             else
             {
@@ -8857,9 +8862,11 @@ namespace Warewolf.UITests
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Select_RemoteConnectionIntegration_From_Explorer();
                 Click_Explorer_RemoteServer_Edit_Button();
-                Assert.IsTrue(publicRadioButton.Selected);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
+                Click_Deploy_Ribbon_Button();
+                Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(publicRadioButton.Selected);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
             }
         }
 
