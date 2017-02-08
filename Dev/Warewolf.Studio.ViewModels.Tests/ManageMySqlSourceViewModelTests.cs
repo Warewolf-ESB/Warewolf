@@ -77,6 +77,17 @@ namespace Warewolf.Studio.ViewModels.Tests
                             fail(ex);
                         }
                     });
+            _updateManagerMock.Setup(model => model.FetchDbSource(It.IsAny<Guid>(), It.IsAny<string>()))
+               .Returns(_dbSourceMock.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<IDbSource>>(),
+                                            It.IsAny<Action<IDbSource>>()))
+                            .Callback<Func<IDbSource>, Action<IDbSource>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
             _targetAsyncWorker = new ManageMySqlSourceViewModel(_asyncWorkerMock.Object);
             _changedPropertiesAsyncWorker = new List<string>();
             _targetAsyncWorker.PropertyChanged += (sender, args) =>
@@ -101,7 +112,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 _updateManagerMock.Object,
                 _requestServiceNameView,
                 _aggregatorMock.Object,
-                _asyncWorkerMock.Object);
+                 _asyncWorkerMock.Object);
             _changedUpdateManagerRequestServiceName = new List<string>();
             _targetUpdateManagerRequestServiceName.PropertyChanged += (sender, args) =>
             {
@@ -298,23 +309,23 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestAuthenticationType_dbSourceNotNullUserSameDbSource()
         {
             //arrange
-            var expectedValue = AuthenticationType.User;
+            const AuthenticationType ExpectedValue = AuthenticationType.User;
             _dbSourceMock.SetupGet(it => it.AuthenticationType).Returns(AuthenticationType.User);
-            var expectedPassword = "somePassword";
-            var expectedUsername = "someUsername";
-            _dbSourceMock.SetupGet(it => it.Password).Returns(expectedPassword);
-            _dbSourceMock.SetupGet(it => it.UserName).Returns(expectedUsername);
+            const string ExpectedPassword = "somePassword";
+            const string ExpectedUsername = "someUsername";
+            _dbSourceMock.SetupGet(it => it.Password).Returns(ExpectedPassword);
+            _dbSourceMock.SetupGet(it => it.UserName).Returns(ExpectedUsername);
             _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
             _targetUpdateManagerAggregatorDbSource.DatabaseNames = new List<string>() { "DatabaseNamesItem" };
 
             //act
-            _targetUpdateManagerAggregatorDbSource.AuthenticationType = expectedValue;
+            _targetUpdateManagerAggregatorDbSource.AuthenticationType = ExpectedValue;
             var actualValue = _targetUpdateManagerAggregatorDbSource.AuthenticationType;
 
             //assert
-            Assert.AreEqual(expectedValue, actualValue);
-            Assert.AreEqual(expectedPassword, _targetUpdateManagerAggregatorDbSource.Password);
-            Assert.AreEqual(expectedUsername, _targetUpdateManagerAggregatorDbSource.UserName);
+            Assert.AreEqual(ExpectedValue, actualValue);
+            Assert.AreEqual(ExpectedPassword, _targetUpdateManagerAggregatorDbSource.Password);
+            Assert.AreEqual(ExpectedUsername, _targetUpdateManagerAggregatorDbSource.UserName);
             Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("AuthenticationType"));
             Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("Header"));
             Assert.IsTrue(_changedPropertiesUpdateManagerAggregatorDbSource.Contains("UserAuthenticationSelected"));
@@ -329,33 +340,33 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestName()
         {
             //arrange
-            var expectedValue = "someName";
+            const string ExpectedValue = "someName";
 
             //act
-            _targetAsyncWorker.Name = expectedValue;
+            _targetAsyncWorker.Name = ExpectedValue;
             var actualValue = _targetAsyncWorker.Name;
 
             //assert
-            Assert.AreEqual(expectedValue, actualValue);
-            Assert.AreEqual(expectedValue, _targetAsyncWorker.ResourceName);
+            Assert.AreEqual(ExpectedValue, actualValue);
+            Assert.AreEqual(ExpectedValue, _targetAsyncWorker.ResourceName);
         }
 
         [TestMethod]
         public void TestResourceNameNotEmpty()
         {
             //arrange
-            var expectedValue = "someName";
+            const string ExpectedValue = "someName";
             _changedPropertiesAsyncWorker.Clear();
 
             //act
-            _targetAsyncWorker.ResourceName = expectedValue;
+            _targetAsyncWorker.ResourceName = ExpectedValue;
             var actualValue = _targetAsyncWorker.ResourceName;
 
             //assert
-            Assert.AreEqual(expectedValue, actualValue);
-            Assert.AreEqual(expectedValue, _targetAsyncWorker.HeaderText);
-            Assert.AreEqual(expectedValue, _targetAsyncWorker.Header);
-            Assert.IsTrue(_changedPropertiesAsyncWorker.Contains(expectedValue));
+            Assert.AreEqual(ExpectedValue, actualValue);
+            Assert.AreEqual(ExpectedValue, _targetAsyncWorker.HeaderText);
+            Assert.AreEqual(ExpectedValue, _targetAsyncWorker.Header);
+            Assert.IsTrue(_changedPropertiesAsyncWorker.Contains(ExpectedValue));
         }
 
         [TestMethod]

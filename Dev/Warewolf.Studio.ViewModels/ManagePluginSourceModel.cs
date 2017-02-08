@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -34,6 +37,16 @@ namespace Warewolf.Studio.ViewModels
         public void Save(IPluginSource source)
         {
             _updateRepository.Save(source);
+        }
+
+        public IPluginSource FetchSource(Guid resourceID)
+        {
+            var xaml = _queryProxy.FetchResourceXaml(resourceID);
+            var db = new PluginSource(xaml.ToXElement());
+
+            var def = new PluginSourceDefinition(db);
+
+            return def;
         }
 
         #endregion
