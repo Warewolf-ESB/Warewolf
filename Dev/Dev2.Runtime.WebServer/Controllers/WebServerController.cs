@@ -182,6 +182,18 @@ namespace Dev2.Runtime.WebServer.Controllers
                 };
                 return ProcessRequest<GetApisJsonServiceHandler>(requestVar);
             }
+            if (__name__.EndsWith(".debug", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var requestVar = new NameValueCollection
+                {
+                    {"isPublic",isPublic.ToString()},
+                    {"IsDebug",true.ToString() },
+                    {"servicename",__name__ }
+                };
+                return Request.Method == HttpMethod.Post
+                        ? ProcessRequest<WebPostRequestHandler>(requestVar)
+                        : ProcessRequest<WebGetRequestHandler>(requestVar);
+            }
             var requestVariables = new NameValueCollection
             {
                 { "servicename", __name__ }
