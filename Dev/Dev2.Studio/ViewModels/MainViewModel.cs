@@ -157,11 +157,8 @@ namespace Dev2.Studio.ViewModels
                     if (EnvironmentRepository != null)
                     {
                         EnvironmentRepository.ActiveEnvironment = value;
-                        if (EnvironmentRepository.ActiveEnvironment != null && EnvironmentRepository.ActiveEnvironment.IsConnected)
-                        {
-                            OnActiveEnvironmentChanged();
-                        }
                     }
+                    OnActiveEnvironmentChanged();
                     NotifyOfPropertyChange(() => ActiveEnvironment);
                 }
             }
@@ -169,7 +166,7 @@ namespace Dev2.Studio.ViewModels
 
         public IBrowserPopupController BrowserPopupController { get; }
 
-        void OnActiveEnvironmentChanged()
+        public void OnActiveEnvironmentChanged()
         {
             NewSqlServerSourceCommand.UpdateContext(ActiveEnvironment);
             NewMySqlSourceCommand.UpdateContext(ActiveEnvironment);
