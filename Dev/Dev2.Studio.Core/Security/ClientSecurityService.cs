@@ -54,24 +54,28 @@ namespace Dev2.Security
 
         public virtual async Task ReadAsync()
         {
-            var communicationController = new CommunicationController
+            if (EnvironmentConnection.IsConnected)
             {
-                ServiceName = "SecurityReadService"
-            };
-            Dev2Logger.Debug("Getting Permissions from Server");
-            SecuritySettingsTO securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection, EnvironmentConnection.WorkspaceID);
-            List<WindowsGroupPermission> newPermissions = null;
-            if (securitySettingsTo != null)
-            {
-                Permissions = securitySettingsTo.WindowsGroupPermissions;
-                newPermissions = securitySettingsTo.WindowsGroupPermissions;
-                Dev2Logger.Debug("Permissions from Server:" + Permissions);
+                var communicationController = new CommunicationController
+                {
+                    ServiceName = "SecurityReadService"
+                };
+                Dev2Logger.Debug("Getting Permissions from Server");
+
+                SecuritySettingsTO securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection,EnvironmentConnection.WorkspaceID);
+                List<WindowsGroupPermission> newPermissions = null;
+                if (securitySettingsTo != null)
+                {
+                    Permissions = securitySettingsTo.WindowsGroupPermissions;
+                    newPermissions = securitySettingsTo.WindowsGroupPermissions;
+                    Dev2Logger.Debug("Permissions from Server:" + Permissions);
+                }
+                if (newPermissions != null)
+                {
+                    RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions));
+                }
+                RaisePermissionsChanged();
             }
-            if (newPermissions != null)
-            {
-                RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions));
-            }
-            RaisePermissionsChanged();
         }
 
         protected override List<WindowsGroupPermission> ReadPermissions()

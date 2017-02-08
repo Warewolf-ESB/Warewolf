@@ -400,6 +400,8 @@ namespace Warewolf.Studio.ViewModels
                         {
                             var mainViewModel = CustomContainer.Get<IShellViewModel>();
                             mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
+                            mainViewModel?.OnActiveEnvironmentChanged();
+
                         }
                     }
                     else
