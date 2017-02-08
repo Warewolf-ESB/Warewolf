@@ -454,7 +454,20 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             set
             {
                 _generateOutputsVisible = value;
-                OutputVisibilitySetter.SetGenerateOutputsVisible(ManageServiceInputViewModel.InputArea, ManageServiceInputViewModel.OutputArea, SetRegionVisibility, value);
+                if (value)
+                {
+                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
+                    SetRegionVisibility(false);
+
+                }
+                else
+                {
+                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
+                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
+                    SetRegionVisibility(true);
+                }
+
                 OnPropertyChanged();
             }
         }

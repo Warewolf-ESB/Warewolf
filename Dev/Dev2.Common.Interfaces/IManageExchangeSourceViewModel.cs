@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Dev2.Common.Interfaces
@@ -90,8 +89,6 @@ namespace Dev2.Common.Interfaces
         string TestConnection(IExchangeSource resource);
         void Save(IExchangeSource toDbSource);
         string ServerName { get; }
-
-        IExchangeSource FetchSource(Guid exchangeSourceResourceID);
     }
 }
 

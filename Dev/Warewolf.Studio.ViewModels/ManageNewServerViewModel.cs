@@ -91,36 +91,31 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker, executor)
         {
             VerifyArgument.IsNotNull("serverSource", serverSource);
-            
+            _serverSource = serverSource;
             _warewolfserverName = updateManager.ServerName;
-            AsyncWorker.Start(() => updateManager.FetchSource(serverSource.ID), source =>
+
+            Item = new ServerSource
             {
+                AuthenticationType = _serverSource.AuthenticationType,
+                ID = _serverSource.ID,
+                Name = _serverSource.Name,
+                Password = _serverSource.Password,
+                ResourcePath = _serverSource.ResourcePath,
+                ServerName = _serverSource.ServerName,
+                UserName = _serverSource.UserName,
+                Address = _serverSource.Address
+            };
 
-                _serverSource = source;
-
-                Item = new ServerSource
-                {
-                    AuthenticationType = _serverSource.AuthenticationType,
-                    ID = _serverSource.ID,
-                    Name = _serverSource.Name,
-                    Password = _serverSource.Password,
-                    ResourcePath = _serverSource.ResourcePath,
-                    ServerName = _serverSource.ServerName,
-                    UserName = _serverSource.UserName,
-                    Address = _serverSource.Address
-                };
-
-                GetLoadComputerNamesTask(() =>
-                    {
-                        FromModel(_serverSource);
-                        SetupHeaderTextFromExisting();
-                    }
-                );
-                if (string.IsNullOrEmpty(TestMessage))
+            GetLoadComputerNamesTask(() =>
                 {
                     FromModel(_serverSource);
+                    SetupHeaderTextFromExisting();
                 }
-            });
+            );
+            if (string.IsNullOrEmpty(TestMessage))
+            {
+                FromModel(_serverSource);
+            }
         }
 
         void SetupHeaderTextFromExisting()
@@ -367,13 +362,13 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Testing)
                 return false;
-            if (string.IsNullOrEmpty(Address))
+            if (String.IsNullOrEmpty(Address))
             {
                 return false;
             }
             if (AuthenticationType == AuthenticationType.User)
             {
-                return !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password);
+                return !String.IsNullOrEmpty(UserName) && !String.IsNullOrEmpty(Password);
             }
             return true;
         }
@@ -729,7 +724,5 @@ namespace Warewolf.Studio.ViewModels
 
 
         string ServerName { get; set; }
-
-        IServerSource FetchSource(Guid resourceID);
     }
 }

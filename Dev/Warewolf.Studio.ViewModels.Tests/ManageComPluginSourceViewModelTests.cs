@@ -89,42 +89,28 @@ namespace Warewolf.Studio.ViewModels.Tests
                             exception(e);
                         }
                     });
-            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
-              .Returns(_pluginSourceMock.Object);
-            _asyncWorkerMock.Setup(worker =>
-                                  worker.Start(
-                                           It.IsAny<Func<IComPluginSource>>(),
-                                           It.IsAny<Action<IComPluginSource>>()))
-                           .Callback<Func<IComPluginSource>, Action<IComPluginSource>>((func, action) =>
-                           {
-                               var dbSource = func.Invoke();
-                               action(dbSource);
-                           });
+
             _changedPropertiesParameterless = new List<string>();
-            _targetParameterless = new ManageComPluginSourceViewModel {DispatcherAction = action => action()};
+            _targetParameterless = new ManageComPluginSourceViewModel();
+            _targetParameterless.DispatcherAction = action => action();
             _targetParameterless.PropertyChanged += (sender, args) => { _changedPropertiesParameterless.Add(args.PropertyName); };
 
             _changedProperties = new List<string>();
-            _target = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object,
-                _asyncWorkerMock.Object) {DispatcherAction = action => action()};
+            _target = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _asyncWorkerMock.Object);
+            _target.DispatcherAction = action => action();
             _target.PropertyChanged += (sender, args) => { _changedProperties.Add(args.PropertyName); };
 
             _changedPropertiesPluginSource = new List<string>();
-            _targetPluginSource = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object,
-                _pluginSourceMock.Object, _asyncWorkerMock.Object) {DispatcherAction = action => action()};
+            _targetPluginSource = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _pluginSourceMock.Object, _asyncWorkerMock.Object);
+            _targetPluginSource.DispatcherAction = action => action();
             _targetPluginSource.PropertyChanged += (sender, args) => { _changedPropertiesPluginSource.Add(args.PropertyName); };
 
             _changedPropertiesRequestServiceNameViewModel = new List<string>();
-            _targetRequestServiceNameViewModel = new ManageComPluginSourceViewModel(_updateManagerMock.Object,
-                _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object)
-            {
-                DispatcherAction = action => action()
-            };
+            _targetRequestServiceNameViewModel = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object);
+            _targetRequestServiceNameViewModel.DispatcherAction = action => action();
             _targetRequestServiceNameViewModel.PropertyChanged += (sender, args) => { _changedPropertiesRequestServiceNameViewModel.Add(args.PropertyName); };
 
             _changedPropertiesPluginSourceAction = new List<string>();
-            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
-                .Returns(_pluginSourceMock.Object);
             _targetPluginSourceAction = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _pluginSourceMock.Object, _asyncWorkerMock.Object, _dispatcherAction);
             _targetPluginSourceAction.PropertyChanged += (sender, args) => { _changedPropertiesPluginSourceAction.Add(args.PropertyName); };
 
@@ -429,21 +415,21 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestFromModelFileSystem()
         {
             //arrange
-            const string ExpectedName = "someexpectedName";
-            const string ExpectedPath = "someexpectedPath";
+            var expectedName = "someexpectedName";
+            var expectedPath = "someexpectedPath";
             var pluginSourceMock = new Mock<IComPluginSource>();
             var selectedDllMock = new Mock<IFileListing>();
-            const string SelectedDllName = "someSelectedDLLName";
+            var selectedDllName = "someSelectedDLLName";
             selectedDllMock.SetupGet(listing => listing.Name).Returns("File System");
             pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(selectedDllMock.Object);
-            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(ExpectedName);
-            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(ExpectedPath);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(expectedName);
+            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(expectedPath);
             var dllListingMock = new Mock<IDllListingModel>();
             dllListingMock.SetupGet(it => it.Name).Returns("File System");
             var dllListingChildrenMock = new Mock<IDllListingModel>();
             dllListingMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IDllListingModel>() { dllListingChildrenMock.Object });
-            dllListingChildrenMock.SetupGet(it => it.Name).Returns(SelectedDllName);
+            dllListingChildrenMock.SetupGet(it => it.Name).Returns(selectedDllName);
             _targetPluginSource.DllListings = new ObservableCollection<IDllListingModel>() { dllListingMock.Object };
 
             //act
@@ -454,6 +440,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             dllListingMock.VerifySet(it => it.IsExpanded = true);
             dllListingMock.VerifySet(it => it.IsSelected = true);
             Assert.AreSame(dllListingMock.Object, _targetPluginSource.SelectedDll);
+            Assert.AreEqual(expectedName, _targetPluginSource.Name);
         }
 
         [TestMethod]

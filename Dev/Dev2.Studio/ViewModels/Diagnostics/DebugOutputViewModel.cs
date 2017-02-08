@@ -662,7 +662,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             if (debugState?.ActivityType == ActivityType.Workflow)
             {
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                shellViewModel?.OpenResource(debugState.OriginatingResourceID, debugState.EnvironmentID,shellViewModel.ActiveServer);
+                shellViewModel?.OpenResource(debugState.OriginatingResourceID, debugState.EnvironmentID);
             }
         }
 

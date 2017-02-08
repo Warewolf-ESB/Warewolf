@@ -13,7 +13,7 @@ using ExchangeService = Microsoft.Exchange.WebServices.Data.ExchangeService;
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
-    public class ExchangeSource : Resource, IExchange, IResourceSource
+    public class ExchangeSource : Resource, IExchangeSource, IResourceSource
     {
         private ExchangeService _exchangeService;
 
