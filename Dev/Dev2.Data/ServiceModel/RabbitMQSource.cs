@@ -20,7 +20,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class RabbitMQSource : Resource, IResourceSource
+    public class RabbitMQSource : Resource, IResourceSource, IRabbitMQ
     {
         private const int DefaultPort = 5672;
         private const string DefaultVirtualHost = "/";

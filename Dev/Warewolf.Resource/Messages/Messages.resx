@@ -121,55 +121,55 @@
     <value>Invalid: Nothing to assert.</value>
   </data>
   <data name="Test_FailureMessage_Choose" xml:space="preserve">
-    <value>Failed: Assert Choose. Invalid Assert operation</value>
+    <value>Failed: Assert Choose. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsError" xml:space="preserve">
-    <value>Failed: Assert Is Error. Expected Error Message '{0}' for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Error. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNotError" xml:space="preserve">
-    <value>Failed: Assert Is Not Error. Expected Error Message not '{0}' for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Not Error. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNull" xml:space="preserve">
-    <value>Failed: Assert Is Null. Expected Null for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Null. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNotNull" xml:space="preserve">
-    <value>Failed: Assert Is Not Null. Expected Not Null for '{1}' but got Null</value>
+    <value>Failed: Assert Is Not Null. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNumeric" xml:space="preserve">
-    <value>Failed: Assert Is Numeric. Expected Numeric for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Numeric. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNotNumeric" xml:space="preserve">
-    <value>Failed: Assert Is Not Numeric. Expected Not Numeric for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Not Numeric. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsText" xml:space="preserve">
-    <value>Failed: Assert Is Text. Expected Text value for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Text. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNotText" xml:space="preserve">
-    <value>Failed: Assert Is Not Text. Expected Not Text value for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Not Text. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsAlphanumeric" xml:space="preserve">
-    <value>Failed: Assert Is Alphanumeric. Expected Alphanumeric for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Alphanumeric. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNotAlphanumeric" xml:space="preserve">
-    <value>Failed: Assert Is Not Alphanumeric. Expected Not Alphanumeric for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Not Alphanumeric. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsXML" xml:space="preserve">
-    <value>Failed: Assert Is XML. Expected XML for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is XML. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNotXML" xml:space="preserve">
-    <value>Failed: Assert Is Not XML. Expected Not XML for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Not XML. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsDate" xml:space="preserve">
-    <value>Failed: Assert Is Date. Expected Date for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Date. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNotDate" xml:space="preserve">
-    <value>Failed: Assert Is Not Date. Expected Not a Date for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Not Date. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsEmail" xml:space="preserve">
-    <value>Failed: Assert Is Email. Expected Email Address for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Email. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsNotEmail" xml:space="preserve">
-    <value>Failed: Assert Is Not Email. Expected Not Email Address for '{1}' but got '{2}'</value>
+    <value>Failed: Assert Is Not Email. Expected '{0}' for '{1}' but got '{2}'</value>
   </data>
   <data name="Test_FailureMessage_IsRegEx" xml:space="preserve">
     <value>Failed: Assert Is Reg Ex. Expected to match RegEx '{0}' for '{1}' but got '{2}'</value>
