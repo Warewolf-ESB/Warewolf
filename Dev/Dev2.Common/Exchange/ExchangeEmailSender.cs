@@ -9,7 +9,6 @@
 */
 
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Microsoft.Exchange.WebServices.Data;
 using System;
 
@@ -17,13 +16,13 @@ namespace Dev2.Common.Exchange
 {
     public class ExchangeEmailSender : IExchangeEmailSender
     {
-        private readonly IExchangeSource _source;
+        private readonly IExchange _source;
 
         public ExchangeEmailSender()
         {
         }
 
-        public ExchangeEmailSender(IExchangeSource source)
+        public ExchangeEmailSender(IExchange source)
         {
             _source = source;
         }

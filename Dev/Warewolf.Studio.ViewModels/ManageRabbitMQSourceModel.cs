@@ -1,6 +1,10 @@
 ﻿using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.RabbitMQ;
+using System;
 using System.Collections.Generic;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core;
+using Dev2.Data.ServiceModel;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -43,6 +47,15 @@ namespace Warewolf.Studio.ViewModels
         public void SaveSource(IRabbitMQServiceSourceDefinition source)
         {
             _updateManager.Save(source);
+        }
+
+
+        public IRabbitMQServiceSourceDefinition FetchSource(Guid resourceID)
+        {
+            var xaml = _queryManager.FetchResourceXaml(resourceID);
+            var source = new RabbitMQSource(xaml.ToXElement());
+            var def = new RabbitMQServiceSourceDefinition(source);
+            return def;
         }
 
         #endregion Implementation of IRabbitMQSourceModel

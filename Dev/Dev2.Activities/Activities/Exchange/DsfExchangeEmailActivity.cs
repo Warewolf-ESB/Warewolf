@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -52,7 +52,7 @@ namespace Dev2.Activities.Exchange
         #endregion
 
         // ReSharper disable MemberCanBePrivate.Global
-        public IExchangeSource SavedSource { get; set; }
+        public IExchange SavedSource { get; set; }
 
         [FindMissing]
         public string To { get; set; }
@@ -119,7 +119,7 @@ namespace Dev2.Activities.Exchange
             InitializeDebug(dataObject);
             try
             {
-                var runtimeSource = ResourceCatalog.GetResource<ExchangeSource>(dataObject.WorkspaceID, SavedSource.ResourceID);
+                IExchange runtimeSource = ResourceCatalog.GetResource<ExchangeSource>(dataObject.WorkspaceID, SavedSource.ResourceID);
 
                 if (runtimeSource == null)
                 {

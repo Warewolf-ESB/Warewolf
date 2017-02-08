@@ -160,6 +160,7 @@
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
     <Compile Include="MaintainerApi.cs" />
+    <Compile Include="Mapper.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="PluginAction.cs" />
     <Compile Include="PluginConstructor.cs" />

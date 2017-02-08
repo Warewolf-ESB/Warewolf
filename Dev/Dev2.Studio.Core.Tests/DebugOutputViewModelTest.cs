@@ -514,7 +514,7 @@ namespace Dev2.Core.Tests
             const string ResourceName = "TestResource";
             var environmentID = Guid.NewGuid();
             var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>()))
+            mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(),It.IsAny<IServer>()))
                 .Verifiable();
             CustomContainer.Register(mockShellViewModel.Object);
             var envList = new List<IEnvironmentModel>();
@@ -544,7 +544,7 @@ namespace Dev2.Core.Tests
 
             model.OpenItemCommand.Execute(debugState);
 
-            mockShellViewModel.Verify(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>()));
+            mockShellViewModel.Verify(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(),It.IsAny<IServer>()));
         }
 
         [TestMethod]
