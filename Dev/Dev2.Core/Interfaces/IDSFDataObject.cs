@@ -30,6 +30,7 @@ namespace Dev2.Interfaces
         string ServiceName { get; set; }
         string TestName { get; set; }
         bool IsServiceTestExecution { get; set; }
+        bool IsDebugFromWeb { get; set; }
         string ParentWorkflowInstanceId { get; set; }
         string ParentServiceName { get; set; }
         StringBuilder DataList { get; set; }
