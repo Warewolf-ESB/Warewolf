@@ -71,9 +71,9 @@ namespace Warewolf.Studio.ViewModels
             _environment = environment;
             _updateManager = updateManager;
             _authenticationType = AuthenticationType.Windows;
-            _serverName = string.Empty;
-            _userName = string.Empty;
-            _password = string.Empty;
+            _serverName = String.Empty;
+            _userName = String.Empty;
+            _password = String.Empty;
             IsWindows = true;
             HeaderText = Resources.Languages.Core.SharePointServiceNewHeaderLabel;
             Header = Resources.Languages.Core.SharePointServiceNewHeaderLabel;
@@ -92,14 +92,9 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker, environment)
         {
             VerifyArgument.IsNotNull("sharePointServiceSource", sharePointServiceSource);
-
-            asyncWorker.Start(() => updateManager.FetchSource(sharePointServiceSource.Id), source =>
-            {
-                _sharePointServiceSource = source;
-                SetupHeaderTextFromExisting();
-                FromModel(source);
-            });
-
+            _sharePointServiceSource = sharePointServiceSource;
+            SetupHeaderTextFromExisting();
+            FromModel(sharePointServiceSource);
         }
 
         void SetupHeaderTextFromExisting()
@@ -140,13 +135,13 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Testing)
                 return false;
-            if (string.IsNullOrEmpty(ServerName))
+            if (String.IsNullOrEmpty(ServerName))
             {
                 return false;
             }
             if (AuthenticationType == AuthenticationType.User)
             {
-                return !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password);
+                return !String.IsNullOrEmpty(UserName) && !String.IsNullOrEmpty(Password);
             }
             return true;
         }

@@ -1235,8 +1235,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
             {
                 var resourceID = ModelItemUtils.TryGetResourceID(modelItem);
-                var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                shellViewModel.OpenResource(resourceID, parentEnvironmentID,shellViewModel.ActiveServer);
+                CustomContainer.Get<IShellViewModel>().OpenResource(resourceID, parentEnvironmentID);
             }
         }
 
@@ -1874,44 +1873,48 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void LoadDesignerXaml()
         {
-            _asyncWorker.Start(() =>
+
+            var xaml = _resourceModel.WorkflowXaml;
+
+            // if null, try fetching. It appears there is more than the two routes identified to populating xaml ;(
+            if (xaml == null || xaml.Length == 0)
             {
-                var xaml = _resourceModel.WorkflowXaml;
+                // we always want server at this point ;)
+                var workspace = GlobalConstants.ServerWorkspaceID;
 
-                if (xaml == null || xaml.Length == 0)
+                // log the trace for fetch ;)
+                Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
+
+                // In the case of null of empty try fetching again ;)
+                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
+                if (msg != null)
                 {
-                    var workspace = GlobalConstants.ServerWorkspaceID;
-                    Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
-                    var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
-                    if (msg != null)
-                    {
-                        xaml = msg.Message;
-                    }
+                    xaml = msg.Message;
                 }
+            }
 
-                if (xaml == null || xaml.Length == 0)
+            // if we still cannot find it, create a new one ;)
+            if (xaml == null || xaml.Length == 0)
+            {
+                if (_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
-                    if (_resourceModel.ResourceType == ResourceType.WorkflowService)
-                    {
-                        Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
-                        var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
-                        return new System.Action(()=>
-                        {
-                            _wd.Load(activityBuilder);
-                            BindToModel();
-                        });
-                        
-                    }
+                    // log the trace for fetch ;)
+                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
+                    var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
+                    _wd.Load(activityBuilder);
+                    BindToModel();
+                }
+                else
+                {
+                    // we have big issues ;(
                     throw new Exception($"Could not find resource definition for {_resourceModel.ResourceName}");
                 }
-                
-                return (() =>
-                {
-                    SetDesignerText(xaml);
-                    _wd.Load();
-                });
-            },action => action.Invoke());
-            
+            }
+            else
+            {
+                SetDesignerText(xaml);
+                _wd.Load();
+            }
         }
 
         private void SetDesignerText(StringBuilder xaml)

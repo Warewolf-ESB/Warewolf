@@ -5,23 +5,6 @@ namespace Dev2.Common.Interfaces.Core
 {
     public class SharePointServiceSourceDefinition : ISharepointServerSource, IEquatable<SharePointServiceSourceDefinition>
     {
-
-        public SharePointServiceSourceDefinition(ISharepointSource db)
-        {
-            AuthenticationType = db.AuthenticationType;
-            Server = db.Server;
-            Path = db.GetSavePath();
-            Id = db.ResourceID;
-            Name = db.ResourceName;
-            Password = db.Password;
-            UserName = db.UserName;
-
-        }
-
-        public SharePointServiceSourceDefinition()
-        {
-        }
-
         public string UserName { get; set; }
         public string Password { get; set; }
         public AuthenticationType AuthenticationType { get; set; }

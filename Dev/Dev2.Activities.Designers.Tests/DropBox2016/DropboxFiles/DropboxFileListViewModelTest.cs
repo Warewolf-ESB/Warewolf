@@ -250,16 +250,14 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             var mockShellViewModel = new Mock<IShellViewModel>();
-            var serverMock = new Mock<IServer>();
-            mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()));
-            mockShellViewModel.Setup(viewModel => viewModel.ActiveServer).Returns(() => serverMock.Object);
+            mockShellViewModel.Setup(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
             CustomContainer.Register(mockShellViewModel.Object);
             //------------Setup for test--------------------------
             var dropBoxFileListViewModel = new DropBoxFileListDesignerViewModel(model, TestResourceCatalog.LazySourceManager.Value) { SelectedSource = new DropBoxSource() };
             dropBoxFileListViewModel.EditDropboxSourceCommand.Execute(null);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            mockShellViewModel.Verify(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()));
+            mockShellViewModel.Verify(viewModel => viewModel.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
             CustomContainer.DeRegister<IShellViewModel>();
         }
         [TestMethod]

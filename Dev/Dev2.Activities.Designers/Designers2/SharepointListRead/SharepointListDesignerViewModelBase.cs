@@ -482,10 +482,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         void EditSharepointSource()
         {
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            var activeServer = shellViewModel.ActiveServer;
-            if (activeServer != null)
-                shellViewModel.OpenResource(SelectedSharepointServer.ResourceID,activeServer.EnvironmentID, activeServer);
+            CustomContainer.Get<IShellViewModel>().OpenResource(SelectedSharepointServer.ResourceID, CustomContainer.Get<IShellViewModel>().ActiveServer);
         }
 
 

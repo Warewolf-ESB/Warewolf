@@ -577,7 +577,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var eventPublisher = new Mock<IEventAggregator>();
             var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()));
+            mockShellViewModel.Setup(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>()));
             CustomContainer.Register(mockShellViewModel.Object);
             var resourceModel = new Mock<IResourceModel>();
 
@@ -586,7 +586,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Execute Test---------------------------
             viewModel.EditDatabaseCommand.Execute(null);
             //------------Assert Results-------------------------
-            mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(),It.IsAny<Guid>(), It.IsAny<IServer>()));
+            mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(),It.IsAny<Guid>()));
         }
 
         [TestMethod]

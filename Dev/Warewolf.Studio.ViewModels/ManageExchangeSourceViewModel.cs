@@ -8,7 +8,6 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -51,18 +50,14 @@ namespace Warewolf.Studio.ViewModels
             Timeout = 10000;
         }
 
-        public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator, IExchangeSource exchangeSource, IAsyncWorker AsyncWorker)
+        public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator, IExchangeSource exchangeSource)
             : this(updateManager, aggregator)
         {
             VerifyArgument.IsNotNull("exchangeSource", exchangeSource);
-            AsyncWorker.Start(() => updateManager.FetchSource(exchangeSource.ResourceID), source =>
-            {
-                _emailServiceSource = source;
-                // ReSharper disable once VirtualMemberCallInContructor
-                FromModel(source);
-                SetupHeaderTextFromExisting();
-            });
-
+            _emailServiceSource = exchangeSource;
+            // ReSharper disable once VirtualMemberCallInContructor
+            FromModel(exchangeSource);
+            SetupHeaderTextFromExisting();
         }
 
         public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator)

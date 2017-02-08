@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,8 +18,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         public ManageExchangeSourceViewModel GetViewModelWithSource()
         {
-            var mock = new Mock<IManageExchangeSourceModel>();
-            var exchangeSourceDefinition = new ExchangeSourceDefinition()
+            return new ManageExchangeSourceViewModel(new Mock<IManageExchangeSourceModel>().Object, new Mock<IEventAggregator>().Object,new ExchangeSourceDefinition()
             {
                 AutoDiscoverUrl = "test",
                 Password = "test",
@@ -29,10 +26,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Path = "test",
                 ResourceName = "test exchange",
                 Type = enSourceType.ExchangeSource,
-            };
-            mock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
-                .Returns(exchangeSourceDefinition);
-            return new ManageExchangeSourceViewModel(mock.Object, new Mock<IEventAggregator>().Object,exchangeSourceDefinition, new SynchronousAsyncWorker())
+            } )
             {
                 Name = "Exchange Source",
                 AutoDiscoverUrl = "test Url",

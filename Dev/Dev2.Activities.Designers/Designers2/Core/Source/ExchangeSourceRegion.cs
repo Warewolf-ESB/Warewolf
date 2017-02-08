@@ -6,22 +6,20 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 // ReSharper disable UnusedMember.Local
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
-    public class ExchangeSourceRegion : ISourceToolRegion<IExchange>
+    public class ExchangeSourceRegion : ISourceToolRegion<IExchangeSource>
     {
         private Guid _sourceId;
         private readonly ModelItem _modelItem;
         private Action _sourceChangedAction;
-        private IExchange _selectedSource;
-        private ICollection<IExchange> _sources;
+        private IExchangeSource _selectedSource;
+        private ICollection<IExchangeSource> _sources;
         public ICommand EditSourceCommand { get; set; }
         public ICommand NewSourceCommand { get; set; }
 
@@ -37,7 +35,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public ICollection<IExchange> Sources
+        public ICollection<IExchangeSource> Sources
         {
             get
             {
@@ -69,8 +67,8 @@ namespace Dev2.Activities.Designers2.Core.Source
             LabelWidth = 70;
             ToolRegionName = "ExchangeSourceRegion";
             Dependants = new List<IToolRegion>();
-            NewSourceCommand = new DelegateCommand(o=>model.CreateNewSource());
-            EditSourceCommand = new DelegateCommand(o => model.EditSource(SelectedSource),o=> CanEditSource());
+            NewSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(model.CreateNewSource);
+            EditSourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => model.EditSource(SelectedSource), CanEditSource);
             var sources = model.RetrieveSources().OrderBy(source => source.ResourceName);
             Sources = sources.Where(source => source != null && source.ResourceType == type).ToObservableCollection();
             IsEnabled = true;
@@ -143,7 +141,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             handler?.Invoke(this, args);
         }
 
-        public IExchange SelectedSource
+        public IExchangeSource SelectedSource
         {
             get
             {
@@ -159,7 +157,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetSelectedSource(IExchange value)
+        private void SetSelectedSource(IExchangeSource value)
         {
             if (value != null)
             {
@@ -171,11 +169,11 @@ namespace Dev2.Activities.Designers2.Core.Source
             OnPropertyChanged("SelectedSource");
         }
 
-        public IExchange SavedSource
+        public IExchangeSource SavedSource
         {
             get
             {
-                return _modelItem.GetProperty<IExchange>("SavedSource");
+                return _modelItem.GetProperty<IExchangeSource>("SavedSource");
             }
             set
             {

@@ -188,8 +188,7 @@ namespace Dev2.Studio.Views.DependencyVisualization
         void Nodes_OnNodeMouseDoubleClick(object sender, NetworkNodeClickEventArgs e)
         {
             var id = ((ExplorerItemNodeViewModel)e.NodeControl.Node.Data).ResourceId;
-            var activeServer = CustomContainer.Get<IShellViewModel>().ActiveServer;
-            CustomContainer.Get<IShellViewModel>().OpenResource(id,activeServer.EnvironmentID, activeServer);
+            CustomContainer.Get<IShellViewModel>().OpenResource(id, CustomContainer.Get<IShellViewModel>().ActiveServer);
             
         }
     }

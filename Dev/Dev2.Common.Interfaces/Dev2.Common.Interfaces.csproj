@@ -229,7 +229,6 @@
     <Compile Include="IAssignValue.cs" />
     <Compile Include="ICheckControlEnabledView.cs" />
     <Compile Include="IChooseDLLView.cs" />
-    <Compile Include="IComPlugin.cs" />
     <Compile Include="IComPluginService.cs" />
     <Compile Include="IComPluginServiceModel.cs" />
     <Compile Include="IComPluginSource.cs" />
@@ -239,7 +238,6 @@
     <Compile Include="IConstructorParameter.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
     <Compile Include="IDatabaseSourceViewModel.cs" />
-    <Compile Include="IDbSource.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
     <Compile Include="IDev2MethodInfo.cs" />
     <Compile Include="IDLLChooser.cs" />
@@ -247,9 +245,7 @@
     <Compile Include="IDropboxExecutor.cs" />
     <Compile Include="IDropboxResult.cs" />
     <Compile Include="IEmailServiceSource.cs" />
-    <Compile Include="IEmailSource.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />
-    <Compile Include="IExchange.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
     <Compile Include="IExecutionToken.cs" />
@@ -318,7 +314,6 @@
     <Compile Include="IOAuthSource.cs" />
     <Compile Include="IPerformanceCountersByMachine.cs" />
     <Compile Include="IPerformanceCountersByResource.cs" />
-    <Compile Include="IPlugin.cs" />
     <Compile Include="IPluginAction.cs" />
     <Compile Include="IPluginConstructor.cs" />
     <Compile Include="IPluginService.cs" />
@@ -326,7 +321,6 @@
     <Compile Include="IPluginSource.cs" />
     <Compile Include="IPulseLogger.cs" />
     <Compile Include="IQueryManager.cs" />
-    <Compile Include="IRabbitMQ.cs" />
     <Compile Include="IRabbitMQServiceSourceDefinition.cs" />
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IResourceHolder.cs" />
@@ -357,7 +351,6 @@
     <Compile Include="IWcfService.cs" />
     <Compile Include="IWcfServiceModel.cs" />
     <Compile Include="IWcfSource.cs" />
-    <Compile Include="IWebSource.cs" />
     <Compile Include="IWorksurfaceKey.cs" />
     <Compile Include="Monitoring\IPerformanceCounter.cs" />
     <Compile Include="Monitoring\IPerformanceCounterFactory.cs" />

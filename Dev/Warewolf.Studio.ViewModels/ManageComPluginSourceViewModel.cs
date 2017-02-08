@@ -194,14 +194,11 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("compluginSource", pluginSource);
-            AsyncWorker.Start(() => updateManager.FetchSource(pluginSource.Id), source =>
-            {
-                _pluginSource = source;
-                SetupHeaderTextFromExisting();
-                PerformLoadAll(() => FromModel(_pluginSource));
+            _pluginSource = pluginSource;
+            SetupHeaderTextFromExisting();
+            PerformLoadAll(() => FromModel(_pluginSource));
 
-                ToItem();
-            });
+            ToItem();
         }
 
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker, Action<System.Action> dispatcherAction)
@@ -236,10 +233,10 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
 
-            Name = pluginSource.ResourceName;
-            Path = pluginSource.ResourcePath;
-            Is32Bit = pluginSource.Is32Bit;
-            ClsId = pluginSource.ClsId;
+            Name = _pluginSource.ResourceName;
+            Path = _pluginSource.ResourcePath;
+            Is32Bit = _pluginSource.Is32Bit;
+            ClsId = _pluginSource.ClsId;
         }
 
         public override string Name
