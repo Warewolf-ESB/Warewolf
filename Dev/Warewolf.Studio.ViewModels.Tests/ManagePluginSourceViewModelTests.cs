@@ -11,6 +11,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Interfaces;
+using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -65,6 +66,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _pluginSourceMock.SetupGet(it => it.Name).Returns(_pluginSourceName);
             _pluginSourceMock.SetupGet(it => it.Name).Returns(_pluginSourceName);
             _pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(_selectedDllMock.Object);
+            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+             .Returns(_pluginSourceMock.Object);
             _requestServiceNameViewModelTask = Task.FromResult(_requestServiceNameViewModelMock.Object);
             _selectedDllMock.SetupGet(it => it.FullName).Returns(_selectedDllFullName);
             _asyncWorkerMock.Setup(
@@ -82,17 +85,28 @@ namespace Warewolf.Studio.ViewModels.Tests
                             exception(e);
                         }
                     });
-
+            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+            .Returns(_pluginSourceMock.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<IPluginSource>>(),
+                                            It.IsAny<Action<IPluginSource>>()))
+                            .Callback<Func<IPluginSource>, Action<IPluginSource>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
             _changedProperties = new List<string>();
             _target = new ManagePluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object);
             _target.PropertyChanged += (sender, e) => { _changedProperties.Add(e.PropertyName); };
 
             _changedPropertiesSource = new List<string>();
+         
             _targetSource = new ManagePluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _pluginSourceMock.Object, _asyncWorkerMock.Object);
             _targetSource.PropertyChanged += (sender, e) => { _changedPropertiesSource.Add(e.PropertyName); };
-
+            
             _changedPropertiesRequestServiceNameViewModel = new List<string>();
-            _targetRequestServiceNameViewModel = new ManagePluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object);
+            _targetRequestServiceNameViewModel = new ManagePluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, new SynchronousAsyncWorker());
             _targetRequestServiceNameViewModel.PropertyChanged += (sender, args) => { _changedPropertiesRequestServiceNameViewModel.Add(args.PropertyName); };
         }
 
@@ -470,7 +484,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetSource.DllChooser.DllListingModels = new List<IDllListingModel>() { dllListingMock.Object };
 
             //act
-            _targetSource.FromModel(pluginSourceMock.Object);
+            _targetSource.FromModel(_pluginSourceMock.Object);
 
             //assert
             Assert.AreEqual(ExpectedName, _targetSource.Name);
@@ -499,7 +513,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetSource.DllChooser.DllListingModels = new List<IDllListingModel>() { dllListingMock.Object };
 
             //act
-            _targetSource.FromModel(pluginSourceMock.Object);
+            _targetSource.FromModel(_pluginSourceMock.Object);
 
             //assert
             Assert.AreEqual(ExpectedName, _targetSource.Name);
@@ -807,7 +821,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateManagerMock.SetupGet(it => it.ServerName).Returns(_warewolfServerName);
             _changedPropertiesSource = new List<string>();
             _targetSource = new ManagePluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _pluginSourceMock.Object, _asyncWorkerMock.Object);
-            _targetSource.PropertyChanged += (sender, args) => { _changedPropertiesSource.Add(args.PropertyName); };
+            _targetSource.PropertyChanged += (sender, args) =>
+            {
+                _changedPropertiesSource.Add(args.PropertyName);
+            };
             const string ExpectedValue = "someResourceName";
             const string PluginSourceName = "pluginSourceName";
             _pluginSourceMock.SetupGet(it => it.Name).Returns(PluginSourceName);
