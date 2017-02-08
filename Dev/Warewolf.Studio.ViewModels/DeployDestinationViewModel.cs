@@ -35,7 +35,8 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == server.EnvironmentID);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
-            SelectedEnvironment = environmentViewModel;           
+            SelectedEnvironment = environmentViewModel;
+            StatsArea?.ReCalculate();
         }
 
         void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)

@@ -1612,6 +1612,7 @@ namespace Dev2.Core.Tests
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.AuthorizationService).Returns(authService.Object);
+            env.Setup(e => e.IsConnected).Returns(true);
 
             //------------Execute Test---------------------------
             MainViewModel.ActiveEnvironment = env.Object;

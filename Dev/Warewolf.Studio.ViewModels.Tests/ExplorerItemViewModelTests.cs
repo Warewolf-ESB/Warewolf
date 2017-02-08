@@ -1207,7 +1207,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestDeployIsResourceCheckedEnabled()
+        public void TestDeployIsResourceCheckedDisabled()
         {
             //arrange
             var windowsGroupPermissionMock = new Mock<IWindowsGroupPermission>();
@@ -1223,9 +1223,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.IsResourceChecked = false;
             //act
             //assert
-            Assert.IsTrue(_target.CanDeploy);
+            Assert.IsFalse(_target.CanDeploy);
             Assert.AreEqual(_target.CanDeploy,_target.IsResourceCheckedEnabled);
-            Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckbox);
+            Assert.AreEqual(_target.DeployResourceCheckboxTooltip, Resources.Languages.Core.DeployResourceCheckboxViewPermissionError);
         }
         [TestMethod]
         public void TestDeployIsResourceCheckedEnabled_GivenView_ThenChangedToAdministrator()

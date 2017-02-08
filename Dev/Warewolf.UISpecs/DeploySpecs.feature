@@ -183,14 +183,8 @@ Scenario: Resource Permissions Toggles Deploy button correctly
 	Given The Warewolf Studio is running
 	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for localhost
 	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for Remote Server
-	When I Click Deploy Ribbon Button
-	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
 	And I set AuthenticationType to Public
-	And I Click Explorer Connect Remote Server Button
-	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-	And I Click Deploy Tab Source Server Connect Button
-	Then I validate I can Deploy "ResourceWithViewAndExecutePerm"
+	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	And I Click Deploy Tab Destination Server Connect Button
-	And I Select localhost from the source tab
 	Then I validate I can not Deploy "ResourceWithViewAndExecutePerm"
