@@ -7509,8 +7509,8 @@ namespace Warewolf.UITests
         [Then(@"Local ""(.*)"" is open")]
         public void LocalResourceIsOpen(string tabName)
         {
-            Playback.Wait(500);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+            Playback.Wait(1000);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "First Item does not exist in tree.");
             Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
         }
 
