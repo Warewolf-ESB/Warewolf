@@ -49,6 +49,11 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="BrowserDebug\BrowserDebug.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BrowserDebug.feature</DependentUpon>
+    </Compile>
     <Compile Include="Composition\ExampleWorkflowExecution.feature.cs">
       <DependentUpon>ExampleWorkflowExecution.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -256,6 +261,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="BrowserDebug\BrowserDebug.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BrowserDebug.feature.cs</LastGenOutput>
+    </None>
     <None Include="Composition\ExampleWorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExampleWorkflowExecution.feature.cs</LastGenOutput>
