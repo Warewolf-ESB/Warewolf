@@ -23,6 +23,7 @@ using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Decision;
@@ -378,13 +379,17 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
+
             if (dataObject.IsDebugFromWeb)
             {
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                var fetchDebugItems = DebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
-                var serialize = serializer.Serialize(fetchDebugItems);
+                var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
+                var remoteDebugItems = fetchDebugItems?.ToList();
+                var debugs = DebugStateTreeBuilder.BuildTree(remoteDebugItems).ToList();
+                var serialize = serializer.Serialize(debugs);
                 return new StringResponseWriter(serialize, formatter.ContentType);
             }
+
 
             foreach (var error in dataObject.Environment.Errors.Union(dataObject.Environment.AllErrors))
             {
@@ -481,6 +486,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.Environment = null;
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
+
+
 
         private static string GetForAllResources(WebRequestTO webRequest)
         {

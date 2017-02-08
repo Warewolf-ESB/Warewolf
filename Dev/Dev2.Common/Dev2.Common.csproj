@@ -108,6 +108,7 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="DebugStateTreeBuilder.cs" />
     <Compile Include="DeplyResult.cs" />
     <Compile Include="Dev2MethodInfo.cs" />
     <Compile Include="DuplicateResource.cs" />

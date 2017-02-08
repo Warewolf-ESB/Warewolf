@@ -42,6 +42,8 @@ namespace Dev2.Diagnostics.Debug
         string _server;
         Guid _environmentID;
         Guid _disconnectedID;
+        private Guid _parentID;
+        private Guid _id;
 
         #region Ctor
 
@@ -83,13 +85,21 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the ID.
         /// </summary>
-        public Guid ID { get; set; }
-     
+        public Guid ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
 
         /// <summary>
         ///     Gets or sets the parent ID.
         /// </summary>
-        public Guid ParentID { get; set; }
+        public Guid ParentID
+        {
+            get { return _parentID; }
+            set { _parentID = value; }
+        }
         public Guid SourceResourceID { get; set; }
 
         /// <summary>
@@ -745,6 +755,9 @@ namespace Dev2.Diagnostics.Debug
             }
         }
         public string ActualType { get; set; }
+
+        [XmlIgnore]
+        public List<IDebugState> Children { get; set; }
 
         #region Implementation of IEquatable<IDebugState>
 

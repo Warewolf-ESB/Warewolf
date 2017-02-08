@@ -176,5 +176,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
 
         bool IsDurationVisible { get; set; }
         string ActualType  { get; set; }
+
+        List<IDebugState> Children { get; set; }
     }
 }
