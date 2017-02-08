@@ -293,6 +293,7 @@ namespace Warewolf.Studio.ViewModels
                 await environmentModel.Load(IsDeploy);
                 OnPropertyChanged(() => Environments);
                 AfterLoad(server.EnvironmentID);
+                _statsArea.Calculate(environmentModel.AsList().Select(model => model as IExplorerTreeItem).ToList());
             }
         }
 

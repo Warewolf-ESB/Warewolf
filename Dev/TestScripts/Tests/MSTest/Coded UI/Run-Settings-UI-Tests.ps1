@@ -24,18 +24,18 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\OtherUITests.testsettings"
+$TestSettingsFile = "$PSScriptRoot\SettingsUITests.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"
 "@ + [guid]::NewGuid() + @"
 `"
-  name=`"OtherUITests`"
+  name=`"SettingsUITests`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run Other UI Tests.</Description>
-  <Deployment enabled=`"false`" />
+  <Description>Run Settings UI Tests.</Description>
+  <Settingsment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
     <Timeouts testTimeout=`"300000`" />
@@ -80,7 +80,7 @@ if (Test-Path "$PSScriptRoot\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll"
 }
 if ($TestAssemblyPath -eq ""){
-	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.UITests\bin\Debug
+	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot\Warewolf.UITests\bin\Debug or $PSScriptRoot
 	exit 1
 }
 if (!(Test-Path $PSScriptRoot\TestResults)) {
@@ -89,10 +89,10 @@ if (!(Test-Path $PSScriptRoot\TestResults)) {
 
 if ($TestList -eq "") {
 	# Create full MSTest argument string.
-	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing&!Default Layout&!Resource Tools&!Save Dialog&!Shortcut Keys&!Settings`""
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\SettingsUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"Settings`""
 } else {
 	# Create full MSTest argument string.
-	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\SettingsUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 }
 
 # Write full command including full argument string.
