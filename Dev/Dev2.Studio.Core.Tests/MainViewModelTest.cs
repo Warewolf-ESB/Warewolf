@@ -1784,7 +1784,7 @@ namespace Dev2.Core.Tests
             viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
             viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
 
-            MainViewModel.OpenResource(source.Object.ResourceId, viewModel.Object.ActiveServer);
+            MainViewModel.OpenResource(source.Object.ResourceId,viewModel.Object.ActiveServer.EnvironmentID, viewModel.Object.ActiveServer);
         }
 
         [TestMethod]
@@ -1818,7 +1818,7 @@ namespace Dev2.Core.Tests
             viewModel.SetupGet(model => model.LocalhostServer).Returns(server.Object);
             viewModel.SetupGet(model => model.ActiveServer.EnvironmentID).Returns(Guid.NewGuid);
 
-            MainViewModel.OpenResource(source.Object.ResourceId, viewModel.Object.ActiveServer);
+            MainViewModel.OpenResource(source.Object.ResourceId, viewModel.Object.ActiveServer.EnvironmentID, viewModel.Object.ActiveServer);
         }
 
         [TestMethod]
@@ -2164,7 +2164,6 @@ namespace Dev2.Core.Tests
             MainViewModel.WorksurfaceContextManager = mockWM.Object;
             MainViewModel.WorksurfaceContextManager.EditServer(source.Object, It.IsAny<IServer>());
             mockWM.Verify(manager => manager.EditServer(It.IsAny<IServerSource>(), It.IsAny<IServer>()));
-            MainViewModel.EditServer(source.Object);
         }
 
         [TestMethod]

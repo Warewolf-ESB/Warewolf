@@ -191,6 +191,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var mockStudioUpdateManager = new Mock<IManageServerSourceModel>();
+            
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "rsaklfhuggspc", "barney", "SANDBOX-1" });
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -229,7 +230,8 @@ namespace Warewolf.UIBindingTests.ServerSource
             }
 
 
-
+            mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                .Returns(serverSource);
             FeatureContext.Current["svrsrc"] = serverSource;
             var viewModel = GetViewModel(manageServerControl);
             var manageServerSourceViewModel = new ManageNewServerViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, serverSource, new SynchronousAsyncWorker(), mockExecutor.Object);

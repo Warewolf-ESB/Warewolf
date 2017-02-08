@@ -37,13 +37,16 @@ namespace Warewolf.Studio.ViewModels
             _requestServiceNameViewModel = requestServiceNameViewModel;
         }
 
-        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IWcfServerSource source, IAsyncWorker asyncWorker, IEnvironmentModel environment)
+        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IWcfServerSource WcfSource, IAsyncWorker asyncWorker, IEnvironmentModel environment)
             : this(updateManager, aggregator, asyncWorker, environment)
         {
-            VerifyArgument.IsNotNull("source", source);
-            _wcfServerSource = source;
-            SetupHeaderTextFromExisting();
-            FromModel(source);
+            VerifyArgument.IsNotNull("source", WcfSource);
+            asyncWorker.Start(() => updateManager.FetchSource(WcfSource.Id), source =>
+            {
+                _wcfServerSource = source;
+                SetupHeaderTextFromExisting();
+                FromModel(source);
+            });
         }
 
         public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IEnvironmentModel environment)
@@ -55,7 +58,7 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker = asyncWorker;
             _environment = environment;
             _updateManager = updateManager;
-            _endPointUrl = String.Empty;
+            _endPointUrl = string.Empty;
 
             HeaderText = Resources.Languages.Core.WcfServiceNewHeaderLabel;
             Header = Resources.Languages.Core.WcfServiceNewHeaderLabel;

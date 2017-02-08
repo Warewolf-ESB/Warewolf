@@ -34,8 +34,8 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016
 
         public static Lazy<IDropboxSourceManager> LazySourceManager = new Lazy<IDropboxSourceManager>(() =>
         {
-            var dropboxSourceManager = new DropboxSourceManager(EnvLazy.Value);
-            return dropboxSourceManager;
+            var mock = new Mock<DropboxSourceManager>(EnvLazy.Value);
+            return mock.Object;
         });
     }
 }
