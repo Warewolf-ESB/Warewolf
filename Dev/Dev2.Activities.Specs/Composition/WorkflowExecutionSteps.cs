@@ -2302,18 +2302,20 @@ namespace Dev2.Activities.Specs.Composition
 
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
-
-            foreach (var activity in activityList)
+            if (activityList != null)
             {
-                if (TestStartNode.Action == null)
+                foreach (var activity in activityList)
                 {
-                    TestStartNode.Action = activity.Value;
-                }
-                else
-                {
-                    var flowStep = new FlowStep { Action = activity.Value };
-                    flowSteps.Last().Next = flowStep;
-                    flowSteps.Add(flowStep);
+                    if (TestStartNode.Action == null)
+                    {
+                        TestStartNode.Action = activity.Value;
+                    }
+                    else
+                    {
+                        var flowStep = new FlowStep { Action = activity.Value };
+                        flowSteps.Last().Next = flowStep;
+                        flowSteps.Add(flowStep);
+                    }
                 }
             }
 
