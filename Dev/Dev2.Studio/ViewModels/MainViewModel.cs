@@ -157,10 +157,10 @@ namespace Dev2.Studio.ViewModels
                     if (EnvironmentRepository != null)
                     {
                         EnvironmentRepository.ActiveEnvironment = value;
-                    }
-                    if (_activeEnvironment.Connection.IsConnected)
-                    {
-                        OnActiveEnvironmentChanged();
+                        if (EnvironmentRepository.ActiveEnvironment != null && EnvironmentRepository.ActiveEnvironment.IsConnected)
+                        {
+                            OnActiveEnvironmentChanged();
+                        }
                     }
                     NotifyOfPropertyChange(() => ActiveEnvironment);
                 }
