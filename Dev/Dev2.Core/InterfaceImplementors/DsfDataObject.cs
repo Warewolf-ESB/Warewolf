@@ -251,6 +251,7 @@ namespace Dev2.DynamicServices
         public string ServiceName { get; set; }
         public string TestName { get; set; }
         public bool IsServiceTestExecution { get; set; }
+        public bool IsDebugFromWeb { get; set; }
         public Guid WorkflowInstanceId { get; set; }
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
@@ -390,6 +391,7 @@ namespace Dev2.DynamicServices
             result.TestName = TestName;
             result.SourceResourceID = SourceResourceID;
             result.IsServiceTestExecution = IsServiceTestExecution;
+            result.IsDebugFromWeb = IsDebugFromWeb;
             if (ServiceTest != null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();

@@ -65,6 +65,8 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
+    <Compile Include="ISpecExternalProcessExecutor.cs" />
+    <Compile Include="SpecExternalProcessExecutor.cs" />
     <Compile Include="TestFramework\StudioTestFramework.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
