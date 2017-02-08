@@ -79,5 +79,6 @@ namespace Dev2.Common.Interfaces
         void NewSchedule(Guid resourceId);
         void SetRefreshExplorerState(bool refresh);
         void ResetMainView();
+        void OnActiveEnvironmentChanged();
     }
 }
