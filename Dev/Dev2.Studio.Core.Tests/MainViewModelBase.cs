@@ -140,6 +140,7 @@ namespace Dev2.Core.Tests
             mock.Setup(s => s.All()).Returns(models);
             mock.Setup(s => s.Source).Returns(EnvironmentModel.Object);
             mock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(EnvironmentModel.Object);
+            mock.Setup(repo => repo.ActiveEnvironment).Returns(EnvironmentModel.Object);
             EnvironmentRepo = mock.Object;
             return EnvironmentRepo;
         }
