@@ -8,6 +8,7 @@ namespace Warewolf.UITests
     public class ExchangeSourceTests
     {
         const string SourceName = "CodedUITestExchangeSource";
+        private const string editSourceName = "EmailExchangeSourceToEdit";
 
         [TestMethod]
         [TestCategory("Exchange Source")]
@@ -28,6 +29,14 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             UIMap.Click_Close_ExchangeSource_Tab();
+        }
+
+        [TestMethod]
+        [TestCategory("Exchange Source")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_ExchangeSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
         }
 
         #region Additional test attributes

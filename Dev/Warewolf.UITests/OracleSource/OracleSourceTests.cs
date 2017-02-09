@@ -7,6 +7,7 @@ namespace Warewolf.UITests.OracleSource
     public class OracleSourceTests
     {
         const string SourceName = "CodedUITestOracleSource";
+        private const string editSourceName = "OracleDatabaseSourceToEdit";
 
         [TestMethod]
         [TestCategory("Database Sources")]
@@ -28,6 +29,14 @@ namespace Warewolf.UITests.OracleSource
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+        }
+
+        [TestMethod]
+        [TestCategory("Database Sources")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_OracleSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
         }
 
         #region Additional test attributes
