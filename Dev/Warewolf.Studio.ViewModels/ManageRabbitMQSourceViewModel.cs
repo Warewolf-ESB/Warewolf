@@ -61,6 +61,7 @@ namespace Warewolf.Studio.ViewModels
             asyncWorker.Start(() => rabbitMQSourceModel.FetchSource(rabbitMQServiceSource.ResourceID), source =>
             {
                 _rabbitMQServiceSource = source;
+                _rabbitMQServiceSource.ResourcePath = rabbitMQServiceSource.ResourcePath;
                 SetupHeaderTextFromExisting();
                 FromModel(source);
             });

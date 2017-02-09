@@ -97,7 +97,7 @@ namespace Warewolf.Studio.ViewModels
             {
 
                 _serverSource = source;
-
+                _serverSource.ResourcePath = serverSource.ResourcePath;
                 Item = new ServerSource
                 {
                     AuthenticationType = _serverSource.AuthenticationType,
@@ -302,7 +302,7 @@ namespace Warewolf.Studio.ViewModels
         public override void Save()
         {
             SaveConnection();
-            ConnectControlSingleton.Instance.ReloadServer();
+            //ConnectControlSingleton.Instance.ReloadServer();
             
         }
 

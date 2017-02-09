@@ -114,8 +114,9 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() => updateManager.FetchSource(webServiceSource.Id), source =>
             {
                 _webServiceSource = source;
+                _webServiceSource.Path = webServiceSource.Path;
                 // ReSharper disable once VirtualMemberCallInContructor
-                FromModel(source);
+                FromModel(_webServiceSource);
                 SetupHeaderTextFromExisting();
             });
 
