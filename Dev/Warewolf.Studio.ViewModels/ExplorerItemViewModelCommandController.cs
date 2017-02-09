@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
@@ -29,6 +30,7 @@ namespace Warewolf.Studio.ViewModels
 
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
+            Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId);
             if (item.IsFolder)
             {
                 item.IsExpanded = !item.IsExpanded;
