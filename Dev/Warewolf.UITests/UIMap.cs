@@ -9048,7 +9048,7 @@ namespace Warewolf.UITests
 
         public void Enter_TextIntoAddress_On_ServerSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.AddressEditBox.Text = "SANDBOX-1";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.AddressEditBox.Text = "RSAKLFSVRGENDEV";
         }
 
         public void Enter_RunAsUser_On_ServerSourceTab()
