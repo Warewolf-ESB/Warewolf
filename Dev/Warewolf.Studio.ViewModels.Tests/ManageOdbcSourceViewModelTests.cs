@@ -83,7 +83,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 _changedPropertiesAsyncWorker.Add(args.PropertyName);
             };
-            _updateManagerMock.Setup(model => model.FetchDbSource(It.IsAny<Guid>(), It.IsAny<string>()))
+            _updateManagerMock.Setup(model => model.FetchDbSource(It.IsAny<Guid>()))
              .Returns(_dbSourceMock.Object);
             _asyncWorkerMock.Setup(worker =>
                                    worker.Start(

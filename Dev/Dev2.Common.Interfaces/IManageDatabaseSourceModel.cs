@@ -11,6 +11,6 @@ namespace Dev2.Common.Interfaces
         void Save(IDbSource toDbSource);
         string ServerName { get; }
 
-        IDbSource FetchDbSource(Guid resourceID,string savePath);
+        IDbSource FetchDbSource(Guid resourceID);
     }
 }

@@ -81,8 +81,9 @@ namespace Warewolf.Studio.ViewModels
             asyncWorker.Start(() => updateManager.FetchSource(oAuthSource.ResourceID), source =>
             {
                 _oAuthSource = source;
+                _oAuthSource.ResourcePath = oAuthSource.ResourcePath;
                 // ReSharper disable once VirtualMemberCallInContructor
-                FromModel(source);
+                FromModel(_oAuthSource);
                 SetupHeaderTextFromExisting();
                 SetupCommands();
                 SetupAuthorizeUri();

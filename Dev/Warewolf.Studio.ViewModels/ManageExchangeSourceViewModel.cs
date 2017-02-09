@@ -58,8 +58,9 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() => updateManager.FetchSource(exchangeSource.ResourceID), source =>
             {
                 _emailServiceSource = source;
+                _emailServiceSource.Path = exchangeSource.Path;
                 // ReSharper disable once VirtualMemberCallInContructor
-                FromModel(source);
+                FromModel(_emailServiceSource);
                 SetupHeaderTextFromExisting();
             });
 

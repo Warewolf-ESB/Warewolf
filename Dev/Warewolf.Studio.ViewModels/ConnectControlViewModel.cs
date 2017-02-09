@@ -18,6 +18,7 @@ using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
+using Dev2.Studio.Core;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
@@ -451,9 +452,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedId = SelectedConnection?.EnvironmentID;
                     if (_selectedId != null)
                     {
-                        
-                            shellViewModel.OpenResource(SelectedConnection.ResourceID, _selectedId.Value, shellViewModel.ActiveServer);
-                        
+                        shellViewModel.OpenResource(SelectedConnection.ResourceID, EnvironmentRepository.Instance.Source.ID, shellViewModel.LocalhostServer);
                     }
                 }
             }

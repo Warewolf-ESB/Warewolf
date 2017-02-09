@@ -2659,6 +2659,7 @@ namespace Dev2.Core.Tests
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.CanStudioExecute).Returns(true);
             env.Setup(a => a.Name).Returns("TestEnvironment");
+            env.Setup(a => a.DisplayName).Returns("TestEnvironment");
             return env;
         }
 
