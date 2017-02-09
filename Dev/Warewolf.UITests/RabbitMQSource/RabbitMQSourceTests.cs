@@ -35,9 +35,10 @@ namespace Warewolf.UITests.RabbitMQSource
         [TestMethod]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
-        public void Edit_RabbitMQeSource_From_ExplorerContextMenu_UITests()
+        public void Open_RabbitMQeSource_From_ExplorerContextMenu_UITests()
         {
             UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.Exists, "RabbitMQ Source Tab does not exist");
         }
 
         #region Additional test attributes

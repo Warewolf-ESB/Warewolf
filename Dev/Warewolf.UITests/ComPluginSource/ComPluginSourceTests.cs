@@ -29,9 +29,11 @@ namespace Warewolf.UITests
         [TestMethod]
         [TestCategory("Plugin Sources")]
         // ReSharper disable once InconsistentNaming
-        public void Edit_ComPluginSource_From_ExplorerContextMenu_UITests()
+        public void Open_ComPluginSource_From_ExplorerContextMenu_UITests()
         {
             UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree);
+            Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.AssemblyNameTextBox.Text), "Assembly Name Textbox is empty after selecting an assembly.");
         }
 
         #region Additional test attributes
