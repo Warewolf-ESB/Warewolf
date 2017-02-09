@@ -3040,12 +3040,15 @@ namespace Warewolf.UITests
         [Given(@"I Click Close RabbitMQ Source Tab Button")]
         [When(@"I Click Close RabbitMQ Source Tab Button")]
         [Then(@"I Click Close RabbitMQ Source Tab Button")]
-        public void Click_Close_RabbitMQ_Source_Tab_Button()
+        public void Click_Close_RabbitMQSource_Tab_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.CloseTabButton, new Point(13, 4));
         }
 
-        public void click_ExchangeSource_CloseTabButton()
+        [Given(@"I Click Close Exchange Source Tab Button")]
+        [When(@"I Click Close Exchange Source Tab Button")]
+        [Then(@"I Click Close RabExchangebitMQ Source Tab Button")]
+        public void Click_ExchangeSource_CloseTabButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.CloseButton);
         }
@@ -3521,7 +3524,7 @@ namespace Warewolf.UITests
         public void Click_Deploy_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
-            Playback.Wait(500);
+            Playback.Wait(1000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
         }
 
@@ -3975,6 +3978,7 @@ namespace Warewolf.UITests
         public void Select_Deploy_From_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.DeployItem, new Point(57, 11));
+            Playback.Wait(1000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "DeployTab does not exist after clicking Deploy");
         }
 
@@ -4032,6 +4036,7 @@ namespace Warewolf.UITests
         public void Click_Duplicate_From_ExplorerContextMenu(string ServiceName)
         {
             Filter_Explorer(ServiceName);
+            Assert.AreEqual(ServiceName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             Duplicate_ExplorerLocalhostFirstItem_With_ExplorerContextMenu();
         }
 
@@ -7506,8 +7511,8 @@ namespace Warewolf.UITests
         [Then(@"Local ""(.*)"" is open")]
         public void LocalResourceIsOpen(string tabName)
         {
-            Playback.Wait(500);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+            Playback.Wait(1000);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "First Item does not exist in tree.");
             Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
         }
 
@@ -8180,7 +8185,7 @@ namespace Warewolf.UITests
         [Then(@"Deploy Button Is Enabled")]
         public void ThenDeployButtonIsEnabled()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, "Deploy button is not enabled");
         }
 
         [Then(@"Deploy Version Conflict Window Shows")]
@@ -8738,10 +8743,6 @@ namespace Warewolf.UITests
 
         public void Select_GACAssemblyFile_From_ChooseDLLWindow(string filter)
         {
-            if (string.IsNullOrEmpty(ChooseDLLWindow.FilterTextBox.Text) == false)
-            {
-                Mouse.Click(ChooseDLLWindow.FilterTextBox.ClearSearchButton);
-            }
             ChooseDLLWindow.FilterTextBox.Text = filter;
             ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem.DrawHighlight();
             Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem, new Point(122, 6));
@@ -8816,6 +8817,7 @@ namespace Warewolf.UITests
                 windowsRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(windowsRadioButton.Selected);
@@ -8825,6 +8827,7 @@ namespace Warewolf.UITests
                 publicRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(publicRadioButton.Selected);
@@ -8836,31 +8839,40 @@ namespace Warewolf.UITests
         [Then(@"I change Server Authentication From Deploy And Validate Changes From Explorer")]
         public void ChangeServerAuthenticationFromDeployAndValidateChangesFromExplorer()
         {
-            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
             var windowsRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
+            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+
             if (publicRadioButton.Selected)
             {
                 windowsRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Select_RemoteConnectionIntegration_From_Explorer();
                 Click_Explorer_RemoteServer_Edit_Button();
-                Assert.IsTrue(windowsRadioButton.Selected);
+                Playback.Wait(1000);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
+                Click_Deploy_Ribbon_Button();
+                Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(windowsRadioButton.Selected);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
             }
             else
             {
                 publicRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Select_RemoteConnectionIntegration_From_Explorer();
                 Click_Explorer_RemoteServer_Edit_Button();
-                Assert.IsTrue(publicRadioButton.Selected);
+                Playback.Wait(1000);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
+                Click_Deploy_Ribbon_Button();
+                Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(publicRadioButton.Selected);
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
             }
         }
 
@@ -8869,7 +8881,7 @@ namespace Warewolf.UITests
         [Then(@"I set AuthenticationType to Public")]
         public void ChangeServerAuthenticationTypeToPublic()
         {
-            Click_Deploy_Tab_Source_Server_Edit_Button();
+            Click_Explorer_RemoteServer_Edit_Button();
             var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
             if (!publicRadioButton.Selected)
             {
@@ -9075,10 +9087,6 @@ namespace Warewolf.UITests
             }
         }
 
-        public void Click_Close_ExchangeSource_Tab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander, new Point(186, 30));
-        }
         public void I_Expand_First_Action_Tree()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.SetActivitiesExpander.Expanded = true;

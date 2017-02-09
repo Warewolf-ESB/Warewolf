@@ -98,11 +98,22 @@ namespace Warewolf.Studio.ViewModels.Tests
                             errorAction(ex);
                         }
                     });
-
+           
             _sharepointServerSourceMock = new Mock<ISharepointServerSource>();
             _sharepointServerSourceMock.Setup(it => it.Name).Returns("someService");
             _requestServiceNameViewModelMock = new Mock<IRequestServiceNameViewModel>();
             _requestServiceNameViewModelTask = Task.FromResult(_requestServiceNameViewModelMock.Object);
+            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+           .Returns(_sharepointServerSourceMock.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<ISharepointServerSource>>(),
+                                            It.IsAny<Action<ISharepointServerSource>>()))
+                            .Callback<Func<ISharepointServerSource>, Action<ISharepointServerSource>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
 
             _changedProperties = new List<string>();
             _target = new SharepointServerSourceViewModel(

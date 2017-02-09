@@ -30,7 +30,6 @@ namespace Dev2.Studio.Factory
         {
             var key = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
-            //TODO Juries move to factory
             var workSurfaceVm = new WorkflowDesignerViewModel(resourceModel, createDesigner);
 
             var contextVm = new WorkSurfaceContextViewModel(key, workSurfaceVm)

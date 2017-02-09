@@ -617,7 +617,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (!String.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
+                if (!string.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
                 {
                     IsVisible = filter(this);
                 }
@@ -683,7 +683,7 @@ namespace Warewolf.Studio.ViewModels
         public void SetPermission(Permissions permission, bool isDeploy = false)
         {
             SetNonePermissions();
-            if (permission.HasFlag(Permissions.DeployFrom))
+            if (Server.CanDeployFrom)
             {
                 CanDeploy = true;
             }
@@ -703,7 +703,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 SetAdministratorPermissions(isDeploy);
             }
-            
         }
 
         private void SetExecutePermissions(bool isDeploy)
