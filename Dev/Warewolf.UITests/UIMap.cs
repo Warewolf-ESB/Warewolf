@@ -9099,5 +9099,11 @@ namespace Warewolf.UITests
             Mouse.Click(scheduleNewTaskListItem, new Point(151, 13));
             Keyboard.SendKeys(scheduleNewTaskListItem, "N", ModifierKeys.Control);
         }
+        public void Change_Dll_And_Save(string newDll)
+        {
+            AssemblyComboBox assembly = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox;            
+            assembly.TextEdit.Text = newDll;
+            Keyboard.SendKeys(assembly.TextEdit, "S", (ModifierKeys.Control));
+        }
     }
 }
