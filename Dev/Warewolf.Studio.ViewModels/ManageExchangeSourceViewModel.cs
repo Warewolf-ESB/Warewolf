@@ -182,8 +182,6 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var src = ToSource();
-                src.Path = Item.Path ?? "";
-                src.ResourceName = Item.ResourceName;
                 Save(src);
                 Item = src;
                 _emailServiceSource = src;
@@ -400,7 +398,7 @@ namespace Warewolf.Studio.ViewModels
             if (_emailServiceSource == null)
             {
                 var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
-                return new ExchangeSourceDefinition()
+                return new ExchangeSourceDefinition
                     {
                         AutoDiscoverUrl = AutoDiscoverUrl,
                         Password = Password,
@@ -421,8 +419,6 @@ namespace Warewolf.Studio.ViewModels
                 _emailServiceSource.UserName = UserName;
                 _emailServiceSource.Password = Password;
                 _emailServiceSource.Timeout = Timeout;
-                _emailServiceSource.ResourceType = "ExchangeSource";
-                _emailServiceSource.ResourceName = ResourceName;
                 return _emailServiceSource;
             }
         }
