@@ -24,16 +24,7 @@ Scenario: Unsaved Tests Contain a Star in their Name
 
 Scenario: Run Passing Tests
 	Given The Warewolf Studio is running
-	When I Click New Workflow Ribbon Button
-	And I Drag Toolbox Random Onto DesignSurface
-	And I Enter Dice Roll Values
-	And I Press F6
-	And I wait for output spinner
-	And I Click Save Ribbon Button to Open Save Dialog
-	And I Enter Service Name Into Save Dialog As "Testing123"
-	And I Click SaveDialog Save Button
-	And I Click Close Workflow Tab Button
-	And I Click View Tests In Explorer Context Menu for "Testing123"
+	When I Click View Tests In Explorer Context Menu for "Testing123"
 	And I Click The Create a New Test Button
 	And I Update Test Name To "Testing123_Test"
 	And I Click Save Ribbon Button Without Expecting a Dialog
