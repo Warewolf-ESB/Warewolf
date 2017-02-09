@@ -128,32 +128,46 @@ namespace Dev2.Studio.Core.DataList
 
             var objToProcess = JsonConvert.DeserializeObject(json) as JObject;
             if (objToProcess != null)
+            {
                 ProcessObjectForComplexObjectCollection(parentObj, objToProcess);
+            }
+            else
+            {
+                var arrToProcess = JsonConvert.DeserializeObject(json) as JArray;
+                if (arrToProcess != null)
+                {
+                    var child = arrToProcess.Children().FirstOrDefault();
+                    ProcessObjectForComplexObjectCollection(parentObj,child as JObject);
+                }
+            }            
         }
 
         private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
         {
-            var properties = objToProcess.Properties();
-            foreach (var property in properties)
+            if(objToProcess != null)
             {
-                var displayname = property.Name;
-                displayname = JPropertyExtensionMethods.IsEnumerable(property) ? displayname + "()" : displayname;
-                var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayname);
-                if (childObj == null)
+                var properties = objToProcess.Properties();
+                foreach (var property in properties)
                 {
-                    childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = JPropertyExtensionMethods.IsEnumerable(property) };
-                    parentObj.Children.Add(childObj);
-                }
-                if (property.Value.IsObject())
-                    ProcessObjectForComplexObjectCollection(childObj, property.Value as JObject);
-                else
-                {
-                    if (!property.Value.IsEnumerable()) continue;
-                    var arrayVal = property.Value as JArray;
-                    if (arrayVal == null) continue;
-                    var obj = arrayVal.FirstOrDefault() as JObject;
-                    if (obj != null)
-                        ProcessObjectForComplexObjectCollection(childObj, obj);
+                    var displayname = property.Name;
+                    displayname = JPropertyExtensionMethods.IsEnumerable(property) ? displayname + "()" : displayname;
+                    var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayname);
+                    if (childObj == null)
+                    {
+                        childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = JPropertyExtensionMethods.IsEnumerable(property) };
+                        parentObj.Children.Add(childObj);
+                    }
+                    if (property.Value.IsObject())
+                        ProcessObjectForComplexObjectCollection(childObj, property.Value as JObject);
+                    else
+                    {
+                        if (!property.Value.IsEnumerable()) continue;
+                        var arrayVal = property.Value as JArray;
+                        if (arrayVal == null) continue;
+                        var obj = arrayVal.FirstOrDefault() as JObject;
+                        if (obj != null)
+                            ProcessObjectForComplexObjectCollection(childObj, obj);
+                    }
                 }
             }
         }

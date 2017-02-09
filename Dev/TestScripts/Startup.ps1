@@ -76,13 +76,12 @@ if (Test-Path ((Get-Item $ServerPath).Directory.FullName + "\ServerStarted")) {
     exit 1
 }
 
-$ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
-if ($ServerService -eq $null) {
+if ((Get-Service "Warewolf Server" -ErrorAction SilentlyContinue) -eq $null) {
     if ($DotCoverPath -eq "") {
-        $ServerService = New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
+        New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
     } else {
         $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover /TargetExecutable=\`"" + $ServerPath + "\`" /LogFile=\`"%ProgramData%\Warewolf\Server Log\dotCover.log\`" /Output=\`"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\`""
-        $ServerService = New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
+        New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
     }
 }
 
@@ -113,7 +112,7 @@ if ($DotCoverPath -eq "") {
 }
 
 # ****************************** Server Start ******************************
-$ServerService.Start()
+Start-Service "Warewolf Server"
 
 $Timeout = 60
 Write-Host Waiting for server to start.
