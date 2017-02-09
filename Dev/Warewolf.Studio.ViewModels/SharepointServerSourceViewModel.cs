@@ -96,6 +96,7 @@ namespace Warewolf.Studio.ViewModels
             asyncWorker.Start(() => updateManager.FetchSource(sharePointServiceSource.Id), source =>
             {
                 _sharePointServiceSource = source;
+                _sharePointServiceSource.Path = sharePointServiceSource.Path;
                 SetupHeaderTextFromExisting();
                 FromModel(source);
             });

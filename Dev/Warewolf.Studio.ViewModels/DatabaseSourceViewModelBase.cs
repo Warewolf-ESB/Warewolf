@@ -347,9 +347,10 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("dbSource", dbSource);
             PerformInitialise(updateManager, aggregator);
             _warewolfserverName = updateManager.ServerName ?? "";
-            AsyncWorker.Start(() => updateManager.FetchDbSource(dbSource.Id, dbSource.Path), source =>
+            AsyncWorker.Start(() => updateManager.FetchDbSource(dbSource.Id), source =>
              {
                  DbSource = source;
+                 DbSource.Path = dbSource.Path;
                  Item = ToSourceDefinition();
                  GetLoadComputerNamesTask(() =>
                  {
