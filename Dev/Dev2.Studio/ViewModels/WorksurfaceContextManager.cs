@@ -24,7 +24,6 @@ using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Scheduler;
-using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -182,8 +181,7 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                var workflow = new WorkflowDesignerViewModel(message.ResourceModel, false);
-                ActivityDesignerHelper.AddDesignerAttributes(workflow);
+                var workflow = new WorkflowDesignerViewModel(message.ResourceModel);
                 var testViewModel = new ServiceTestViewModel(message.ResourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow, message);
                 var vm = new StudioTestViewModel(_mainViewModel.EventPublisher, testViewModel, _mainViewModel.PopupProvider, new ServiceTestView());
                 var key = workSurfaceKey as WorkSurfaceKey;
@@ -300,8 +298,7 @@ namespace Dev2.Studio.ViewModels
 
         public void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null)
         {
-            var workflow = new WorkflowDesignerViewModel(resourceModel, false);
-            ActivityDesignerHelper.AddDesignerAttributes(workflow);
+            var workflow = new WorkflowDesignerViewModel(resourceModel);
             var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
             var vm = new StudioTestViewModel(_mainViewModel.EventPublisher, testViewModel, _mainViewModel.PopupProvider, new ServiceTestView());
             workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, resourceModel.ID);
@@ -312,8 +309,7 @@ namespace Dev2.Studio.ViewModels
 
         public void RunAllTestsForService(IContextualResourceModel resourceModel)
         {
-            var workflow = new WorkflowDesignerViewModel(resourceModel, false);
-            ActivityDesignerHelper.AddDesignerAttributes(workflow);
+            var workflow = new WorkflowDesignerViewModel(resourceModel);
             var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
             testViewModel.RunAllTestsInBrowserCommand.Execute(null);
         }
@@ -1316,13 +1312,8 @@ namespace Dev2.Studio.ViewModels
             }
 
             AddWorkspaceItem(resourceModel);
-            var workSurfaceContextViewModel = _getWorkSurfaceContextViewModel(resourceModel, false) as WorkSurfaceContextViewModel;
+            var workSurfaceContextViewModel = _getWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel;
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
-            if (_createDesigners)
-            {
-                if (workSurfaceContextViewModel != null)
-                    ActivityDesignerHelper.AddDesignerAttributes(workSurfaceContextViewModel.WorkSurfaceViewModel as WorkflowDesignerViewModel);
-            }
             OpeningWorkflowsHelper.RemoveWorkflow(workSurfaceKey);
             _mainViewModel.CanDebug = true;
         }
