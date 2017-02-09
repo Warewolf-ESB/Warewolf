@@ -627,6 +627,7 @@ namespace Dev2.Studio.ViewModels
             if (server.IsConnected)
             {
                 ActiveServer = server;
+                OnActiveEnvironmentChanged();
             }
         }
 
