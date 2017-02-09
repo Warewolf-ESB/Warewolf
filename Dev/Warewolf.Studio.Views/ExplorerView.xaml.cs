@@ -306,6 +306,7 @@ namespace Warewolf.Studio.Views
                     if (explorerItemViewModel != null && explorerItemViewModel.CanView)
                     {
                         explorerItemViewModel.OpenCommand.Execute(this);
+                        e.Handled = true;
                         return;
                     }
                 }
