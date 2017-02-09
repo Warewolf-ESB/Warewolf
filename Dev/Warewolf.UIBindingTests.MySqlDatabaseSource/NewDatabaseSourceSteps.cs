@@ -434,6 +434,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             if (manageDatabaseSourceViewModel != null)
             {
                 Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Windows;
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
         }
