@@ -35,8 +35,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public void FireServerSaved(Guid savedServerID)
         {
-            var handler = ServerSaved;
-            handler.Invoke(savedServerID);
+            if (ServerSaved != null)
+            {
+                var handler = ServerSaved;
+                handler.Invoke(savedServerID);
+            }
         }
 
         private IUpdateManager UpdateManagerProxy { get; set; }
