@@ -34,9 +34,10 @@ namespace Warewolf.UITests.OracleSource
         [TestMethod]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
-        public void Edit_OracleSource_From_ExplorerContextMenu_UITests()
+        public void Open_OracleSource_From_ExplorerContextMenu_UITests()
         {
             UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "Oracle Source Tab does not exist");
         }
 
         #region Additional test attributes
