@@ -2,6 +2,6 @@
 {
     public interface IExchangeServiceViewModel
     {
-        ISourceToolRegion<IExchangeSource> SourceRegion { get; set; }
+        ISourceToolRegion<IExchange> SourceRegion { get; set; }
     }
 }

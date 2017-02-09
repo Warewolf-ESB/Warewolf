@@ -3551,6 +3551,7 @@ namespace Warewolf.UITests
         public void Click_Settings_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 2));
+            MainStudioWindow.DockManager.SplitPaneMiddle.DrawHighlight();
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "Settings tab does not exist after clicking settings ribbon button.");
         }
 
@@ -4036,6 +4037,7 @@ namespace Warewolf.UITests
         public void Click_Duplicate_From_ExplorerContextMenu(string ServiceName)
         {
             Filter_Explorer(ServiceName);
+            Assert.AreEqual(ServiceName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             Duplicate_ExplorerLocalhostFirstItem_With_ExplorerContextMenu();
         }
 
@@ -4052,7 +4054,8 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests option does not exist in context menu after right clicking an item in the explorer.");
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Tests);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after openning it by clicking the explorer context menu item.");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.DrawHighlight();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.Exists, "Workflow test tab does not exist after opening it by clicking the explorer context menu item.");
         }
 
         public void Show_ExplorerSecondItemTests_With_ExplorerContextMenu(string filter)
@@ -8741,10 +8744,6 @@ namespace Warewolf.UITests
 
         public void Select_GACAssemblyFile_From_ChooseDLLWindow(string filter)
         {
-            if (string.IsNullOrEmpty(ChooseDLLWindow.FilterTextBox.Text) == false)
-            {
-                Mouse.Click(ChooseDLLWindow.FilterTextBox.ClearSearchButton);
-            }
             ChooseDLLWindow.FilterTextBox.Text = filter;
             ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem.DrawHighlight();
             Mouse.Click(ChooseDLLWindow.DLLDataTree.GAC.DataTreeItem, new Point(122, 6));
@@ -8819,6 +8818,7 @@ namespace Warewolf.UITests
                 windowsRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(windowsRadioButton.Selected);
@@ -8828,6 +8828,7 @@ namespace Warewolf.UITests
                 publicRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(publicRadioButton.Selected);
@@ -8847,6 +8848,7 @@ namespace Warewolf.UITests
                 windowsRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Select_RemoteConnectionIntegration_From_Explorer();
                 Click_Explorer_RemoteServer_Edit_Button();
@@ -8862,9 +8864,11 @@ namespace Warewolf.UITests
                 publicRadioButton.Selected = true;
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 Select_RemoteConnectionIntegration_From_Explorer();
                 Click_Explorer_RemoteServer_Edit_Button();
+                Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
                 Click_Deploy_Ribbon_Button();
                 Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();

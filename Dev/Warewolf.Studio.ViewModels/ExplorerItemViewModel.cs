@@ -617,7 +617,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (!String.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
+                if (!string.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
                 {
                     IsVisible = filter(this);
                 }

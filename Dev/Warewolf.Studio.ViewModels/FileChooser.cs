@@ -112,7 +112,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return SelectedDriveName;
                 }
-                var driveName = String.Join(";", Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList());
+                var driveName = string.Join(";", Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList());
                 return driveName;
             }
             set

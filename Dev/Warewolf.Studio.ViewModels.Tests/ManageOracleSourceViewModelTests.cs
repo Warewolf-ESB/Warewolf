@@ -77,6 +77,17 @@ namespace Warewolf.Studio.ViewModels.Tests
                                 fail(ex);
                             }
                         });
+            _updateManagerMock.Setup(model => model.FetchDbSource(It.IsAny<Guid>()))
+            .Returns(_dbSourceMock.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<IDbSource>>(),
+                                            It.IsAny<Action<IDbSource>>()))
+                            .Callback<Func<IDbSource>, Action<IDbSource>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
             _targetAsyncWorker = new ManageOracleSourceViewModel(_asyncWorkerMock.Object);
             _changedPropertiesAsyncWorker = new List<string>();
             _targetAsyncWorker.PropertyChanged += (sender, args) =>
