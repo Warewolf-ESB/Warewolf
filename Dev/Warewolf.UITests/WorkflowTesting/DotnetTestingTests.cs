@@ -181,7 +181,7 @@ namespace Warewolf.UITests.WorkflowTesting
             UIMap.Click_Create_Test_From_Debug();
         }
 
-        public const string DotnetWorkflowForTesting = "DotnetWorkflowForTesting";
+        public const string DotnetWorkflowForTesting = "NewDotnetWorkflowForTesting";
 
         UIMap UIMap
         {
