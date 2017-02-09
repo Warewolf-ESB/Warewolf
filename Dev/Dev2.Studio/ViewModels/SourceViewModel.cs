@@ -59,7 +59,24 @@ namespace Dev2.ViewModels
             base.OnViewAttached(view, ViewModel);
         }
 
-        public override string DisplayName => ViewModel.Header;
+        public override string DisplayName
+        {
+            get
+            {
+                var header = ViewModel.Header;
+                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                if (mainViewModel != null && !mainViewModel.ActiveEnvironment.IsLocalHost)
+                {
+                    var name = mainViewModel.ActiveEnvironment.Name;
+                    if (header.EndsWith(" *"))
+                    {
+                        return header.Replace(" *", "") + " - " + name + " *";
+                    }
+                    return header + " - " + name;
+                }
+                return header;
+            }
+        }
 
         protected override void OnViewLoaded(object view)
         {
