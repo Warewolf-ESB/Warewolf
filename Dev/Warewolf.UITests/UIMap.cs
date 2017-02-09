@@ -3184,6 +3184,7 @@ namespace Warewolf.UITests
         public void Click_ConfigureSetting_From_Menu()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 13));
+            MainStudioWindow.DockManager.SplitPaneMiddle.DrawHighlight();
         }
 
         [Given(@"I Click Connect Control InExplorer")]
