@@ -50,6 +50,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -95,18 +97,40 @@
             </ScrollViewer>
         </Border>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="{x:Static languages:Core.EmailAddressLabel}" Margin="{StaticResource ControlBorderTop}"/>
-        <TextBox Grid.Column="1" Grid.Row="3" 
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Server Log" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
+
+        <Border BorderThickness="1" 
+                BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
+                Grid.Column="1" Grid.Row="3"
+                Margin="{StaticResource ControlBorderTop}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                <TextBlock Text="{Binding ServerLogFile}" TextWrapping="WrapWithOverflow" ScrollViewer.CanContentScroll="True" />
+            </ScrollViewer>
+        </Border>
+
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Studio Log" VerticalAlignment="Top" Margin="{StaticResource ControlBorderTop}"/>
+
+        <Border BorderThickness="1" 
+                BorderBrush="{StaticResource WarewolfHeaderWatermarkGreyBrush}" 
+                Grid.Column="1" Grid.Row="4"
+                Margin="{StaticResource ControlBorderTop}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                <TextBlock Text="{Binding StudioLogFile}" TextWrapping="WrapWithOverflow" ScrollViewer.CanContentScroll="True" />
+            </ScrollViewer>
+        </Border>
+
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="{x:Static languages:Core.EmailAddressLabel}" Margin="{StaticResource ControlBorderTop}"/>
+        <TextBox Grid.Column="1" Grid.Row="5" 
                  Margin="{StaticResource ControlBorderTop}"
                  customControls:WatermarkTextBox.Watermark="{x:Static languages:Core.ExceptionViewEmailAddressWatermark}" 
                  Text="{Binding EmailAddress}"/>
 
-        <StackPanel Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="{StaticResource ControlBorderTop}"
+        <StackPanel Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Margin="{StaticResource ControlBorderTop}"
                     Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
             <views:CircularProgressBar Width="16"
-                                   Height="16"
-                                   Margin="{StaticResource ControlBorderRight}" 
-                                   Visibility="{Binding Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
+                                       Height="16"
+                                       Margin="{StaticResource ControlBorderRight}" 
+                                       Visibility="{Binding Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
             <Button x:Name="SendReport"
                     Content="Send Report"
                     MinWidth="100"
