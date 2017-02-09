@@ -37,13 +37,14 @@ namespace Warewolf.Studio.ViewModels
             _requestServiceNameViewModel = requestServiceNameViewModel;
         }
 
-        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IWcfServerSource WcfSource, IAsyncWorker asyncWorker, IEnvironmentModel environment)
+        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IWcfServerSource wcfSource, IAsyncWorker asyncWorker, IEnvironmentModel environment)
             : this(updateManager, aggregator, asyncWorker, environment)
         {
-            VerifyArgument.IsNotNull("source", WcfSource);
-            asyncWorker.Start(() => updateManager.FetchSource(WcfSource.Id), source =>
+            VerifyArgument.IsNotNull("source", wcfSource);
+            asyncWorker.Start(() => updateManager.FetchSource(wcfSource.Id), source =>
             {
                 _wcfServerSource = source;
+                _wcfServerSource.Path = wcfSource.Path;
                 SetupHeaderTextFromExisting();
                 FromModel(source);
             });
@@ -364,7 +365,7 @@ namespace Warewolf.Studio.ViewModels
         public override void FromModel(IWcfServerSource service)
         {
             ResourceName = service.Name;
-            EndpointUrl = service.EndpointUrl;
+            EndpointUrl = service.EndpointUrl;            
         }
 
         public override bool CanSave()

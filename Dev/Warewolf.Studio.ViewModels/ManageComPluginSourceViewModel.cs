@@ -197,6 +197,7 @@ namespace Warewolf.Studio.ViewModels
             AsyncWorker.Start(() => updateManager.FetchSource(pluginSource.Id), source =>
             {
                 _pluginSource = source;
+                _pluginSource.ResourcePath = pluginSource.ResourcePath;
                 SetupHeaderTextFromExisting();
                 PerformLoadAll(() => FromModel(_pluginSource));
 

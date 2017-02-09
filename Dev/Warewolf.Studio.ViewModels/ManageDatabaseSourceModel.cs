@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IManageDatabaseSourceModel
 
-        public IDbSource FetchDbSource(Guid resourceID,string savePath)
+        public IDbSource FetchDbSource(Guid resourceID)
         {
             var xaml = _queryProxy.FetchResourceXaml(resourceID);
             var db = new DbSource(xaml.ToXElement());
