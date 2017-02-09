@@ -561,19 +561,32 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.ShowDependencies(dependsOnMe, model, ActiveServer);
         }
 
-        public void ShowDependencies(Guid resourceId, IServer server)
+        public void ShowDependencies(Guid resourceId, IServer server, bool isSource)
         {
             var environmentModel = EnvironmentRepository.Get(server.EnvironmentID);
             if (environmentModel != null)
             {
-                environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
+                if (!isSource)
+                    environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
                 if (server.IsConnected)
                 {
-                    var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
-                    var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
-                    contextualResourceModel.Update(resource);
-                    contextualResourceModel.ID = resourceId;
-                    _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
+                    if (isSource)
+                    {
+                        var resource = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+                        var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
+                        contextualResourceModel.Update(resource);
+                        contextualResourceModel.ID = resourceId;
+                        _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
+                    }
+                    else
+                    {
+                        var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
+                        var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
+                        contextualResourceModel.Update(resource);
+                        contextualResourceModel.ID = resourceId;
+                        _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
+                    }
+                
                 }
             }
         }
@@ -1015,10 +1028,10 @@ namespace Dev2.Studio.ViewModels
 
         private IDbSource CreateDbSource(IContextualResourceModel contextualResourceModel, WorkSurfaceContext workSurfaceContext)
         {
-            var def = new DbSourceDefinition { Id = contextualResourceModel.ID,Path = contextualResourceModel.GetSavePath(), Type = ToenSourceType(workSurfaceContext)};
+            var def = new DbSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath(), Type = ToenSourceType(workSurfaceContext) };
             return def;
         }
-        
+
         private void ProcessDBSource(DatabaseSourceViewModelBase dbSourceViewModel, WorkSurfaceKey workSurfaceKey)
         {
 
@@ -1046,7 +1059,7 @@ namespace Dev2.Studio.ViewModels
                 case WorkSurfaceContext.OracleSource:
                     return enSourceType.Oracle;
                 case WorkSurfaceContext.OdbcSource:
-                    return enSourceType.ODBC;               
+                    return enSourceType.ODBC;
                 default:
                     return enSourceType.Unknown;
             }
@@ -1785,21 +1798,21 @@ namespace Dev2.Studio.ViewModels
         {
 
             SaveWorkspaceItems();
-//            Task t = new Task(() =>
-//            {
-//
-//                lock (_locker)
-//                {
-//                    foreach (var ctx in Items.Where(a => true).ToList())
-//                    {
-//                        if (!ctx.WorkSurfaceViewModel.DisplayName.ToLower().Contains("version") && ctx.IsEnvironmentConnected())
-//                        {
-//                            ctx.Save(true, isStudioShutdown);
-//                        }
-//                    }
-//                }
-//            });
-//            t.Start();
+            //            Task t = new Task(() =>
+            //            {
+            //
+            //                lock (_locker)
+            //                {
+            //                    foreach (var ctx in Items.Where(a => true).ToList())
+            //                    {
+            //                        if (!ctx.WorkSurfaceViewModel.DisplayName.ToLower().Contains("version") && ctx.IsEnvironmentConnected())
+            //                        {
+            //                            ctx.Save(true, isStudioShutdown);
+            //                        }
+            //                    }
+            //                }
+            //            });
+            //            t.Start();
 
         }
 
