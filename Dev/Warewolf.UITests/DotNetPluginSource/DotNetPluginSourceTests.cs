@@ -9,6 +9,7 @@ namespace Warewolf.UITests
     {
         const string DLLAssemblySourceName = "CodedUITestDLLDotNetPluginSource";
         const string GACAssemblySourceName = "CodedUITestGACDotNetPluginSource";
+        private const string editSourceName = "DotNetPluginSourceToEdit";
 
         [TestMethod]
         [TestCategory("Plugin Sources")]
@@ -55,6 +56,14 @@ namespace Warewolf.UITests
             {
                 File.Delete(filePath);
             }
+        }
+
+        [TestMethod]
+        [TestCategory("Database Sources")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_DotNetPluginSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
         }
 
         #region Additional test attributes

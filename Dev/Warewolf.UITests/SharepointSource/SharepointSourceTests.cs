@@ -6,6 +6,8 @@ namespace Warewolf.UITests.SharepointSource
     [CodedUITest]
     public class SharepointSourceTests
     {
+        private const string editSourceName = "SharePointServiceSourceToEdit";
+
         [TestMethod]
         [TestCategory("Sharepoint Source")]
         // ReSharper disable once InconsistentNaming
@@ -20,8 +22,18 @@ namespace Warewolf.UITests.SharepointSource
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.CancelTestButton.Enabled, "Cancel Test button is  enabled.");
             UIMap.Enter_TextIntoAddress_In_SharepointServiceSourceTab();
             UIMap.Click_UserButton_On_SharepointSource();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
             UIMap.Enter_Sharepoint_ServerSource_User_Credentials();
             UIMap.Click_Sharepoint_Server_Source_TestConnection();
+        }
+
+        [TestMethod]
+        [TestCategory("Sharepoint Source")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_SharepointSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
         }
 
         #region Additional test attributes
