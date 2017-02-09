@@ -90744,6 +90744,22 @@ namespace Warewolf.UITests
                 return this.mSpinner;
             }
         }
+        
+        public WpfEdit TimeoutTextBoxEdit
+        {
+            get
+            {
+                if ((this.mTimeoutTextBoxEdit == null))
+                {
+                    this.mTimeoutTextBoxEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTimeoutTextBoxEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "TimeoutTextBox";
+                    this.mTimeoutTextBoxEdit.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mTimeoutTextBoxEdit;
+            }
+        }
         #endregion
         
         #region Fields
@@ -90760,6 +90776,8 @@ namespace Warewolf.UITests
         private PassedText mPassedText;
         
         private WpfCustom mSpinner;
+        
+        private WpfEdit mTimeoutTextBoxEdit;
         #endregion
     }
     
