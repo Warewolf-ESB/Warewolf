@@ -40,9 +40,9 @@ namespace Warewolf.UITests
             UIMap.Edit_Timeout_On_ExchangeSource();
             UIMap.Click_ExchangeSource_TestConnection_Button();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            UIMap.Click_Close_EmailSource_Tab();
+            UIMap.Click_ExchangeSource_CloseTabButton();
             UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
-            Assert.AreEqual("2000", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
+            Assert.AreEqual("2000", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
 
         }
 
