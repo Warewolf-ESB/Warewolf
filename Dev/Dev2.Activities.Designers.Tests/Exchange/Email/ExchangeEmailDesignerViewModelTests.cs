@@ -275,7 +275,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             //------------Setup for test--------------------------
             var activity = new DsfExchangeEmailActivity() { To = to };
 
-            var emailSource = new ExchangeSource()
+            var emailSource = new ExchangeSource
             {
                 UserName = "bob@mydomain.com",
                 Password = "MyPassword",
@@ -405,7 +405,6 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
 
             viewModel.AddProperty("Test","test");
 
-            Assert.IsNotNull(viewModel.AsyncWorker);
             Assert.IsTrue(viewModel.HasLargeView);
             Assert.IsTrue(viewModel.CanTestEmailAccount);
             Assert.IsTrue(viewModel.IsEmailSourceFocused);
@@ -917,8 +916,8 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
 
     public class TestExchangeServiceModel : IExchangeServiceModel
     {
-        public ObservableCollection<IExchangeSource> Sources { get; set; }
-        private readonly ObservableCollection<IExchangeSource> _sources = new ObservableCollection<IExchangeSource>
+        public ObservableCollection<IExchange> Sources { get; set; }
+        private readonly ObservableCollection<IExchange> _sources = new ObservableCollection<IExchange>
         {
             new ExchangeSource()
             {
@@ -933,7 +932,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         {
             if (emptySource)
             {
-                _sources = new ObservableCollection<IExchangeSource>()
+                _sources = new ObservableCollection<IExchange>()
                 {
                     new ExchangeSource()
                 };
@@ -942,7 +941,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         
         
 
-        public ObservableCollection<IExchangeSource> RetrieveSources()
+        public ObservableCollection<IExchange> RetrieveSources()
         {
             return _sources;
         }
@@ -952,7 +951,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             
         }
 
-        public void EditSource(IExchangeSource selectedSource)
+        public void EditSource(IExchange selectedSource)
         {
             
         }

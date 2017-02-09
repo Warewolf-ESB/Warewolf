@@ -25,6 +25,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.Validation;
 using Warewolf.Resource.Errors;
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable NotAccessedField.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Local
@@ -40,8 +41,8 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
-        public IAsyncWorker AsyncWorker;
-        private ISourceToolRegion<IExchangeSource> _sourceRegion;
+        readonly IAsyncWorker _asyncWorker;
+        private ISourceToolRegion<IExchange> _sourceRegion;
 
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public RelayCommand TestEmailAccountCommand { get; private set; }
@@ -57,7 +58,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
             _eventPublisher = eventPublisher;
-            AsyncWorker = asyncWorker;
+            _asyncWorker = asyncWorker;
             Model = model;
             SetupCommonProperties();
         }
@@ -68,7 +69,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            AsyncWorker = asyncWorker;
+            _asyncWorker = asyncWorker;
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
             _eventPublisher.Subscribe(this);
@@ -119,7 +120,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        public ISourceToolRegion<IExchangeSource> SourceRegion
+        public ISourceToolRegion<IExchange> SourceRegion
         {
             get
             {
@@ -272,7 +273,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         private void SendEmail(ExchangeSource testSource, ExchangeTestMessage testMessage)
         {
-            AsyncWorker.Start(() =>
+            _asyncWorker.Start(() =>
             {
                 try
                 {

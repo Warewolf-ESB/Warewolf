@@ -215,7 +215,9 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         {
             //------------Setup for test--------------------------
             var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.OpenResource(It.IsAny<Guid>(),It.IsAny<IServer>())).Verifiable();
+            mockShellViewModel.Setup(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(),It.IsAny<IServer>())).Verifiable();
+            var serverMock = new Mock<IServer>();
+            mockShellViewModel.Setup(viewModel => viewModel.ActiveServer).Returns(() => serverMock.Object);
             CustomContainer.Register(mockShellViewModel.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockResourceRepo = new Mock<IResourceRepository>();
@@ -233,7 +235,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             sharepointListDesignerViewModelBase.EditSharepointServerCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(sharepointListDesignerViewModelBase.SelectedSharepointServer);
-            mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<IServer>()));
+            mockShellViewModel.Verify(model => model.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()));
         }
 
 

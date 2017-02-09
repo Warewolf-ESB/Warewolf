@@ -152,6 +152,5 @@ Given I open "Database Source - testOracle"
 	And "Save" is "Enabled"
 	And Database dropdown is "Visible"
 	And I select "Dev2TestingDB2" as Database
-	And "Save" is "Enabled" 
 
 	

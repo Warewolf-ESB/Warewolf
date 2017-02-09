@@ -279,6 +279,7 @@ namespace Dev2.Common
 
         // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;
+        public const int LogFileNumberOfLines = 10;
 
         public const int DefaultStorageSegments = 1;
         public const int DefaultStorageSegmentSize = 8 * 1024 * 1024; // 8 MB default buffer size ;)

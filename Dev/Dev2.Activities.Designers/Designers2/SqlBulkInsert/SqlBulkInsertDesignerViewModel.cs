@@ -476,7 +476,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             if(shellViewModel != null)
             {
-                shellViewModel.OpenResource(SelectedDatabase.ResourceID,_environmentModel.ID);
+                shellViewModel.OpenResource(SelectedDatabase.ResourceID,_environmentModel.ID,shellViewModel.ActiveServer);
                 RefreshDatabases();
             }            
         }

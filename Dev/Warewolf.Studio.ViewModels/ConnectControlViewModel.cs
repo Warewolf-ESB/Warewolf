@@ -16,7 +16,6 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
@@ -212,6 +211,8 @@ namespace Warewolf.Studio.ViewModels
                 IsConnected = SelectedConnection.IsConnected;
                 IsConnecting = false;
                 IsLoading = false;
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                SetActiveEnvironment(mainViewModel);
             }
         }
 
@@ -300,11 +301,13 @@ namespace Warewolf.Studio.ViewModels
         {
             if (mainViewModel != null)
             {
-                if (_selectedConnection.IsConnected && ShouldUpdateActiveEnvironment &&
-                    !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
+                if (_selectedConnection?.ResourceName != null)
                 {
-                    mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
-                    mainViewModel.SetActiveServer(_selectedConnection);
+                    if (ShouldUpdateActiveEnvironment && !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
+                    {
+                        mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
+                        mainViewModel.SetActiveServer(_selectedConnection);
+                    }
                 }
             }
         }
@@ -396,6 +399,8 @@ namespace Warewolf.Studio.ViewModels
                         {
                             var mainViewModel = CustomContainer.Get<IShellViewModel>();
                             mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
+                            mainViewModel?.OnActiveEnvironmentChanged();
+
                         }
                     }
                     else
@@ -447,22 +452,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedId = SelectedConnection?.EnvironmentID;
                     if (_selectedId != null)
                     {
-                        var env = EnvironmentRepository.Instance.Get(_selectedId.Value);
-                        if (env != null)
-                        {
-                            var environmentConnection = env.Connection;
-                            var serverSource = new ServerSource
-                            {
-                                Address = environmentConnection.WebServerUri.OriginalString,
-                                ID = server.EnvironmentID,
-                                AuthenticationType = environmentConnection.AuthenticationType,
-                                UserName = environmentConnection.UserName,
-                                Password = environmentConnection.Password,
-                                ServerName = environmentConnection.WebServerUri.Host,
-                                Name = server.ResourceName,
-                            };
-                            shellViewModel.EditServer(serverSource);
-                        }
+                        shellViewModel.OpenResource(SelectedConnection.ResourceID, EnvironmentRepository.Instance.Source.ID, shellViewModel.LocalhostServer);
                     }
                 }
             }
