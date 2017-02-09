@@ -35,7 +35,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var mockEnvironmentModel = new Mock<Dev2.Studio.Core.Interfaces.IEnvironmentModel>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var manageSharepointServerSourceViewModel = new SharepointServerSourceViewModel(mockStudioUpdateManager.Object,task ,mockEventAggregator.Object,new SynchronousAsyncWorker(),mockEnvironmentModel.Object);
+            var manageSharepointServerSourceViewModel = new SharepointServerSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockEnvironmentModel.Object);
             manageSharepointServerSource.DataContext = manageSharepointServerSourceViewModel;
             Utils.ShowTheViewForTesting(manageSharepointServerSource);
             FeatureContext.Current.Add(Utils.ViewNameKey, manageSharepointServerSource);
@@ -60,7 +60,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         {
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
             Assert.IsNotNull(manageSharepointServerSource);
-            Assert.IsNotNull(manageSharepointServerSource.DataContext); 
+            Assert.IsNotNull(manageSharepointServerSource.DataContext);
         }
 
         [Then(@"""(.*)"" tab is opened")]
@@ -165,7 +165,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             }
             else
             {
-                
+
                 mockUpdateManager.Setup(manager => manager.TestConnection(It.IsAny<ISharepointServerSource>()))
                     .Throws(new WarewolfTestException(unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange, new Exception(unableToContactServerTestFailedValueDoesNotFallWithinTheExpectedRange)));
             }
@@ -286,6 +286,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         {
             var manageSharepointServerSource = ScenarioContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey);
             var mockStudioUpdateManager = new Mock<ISharePointSourceModel>();
+
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<Dev2.Studio.Core.Interfaces.IEnvironmentModel>();
@@ -298,6 +299,8 @@ namespace Warewolf.UIBindingTests.SharepointSource
                 UserName = "IntegrationTester",
                 Password = "I73573r0"
             };
+            mockStudioUpdateManager.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                .Returns(sharePointServiceSourceDefinition);
             var manageSharepointServerSourceViewModel = new SharepointServerSourceViewModel(mockStudioUpdateManager.Object, mockEventAggregator.Object, sharePointServiceSourceDefinition, new SynchronousAsyncWorker(), mockExecutor.Object);
             manageSharepointServerSource.DataContext = manageSharepointServerSourceViewModel;
             ScenarioContext.Current.Remove("viewModel");

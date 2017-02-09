@@ -217,7 +217,7 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _resourceName = value;
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     SetupHeaderTextFromExisting();
                 }
@@ -347,14 +347,19 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("dbSource", dbSource);
             PerformInitialise(updateManager, aggregator);
             _warewolfserverName = updateManager.ServerName ?? "";
-            DbSource = dbSource;
-            Item = ToSourceDefinition();
+            AsyncWorker.Start(() => updateManager.FetchDbSource(dbSource.Id), source =>
+             {
+                 DbSource = source;
+                 DbSource.Path = dbSource.Path;
+                 Item = ToSourceDefinition();
+                 GetLoadComputerNamesTask(() =>
+                 {
+                     FromModel(DbSource);
+                     SetupHeaderTextFromExisting();
+                 });
+             });
 
-            GetLoadComputerNamesTask(() =>
-            {
-                FromModel(DbSource);
-                SetupHeaderTextFromExisting();
-            });
+            
         }
 
         #region Methods

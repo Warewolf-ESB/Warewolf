@@ -4,6 +4,23 @@ namespace Dev2.Common.Interfaces.Core
 {
     public class EmailServiceSourceDefinition : IEmailServiceSource, IEquatable<EmailServiceSourceDefinition>
     {
+        public EmailServiceSourceDefinition()
+        {
+                
+        }
+
+        public EmailServiceSourceDefinition(IEmailSource db)
+        {
+                Id = db.ResourceID;
+                HostName = db.Host;
+                Password = db.Password;
+                UserName = db.UserName;
+                Path = "";
+                Port = db.Port;
+                Timeout = db.Timeout;
+                ResourceName = db.ResourceName;
+                EnableSsl = db.EnableSsl;
+        }
         #region Equality members
 
         /// <summary>
