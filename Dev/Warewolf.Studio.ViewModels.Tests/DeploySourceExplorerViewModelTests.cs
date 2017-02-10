@@ -119,7 +119,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child.SetupGet(it => it.IsResourceChecked).Returns(true);
             var childNotChecked = new Mock<IExplorerItemViewModel>();
             childNotChecked.SetupGet(it => it.IsResourceChecked).Returns(false);
-            selectedEnvironmentMock.Setup(it => it.AsList()).Returns(new List<IExplorerItemViewModel>()
+            selectedEnvironmentMock.SetupGet(it => it.UnfilteredChildren).Returns(new ObservableCollection<IExplorerItemViewModel>()
             {
                 child.Object,
                 childNotChecked.Object
