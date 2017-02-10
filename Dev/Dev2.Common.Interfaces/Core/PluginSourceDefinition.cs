@@ -40,7 +40,6 @@ namespace Dev2.Common.Interfaces.Core
         {
             // ReSharper disable once PossibleNullReferenceException
             return string.Equals(Name, other.Name) &&
-                Id.Equals(other.Id) &&
                 string.Equals(Path, other.Path) &&
                 string.Equals(ConfigFilePath, other.ConfigFilePath) &&
                 string.Equals(FileSystemAssemblyName, other.FileSystemAssemblyName) &&
@@ -83,7 +82,6 @@ namespace Dev2.Common.Interfaces.Core
             unchecked
             {
                 var hashCode = Name?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ Id.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Path?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (ConfigFilePath?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (FileSystemAssemblyName?.GetHashCode() ?? 0);
