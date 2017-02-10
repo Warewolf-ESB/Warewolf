@@ -177,13 +177,14 @@ namespace Dev2.Runtime.ServiceModel
 
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
         {
-            var requestHeaders = SetParameters(service.Method.Parameters, service.RequestHeaders);
+            var requestHeaders = SetParameters(service.Method.Parameters,"");
             var headers = string.IsNullOrEmpty(requestHeaders)
-                              ? new string[0]
-                              : requestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                              ? new List<string>()
+                              : requestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            headers.AddRange(service.Headers.Select(nameValue => nameValue.Name + ":" + nameValue.Value).ToList());
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
+            service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray());
             if(!String.IsNullOrEmpty(service.JsonPath))
             {
                 service.ApplyPath();
