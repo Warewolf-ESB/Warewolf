@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿    using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests
@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class EmailSourceTests
     {
         const string SourceName = "CodedUITestEmailSource";
+        private const string editSourceName = "EmailSourceToEdit";
 
         [TestMethod]
         [TestCategory("Email Source")]
@@ -27,6 +28,21 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             UIMap.Click_Close_EmailSource_Tab();
+        }
+
+        [TestMethod]
+        [TestCategory("Email Source")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_EmailSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
+            UIMap.Edit_Timeout_On_EmailSource();
+            UIMap.Click_EmailSource_TestConnection_Button();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_EmailSource_Tab();
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.AreEqual("2000", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
         }
 
         #region Additional test attributes
