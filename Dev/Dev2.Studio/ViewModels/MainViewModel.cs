@@ -624,7 +624,10 @@ namespace Dev2.Studio.ViewModels
         public void SetActiveServer(IServer server)
         {
             ActiveServer = server;
-            OnActiveEnvironmentChanged();
+            if (ActiveServer.IsConnected && !ActiveEnvironment.IsConnected)
+            {
+                ActiveEnvironment.Connect();
+            }
         }
 
         public void Debug()
