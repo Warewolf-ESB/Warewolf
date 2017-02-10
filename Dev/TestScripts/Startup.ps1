@@ -36,8 +36,7 @@ if (Test-Path "$PSScriptRoot\Cleanup.ps1") {
     &"$PSScriptRoot\Cleanup.ps1"
 }
 
-if ($ServerPath -eq "") {   
-
+if ($ServerPath -eq "") {
     $CurrentDirectory = $PSScriptRoot
     $NumberOfParentsSearched = 0
     while ($ServerPath -eq "" -and $NumberOfParentsSearched++ -lt 7) {
@@ -153,7 +152,7 @@ if (Test-Path ("$PSScriptRoot\StudioStarted")) {
 
 if ($StudioPath -ne "") {
     if ($DotCoverPath -eq "") {
-        Start-Process $StudioPath
+        Start-Process "$StudioPath"
     } else {
         Start-Process $DotCoverPath "cover /TargetExecutable=`"$StudioPath`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`" /Output=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr`""
     }

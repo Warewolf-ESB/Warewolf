@@ -135,6 +135,7 @@
                             <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                             <EventSetter Event="PreviewMouseRightButtonDown" Handler="TreeViewItemPreviewMouseRightButtonDown"/>
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="TreeViewItemPreviewMouseLeftButtonDown"/>
+                            <EventSetter Event="PreviewMouseDoubleClick" Handler="TreeViewItemPreviewMouseDoubleClick"/>
                             <EventSetter Event="RequestBringIntoView" Handler="TreeViewItemRequestBringIntoView"/>
                         </Style>
                 </TreeView.ItemContainerStyle>
