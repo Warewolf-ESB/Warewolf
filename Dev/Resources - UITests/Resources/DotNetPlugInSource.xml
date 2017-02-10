@@ -1,9 +1,0 @@
-
-<Source ID="1cfc7938-d96a-4d2c-b82c-070a86309b01" Name="DotNetPlugInSource" ResourceType="PluginSource" IsValid="false" AssemblyLocation="C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll" AssemblyName="" ConfigFilePath="" Type="PluginSource" ServerVersion="0.0.6241.32757" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
-  <DisplayName>DotNetPlugInSource</DisplayName>
-  <AuthorRoles>
-  </AuthorRoles>
-  <ErrorMessages />
-  <TypeOf>PluginSource</TypeOf>
-  <VersionInfo DateTimeStamp="2017-02-01T18:44:43.6537967+02:00" Reason="" User="DEV2\Sanele.Mthembu" VersionNumber="2" ResourceId="1cfc7938-d96a-4d2c-b82c-070a86309b01" VersionId="f1762dab-4e6b-423b-8bfd-068c78acad69" />
-</Source>

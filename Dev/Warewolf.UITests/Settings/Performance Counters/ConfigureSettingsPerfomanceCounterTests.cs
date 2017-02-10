@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests
+namespace Warewolf.UITests.Settings.Performance_Counters
 {
     [CodedUITest]
     public class ConfigureSettingsperfomanceCounter

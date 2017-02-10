@@ -3181,6 +3181,7 @@ namespace Warewolf.UITests
         public void Click_ConfigureSetting_From_Menu()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 13));
+            MainStudioWindow.DockManager.SplitPaneMiddle.DrawHighlight();
         }
 
         [Given(@"I Click Connect Control InExplorer")]
@@ -3524,7 +3525,7 @@ namespace Warewolf.UITests
         public void Click_Deploy_Ribbon_Button()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
-            Playback.Wait(1000);
+            Playback.Wait(2000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
         }
 
@@ -3979,7 +3980,7 @@ namespace Warewolf.UITests
         public void Select_Deploy_From_ExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.DeployItem, new Point(57, 11));
-            Playback.Wait(1000);
+            Playback.Wait(2000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "DeployTab does not exist after clicking Deploy");
         }
 

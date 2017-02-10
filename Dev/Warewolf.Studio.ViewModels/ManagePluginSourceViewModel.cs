@@ -327,21 +327,49 @@ namespace Warewolf.Studio.ViewModels
 
         public sealed override IPluginSource ToModel()
         {
+            if(Item == null)
+            {
+                Item = ToSource();
+                return Item;
+            }
+            return new PluginSourceDefinition
+            {
+                Name = ResourceName,
+                Path = Path,
+                FileSystemAssemblyName = _fileSystemAssemblyName,
+                ConfigFilePath = _configFilePath,
+                GACAssemblyName = _gacAssemblyName
+            };
+        }
+
+        private IPluginSource ToSource()
+        {
             if (_pluginSource == null)
             {
-                return new PluginSourceDefinition
-                {
-                    Name = ResourceName,
-                    Path = Path,
-                    FileSystemAssemblyName = _fileSystemAssemblyName,
-                    ConfigFilePath = _configFilePath,
-                    GACAssemblyName = _gacAssemblyName
-                };
+                return ToNewSource();
             }
-            _pluginSource.FileSystemAssemblyName = FileSystemAssemblyName;
-            _pluginSource.ConfigFilePath = ConfigFilePath;
-            _pluginSource.GACAssemblyName = GACAssemblyName;
-            return _pluginSource;
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                _pluginSource.FileSystemAssemblyName = FileSystemAssemblyName;
+                _pluginSource.ConfigFilePath = ConfigFilePath;
+                _pluginSource.GACAssemblyName = GACAssemblyName;
+                return _pluginSource;
+            }
+        }
+
+        private IPluginSource ToNewSource()
+        {
+            return new PluginSourceDefinition
+            {
+                Name = ResourceName,
+                Path = Path,
+                FileSystemAssemblyName = _fileSystemAssemblyName,
+                ConfigFilePath = _configFilePath,
+                GACAssemblyName = _gacAssemblyName,
+                Id = _pluginSource?.Id ?? Guid.NewGuid()
+            };
+            
         }
 
         public IRequestServiceNameViewModel RequestServiceNameViewModel
