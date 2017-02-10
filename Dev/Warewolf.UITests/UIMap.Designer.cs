@@ -1114,6 +1114,38 @@ namespace Warewolf.UITests
                 return this.mComboboxListItemAstest;
             }
         }
+        
+        public WpfListItem MySQLDatabaseSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mMySQLDatabaseSourceToEditListItem == null))
+                {
+                    this.mMySQLDatabaseSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mMySQLDatabaseSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "MySQLDatabaseSourceToEdit";
+                    this.mMySQLDatabaseSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mMySQLDatabaseSourceToEditListItem;
+            }
+        }
+        
+        public WpfListItem EmailSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mEmailSourceToEditListItem == null))
+                {
+                    this.mEmailSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mEmailSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Host"":""localhost"",""UserName"":""test"",""Password"":""test"",""Port"":2,""EnableSsl"":false,""Timeout"":10000,""TestFromAddress"":null,""TestToAddress"":null,""DataList"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""821a3020-6ea1-465d-8080-ed1091ade489"",""ResourceType"":""EmailSource"",""ResourceName"":""EmailSourceToEdit"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2017-02-10T09:50:07.1598084+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""821a3020-6ea1-465d-8080-ed1091ade489"",""VersionId"":""311c845c-db2b-4ad6-8178-ae07e0b793df""}}";
+                    this.mEmailSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mEmailSourceToEditListItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1232,6 +1264,10 @@ namespace Warewolf.UITests
         private WpfCustom mComboboxListItemAsmaster;
         
         private WpfCustom mComboboxListItemAstest;
+        
+        private WpfListItem mMySQLDatabaseSourceToEditListItem;
+        
+        private WpfListItem mEmailSourceToEditListItem;
         #endregion
     }
     
@@ -14805,17 +14841,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfComboBox SourceComboBox
+        public SourceComboBox SourceComboBox
         {
             get
             {
                 if ((this.mSourceComboBox == null))
                 {
-                    this.mSourceComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourceComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "InitialFocusElement";
-                    this.mSourceComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSourceComboBox = new SourceComboBox(this);
                 }
                 return this.mSourceComboBox;
             }
@@ -14951,7 +14983,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfComboBox mSourceComboBox;
+        private SourceComboBox mSourceComboBox;
         
         private WpfButton mEditSourceButton;
         
@@ -14970,6 +15002,42 @@ namespace Warewolf.UITests
         private ResultsComboBox mResultsComboBox;
         
         private OnErrorCustom mOnErrorCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourceComboBox : WpfComboBox
+    {
+        
+        public SourceComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "InitialFocusElement";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem RabbitMQPublishSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mRabbitMQPublishSourceToEditListItem == null))
+                {
+                    this.mRabbitMQPublishSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mRabbitMQPublishSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.RabbitMQServiceSourceDefinition";
+                    this.mRabbitMQPublishSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mRabbitMQPublishSourceToEditListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mRabbitMQPublishSourceToEditListItem;
         #endregion
     }
     
@@ -15265,17 +15333,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfComboBox SourceComboBox
+        public SourceComboBox1 SourceComboBox
         {
             get
             {
                 if ((this.mSourceComboBox == null))
                 {
-                    this.mSourceComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourceComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "InitialFocusElement";
-                    this.mSourceComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSourceComboBox = new SourceComboBox1(this);
                 }
                 return this.mSourceComboBox;
             }
@@ -15351,7 +15415,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfComboBox mSourceComboBox;
+        private SourceComboBox1 mSourceComboBox;
         
         private WpfButton mNewSourceButton;
         
@@ -15362,6 +15426,42 @@ namespace Warewolf.UITests
         private MessageComboBox1 mMessageComboBox;
         
         private ResultsComboBox1 mResultsComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourceComboBox1 : WpfComboBox
+    {
+        
+        public SourceComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "InitialFocusElement";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem RabbitMQPublishSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mRabbitMQPublishSourceToEditListItem == null))
+                {
+                    this.mRabbitMQPublishSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mRabbitMQPublishSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.RabbitMQServiceSourceDefinition";
+                    this.mRabbitMQPublishSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mRabbitMQPublishSourceToEditListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mRabbitMQPublishSourceToEditListItem;
         #endregion
     }
     
@@ -15553,17 +15653,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfComboBox SourceComboBox
+        public SourceComboBox2 SourceComboBox
         {
             get
             {
                 if ((this.mSourceComboBox == null))
                 {
-                    this.mSourceComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourceComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "InitialFocusElement";
-                    this.mSourceComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSourceComboBox = new SourceComboBox2(this);
                 }
                 return this.mSourceComboBox;
             }
@@ -15707,7 +15803,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfComboBox mSourceComboBox;
+        private SourceComboBox2 mSourceComboBox;
         
         private WpfButton mEditSourceButton;
         
@@ -15728,6 +15824,42 @@ namespace Warewolf.UITests
         private ResultsComboBox2 mResultsComboBox;
         
         private OnErrorCustom1 mOnErrorCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourceComboBox2 : WpfComboBox
+    {
+        
+        public SourceComboBox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "InitialFocusElement";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem RabbitMQConsumeSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mRabbitMQConsumeSourceToEditListItem == null))
+                {
+                    this.mRabbitMQConsumeSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mRabbitMQConsumeSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.RabbitMQServiceSourceDefinition";
+                    this.mRabbitMQConsumeSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mRabbitMQConsumeSourceToEditListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mRabbitMQConsumeSourceToEditListItem;
         #endregion
     }
     
@@ -16098,17 +16230,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfComboBox SourceComboBox
+        public SourceComboBox3 SourceComboBox
         {
             get
             {
                 if ((this.mSourceComboBox == null))
                 {
-                    this.mSourceComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourceComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "InitialFocusElement";
-                    this.mSourceComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSourceComboBox = new SourceComboBox3(this);
                 }
                 return this.mSourceComboBox;
             }
@@ -16172,7 +16300,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfComboBox mSourceComboBox;
+        private SourceComboBox3 mSourceComboBox;
         
         private WpfButton mEditSourceButton;
         
@@ -16181,6 +16309,42 @@ namespace Warewolf.UITests
         private QueueNameComboBox3 mQueueNameComboBox;
         
         private ResponseComboBox1 mResponseComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourceComboBox3 : WpfComboBox
+    {
+        
+        public SourceComboBox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "InitialFocusElement";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem RabbitMQConsumeSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mRabbitMQConsumeSourceToEditListItem == null))
+                {
+                    this.mRabbitMQConsumeSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mRabbitMQConsumeSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.RabbitMQServiceSourceDefinition";
+                    this.mRabbitMQConsumeSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mRabbitMQConsumeSourceToEditListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mRabbitMQConsumeSourceToEditListItem;
         #endregion
     }
     
@@ -20023,12 +20187,47 @@ namespace Warewolf.UITests
                 return this.mDotNetSource;
             }
         }
+        
+        public WpfListItem DotNetPluginSource
+        {
+            get
+            {
+                if ((this.mDotNetPluginSource == null))
+                {
+                    this.mDotNetPluginSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDotNetPluginSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mDotNetPluginSource;
+            }
+        }
+        
+        public WpfListItem DotNetPluginSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mDotNetPluginSourceToEditListItem == null))
+                {
+                    this.mDotNetPluginSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDotNetPluginSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mDotNetPluginSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mDotNetPluginSourceToEditListItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfListItem mListItem1;
         
         private WpfListItem mDotNetSource;
+        
+        private WpfListItem mDotNetPluginSource;
+        
+        private WpfListItem mDotNetPluginSourceToEditListItem;
         #endregion
     }
     
@@ -25831,10 +26030,28 @@ namespace Warewolf.UITests
                 return this.mUITestingDBSourceListItem;
             }
         }
+        
+        public WpfListItem SQLServerDatabaseSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mSQLServerDatabaseSourceToEditListItem == null))
+                {
+                    this.mSQLServerDatabaseSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSQLServerDatabaseSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "SQLServerDatabaseSourceToEdit";
+                    this.mSQLServerDatabaseSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mSQLServerDatabaseSourceToEditListItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfListItem mUITestingDBSourceListItem;
+        
+        private WpfListItem mSQLServerDatabaseSourceToEditListItem;
         #endregion
     }
     
@@ -26426,17 +26643,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfComboBox SourcesComboBox
+        public SourcesComboBox4 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourcesComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mSourcesComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSourcesComboBox = new SourcesComboBox4(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -26548,7 +26761,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfComboBox mSourcesComboBox;
+        private SourcesComboBox4 mSourcesComboBox;
         
         private WpfButton mNewSourceButton;
         
@@ -26563,6 +26776,42 @@ namespace Warewolf.UITests
         private WpfEdit mRecordSetTextBoxEdit;
         
         private OnErrorCustom5 mOnErrorCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourcesComboBox4 : WpfComboBox
+    {
+        
+        public SourcesComboBox4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem ODBCDatabaseSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mODBCDatabaseSourceToEditListItem == null))
+                {
+                    this.mODBCDatabaseSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mODBCDatabaseSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "ODBCDatabaseSourceToEdit";
+                    this.mODBCDatabaseSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mODBCDatabaseSourceToEditListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mODBCDatabaseSourceToEditListItem;
         #endregion
     }
     
@@ -26856,19 +27105,15 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfComboBox SourcesComboBoxComboBox
+        public SourcesComboBox5 SourcesComboBox
         {
             get
             {
-                if ((this.mSourcesComboBoxComboBox == null))
+                if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBoxComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourcesComboBoxComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mSourcesComboBoxComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSourcesComboBox = new SourcesComboBox5(this);
                 }
-                return this.mSourcesComboBoxComboBox;
+                return this.mSourcesComboBox;
             }
         }
         
@@ -27014,7 +27259,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfComboBox mSourcesComboBoxComboBox;
+        private SourcesComboBox5 mSourcesComboBox;
         
         private WpfButton mNewSourceButton;
         
@@ -27033,6 +27278,42 @@ namespace Warewolf.UITests
         private WpfEdit mRecordSetTextBoxEdit;
         
         private OnErrorCustom6 mOnErrorCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourcesComboBox5 : WpfComboBox
+    {
+        
+        public SourcesComboBox5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem OracleDatabaseSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mOracleDatabaseSourceToEditListItem == null))
+                {
+                    this.mOracleDatabaseSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mOracleDatabaseSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "OracleDatabaseSourceToEdit";
+                    this.mOracleDatabaseSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mOracleDatabaseSourceToEditListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mOracleDatabaseSourceToEditListItem;
         #endregion
     }
     
@@ -27290,13 +27571,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourcesComboBox4 SourcesComboBox
+        public SourcesComboBox6 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new SourcesComboBox4(this);
+                    this.mSourcesComboBox = new SourcesComboBox6(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -27440,7 +27721,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SourcesComboBox4 mSourcesComboBox;
+        private SourcesComboBox6 mSourcesComboBox;
         
         private WpfButton mNewSourceButton;
         
@@ -27463,10 +27744,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesComboBox4 : WpfComboBox
+    public class SourcesComboBox6 : WpfComboBox
     {
         
-        public SourcesComboBox4(UITestControl searchLimitContainer) : 
+        public SourcesComboBox6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -27491,10 +27772,28 @@ namespace Warewolf.UITests
                 return this.mPostgreSourceTest;
             }
         }
+        
+        public WpfListItem PostgreSQLDatabaseSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mPostgreSQLDatabaseSourceToEditListItem == null))
+                {
+                    this.mPostgreSQLDatabaseSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mPostgreSQLDatabaseSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "PostgreSQLDatabaseSourceToEdit";
+                    this.mPostgreSQLDatabaseSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mPostgreSQLDatabaseSourceToEditListItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfListItem mPostgreSourceTest;
+        
+        private WpfListItem mPostgreSQLDatabaseSourceToEditListItem;
         #endregion
     }
     
@@ -47545,13 +47844,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourceComboBox SourceComboBox
+        public SourceComboBox4 SourceComboBox
         {
             get
             {
                 if ((this.mSourceComboBox == null))
                 {
-                    this.mSourceComboBox = new SourceComboBox(this);
+                    this.mSourceComboBox = new SourceComboBox4(this);
                 }
                 return this.mSourceComboBox;
             }
@@ -47623,7 +47922,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SourceComboBox mSourceComboBox;
+        private SourceComboBox4 mSourceComboBox;
         
         private WpfButton mItemButton;
         
@@ -47638,10 +47937,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourceComboBox : WpfComboBox
+    public class SourceComboBox4 : WpfComboBox
     {
         
-        public SourceComboBox(UITestControl searchLimitContainer) : 
+        public SourceComboBox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -47832,31 +48131,15 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourceComboBox1 SourceComboBox
+        public SourceComboBox5 SourceComboBox
         {
             get
             {
                 if ((this.mSourceComboBox == null))
                 {
-                    this.mSourceComboBox = new SourceComboBox1(this);
+                    this.mSourceComboBox = new SourceComboBox5(this);
                 }
                 return this.mSourceComboBox;
-            }
-        }
-        
-        public WpfButton ItemButton
-        {
-            get
-            {
-                if ((this.mItemButton == null))
-                {
-                    this.mItemButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mItemButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__EditEmailSourceBtn_AutoID";
-                    this.mItemButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mItemButton;
             }
         }
         
@@ -48035,12 +48318,26 @@ namespace Warewolf.UITests
                 return this.mSelectFilesButton;
             }
         }
+        
+        public WpfButton EditSourceButton
+        {
+            get
+            {
+                if ((this.mEditSourceButton == null))
+                {
+                    this.mEditSourceButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI__EditEmailSourceBtn_AutoID";
+                    this.mEditSourceButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mEditSourceButton;
+            }
+        }
         #endregion
         
         #region Fields
-        private SourceComboBox1 mSourceComboBox;
-        
-        private WpfButton mItemButton;
+        private SourceComboBox5 mSourceComboBox;
         
         private FromAddressComboBox mFromAddressComboBox;
         
@@ -48067,14 +48364,16 @@ namespace Warewolf.UITests
         private AttachmentsComboBox mAttachmentsComboBox;
         
         private WpfButton mSelectFilesButton;
+        
+        private WpfButton mEditSourceButton;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourceComboBox1 : WpfComboBox
+    public class SourceComboBox5 : WpfComboBox
     {
         
-        public SourceComboBox1(UITestControl searchLimitContainer) : 
+        public SourceComboBox5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -68564,17 +68863,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfComboBox SourcesCombobox
+        public SourcesCombobox7 SourcesCombobox
         {
             get
             {
                 if ((this.mSourcesCombobox == null))
                 {
-                    this.mSourcesCombobox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourcesCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mSourcesCombobox.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mSourcesCombobox = new SourcesCombobox7(this);
                 }
                 return this.mSourcesCombobox;
             }
@@ -68770,7 +69065,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private WpfComboBox mSourcesCombobox;
+        private SourcesCombobox7 mSourcesCombobox;
         
         private WpfButton mEditSourceButton;
         
@@ -68795,6 +69090,42 @@ namespace Warewolf.UITests
         private WpfEdit mRecordsetNameTextbox;
         
         private OnErrorPanel mOnErrorPanel;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourcesCombobox7 : WpfComboBox
+    {
+        
+        public SourcesCombobox7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem COMPluginSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mCOMPluginSourceToEditListItem == null))
+                {
+                    this.mCOMPluginSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mCOMPluginSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.ComPluginSourceDefinition";
+                    this.mCOMPluginSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mCOMPluginSourceToEditListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mCOMPluginSourceToEditListItem;
         #endregion
     }
     

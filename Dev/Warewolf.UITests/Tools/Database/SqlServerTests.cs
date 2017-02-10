@@ -32,6 +32,25 @@ namespace Warewolf.UITests.Tools
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
         }
 
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void SQLServerDatabaseTool_EditSource_UITest()
+        {
+            UIMap.Select_Source_From_SQLServerTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_SQLServerTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "SQL Server Source Tab does not exist");
+            UIMap.Click_WindowsButton_On_DatabaseSource();
+            UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
+            UIMap.Select_master_From_DB_Source_Wizard_Database_Combobox();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+            UIMap.SqlServerDatabaseTool_ChangeView_With_DoubleClick();
+            UIMap.Click_EditSourceButton_On_SQLServerTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected);
+            Assert.AreEqual("master", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

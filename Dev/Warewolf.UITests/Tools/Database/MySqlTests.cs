@@ -33,6 +33,23 @@ namespace Warewolf.UITests.Tools
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
         }
 
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void MySQLDatabaseTool_EditSource_UITest()
+        {
+            UIMap.Select_Source_From_MySQLTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MySqlDatabase.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_MySQLTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "MySql Source Tab does not exist");
+            UIMap.Select_test_From_DB_Source_Wizard_Database_Combobox();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+            UIMap.MySqlDatabaseTool_ChangeView_With_DoubleClick();
+            UIMap.Click_EditSourceButton_On_MySQLTool();
+            Assert.AreEqual("test", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.testText.DisplayText);
+        }
+
+
         #region Additional test attributes
 
         [TestInitialize]
