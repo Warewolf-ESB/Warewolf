@@ -53,6 +53,7 @@ namespace Dev2.Common.Interfaces
         void SetPropertiesForDialogFromPermissions(IWindowsGroupPermission permissions);
 
         Action SelectAll { get; set; }
+        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
 
         Task<bool> Load(bool isDeploy = false,bool reloadCatalogue = false);
 
