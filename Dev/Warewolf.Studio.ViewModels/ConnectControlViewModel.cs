@@ -37,6 +37,7 @@ namespace Warewolf.Studio.ViewModels
         ObservableCollection<IServer> _servers;
         bool _isLoading;
         private Guid? _selectedId;
+        private bool _shouldUpdateActiveEnvironment;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
         {
@@ -60,7 +61,15 @@ namespace Warewolf.Studio.ViewModels
             ShouldUpdateActiveEnvironment = false;
         }
 
-        public bool ShouldUpdateActiveEnvironment { get; set; }
+        public bool ShouldUpdateActiveEnvironment
+        {
+            get { return _shouldUpdateActiveEnvironment; }
+            set
+            {
+                _shouldUpdateActiveEnvironment = value; 
+                
+            }
+        }
 
         private bool CanExecuteMethod()
         {
@@ -73,8 +82,11 @@ namespace Warewolf.Studio.ViewModels
             var idx = -1;
             if (currentServer != null)
             {
-                currentServer.Disconnect();
-                ServerDisconnected?.Invoke(this, currentServer);
+                if (currentServer.IsConnected)
+                {
+                    currentServer.Disconnect();
+                    ServerDisconnected?.Invoke(this, currentServer);
+                }
                 idx = Servers.IndexOf(currentServer);
                 currentServer.NetworkStateChanged -= OnServerOnNetworkStateChanged;
                 Servers.Remove(currentServer);
@@ -90,12 +102,8 @@ namespace Warewolf.Studio.ViewModels
             }
             updatedServer.NetworkStateChanged += OnServerOnNetworkStateChanged;
             Servers.Insert(idx, updatedServer);
-            if (_selectedId != null && _selectedId != Guid.Empty)
-            {
-                var selectConnection = Servers.FirstOrDefault(server => server.EnvironmentID == _selectedId);
-                SelectedConnection = null;
-                SelectedConnection = selectConnection;
-            }
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            SelectedConnection = shellViewModel?.LocalhostServer;
         }
 
         public void LoadServers()
@@ -305,6 +313,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (ShouldUpdateActiveEnvironment && !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
                     {
+                        mainViewModel.ShouldUpdateActiveState = _selectedConnection.IsConnected;
                         mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
                         mainViewModel.SetActiveServer(_selectedConnection);
                     }
@@ -397,10 +406,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (ShouldUpdateActiveEnvironment)
                         {
-                            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                            mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
-                            mainViewModel?.OnActiveEnvironmentChanged();
-
+                            SetActiveServer(connection);
                         }
                     }
                     else
@@ -420,8 +426,10 @@ namespace Warewolf.Studio.ViewModels
                     if (ServerConnected != null && connected)
                     {
                         ServerConnected(this, connection);
-                        var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                        mainViewModel?.OnActiveEnvironmentChanged();
+                        if (ShouldUpdateActiveEnvironment)
+                        {
+                            SetActiveServer(connection);
+                        }
                     }
                 }
                 catch (Exception)
@@ -431,6 +439,14 @@ namespace Warewolf.Studio.ViewModels
                 return true;
             }
             return false;
+        }
+
+        private static void SetActiveServer(IServer connection)
+        {
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
+            mainViewModel?.SetActiveServer(connection);
+            mainViewModel?.OnActiveEnvironmentChanged();
         }
 
         private void Disconnect(IServer connection)
@@ -454,7 +470,8 @@ namespace Warewolf.Studio.ViewModels
                     _selectedId = SelectedConnection?.EnvironmentID;
                     if (_selectedId != null)
                     {
-                        shellViewModel.OpenResource(SelectedConnection.ResourceID, EnvironmentRepository.Instance.Source.ID, shellViewModel.LocalhostServer);
+                        shellViewModel?.OpenResource(SelectedConnection.ResourceID, EnvironmentRepository.Instance.Source.ID, shellViewModel.LocalhostServer);
+                        SelectedConnection = shellViewModel?.LocalhostServer;
                     }
                 }
             }

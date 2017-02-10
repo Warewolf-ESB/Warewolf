@@ -80,7 +80,7 @@ namespace Dev2.Data.Decisions.Operations
                 Dev2Logger.Error(ErrorResource.IsBetweenDataTypeMismatch,e);
                 throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
             }            
-            return left > 0 && right < 0 || left < 0 && right > 0;
+            return left >= 0 && right <= 0 || left <= 0 && right >= 0;
         }
     }
 }

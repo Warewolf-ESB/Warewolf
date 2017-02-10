@@ -370,9 +370,10 @@ namespace Dev2.Activities
 
         private PluginInvokeArgs BuidlPluginInvokeArgs(int update, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
         {
+            var pluginSource = ResourceCatalog.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, SourceId);
             return new PluginInvokeArgs
             {
-                AssemblyLocation = Namespace.AssemblyLocation,
+                AssemblyLocation = pluginSource.AssemblyLocation,
                 AssemblyName = Namespace.AssemblyName,
                 Fullname = namespaceItem.FullName,
                 PluginConstructor = constructor,
