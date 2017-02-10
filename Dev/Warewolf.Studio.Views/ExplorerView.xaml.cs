@@ -305,12 +305,10 @@ namespace Warewolf.Studio.Views
 
                     if (explorerItemViewModel != null && explorerItemViewModel.CanView)
                     {
-                        e.MouseDevice.SetCursor(Cursors.Wait);
-                        e.MouseDevice.OverrideCursor = Cursors.Wait;
+                        Mouse.OverrideCursor = Cursors.Wait;
                         explorerItemViewModel.OpenCommand.Execute(this);
                         e.Handled = true;
-                        e.MouseDevice.OverrideCursor = Cursors.Arrow;
-                        e.MouseDevice.SetCursor(Cursors.Arrow);
+                        Mouse.OverrideCursor = null;
                         return;
                     }
                 }
