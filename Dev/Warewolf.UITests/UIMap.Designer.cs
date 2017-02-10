@@ -211,6 +211,18 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
+        
+        public UIWarewolfDEV2NKOSINATWindow UIWarewolfDEV2NKOSINATWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2NKOSINATWindow == null))
+                {
+                    this.mUIWarewolfDEV2NKOSINATWindow = new UIWarewolfDEV2NKOSINATWindow();
+                }
+                return this.mUIWarewolfDEV2NKOSINATWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -241,6 +253,8 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
+        
+        private UIWarewolfDEV2NKOSINATWindow mUIWarewolfDEV2NKOSINATWindow;
         #endregion
     }
     
@@ -76152,6 +76166,18 @@ namespace Warewolf.UITests
                 return this.mNode5;
             }
         }
+        
+        public NodesCustom NodesCustom
+        {
+            get
+            {
+                if ((this.mNodesCustom == null))
+                {
+                    this.mNodesCustom = new NodesCustom(this);
+                }
+                return this.mNodesCustom;
+            }
+        }
         #endregion
         
         #region Fields
@@ -76172,6 +76198,8 @@ namespace Warewolf.UITests
         private Node4 mNode4;
         
         private Node5 mNode5;
+        
+        private NodesCustom mNodesCustom;
         #endregion
     }
     
@@ -76393,6 +76421,43 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NodesCustom : WpfCustom
+    {
+        
+        public NodesCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamNetworkNode";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Nodes";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText DotnetWorkflowForTesText
+        {
+            get
+            {
+                if ((this.mDotnetWorkflowForTesText == null))
+                {
+                    this.mDotnetWorkflowForTesText = new WpfText(this);
+                    #region Search Criteria
+                    this.mDotnetWorkflowForTesText.SearchProperties[WpfText.PropertyNames.Name] = "DotnetWorkflowForTesting";
+                    this.mDotnetWorkflowForTesText.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mDotnetWorkflowForTesText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mDotnetWorkflowForTesText;
         #endregion
     }
     
@@ -113311,6 +113376,239 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2NKOSINATWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2NKOSINATWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\NKOSINATHI.SANGWENI)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsTabPage UIDev2StudioViewModelsTabPage
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsTabPage == null))
+                {
+                    this.mUIDev2StudioViewModelsTabPage = new UIDev2StudioViewModelsTabPage(this);
+                }
+                return this.mUIDev2StudioViewModelsTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsTabPage mUIDev2StudioViewModelsTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsTabPage : WpfTabPage
+    {
+        
+        public UIDev2StudioViewModelsTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.DependencyVisualization.DependencyVisualiserViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIDev2StudioViewModelsCustom : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIContentDockManagerCustom UIContentDockManagerCustom
+        {
+            get
+            {
+                if ((this.mUIContentDockManagerCustom == null))
+                {
+                    this.mUIContentDockManagerCustom = new UIContentDockManagerCustom(this);
+                }
+                return this.mUIContentDockManagerCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIContentDockManagerCustom mUIContentDockManagerCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIContentDockManagerCustom : WpfCustom
+    {
+        
+        public UIContentDockManagerCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_DependencyView_AuCustom UIUI_DependencyView_AuCustom
+        {
+            get
+            {
+                if ((this.mUIUI_DependencyView_AuCustom == null))
+                {
+                    this.mUIUI_DependencyView_AuCustom = new UIUI_DependencyView_AuCustom(this);
+                }
+                return this.mUIUI_DependencyView_AuCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_DependencyView_AuCustom mUIUI_DependencyView_AuCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_DependencyView_AuCustom : WpfCustom
+    {
+        
+        public UIUI_DependencyView_AuCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DependencyVisualiserView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_DependencyView_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfPane UIUI_TopScrollView_AutPane
+        {
+            get
+            {
+                if ((this.mUIUI_TopScrollView_AutPane == null))
+                {
+                    this.mUIUI_TopScrollView_AutPane = new WpfPane(this);
+                    #region Search Criteria
+                    this.mUIUI_TopScrollView_AutPane.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+                    this.mUIUI_TopScrollView_AutPane.SearchProperties[WpfPane.PropertyNames.AutomationId] = "UI_TopScrollView_AutoID";
+                    this.mUIUI_TopScrollView_AutPane.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUIUI_TopScrollView_AutPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfPane mUIUI_TopScrollView_AutPane;
         #endregion
     }
 }
