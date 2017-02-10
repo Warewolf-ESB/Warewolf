@@ -36,7 +36,7 @@ namespace Warewolf.UITests.Tools.Resources
         }
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("Resource Tools")]
         public void DotNetDLLTool_EditSource_UITest()
         {
             const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading2.dll";

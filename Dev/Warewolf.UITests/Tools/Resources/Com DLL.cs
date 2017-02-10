@@ -37,7 +37,7 @@ namespace Warewolf.UITests.Tools.Resources
         }
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("Resource Tools")]
         public void ComDLLTool_EditSource_UITest()
         {
             UIMap.Select_Source_From_ComDLLTool();

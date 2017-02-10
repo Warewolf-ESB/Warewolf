@@ -69,8 +69,8 @@ namespace Warewolf.UITests.Tools.Email
         }
 
         [TestMethod]
-        [TestCategory("Database Tools")]
-        public void EmailTool_EditSource_UITest()
+        [TestCategory("Tools")]
+        public void SMTPSendTool_EditSource_UITest()
         {
             UIMap.Open_SMTPSendTool_LargeView();
             UIMap.Select_Source_From_EmailTool();

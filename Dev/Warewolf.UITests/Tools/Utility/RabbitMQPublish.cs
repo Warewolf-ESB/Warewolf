@@ -42,7 +42,7 @@ namespace Warewolf.UITests.Tools.Utility
         }
 
         [TestMethod]
-        [TestCategory("Database Tools")]
+        [TestCategory("Utility Tools")]
         public void RabbitMQPublishTool_EditSource_UITest()
         {
             UIMap.Open_RabbitMqPublish_LargeView();
