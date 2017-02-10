@@ -6,6 +6,9 @@ namespace Warewolf.UITests.SharepointSource
     [CodedUITest]
     public class SharepointSourceTests
     {
+        const string SourceName = "CodedUITestSharepointSource";
+        private const string editSourceName = "SharePointServiceSourceToEdit";
+
         [TestMethod]
         [TestCategory("Sharepoint Source")]
         // ReSharper disable once InconsistentNaming
@@ -20,8 +23,29 @@ namespace Warewolf.UITests.SharepointSource
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.CancelTestButton.Enabled, "Cancel Test button is  enabled.");
             UIMap.Enter_TextIntoAddress_In_SharepointServiceSourceTab();
             UIMap.Click_UserButton_On_SharepointSource();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
             UIMap.Enter_Sharepoint_ServerSource_User_Credentials();
             UIMap.Click_Sharepoint_Server_Source_TestConnection();
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            UIMap.Click_Sharepoint_Server_Source_TestConnection();
+        }
+
+        [TestMethod]
+        [TestCategory("Sharepoint Source")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_SharepointSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists, "Sharepoint Source Tab does not exist.");
+            UIMap.Click_WindowsButton_On_SharepointSource();
+            UIMap.Click_Sharepoint_Server_Source_TestConnection();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_SharepointSource_Tab_Button();
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Selected);
         }
 
         #region Additional test attributes

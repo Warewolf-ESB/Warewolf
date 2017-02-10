@@ -7,6 +7,7 @@ namespace Warewolf.UITests.ODBCSource
     public class ODBCSourceTests
     {
         const string SourceName = "CodedUITestODBCSource";
+        private const string editSourceName = "ODBCDatabaseSourceToEdit";
 
         [TestMethod]
         [TestCategory("Database Sources")]
@@ -22,6 +23,20 @@ namespace Warewolf.UITests.ODBCSource
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+        }
+
+        [TestMethod]
+        [TestCategory("Database Sources")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_ODBCSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "ODBC Source Tab does not exist");
+            UIMap.Select_MSAccess_From_DB_Source_Wizard_Database_Combobox();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.AreEqual("MS Access Database", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.MSAccessDatabaseText.DisplayText);
         }
 
         #region Additional test attributes
