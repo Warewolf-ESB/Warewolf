@@ -61,7 +61,7 @@ namespace Dev2.Common.Interfaces
         void SetActiveServer(IServer server);
         void Debug();
         void ShowAboutBox();
-        void ShowDependencies(Guid resourceId, IServer server);
+        void ShowDependencies(Guid resourceId, IServer server, bool isSource);
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);

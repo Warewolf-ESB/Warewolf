@@ -506,6 +506,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                         });
                     }
                     AddEmailSources(elementToUse);
+                    AddDotnetSources(elementToUse);
                     AddRabbitMqSources(elementToUse);
                     AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
                 }
@@ -525,6 +526,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 case "DsfSqlServerDatabaseActivity":
                     return "DbService";
                 case "DsfDotNetDllActivity":
+                case "DsfEnhancedDotNetDllActivity":
                     return "PluginService";
                 case "DsfWebGetActivity":
                     return "WebService";
@@ -579,6 +581,34 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var element = xElements[0];
                 var resourceIdAsString = element.AttributeSafe("ResourceID");
+                var resourceName = element.AttributeSafe("ResourceName");
+                var actionTypeStr = element.AttributeSafe("Type");
+                var resourceType = GetResourceTypeFromString(actionTypeStr);
+                Guid resId;
+                Guid.TryParse(resourceIdAsString, out resId);
+                Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
+            }
+        }
+
+        private void AddDotnetSources(XElement elementToUse)
+        {
+            if(elementToUse == null)
+            {
+                return;
+            }
+            if(Dependencies == null)
+            {
+                Dependencies = new List<IResourceForTree>();
+            }
+            var dependenciesFromXml = from desc in elementToUse.Descendants()
+                where (desc.Name.LocalName.Contains("DsfEnhancedDotNetDllActivity")) && desc.HasAttributes
+                select desc;
+            var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+            var count = xElements.Count;
+            if(count == 1)
+            {
+                var element = xElements[0];
+                var resourceIdAsString = element.AttributeSafe("SourceId");
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
