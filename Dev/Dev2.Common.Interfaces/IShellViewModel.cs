@@ -55,12 +55,13 @@ namespace Dev2.Common.Interfaces
     {
         IServer LocalhostServer { get; }
         IServer ActiveServer { get; set; }
+        bool ShouldUpdateActiveState { get; set; }
         void ShowPopup(IPopupMessage getDuplicateMessage);
         void SetActiveEnvironment(Guid environmentId);
         void SetActiveServer(IServer server);
         void Debug();
         void ShowAboutBox();
-        void ShowDependencies(Guid resourceId, IServer server);
+        void ShowDependencies(Guid resourceId, IServer server, bool isSource);
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);

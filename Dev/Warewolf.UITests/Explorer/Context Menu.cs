@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+// ReSharper disable CyclomaticComplexity
 
 namespace Warewolf.UITests
 {
@@ -45,6 +46,27 @@ namespace Warewolf.UITests
             UIMap.RightClick_Localhost();
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists, "Sources Context menu item does not exist on explorer context menu for workflows.");
         }
+
+        //WOLF-2474
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Explorer_GivenSources_ShouldHaveShowDependencyMenuItem()
+        {
+            //---------------Set up test pack-------------------
+            const string Source = "DotNetPlugInSource";
+            UIMap.Filter_Explorer(Source);
+            UIMap.RightClick_Explorer_Localhost_FirstItem();
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies.Exists, "Show Dependencies Context menu item does not exist on explorer context menu for Sources.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.DeployItem.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Rename.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Delete.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Duplicate.Exists);
+        }
+
+        
 
         #region Additional test attributes
 
