@@ -21,7 +21,7 @@ namespace Warewolf.UITests.Tools.Email
             // Large View
             UIMap.Open_SMTPSendTool_LargeView();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.SourceComboBox.Enabled, "Source Combobox is not enabled.");
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.ItemButton.Enabled, "Item Button is not enabled.");
+            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.EditSourceButton.Enabled, "EditSource Button is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.FromAddressComboBox.Enabled, "From Address Combobox is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.PasswordTextbox.Enabled, "Password Textbox is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.TestButton.Enabled, "Test Button is not enabled.");
@@ -66,6 +66,24 @@ namespace Warewolf.UITests.Tools.Email
             {
                 UIMap.RemoveTestFiles(filePath1, filePath2, folderName);
             }
+        }
+
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void EmailTool_EditSource_UITest()
+        {
+            UIMap.Open_SMTPSendTool_LargeView();
+            UIMap.Select_Source_From_EmailTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_EmailTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
+            UIMap.Edit_Timeout_On_EmailSource();
+            UIMap.Click_EmailSource_TestConnection_Button();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_EmailSource_Tab();
+            UIMap.Open_SMTPSendTool_LargeView();
+            UIMap.Click_EditSourceButton_On_EmailTool();
+            Assert.AreEqual("2000", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
         }
 
         #region Additional test attributes

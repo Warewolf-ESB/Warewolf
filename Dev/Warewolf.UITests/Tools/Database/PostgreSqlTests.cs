@@ -34,6 +34,22 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password textbos is not enabled.");
         }
 
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void PostgreDatabaseTool_EditSource_UITest()
+        {
+            UIMap.Select_Source_From_PostgreTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_PostgreSQLTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "PostgreSQL Source Tab does not exist");
+            UIMap.Select_TestDB_From_DB_Source_Wizard_Database_Combobox();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+            UIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
+            UIMap.Click_EditSourceButton_On_PostgreSQLTool();
+            Assert.AreEqual("TestDB", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.TestDBText.DisplayText);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
