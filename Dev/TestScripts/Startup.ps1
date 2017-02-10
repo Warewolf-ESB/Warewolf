@@ -69,8 +69,8 @@ if ($ServerPath -eq "") {
     }
 }
 
-Remove-Item ((Get-Item $ServerPath).Directory.FullName + "\ServerStarted") -Recurse -ErrorAction SilentlyContinue
-if (Test-Path ((Get-Item $ServerPath).Directory.FullName + "\ServerStarted")) {
+Remove-Item ((Get-Item "$ServerPath").Directory.FullName + "\ServerStarted") -Recurse -ErrorAction SilentlyContinue
+if (Test-Path ((Get-Item "$ServerPath").Directory.FullName + "\ServerStarted")) {
     Write-Host Cannot delete "ServerStarted" file.
     sleep 30
     exit 1
@@ -154,8 +154,8 @@ if ($StudioPath -eq "") {
     }
 }
 
-Remove-Item ((Get-Item $StudioPath).Directory.FullName + "\StudioStarted") -Recurse -ErrorAction SilentlyContinue
-if (Test-Path ((Get-Item $StudioPath).Directory.FullName + "\StudioStarted")) {
+Remove-Item ((Get-Item "$StudioPath").Directory.FullName + "\StudioStarted") -Recurse -ErrorAction SilentlyContinue
+if (Test-Path ((Get-Item "$StudioPath").Directory.FullName + "\StudioStarted")) {
     Write-Host Cannot delete "StudioStarted" file.
     sleep 30
     exit 1
