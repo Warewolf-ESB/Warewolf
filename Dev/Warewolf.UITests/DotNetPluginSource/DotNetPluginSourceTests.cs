@@ -9,6 +9,7 @@ namespace Warewolf.UITests
     {
         const string DLLAssemblySourceName = "CodedUITestDLLDotNetPluginSource";
         const string GACAssemblySourceName = "CodedUITestGACDotNetPluginSource";
+        const string SourceNameToEdit = "DotNetPluginSourceToEdit";
 
         [TestMethod]
         [TestCategory("Plugin Sources")]
@@ -29,6 +30,21 @@ namespace Warewolf.UITests
 
         }
 
+        [TestMethod]
+        [TestCategory("Plugin Sources")]
+        public void Edit_DotNetSource_Keeps_The_Changes_On_ReOpen_UITests()
+        {
+            const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading2.dll";
+            UIMap.Filter_Explorer(SourceNameToEdit);
+            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox is not enabled");
+            UIMap.Change_Dll_And_Save(newDll);
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
+            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            Assert.AreEqual(newDll, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
+        }
+
+       
         [TestMethod]
         [TestCategory("Plugin Sources")]
         public void Select_AssemblyAndConfigFile_Then_Validate_Clear_On_GACSelection_UITests()
