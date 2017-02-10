@@ -198,10 +198,10 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                var explorerItemViewModels = FlatUnfilteredChildren(SelectedEnvironment?.UnfilteredChildren?.ToList());
+                var explorerItemViewModels = FlatUnfilteredChildren(SelectedEnvironment);
                 var explorerTreeItems = explorerItemViewModels?.Select(a => a as IExplorerTreeItem)
                     .Where(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value)
-                    .ToList() ?? new List<IExplorerTreeItem>();
+                    .ToList();
                 return explorerTreeItems;
             }
             set
@@ -213,22 +213,19 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(List<IExplorerItemViewModel> itemViewModels)
+        private IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
         {
-
-            if (itemViewModels == null || !itemViewModels.Any())
-            {
-                return new List<IExplorerItemViewModel>();
-            }
-            var explorerItemViewModels = itemViewModels.Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>());
-            return explorerItemViewModels;
+            var itemViewModels = itemViewModelsModel?.AsList()?.Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>());
+            var explorerItemViewModels = itemViewModelsModel?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
+            var viewModels = explorerItemViewModels?.Union(itemViewModels ?? new List<IExplorerItemViewModel>());
+            return viewModels ?? new List<IExplorerItemViewModel>();
         }
 
         public ICollection<IExplorerTreeItem> SourceLoadedItems
         {
             get
             {
-                var explorerItemViewModels = FlatUnfilteredChildren(SelectedEnvironment?.UnfilteredChildren?.ToList());
+                var explorerItemViewModels = FlatUnfilteredChildren(SelectedEnvironment);
                 return explorerItemViewModels?.Select(a => a as IExplorerTreeItem)
                     .ToList() ?? new List<IExplorerTreeItem>();
             }
