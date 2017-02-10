@@ -399,7 +399,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(serverConnectedRaised);
             Assert.IsTrue(_changedProperties.Contains("IsConnected"));
             serverMock.Verify(it => it.ConnectAsync());
-            mainViewModelMock.Verify(it => it.SetActiveEnvironment(serverEnvironmentId));
+            mainViewModelMock.Verify(it => it.SetActiveServer(serverMock.Object));
         }
 
         [TestMethod]
@@ -438,7 +438,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_changedProperties.Contains("IsConnected"));
             serverMock.Verify(it => it.ConnectAsync());
             popupControllerMock.Verify(it => it.ShowConnectionTimeoutConfirmation("DisplayName"));
-            mainViewModelMock.Verify(it => it.SetActiveEnvironment(serverEnvironmentId));
+            mainViewModelMock.Verify(it => it.SetActiveServer(serverMock.Object));
         }
 
 
