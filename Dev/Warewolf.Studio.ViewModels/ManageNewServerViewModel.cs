@@ -97,28 +97,14 @@ namespace Warewolf.Studio.ViewModels
 
                 _serverSource = source;
                 _serverSource.ResourcePath = serverSource.ResourcePath;
-                Item = new ServerSource
-                {
-                    AuthenticationType = _serverSource.AuthenticationType,
-                    ID = _serverSource.ID,
-                    Name = _serverSource.Name,
-                    Password = _serverSource.Password,
-                    ResourcePath = _serverSource.ResourcePath,
-                    ServerName = _serverSource.ServerName,
-                    UserName = _serverSource.UserName,
-                    Address = _serverSource.Address
-                };
-
                 GetLoadComputerNamesTask(() =>
                     {
                         FromModel(_serverSource);
+                        Item = ToModel();
                         SetupHeaderTextFromExisting();
                     }
                 );
-                if (string.IsNullOrEmpty(TestMessage))
-                {
-                    FromModel(_serverSource);
-                }
+               
             });
         }
 

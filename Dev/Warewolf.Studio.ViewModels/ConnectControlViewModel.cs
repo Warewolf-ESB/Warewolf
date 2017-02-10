@@ -37,6 +37,7 @@ namespace Warewolf.Studio.ViewModels
         ObservableCollection<IServer> _servers;
         bool _isLoading;
         private Guid? _selectedId;
+        private bool _shouldUpdateActiveEnvironment;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
         {
@@ -60,7 +61,15 @@ namespace Warewolf.Studio.ViewModels
             ShouldUpdateActiveEnvironment = false;
         }
 
-        public bool ShouldUpdateActiveEnvironment { get; set; }
+        public bool ShouldUpdateActiveEnvironment
+        {
+            get { return _shouldUpdateActiveEnvironment; }
+            set
+            {
+                _shouldUpdateActiveEnvironment = value; 
+                
+            }
+        }
 
         private bool CanExecuteMethod()
         {
@@ -416,7 +425,10 @@ namespace Warewolf.Studio.ViewModels
                     if (ServerConnected != null && connected)
                     {
                         ServerConnected(this, connection);
-                        SetActiveServer(connection);
+                        if (ShouldUpdateActiveEnvironment)
+                        {
+                            SetActiveServer(connection);
+                        }
                     }
                 }
                 catch (Exception)
@@ -431,6 +443,7 @@ namespace Warewolf.Studio.ViewModels
         private static void SetActiveServer(IServer connection)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
             mainViewModel?.SetActiveServer(connection);
             mainViewModel?.OnActiveEnvironmentChanged();
         }

@@ -189,11 +189,9 @@ namespace Warewolf.Studio.ViewModels
 
         void SelectAction(IExplorerItemViewModel ax)
         {
-
             if (ax.Parent?.ResourceType == @"Folder" || ax.Parent?.ResourceType == @"ServerSource")
                 ax.Parent.IsFolderChecked = ax.IsResourceChecked;
             _statsArea.Calculate(SelectedItems.ToList());
-
         }
 
         public virtual ICollection<IExplorerTreeItem> SelectedItems
