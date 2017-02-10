@@ -93,7 +93,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var actual = comparer.Invoke(new[] { "2", "2", "50" });
 
             //assert
-            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
 
         }
 
@@ -110,7 +110,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var actual = comparer.Invoke(new[] { "50", "2", "50" });
 
             //assert
-            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
 
         }
 
@@ -176,7 +176,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var actual = comparer.Invoke(new[] { "2016/10/13", "2016/10/13", "2016/10/16" });
 
             //assert
-            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
 
         }
 
@@ -193,7 +193,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var actual = comparer.Invoke(new[] { "2016/10/16", "2016/10/13", "2016/10/16" });
 
             //assert
-            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
+            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
 
         }        
     }
