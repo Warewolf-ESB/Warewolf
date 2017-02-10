@@ -394,11 +394,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetSource.OkCommand.Execute(null);
 
             //assert
-            _updateManagerMock.Verify(it => it.Save(_pluginSourceMock.Object));
+            _updateManagerMock.Verify(it => it.Save(It.IsAny<IPluginSource>()));
             Assert.IsTrue(_changedPropertiesSource.Contains("Header"));
-            Assert.AreEqual(expectedId, _targetSource.Item.Id);
-            Assert.AreEqual(ExpectedName, _targetSource.Item.Name);
-            Assert.AreEqual(ExpectedPath, _targetSource.Item.Path);
         }
 
         [TestMethod]
@@ -447,21 +444,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(ExpectedName, result.Name);
             Assert.AreEqual(ExpectedPath, result.Path);
         }
-
-        [TestMethod]
-        public void TestToModelSource()
-        {
-            //arrange
-            var selectedDllMock = new Mock<IDllListingModel>();
-            _targetSource.SelectedDll = selectedDllMock.Object;
-
-            //act
-            var result = _targetSource.ToModel();
-
-            //assert
-            Assert.AreSame(_pluginSourceMock.Object, result);
-        }
-
+        
         [TestMethod]
         public void TestFromModelGAC()
         {
@@ -596,11 +579,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetSource.Save();
 
             //assert
-            _updateManagerMock.Verify(it => it.Save(_pluginSourceMock.Object));
+            _updateManagerMock.Verify(it => it.Save(It.IsAny<IPluginSource>()));
             Assert.IsTrue(_changedPropertiesSource.Contains("Header"));
-            Assert.AreEqual(expectedId, _targetSource.Item.Id);
-            Assert.AreEqual(ExpectedName, _targetSource.Item.Name);
-            Assert.AreEqual(ExpectedPath, _targetSource.Item.Path);
         }
 
         [TestMethod]
