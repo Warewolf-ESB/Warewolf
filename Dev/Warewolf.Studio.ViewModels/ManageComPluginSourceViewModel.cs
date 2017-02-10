@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -179,7 +180,7 @@ namespace Warewolf.Studio.ViewModels
             Item = ToModel();
         }
 
-        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<System.Action> dispatcherAction)
+        public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker, Action<Action> dispatcherAction)
             : this(updateManager, aggregator, asyncWorker)
         {
             DispatcherAction = dispatcherAction;
@@ -194,29 +195,33 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("compluginSource", pluginSource);
-            PerformLoadAll(()=>
+            asyncWorker.Start(() =>
             {
-                AsyncWorker.Start(() => updateManager.FetchSource(pluginSource.Id), source =>
-                {
-                    _pluginSource = source;
-                    _pluginSource.ResourcePath = pluginSource.ResourcePath;
-                    SetupHeaderTextFromExisting();
-                    FromModel(_pluginSource);
-                    ToItem();
-                });
+                IsLoading = true;
+                var comPluginSource = updateManager.FetchSource(pluginSource.Id);
+                List<DllListingModel> names = updateManager.GetComDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
+                return new Tuple<IComPluginSource, List<DllListingModel>>(comPluginSource, names);
+            }, tuple =>
+            {
+                _originalDllListings = new AsyncObservableCollection<IDllListingModel>(tuple.Item2);
+                DllListings = _originalDllListings;
+                _pluginSource = tuple.Item1;
+                _pluginSource.ResourcePath = pluginSource.ResourcePath;
+                SetupHeaderTextFromExisting();
+                FromModel(_pluginSource);
+                Item = ToModel();
+                IsLoading = false;
             });
-            
         }
 
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker, Action<System.Action> dispatcherAction)
             : this(updateManager, aggregator, asyncWorker)
         {
-            DispatcherAction = dispatcherAction;
             VerifyArgument.IsNotNull("comPluginSource", pluginSource);
+            DispatcherAction = dispatcherAction;
             _pluginSource = pluginSource;
             SetupHeaderTextFromExisting();
             PerformLoadAll(() => FromModel(_pluginSource));
-
             ToItem();
         }
 
@@ -236,8 +241,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     dllListingModel.IsExpanded = true;
                     SelectedDll = dllListingModel;
-                    dllListingModel.IsSelected = true;
-                    AssemblyName = dllListingModel.Name;
+                    SelectedDll.IsSelected = true;
                 }
             }
 
@@ -440,7 +444,10 @@ namespace Warewolf.Studio.ViewModels
                     ResourcePath = Path
                 };
             }
-            _pluginSource.SelectedDll = _selectedDll;
+            if (_selectedDll != null)
+            {
+                _pluginSource.SelectedDll = _selectedDll;
+            }
             return _pluginSource;
         }
 
