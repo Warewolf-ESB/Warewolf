@@ -313,6 +313,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (ShouldUpdateActiveEnvironment && !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
                     {
+                        mainViewModel.ShouldUpdateActiveState = _selectedConnection.IsConnected;
                         mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
                         mainViewModel.SetActiveServer(_selectedConnection);
                     }

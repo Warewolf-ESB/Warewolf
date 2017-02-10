@@ -148,6 +148,8 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public bool ShouldUpdateActiveState { get; set; }
+
         public IEnvironmentModel ActiveEnvironment
         {
             get { return _activeEnvironment; }
@@ -480,7 +482,7 @@ namespace Dev2.Studio.ViewModels
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
             PopupProvider = popupController ?? new PopupController();
             _activeServer = LocalhostServer;
-
+            ShouldUpdateActiveState = true;
             EnvironmentRepository = environmentRepository;
             SetActiveEnvironment(_activeServer.EnvironmentID);
 
@@ -1420,8 +1422,8 @@ namespace Dev2.Studio.ViewModels
                 return false;
             }
 
-            var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute;
-            if (ActiveEnvironment.IsConnected)
+            var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute && ShouldUpdateActiveState;
+            if (ActiveEnvironment.IsConnected && ShouldUpdateActiveState)
             {
                 if (ToolboxViewModel?.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
                 {
