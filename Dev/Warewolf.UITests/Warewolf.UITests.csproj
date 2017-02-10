@@ -65,6 +65,7 @@
     <Compile Include="DebugOutputTests\DebugOutputWindowTests.cs" />
     <Compile Include="DotNetPluginSource\DotNetPluginSourceTests.cs" />
     <Compile Include="DropboxSource\DropboxSourceTests.cs" />
+    <Compile Include="DependencyGraph\ShowDependencyTets.cs" />
     <Compile Include="ODBCSource\ODBCSourceTests.cs" />
     <Compile Include="OracleSource\OracleSourceTests.cs" />
     <Compile Include="PostgreSQLSource\PostgreSQLSourceTests.cs" />

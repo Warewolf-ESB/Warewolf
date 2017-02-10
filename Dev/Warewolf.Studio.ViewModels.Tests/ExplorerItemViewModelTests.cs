@@ -558,7 +558,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.ShowDependenciesCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.ShowDependencies(_target.ResourceId, _target.Server));
+            _shellViewModelMock.Verify(it => it.ShowDependencies(_target.ResourceId, _target.Server,_target.IsSource));
         }
 
         [TestMethod]
@@ -680,7 +680,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestDeleteCommandResourceTypeServerDeleteSuccess_ShowDependencies()
         {
             //arrange
-            _shellViewModelMock.Setup(model => model.ShowDependencies(It.IsAny<Guid>(), It.IsAny<IServer>()));
+            _shellViewModelMock.Setup(model => model.ShowDependencies(It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<bool>()));
             var environmentModelMock = new Mock<IEnvironmentModel>();
             environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
             _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = false,ShowDependencies = true});
