@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ServiceModel
         void TestWebService(WebService service);
     }
 
-    public class WebServices : Services,IWebServices
+    public class WebServices : Services, IWebServices
     {
         static readonly WebExecuteString DefaultWebExecute = WebSources.Execute;
         readonly WebExecuteString _webExecute = DefaultWebExecute;
@@ -83,7 +83,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 service = JsonConvert.DeserializeObject<WebService>(args);
 
-                if(string.IsNullOrEmpty(service.RequestResponse))
+                if (string.IsNullOrEmpty(service.RequestResponse))
                 {
                     ErrorResultTO errors;
                     ExecuteRequest(service, true, out errors, _webExecute);
@@ -94,7 +94,7 @@ namespace Dev2.Runtime.ServiceModel
                 service.RequestMessage = string.Empty;
                 service.JsonPathResult = string.Empty;
 
-                if(service.RequestResponse.IsJSON() && String.IsNullOrEmpty(service.JsonPath))
+                if (service.RequestResponse.IsJSON() && String.IsNullOrEmpty(service.JsonPath))
                 {
                     service.ApplyPath();
                     // we need to timeout this request after 10 seconds due to nasty pathing issues ;)
@@ -108,7 +108,7 @@ namespace Dev2.Runtime.ServiceModel
                     jsonMapTask.Start();
                     jsonMapTask.Wait(10000);
 
-                    if(!jsonMapTask.IsCompleted)
+                    if (!jsonMapTask.IsCompleted)
                     {
                         jsonMapTaskThread?.Abort();
 
@@ -124,10 +124,10 @@ namespace Dev2.Runtime.ServiceModel
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                if(service.Recordsets.Count > 0)
+                if (service.Recordsets.Count > 0)
                 {
                     service.Recordsets[0].HasErrors = true;
                     service.Recordsets[0].ErrorMessage = ex.Message;
@@ -151,10 +151,10 @@ namespace Dev2.Runtime.ServiceModel
                 service.Recordsets = FetchRecordset(service, true);
                 service.RequestResponse = oldResult;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 RaiseError(ex);
-                if(service.Recordsets.Count > 0)
+                if (service.Recordsets.Count > 0)
                 {
                     service.Recordsets[0].HasErrors = true;
                     service.Recordsets[0].ErrorMessage = ex.Message;
@@ -177,15 +177,15 @@ namespace Dev2.Runtime.ServiceModel
 
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
         {
-            var requestHeaders = SetParameters(service.Method.Parameters,"");
-            var headers = string.IsNullOrEmpty(requestHeaders)
-                              ? new List<string>()
-                              : requestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-            headers.AddRange(service.Headers.Select(nameValue => nameValue.Name + ":" + nameValue.Value).ToList());
+            var headers = new List<string>();
+            if (service.Headers !=null)
+            {
+                headers.AddRange(service.Headers.Select(nameValue => nameValue.Name + ":" + SetParameters(service.Method.Parameters, nameValue.Value)).ToList());
+            }
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
             service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers.ToArray());
-            if(!String.IsNullOrEmpty(service.JsonPath))
+            if (!String.IsNullOrEmpty(service.JsonPath))
             {
                 service.ApplyPath();
             }
