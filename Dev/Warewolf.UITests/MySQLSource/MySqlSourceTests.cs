@@ -7,6 +7,7 @@ namespace Warewolf.UITests
     public class MySQLSourceTests
     {
         const string SourceName = "CodedUITestMySQLSource";
+        private const string editSourceName = "MySQLDatabaseSourceToEdit";
 
         [TestMethod]
         [TestCategory("Database Sources")]
@@ -20,6 +21,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows authentification type radio button not enabled.");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is enabled.");
             UIMap.Click_UserButton_On_DatabaseSource();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Exists);
             UIMap.Enter_Text_Into_DatabaseServer_Tab();
             UIMap.IEnterRunAsUserRootOnDatabaseSource();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
@@ -29,6 +32,20 @@ namespace Warewolf.UITests
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Database Sources")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_MySQLSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "MySQL Source Tab does not exist");
+            UIMap.Select_test_From_DB_Source_Wizard_Database_Combobox();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.AreEqual("test", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.testText.DisplayText);
         }
 
         #region Additional test attributes

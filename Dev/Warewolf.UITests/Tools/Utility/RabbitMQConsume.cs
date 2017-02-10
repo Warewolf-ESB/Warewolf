@@ -41,6 +41,17 @@ namespace Warewolf.UITests.Tools.Utility
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton.Enabled, "Test Connection button is enabled");
         }
 
+        [TestMethod]
+        [TestCategory("Utility Tools")]
+        public void RabbitMQConsumeTool_EditSource_UITest()
+        {
+            UIMap.Open_RabbitMqConsume_LargeView();
+            UIMap.Select_Source_From_RabbitMQConsumeTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_RabbitMQConsumeTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.Exists, "RabbitMQ Source Tab does not exist");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

@@ -101,15 +101,18 @@ namespace Dev2.Activities
 
                         NextNodes = new List<IDev2Activity> { Switches[a] };
                     }
-                    if (Default != null)
+                    else
                     {
-                        Result = "Default";
-                        var activity = Default.FirstOrDefault();
-                        if (dataObject.IsDebugMode())
+                        if (Default != null)
                         {
-                            DebugOutput(dataObject);
+                            Result = "Default";
+                            var activity = Default.FirstOrDefault();
+                            if (dataObject.IsDebugMode())
+                            {
+                                DebugOutput(dataObject);
+                            }
+                            NextNodes = new List<IDev2Activity> { activity };
                         }
-                        NextNodes = new List<IDev2Activity> { activity };
                     }
                 }
             }
