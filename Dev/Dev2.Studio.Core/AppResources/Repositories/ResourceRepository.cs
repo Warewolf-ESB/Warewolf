@@ -194,8 +194,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 if (!_environmentModel.Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();
+                    return null;
                 }
-                return null;
             }
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
