@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         readonly IEventAggregator _eventPublisher;
         readonly IEnvironmentModel _environmentModel;
         readonly IAsyncWorker _asyncWorker;
-        private ISourceToolRegion<IExchange> _sourceRegion;
+        private ISourceToolRegion<IExchangeSource> _sourceRegion;
 
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public RelayCommand TestEmailAccountCommand { get; private set; }
@@ -120,7 +120,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        public ISourceToolRegion<IExchange> SourceRegion
+        public ISourceToolRegion<IExchangeSource> SourceRegion
         {
             get
             {
