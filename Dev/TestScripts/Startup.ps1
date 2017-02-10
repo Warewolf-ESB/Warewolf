@@ -36,11 +36,7 @@ if (Test-Path "$PSScriptRoot\Cleanup.ps1") {
     &"$PSScriptRoot\Cleanup.ps1"
 }
 
-if ($ServerPath -eq "") {
-    if (Test-Path "$PSScriptRoot\*Server.zip") {
-        Expand-Archive "$PSScriptRoot\*Server.zip" "$PSScriptRoot\Server" -Force
-        $ServerPath = "$PSScriptRoot\Server\Warewolf Server.exe"
-    }
+if ($ServerPath -eq "") {   
 
     $CurrentDirectory = $PSScriptRoot
     $NumberOfParentsSearched = 0
@@ -57,7 +53,10 @@ if ($ServerPath -eq "") {
             $ServerPath = "$CurrentDirectory\Dev2.Server\bin\Debug\Warewolf Server.exe"
         } elseif (Test-Path "$CurrentDirectory\Dev2.Server\bin\Release\Warewolf Server.exe") {
             $ServerPath = "$CurrentDirectory\Dev2.Server\bin\Release\Warewolf Server.exe"
-        }
+        } elseif (Test-Path "$CurrentDirectory\*Server.zip") {
+			Expand-Archive "$CurrentDirectory\*Server.zip" "$CurrentDirectory\Server" -Force
+			$ServerPath = "$CurrentDirectory\Server\Warewolf Server.exe"
+		}
         if ($ServerPath -eq "") {
             $CurrentDirectory = (Get-Item $CurrentDirectory).Parent.FullName
         }
@@ -113,21 +112,9 @@ if ($DotCoverPath -eq "") {
 
 # ****************************** Server Start ******************************
 Start-Service "Warewolf Server"
-
-$Timeout = 60
-Write-Host Waiting for server to start.
-while (-not $ServerStarted -and $Timeout-- -gt 0) {
-    sleep 1
-    $ServerStarted = Test-Path ((Get-Item $ServerPath).Directory.FullName + "\ServerStarted")
-}
 Write-Host Server has started.
 
 if ($StudioPath -eq "") {
-    if (Test-Path "$PSScriptRoot\*Studio.zip") {
-        Expand-Archive "$PSScriptRoot\*Studio.zip" "$PSScriptRoot\Studio" -Force
-        $StudioPath = "$PSScriptRoot\Studio\Warewolf Studio.exe"
-    }
-
     $CurrentDirectory = $PSScriptRoot
     $NumberOfParentsSearched = 0
     while ($StudioPath -eq "" -and $NumberOfParentsSearched++ -lt 7) {
@@ -143,7 +130,10 @@ if ($StudioPath -eq "") {
             $StudioPath = "$CurrentDirectory\Dev2.Studio\bin\Debug\Warewolf Studio.exe"
         } elseif (Test-Path "$CurrentDirectory\Dev2.Studio\bin\Release\Warewolf Studio.exe") {
             $StudioPath = "$CurrentDirectory\Dev2.Studio\bin\Release\Warewolf Studio.exe"
-        }
+        } elseif (Test-Path "$CurrentDirectory\*Studio.zip") {
+			Expand-Archive "$CurrentDirectory\*Studio.zip" "$CurrentDirectory\Studio" -Force
+			$StudioPath = "$CurrentDirectory\Studio\Warewolf Studio.exe"
+		}
         if ($StudioPath -eq "") {
             $CurrentDirectory = (Get-Item $CurrentDirectory).Parent.FullName
         }
@@ -154,8 +144,8 @@ if ($StudioPath -eq "") {
     }
 }
 
-Remove-Item ((Get-Item "$StudioPath").Directory.FullName + "\StudioStarted") -Recurse -ErrorAction SilentlyContinue
-if (Test-Path ((Get-Item "$StudioPath").Directory.FullName + "\StudioStarted")) {
+Remove-Item ("$PSScriptRoot\StudioStarted") -Recurse -ErrorAction SilentlyContinue
+if (Test-Path ("$PSScriptRoot\StudioStarted")) {
     Write-Host Cannot delete "StudioStarted" file.
     sleep 30
     exit 1
@@ -172,7 +162,14 @@ if ($StudioPath -ne "") {
 	Write-Host Waiting for studio to start.
 	while (-not $StudioStarted -and $Timeout-- -gt 0) {
 		sleep 1
-		$StudioStarted = Test-Path ((Get-Item $StudioPath).Directory.FullName + "\StudioStarted")
+		$StudioStarted = Test-Path ("$PSScriptRoot\StudioStarted")
 	}
 	Write-Host Studio has started.
+}
+
+Remove-Item ("$PSScriptRoot\StudioStarted") -Recurse -ErrorAction SilentlyContinue
+if (Test-Path ("$PSScriptRoot\StudioStarted")) {
+    Write-Host Cannot delete "StudioStarted" file.
+    sleep 30
+    exit 1
 }
