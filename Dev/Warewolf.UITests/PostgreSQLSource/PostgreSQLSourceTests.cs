@@ -7,6 +7,7 @@ namespace Warewolf.UITests.PostgreSQLSource
     public class PostgreSQLSourceTests
     {
         const string SourceName = "CodedUITestMyPostgreSQLSource";
+        private const string editSourceName = "PostgreSQLDatabaseSourceToEdit";
 
         [TestMethod]
         [TestCategory("Database Sources")]
@@ -28,6 +29,20 @@ namespace Warewolf.UITests.PostgreSQLSource
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+        }
+
+        [TestMethod]
+        [TestCategory("Database Sources")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_PostgreSQLSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "PostgreSQL Source Tab does not exist");
+            UIMap.Select_TestDB_From_DB_Source_Wizard_Database_Combobox();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.AreEqual("TestDB", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.TestDBText.DisplayText);
         }
 
         #region Additional test attributes

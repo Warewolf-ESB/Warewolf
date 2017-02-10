@@ -1,0 +1,22 @@
+
+<Source ID="90f665c9-6d1c-4ec4-aa74-18cd0044683a" Name="PostgreSQLDatabaseSourceToEdit" ResourceType="PostgreSQL" IsValid="false" ServerType="PostgreSQL" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAr4ygmzcjI0Cq1PQ3c45jKQQAAAACAAAAAAADZgAAwAAAABAAAAAx8ppkSq9INxGMCktkVw7yAAAAAASAAACgAAAAEAAAADPuj8gV7CDiLRm1at7fMheYAAAAEXoYM73g4bvC+3rnWccoOnm1tdW17w2HT4xbAEDDTS/KddhjRVKMKiTzzkMzlNm/FPt88X+PGGx2FNbP3jdTKtTUG7vZNzmEvnKe3O7kQ6BrfWa0YKo5aAgieHOS5yzrCQ2p3e84tjipO/uNLyDiBb3Z6H5yEYkZx3PKDCLbCTjWla77KClb5ywHKYXQkhx32dMZUQbfvGoUAAAAturw3El3hfbQK1c1XrADnEFidFU=" ServerVersion="0.0.6250.14405" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>PostgreSQLDatabaseSourceToEdit</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2017-02-10T09:43:04.0459175+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="90f665c9-6d1c-4ec4-aa74-18cd0044683a" VersionId="6145c19e-a201-4d66-b796-84eccab49481" />
+</Source>

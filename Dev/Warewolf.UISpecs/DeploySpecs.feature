@@ -151,6 +151,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	And I Click Deploy Successful MessageBox OK
 	And I Select RemoteConnectionIntegration From Explorer
 	And I Click Explorer Connect Remote Server Button
+	And I Wait For Explorer First Remote Server Spinner
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
 
