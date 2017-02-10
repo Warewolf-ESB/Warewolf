@@ -55,6 +55,7 @@ namespace Dev2.Common.Interfaces
     {
         IServer LocalhostServer { get; }
         IServer ActiveServer { get; set; }
+        bool ShouldUpdateActiveState { get; set; }
         void ShowPopup(IPopupMessage getDuplicateMessage);
         void SetActiveEnvironment(Guid environmentId);
         void SetActiveServer(IServer server);
