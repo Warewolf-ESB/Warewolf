@@ -215,10 +215,10 @@ namespace Warewolf.Studio.ViewModels
 
         private IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
         {
-            var itemViewModels = itemViewModelsModel.AsList().Flatten(model => model.Children?? new ObservableCollection<IExplorerItemViewModel>());
-            var explorerItemViewModels = itemViewModelsModel.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
-            var viewModels = explorerItemViewModels?.Union(itemViewModels);
-            return viewModels?? new List<IExplorerItemViewModel>();
+            var itemViewModels = itemViewModelsModel?.AsList()?.Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>());
+            var explorerItemViewModels = itemViewModelsModel?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
+            var viewModels = explorerItemViewModels?.Union(itemViewModels ?? new List<IExplorerItemViewModel>());
+            return viewModels ?? new List<IExplorerItemViewModel>();
         }
 
         public ICollection<IExplorerTreeItem> SourceLoadedItems
