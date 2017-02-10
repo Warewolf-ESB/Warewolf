@@ -52,6 +52,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private IAsyncWorker _asyncWorker;
         private string _emailAddress;
         private string _stepsToFollow;
+        private string _serverLogFile;
+        private string _studioLogFile;
 
         #endregion private fields
 
@@ -133,6 +135,36 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
                 _stackTrace = value;
                 NotifyOfPropertyChange(() => StackTrace);
+            }
+        }
+
+        public string ServerLogFile
+        {
+            get
+            {
+                return _serverLogFile;
+            }
+            set
+            {
+                if (_serverLogFile == value) return;
+
+                _serverLogFile = value;
+                NotifyOfPropertyChange(() => ServerLogFile);
+            }
+        }
+
+        public string StudioLogFile
+        {
+            get
+            {
+                return _studioLogFile;
+            }
+            set
+            {
+                if (_studioLogFile == value) return;
+
+                _studioLogFile = value;
+                NotifyOfPropertyChange(() => StudioLogFile);
             }
         }
 
@@ -227,7 +259,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             });
         }
 
-        private async void SetupProgressSpinner(List<string> messageList, string url)
+        private void SetupProgressSpinner(List<string> messageList, string url)
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
@@ -245,22 +277,20 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 steps = StepsToFollow;
             }
 
-            var serverLogFile = await GetServerLogFile();
-            var studioLogFile = GetStudioLogFile();
             string description = "Server Version : " + ServerVersion + Environment.NewLine + " " + Environment.NewLine +
                                  "Studio Version : " + StudioVersion + Environment.NewLine + " " + Environment.NewLine +
                                  "Email Address : " + email + Environment.NewLine + " " + Environment.NewLine +                                 
                                  "Steps to follow : " + steps + Environment.NewLine + " " + Environment.NewLine +
                                  StackTrace + Environment.NewLine + " " + Environment.NewLine +
-                                 "Warewolf Studio log file : " + Environment.NewLine + " " + Environment.NewLine + 
-                                 studioLogFile + Environment.NewLine + " " + Environment.NewLine +
-                                 "Warewolf Server log file : " + Environment.NewLine + " " + Environment.NewLine + 
-                                 serverLogFile;
+                                 "Warewolf Studio log file : " + Environment.NewLine + " " + Environment.NewLine +
+                                 StudioLogFile + Environment.NewLine + " " + Environment.NewLine +
+                                 "Warewolf Server log file : " + Environment.NewLine + " " + Environment.NewLine +
+                                 ServerLogFile;
 
             WebServer.SendErrorOpenInBrowser(messageList, description, url);
         }
 
-        private static async Task<string> GetServerLogFile()
+        public static async Task<string> GetServerLogFile()
         {
             var activeEnvironment = CustomContainer.Get<IMainViewModel>().ActiveEnvironment;
             WebClient client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
@@ -269,15 +299,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             return serverLogFile;
         }
 
-        private string GetStudioLogFile()
+        public void GetStudioLogFile()
         {
-            string studioLogFile;
             var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var logFile = Path.Combine(localAppDataFolder, "Warewolf", "Studio Logs", "Warewolf Studio.log");
             if (File.Exists(logFile))
             {
                 var numberOfLines = GlobalConstants.LogFileNumberOfLines;
-                var buffor = new Queue<string>(numberOfLines);
+                var buffor = new List<string>();
                 using (Stream stream = File.Open(logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     var realEnd = stream.Length - StackTrace.Length;
@@ -285,21 +314,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     while (stream.Position<realEnd)
                     {
                         string line = file.ReadLine();
-                        if (buffor.Count >= numberOfLines)
-                        {
-                            buffor.Dequeue();
-                        }
-                        buffor.Enqueue(line);
+                        buffor.Add(line);
                     }
-                    string[] lastLines = buffor.ToArray();
-                    studioLogFile = string.Join(Environment.NewLine, lastLines);
+                    string[] lastLines = buffor.Skip(Math.Max(0,  buffor.Count - numberOfLines)).Take(numberOfLines).ToArray();
+                    StudioLogFile = string.Join(Environment.NewLine, lastLines);
                 }
             }
             else
             {
-                studioLogFile = "Could not locate Warewolf Studio log file.";
+                StudioLogFile = "Could not locate Warewolf Studio log file.";
             }
-            return studioLogFile;
         }
 
         /// <summary>

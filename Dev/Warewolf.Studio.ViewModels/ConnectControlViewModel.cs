@@ -419,7 +419,9 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => connection.IsConnected);
                     if (ServerConnected != null && connected)
                     {
-                       ServerConnected(this, connection);
+                        ServerConnected(this, connection);
+                        var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                        mainViewModel?.OnActiveEnvironmentChanged();
                     }
                 }
                 catch (Exception)
