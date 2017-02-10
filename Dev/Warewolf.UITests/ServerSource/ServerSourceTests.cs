@@ -6,6 +6,8 @@ namespace Warewolf.UITests.ServerSource
     [CodedUITest]
     public class ServerSourceTests
     {
+        private const string editSourceName = "ServerSourceToEdit";
+
         [TestMethod]
         [TestCategory("Server Source")]
         // ReSharper disable once InconsistentNaming
@@ -20,10 +22,29 @@ namespace Warewolf.UITests.ServerSource
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows Radio button not enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button is enabled");
             UIMap.Click_UserButton_On_ServerSourceTab();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Enabled, "Username Textbox not enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
             UIMap.Enter_TextIntoAddress_On_ServerSourceTab();
             UIMap.Enter_RunAsUser_On_ServerSourceTab();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
             UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Server Source")]
+        // ReSharper disable once InconsistentNaming
+        public void Edit_ServerSource_From_ExplorerContextMenu_UITests()
+        {
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist");
+            UIMap.Click_UserButton_On_ServerSourceTab();
+            UIMap.Enter_RunAsUser_On_ServerSourceTab();
+            UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            Assert.AreEqual("IntegrationTester", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text);
         }
 
         #region Additional test attributes
