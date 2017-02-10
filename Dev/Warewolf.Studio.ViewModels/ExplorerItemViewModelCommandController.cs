@@ -165,9 +165,9 @@ namespace Warewolf.Studio.ViewModels
             shellViewModel.SetActiveServer(server);
         }
 
-        public void ShowDependenciesCommand(Guid resourceId, IServer server)
+        public void ShowDependenciesCommand(Guid resourceId, IServer server,bool isSource)
         {
-            _shellViewModel.ShowDependencies(resourceId, server);
+            _shellViewModel.ShowDependencies(resourceId, server, isSource);
         }
 
         public void DeleteVersionCommand(IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem parent, string resourceName)
