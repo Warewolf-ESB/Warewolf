@@ -601,7 +601,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Dependencies = new List<IResourceForTree>();
             }
             var dependenciesFromXml = from desc in elementToUse.Descendants()
-                where (desc.Name.LocalName.Contains("DsfEnhancedDotNetDllActivity") || desc.Name.LocalName.Contains("DsfDotNetDllActivity")) && desc.HasAttributes
+                where (desc.Name.LocalName.Contains("DsfEnhancedDotNetDllActivity")) && desc.HasAttributes
                 select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
             var count = xElements.Count;
