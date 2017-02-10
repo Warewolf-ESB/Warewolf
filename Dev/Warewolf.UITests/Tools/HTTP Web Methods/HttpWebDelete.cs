@@ -45,6 +45,22 @@ namespace Warewolf.UITests.Tools
             UIMap.Click_DELETEWebTool_Outputs_DoneButton();
         }
 
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void HTTPWebDeleteTool_EditSource_UITest()
+        {
+            UIMap.Select_Source_From_DELETEWebTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_DELETEWebTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
+            UIMap.Click_AnonymousButton_On_WebServiceSourceTab();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
+            UIMap.WebDeleteTool_ChangeView_With_DoubleClick();
+            UIMap.Click_EditSourceButton_On_DELETEWebTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Selected);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

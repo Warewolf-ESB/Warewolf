@@ -70,6 +70,21 @@ namespace Warewolf.UITests
             UIMap.ClickDeploySuccessfulMessageBoxOK();
         }
 
+        [TestMethod]
+        [TestCategory("Deploy")]
+        public void Deploy_DotnetWorkFlowForTesttingSelectAllDependencies_HasSourceSelected()
+        {
+            const string Source = "DotnetWorkflowForTesting";
+            UIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter(Source);
+            UIMap.Select_Deploy_First_Source_Item();
+            var displayText = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText;
+            Assert.AreEqual("1", displayText);
+            UIMap.Click_SelectAllDependencies_Button();
+            Playback.Wait(10);
+            displayText = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText;
+            Assert.AreEqual("2", displayText);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
