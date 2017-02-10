@@ -588,7 +588,9 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
         }
 
+        [Given(@"I Wait For Explorer First Remote Server Spinner")]
         [When(@"I Wait For Explorer First Remote Server Spinner")]
+        [Then(@"I Wait For Explorer First Remote Server Spinner")]
         public void WaitForExplorerFirstRemoteServerSpinner()
         {
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
