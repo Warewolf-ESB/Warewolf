@@ -8245,6 +8245,11 @@ namespace Warewolf.UITests
             Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.ShowDependenciesButton.Enabled);
         }
 
+        public void Click_SelectAllDependencies_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.ShowDependenciesButton);
+        }
+
         [Given(@"Filter Textbox is cleared")]
         [When(@"Filter Textbox is cleared")]
         [Then(@"Filter Textbox is cleared")]
