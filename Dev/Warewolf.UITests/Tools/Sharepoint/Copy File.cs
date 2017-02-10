@@ -36,6 +36,24 @@ namespace Warewolf.UITests.Tools.Sharepoint
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.CancelTestButton.Enabled, "Cancel Test button is  enabled.");
         }
 
+        [TestMethod]
+        [TestCategory("Sharepoint Tools")]
+        public void SharepointTool_EditSource_UITest()
+        {
+            UIMap.Open_SharepointCopyTool_LargeView();
+            UIMap.Select_Source_From_SharepointCopyFileTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_SharepointCopyFileTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists, "Sharepoint Source Tab does not exist.");
+            UIMap.Click_WindowsButton_On_SharepointSource();
+            UIMap.Click_Sharepoint_Server_Source_TestConnection();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_SharepointSource_Tab_Button();
+            UIMap.Open_SharepointCopyTool_LargeView();
+            UIMap.Click_EditSourceButton_On_SharepointCopyFileTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Selected);
+            }
+
         #region Additional test attributes
 
         [TestInitialize()]

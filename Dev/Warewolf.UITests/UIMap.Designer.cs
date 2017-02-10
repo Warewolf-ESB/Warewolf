@@ -1146,6 +1146,23 @@ namespace Warewolf.UITests
                 return this.mEmailSourceToEditListItem;
             }
         }
+        
+        public WpfListItem WebServiceSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mWebServiceSourceToEditListItem == null))
+                {
+                    this.mWebServiceSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServiceSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.WebServiceSourceDefinition";
+                    this.mWebServiceSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
+                    this.mWebServiceSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mWebServiceSourceToEditListItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1268,6 +1285,8 @@ namespace Warewolf.UITests
         private WpfListItem mMySQLDatabaseSourceToEditListItem;
         
         private WpfListItem mEmailSourceToEditListItem;
+        
+        private WpfListItem mWebServiceSourceToEditListItem;
         #endregion
     }
     
@@ -37246,10 +37265,28 @@ namespace Warewolf.UITests
                 return this.mNewSharePointSource;
             }
         }
+        
+        public WpfListItem SharepointSourceToEditListItem
+        {
+            get
+            {
+                if ((this.mSharepointSourceToEditListItem == null))
+                {
+                    this.mSharepointSourceToEditListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mSharepointSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrsharep"",""AuthenticationType"":""User"",""UserName"":""IntegrationTester"",""Password"":""I73573r0"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""64e707b4-6186-4961-8514-4ca202543e15"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePointServiceSourceToEdit"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2017-02-10T09:57:00.0478157+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""64e707b4-6186-4961-8514-4ca202543e15"",""VersionId"":""e7c5cc7c-f5f0-45fb-921a-f657c8a6eb8e""}}";
+                    this.mSharepointSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mSharepointSourceToEditListItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfListItem mNewSharePointSource;
+        
+        private WpfListItem mSharepointSourceToEditListItem;
         #endregion
     }
     
