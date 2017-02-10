@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
 
         public Action<System.Action> DispatcherAction { get; set; }
 
-        void PerformLoadAll(System.Action actionToPerform = null)
+        void PerformLoadAll(Action actionToPerform = null)
         {
             AsyncWorker.Start(() =>
             {
@@ -194,15 +194,18 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("compluginSource", pluginSource);
-            AsyncWorker.Start(() => updateManager.FetchSource(pluginSource.Id), source =>
+            PerformLoadAll(()=>
             {
-                _pluginSource = source;
-                _pluginSource.ResourcePath = pluginSource.ResourcePath;
-                SetupHeaderTextFromExisting();
-                PerformLoadAll(() => FromModel(_pluginSource));
-
-                ToItem();
+                AsyncWorker.Start(() => updateManager.FetchSource(pluginSource.Id), source =>
+                {
+                    _pluginSource = source;
+                    _pluginSource.ResourcePath = pluginSource.ResourcePath;
+                    SetupHeaderTextFromExisting();
+                    FromModel(_pluginSource);
+                    ToItem();
+                });
             });
+            
         }
 
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IComPluginSource pluginSource, IAsyncWorker asyncWorker, Action<System.Action> dispatcherAction)
@@ -234,6 +237,7 @@ namespace Warewolf.Studio.ViewModels
                     dllListingModel.IsExpanded = true;
                     SelectedDll = dllListingModel;
                     dllListingModel.IsSelected = true;
+                    AssemblyName = dllListingModel.Name;
                 }
             }
 
@@ -241,6 +245,7 @@ namespace Warewolf.Studio.ViewModels
             Path = pluginSource.ResourcePath;
             Is32Bit = pluginSource.Is32Bit;
             ClsId = pluginSource.ClsId;
+            
         }
 
         public override string Name
@@ -411,9 +416,9 @@ namespace Warewolf.Studio.ViewModels
                 Is32Bit = _pluginSource.Is32Bit,
                 ClsId = _pluginSource.ClsId,
                 ResourcePath = _pluginSource.ResourcePath,
-                SelectedDll = SelectedDll
+                SelectedDll = SelectedDll                
             };
-            AssemblyName = _pluginSource.SelectedDll.Name;
+            AssemblyName = _pluginSource?.SelectedDll?.Name;
         }
 
         void Save(IComPluginSource source)
