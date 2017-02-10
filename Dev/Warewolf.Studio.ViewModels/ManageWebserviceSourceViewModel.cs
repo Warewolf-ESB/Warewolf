@@ -117,6 +117,7 @@ namespace Warewolf.Studio.ViewModels
                 _webServiceSource.Path = webServiceSource.Path;
                 // ReSharper disable once VirtualMemberCallInContructor
                 FromModel(_webServiceSource);
+                Item = ToSource();
                 SetupHeaderTextFromExisting();
             });
 
@@ -199,6 +200,7 @@ namespace Warewolf.Studio.ViewModels
             DefaultQuery = webServiceSource.DefaultQuery;
             HostName = webServiceSource.HostName;
             Password = webServiceSource.Password;
+            SelectedGuid = webServiceSource.Id;            
         }
 
         public override string Name
