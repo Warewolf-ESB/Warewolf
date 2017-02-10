@@ -977,6 +977,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverSource.SetupGet(source => source.AuthenticationType).Returns(AuthenticationType.Public);
             serverSourceModel.Setup(model => model.FetchSource(It.IsAny<Guid>()))
                 .Returns(serverSource.Object);
+            serverSourceModel.Setup(it => it.GetComputerNames())
+                .Returns(new List<string> { "computerName1", "computerName2" });
             var asyncWorker = new Mock<IAsyncWorker>();
             asyncWorker.Setup(worker => worker.Start(It.IsAny<Func<IServerSource>>(), It.IsAny<Action<IServerSource>>()))
              .Callback<Func<IServerSource>, Action<IServerSource>>((func, action) =>
@@ -984,6 +986,21 @@ namespace Warewolf.Studio.ViewModels.Tests
                  var dbSource = func.Invoke();
                  action(dbSource);
              });
+            asyncWorker.Setup(it =>it.Start(It.IsAny<Func<List<ComputerName>>>(),
+                                            It.IsAny<Action<List<ComputerName>>>(),
+                                            It.IsAny<Action<Exception>>()))
+                                    .Callback<Func<List<ComputerName>>, Action<List<ComputerName>>, Action<Exception>>(
+                                        (progress, success, errorAction) =>
+                                        {
+                                            try
+                                            {
+                                                success(progress());
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                errorAction(ex);
+                                            }
+                                        });
             var executor = new Mock<IExternalProcessExecutor>();
             var vm = new ManageNewServerViewModel(serverSourceModel.Object, evtAggregator.Object, serverSource.Object, asyncWorker.Object, executor.Object);
             //---------------Assert Precondition----------------

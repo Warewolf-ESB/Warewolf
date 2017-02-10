@@ -983,18 +983,26 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            IExplorerItemViewModel explorerItem = null;
-                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
-                            foreach (var environmentViewModel in environmentViewModels)
-                            {
-                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
-                            }
+                            var explorerItem = GetSelected(mvm);
                             if (explorerItem != null)
                                 mvm.AddDeploySurface(explorerItem.AsList().Union(new[] { explorerItem }));
                         }
                     }
                 }));
             }
+        }
+
+        private static IExplorerItemViewModel GetSelected(MainViewModel mvm)
+        {
+            IExplorerItemViewModel explorerItem = null;
+            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
+            foreach (var environmentViewModel in environmentViewModels)
+            {
+                explorerItem =
+                    environmentViewModel.Children.Flatten(model => model.Children)
+                        .FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+            }
+            return explorerItem;
         }
 
         public ICommand ShowDependenciesCommand
@@ -1008,7 +1016,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
+                            var explorerItem = GetSelected(mvm);
+                            mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer, explorerItem.IsSource);
                         }
                     }
                 }));

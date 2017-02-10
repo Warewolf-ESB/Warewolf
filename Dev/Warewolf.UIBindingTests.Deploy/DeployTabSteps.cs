@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Explorer;
@@ -304,6 +305,7 @@ namespace Warewolf.UIBindingTests.Deploy
                 var envMock = new Mock<IEnvironmentViewModel>();
                 envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
                 envMock.Setup(model => model.AsList()).Returns(new List<IExplorerItemViewModel>());
+                envMock.Setup(model => model.UnfilteredChildren).Returns(new ObservableCollection<IExplorerItemViewModel>());
                 envMock.SetupGet(model => model.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
                 var deployDestinationExplorerViewModel = GetViewModel().Destination;
                 deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
@@ -336,6 +338,7 @@ namespace Warewolf.UIBindingTests.Deploy
                 envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
                 envMock.SetupGet(model => model.IsConnected).Returns(true);
                 envMock.Setup(model => model.AsList()).Returns(deployDestinationExplorerViewModel.Environments[0].AsList());
+                envMock.Setup(model => model.UnfilteredChildren).Returns(deployDestinationExplorerViewModel.Environments[0].AsList().ToObservableCollection());
                 envMock.SetupGet(model => model.Children).Returns(deployDestinationExplorerViewModel.Environments[0].Children);
                 deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
                 deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection.EnvironmentID = Guid.NewGuid();
@@ -365,6 +368,7 @@ namespace Warewolf.UIBindingTests.Deploy
             };
             envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
             envMock.Setup(model => model.AsList()).Returns(observableCollection);
+            envMock.Setup(model => model.UnfilteredChildren).Returns(observableCollection);
             envMock.SetupGet(model => model.Children).Returns(observableCollection);
             var deployDestinationExplorerViewModel = GetViewModel().Destination;
             deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
@@ -392,6 +396,7 @@ namespace Warewolf.UIBindingTests.Deploy
             };
             envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
             envMock.Setup(model => model.AsList()).Returns(observableCollection);
+            envMock.Setup(model => model.UnfilteredChildren).Returns(observableCollection);
             envMock.SetupGet(model => model.Children).Returns(observableCollection);
             var deployDestinationExplorerViewModel = GetViewModel().Destination;
             deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
