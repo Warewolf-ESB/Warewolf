@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Dev2.Common.Interfaces
 {
@@ -25,7 +26,7 @@ namespace Dev2.Common.Interfaces
         StringBuilder FetchResourceXaml(Guid resourceId);
         Task<IExplorerItem> Load(bool reloadCatalogue = false);
         IList<IToolDescriptor> FetchTools();
-        IList<IExchange> FetchExchangeSources();
+        IList<IExchangeSource> FetchExchangeSources();
         IList<string> GetComputerNames();
         IList<IDbSource> FetchDbSources();
         IList<IDbAction> FetchDbActions(IDbSource source);
