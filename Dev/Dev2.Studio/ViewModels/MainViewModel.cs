@@ -763,7 +763,7 @@ namespace Dev2.Studio.ViewModels
             };
 
             var pluginSourceViewModel = new ManagePluginSourceViewModel(
-                new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""),
+                new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 def,
                 AsyncWorker);
