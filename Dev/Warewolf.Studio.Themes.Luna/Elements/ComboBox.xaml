@@ -973,7 +973,7 @@
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="focused"
                                    Grid.ColumnSpan="2"
-                                   Stroke="{StaticResource ComboBoxFocusedBorderBrush}"
+                                   Stroke="Transparent"
                                    StrokeThickness="1"
                                    Visibility="Collapsed" />
                         <Rectangle x:Name="disabled"
