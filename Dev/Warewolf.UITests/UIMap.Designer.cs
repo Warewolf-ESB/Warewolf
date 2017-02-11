@@ -43,6 +43,19 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfListItem dev2CommonInterfacesListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.SourcesComboBox.Dev2CommonInterfacesListItem;
+            #endregion
+
+            // Verify that the 'Exists' property of 'Dev2.Common.Interfaces.Core.ExchangeSourceDefiniti...' list item equals 'True'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.Dev2CommonInterfacesListItemExists, dev2CommonInterfacesListItem.Exists);
+        }
+        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -53,6 +66,18 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
+            }
+        }
+        
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -211,10 +236,24 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
+        
+        public UIWarewolfDEV2DYLANDELWindow UIWarewolfDEV2DYLANDELWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2DYLANDELWindow == null))
+                {
+                    this.mUIWarewolfDEV2DYLANDELWindow = new UIWarewolfDEV2DYLANDELWindow();
+                }
+                return this.mUIWarewolfDEV2DYLANDELWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
+        
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -241,6 +280,8 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
+        
+        private UIWarewolfDEV2DYLANDELWindow mUIWarewolfDEV2DYLANDELWindow;
         #endregion
     }
     
@@ -256,6 +297,21 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'Exists' property of 'Dev2.Common.Interfaces.Core.ExchangeSourceDefiniti...' list item equals 'True'
+        /// </summary>
+        public bool Dev2CommonInterfacesListItemExists = true;
         #endregion
     }
     
@@ -48951,17 +49007,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfComboBox SourcesComboBox
+        public SourcesComboBox8 SourcesComboBox
         {
             get
             {
                 if ((this.mSourcesComboBox == null))
                 {
-                    this.mSourcesComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mSourcesComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mSourcesComboBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
+                    this.mSourcesComboBox = new SourcesComboBox8(this);
                 }
                 return this.mSourcesComboBox;
             }
@@ -49039,7 +49091,7 @@ namespace Warewolf.UITests
         
         private WpfButton mSelectFilesButton;
         
-        private WpfComboBox mSourcesComboBox;
+        private SourcesComboBox8 mSourcesComboBox;
         
         private SubjectComboBox2 mSubjectComboBox;
         
@@ -49228,6 +49280,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SourcesComboBox8 : WpfComboBox
+    {
+        
+        public SourcesComboBox8(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem Dev2CommonInterfacesListItem
+        {
+            get
+            {
+                if ((this.mDev2CommonInterfacesListItem == null))
+                {
+                    this.mDev2CommonInterfacesListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mDev2CommonInterfacesListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.ExchangeSourceDefinition";
+                    this.mDev2CommonInterfacesListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mDev2CommonInterfacesListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mDev2CommonInterfacesListItem;
         #endregion
     }
     
@@ -68967,13 +69055,13 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public SourcesCombobox8 SourcesCombobox
+        public SourcesCombobox9 SourcesCombobox
         {
             get
             {
                 if ((this.mSourcesCombobox == null))
                 {
-                    this.mSourcesCombobox = new SourcesCombobox8(this);
+                    this.mSourcesCombobox = new SourcesCombobox9(this);
                 }
                 return this.mSourcesCombobox;
             }
@@ -69169,7 +69257,7 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
-        private SourcesCombobox8 mSourcesCombobox;
+        private SourcesCombobox9 mSourcesCombobox;
         
         private WpfButton mEditSourceButton;
         
@@ -69198,10 +69286,10 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SourcesCombobox8 : WpfComboBox
+    public class SourcesCombobox9 : WpfComboBox
     {
         
-        public SourcesCombobox8(UITestControl searchLimitContainer) : 
+        public SourcesCombobox9(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -91605,6 +91693,22 @@ namespace Warewolf.UITests
         }
         
         #region Properties
+        public WpfEdit SearchText
+        {
+            get
+            {
+                if ((this.mSearchText == null))
+                {
+                    this.mSearchText = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mSearchText.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "SearchTextBox";
+                    this.mSearchText.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mSearchText;
+            }
+        }
+        
         public WpfText FilterText
         {
             get
@@ -91623,6 +91727,8 @@ namespace Warewolf.UITests
         #endregion
         
         #region Fields
+        private WpfEdit mSearchText;
+        
         private WpfText mFilterText;
         #endregion
     }
@@ -114025,6 +114131,75 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2DYLANDELWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2DYLANDELWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\DYLAN.DELPORT)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public UILargeViewContentCustom UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UILargeViewContentCustom mUILargeViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UILargeViewContentCustom : WpfCustom
+    {
+        
+        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox UISourcesComboBoxComboBox
+        {
+            get
+            {
+                if ((this.mUISourcesComboBoxComboBox == null))
+                {
+                    this.mUISourcesComboBoxComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mUISourcesComboBoxComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+                    this.mUISourcesComboBoxComboBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUISourcesComboBoxComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mUISourcesComboBoxComboBox;
         #endregion
     }
 }
