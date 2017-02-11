@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Warewolf.UITests.Tools
+namespace Warewolf.UITests.Tools.Database
 {
+    [Ignore]
     [CodedUITest]
     public class PostgreSqlTests
     {

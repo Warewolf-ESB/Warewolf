@@ -4,9 +4,9 @@ namespace Dev2.Common.Interfaces.ToolBase.ExchangeEmail
 {
     public interface IExchangeServiceModel
     {
-        ObservableCollection<IExchange> RetrieveSources();
+        ObservableCollection<IExchangeSource> RetrieveSources();
         void CreateNewSource();
-        void EditSource(IExchange selectedSource);
+        void EditSource(IExchangeSource selectedSource);
         IStudioUpdateManager UpdateRepository { get; }
     }
 }
