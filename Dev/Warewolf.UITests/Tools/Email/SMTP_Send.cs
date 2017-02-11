@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools.Email
 {
+    [Ignore]
     [CodedUITest]
     public class SMTP_Send
     {

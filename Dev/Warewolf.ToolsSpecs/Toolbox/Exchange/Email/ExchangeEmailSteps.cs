@@ -8,6 +8,7 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
@@ -57,15 +58,27 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             var server = SimpleSmtpServer.Start(25);
             scenarioContext.Add("server", server);
 
-            var selectedEmailSource = new ExchangeSource()
+            var resourceName = Guid.NewGuid();
+            var resourceID = Guid.NewGuid();
+            var selectedEmailSource = new ExchangeSourceDefinition
             {
                 AutoDiscoverUrl = "https://outlook.office365.com/EWS/Exchange.asmx",
                 UserName = "bernartdt@dvtdev.onmicrosoft.com",
                 Password = "Kailey@40",
-                ResourceName = Guid.NewGuid().ToString(),
-                ResourceID = Guid.NewGuid()
+                ResourceName = resourceName.ToString(),
+                ResourceID = resourceID
             };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource,"");
+
+            
+            var emailSource = new ExchangeSource
+            {
+                AutoDiscoverUrl = "https://outlook.office365.com/EWS/Exchange.asmx",
+                UserName = "bernartdt@dvtdev.onmicrosoft.com",
+                Password = "Kailey@40",
+                ResourceName = resourceName.ToString(),
+                ResourceID = resourceID
+            };
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSource, "");
             var emailSender = new Mock<IDev2EmailSender>();
             // ReSharper disable once RedundantAssignment
             var eR = new ErrorResultTO();
@@ -128,15 +141,26 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             var server = SimpleSmtpServer.Start(25);
             scenarioContext.Add("server", server);
 
-            var selectedEmailSource = new ExchangeSource()
+            var resourceID = Guid.NewGuid();
+            var resourceName = Guid.NewGuid();
+            var selectedEmailSource = new ExchangeSourceDefinition
             {
                 AutoDiscoverUrl = "https://outlook.office365.com/EWS/Exchange.asmx",
                 UserName = "bernartdt@dvtdev.onmicrosoft.com",
                 Password = "Kailey@40",
-                ResourceName = Guid.NewGuid().ToString(),
-                ResourceID = Guid.NewGuid()
+                ResourceName = resourceName.ToString(),
+                ResourceID = resourceID
             };
-            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource,"");
+
+            var emailSource = new ExchangeSource
+            {
+                AutoDiscoverUrl = "https://outlook.office365.com/EWS/Exchange.asmx",
+                UserName = "bernartdt@dvtdev.onmicrosoft.com",
+                Password = "Kailey@40",
+                ResourceName = resourceName.ToString(),
+                ResourceID = resourceID
+            };
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSource, "");
             var emailSender = new Mock<IDev2EmailSender>();
             // ReSharper disable once RedundantAssignment
             var eR = new ErrorResultTO();

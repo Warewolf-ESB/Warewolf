@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Explorer;
@@ -204,7 +205,7 @@ namespace Warewolf.Studio.ServerProxyLayer
             return serializer.Deserialize<List<IFileResource>>(result.Message.ToString());
         }
 
-        public IList<IExchange> FetchExchangeSources()
+        public IList<IExchangeSource> FetchExchangeSources()
         {
             var comsController = CommunicationControllerFactory.CreateController("FetchExchangeSources");
 
@@ -215,7 +216,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 if (!Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();
-                    return new List<IExchange>();
+                    return new List<IExchangeSource>();
                 }
                 if (result != null)
                 {
@@ -224,7 +225,7 @@ namespace Warewolf.Studio.ServerProxyLayer
                 throw new WarewolfSupportServiceException(ErrorResource.ServiceDoesNotExist, null);
             }
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.Deserialize<IList<IExchange>>(result.Message.ToString());
+            return serializer.Deserialize<IList<IExchangeSource>>(result.Message.ToString());
         }
 
         public IList<IDbAction> FetchDbActions(IDbSource source)
