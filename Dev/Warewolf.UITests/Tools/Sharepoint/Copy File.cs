@@ -6,6 +6,7 @@ namespace Warewolf.UITests.Tools.Sharepoint
     [CodedUITest]
     public class Copy_File
     {
+        [Ignore]
         [TestMethod]
         [TestCategory("Sharepoint Tools")]
         public void SharepointCopyFileTool_Small_And_LargeView_Then_NewSource_UITest()
