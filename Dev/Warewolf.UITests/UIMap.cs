@@ -6328,6 +6328,16 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton, new Point(21, 11));
         }
 
+        [Given(@"I Enter invalid data on the DELETE Web Large View")]
+        [When(@"I Enter invalid data on the DELETE Web Large View")]
+        [Then(@"I Enter invalid data on the DELETE Web Large View")]
+        public void Enter_Invalid_Data_DELETEWebTool()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart
+                .WebDelete.LargeView.Table.ItemRow1.HeaderCell.HeaderComboBox.TextEdit.Text = "stupidData";
+        }
+
         [Given(@"I Click GET Web Tool Outputs Done Button")]
         [When(@"I Click GET Web Tool Outputs Done Button")]
         [Then(@"I Click GET Web Tool Outputs Done Button")]

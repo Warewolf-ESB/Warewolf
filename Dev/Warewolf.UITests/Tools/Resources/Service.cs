@@ -7,7 +7,6 @@ namespace Warewolf.UITests.Tools.Resources
     [CodedUITest]
     public class Service
     {
-        [Ignore]
         [TestMethod]
 		[TestCategory("Resource Tools")]
         public void ServiceTool_UIBehaviourCheck_UITest()

@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools
 {
-    [Ignore]
     [CodedUITest]
     public class HttpWebPost
     {

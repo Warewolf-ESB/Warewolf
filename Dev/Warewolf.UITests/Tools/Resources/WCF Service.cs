@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools.Resources
 {
-    [Ignore]
     [CodedUITest]
     public class WCF_Service
     {
