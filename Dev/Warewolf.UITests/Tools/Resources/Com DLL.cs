@@ -7,6 +7,7 @@ namespace Warewolf.UITests.Tools.Resources
     [CodedUITest]
     public class Com_DLL
     {
+        [Ignore]
         [TestMethod]
         [TestCategory("Resource Tools")]
         public void ComDLLTool_Small_And_LargeView_Then_NewSource_UITest()
