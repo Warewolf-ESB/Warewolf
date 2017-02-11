@@ -15860,25 +15860,24 @@ namespace Warewolf.UITests
         }
         
         #region Properties
-        public WpfListItem RabbitMQConsumeSourceToEditListItem
+        public WpfListItem RabbitMQSourceFromToolListItem
         {
             get
             {
-                if ((this.mRabbitMQConsumeSourceToEditListItem == null))
+                if ((this.mRabbitMQSourceFromToolListItem == null))
                 {
-                    this.mRabbitMQConsumeSourceToEditListItem = new WpfListItem(this);
+                    this.mRabbitMQSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mRabbitMQConsumeSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.RabbitMQServiceSourceDefinition";
-                    this.mRabbitMQConsumeSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mRabbitMQSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
-                return this.mRabbitMQConsumeSourceToEditListItem;
+                return this.mRabbitMQSourceFromToolListItem;
             }
         }
         #endregion
         
         #region Fields
-        private WpfListItem mRabbitMQConsumeSourceToEditListItem;
+        private WpfListItem mRabbitMQSourceFromToolListItem;
         #endregion
     }
     
@@ -17708,10 +17707,28 @@ namespace Warewolf.UITests
                 return this.mUITesting;
             }
         }
+        
+        public WpfListItem WebServiceSourceFromToolListItem
+        {
+            get
+            {
+                if ((this.mWebServiceSourceFromToolListItem == null))
+                {
+                    this.mWebServiceSourceFromToolListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mWebServiceSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "6";
+                    this.mWebServiceSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mWebServiceSourceFromToolListItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfListItem mUITesting;
+        
+        private WpfListItem mWebServiceSourceFromToolListItem;
         #endregion
     }
     
@@ -37298,19 +37315,19 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfListItem SharepointSourceToEditListItem
+        public WpfListItem SharepointSourceFromToolListItem
         {
             get
             {
-                if ((this.mSharepointSourceToEditListItem == null))
+                if ((this.mSharepointSourceFromToolListItem == null))
                 {
-                    this.mSharepointSourceToEditListItem = new WpfListItem(this);
+                    this.mSharepointSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mSharepointSourceToEditListItem.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrsharep"",""AuthenticationType"":""User"",""UserName"":""IntegrationTester"",""Password"":""I73573r0"",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""64e707b4-6186-4961-8514-4ca202543e15"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePointServiceSourceToEdit"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2017-02-10T09:57:00.0478157+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""64e707b4-6186-4961-8514-4ca202543e15"",""VersionId"":""e7c5cc7c-f5f0-45fb-921a-f657c8a6eb8e""}}";
-                    this.mSharepointSourceToEditListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mSharepointSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mSharepointSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
-                return this.mSharepointSourceToEditListItem;
+                return this.mSharepointSourceFromToolListItem;
             }
         }
         #endregion
@@ -37318,7 +37335,7 @@ namespace Warewolf.UITests
         #region Fields
         private WpfListItem mNewSharePointSource;
         
-        private WpfListItem mSharepointSourceToEditListItem;
+        private WpfListItem mSharepointSourceFromToolListItem;
         #endregion
     }
     
@@ -48467,10 +48484,28 @@ namespace Warewolf.UITests
                 return this.mNewEmailSource;
             }
         }
+        
+        public WpfListItem UIHostlocalhostUserNamListItem
+        {
+            get
+            {
+                if ((this.mUIHostlocalhostUserNamListItem == null))
+                {
+                    this.mUIHostlocalhostUserNamListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIHostlocalhostUserNamListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mUIHostlocalhostUserNamListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUIHostlocalhostUserNamListItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfListItem mNewEmailSource;
+        
+        private WpfListItem mUIHostlocalhostUserNamListItem;
         #endregion
     }
     

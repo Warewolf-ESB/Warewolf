@@ -6,7 +6,9 @@ namespace Warewolf.UITests.Tools.Sharepoint
     [CodedUITest]
     public class Copy_File
     {
-        [Ignore]
+
+        const string SourceName = "SharepointSourceFromTool";
+
         [TestMethod]
         [TestCategory("Sharepoint Tools")]
         public void SharepointCopyFileTool_Small_And_LargeView_Then_NewSource_UITest()
@@ -30,17 +32,22 @@ namespace Warewolf.UITests.Tools.Sharepoint
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.DoneButton.Exists, "Done Button does not exist on tool large view after openning the large view with a double click.");
             //New Source
             UIMap.Click_NewSource_From_SharepointCopyFileTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists, "Sharepoint Source Tab does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Enabled, "Server Name Textbox is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Enabled, "Windows Radio button is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Enabled, "User Radio button is not enabled.");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.Enabled, "Test Connection button is enabled.");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.CancelTestButton.Enabled, "Cancel Test button is  enabled.");
-        }
-
-        [TestMethod]
-        [TestCategory("Sharepoint Tools")]
-        public void SharepointTool_EditSource_UITest()
-        {
+            UIMap.Enter_TextIntoAddress_In_SharepointServiceSourceTab();
+            UIMap.Click_UserButton_On_SharepointSource();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
+            UIMap.Enter_Sharepoint_ServerSource_User_Credentials();
+            UIMap.Click_Sharepoint_Server_Source_TestConnection();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Click_Close_SharepointSource_Tab_Button();
+            //Edit Source
             UIMap.Open_SharepointCopyTool_LargeView();
             UIMap.Select_Source_From_SharepointCopyFileTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
@@ -53,7 +60,7 @@ namespace Warewolf.UITests.Tools.Sharepoint
             UIMap.Open_SharepointCopyTool_LargeView();
             UIMap.Click_EditSourceButton_On_SharepointCopyFileTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Selected);
-            }
+        }
 
         #region Additional test attributes
 

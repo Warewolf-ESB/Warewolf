@@ -6,7 +6,7 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class Exchange_Send
     {
-        const string SourceName = "CodedUITestExchangeSource";
+        const string SourceName = "ExchangeSourceFromTool";
 
         [TestMethod]
         [TestCategory("Tools")]
@@ -49,6 +49,7 @@ namespace Warewolf.UITests.Tools
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             UIMap.Click_ExchangeSource_CloseTabButton();
             //Edit Source
+            UIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
             UIMap.Select_Source_From_ExchangeSendTool();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.ItemButton.Enabled, "Edit Source Button is not enabled after selecting source.");
             UIMap.Click_EditSourceButton_On_ExchangeSendTool();
