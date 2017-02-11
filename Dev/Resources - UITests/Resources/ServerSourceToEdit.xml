@@ -1,9 +1,0 @@
-
-<Source ID="0418eb3e-b023-47b8-90f0-4576334dab14" Name="ServerSourceToEdit" ResourceType="Dev2Server" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAr4ygmzcjI0Cq1PQ3c45jKQQAAAACAAAAAAADZgAAwAAAABAAAACyl+nDyQy4jMHmkRnWVIcjAAAAAASAAACgAAAAEAAAAMxH5vGx80Na/TWaiHVja3QIAQAA8lI1AdGZHyn5Cd4Nf/UWZnea5BB4NJLP2bcs1wIoxR287DYAbMVZ7mQWT6MY7DGn8Jknqy6pPugVrJ3Atw2ZgmVasHrEoHVYpfVZnzhz76dkjDgWGgfrEwYVmjDsJfL5gXYO3FERROWuPa/MJiPgjZKscbDxwAhstGWNGSrTuBOhDGaptNfs+wc8nCxNseBryrN1+3rCLW1G5U7fv58Zkpbt1h5SqtgDIOacCyo4TYnAfWTyzvbEEDO8KboZ8xPLMgYwrW+wwoHzVwUrlQCvqizrEAx/fgkhE1nbnFeobM8s0pT8ylMQvCbYk6BduSyLkEsYixSZ5eKEww2xvVxUC6u5I74hq9uBFAAAAGKaOdqbhO2uccOIJmw9EksVQrYA" Type="Connection" ServerVersion="0.0.6250.14405" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
-  <DisplayName>ServerSourceToEdit</DisplayName>
-  <AuthorRoles>
-  </AuthorRoles>
-  <ErrorMessages />
-  <TypeOf>Dev2Server</TypeOf>
-  <VersionInfo DateTimeStamp="2017-02-10T09:57:57.9675099+02:00" ResourceId="0418eb3e-b023-47b8-90f0-4576334dab14" VersionId="00000000-0000-0000-0000-000000000000" />
-</Source>
