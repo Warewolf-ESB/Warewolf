@@ -6,7 +6,8 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebDelete
     {
-        [Ignore]
+        const string SourceName = "WebSourceFromTool";
+
         [TestMethod]
         [TestCategory("HTTP Tools")]
         public void HTTPWebDELETETool_Small_And_LargeView_UITest()
@@ -29,6 +30,30 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Enabled, "Anonymous Radio button is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User Radio button is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Enabled, "Default Query Textbox is not enabled");
+            UIMap.Click_UserButton_On_WebServiceSourceTab();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username Textbox not enabled");
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
+            UIMap.Enter_TextIntoAddress_On_WebServiceSourceTab();
+            UIMap.Enter_RunAsUser_On_WebServiceSourceTab();
+            UIMap.Enter_DefaultQuery_On_WebServiceSourceTab();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button not enabled");
+            UIMap.Click_NewWebSource_TestConnectionButton();
+            Playback.Wait(1000);
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save Ribbon Button is not enabled.");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
+            //Edit Source
+            UIMap.WebDeleteTool_ChangeView_With_DoubleClick();
+            UIMap.Select_Source_From_DELETEWebTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_DELETEWebTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
+            UIMap.Click_AnonymousButton_On_WebServiceSourceTab();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
+            UIMap.WebDeleteTool_ChangeView_With_DoubleClick();
+            UIMap.Click_EditSourceButton_On_DELETEWebTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Selected);
         }
 
         [TestMethod]
@@ -44,22 +69,6 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.PasteButton.Exists, "Web DELETE tool large view generate outputs paste button does not exist.");
             UIMap.Click_DELETEWebTool_TestInputsButton();
             UIMap.Click_DELETEWebTool_Outputs_DoneButton();
-        }
-
-        [TestMethod]
-        [TestCategory("HTTP Tools")]
-        public void HTTPWebDeleteTool_EditSource_UITest()
-        {
-            UIMap.Select_Source_From_DELETEWebTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
-            UIMap.Click_EditSourceButton_On_DELETEWebTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
-            UIMap.Click_AnonymousButton_On_WebServiceSourceTab();
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
-            UIMap.WebDeleteTool_ChangeView_With_DoubleClick();
-            UIMap.Click_EditSourceButton_On_DELETEWebTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Selected);
         }
 
         #region Additional test attributes
