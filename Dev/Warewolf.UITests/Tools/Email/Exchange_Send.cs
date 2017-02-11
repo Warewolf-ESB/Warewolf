@@ -51,14 +51,15 @@ namespace Warewolf.UITests.Tools
             //Edit Source
             UIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
             UIMap.Select_Source_From_ExchangeSendTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.ItemButton.Enabled, "Edit Source Button is not enabled after selecting source.");
-            UIMap.Click_EditSourceButton_On_ExchangeSendTool();
+            UIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.SmallViewContent.ItemButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_ExchangeSendToolSmallView();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.Exists, "Exchange Source Tab does not exist.");
             UIMap.Edit_Timeout_On_ExchangeSource();
             UIMap.Click_ExchangeSource_TestConnection_Button();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_ExchangeSource_CloseTabButton();
-            UIMap.Click_EditSourceButton_On_ExchangeSendTool();
+            UIMap.Click_EditSourceButton_On_ExchangeSendToolSmallView();
             Assert.AreEqual("2000", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
         }
 
