@@ -6,6 +6,7 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebDelete
     {
+        [Ignore]
         [TestMethod]
         [TestCategory("HTTP Tools")]
         public void HTTPWebDELETETool_Small_And_LargeView_UITest()

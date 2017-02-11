@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Warewolf.UITests.Tools.Sharepoint
 {
+    [Ignore]
     [CodedUITest]
     public class Move_File
     {
