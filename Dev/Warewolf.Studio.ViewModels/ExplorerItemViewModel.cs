@@ -218,6 +218,7 @@ namespace Warewolf.Studio.ViewModels
         private string _newWcfSourceTooltip;
         private bool _isNewFolder;
         private bool _isSaveDialog;
+        private bool _isServer;
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
@@ -413,7 +414,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void ShowDependencies()
         {
-            _explorerItemViewModelCommandController.ShowDependenciesCommand(ResourceId, Server, IsSource);
+            _explorerItemViewModelCommandController.ShowDependenciesCommand(ResourceId, Server, IsSource || IsServer);
         }
 
         private void OpenVersion()
@@ -529,7 +530,7 @@ namespace Warewolf.Studio.ViewModels
             IsRollbackVisible = _isService;
             IsOpenVersionVisible = _isService;
 
-            IsDependenciesVisible = _isService || _isSource;
+            IsDependenciesVisible = _isService || _isSource || _isServer;
             IsScheduleVisible = _isService;
 
             CanViewApisJson = (_isFolder || _isService) && _canView;
@@ -567,8 +568,13 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsServer
         {
-            get;
-            set;
+            get { return _isServer; }
+            set
+            {
+                _isServer = value;
+                SetContextMenuVisibility();
+                OnPropertyChanged(() => IsServer);
+            }
         }
         public bool IsResourceVersion
         {
