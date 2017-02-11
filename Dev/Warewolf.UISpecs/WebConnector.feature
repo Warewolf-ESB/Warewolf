@@ -52,6 +52,7 @@ Scenario: Right click adorner control with error
 	And I DoubleClick Explorer Localhost First Item
 	And I Open DeleteWeb Tool Large View
 	And I Select Test Source From DELETE Web Large View Source Combobox
+	And I Enter invalid data on the DELETE Web Large View
 	And I Click DELETE Web Large View Generate Outputs
 	And I Click DELETE Web Large View Test Inputs Button
 	Then There is an error
