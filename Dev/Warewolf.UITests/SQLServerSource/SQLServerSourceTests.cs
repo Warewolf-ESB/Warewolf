@@ -7,13 +7,13 @@ namespace Warewolf.UITests
     public class SQLServerSourceTests
     {
         const string SourceName = "CodedUITestSQLServerSource";
-        private const string editSourceName = "SQLServerDatabaseSourceToEdit";
 
         [TestMethod]
         [TestCategory("Database Sources")]
         // ReSharper disable once InconsistentNaming
-        public void Create_SQLServerSource_From_ExplorerContextMenu_UITests()
+        public void Create_Save_And_Edit_SQLServerSource_From_ExplorerContextMenu_UITests()
         {
+            //Create Source
             UIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "SQL Server Source does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "SQL Server Address combobox is disabled new Sql Server Source wizard tab");
@@ -28,24 +28,20 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
             UIMap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
+            //Save Source
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             UIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
-        }
-
-        [TestMethod]
-        [TestCategory("Database Sources")]
-        // ReSharper disable once InconsistentNaming
-        public void Edit_SQLServerSource_From_ExplorerContextMenu_UITests()
-        {
-            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            //Edit Source
+            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "SQL Server Source Tab does not exist");
             UIMap.Click_WindowsButton_On_DatabaseSource();
             UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
             UIMap.Select_master_From_DB_Source_Wizard_Database_Combobox();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
-            UIMap.Select_Source_From_ExplorerContextMenu(editSourceName);
+            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected);
             Assert.AreEqual("master", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
         }
