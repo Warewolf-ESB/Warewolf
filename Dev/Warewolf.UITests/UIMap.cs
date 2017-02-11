@@ -8881,6 +8881,8 @@ namespace Warewolf.UITests
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox);
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText);
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(windowsRadioButton.Selected);
             }
@@ -8891,6 +8893,8 @@ namespace Warewolf.UITests
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox);
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText);
                 Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(publicRadioButton.Selected);
             }
