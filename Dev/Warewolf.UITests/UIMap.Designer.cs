@@ -43,19 +43,6 @@ namespace Warewolf.UITests
             Assert.AreEqual(this.Open_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfListItem dev2CommonInterfacesListItem = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.SourcesComboBox.Dev2CommonInterfacesListItem;
-            #endregion
-
-            // Verify that the 'Exists' property of 'Dev2.Common.Interfaces.Core.ExchangeSourceDefiniti...' list item equals 'True'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.Dev2CommonInterfacesListItemExists, dev2CommonInterfacesListItem.Exists);
-        }
-        
         #region Properties
         public virtual Open_UI_Map_Designer_To_FlowchartParams Open_UI_Map_Designer_To_FlowchartParams
         {
@@ -66,18 +53,6 @@ namespace Warewolf.UITests
                     this.mOpen_UI_Map_Designer_To_FlowchartParams = new Open_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_UI_Map_Designer_To_FlowchartParams;
-            }
-        }
-        
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -236,24 +211,10 @@ namespace Warewolf.UITests
                 return this.mSelectFilesWindow;
             }
         }
-        
-        public UIWarewolfDEV2DYLANDELWindow UIWarewolfDEV2DYLANDELWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2DYLANDELWindow == null))
-                {
-                    this.mUIWarewolfDEV2DYLANDELWindow = new UIWarewolfDEV2DYLANDELWindow();
-                }
-                return this.mUIWarewolfDEV2DYLANDELWindow;
-            }
-        }
         #endregion
         
         #region Fields
         private Open_UI_Map_Designer_To_FlowchartParams mOpen_UI_Map_Designer_To_FlowchartParams;
-        
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
@@ -280,8 +241,6 @@ namespace Warewolf.UITests
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
-        
-        private UIWarewolfDEV2DYLANDELWindow mUIWarewolfDEV2DYLANDELWindow;
         #endregion
     }
     
@@ -297,21 +256,6 @@ namespace Warewolf.UITests
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'Exists' property of 'Dev2.Common.Interfaces.Core.ExchangeSourceDefiniti...' list item equals 'True'
-        /// </summary>
-        public bool Dev2CommonInterfacesListItemExists = true;
         #endregion
     }
     
@@ -17772,7 +17716,7 @@ namespace Warewolf.UITests
                 {
                     this.mWebServiceSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
-                    this.mWebServiceSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "6";
+                    this.mWebServiceSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "5";
                     this.mWebServiceSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
@@ -20295,6 +20239,22 @@ namespace Warewolf.UITests
             }
         }
         
+        public WpfListItem NewDotNetPluginSource
+        {
+            get
+            {
+                if ((this.mNewDotNetPluginSource == null))
+                {
+                    this.mNewDotNetPluginSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewDotNetPluginSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mNewDotNetPluginSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mNewDotNetPluginSource;
+            }
+        }
+        
         public WpfListItem DotNetPluginSourceToEditListItem
         {
             get
@@ -20318,6 +20278,8 @@ namespace Warewolf.UITests
         private WpfListItem mDotNetSource;
         
         private WpfListItem mDotNetPluginSource;
+        
+        private WpfListItem mNewDotNetPluginSource;
         
         private WpfListItem mDotNetPluginSourceToEditListItem;
         #endregion
@@ -114131,75 +114093,6 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCheckBox mCheckBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfDEV2DYLANDELWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2DYLANDELWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\DYLAN.DELPORT)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public UILargeViewContentCustom UILargeViewContentCustom
-        {
-            get
-            {
-                if ((this.mUILargeViewContentCustom == null))
-                {
-                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
-                }
-                return this.mUILargeViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UILargeViewContentCustom mUILargeViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UILargeViewContentCustom : WpfCustom
-    {
-        
-        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfComboBox UISourcesComboBoxComboBox
-        {
-            get
-            {
-                if ((this.mUISourcesComboBoxComboBox == null))
-                {
-                    this.mUISourcesComboBoxComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mUISourcesComboBoxComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
-                    this.mUISourcesComboBoxComboBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
-                }
-                return this.mUISourcesComboBoxComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfComboBox mUISourcesComboBoxComboBox;
         #endregion
     }
 }
