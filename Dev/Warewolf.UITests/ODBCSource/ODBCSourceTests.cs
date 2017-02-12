@@ -32,7 +32,7 @@ namespace Warewolf.UITests.ODBCSource
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
             UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
-            Assert.AreEqual("MS Access Database", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.MSAccessDatabaseText.DisplayText);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.Enabled);
         }
 
         #region Additional test attributes
