@@ -6,8 +6,7 @@ namespace Warewolf.UITests.Tools.Resources
 {
     [CodedUITest]
     public class Com_DLL
-    {
-        [Ignore]
+    {        
         [TestMethod]
         [TestCategory("Resource Tools")]
         public void ComDLLTool_Small_And_LargeView_Then_NewSource_UITest()
@@ -129,7 +128,7 @@ namespace Warewolf.UITests.Tools.Resources
                          .WorkSurfaceContext.AssemblyNameTextBox.Text,
                  "Assembly Name Textbox is not equal to ADODB.Connection.6.0.");            
             UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.ERROR";
+                .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.Parameter";
             Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                     .WorkSurfaceContext.DataTree, new Point(55, 27));
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
@@ -140,10 +139,10 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.WaitForControlVisible(
                UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                    .WorkSurfaceContext.DataTree);
-            Assert.AreEqual("ADODB.ErrorLookup.6.0",
+            Assert.AreEqual("ADODB.Parameter.6.0",
                     UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                         .WorkSurfaceContext.AssemblyNameTextBox.Text,
-                "Assembly Name Textbox is not equal to ADODB.ErrorLookup.6.0.");
+                "Assembly Name Textbox is not equal to ADODB.Parameter.6.0.");
         }
 
         #region Additional test attributes
