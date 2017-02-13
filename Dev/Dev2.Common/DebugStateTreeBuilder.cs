@@ -9,7 +9,7 @@ namespace Dev2.Common
     public class DebugStateTreeBuilder
     {
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public static IList<IDebugState> BuildTree(IEnumerable<IDebugState> source)
+        public static IEnumerable<IDebugState> BuildTree(IEnumerable<IDebugState> source)
         {
             var groups = source.GroupBy(i => i.ParentID);
 
@@ -21,8 +21,9 @@ namespace Dev2.Common
                 for (int i = 0; i < roots.Count(); i++)
                     AddChildren(roots[i], dict);
             }
+            var debugStates = roots.GroupBy(state => state.Children).Select(states => states.First());
 
-            return roots;
+            return debugStates;
         }
 
         private static void AddChildren(IDebugState node, IDictionary<string, List<IDebugState>> source)
