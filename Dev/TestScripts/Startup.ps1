@@ -166,37 +166,14 @@ if (!($SkipStudioStartup)) {
 		}
 	}
 
-	Remove-Item ("$PSScriptRoot\StudioStarted") -Recurse -ErrorAction SilentlyContinue
-	if (Test-Path ("$PSScriptRoot\StudioStarted")) {
-		Write-Host Cannot delete "StudioStarted" file.
-		sleep 30
-		exit 1
-	}
-
 	if ($StudioPath -ne "") {
 		if ($DotCoverPath -eq "") {
 			Start-Process "$StudioPath"
+			sleep 60
 		} else {
 			Start-Process $DotCoverPath "cover /TargetExecutable=`"$StudioPath`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`" /Output=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr`""
+			sleep 600
 		}
-		
-		$Timeout = 600
-		Write-Host Waiting for studio to start.
-		while (-not $StudioStarted -and $Timeout-- -gt 0) {
-			sleep 1
-			$StudioStarted = Test-Path ("$PSScriptRoot\StudioStarted")
-		}
-		if ($Timeout -gt 0) {
-			Write-Host Studio has started.
-		} else {
-			Write-Host Timed out waiting for the Studio to start.
-		}
-	}
-
-	Remove-Item ("$PSScriptRoot\StudioStarted") -Recurse -ErrorAction SilentlyContinue
-	if (Test-Path ("$PSScriptRoot\StudioStarted")) {
-		Write-Host Cannot delete "StudioStarted" file.
-		sleep 30
-		exit 1
+		Write-Host Studio has started.
 	}
 }
