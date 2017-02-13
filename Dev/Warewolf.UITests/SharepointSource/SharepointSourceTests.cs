@@ -27,6 +27,7 @@ namespace Warewolf.UITests.SharepointSource
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
             UIMap.Enter_Sharepoint_ServerSource_User_Credentials();
             UIMap.Click_Sharepoint_Server_Source_TestConnection();
+            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.DrawHighlight();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
             //Save Source
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
@@ -38,6 +39,7 @@ namespace Warewolf.UITests.SharepointSource
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists, "Sharepoint Source Tab does not exist.");
             UIMap.Click_WindowsButton_On_SharepointSource();
             UIMap.Click_Sharepoint_Server_Source_TestConnection();
+            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.DrawHighlight();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_SharepointSource_Tab_Button();
             UIMap.Select_Source_From_ExplorerContextMenu(SourceName);

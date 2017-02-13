@@ -33,23 +33,29 @@ namespace Warewolf.UITests.Tools.Resources
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton.Enabled, "Config File Combobox Button is enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton.Enabled, "GAC Assembly Combobox Button is not enabled");
-            
+            const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll";
+            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll;
+            UIMap.Save_With_Ribbon_Button_And_Dialog("NewDotnetPluginSource");
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
+            UIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
+            UIMap.Select_New_Source_From_DotNetDLLTool();
+            UIMap.Click_EditSourceButton_On_DotNetDLLTool();
+            Assert.AreEqual(newDll, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
         }
 
         [TestMethod]
         [TestCategory("Resource Tools")]
         public void DotNetDLLTool_EditSource_UITest()
         {
-            const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading2.dll";
-            UIMap.Select_Source_From_DotNetDLLTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
-            UIMap.Click_EditSourceButton_On_DotNetDLLTool();
-            Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox is not enabled");
-            UIMap.Change_Dll_And_Save(newDll);
-            UIMap.Click_Close_DotNetPlugin_Source_Tab();
-            UIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
-            UIMap.Click_EditSourceButton_On_DotNetDLLTool();
-            Assert.AreEqual(newDll, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
+            //UIMap.Select_Source_From_DotNetDLLTool();
+            //Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            //UIMap.Click_EditSourceButton_On_DotNetDLLTool();
+            //Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox is not enabled");
+            //UIMap.Change_Dll_And_Save(newDll);
+            //UIMap.Click_Close_DotNetPlugin_Source_Tab();
+            //UIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
+            //UIMap.Click_EditSourceButton_On_DotNetDLLTool();
+            //Assert.AreEqual(newDll, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
         }
 
 
