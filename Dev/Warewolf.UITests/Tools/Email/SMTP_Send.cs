@@ -6,6 +6,8 @@ namespace Warewolf.UITests.Tools.Email
     [CodedUITest]
     public class SMTP_Send
     {
+        const string SourceName = "EmailSourceFromTool";
+
         [TestMethod]
         [TestCategory("Tools")]
         public void SMTPSendTool_Small_And_LargeView_Then_NewSource_UITest()
@@ -37,11 +39,31 @@ namespace Warewolf.UITests.Tools.Email
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.ResultComboBox.Enabled, "Result Combobox is not enabled.");
             // New Source
             UIMap.Click_NewSource_From_SMTPSendTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.HostTextBoxEdit.Exists, "Host textbox does not exist after opening Email source tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.UserNameTextBoxEdit.Exists, "Username textbox does not exist after opening Email source tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.PasswordTextBoxEdit.Exists, "Password textbox does not exist after opening Email source tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.PortTextBoxEdit.Exists, "Port textbox does not exist after opening Email source tab");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Exists, "Timeout textbox does not exist after opening Email source tab");
+            UIMap.Enter_Text_Into_EmailSource_Tab();
+            UIMap.Click_EmailSource_TestConnection_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.ToTextBoxEdit.ItemImage.Exists, "Connection test Failed");
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Click_Close_EmailSource_Tab();
+            //Edit Source
+            UIMap.Open_SMTPSendTool_LargeView();
+            UIMap.Select_Source_From_EmailTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            UIMap.Click_EditSourceButton_On_EmailTool();
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
+            UIMap.Edit_Timeout_On_EmailSource();
+            UIMap.Click_EmailSource_TestConnection_Button();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+            UIMap.Click_Close_EmailSource_Tab();
+            UIMap.Open_SMTPSendTool_LargeView();
+            UIMap.Click_EditSourceButton_On_EmailTool();
+            Assert.AreEqual("2000", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
         }
 
         [TestMethod]
@@ -66,24 +88,6 @@ namespace Warewolf.UITests.Tools.Email
             {
                 UIMap.RemoveTestFiles(filePath1, filePath2, folderName);
             }
-        }
-
-        [TestMethod]
-        [TestCategory("Tools")]
-        public void SMTPSendTool_EditSource_UITest()
-        {
-            UIMap.Open_SMTPSendTool_LargeView();
-            UIMap.Select_Source_From_EmailTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
-            UIMap.Click_EditSourceButton_On_EmailTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
-            UIMap.Edit_Timeout_On_EmailSource();
-            UIMap.Click_EmailSource_TestConnection_Button();
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            UIMap.Click_Close_EmailSource_Tab();
-            UIMap.Open_SMTPSendTool_LargeView();
-            UIMap.Click_EditSourceButton_On_EmailTool();
-            Assert.AreEqual("2000", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
         }
 
         #region Additional test attributes

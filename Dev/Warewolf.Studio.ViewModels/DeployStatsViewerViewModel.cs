@@ -223,7 +223,7 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_destination.SelectedEnvironment != null)
                 {
-                    var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.Children?? new ObservableCollection<IExplorerItemViewModel>());
+                    var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren?? new ObservableCollection<IExplorerItemViewModel>());
                     var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
                     var idConflicts = from b in explorerTreeItems
                                join explorerTreeItem in items on b.ResourceId equals explorerTreeItem.ResourceId

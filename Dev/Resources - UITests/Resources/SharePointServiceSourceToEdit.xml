@@ -1,9 +1,0 @@
-
-<Source ID="64e707b4-6186-4961-8514-4ca202543e15" Name="SharePointServiceSourceToEdit" ResourceType="SharepointServerSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAr4ygmzcjI0Cq1PQ3c45jKQQAAAACAAAAAAADZgAAwAAAABAAAAAsa/xVbFk+jnh7SYO8R0VbAAAAAASAAACgAAAAEAAAAINykM3ma3byqVnNsHyIWorIAAAAafQmUFOrJsI1DNtMRKIo3i4n0r6d5oWkAlOnVQzAgz/Jx/0fncmN9BBd4FpYsYRfsDk3W7ENyH44tGJqxFM1ooOsypxJ7/7Jee2vD4E95dKBxH6sEqCdS0JrCx36MrPLgMcjuINJRq8GI/gztLdtpFuEH4TqJiACCdiNYssQIcLv19KcKj/gT81nw2WB7W8uoxavs1n3UJywN4J36gsAFB59CEdbuR0Wyvsl7udgaXYBaCXIMFxFppgaMKjwNGyqEVsHFe0YK9oUAAAA2iHKVlvzm6YcibAPEkMb2cvymG8=" IsSharepointOnline="false" Type="SharepointSource" ServerVersion="0.0.6250.14405" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
-  <DisplayName>SharePointServiceSourceToEdit</DisplayName>
-  <AuthorRoles>
-  </AuthorRoles>
-  <ErrorMessages />
-  <TypeOf>SharepointServerSource</TypeOf>
-  <VersionInfo DateTimeStamp="2017-02-10T09:57:00.0478157+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="64e707b4-6186-4961-8514-4ca202543e15" VersionId="e7c5cc7c-f5f0-45fb-921a-f657c8a6eb8e" />
-</Source>
