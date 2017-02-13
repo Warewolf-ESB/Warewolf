@@ -91548,17 +91548,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfTree DataTree
+        public DataTree DataTree
         {
             get
             {
                 if ((this.mDataTree == null))
                 {
-                    this.mDataTree = new WpfTree(this);
-                    #region Search Criteria
-                    this.mDataTree.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
-                    this.mDataTree.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
+                    this.mDataTree = new DataTree(this);
                 }
                 return this.mDataTree;
             }
@@ -91596,7 +91592,7 @@ namespace Warewolf.UITests
         #region Fields
         private RefreshButton mRefreshButton;
         
-        private WpfTree mDataTree;
+        private DataTree mDataTree;
         
         private SearchTextBox3 mSearchTextBox;
         
@@ -91638,6 +91634,41 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfCustom mRefreshSpinner;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DataTree : WpfTree
+    {
+        
+        public DataTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ExplorerTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem ItemTreeItem
+        {
+            get
+            {
+                if ((this.mItemTreeItem == null))
+                {
+                    this.mItemTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mItemTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mItemTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mItemTreeItem;
         #endregion
     }
     

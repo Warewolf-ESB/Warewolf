@@ -110,7 +110,7 @@ namespace Warewolf.UITests.Tools.Resources
                 .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.CONNECTION";
             Mouse.Click(
                 UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                    .WorkSurfaceContext.DataTree, new Point(55, 27));
+                    .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
             Assert.AreEqual("ADODB.Connection.6.0",
                     UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                         .WorkSurfaceContext.AssemblyNameTextBox.Text,
@@ -130,7 +130,7 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                 .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.Parameter";
             Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                    .WorkSurfaceContext.DataTree, new Point(55, 27));
+                    .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
             Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
             UIMap.ComDLLTool_ChangeView_With_DoubleClick();
