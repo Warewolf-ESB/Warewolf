@@ -157,13 +157,17 @@ if ($StudioPath -ne "") {
         Start-Process $DotCoverPath "cover /TargetExecutable=`"$StudioPath`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`" /Output=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr`""
     }
     
-	$Timeout = 60
+	$Timeout = 600
 	Write-Host Waiting for studio to start.
 	while (-not $StudioStarted -and $Timeout-- -gt 0) {
 		sleep 1
 		$StudioStarted = Test-Path ("$PSScriptRoot\StudioStarted")
 	}
-	Write-Host Studio has started.
+	if ($Timeout -gt 0) {
+		Write-Host Studio has started.
+	} else {
+		Write-Host Timed out waiting for the Studio to start.
+	}
 }
 
 Remove-Item ("$PSScriptRoot\StudioStarted") -Recurse -ErrorAction SilentlyContinue
