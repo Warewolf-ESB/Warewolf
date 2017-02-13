@@ -78,7 +78,6 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
   </ItemGroup>
@@ -97,9 +96,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DebugStates.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
