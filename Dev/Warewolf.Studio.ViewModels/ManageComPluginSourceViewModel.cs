@@ -199,12 +199,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsLoading = true;
                 var comPluginSource = updateManager.FetchSource(pluginSource.Id);
-                List<DllListingModel> names = updateManager.GetComDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
+                List<DllListingModel> names = updateManager.GetComDllListings(null)?.Select(input => new DllListingModel(updateManager, input)).ToList();
                 return new Tuple<IComPluginSource, List<DllListingModel>>(comPluginSource, names);
             }, tuple =>
             {
-                _originalDllListings = new AsyncObservableCollection<IDllListingModel>(tuple.Item2);
-                DllListings = _originalDllListings;
+                if (tuple.Item2 != null)
+                {
+                    _originalDllListings = new AsyncObservableCollection<IDllListingModel>(tuple.Item2);
+                    DllListings = _originalDllListings;
+                }
                 _pluginSource = tuple.Item1;
                 _pluginSource.ResourcePath = pluginSource.ResourcePath;
                 SetupHeaderTextFromExisting();
@@ -222,7 +225,7 @@ namespace Warewolf.Studio.ViewModels
             _pluginSource = pluginSource;
             SetupHeaderTextFromExisting();
             PerformLoadAll(() => FromModel(_pluginSource));
-            ToItem();
+            Item = ToModel();
         }
 
         public ManageComPluginSourceViewModel()
@@ -236,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
             var selectedDll = pluginSource.SelectedDll;
             if (selectedDll != null)
             {
-                var dllListingModel = DllListings.FirstOrDefault(model => model.Name == selectedDll.Name);
+                var dllListingModel = DllListings?.FirstOrDefault(model => model.Name == selectedDll.Name);
                 if(dllListingModel != null)
                 {
                     dllListingModel.IsExpanded = true;
@@ -393,7 +396,7 @@ namespace Warewolf.Studio.ViewModels
                     Path = src.ResourcePath;
                     src.Is32Bit = SelectedDll.Is32Bit;
                     _pluginSource = src;
-                    ToItem();
+                    Item= ToModel();
                     SetupHeaderTextFromExisting();
                 }
             }
@@ -404,26 +407,14 @@ namespace Warewolf.Studio.ViewModels
                 src.Is32Bit = SelectedDll.Is32Bit;
                 Save(src);
                 _pluginSource = src;
-                ToItem();
+                Item = ToModel();
             }
             OnPropertyChanged(() => Header);
         }
 
         public string Path { get; set; }
+        
 
-        void ToItem()
-        {
-            Item = new ComPluginSourceDefinition
-            {
-                Id = _pluginSource.Id,
-                ResourceName = _pluginSource.ResourceName,
-                Is32Bit = _pluginSource.Is32Bit,
-                ClsId = _pluginSource.ClsId,
-                ResourcePath = _pluginSource.ResourcePath,
-                SelectedDll = SelectedDll                
-            };
-            AssemblyName = _pluginSource?.SelectedDll?.Name;
-        }
 
         void Save(IComPluginSource source)
         {
@@ -433,7 +424,24 @@ namespace Warewolf.Studio.ViewModels
 
         public sealed override IComPluginSource ToModel()
         {
-            if (_pluginSource == null)
+            if(Item == null)
+            {
+                Item = ToSource();
+                return Item;
+            }
+            return new ComPluginSourceDefinition
+            {
+                ResourceName = ResourceName,
+                ClsId = ClsId,
+                Is32Bit = Is32Bit,
+                SelectedDll = SelectedDll,
+                ResourcePath = Path
+            };
+        }
+
+        IComPluginSource ToSource()
+        {
+            if(_pluginSource == null)
             {
                 return new ComPluginSourceDefinition
                 {
@@ -447,6 +455,8 @@ namespace Warewolf.Studio.ViewModels
             if (_selectedDll != null)
             {
                 _pluginSource.SelectedDll = _selectedDll;
+                _pluginSource.ClsId = ClsId;
+                _pluginSource.Is32Bit = Is32Bit;                
             }
             return _pluginSource;
         }
