@@ -39,6 +39,9 @@
                 <ui:IntellisenseTextBox Grid.Column="1"
                                         WrapInBrackets="False"
                                         AllowUserInsertLine="False"
+                                        x:Name="SwitchArmCaseTextbox"
+                                        Loaded="SwitchArmCaseTextbox_OnLoaded"
+                                        Focusable="True"
                                         Text="{Binding Path=SwitchExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         Style="{StaticResource ActivityIntellisenseTextBoxStyle}">
                 </ui:IntellisenseTextBox>
