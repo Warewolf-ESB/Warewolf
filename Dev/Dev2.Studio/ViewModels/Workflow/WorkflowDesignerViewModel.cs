@@ -1017,7 +1017,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (mvm?.ActiveItem != null)
                         {
                             var explorerItem = GetSelected(mvm);
-                            mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer, explorerItem.IsSource);
+                            mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer, explorerItem.IsSource || explorerItem.IsServer);
                         }
                     }
                 }));
@@ -1245,7 +1245,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var resourceID = ModelItemUtils.TryGetResourceID(modelItem);
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                shellViewModel.OpenResource(resourceID, parentEnvironmentID,shellViewModel.ActiveServer);
+                shellViewModel.OpenResource(resourceID, parentEnvironmentID, shellViewModel.ActiveServer);
             }
         }
 
@@ -1597,7 +1597,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
                 _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
                 _wd.Context.Services.Publish(DesignerManagementService);
-                
+
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
@@ -1640,7 +1640,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 UpdateErrorIconWithCorrectMessage();
             }
         }
-        
+
 
         private void SetHashTable()
         {
@@ -1659,7 +1659,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 designerConfigService.PanModeEnabled = true;
                 designerConfigService.RubberBandSelectionEnabled = true;
                 designerConfigService.BackgroundValidationEnabled = true;
-                
+
                 // prevent design-time background validation from blocking UI thread
                 // Disabled for now
                 designerConfigService.AnnotationEnabled = false;
@@ -1711,7 +1711,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void ModelServiceSubscribe(ModelService instance)
         {
             ModelService = instance;
-            ModelService.ModelChanged += ModelServiceModelChanged;            
+            ModelService.ModelChanged += ModelServiceModelChanged;
         }
 
         private void SubscribeToDebugSelectionChanged()
@@ -1853,9 +1853,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void ClearSelection()
         {
             _wd.Context.Items.SetValue(new Selection());
-            if(_selectedDebugItems != null)
+            if (_selectedDebugItems != null)
             {
-                foreach(var selectedDebugItem in _selectedDebugItems)
+                foreach (var selectedDebugItem in _selectedDebugItems)
                 {
                     selectedDebugItem.SetProperty("IsSelected", false);
                 }
@@ -1904,23 +1904,23 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
                         var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
-                        return new System.Action(()=>
+                        return new System.Action(() =>
                         {
                             _wd.Load(activityBuilder);
                             BindToModel();
                         });
-                        
+
                     }
                     throw new Exception($"Could not find resource definition for {_resourceModel.ResourceName}");
                 }
-                
+
                 return (() =>
                 {
                     SetDesignerText(xaml);
                     _wd.Load();
                 });
-            },action => action.Invoke());
-            
+            }, action => action.Invoke());
+
         }
 
         private void SetDesignerText(StringBuilder xaml)
@@ -1963,7 +1963,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
                 UpdateErrorIconWithCorrectMessage();
-                
+
                 // If we are opening from server skip this check, it cannot have "real" changes!
                 if (!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
                 {
@@ -2194,7 +2194,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 return true;
             }
-           
+
             return false;
         }
 
@@ -2569,22 +2569,22 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _wd?.View?.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-           
+
             if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
             {
 
                 var dataObject = Clipboard.GetDataObject();
-                if(dataObject != null)
+                if (dataObject != null)
                 {
                     var dataPresent = dataObject.GetDataPresent("WorkflowXamlFormat");
-                    if(dataPresent)
+                    if (dataPresent)
                     {
                         var data = dataObject.GetData("WorkflowXamlFormat") as string;
                         if (!string.IsNullOrEmpty(data))
                         {
                             var indexOf = data.IndexOf("ResourceID=", StringComparison.InvariantCultureIgnoreCase);
                             var guid = data.Substring(indexOf + 12, 36);
-                            if(guid.Equals(ResourceModel.ID.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                            if (guid.Equals(ResourceModel.ID.ToString(), StringComparison.InvariantCultureIgnoreCase))
                             {
                                 e.Handled = true;
                                 return;
