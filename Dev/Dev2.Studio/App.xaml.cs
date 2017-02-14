@@ -192,23 +192,6 @@ namespace Dev2.Studio
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
-            SetStarted();
-        }
-
-        static void SetStarted()
-        {
-            try
-            {
-                if (File.Exists(".\\StudioStarted"))
-                {
-                    File.Delete(".\\StudioStarted");
-                }
-                File.WriteAllText(".\\StudioStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
-            }
-            catch (Exception err)
-            {
-                Dev2Logger.Error(err);
-            }
         }
 
         private static void CreateDummyWorkflowDesignerForCaching()
