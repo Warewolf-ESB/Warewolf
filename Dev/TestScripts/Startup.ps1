@@ -115,7 +115,7 @@ while ($ResourcesPath -eq "" -and $NumberOfParentsSearched++ -lt 6) {
         $CurrentDirectory = (Get-Item $CurrentDirectory).Parent.FullName
     }
 }
-if ($ResourcesPath -ne "") {
+if ($ResourcesPath -ne "" -and $CurrentDirectory -ne (Get-Item $ServerPath).Directory.FullName ) {
     Copy-Item -Path "$CurrentDirectory\Resources - $ResourcesType" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
 }
 
