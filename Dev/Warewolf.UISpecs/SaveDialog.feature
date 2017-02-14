@@ -53,17 +53,6 @@ Scenario: Create New Folder In Localhost From Save Dialog Then Delete In Main Ex
 	And I Click MessageBox Yes
 	And Folder Is Removed From Explorer
 
-Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Creates The Folder
-	Given The Warewolf Studio is running
-	And I Create New Workflow using shortcut
-	And I Make Workflow Savable And Then Save
-	And I Filter Save Dialog Explorer with "New Folder"
-	And I RightClick Save Dialog Localhost
-	And I Select New Folder From SaveDialog Context Menu
-	And I Hit Escape Key On The Keyboard
-	And I Filter the Explorer with "New Folder"
-	And Explorer Contain Item "New Folder"
-
 Scenario: Create New Folder In Localhost Server From Save Dialog
 	Given The Warewolf Studio is running
 	And I Create New Workflow using shortcut
