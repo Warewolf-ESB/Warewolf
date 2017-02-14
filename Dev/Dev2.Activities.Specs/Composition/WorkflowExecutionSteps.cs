@@ -3849,12 +3849,17 @@ namespace Dev2.Activities.Specs.Composition
                 _externalProcessExecutor.WebResult.First());
         }
 
-        [Then(@"The Debug in Browser content contains has children ""(.*)""")]
-        public void TheDebugInBrowserContentHaveGivenVariable(string containedText)
+        [Then(@"The Debug in Browser content contains has children with no Inputs and Ouputs")]
+        public void TheDebugInBrowserContentHaveGivenVariable()
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var deserialize = serializer.Deserialize<IEnumerable<IDebugState>>(_externalProcessExecutor.WebResult.First());
-
+            Assert.IsNotNull(deserialize);
+            foreach(var debugState in deserialize)
+            {
+                Assert.AreEqual(0, debugState.Inputs.Count);
+                Assert.AreEqual(0, debugState.Outputs.Count);
+            }            
         }
     }
 }
