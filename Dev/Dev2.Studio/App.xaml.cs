@@ -16,7 +16,6 @@ using System.Activities.Presentation.View;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -61,11 +60,8 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
+using System.Globalization;
 // ReSharper disable RedundantAssignment
-
-
-// ReSharper restore RedundantUsingDirective
-
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio
 // ReSharper restore CheckNamespace
@@ -192,23 +188,6 @@ namespace Dev2.Studio
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
-            SetStarted();
-        }
-
-        static void SetStarted()
-        {
-            try
-            {
-                if (File.Exists(".\\StudioStarted"))
-                {
-                    File.Delete(".\\StudioStarted");
-                }
-                File.WriteAllText(".\\StudioStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
-            }
-            catch (Exception err)
-            {
-                Dev2Logger.Error(err);
-            }
         }
 
         private static void CreateDummyWorkflowDesignerForCaching()

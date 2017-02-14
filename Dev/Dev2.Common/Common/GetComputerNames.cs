@@ -14,6 +14,7 @@ using System.DirectoryServices;
 using System.Linq;
 using System.Management;
 using System.Security.Principal;
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 
 namespace Dev2.Common.Common
 {
