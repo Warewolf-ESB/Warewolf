@@ -144,7 +144,7 @@ public class COMPluginSourceSteps
     [Then(@"""(.*)"" is ""(.*)""")]
     public void GivenIs(string controlName, string enabledString)
     {
-        Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+        Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
     }
 
     [When(@"I change Assembly to ""(.*)""")]

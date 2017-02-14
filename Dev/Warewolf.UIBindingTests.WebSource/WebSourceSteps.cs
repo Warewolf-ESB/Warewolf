@@ -332,7 +332,7 @@ namespace Warewolf.UIBindingTests.WebSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Utils.CheckControlEnabled(controlName, enabledString, scenarioContext.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Then(@"Test Connecton is ""(.*)""")]

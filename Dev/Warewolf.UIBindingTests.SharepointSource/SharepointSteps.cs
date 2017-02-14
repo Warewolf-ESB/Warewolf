@@ -95,7 +95,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [Given(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Then(@"I Select Authentication Type as ""(.*)""")]
