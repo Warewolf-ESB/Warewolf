@@ -126,6 +126,12 @@ namespace Dev2.Activities.Specs.Composition
             CustomContainer.Register(mockshell.Object);
             _externalProcessExecutor = new SpecExternalProcessExecutor();
         }
+        private IEnumerable<IDebugState> GetDebugState()
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var deserialize = serializer.Deserialize<IEnumerable<IDebugState>>(_externalProcessExecutor.WebResult.First());
+            return deserialize;
+        }
 
         [Given(@"Debug states are cleared")]
         public void GivenDebugStatesAreCleared()
@@ -3852,9 +3858,21 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"The Debug in Browser content contains has children ""(.*)""")]
         public void TheDebugInBrowserContentHaveGivenVariable(string containedText)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var deserialize = serializer.Deserialize<IEnumerable<IDebugState>>(_externalProcessExecutor.WebResult.First());
-
+            var deserialize = GetDebugState();
         }
+
+        [Then(@"The Debug in Browser content contains has inputs and outputs")]
+        public void ThenTheDebugInBrowserContentContainsHasInputsAndOutputs()
+        {
+            var deserialize = GetDebugState();
+            foreach (var debugState in deserialize)
+            {
+                if (debugState.IsFirstStep())
+                    continue;
+                if (!debugState.IsFinalStep())
+                    Assert.IsTrue(debugState.Inputs.Count > 0);
+                Assert.IsTrue(debugState.Outputs.Count > 0);
+            }
+        }      
     }
 }
