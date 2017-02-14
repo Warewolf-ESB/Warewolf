@@ -507,6 +507,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                         });
                     }
                     AddEmailSources(elementToUse);
+                    AddWebSources(elementToUse);
+                    AddSharepointSources(elementToUse);
                     AddDotnetSources(elementToUse);
                     AddRabbitMqSources(elementToUse);
                     AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
@@ -635,7 +637,6 @@ namespace Dev2.Runtime.ServiceModel.Data
                                       where (desc.Name.LocalName.Contains("DsfPublishRabbitMQActivity") || desc.Name.LocalName.Contains("DsfConsumeRabbitMQActivity")) && desc.HasAttributes
                                       select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
-            var count = xElements.Count;
             foreach (var element in xElements)
             {
                 var resourceIdAsString = element.AttributeSafe("RabbitMQSourceResourceId");
@@ -647,6 +648,78 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
                     Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "RabbitMQSource"));
+            }
+        }
+
+        private void AddWebSources(XElement elementToUse)
+        {
+            if (elementToUse == null)
+            {
+                return;
+            }
+            if (Dependencies == null)
+            {
+                Dependencies = new List<IResourceForTree>();
+            }
+            var dependenciesFromXml = from desc in elementToUse.Descendants()
+                                      where (desc.Name.LocalName.Contains("DsfWebDeleteActivity") 
+                                            || desc.Name.LocalName.Contains("DsfWebGetActivity")
+                                            || desc.Name.LocalName.Contains("DsfWebPostActivity")
+                                            || desc.Name.LocalName.Contains("DsfWebPutActivity")
+                                            
+                                            ) && desc.HasAttributes
+                                      select desc;
+            var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+            foreach (var element in xElements)
+            {
+                var resourceIdAsString = element.AttributeSafe("SourceId");
+                var uniqueIdAsString = element.AttributeSafe("UniqueID");
+                Guid uniqueId;
+                Guid.TryParse(uniqueIdAsString, out uniqueId);
+                Guid resId;
+                Guid.TryParse(resourceIdAsString, out resId);
+                var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
+                if (resourceForTree == null)
+                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "WebSource"));
+            }
+        }
+
+        private void AddSharepointSources(XElement elementToUse)
+        {
+            if (elementToUse == null)
+            {
+                return;
+            }
+            if (Dependencies == null)
+            {
+                Dependencies = new List<IResourceForTree>();
+            }
+            var dependenciesFromXml = from desc in elementToUse.Descendants()
+                                      where (desc.Name.LocalName.Contains("SharepointCopyFileActivity") 
+                                            || desc.Name.LocalName.Contains("SharepointCreateListItemActivity")
+                                            || desc.Name.LocalName.Contains("SharepointDeleteFileActivity")
+                                            || desc.Name.LocalName.Contains("SharepointDeleteListItemActivity")
+                                            || desc.Name.LocalName.Contains("SharepointFileDownLoadActivity")
+                                            || desc.Name.LocalName.Contains("SharepointFileUploadActivity")
+                                            || desc.Name.LocalName.Contains("SharepointMoveFileActivity")
+                                            || desc.Name.LocalName.Contains("SharepointReadFolderItemActivity")
+                                            || desc.Name.LocalName.Contains("SharepointReadListActivity")
+                                            || desc.Name.LocalName.Contains("SharepointUpdateListItemActivity")
+                                            
+                                            ) && desc.HasAttributes
+                                      select desc;
+            var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
+            foreach (var element in xElements)
+            {
+                var resourceIdAsString = element.AttributeSafe("SharepointServerResourceId");
+                var uniqueIdAsString = element.AttributeSafe("UniqueID");
+                Guid uniqueId;
+                Guid.TryParse(uniqueIdAsString, out uniqueId);
+                Guid resId;
+                Guid.TryParse(resourceIdAsString, out resId);
+                var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
+                if (resourceForTree == null)
+                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "SharepointSource"));
             }
         }
 
