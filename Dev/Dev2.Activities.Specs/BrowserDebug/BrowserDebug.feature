@@ -11,11 +11,11 @@ Scenario: Executing an empty workflow
 		And The Debug in Browser content contains "The workflow must have at least one service or activity connected to the Start Node."
 
 Scenario: Executing a workflow with no inputs and outputs
-		Given I have a workflow "AssignedVariableWF"
-		When "AssignedVariableWF" is executed
+		Given I have a workflow "NoInputsWorkflow"
+		When "NoInputsWorkflow" is executed
 		Then the workflow execution has "NO" error
-		And I Debug "http://localhost:3142/secure/AssignedVariableWF.debug?" in Browser
-		And The Debug in Browser content contains has children "The workflow must have at least one service or activity connected to the Start Node."
+		And I Debug "http://localhost:3142/secure/NoInputsWorkflow.debug?" in Browser
+		And The Debug in Browser content contains has children with no Inputs and Ouputs
 
 Scenario: Executing Assign workflow with inputs and outputs
 		Given I have a workflow "AssignedVariableWF"
