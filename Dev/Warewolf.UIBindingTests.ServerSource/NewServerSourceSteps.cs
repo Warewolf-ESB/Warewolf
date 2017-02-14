@@ -110,7 +110,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void ThenIs(string controlName, string enabledString)
         {
-            Core.Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Core.Utils.ViewNameKey));
+            Core.Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Core.Utils.ViewNameKey), Core.Utils.ViewNameKey);
         }
 
         [Given(@"I type Server as ""(.*)""")]
