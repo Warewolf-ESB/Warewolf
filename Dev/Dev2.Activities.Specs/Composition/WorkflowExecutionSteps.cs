@@ -3848,5 +3848,13 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(_externalProcessExecutor.WebResult.First().Contains(containedText),
                 _externalProcessExecutor.WebResult.First());
         }
+
+        [Then(@"The Debug in Browser content contains has children ""(.*)""")]
+        public void TheDebugInBrowserContentHaveGivenVariable(string containedText)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var deserialize = serializer.Deserialize<IEnumerable<IDebugState>>(_externalProcessExecutor.WebResult.First());
+
+        }
     }
 }
