@@ -236,7 +236,7 @@ namespace Warewolf.UIBindingTests.OracleSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Given(@"I select ""(.*)"" as Database")]
@@ -410,7 +410,7 @@ namespace Warewolf.UIBindingTests.OracleSource
         [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
         public void ThenAuthenticationTypeIs(string p0, string p1)
         {
-            Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
 
