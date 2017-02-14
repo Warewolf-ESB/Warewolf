@@ -24,11 +24,13 @@ Scenario: Executing Assign workflow with inputs and outputs
 		And I Debug "http://localhost:3142/secure/AssignedVariableWF.debug?" in Browser
 		And The Debug in Browser content contains has inputs and outputs
 
-#Scenario: Executing Assign workflow with invalid variable
+Scenario: Executing Hello World workflow
+		Given I have a workflow "Hello World"
+		When "Hello World" is executed
+		Then the workflow execution has "NO" error
+		And I Debug "http://localhost:3142/secure/Hello World.debug?" in Browser
+		And The Debug in Browser content contains has inputs and outputs
 
-
-
-#Scenario: Executing Hello World workflow
 #Scenario: Executing a Sequence workflow
 #Scenario: Executing a Foreach workflow
 #Scenario: Executing a Dotnet plugin workflow
