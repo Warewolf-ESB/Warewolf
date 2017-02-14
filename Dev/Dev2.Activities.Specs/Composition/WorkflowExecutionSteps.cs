@@ -68,9 +68,16 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Data.TO;
+using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
+using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.Execution;
 using Dev2.Studio.Core.Factories;
+using Dev2.Workspaces;
 using Warewolf.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ServerProxyLayer;
@@ -95,8 +102,94 @@ namespace Dev2.Activities.Specs.Composition
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(_scenarioContext);
             AppSettings.LocalHost = "http://localhost:3142";
-        }
+        }        
+       
 
+       new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
+        {
+
+
+            var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
+            svc.SetActivity(FlowchartProcess);
+            Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
+
+            if (CurrentDl == null)
+            {
+                CurrentDl = TestData;
+            }
+
+            var errors = new ErrorResultTO();
+            if (ExecutionId == Guid.Empty)
+            {
+
+                if (dataObject != null)
+                {
+                    dataObject.ExecutingUser = User;
+                    dataObject.DataList = new StringBuilder(CurrentDl);
+                }
+
+            }
+
+            if (errors.HasErrors())
+            {
+                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+
+                if (throwException)
+                {
+                    throw new Exception(errorString);
+                }
+            }
+
+            if (dataObject == null)
+            {
+
+                dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+                {
+                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                    //       if this is NOT provided which will cause the tests to fail!
+                    ServerID = Guid.NewGuid(),
+                    ExecutingUser = User,
+                    IsDebug = isDebugMode,
+                    EnvironmentID = currentEnvironmentId,
+                    IsRemoteInvokeOverridden = overrideRemote,
+                    DataList = new StringBuilder(CurrentDl)
+                };
+
+            }
+            if (!string.IsNullOrEmpty(TestData))
+            {
+                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl, 0);
+            }
+            dataObject.IsDebug = isDebug;
+
+            // we now need to set a thread ID ;)
+            dataObject.ParentThreadID = 1;
+
+            if (isRemoteInvoke)
+            {
+                dataObject.RemoteInvoke = true;
+                dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
+            }
+
+            var esbChannel = mockChannel.Object;
+            if (channel != null)
+            {
+                esbChannel = channel;
+            }
+            dataObject.ExecutionToken = new ExecutionToken();
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+
+            errors.ClearErrors();
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+            if (dataObject.ResourceID == Guid.Empty)
+            {
+                dataObject.ResourceID = Guid.NewGuid();
+            }
+            dataObject.Environment = DataObject.Environment;
+            wfec.Eval(FlowchartProcess, dataObject, 0);
+            DataObject = dataObject;
+            return dataObject;
+        }
         const int EnvironmentConnectionTimeout = 3000;
 
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
@@ -1049,6 +1142,7 @@ namespace Dev2.Activities.Specs.Composition
             repository.SaveToServer(resourceModel);
 
             ExecuteWorkflow(resourceModel);
+            ExecuteProcess(isDebug: true, throwException: false);
         }
 
 
@@ -3873,6 +3967,42 @@ namespace Dev2.Activities.Specs.Composition
                     Assert.IsTrue(debugState.Inputs.Count > 0);
                 Assert.IsTrue(debugState.Outputs.Count > 0);
             }
-        }      
+        }
+
+        [Then(@"The Debug in Browser content contains has invalid variables ""(.*)""")]
+        public void ThenTheDebugInBrowserContentContainsHasInvalidVariables(string p0)
+        {
+            var deserialize = GetDebugState();
+            Assert.IsTrue(deserialize.Last().HasError);
+        }
+
+        [Given(@"I assign the value (.*) to a variable ""(.*)""")]
+        [Given(@"I assign the value (.*) to a variable ""(.*)""")]
+        public void GivenIAssignTheValueToAVariable(string value, string variable)
+        {
+            List<Tuple<string, string>> variableList;
+            _scenarioContext.TryGetValue("variableList", out variableList);
+
+            List<ActivityDTO> fieldCollection;
+            _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                _scenarioContext.Add("variableList", variableList);
+            }
+
+            if (fieldCollection == null)
+            {
+                fieldCollection = new List<ActivityDTO>();
+                _scenarioContext.Add("fieldCollection", fieldCollection);
+            }
+
+            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+        }
+
+
+
+
     }
 }
