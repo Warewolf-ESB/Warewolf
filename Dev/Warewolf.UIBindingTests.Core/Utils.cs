@@ -103,11 +103,11 @@ namespace Warewolf.UIBindingTests.Core
             return view;
         }
 
-        public static void CheckControlEnabled(string controlName, string enabledString, ICheckControlEnabledView view)
+        public static void CheckControlEnabled(string controlName, string enabledString, ICheckControlEnabledView view, string viewName)
         {
             var isEnabled = String.Equals(enabledString, "Enabled", StringComparison.InvariantCultureIgnoreCase);
             var controlEnabled = view.GetControlEnabled(controlName);
-            Assert.AreEqual(isEnabled, controlEnabled);
+            Assert.AreEqual(isEnabled, controlEnabled, "Control " + controlName + " in view " + viewName + " is not " + enabledString + ".");
         }
 
         // ReSharper disable once InconsistentNaming
