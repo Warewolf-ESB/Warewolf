@@ -3851,6 +3851,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"The Debug in Browser content contains ""(.*)""")]
         public void ThenTheDebugInBrowserContentContains(string containedText)
         {
+            var deserialize = GetDebugState();
             Assert.IsTrue(_externalProcessExecutor.WebResult.First().Contains(containedText),
                 _externalProcessExecutor.WebResult.First());
         }
