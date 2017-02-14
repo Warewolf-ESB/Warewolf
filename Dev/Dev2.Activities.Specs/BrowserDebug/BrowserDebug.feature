@@ -17,9 +17,17 @@ Scenario: Executing a workflow with no inputs and outputs
 		And I Debug "http://localhost:3142/secure/NoInputsWorkflow.debug?" in Browser
 		And The Debug in Browser content contains has children with no Inputs and Ouputs
 
+Scenario: Executing Assign workflow with inputs and outputs
+		Given I have a workflow "AssignedVariableWF"
+		When "AssignedVariableWF" is executed
+		Then the workflow execution has "NO" error
+		And I Debug "http://localhost:3142/secure/AssignedVariableWF.debug?" in Browser
+		And The Debug in Browser content contains has inputs and outputs
+
 #Scenario: Executing Assign workflow with invalid variable
-#Scenario: Executing Assign workflow with inputs and outputs
-#Scenario: Executing Assign workflow with invalid variable
+
+
+
 #Scenario: Executing Hello World workflow
 #Scenario: Executing a Sequence workflow
 #Scenario: Executing a Foreach workflow
