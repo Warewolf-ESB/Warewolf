@@ -8354,6 +8354,14 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(newFolderEdit, "{Escape}", ModifierKeys.None);
         }
 
+        [Given(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
+        [When(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
+        [Then(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
+        public void WhenIHitEscapeKeyOnTheKeyboardOnActivityDefaultWindow()
+        {
+            Keyboard.SendKeys(DecisionOrSwitchDialog, "{Escape}", ModifierKeys.None);
+        }
+
         [Given(@"I Dont Name The Created Folder")]
         [When(@"I Dont Name The Created Folder")]
         [Then(@"I Dont Name The Created Folder")]
