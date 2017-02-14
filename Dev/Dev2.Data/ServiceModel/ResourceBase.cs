@@ -674,13 +674,14 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var resourceIdAsString = element.AttributeSafe("SourceId");
                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
+                var resourceName = element.AttributeSafe("ResourceName");
                 Guid uniqueId;
                 Guid.TryParse(uniqueIdAsString, out uniqueId);
                 Guid resId;
                 Guid.TryParse(resourceIdAsString, out resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
-                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "WebSource"));
+                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, "WebSource"));
             }
         }
 
@@ -713,13 +714,14 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 var resourceIdAsString = element.AttributeSafe("SharepointServerResourceId");
                 var uniqueIdAsString = element.AttributeSafe("UniqueID");
+                var resourceName = element.AttributeSafe("ResourceName");
                 Guid uniqueId;
                 Guid.TryParse(uniqueIdAsString, out uniqueId);
                 Guid resId;
                 Guid.TryParse(resourceIdAsString, out resId);
                 var resourceForTree = Dependencies.FirstOrDefault(tree => tree.ResourceID == resId);
                 if (resourceForTree == null)
-                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, "", "SharepointSource"));
+                    Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, "SharepointSource"));
             }
         }
 
