@@ -3949,11 +3949,17 @@ namespace Dev2.Activities.Specs.Composition
                 _externalProcessExecutor.WebResult.First());
         }
 
-        [Then(@"The Debug in Browser content contains has children ""(.*)""")]
-        public void TheDebugInBrowserContentHaveGivenVariable(string containedText)
+        [Then(@"The Debug in Browser content contains has children with no Inputs and Ouputs")]
+        public void TheDebugInBrowserContentHaveGivenVariable()
         {
             var deserialize = GetDebugState();
-        }
+            Assert.IsNotNull(deserialize);
+            foreach(var debugState in deserialize)
+            {
+                Assert.AreEqual(0, debugState.Inputs.Count);
+                Assert.AreEqual(0, debugState.Outputs.Count);
+            }            
+        }                    
 
         [Then(@"The Debug in Browser content contains has inputs and outputs")]
         public void ThenTheDebugInBrowserContentContainsHasInputsAndOutputs()
