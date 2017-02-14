@@ -4919,6 +4919,13 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
+        [When(@"I change the input and output variables")]
+        public void WhenIChangeTheInputAndOutputVariables()
+        {
+            //UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow
+        }
+
+
         [When(@"I open ""(.*)"" in Remote Connection Integration")]
         public void WhenIOpenInRemoteConnectionIntegration(string resourceName)
         {
