@@ -7,6 +7,28 @@ Param(
   [string]$ResourcesType
 )
 
+if ($ServerPath -ne "" -and !(Test-Path $ServerPath)) {
+    Write-Host Server path not found: $ServerPath
+    sleep 30
+    exit 1
+}
+if ($StudioPath -ne "" -and !(Test-Path $StudioPath)) {
+    Write-Host Studio path not found: $StudioPath
+    sleep 30
+    exit 1
+}
+if ($DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
+    Write-Host DotCover path not found: $DotCoverPath
+    sleep 30
+    exit 1
+}
+#If only a server path is specified, then skip studio startup entirely
+if (($ServerPath -ne "") -and ($StudioPath -eq "")) {
+	[bool]$SkipStudioStartup = $true
+} else {
+	[bool]$SkipStudioStartup = $false
+}
+
 if ($ResourcesType -eq "") {
 	$title = "Server Resources"
 	$message = "What type of resources would you like the server to start with?"
@@ -93,7 +115,7 @@ while ($ResourcesPath -eq "" -and $NumberOfParentsSearched++ -lt 6) {
         $CurrentDirectory = (Get-Item $CurrentDirectory).Parent.FullName
     }
 }
-if ($ResourcesPath -ne "") {
+if ($ResourcesPath -ne "" -and $CurrentDirectory -ne (Get-Item $ServerPath).Directory.FullName ) {
     Copy-Item -Path "$CurrentDirectory\Resources - $ResourcesType" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
 }
 
@@ -113,66 +135,45 @@ if ($DotCoverPath -eq "") {
 Start-Service "Warewolf Server"
 Write-Host Server has started.
 
-if ($StudioPath -eq "") {
-    $CurrentDirectory = $PSScriptRoot
-    $NumberOfParentsSearched = 0
-    while ($StudioPath -eq "" -and $NumberOfParentsSearched++ -lt 7) {
-        if (Test-Path "$CurrentDirectory\Warewolf Studio.exe") {
-            $StudioPath = "$CurrentDirectory\Warewolf Studio.exe"
-        } elseif (Test-Path "$CurrentDirectory\Studio\Warewolf Studio.exe") {
-            $StudioPath = "$CurrentDirectory\Studio\Warewolf Studio.exe"
-        } elseif (Test-Path "$CurrentDirectory\DebugStudio\Warewolf Studio.exe") {
-            $StudioPath = "$CurrentDirectory\DebugStudio\Warewolf Studio.exe"
-        } elseif (Test-Path "$CurrentDirectory\ReleaseStudio\Warewolf Studio.exe") {
-            $StudioPath = "$CurrentDirectory\ReleaseStudio\Warewolf Studio.exe"
-        } elseif (Test-Path "$CurrentDirectory\Dev2.Studio\bin\Debug\Warewolf Studio.exe") {
-            $StudioPath = "$CurrentDirectory\Dev2.Studio\bin\Debug\Warewolf Studio.exe"
-        } elseif (Test-Path "$CurrentDirectory\Dev2.Studio\bin\Release\Warewolf Studio.exe") {
-            $StudioPath = "$CurrentDirectory\Dev2.Studio\bin\Release\Warewolf Studio.exe"
-        } elseif (Test-Path "$CurrentDirectory\*Studio.zip") {
-			Expand-Archive "$CurrentDirectory\*Studio.zip" "$CurrentDirectory\Studio" -Force
-			$StudioPath = "$CurrentDirectory\Studio\Warewolf Studio.exe"
+if (!($SkipStudioStartup)) {
+	if ($StudioPath -eq "") {
+		$CurrentDirectory = $PSScriptRoot
+		$NumberOfParentsSearched = 0
+		while ($StudioPath -eq "" -and $NumberOfParentsSearched++ -lt 7) {
+			if (Test-Path "$CurrentDirectory\Warewolf Studio.exe") {
+				$StudioPath = "$CurrentDirectory\Warewolf Studio.exe"
+			} elseif (Test-Path "$CurrentDirectory\Studio\Warewolf Studio.exe") {
+				$StudioPath = "$CurrentDirectory\Studio\Warewolf Studio.exe"
+			} elseif (Test-Path "$CurrentDirectory\DebugStudio\Warewolf Studio.exe") {
+				$StudioPath = "$CurrentDirectory\DebugStudio\Warewolf Studio.exe"
+			} elseif (Test-Path "$CurrentDirectory\ReleaseStudio\Warewolf Studio.exe") {
+				$StudioPath = "$CurrentDirectory\ReleaseStudio\Warewolf Studio.exe"
+			} elseif (Test-Path "$CurrentDirectory\Dev2.Studio\bin\Debug\Warewolf Studio.exe") {
+				$StudioPath = "$CurrentDirectory\Dev2.Studio\bin\Debug\Warewolf Studio.exe"
+			} elseif (Test-Path "$CurrentDirectory\Dev2.Studio\bin\Release\Warewolf Studio.exe") {
+				$StudioPath = "$CurrentDirectory\Dev2.Studio\bin\Release\Warewolf Studio.exe"
+			} elseif (Test-Path "$CurrentDirectory\*Studio.zip") {
+				Expand-Archive "$CurrentDirectory\*Studio.zip" "$CurrentDirectory\Studio" -Force
+				$StudioPath = "$CurrentDirectory\Studio\Warewolf Studio.exe"
+			}
+			if ($StudioPath -eq "") {
+				$CurrentDirectory = (Get-Item $CurrentDirectory).Parent.FullName
+			}
 		}
-        if ($StudioPath -eq "") {
-            $CurrentDirectory = (Get-Item $CurrentDirectory).Parent.FullName
-        }
-    }
-    if ($StudioPath -eq "") {
-        Write-Host Cannot find Warewolf Studio.exe. To run the studio provide a path to that file as a commandline parameter like this: -StudioPath
-		exit 0
-    }
-}
-
-Remove-Item ("$PSScriptRoot\StudioStarted") -Recurse -ErrorAction SilentlyContinue
-if (Test-Path ("$PSScriptRoot\StudioStarted")) {
-    Write-Host Cannot delete "StudioStarted" file.
-    sleep 30
-    exit 1
-}
-
-if ($StudioPath -ne "") {
-    if ($DotCoverPath -eq "") {
-        Start-Process "$StudioPath"
-    } else {
-        Start-Process $DotCoverPath "cover /TargetExecutable=`"$StudioPath`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`" /Output=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr`""
-    }
-    
-	$Timeout = 600
-	Write-Host Waiting for studio to start.
-	while (-not $StudioStarted -and $Timeout-- -gt 0) {
-		sleep 1
-		$StudioStarted = Test-Path ("$PSScriptRoot\StudioStarted")
+		if ($StudioPath -eq "") {
+			Write-Host Cannot find Warewolf Studio.exe. To run the studio provide a path to that file as a commandline parameter like this: -StudioPath
+			exit 0
+		}
 	}
-	if ($Timeout -gt 0) {
+
+	if ($StudioPath -ne "") {
+		if ($DotCoverPath -eq "") {
+			Start-Process "$StudioPath"
+			sleep 60
+		} else {
+			Start-Process $DotCoverPath "cover /TargetExecutable=`"$StudioPath`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`" /Output=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr`""
+			sleep 600
+		}
 		Write-Host Studio has started.
-	} else {
-		Write-Host Timed out waiting for the Studio to start.
 	}
-}
-
-Remove-Item ("$PSScriptRoot\StudioStarted") -Recurse -ErrorAction SilentlyContinue
-if (Test-Path ("$PSScriptRoot\StudioStarted")) {
-    Write-Host Cannot delete "StudioStarted" file.
-    sleep 30
-    exit 1
 }
