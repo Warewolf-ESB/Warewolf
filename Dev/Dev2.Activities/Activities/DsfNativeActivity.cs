@@ -1086,14 +1086,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (remoteID != Guid.Empty)
             {
                 var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
-                if (resource != null)
-                {
-                    name = resource.ResourceName;
-                }
-                else
-                {
-                    name = remoteID.ToString();
-                }
+                name = resource != null ? resource.ResourceName : remoteID.ToString();
             }
             else
             {
