@@ -3858,17 +3858,14 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"The Debug in Browser content contains has children with no Inputs and Ouputs")]
         public void TheDebugInBrowserContentHaveGivenVariable()
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var deserialize = serializer.Deserialize<IEnumerable<IDebugState>>(_externalProcessExecutor.WebResult.First());
+            var deserialize = GetDebugState();
             Assert.IsNotNull(deserialize);
             foreach(var debugState in deserialize)
             {
                 Assert.AreEqual(0, debugState.Inputs.Count);
                 Assert.AreEqual(0, debugState.Outputs.Count);
             }            
-        }
-            var deserialize = GetDebugState();
-        }
+        }                    
 
         [Then(@"The Debug in Browser content contains has inputs and outputs")]
         public void ThenTheDebugInBrowserContentContainsHasInputsAndOutputs()
