@@ -49,6 +49,7 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="BrowserDebug\BrowserDebugSteps.cs" />
     <Compile Include="BrowserDebug\BrowserDebug.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
