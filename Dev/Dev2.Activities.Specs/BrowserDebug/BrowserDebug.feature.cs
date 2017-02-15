@@ -124,19 +124,21 @@ this.ScenarioSetup(scenarioInfo);
                         "variable",
                         "value"});
             table1.AddRow(new string[] {
-                        "dateMonth",
+                        "[[dateMonth]]",
                         "February"});
             table1.AddRow(new string[] {
-                        "dateYear",
+                        "[[dateYear]]",
                         "2017"});
 #line 20
   testRunner.And("\"ValidAssignedVariableWF\" contains an Assign \"ValidAssignVariables\" as", ((string)(null)), table1, "And ");
 #line 24
   testRunner.When("workflow \"ValidAssignedVariableWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
-  testRunner.And("I Debug \"http://localhost:3142/secure/ValidAssignedVariableWF.debug?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/ValidAssignedVariableWF." +
+                    "debug?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
-  testRunner.Then("The Debug in Browser content contains has inputs and outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("The Debug in Browser content contains has \"2\" inputs and \"2\" outputs for \"ValidAs" +
+                    "signVariables\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -163,33 +165,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
   testRunner.When("workflow \"InvalidAssignedVariableWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
-  testRunner.And("I Debug \"http://rsaklfdylan:3142/secure/Acceptance%20Tests/InvalidAssignedVariabl" +
-                    "eWF.debug?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/InvalidAssignedVariableW" +
+                    "F.debug?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
   testRunner.Then("The Debug in Browser content contains has error messagge \"\"invalid variable assig" +
                     "ned to d@teMonth\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Hello World workflow")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
-        public virtual void ExecutingHelloWorldWorkflow()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Hello World workflow", ((string[])(null)));
-#line 27
-this.ScenarioSetup(scenarioInfo);
-#line 28
-  testRunner.Given("I have a workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 29
-  testRunner.When("\"Hello World\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 30
-  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 31
-  testRunner.And("I Debug \"http://localhost:3142/secure/Hello World.debug?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
-  testRunner.And("The Debug in Browser content contains has inputs and outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

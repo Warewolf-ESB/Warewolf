@@ -59,11 +59,21 @@ namespace Dev2.Activities.Specs.BrowserDebug
                 Assert.AreEqual(0, debugState.Outputs.Count);
             }
         }
+        
+        [Then(@"The Debug in Browser content contains has ""(.*)"" inputs and ""(.*)"" outputs for ""(.*)""")]
+        public void TheDebugInBrowserContentContainsHasInputsAndOutputsFor(int inputCount, int outputCount, string stepName)
+        {
+            var allDebugStates = GetDebugStates();
+            var debugState = allDebugStates.FirstOrDefault(p => p.DisplayName == stepName);
+            Assert.IsNotNull(debugState);
+            Assert.AreEqual(inputCount, debugState.Inputs.Count);
+            Assert.AreEqual(outputCount, debugState.Outputs.Count);
+        }
 
-        [Given(@"The Debug in Browser content contains has inputs and outputs")]
-        [When(@"The Debug in Browser content contains has inputs and outputs")]
-        [Then(@"The Debug in Browser content contains has inputs and outputs")]
-        public void ThenTheDebugInBrowserContentContainsHasInputsAndOutputs()
+        [Given(@"The Debug in Browser hello world content has inputs and outputs")]
+        [When(@"The Debug in Browser hello world content has inputs and outputs")]
+        [Then(@"The Debug in Browser hello world content has inputs and outputs")]
+        public void TheDebugInBrowserContentForHelloWorldHasInputsAndOutputs()
         {
             var allDebugStates = GetDebugStates();
             foreach (var debugState in allDebugStates)
