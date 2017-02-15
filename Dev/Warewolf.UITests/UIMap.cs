@@ -129,13 +129,6 @@ namespace Warewolf.UITests
             Mouse.Click(FindAddRemoveRowButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
         }
 
-        public void Click_Settings_Resource_Permissions_Row1_Windows_Group_Button()
-        {
-            Mouse.Click(FindAddWindowsGroupButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-            Assert.IsTrue(SelectWindowsGroupDialog.Exists, "Select windows group dialog does not exist.");
-            Assert.IsTrue(SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Exists, "Select windows group object name textbox does not exist.");
-        }
-
         public UITestControl FindAddResourceButton(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(0);
@@ -306,12 +299,6 @@ namespace Warewolf.UITests
         public void Filter_ToolBox(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = FilterText;
-        }
-
-        public void Enter_GroupName_Into_Windows_Group_Dialog(string GroupName)
-        {
-            SelectWindowsGroupDialog.ItemPanel.ObjectNameTextbox.Text = GroupName;
-            Assert.IsTrue(SelectWindowsGroupDialog.OKPanel.OK.Enabled, "Windows group dialog OK button is not enabled.");
         }
 
         [When(@"I Enter Dice Roll Values")]
@@ -1410,24 +1397,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button.Enabled, "ViewInBrowserF7Button is not enabled after clicking RunDebug from Menu.");
             Mouse.Click(MainStudioWindow.DebugInputDialog.ViewInBrowserF7Button, new Point(82, 14));
         }
-
-        [Given(@"I Click Decision Dialog Cancel Button")]
-        [When(@"I Click Decision Dialog Cancel Button")]
-        [Then(@"I Click Decision Dialog Cancel Button")]
-        public void Click_Decision_Dialog_Cancel_Button()
-        {
-            Mouse.Click(DecisionOrSwitchDialog.CancelButton, new Point(10, 14));
-        }
-
-        [Given(@"I Click Decision Dialog Done Button")]
-        [When(@"I Click Decision Dialog Done Button")]
-        [Then(@"I Click Decision Dialog Done Button")]
-        public void Click_Decision_Dialog_Done_Button()
-        {
-            Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(10, 14));
-            Assert.IsFalse(ControlExistsNow(DecisionOrSwitchDialog), "Decision large view dialog still exists after the done button is clicked.");
-        }
-
+        
         [Given(@"I Click Deploy Tab Destination Server Combobox")]
         [When(@"I Click Deploy Tab Destination Server Combobox")]
         [Then(@"I Click Deploy Tab Destination Server Combobox")]
@@ -1760,13 +1730,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton, new Point(9, 8));
         }
 
-        [When(@"I Click Select Windows Group Cancel Button")]
-        public void Click_Select_Windows_Group_Cancel_Button()
-        {
-            Assert.IsTrue(SelectWindowsGroupDialog.CancelPanel.Cancel.Exists, "Select Windows group dialog cancel buttton does not exist.");
-            Mouse.Click(SelectWindowsGroupDialog.CancelPanel.Cancel, new Point(28, 9));
-        }
-
         [When(@"I Click Server Source Wizard Address Protocol Dropdown")]
         public void Click_Server_Source_Wizard_Address_Protocol_Dropdown()
         {
@@ -1782,6 +1745,60 @@ namespace Warewolf.UITests
         }
 
         #region Dialogs\Dialogs.uitest
+
+        [When(@"I Click Select Windows Group OK Button")]
+        public void Click_Select_Windows_Group_OK_Button()
+        {
+            Mouse.Click(SelectWindowsGroupDialog.OKPanel.OK, new Point(37, 9));
+        }
+
+        public void Resize_Decision_LargeTool()
+        {
+            Mouse.StartDragging(DecisionOrSwitchDialog, new Point(396, 387));
+            Mouse.StopDragging(DecisionOrSwitchDialog, new Point(0, 450));
+        }
+
+        [Given(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
+        [When(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
+        [Then(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
+        public void WhenIHitEscapeKeyOnTheKeyboardOnActivityDefaultWindow()
+        {
+            Keyboard.SendKeys(DecisionOrSwitchDialog, "{Escape}", ModifierKeys.None);
+        }
+
+        [Then(@"The Case Dialog Must Be Open")]
+        public void ThenTheCaseDialogMustBeOpen()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
+            Assert.IsTrue(DecisionOrSwitchDialog.Exists, "Switch case dialog does not exist after dragging onto switch case arm.");
+            Mouse.Click(DecisionOrSwitchDialog.DoneButton);
+        }
+
+        [Given(@"I Click Decision Dialog Cancel Button")]
+        [When(@"I Click Decision Dialog Cancel Button")]
+        [Then(@"I Click Decision Dialog Cancel Button")]
+        public void Click_Decision_Dialog_Cancel_Button()
+        {
+            Mouse.Click(DecisionOrSwitchDialog.CancelButton, new Point(10, 14));
+        }
+
+        [Given(@"I Click Decision Dialog Done Button")]
+        [When(@"I Click Decision Dialog Done Button")]
+        [Then(@"I Click Decision Dialog Done Button")]
+        public void Click_Decision_Dialog_Done_Button()
+        {
+            Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(10, 14));
+            Assert.IsFalse(ControlExistsNow(DecisionOrSwitchDialog), "Decision large view dialog still exists after the done button is clicked.");
+        }
+
+        [Given(@"I Click Switch Dialog Done Button")]
+        [When(@"I Click Switch Dialog Done Button")]
+        [Then(@"I Click Switch Dialog Done Button")]
+        public void Click_Switch_Dialog_Done_Button()
+        {
+            Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
+        }
 
         [Given(@"Filtered Item Exists")]
         [When(@"Filtered Item Exists")]
@@ -3207,12 +3224,6 @@ namespace Warewolf.UITests
 
         #endregion
         #region Settings\Settings.uitest
-
-        [When(@"I Click Select Windows Group OK Button")]
-        public void Click_Select_Windows_Group_OK_Button()
-        {
-            Mouse.Click(SelectWindowsGroupDialog.OKPanel.OK, new Point(37, 9));
-        }
 
         [When(@"I Click Server Log File Button")]
         public void Click_Server_Log_File_Button()
@@ -5225,15 +5236,6 @@ namespace Warewolf.UITests
             Mouse.MoveScrollWheel(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid, -1);
         }
 
-        [Given(@"I Click Switch Dialog Done Button")]
-        [When(@"I Click Switch Dialog Done Button")]
-        [Then(@"I Click Switch Dialog Done Button")]
-        public void Click_Switch_Dialog_Done_Button()
-        {
-            Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
-        }
-
         [When(@"I Click System Information Tool Done Button")]
         public void Click_System_Information_Tool_Done_Button()
         {
@@ -5335,14 +5337,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
             Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.TryGetClickablePoint(out point));
-        }
-
-        [Then(@"The Case Dialog Must Be Open")]
-        public void ThenTheCaseDialogMustBeOpen()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
-            Assert.IsTrue(DecisionOrSwitchDialog.Exists, "Switch case dialog does not exist after dragging onto switch case arm.");
-            Mouse.Click(DecisionOrSwitchDialog.DoneButton);
         }
 
         [When(@"I Click Assign tool VariableTextbox")]
@@ -8810,14 +8804,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(unitTestsUrlWorkflowUrlHyperlink.Exists, "UnitTestsUrlWorkflowUrl does not exist");
         }
 
-        [Given(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
-        [When(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
-        [Then(@"I Hit Escape Key On The Keyboard on Activity Default Window")]
-        public void WhenIHitEscapeKeyOnTheKeyboardOnActivityDefaultWindow()
-        {
-            Keyboard.SendKeys(DecisionOrSwitchDialog, "{Escape}", ModifierKeys.None);
-        }
-
         [Given(@"Resource Did not Open")]
         [When(@"Resource Did not Open")]
         [Then(@"Resource Did not Open")]
@@ -8851,16 +8837,6 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.OutputCheckbox.Checked = true;
-        }
-
-        public void Resize_Decision_LargeTool()
-        {
-            #region Variable Declarations
-            WpfWindow uIActivityDefaultWindoWindow = this.DecisionOrSwitchDialog;
-            #endregion
-
-            Mouse.StartDragging(uIActivityDefaultWindoWindow, new Point(396, 387));
-            Mouse.StopDragging(uIActivityDefaultWindoWindow, new Point(0, 450));
         }
 
         [Given(@"Destination Remote Server Is Connected")]
