@@ -68,9 +68,16 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Data.TO;
+using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
+using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.Execution;
 using Dev2.Studio.Core.Factories;
+using Dev2.Workspaces;
 using Warewolf.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ServerProxyLayer;
@@ -97,6 +104,92 @@ namespace Dev2.Activities.Specs.Composition
             AppSettings.LocalHost = "http://localhost:3142";
         }
 
+
+        new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
+        {
+
+
+            var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
+            svc.SetActivity(FlowchartProcess);
+            Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
+
+            if (CurrentDl == null)
+            {
+                CurrentDl = TestData;
+            }
+
+            var errors = new ErrorResultTO();
+            if (ExecutionId == Guid.Empty)
+            {
+
+                if (dataObject != null)
+                {
+                    dataObject.ExecutingUser = User;
+                    dataObject.DataList = new StringBuilder(CurrentDl);
+                }
+
+            }
+
+            if (errors.HasErrors())
+            {
+                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+
+                if (throwException)
+                {
+                    throw new Exception(errorString);
+                }
+            }
+
+            if (dataObject == null)
+            {
+
+                dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+                {
+                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                    //       if this is NOT provided which will cause the tests to fail!
+                    ServerID = Guid.NewGuid(),
+                    ExecutingUser = User,
+                    IsDebug = isDebugMode,
+                    EnvironmentID = currentEnvironmentId,
+                    IsRemoteInvokeOverridden = overrideRemote,
+                    DataList = new StringBuilder(CurrentDl)
+                };
+
+            }
+            if (!string.IsNullOrEmpty(TestData))
+            {
+                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl, 0);
+            }
+            dataObject.IsDebug = isDebug;
+
+            // we now need to set a thread ID ;)
+            dataObject.ParentThreadID = 1;
+
+            if (isRemoteInvoke)
+            {
+                dataObject.RemoteInvoke = true;
+                dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
+            }
+
+            var esbChannel = mockChannel.Object;
+            if (channel != null)
+            {
+                esbChannel = channel;
+            }
+            dataObject.ExecutionToken = new ExecutionToken();
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+
+            errors.ClearErrors();
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+            if (dataObject.ResourceID == Guid.Empty)
+            {
+                dataObject.ResourceID = Guid.NewGuid();
+            }
+            dataObject.Environment = DataObject.Environment;
+            wfec.Eval(FlowchartProcess, dataObject, 0);
+            DataObject = dataObject;
+            return dataObject;
+        }
         const int EnvironmentConnectionTimeout = 3000;
 
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
@@ -125,12 +218,6 @@ namespace Dev2.Activities.Specs.Composition
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockshell.Object);
             _externalProcessExecutor = new SpecExternalProcessExecutor();
-        }
-        private IEnumerable<IDebugState> GetDebugState()
-        {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var deserialize = serializer.Deserialize<IEnumerable<IDebugState>>(_externalProcessExecutor.WebResult.First());
-            return deserialize;
         }
 
         [Given(@"Debug states are cleared")]
@@ -2416,19 +2503,20 @@ namespace Dev2.Activities.Specs.Composition
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
 
-            foreach (var activity in activityList)
-            {
-                if (TestStartNode.Action == null)
+            if (activityList != null)
+                foreach (var activity in activityList)
                 {
-                    TestStartNode.Action = activity.Value;
+                    if (TestStartNode.Action == null)
+                    {
+                        TestStartNode.Action = activity.Value;
+                    }
+                    else
+                    {
+                        var flowStep = new FlowStep { Action = activity.Value };
+                        flowSteps.Last().Next = flowStep;
+                        flowSteps.Add(flowStep);
+                    }
                 }
-                else
-                {
-                    var flowStep = new FlowStep { Action = activity.Value };
-                    flowSteps.Last().Next = flowStep;
-                    flowSteps.Add(flowStep);
-                }
-            }
 
             IContextualResourceModel resourceModel;
             IEnvironmentModel environmentModel;
@@ -2586,7 +2674,8 @@ namespace Dev2.Activities.Specs.Composition
         {
             var dsfEnhancedDotNetDllActivity = new DsfEnhancedDotNetDllActivity()
             {
-                IsObject = true, DisplayName = dotNetServiceName
+                IsObject = true,
+                DisplayName = dotNetServiceName
             };
             var Source = table.Rows[0]["Source"];
             var ClassName = table.Rows[0]["ClassName"];
@@ -3841,45 +3930,5 @@ namespace Dev2.Activities.Specs.Composition
                 Add("debugStates", new List<IDebugState>());
             }
         }
-
-        [Then(@"I Debug ""(.*)"" in Browser")]
-        public void ThenIDebugInBrowser(string urlString)
-        {
-            _externalProcessExecutor.OpenInBrowser(new Uri(urlString));
-        }
-
-        [Then(@"The Debug in Browser content contains ""(.*)""")]
-        public void ThenTheDebugInBrowserContentContains(string containedText)
-        {
-            var deserialize = GetDebugState();
-            Assert.IsTrue(_externalProcessExecutor.WebResult.First().Contains(containedText),
-                _externalProcessExecutor.WebResult.First());
-        }
-
-        [Then(@"The Debug in Browser content contains has children with no Inputs and Ouputs")]
-        public void TheDebugInBrowserContentHaveGivenVariable()
-        {
-            var deserialize = GetDebugState();
-            Assert.IsNotNull(deserialize);
-            foreach(var debugState in deserialize)
-            {
-                Assert.AreEqual(0, debugState.Inputs.Count);
-                Assert.AreEqual(0, debugState.Outputs.Count);
-            }            
-        }                    
-
-        [Then(@"The Debug in Browser content contains has inputs and outputs")]
-        public void ThenTheDebugInBrowserContentContainsHasInputsAndOutputs()
-        {
-            var deserialize = GetDebugState();
-            foreach (var debugState in deserialize)
-            {
-                if (debugState.IsFirstStep())
-                    continue;
-                if (!debugState.IsFinalStep())
-                    Assert.IsTrue(debugState.Inputs.Count > 0);
-                Assert.IsTrue(debugState.Outputs.Count > 0);
-            }
-        }      
     }
 }
