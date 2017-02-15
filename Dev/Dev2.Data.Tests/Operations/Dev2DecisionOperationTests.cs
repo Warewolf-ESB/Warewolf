@@ -321,59 +321,7 @@ namespace Dev2.Data.Tests.Operations
 
         #endregion
 
-        #region IsBetween
-
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, true is expected")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void IsBetween_IsBetweenUnitTest_Invoke_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var comparer = new IsBetween();
-
-            //exe
-            var actual = comparer.Invoke(new[] { "50", "2", "100" });
-
-            //assert
-            Assert.IsTrue(actual, "IsBetween returned the wrong result when comparing integers");
-        }
-
-        [TestMethod]
-        [TestCategory("UnitTest")]
-        [Description("Test for invoking IsBetween with an array of strings that can be parsed to integers, false is expected")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void IsBetween_IsBetweenUnitTest_Invoke_FalseIsReturned()
-        // ReSharper restore InconsistentNaming
-        {
-            //init
-            var comparer = new IsBetween();
-
-            //exe
-            var actual = comparer.Invoke(new[] { "100", "2", "50" });
-
-            //assert
-            Assert.IsFalse(actual, "IsBetween returned the wrong result when comparing integers");
-
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthmembu")]
-        public void IsBetween_HandleType_ShouldReturneIsBetween()
-        {
-            var decisionType = enDecisionType.IsBetween;
-            //------------Setup for test--------------------------
-            var isBetween = new IsBetween();
-            //------------Execute Test---------------------------
-            //------------Assert Results-------------------------
-            Assert.AreEqual(decisionType, isBetween.HandlesType());
-        }
-
-
-        #endregion
+     
 
         #region NotBetween
 

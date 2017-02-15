@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
 namespace Dev2.Common.Interfaces
 {
@@ -57,5 +58,6 @@ namespace Dev2.Common.Interfaces
         void Save(IWcfServerSource toSource);
 
         string ServerName { get; set; }
+        IWcfServerSource FetchSource(Guid resourceID);
     }
 }
