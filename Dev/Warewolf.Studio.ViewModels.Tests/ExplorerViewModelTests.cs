@@ -384,30 +384,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        public void TestServerDisconnect()
-        {
-            //arrange
-            var isEnvironmentChanged = false;
-            _target.PropertyChanged += (s, e) =>
-            {
-                isEnvironmentChanged = isEnvironmentChanged || e.PropertyName == "Environments";
-            };
-            var childMock = new Mock<IExplorerItemViewModel>();
-            childMock.SetupGet(it => it.IsVisible).Returns(true);
-            _target.Environments.First().AddChild(childMock.Object);
-            _localhostServerMock.SetupGet(it => it.IsConnected).Returns(true);
-            _localhostServerMock.SetupGet(it => it.HasLoaded).Returns(true);
-
-            //act
-            //_target.ConnectControlViewModel.ToggleConnectionStateCommand.Execute(null);
-
-            //assert
-            childMock.VerifySet(it => it.IsVisible = false);
-            Assert.IsTrue(isEnvironmentChanged);
-            Assert.IsFalse(_target.Environments.Any());
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConstructorArgumentNull()
         {
