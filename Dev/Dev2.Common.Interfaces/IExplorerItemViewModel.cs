@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -46,6 +47,7 @@ namespace Dev2.Common.Interfaces
         bool CanCreateSchedule { get; set; }
         bool CanViewRunAllTests { get; set; }
         bool CanContribute { get; set; }
+        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 

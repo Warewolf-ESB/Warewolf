@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Threading;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable VirtualMemberCallInContructor
@@ -46,21 +47,24 @@ namespace Warewolf.Studio.ViewModels
 
             HeaderText = Resources.Languages.Core.RabbitMQSourceNewHeaderLabel;
             Header = Resources.Languages.Core.RabbitMQSourceNewHeaderLabel;
-            HostName = String.Empty;
+            HostName = string.Empty;
             Port = 5672;
-            UserName = String.Empty;
-            Password = String.Empty;
+            UserName = string.Empty;
+            Password = string.Empty;
             VirtualHost = "/";
         }
 
-        public ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel, IRabbitMQServiceSourceDefinition rabbitMQServiceSource)
+        public ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel, IRabbitMQServiceSourceDefinition rabbitMQServiceSource,IAsyncWorker asyncWorker)
             : this(rabbitMQSourceModel)
         {
             VerifyArgument.IsNotNull("rabbitMQServiceSource", rabbitMQServiceSource);
-
-            _rabbitMQServiceSource = rabbitMQServiceSource;
-            SetupHeaderTextFromExisting();
-            FromModel(rabbitMQServiceSource);
+            asyncWorker.Start(() => rabbitMQSourceModel.FetchSource(rabbitMQServiceSource.ResourceID), source =>
+            {
+                _rabbitMQServiceSource = source;
+                _rabbitMQServiceSource.ResourcePath = rabbitMQServiceSource.ResourcePath;
+                SetupHeaderTextFromExisting();
+                FromModel(source);
+            });
         }
 
         private ManageRabbitMQSourceViewModel(IRabbitMQSourceModel rabbitMQSourceModel)
@@ -130,11 +134,11 @@ namespace Warewolf.Studio.ViewModels
                 return false;
             }
 
-            if (String.IsNullOrEmpty(HostName) ||
+            if (string.IsNullOrEmpty(HostName) ||
                 (Port >= 49152 && Port <= 65535) ||
-                String.IsNullOrEmpty(UserName) ||
-                String.IsNullOrEmpty(Password) ||
-                String.IsNullOrEmpty(VirtualHost))
+                string.IsNullOrEmpty(UserName) ||
+                string.IsNullOrEmpty(Password) ||
+                string.IsNullOrEmpty(VirtualHost))
             {
                 return false;
             }

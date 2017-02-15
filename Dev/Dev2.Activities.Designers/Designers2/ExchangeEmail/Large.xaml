@@ -67,7 +67,7 @@
             <TextBlock Grid.Column="0" x:Name="SourceLabel" Text="Source" />
             <ComboBox Grid.Column="1" 
                       x:Name="SourcesComboBox"
-                      DisplayMemberPath="Name" 
+                      DisplayMemberPath="ResourceName" 
                       Margin="{StaticResource ControlBorderRight}"
                       ToolTip="{x:Static languages:Tooltips.ManageExchangeServiceSourcesTooltip}"
                       ItemsSource="{Binding SourceRegion.Sources}"

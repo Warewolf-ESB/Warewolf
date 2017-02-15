@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
@@ -29,6 +30,7 @@ namespace Warewolf.Studio.ViewModels
 
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
+            Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId);
             if (item.IsFolder)
             {
                 item.IsExpanded = !item.IsExpanded;
@@ -40,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 SetActiveStates(_shellViewModel, server);
-                _shellViewModel.OpenResource(item.ResourceId, server);
+                _shellViewModel.OpenResource(item.ResourceId,server.EnvironmentID, server);
             }
         }
 
@@ -163,9 +165,9 @@ namespace Warewolf.Studio.ViewModels
             shellViewModel.SetActiveServer(server);
         }
 
-        public void ShowDependenciesCommand(Guid resourceId, IServer server)
+        public void ShowDependenciesCommand(Guid resourceId, IServer server,bool isSource)
         {
-            _shellViewModel.ShowDependencies(resourceId, server);
+            _shellViewModel.ShowDependencies(resourceId, server, isSource);
         }
 
         public void DeleteVersionCommand(IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem parent, string resourceName)
