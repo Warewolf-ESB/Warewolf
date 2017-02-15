@@ -142,12 +142,6 @@ namespace Warewolf.UITests
             return controlExists;
         }
 
-        [When(@"I Click UnDock Explorer")]
-        public void Click_UnDock_Explorer()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn, new Point(177, -13));
-        }
-
         [When(@"I Click Unpinned Workflow CollapseAll")]
         public void Click_Unpinned_Workflow_CollapseAll()
         {
@@ -178,16 +172,6 @@ namespace Warewolf.UITests
         public void InitializeABlankWorkflow()
         {
             Click_NewWorkflow_RibbonButton();
-        }
-
-        public void TryClearExplorerFilter()
-        {
-            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
-            {
-                Click_Explorer_Filter_Clear_Button();
-                Click_Explorer_Refresh_Button();
-            }
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text == string.Empty, "Explorer filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
 
         [When(@"I Try Clear Toolbox Filter")]
@@ -265,127 +249,6 @@ namespace Warewolf.UITests
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(5);
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
         }
-
-        public void TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(string SourceName)
-        {
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
-                {
-                    Click_Explorer_RemoteServer_Connect_Button();
-                }
-                else
-                {
-                    Click_Connect_Control_InExplorer();
-                    if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected))
-                    {
-                        Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
-                        Click_Explorer_RemoteServer_Connect_Button();
-                    }
-                }
-                Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
-                Filter_Explorer(SourceName);
-                WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
-                {
-                    RightClick_Explorer_Localhost_FirstItem();
-                    Select_Delete_From_ExplorerContextMenu();
-                    Click_MessageBox_Yes();
-                }
-                TryClearExplorerFilter();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove remote server " + SourceName + ". Test may have crashed before remote server " + SourceName + " was connected.\n" + e.Message);
-                TryClearExplorerFilter();
-            }
-        }
-
-        [Given(@"I Try Remove ""(.*)"" From Explorer")]
-        [When(@"I Try Remove ""(.*)"" From Explorer")]
-        [Then(@"I Try Remove ""(.*)"" From Explorer")]
-        public void WhenITryRemoveFromExplorer(string ResourceName)
-        {
-            Filter_Explorer(ResourceName);
-            try
-            {
-                var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
-                if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
-                {
-                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                    if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
-                    {
-                        RightClick_Explorer_Localhost_FirstItem();
-                        Select_Delete_From_ExplorerContextMenu();
-                        Click_MessageBox_Yes();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove resource " + ResourceName + " from the explorer.\n" + e.Message);
-            }
-            finally
-            {
-                TryClearExplorerFilter();
-            }
-        }
-
-        [When(@"I Connect To Remote Server")]
-        public void ConnectToRemoteServer()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
-            Click_Explorer_RemoteServer_Connect_Button();
-        }
-
-        [When(@"I Try Connect To Remote Server")]
-        public void TryConnectToRemoteServer()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
-            {
-                Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(226, 13));
-            }
-            else
-            {
-                Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-                Click_Explorer_RemoteServer_Connect_Button();
-            }
-        }
-
-        [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
-        [When(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
-        [Then(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
-        public void I_Try_Remove_From_Remote_Server_Explorer(string ResourceName)
-        {
-            TryConnectToRemoteServer();
-            Filter_Explorer(ResourceName);
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem))
-                {
-                    MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.DrawHighlight();
-                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                    RightClick_Explorer_FirstRemoteServer_FirstItem();
-                    Select_Delete_From_ExplorerContextMenu();
-                    Click_MessageBox_Yes();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove resource " + ResourceName + " from the explorer.\n" + e.Message);
-            }
-            finally
-            {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton))
-                    TryClearExplorerFilter();
-            }
-        }
-
 
         public void Close_And_Lock_Side_Menu_Bar()
         {
@@ -568,20 +431,6 @@ namespace Warewolf.UITests
             }, searchTimeout * int.Parse(Playback.PlaybackSettings.ThinkTimeMultiplier.ToString()));
         }
 
-        [When(@"I Wait For Explorer Localhost Spinner")]
-        public void WaitForExplorerLocalhostSpinner()
-        {
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-        }
-
-        [Given(@"I Wait For Explorer First Remote Server Spinner")]
-        [When(@"I Wait For Explorer First Remote Server Spinner")]
-        [Then(@"I Wait For Explorer First Remote Server Spinner")]
-        public void WaitForExplorerFirstRemoteServerSpinner()
-        {
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
-        }
-
         [When(@"I Wait For Save Dialog Explorer Spinner")]
         public void WaitForSaveDialogExplorerSpinner()
         {
@@ -591,32 +440,6 @@ namespace Warewolf.UITests
         public void WaitForSpinner(UITestControl control, int searchTimeout = 30000)
         {
             WaitForControlNotVisible(control, searchTimeout);
-        }
-
-        [Given(@"I Try DisConnect To Remote Server")]
-        [When(@"I Try DisConnect To Remote Server")]
-        [Then(@"I Try DisConnect To Remote Server")]
-        public void TryDisConnectToRemoteServer()
-        {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
-            {
-                Click_Explorer_RemoteServer_Connect_Button();
-                Click_Connect_Control_InExplorer();
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-            }
-            else
-            {
-                Click_Connect_Control_InExplorer();
-                if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
-                {
-                    Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
-                    Click_Explorer_RemoteServer_Connect_Button();
-                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegration.Exists);
-                    Click_Connect_Control_InExplorer();
-                    Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-                }
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-            }
         }
 
         [Given(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
@@ -716,35 +539,12 @@ namespace Warewolf.UITests
             Mouse.DoubleClick(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem);
         }
 
-        public void Filter_ServicePicker_Explorer(string FilterText)
-        {
-            ServicePickerDialog.Explorer.FilterTextbox.Text = FilterText;
-            WaitForControlVisible(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-        }
-
-        [When(@"I Click Localhost")]
-        [Then(@"I Click Localhost")]
-        [Given(@"I Click Localhost")]
-        public void Click_LocalHost_Once()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
-        }
-
         [Given(@"I Select LocalHost on the Save Dialog")]
         [When(@"I Select LocalHost on the Save Dialog")]
         [Then(@"I Select LocalHost on the Save Dialog")]
         public void WhenISelectLocalHostOnTheSaveDialog()
         {
             Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost);
-        }
-
-        [Given(@"I Filter the Explorer with ""(.*)""")]
-        [When(@"I Filter the Explorer with ""(.*)""")]
-        [Then(@"I Filter the Explorer with ""(.*)""")]
-        public void Filter_Explorer(string FilterText)
-        {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
         [Given(@"I Filter Save Dialog Explorer with ""(.*)""")]
@@ -754,13 +554,6 @@ namespace Warewolf.UITests
         {
             var searchTextBox = SaveDialogWindow.ExplorerView.SearchTextBox;
             searchTextBox.Text = FilterText;
-        }
-
-        [When(@"I Move FirstSubItem Into FirstItem Folder")]
-        public void Move_FirstSubItem_Into_FirstItem_Folder()
-        {
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
         [When(@"I Filter the ToolBox with ""(.*)""")]
@@ -794,50 +587,6 @@ namespace Warewolf.UITests
             Click_Service_Picker_Dialog_OK();
         }
 
-        public void TryRefreshExplorerUntilOneItemOnly(int retries = 3)
-        {
-            while ((ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem) || ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.SecondItem)) && retries-- > 0)
-            {
-                Click_Explorer_Refresh_Button();
-            }
-        }
-
-        public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
-        {
-            Click_Explorer_Remote_Server_Dropdown_List();
-            Assert.IsTrue(comboboxListItem.Exists, "Server does not exist in explorer remote server drop down list.");
-            Mouse.Click(comboboxListItem, new Point(79, 8));
-        }
-
-        public void Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected, new Point(80, 13));
-        }
-
-        [When(@"I Select NewRemoteServer From Explorer Server Dropdownlist")]
-        public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer.NewRemoteServerItemText, new Point(114, 10));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Exists, "Server source wizard does not exist.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard protocol dropdown does not exist.");
-        }
-
-        public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(94, 10));
-            Assert.AreEqual("localhost", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost.DisplayText, "Selected remote server is not localhost");
-        }
-
-        public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(174, 8));
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-        }
-
         [When(@"I Enter Dice Roll Values")]
         public void WhenIEnterDiceRollValues()
         {
@@ -868,17 +617,6 @@ namespace Warewolf.UITests
             Click_Save_RibbonButton();
             Enter_Service_Name_Into_Save_Dialog(Name);
             Click_SaveDialog_Save_Button();
-        }
-
-        [Given(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
-        [When(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
-        [Then(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
-        public void Save_Valid_Service_With_Ribbon_Button_And_Dialog(string Name)
-        {
-            Click_Save_RibbonButton();
-            Enter_Valid_Service_Name_Into_Save_Dialog(Name);
-            Click_SaveDialog_Save_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
         [Given(@"I Click SaveDialog Save Button")]
@@ -1052,36 +790,6 @@ namespace Warewolf.UITests
                     return;
                 }
             }            
-            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
-            Click_Close_Settings_Tab_Button();
-        }
-
-        [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
-        public void SetupPublicPermissionsForForRemoteServer(string resource)
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
-            Select_RemoteConnectionIntegration_From_Explorer();
-            Click_Explorer_RemoteServer_Connect_Button();
-            Playback.Wait(1000);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
-            Click_Settings_RibbonButton();
-            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
-            if (deleteFirstResourceButton.Enabled)
-            {
-                var isViewChecked = FindViewPermissionsCheckbox(
-                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
-                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
-
-                var isExecuteChecked = FindExecutePermissionsCheckbox(
-                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
-                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
-
-                if (isViewChecked && isExecuteChecked)
-                {
-                    Click_Close_Settings_Tab_Button();
-                    return;
-                }
-            }
             Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
             Click_Close_Settings_Tab_Button();
         }
@@ -1729,21 +1437,6 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
 
-        [Given(@"I Refresh Explorer")]
-        [When(@"I Refresh Explorer")]
-        [Then(@"I Refresh Explorer")]
-        public void Click_Explorer_Refresh_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-        }
-
-        [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
-        public void RefreshExplorerWithpoutWaitingForSpinner()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-        }
-
         [Given(@"I Click Close Clean Workflow Tab")]
         [When(@"I Click Close Clean Workflow Tab")]
         [Then(@"I Click Close Clean Workflow Tab")]
@@ -2175,12 +1868,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
         }
 
-        public void Click_Explorer_RemoteServer_Edit_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton, new Point(11, 10));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab was not open.");
-        }
-
         public void Enter_Text_Into_EmailSource_Tab()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.HostTextBoxEdit.Text = "localhost";
@@ -2292,12 +1979,6 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow, "{ALT}{TAB}");
             Point point;
             Assert.IsFalse(MainStudioWindow.UnpinnedTab.TryGetClickablePoint(out point), "Unpinned pane still visible after Alt+TAB");
-        }
-
-        public void Debug_Using_Play_Icon()
-        {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon.DrawHighlight();
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon);
         }
 
         [Given(@"I Assign Value To Variable With Assign Tool Small View Row 1 On Unpinned tab")]
@@ -2649,14 +2330,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.DrawHighlight();
         }
 
-        [Given(@"I Click Connect Control InExplorer")]
-        [When(@"I Click Connect Control InExplorer")]
-        [Then(@"I Click Connect Control InExplorer")]
-        public void Click_Connect_Control_InExplorer()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
-        }
-
         [Given(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
         [When(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
         [Then(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
@@ -2800,39 +2473,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TestConnectionButton, new Point(58, 16));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.Spinner);
-        }
-
-        [Given(@"I Click Explorer Filter Clear Button")]
-        [When(@"I Click Explorer Filter Clear Button")]
-        [Then(@"I Click Explorer Filter Clear Button")]
-        public void Click_Explorer_Filter_Clear_Button()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));
-        }
-
-        [When(@"I Click Explorer Localhost First Item")]
-        [Given(@"I Click Explorer Localhost First Item")]
-        [Then(@"I Click Explorer Localhost First Item")]
-        public void Click_Explorer_Localhost_First_Item()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
-        }
-
-        [Given(@"I Click Explorer Remote Server Dropdown List")]
-        [When(@"I Click Explorer Remote Server Dropdown List")]
-        [Then(@"I Click Explorer Remote Server Dropdown List")]
-        public void Click_Explorer_Remote_Server_Dropdown_List()
-        {
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
-        }
-
-        [Given(@"I Click Explorer Connect Remote Server Button")]
-        [When(@"I Click Explorer Connect Remote Server Button")]
-        [Then(@"I Click Explorer Connect Remote Server Button")]
-        public void Click_Explorer_RemoteServer_Connect_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
         }
 
         [Given(@"I Click First Recordset Input Checkbox")]
@@ -3097,14 +2737,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Help.DocumentorUnpinBtn, new Point(2, 11));
         }
 
-        [Given(@"I Click Pin Toggle Explorer")]
-        [When(@"I Click Pin Toggle Explorer")]
-        [Then(@"I Click Pin Toggle Explorer")]
-        public void Click_Pin_Toggle_Explorer()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn, new Point(12, 9));
-        }
-
         [Given(@"I Click Pin Toggle Toolbox")]
         [When(@"I Click Pin Toggle Toolbox")]
         [Then(@"I Click Pin Toggle Toolbox")]
@@ -3247,7 +2879,7 @@ namespace Warewolf.UITests
             Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
         }
 
-        //TODO: Start of "Settings\Settings.uitest"
+        #region Settings\Settings.uitest
 
         [When(@"I Click Select Windows Group OK Button")]
         public void Click_Select_Windows_Group_OK_Button()
@@ -3279,8 +2911,707 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink, new Point(79, 10));
         }
 
-        //TODO: End of "Settings\Settings.uitest"
-        //TODO: Start of "Explorer\Explorer.uitest"
+        #endregion
+        #region Explorer\Explorer.uitest
+
+        [Given(@"First remote Item should be ""(.*)""")]
+        [When(@"First remote Item should be ""(.*)""")]
+        [Then(@"First remote Item should be ""(.*)""")]
+        public void FirstRemoteItemShouldBe(string resource)
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text == resource);
+        }
+
+        public void Select_Source_From_ExplorerContextMenu(String sourceName)
+        {
+            Filter_Explorer(sourceName);
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
+        [Given(@"I DoubleClick Explorer Localhost First Item")]
+        [When(@"I DoubleClick Explorer Localhost First Item")]
+        [Then(@"I DoubleClick Explorer Localhost First Item")]
+        public void DoubleClick_Explorer_Localhost_First_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
+        [Given(@"I DoubleClick Explorer Localhost Second Item")]
+        [When(@"I DoubleClick Explorer Localhost Second Item")]
+        [Then(@"I DoubleClick Explorer Localhost Second Item")]
+        public void DoubleClick_Explorer_Localhost_Second_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem);
+        }
+
+        [Given(@"Folder Is Removed From Explorer")]
+        [When(@"Folder Is Removed From Explorer")]
+        [Then(@"Folder Is Removed From Explorer")]
+        public void ThenFolderIsRemovedFromExplorer()
+        {
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
+        }
+
+        [Then(@"""(.*)"" Resource Exists In Windows Directory ""(.*)""")]
+        public void ResourceExistsInWindowsDirectory(string serviceName, string path)
+        {
+            Filter_Explorer(serviceName);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
+        }
+
+        [Given(@"Explorer Contain Item ""(.*)""")]
+        [When(@"Explorer Contain Item ""(.*)""")]
+        [Then(@"Explorer Contain Item ""(.*)""")]
+        public void ExplorerContainItem(string itemName)
+        {
+            Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text);
+        }
+
+        [Given(@"Save Dialog Explorer Contain Item ""(.*)""")]
+        [When(@"Save Dialog Explorer Contain Item ""(.*)""")]
+        [Then(@"Save Dialog Explorer Contain Item ""(.*)""")]
+        public void ThenSaveDialogExplorerContainItem(string itemName)
+        {
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(itemName));
+        }
+
+        [Given(@"Explorer Does Not Contain Item ""(.*)""")]
+        [When(@"Explorer Does Not Contain Item ""(.*)""")]
+        [Then(@"Explorer Does Not Contain Item ""(.*)""")]
+        public void ExplorerDoesNotContainItem(string p0)
+        {
+            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem));
+        }
+
+        [Given(@"Explorer Contain Sub Item ""(.*)""")]
+        [When(@"Explorer Contain Sub Item ""(.*)""")]
+        [Then(@"Explorer Contain Sub Item ""(.*)""")]
+        public void ExplorerContainSubFolder(string itemName)
+        {
+            Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text);
+        }
+
+        [Given(@"Explorer Items appear on the Explorer Tree")]
+        [When(@"Explorer Items appear on the Explorer Tree")]
+        [Then(@"Explorer Items appear on the Explorer Tree")]
+        public void ExplorerItemsAppearOnTheExplorerTree()
+        {
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem));
+        }
+
+        [Given(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        [When(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        [Then(@"Explorer Items appear on the Save Dialog Explorer Tree")]
+        public void ExplorerItemsAppearOnTheSaveDialogExplorerTree()
+        {
+            Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
+            Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
+        }
+
+        [Given(@"Filter Textbox is cleared")]
+        [When(@"Filter Textbox is cleared")]
+        [Then(@"Filter Textbox is cleared")]
+        public void ThenFilterTextboxIsCleared()
+        {
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text), "Explorer Filter Textbox text is not blank after clicking the clear button.");
+        }
+
+        [Given(@"Filter Textbox has ""(.*)""")]
+        [When(@"Filter Textbox has ""(.*)""")]
+        [Then(@"Filter Textbox has ""(.*)""")]
+        public void ThenFilterTextboxHas(string filterText)
+        {
+            Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
+        }
+
+        [Given(@"I am connected on a remote server")]
+        [When(@"I am connected on a remote server")]
+        [Then(@"I am connected on a remote server")]
+        public void GivenIAmConnectedOnARemoteServer()
+        {
+            Select_RemoteConnectionIntegration_From_Explorer();
+            Click_Explorer_RemoteServer_Connect_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
+        }
+
+        [Then(@"Remote Server Refreshes")]
+        public void ThenRemoteServerRefreshes()
+        {
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner));
+            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
+            Point point;
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner.TryGetClickablePoint(out point));
+        }
+
+        [Given(@"I Create New Workflow using shortcut")]
+        [When(@"I Create New Workflow using shortcut")]
+        [Then(@"I Create New Workflow using shortcut")]
+        public void Create_New_Workflow_In_LocalHost_With_Shortcut()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, new Point(74, 8));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, "W", (ModifierKeys.Control));
+        }
+
+        public void Create_New_Folder_Using_Shortcut()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, new Point(74, 8));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
+        }
+
+        [Given(@"I Double Click Localhost Server")]
+        [When(@"I Double Click Localhost Server")]
+        [Then(@"I Double Click Localhost Server")]
+        public void DoubleClick_Localhost_Server()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
+        }
+
+        [When(@"I Drag Explorer First Sub Item Onto Second Sub Item")]
+        public void Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem.EnsureClickable(new Point(90, 7));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem, new Point(90, 7));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+        }
+
+        [When(@"I Drag Explorer First Item Onto Second Sub Item")]
+        public void Drag_Explorer_First_Item_Onto_Second_Item()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.EnsureClickable(new Point(90, 7));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
+        }
+
+        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
+        [When(@"I Select RemoteConnectionIntegration From Explorer")]
+        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
+        public void Select_RemoteConnectionIntegration_From_Explorer()
+        {
+            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
+            Mouse.Click(toggleButton, new Point(136, 7));
+            Playback.Wait(1000);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
+        }
+
+        [Given(@"I Select Connected RemoteConnectionIntegration From Explorer")]
+        [When(@"I Select Connected RemoteConnectionIntegration From Explorer")]
+        [Then(@"I Select Connected RemoteConnectionIntegration From Explorer")]
+        public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Playback.Wait(500);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
+        }
+
+        [Then(@"Remote ""(.*)"" is open")]
+        public void RemoteResourceIsOpen(string tabName)
+        {
+            Playback.Wait(500);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists);
+            Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
+        }
+
+        [Then(@"Local ""(.*)"" is open")]
+        public void LocalResourceIsOpen(string tabName)
+        {
+            Playback.Wait(1000);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "First Item does not exist in tree.");
+            Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
+        }
+
+        [When(@"I Select NewWorkFlowService From ContextMenu")]
+        public void Select_NewWorkFlowService_From_ContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
+            Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow.Enabled, "NewWorkFlowService button is disabled.");
+            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow, new Point(79, 13));
+        }
+
+        [When(@"I Search And Select DiceRoll")]
+        public void Search_And_Select_DiceRoll()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, new Point(165, 9));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = "Dice Roll";
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+        }
+
+        [When(@"I Search And Select HelloWolrd")]
+        public void Search_And_Select_HelloWolrd()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, new Point(165, 9));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = "Hello World";
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
+        }
+
+        [Given(@"I RightClick Explorer First Remote Server First Item")]
+        [When(@"I RightClick Explorer First Remote Server First Item")]
+        [Then(@"I RightClick Explorer First Remote Server First Item")]
+        public void RightClick_Explorer_FirstRemoteServer_FirstItem()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+        }
+
+        [Given(@"I RightClick Explorer Localhost First Item")]
+        [When(@"I RightClick Explorer Localhost First Item")]
+        [Then(@"I RightClick Explorer Localhost First Item")]
+        public void RightClick_Explorer_Localhost_FirstItem()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+
+        [Given(@"I RightClick Localhost")]
+        [When(@"I RightClick Localhost")]
+        [Then(@"I RightClick Localhost")]
+        public void RightClick_Localhost()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+
+        [Given(@"I Rename LocalFolder To SecondFolder")]
+        [When(@"I Rename LocalFolder To SecondFolder")]
+        [Then(@"I Rename LocalFolder To SecondFolder")]
+        public void Rename_LocalFolder_To_SecondFolder(string newName)
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [Given(@"I Rename LocalWorkflow To SecodWorkFlow")]
+        [When(@"I Rename LocalWorkflow To SecodWorkFlow")]
+        [Then(@"I Rename LocalWorkflow To SecodWorkFlow")]
+        public void Rename_LocalWorkflow_To_SecodWorkFlow()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
+            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(73, 15));
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = "SecondWorkflow";
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [When(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Then(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Given(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
+        public void Rename_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [When(@"I Rename Explorer First item")]
+        [Then(@"I Rename Explorer First item")]
+        [Given(@"I Rename Explorer First item")]
+        public void Rename_Explorer_First_Item(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [When(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Then(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        [Given(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
+        public void Rename_Remote_Folder_Using_Shortcut(string newName)
+        {
+            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
+            Mouse.Click(firstItem);
+            Keyboard.SendKeys(firstItem, "{F2}");
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [Given(@"I Rename FolderItem ToNewFolderItem")]
+        [When(@"I Rename FolderItem ToNewFolderItem")]
+        [Then(@"I Rename FolderItem ToNewFolderItem")]
+        public void Rename_FolderItem_ToNewFolderItem(string newName)
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Select_Rename_From_Explorer_ContextMenu();
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text = newName;
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit, "{Enter}", ModifierKeys.None);
+        }
+
+        [When(@"I DoubleClick Explorer First Remote Server First Item")]
+        public void DoubleClick_Explorer_First_Remote_Server_First_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(63, 11));
+        }
+
+        [Given(@"I Click Pin Toggle Explorer")]
+        [When(@"I Click Pin Toggle Explorer")]
+        [Then(@"I Click Pin Toggle Explorer")]
+        public void Click_Pin_Toggle_Explorer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn, new Point(12, 9));
+        }
+
+        [Given(@"I Click Explorer Filter Clear Button")]
+        [When(@"I Click Explorer Filter Clear Button")]
+        [Then(@"I Click Explorer Filter Clear Button")]
+        public void Click_Explorer_Filter_Clear_Button()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton, new Point(6, 8));
+        }
+
+        [When(@"I Click Explorer Localhost First Item")]
+        [Given(@"I Click Explorer Localhost First Item")]
+        [Then(@"I Click Explorer Localhost First Item")]
+        public void Click_Explorer_Localhost_First_Item()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
+        [Given(@"I Click Explorer Remote Server Dropdown List")]
+        [When(@"I Click Explorer Remote Server Dropdown List")]
+        [Then(@"I Click Explorer Remote Server Dropdown List")]
+        public void Click_Explorer_Remote_Server_Dropdown_List()
+        {
+            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
+        }
+
+        [Given(@"I Click Explorer Connect Remote Server Button")]
+        [When(@"I Click Explorer Connect Remote Server Button")]
+        [Then(@"I Click Explorer Connect Remote Server Button")]
+        public void Click_Explorer_RemoteServer_Connect_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
+        }
+
+        [Given(@"I Click Connect Control InExplorer")]
+        [When(@"I Click Connect Control InExplorer")]
+        [Then(@"I Click Connect Control InExplorer")]
+        public void Click_Connect_Control_InExplorer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
+        }
+
+        public void Debug_Using_Play_Icon()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon.DrawHighlight();
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon);
+        }
+
+        public void Click_Explorer_RemoteServer_Edit_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton, new Point(11, 10));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab was not open.");
+        }
+
+        [Given(@"I Refresh Explorer")]
+        [When(@"I Refresh Explorer")]
+        [Then(@"I Refresh Explorer")]
+        public void Click_Explorer_Refresh_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+        }
+
+        [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        public void RefreshExplorerWithpoutWaitingForSpinner()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+        }
+
+        [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
+        public void SetupPublicPermissionsForForRemoteServer(string resource)
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
+            Select_RemoteConnectionIntegration_From_Explorer();
+            Click_Explorer_RemoteServer_Connect_Button();
+            Playback.Wait(1000);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
+            Click_Settings_RibbonButton();
+            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
+            if (deleteFirstResourceButton.Enabled)
+            {
+                var isViewChecked = FindViewPermissionsCheckbox(
+                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
+
+                var isExecuteChecked = FindExecutePermissionsCheckbox(
+                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
+
+                if (isViewChecked && isExecuteChecked)
+                {
+                    Click_Close_Settings_Tab_Button();
+                    return;
+                }
+            }
+            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+            Click_Close_Settings_Tab_Button();
+        }
+
+        [Given(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
+        [When(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
+        [Then(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
+        public void Save_Valid_Service_With_Ribbon_Button_And_Dialog(string Name)
+        {
+            Click_Save_RibbonButton();
+            Enter_Valid_Service_Name_Into_Save_Dialog(Name);
+            Click_SaveDialog_Save_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+        }
+
+        public void TryRefreshExplorerUntilOneItemOnly(int retries = 3)
+        {
+            while ((ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem) || ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.SecondItem)) && retries-- > 0)
+            {
+                Click_Explorer_Refresh_Button();
+            }
+        }
+
+        public void Select_RemoteConnectionIntegration_From_Explorer_Remote_Server_Dropdown_List(WpfText comboboxListItem)
+        {
+            Click_Explorer_Remote_Server_Dropdown_List();
+            Assert.IsTrue(comboboxListItem.Exists, "Server does not exist in explorer remote server drop down list.");
+            Mouse.Click(comboboxListItem, new Point(79, 8));
+        }
+
+        public void Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List()
+        {
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected, new Point(80, 13));
+        }
+
+        [When(@"I Select NewRemoteServer From Explorer Server Dropdownlist")]
+        public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer.NewRemoteServerItemText, new Point(114, 10));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Exists, "Server source wizard does not exist.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard protocol dropdown does not exist.");
+        }
+
+        public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(94, 10));
+            Assert.AreEqual("localhost", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost.DisplayText, "Selected remote server is not localhost");
+        }
+
+        public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(174, 8));
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
+        }
+
+        [When(@"I Move FirstSubItem Into FirstItem Folder")]
+        public void Move_FirstSubItem_Into_FirstItem_Folder()
+        {
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
+        [When(@"I Click Localhost")]
+        [Then(@"I Click Localhost")]
+        [Given(@"I Click Localhost")]
+        public void Click_LocalHost_Once()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
+        }
+
+        [Given(@"I Filter the Explorer with ""(.*)""")]
+        [When(@"I Filter the Explorer with ""(.*)""")]
+        [Then(@"I Filter the Explorer with ""(.*)""")]
+        public void Filter_Explorer(string FilterText)
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+        }
+
+        public void Filter_ServicePicker_Explorer(string FilterText)
+        {
+            ServicePickerDialog.Explorer.FilterTextbox.Text = FilterText;
+            WaitForControlVisible(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+        }
+
+        [Given(@"I Try DisConnect To Remote Server")]
+        [When(@"I Try DisConnect To Remote Server")]
+        [Then(@"I Try DisConnect To Remote Server")]
+        public void TryDisConnectToRemoteServer()
+        {
+            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
+            {
+                Click_Explorer_RemoteServer_Connect_Button();
+                Click_Connect_Control_InExplorer();
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
+            }
+            else
+            {
+                Click_Connect_Control_InExplorer();
+                if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
+                {
+                    Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
+                    Click_Explorer_RemoteServer_Connect_Button();
+                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegration.Exists);
+                    Click_Connect_Control_InExplorer();
+                    Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
+                }
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
+            }
+        }
+
+        [When(@"I Wait For Explorer Localhost Spinner")]
+        public void WaitForExplorerLocalhostSpinner()
+        {
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+        }
+
+        [Given(@"I Wait For Explorer First Remote Server Spinner")]
+        [When(@"I Wait For Explorer First Remote Server Spinner")]
+        [Then(@"I Wait For Explorer First Remote Server Spinner")]
+        public void WaitForExplorerFirstRemoteServerSpinner()
+        {
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Checkbox.Spinner);
+        }
+
+        [Given(@"I Try Remove ""(.*)"" From Explorer")]
+        [When(@"I Try Remove ""(.*)"" From Explorer")]
+        [Then(@"I Try Remove ""(.*)"" From Explorer")]
+        public void WhenITryRemoveFromExplorer(string ResourceName)
+        {
+            Filter_Explorer(ResourceName);
+            try
+            {
+                var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources";
+                if (File.Exists(resourcesFolder + @"\" + ResourceName + ".xml"))
+                {
+                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                    if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
+                    {
+                        RightClick_Explorer_Localhost_FirstItem();
+                        Select_Delete_From_ExplorerContextMenu();
+                        Click_MessageBox_Yes();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove resource " + ResourceName + " from the explorer.\n" + e.Message);
+            }
+            finally
+            {
+                TryClearExplorerFilter();
+            }
+        }
+
+        [When(@"I Connect To Remote Server")]
+        public void ConnectToRemoteServer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
+            Click_Explorer_RemoteServer_Connect_Button();
+        }
+
+        [When(@"I Try Connect To Remote Server")]
+        public void TryConnectToRemoteServer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
+            {
+                Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(226, 13));
+            }
+            else
+            {
+                Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
+                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
+                Click_Explorer_RemoteServer_Connect_Button();
+            }
+        }
+
+        [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
+        [When(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
+        [Then(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
+        public void I_Try_Remove_From_Remote_Server_Explorer(string ResourceName)
+        {
+            TryConnectToRemoteServer();
+            Filter_Explorer(ResourceName);
+            try
+            {
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem))
+                {
+                    MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.DrawHighlight();
+                    WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                    RightClick_Explorer_FirstRemoteServer_FirstItem();
+                    Select_Delete_From_ExplorerContextMenu();
+                    Click_MessageBox_Yes();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove resource " + ResourceName + " from the explorer.\n" + e.Message);
+            }
+            finally
+            {
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton))
+                    TryClearExplorerFilter();
+            }
+        }
+
+        public void TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(string SourceName)
+        {
+            try
+            {
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
+                {
+                    Click_Explorer_RemoteServer_Connect_Button();
+                }
+                else
+                {
+                    Click_Connect_Control_InExplorer();
+                    if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected))
+                    {
+                        Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
+                        Click_Explorer_RemoteServer_Connect_Button();
+                    }
+                }
+                Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
+                Filter_Explorer(SourceName);
+                WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
+                {
+                    RightClick_Explorer_Localhost_FirstItem();
+                    Select_Delete_From_ExplorerContextMenu();
+                    Click_MessageBox_Yes();
+                }
+                TryClearExplorerFilter();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cleanup failed to remove remote server " + SourceName + ". Test may have crashed before remote server " + SourceName + " was connected.\n" + e.Message);
+                TryClearExplorerFilter();
+            }
+        }
+
+        public void TryClearExplorerFilter()
+        {
+            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
+            {
+                Click_Explorer_Filter_Clear_Button();
+                Click_Explorer_Refresh_Button();
+            }
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text == string.Empty, "Explorer filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text + " is not empty after clicking clear filter button.");
+        }
+
+        [When(@"I Click UnDock Explorer")]
+        public void Click_UnDock_Explorer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerUnpinBtn, new Point(177, -13));
+        }
 
         [Given(@"I Click New Web Source Explorer Context Menu Button")]
         [When(@"I Click New Web Source Explorer Context Menu Button")]
@@ -3672,8 +4003,8 @@ namespace Warewolf.UITests
             Mouse.Click(MessageBoxWindow.YesButton, new Point(7, 12));
         }
 
-        //TODO: End of "Explorer\Explorer.uitest
-        //TODO: Start of proposed new UI map "Tools\WorkflowDesigner.uitest"
+        #endregion
+#region Tools\WorkflowDesigner.uitest
 
         [When(@"I Click RequireAllFieldsToMatch CheckBox")]
         public void Click_RequireAllFieldsToMatch_CheckBox()
@@ -4679,20 +5010,11 @@ namespace Warewolf.UITests
 
         public void DeleteAssign_FromContextMenu()
         {
-            #region Variable Declarations
-            WpfMenuItem delete = MainStudioWindow.DesignSurfaceContextMenu.Delete;
-            WpfWindow messageBoxWindow = MessageBoxWindow;
-            WpfCustom multiAssign = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            #endregion
-
             var point = new Point();
-            Assert.IsTrue(multiAssign.TryGetClickablePoint(out point));
-            // Right-Click 'DsfMultiAssignActivity' custom control
-            Mouse.Click(multiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
-
-            // Click 'Delete' menu item
-            Mouse.Click(delete, new Point(27, 18));
-            Assert.IsFalse(multiAssign.TryGetClickablePoint(out point));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.TryGetClickablePoint(out point));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, MouseButtons.Right, ModifierKeys.None, new Point(115, 10));
+            Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Delete, new Point(27, 18));
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.TryGetClickablePoint(out point));
         }
 
         [Then(@"The Case Dialog Must Be Open")]
@@ -4796,12 +5118,6 @@ namespace Warewolf.UITests
         public void DisplayStartNodeContextMenu()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, MouseButtons.Right, ModifierKeys.None, new Point(179, 31));
-        }
-
-        [When(@"I DoubleClick Explorer First Remote Server First Item")]
-        public void DoubleClick_Explorer_First_Remote_Server_First_Item()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(63, 11));
         }
 
         [When(@"I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
@@ -7738,7 +8054,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.SmallViewContent.ItemButton);
         }
 
-        //TODO: End of UIMap.WorkflowDesigner.uitest
+        #endregion
 
         [Given(@"I Press F6")]
         [When(@"I Press F6")]
@@ -7786,17 +8102,6 @@ namespace Warewolf.UITests
             Assert.AreEqual(false, SaveDialogWindow.SaveButton.Enabled, "Save button on the Save dialog is enabled");
         }
 
-        [Given(@"I Rename FolderItem ToNewFolderItem")]
-        [When(@"I Rename FolderItem ToNewFolderItem")]
-        [Then(@"I Rename FolderItem ToNewFolderItem")]
-        public void Rename_FolderItem_ToNewFolderItem(string newName)
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Select_Rename_From_Explorer_ContextMenu();
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text = newName;
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit, "{Enter}", ModifierKeys.None);
-        }
-
         [Given(@"I Select Rename From Explorer Context Menu")]
         [When(@"I Select Rename From Explorer Context Menu")]
         [Then(@"I Select Rename From Explorer Context Menu")]
@@ -7811,64 +8116,6 @@ namespace Warewolf.UITests
         private void Select_Rename_From_SaveDialog_ContextMenu()
         {
             Mouse.Click(SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem);
-        }
-
-        [When(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
-        [Then(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
-        [Given(@"I Rename Folder to ""(.*)"" Using Shortcut KeyF2")]
-        public void Rename_Folder_Using_Shortcut(string newName)
-        {
-            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            Mouse.Click(firstItem);
-            Keyboard.SendKeys(firstItem, "{F2}");
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
-        }
-
-        [When(@"I Rename Explorer First item")]
-        [Then(@"I Rename Explorer First item")]
-        [Given(@"I Rename Explorer First item")]
-        public void Rename_Explorer_First_Item(string newName)
-        {
-            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            Mouse.Click(firstItem);
-            Keyboard.SendKeys(firstItem, "{F2}");
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
-        }
-
-        [When(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
-        [Then(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
-        [Given(@"I Rename Remote Folder to ""(.*)"" Using Shortcut KeyF2")]
-        public void Rename_Remote_Folder_Using_Shortcut(string newName)
-        {
-            var firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem;
-            Mouse.Click(firstItem);
-            Keyboard.SendKeys(firstItem, "{F2}");
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text = newName;
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
-        }
-
-        [Given(@"I Rename LocalFolder To SecondFolder")]
-        [When(@"I Rename LocalFolder To SecondFolder")]
-        [Then(@"I Rename LocalFolder To SecondFolder")]
-        public void Rename_LocalFolder_To_SecondFolder(string newName)
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename);
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = newName;
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
-        }
-
-        [Given(@"I Rename LocalWorkflow To SecodWorkFlow")]
-        [When(@"I Rename LocalWorkflow To SecodWorkFlow")]
-        [Then(@"I Rename LocalWorkflow To SecodWorkFlow")]
-        public void Rename_LocalWorkflow_To_SecodWorkFlow()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
-            Mouse.Click(MainStudioWindow.ExplorerContextMenu.Rename, new Point(73, 15));
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text = "SecondWorkflow";
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit, "{Enter}", ModifierKeys.None);
         }
 
         [Given(@"I Restore Unpinned Tab Using Context Menu")]
@@ -7886,30 +8133,6 @@ namespace Warewolf.UITests
         public void Right_Click_Help_Tab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.HelpTab, MouseButtons.Right, ModifierKeys.None, new Point(64, 15));
-        }
-
-        [Given(@"I RightClick Explorer First Remote Server First Item")]
-        [When(@"I RightClick Explorer First Remote Server First Item")]
-        [Then(@"I RightClick Explorer First Remote Server First Item")]
-        public void RightClick_Explorer_FirstRemoteServer_FirstItem()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
-        }
-
-        [Given(@"I RightClick Explorer Localhost First Item")]
-        [When(@"I RightClick Explorer Localhost First Item")]
-        [Then(@"I RightClick Explorer Localhost First Item")]
-        public void RightClick_Explorer_Localhost_FirstItem()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
-        }
-
-        [Given(@"I RightClick Localhost")]
-        [When(@"I RightClick Localhost")]
-        [Then(@"I RightClick Localhost")]
-        public void RightClick_Localhost()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
 
         [Given(@"I RightClick Save Dialog Localhost")]
@@ -7945,22 +8168,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, new Point(77, 9));
             Keyboard.SendKeys(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, "F", (ModifierKeys.Control | ModifierKeys.Shift));
-        }
-
-        [When(@"I Search And Select DiceRoll")]
-        public void Search_And_Select_DiceRoll()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, new Point(165, 9));
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = "Dice Roll";
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
-        }
-
-        [When(@"I Search And Select HelloWolrd")]
-        public void Search_And_Select_HelloWolrd()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox, new Point(165, 9));
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = "Hello World";
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(101, 9));
         }
 
         [When(@"I Select Copy FromContextMenu")]
@@ -8058,36 +8265,12 @@ namespace Warewolf.UITests
             Assert.IsTrue(MessageBoxWindow.DeleteConfirmation.Exists);
         }
 
-        [When(@"I Select NewWorkFlowService From ContextMenu")]
-        public void Select_NewWorkFlowService_From_ContextMenu()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(75, 10));
-            Assert.IsTrue(MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow.Enabled, "NewWorkFlowService button is disabled.");
-            Mouse.Click(MainStudioWindow.ExplorerEnvironmentContextMenu.NewWorkflow, new Point(79, 13));
-        }
-
         [Given(@"I Select Open FromExplorerContextMenu")]
         [When(@"I Select Open FromExplorerContextMenu")]
         [Then(@"I Select Open FromExplorerContextMenu")]
         public void Select_Open_FromExplorerContextMenu()
         {
             Mouse.Click(MainStudioWindow.ExplorerContextMenu.Open);
-        }
-
-        [Then(@"Remote ""(.*)"" is open")]
-        public void RemoteResourceIsOpen(string tabName)
-        {
-            Playback.Wait(500);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists);
-            Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
-        }
-
-        [Then(@"Local ""(.*)"" is open")]
-        public void LocalResourceIsOpen(string tabName)
-        {
-            Playback.Wait(1000);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "First Item does not exist in tree.");
-            Assert.AreEqual(tabName, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText);
         }
         
         [When(@"I Select Paste FromContextMenu")]
@@ -8165,27 +8348,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Selected source server in deploy is not localhost (Connected).");
         }
 
-        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
-        [When(@"I Select RemoteConnectionIntegration From Explorer")]
-        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
-        public void Select_RemoteConnectionIntegration_From_Explorer()
-        {
-            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
-            Mouse.Click(toggleButton, new Point(136, 7));
-            Playback.Wait(1000);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-        }
-
-        [Given(@"I Select Connected RemoteConnectionIntegration From Explorer")]
-        [When(@"I Select Connected RemoteConnectionIntegration From Explorer")]
-        [Then(@"I Select Connected RemoteConnectionIntegration From Explorer")]
-        public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Playback.Wait(500);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
-        }
-
         [When(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Source Server Combobox")]
         public void Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
         {
@@ -8225,31 +8387,6 @@ namespace Warewolf.UITests
         public void Select_ShowLargeView_FromContextMenu()
         {
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.ShowLargeView, new Point(43, 15));
-        }
-
-        [When(@"I Drag Explorer First Sub Item Onto Second Sub Item")]
-        public void Drag_Explorer_First_Sub_Item_Onto_Second_Sub_Item()
-        {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem.EnsureClickable(new Point(90, 7));
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, new Point(94, 11));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem, new Point(90, 7));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-        }
-
-        [When(@"I Drag Explorer First Item Onto Second Sub Item")]
-        public void Drag_Explorer_First_Item_Onto_Second_Item()
-        {
-            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.EnsureClickable(new Point(90, 7));
-            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
-        }
-
-        [Given(@"I Double Click Localhost Server")]
-        [When(@"I Double Click Localhost Server")]
-        [Then(@"I Double Click Localhost Server")]
-        public void DoubleClick_Localhost_Server()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
         }
 
         [When(@"I Click Web Browser Error Messagebox OK Button")]
@@ -8416,79 +8553,21 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.RunAllButton);
         }
 
-        /// <summary>
-        /// Create_New_Folder_Using_Shortcut - Use 'Create_New_Folder_Using_ShortcutParams' to pass parameters into this method.
-        /// </summary>
-        public void Create_New_Folder_Using_Shortcut()
-        {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            #endregion
-
-            Mouse.Click(localhost, new Point(74, 8));
-
-            Keyboard.SendKeys(localhost, "F", (ModifierKeys.Control | ModifierKeys.Shift));
-        }
-
-        [Given(@"I Create New Workflow using shortcut")]
-        [When(@"I Create New Workflow using shortcut")]
-        [Then(@"I Create New Workflow using shortcut")]
-        public void Create_New_Workflow_In_LocalHost_With_Shortcut()
-        {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            #endregion
-
-            Mouse.Click(localhost, new Point(74, 8));
-
-            Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
-        }
-
         public void Create_New_Workflow_In_Explorer_First_Item_With_Shortcut()
         {
-            #region Variable Declarations
-            WpfTreeItem firstItem = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem;
-            #endregion
-
-            Mouse.Click(firstItem, new Point(74, 8));
-
-            Keyboard.SendKeys(firstItem, "W", (ModifierKeys.Control));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(74, 8));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, "W", (ModifierKeys.Control));
         }
 
         public void Create_New_Workflow_Using_Shortcut()
         {
-            #region Variable Declarations
-            WpfTreeItem localhost = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost;
-            #endregion
-
-            Mouse.Click(localhost, new Point(74, 8));
-
-            Keyboard.SendKeys(localhost, "W", (ModifierKeys.Control));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, new Point(74, 8));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, "W", (ModifierKeys.Control));
         }
 
         public void Open_Deploy_Using_Shortcut()
         {
             Keyboard.SendKeys("D", (ModifierKeys.Control));
-        }
-
-        [Given(@"I am connected on a remote server")]
-        [When(@"I am connected on a remote server")]
-        [Then(@"I am connected on a remote server")]
-        public void GivenIAmConnectedOnARemoteServer()
-        {
-            Select_RemoteConnectionIntegration_From_Explorer();
-            Click_Explorer_RemoteServer_Connect_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
-        }
-
-        [Then(@"Remote Server Refreshes")]
-        public void ThenRemoteServerRefreshes()
-        {
-            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner));
-            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
-            Point point;
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner.TryGetClickablePoint(out point));
         }
 
         [Then(@"Filtered Resourse Is Checked For Deploy")]
@@ -8562,23 +8641,6 @@ namespace Warewolf.UITests
         public void Click_SelectAllDependencies_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.ShowDependenciesButton);
-        }
-
-        [Given(@"Filter Textbox is cleared")]
-        [When(@"Filter Textbox is cleared")]
-        [Then(@"Filter Textbox is cleared")]
-        public void ThenFilterTextboxIsCleared()
-        {
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            Assert.IsTrue(string.IsNullOrEmpty(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text), "Explorer Filter Textbox text is not blank after clicking the clear button.");
-        }
-
-        [Given(@"Filter Textbox has ""(.*)""")]
-        [When(@"Filter Textbox has ""(.*)""")]
-        [Then(@"Filter Textbox has ""(.*)""")]
-        public void ThenFilterTextboxHas(string filterText)
-        {
-            Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
         }
 
         [Given(@"Unit Tests Url Exists")]
@@ -8711,56 +8773,6 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(namedFolderExit, "{Right}{Enter}", ModifierKeys.None);
         }
 
-        [Given(@"Explorer Contain Item ""(.*)""")]
-        [When(@"Explorer Contain Item ""(.*)""")]
-        [Then(@"Explorer Contain Item ""(.*)""")]
-        public void ExplorerContainItem(string itemName)
-        {
-            Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text);
-        }
-
-        [Given(@"Save Dialog Explorer Contain Item ""(.*)""")]
-        [When(@"Save Dialog Explorer Contain Item ""(.*)""")]
-        [Then(@"Save Dialog Explorer Contain Item ""(.*)""")]
-        public void ThenSaveDialogExplorerContainItem(string itemName)
-        {
-            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(itemName));
-        }
-
-        [Given(@"Explorer Does Not Contain Item ""(.*)""")]
-        [When(@"Explorer Does Not Contain Item ""(.*)""")]
-        [Then(@"Explorer Does Not Contain Item ""(.*)""")]
-        public void ExplorerDoesNotContainItem(string p0)
-        {
-            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem));
-        }
-
-        [Given(@"Explorer Contain Sub Item ""(.*)""")]
-        [When(@"Explorer Contain Sub Item ""(.*)""")]
-        [Then(@"Explorer Contain Sub Item ""(.*)""")]
-        public void ExplorerContainSubFolder(string itemName)
-        {
-            Assert.AreEqual(itemName, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ItemEdit.Text);
-        }
-
-        [Given(@"Explorer Items appear on the Explorer Tree")]
-        [When(@"Explorer Items appear on the Explorer Tree")]
-        [Then(@"Explorer Items appear on the Explorer Tree")]
-        public void ExplorerItemsAppearOnTheExplorerTree()
-        {
-            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
-            Assert.IsTrue(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem));
-        }
-
-        [Given(@"Explorer Items appear on the Save Dialog Explorer Tree")]
-        [When(@"Explorer Items appear on the Save Dialog Explorer Tree")]
-        [Then(@"Explorer Items appear on the Save Dialog Explorer Tree")]
-        public void ExplorerItemsAppearOnTheSaveDialogExplorerTree()
-        {
-            Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
-            Assert.IsTrue(ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
-        }
-
         [Given(@"Resource Did not Open")]
         [When(@"Resource Did not Open")]
         [Then(@"Resource Did not Open")]
@@ -8818,14 +8830,6 @@ namespace Warewolf.UITests
             Mouse.StopDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, new Point(90, 11));
         }
 
-        [Then(@"""(.*)"" Resource Exists In Windows Directory ""(.*)""")]
-        public void ResourceExistsInWindowsDirectory(string serviceName, string path)
-        {
-            Filter_Explorer(serviceName);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
-        }
-
-
         [Given(@"Context Menu Has Two Items")]
         [When(@"Context Menu Has Two Items")]
         [Then(@"Context Menu Has Two Items")]
@@ -8838,13 +8842,6 @@ namespace Warewolf.UITests
             Assert.IsFalse(SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem.TryGetClickablePoint(out point));
         }
 
-        [Given(@"Folder Is Removed From Explorer")]
-        [When(@"Folder Is Removed From Explorer")]
-        [Then(@"Folder Is Removed From Explorer")]
-        public void ThenFolderIsRemovedFromExplorer()
-        {
-            Assert.IsFalse(ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
-        }
         [Given(@"I Filter Variable List ""(.*)""")]
         [When(@"I Filter Variable List ""(.*)""")]
         [Then(@"I Filter Variable List ""(.*)""")]
@@ -8901,22 +8898,6 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.TestConnectionButton, new Point(58, 16));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.Spinner);
-        }
-        
-        [Given(@"I DoubleClick Explorer Localhost First Item")]
-        [When(@"I DoubleClick Explorer Localhost First Item")]
-        [Then(@"I DoubleClick Explorer Localhost First Item")]
-        public void DoubleClick_Explorer_Localhost_First_Item()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
-        }
-
-        [Given(@"I DoubleClick Explorer Localhost Second Item")]
-        [When(@"I DoubleClick Explorer Localhost Second Item")]
-        [Then(@"I DoubleClick Explorer Localhost Second Item")]
-        public void DoubleClick_Explorer_Localhost_Second_Item()
-        {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem);
         }
 
         [Given(@"Filtered Item Exists")]
@@ -9126,13 +9107,6 @@ namespace Warewolf.UITests
             Click_RunAllTests_On_FirstLocalhostItem_From_ExplorerContextMenu();
         }
 
-        [Given(@"First remote Item should be ""(.*)""")]
-        [When(@"First remote Item should be ""(.*)""")]
-        [Then(@"First remote Item should be ""(.*)""")]
-        public void FirstRemoteItemShouldBe(string resource)
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.ItemEdit.Text == resource);
-        }
         [Given(@"I change Server Authentication type")]
         [When(@"I change Server Authentication type")]
         [Then(@"I change Server Authentication type")]
@@ -9345,11 +9319,6 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(scheduleNewTaskListItem, "N", ModifierKeys.Control);
         }
 
-        public void Select_Source_From_ExplorerContextMenu(String sourceName)
-        {
-            Filter_Explorer(sourceName);
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
-        }
         public void Change_Dll_And_Save(string newDll)
         {
             AssemblyComboBox assembly = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox;            
