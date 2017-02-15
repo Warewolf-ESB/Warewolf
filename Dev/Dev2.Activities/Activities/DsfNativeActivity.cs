@@ -553,18 +553,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }            
 
             if (_debugState != null)
-            {
-                _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
-                _debugState.StateType = stateType;
-                if (endTime != null)
+            {               
+                if (stateType != StateType.Before)
                 {
-                    _debugState.StartTime = startTime ?? DateTime.Now;
+                    if (endTime == null)
+                    {
+                        endTime = DateTime.Now;
+                    }
                     _debugState.EndTime = endTime.Value;
                 }
-                else
-                {
-                    _debugState.EndTime = startTime ?? DateTime.Now;
-                }
+
+                _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
+                _debugState.StateType = stateType;
                 _debugState.HasError = hasError;
                 _debugState.ErrorMessage = errorMessage;
                 try
@@ -611,34 +611,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Dev2Logger.Info("Debug Already Started");
             }
 
-                if (_debugState != null)
+            if (_debugState != null)
+            {
+                if (stateType == StateType.Before)
                 {
-                    var type = GetType();
-                    var instance = Activator.CreateInstance(type);
-                    var activity = instance as Activity;
-                    if (activity != null)
+                    if (startTime == null)
                     {
-                        _debugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
+                        startTime = DateTime.Now;
                     }
-                    var act = instance as DsfActivity;
-                    try
+                    _debugState.StartTime = startTime.Value;
+                }
+                var type = GetType();
+                var instance = Activator.CreateInstance(type);
+                var activity = instance as Activity;
+                if (activity != null)
+                {
+                    _debugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
+                }
+                var act = instance as DsfActivity;
+                try
+                {
+                    var debugInputs = GetDebugInputs(dataObject.Environment, update);
+                    Copy(debugInputs, _debugState.Inputs);
+                }
+                catch (Exception err)
+                {
+                    Dev2Logger.Error("DispatchDebugState", err);
+                    AddErrorToDataList(err, dataObject);
+                    var errorMessage = dataObject.Environment.FetchErrors();
+                    _debugState.ErrorMessage = errorMessage;
+                    _debugState.HasError = true;
+                    var debugError = err as DebugCopyException;
+                    if (debugError != null)
                     {
-                        var debugInputs = GetDebugInputs(dataObject.Environment, update);
-                        Copy(debugInputs, _debugState.Inputs);
+                        _debugState.Inputs.Add(debugError.Item);
                     }
-                    catch (Exception err)
-                    {
-                        Dev2Logger.Error("DispatchDebugState", err);
-                        AddErrorToDataList(err, dataObject);
-                        var errorMessage = dataObject.Environment.FetchErrors();
-                        _debugState.ErrorMessage = errorMessage;
-                        _debugState.HasError = true;
-                        var debugError = err as DebugCopyException;
-                        if (debugError != null)
-                        {
-                            _debugState.Inputs.Add(debugError.Item);
-                        }
-                    }
+                }
 
                 if (dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
                 {
@@ -1108,7 +1116,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var type = GetType();
             string typeName = type.Name;
-            
             _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),
@@ -1117,8 +1124,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
                 ActualType = typeName,
-                StartTime = startTime ?? DateTime.Now,
-                EndTime = endTime ?? DateTime.Now,
                 ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
                 DisplayName = DisplayName,
                 IsSimulation = ShouldExecuteSimulation,
@@ -1132,7 +1137,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ErrorMessage = errorMessage,
                 EnvironmentID = dataObject.DebugEnvironmentId,
                 SessionID = dataObject.DebugSessionID
-            };
+            };                  
         }
 
         public virtual void UpdateDebugParentID(IDSFDataObject dataObject)
