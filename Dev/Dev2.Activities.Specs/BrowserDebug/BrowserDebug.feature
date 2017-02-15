@@ -18,20 +18,20 @@ Scenario: Executing a workflow with no inputs and outputs
 Scenario: Executing Assign workflow with valid inputs
 		Given I have a workflow "ValidAssignedVariableWF"
 		And "ValidAssignedVariableWF" contains an Assign "ValidAssignVariables" as
-		  | variable    | value |
-		  | dateMonth | February |
-		  | dateYear | 2017 |
+		  | variable      | value    |
+		  | [[dateMonth]] | February |
+		  | [[dateYear]]  | 2017     |
 		When workflow "ValidAssignedVariableWF" is saved "1" time
-		And I Debug "http://localhost:3142/secure/ValidAssignedVariableWF.debug?" in Browser
-		Then The Debug in Browser content contains has inputs and outputs
+		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/ValidAssignedVariableWF.debug?" in Browser
+		Then The Debug in Browser content contains has "2" inputs and "2" outputs for "ValidAssignVariables"
 
 Scenario: Executing Assign workflow with invalid variable
 		Given I have a workflow "InvalidAssignedVariableWF"
 		And "InvalidAssignedVariableWF" contains an Assign "InvalidAssignVariables" as
-		  | variable    | value |
+		  | variable  | value    |
 		  | d@teMonth | February |
 		When workflow "InvalidAssignedVariableWF" is saved "1" time
-		And I Debug "http://rsaklfdylan:3142/secure/Acceptance%20Tests/InvalidAssignedVariableWF.debug?" in Browser
+		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/InvalidAssignedVariableWF.debug?" in Browser
 		Then The Debug in Browser content contains has error messagge ""invalid variable assigned to d@teMonth""
 
 
