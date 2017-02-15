@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -44,15 +43,13 @@
                            Focusable="False"
                            views:FocusExtension.IsFocused="False">
             <i:Interaction.Behaviors>
-                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewSelectHelp}"
-                                 DataContext="{Binding}" />
+                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewSelectHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ig:XamComboEditor>
         <Button AutomationProperties.AutomationId="{Binding EditButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
                 Grid.Column="1"
                 x:Name="EditButton"
                 Content="..."
-           
                 ToolTip="{Binding Path=EditConnectionToolTip}"
                 Command="{Binding EditConnectionCommand}" >
             <i:Interaction.Behaviors>
@@ -61,21 +58,15 @@
         </Button>
         <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
                 Grid.Column="2"
-                x:Name="ConnectButton"
+                x:Name="NewConnectionButton"
+                Content="{x:Static languages:Core.New}" 
+                Width="Auto"
+                Style="{StaticResource ButtonOrangeStyle}" 
                 Margin="{StaticResource ControlBorderLeft}"
-                ToolTip="{Binding Path=ToggleConnectionToolTip}"
-                Command="{Binding ToggleConnectionStateCommand}"
-                IsEnabled="{Binding AllowConnection}"
-                Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-            <Button.Content>
-                <StackPanel HorizontalAlignment="Stretch">
-                    <fa:FontAwesome Icon="Link" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverterNegative}}"></fa:FontAwesome>
-                    <fa:FontAwesome Icon="ChainBroken" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisibilityConverterPositive}}"></fa:FontAwesome>
-                </StackPanel>
-            </Button.Content>
+                ToolTip="{Binding Path=NewConnectionToolTip}"
+                Command="{Binding NewConnectionCommand}">
             <i:Interaction.Behaviors>
-                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewToggleConnectionHelp}"
-                                 DataContext="{Binding}" />
+                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
         <customControls:CircularProgressBar Grid.Column="2" 

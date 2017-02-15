@@ -162,8 +162,27 @@ namespace Dev2.Studio.ViewModels
                     {
                         EnvironmentRepository.ActiveEnvironment = value;
                     }
+                    SetEnvironmentIsSelected();
                     OnActiveEnvironmentChanged();
                     NotifyOfPropertyChange(() => ActiveEnvironment);
+                }
+            }
+        }
+
+        private void SetEnvironmentIsSelected()
+        {
+            var environmentViewModels = ExplorerViewModel?.Environments;
+            if (environmentViewModels != null)
+            {
+                foreach (var environment in environmentViewModels)
+                {
+                    environment.IsSelected = false;
+                }
+                var environmentViewModel =
+                    environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeEnvironment.ID);
+                if (environmentViewModel != null)
+                {
+                    environmentViewModel.IsSelected = true;
                 }
             }
         }

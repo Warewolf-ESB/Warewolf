@@ -10,12 +10,11 @@ namespace Dev2.Common.Interfaces
         ObservableCollection<IServer> Servers { get; }
         IServer SelectedConnection { get; set; }
         ICommand EditConnectionCommand { get; }
-        ICommand ToggleConnectionStateCommand { get; }
-        bool AllowConnection { get; }
+        ICommand NewConnectionCommand { get; }
         bool IsConnected { get; }
         bool IsConnecting { get;  }
         bool IsLoading { get; set; }
-        string ToggleConnectionToolTip { get; }
+        string NewConnectionToolTip { get; }
         string EditConnectionToolTip { get; }
         string ConnectionsToolTip { get; }
         EventHandler<IServer> ServerConnected { get; set; }
@@ -26,7 +25,6 @@ namespace Dev2.Common.Interfaces
 
         Task<bool> Connect(IServer connection);
         event SelectedServerChanged SelectedEnvironmentChanged;
-        //void LoadNewServers();
         void LoadServers();
     }
 }

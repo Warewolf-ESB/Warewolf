@@ -213,12 +213,10 @@ namespace Warewolf.Studio.Views
 
         public void ConnectSourceServer()
         {
-            SourceConnectControl.ConnectButton.Command.Execute(null);
         }
 
         public void ConnectDestinationServer()
         {
-            DestinationConnectControl.ConnectButton.Command.Execute(null);
         }
     }
 }

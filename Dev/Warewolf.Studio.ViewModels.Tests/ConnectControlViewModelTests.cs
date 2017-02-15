@@ -113,69 +113,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditConnectionCommand.Execute(null);
         }
 
-        [TestMethod]
-        public void TestToggleConnectionStateCommand()
-        {
-            //arrange
-            _serverMock.Setup(it => it.GetServerVersion()).Returns("0.0.0.1");
-            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
-            _serverMock.SetupGet(it => it.HasLoaded).Returns(true);
-            var popupControllerMock = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-            CustomContainer.Register<Dev2.Common.Interfaces.Studio.Controller.IPopupController>(
-                popupControllerMock.Object);
-            bool disconnectedEventRaised = false;
-            _target.ServerDisconnected =
-                (s, e) => { disconnectedEventRaised = s == _target && e == _serverMock.Object; };
-
-            //act
-            var canExecute = _target.ToggleConnectionStateCommand.CanExecute(null);
-            _target.ToggleConnectionStateCommand.Execute(null);
-
-            //assert
-            Assert.IsTrue(canExecute);
-            Assert.IsTrue(disconnectedEventRaised);
-            Assert.IsFalse(_target.IsConnecting);
-        }
-
-        [TestMethod]
-        public void TestToggleConnectionStateCommandException()
-        {
-            //arrange
-            _serverMock.Setup(it => it.GetServerVersion()).Throws(new Exception());
-
-            //act
-            var canExecute = _target.ToggleConnectionStateCommand.CanExecute(null);
-            _target.ToggleConnectionStateCommand.Execute(null);
-
-            //assert
-            Assert.IsTrue(canExecute);
-        }
-
-        [TestMethod]
-        public void TestToggleConnectionStateCommandIsNotConnected()
-        {
-            //arrange
-            _serverMock.Setup(it => it.GetServerVersion()).Returns("0.0.0.1");
-            var envId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
-            _serverMock.SetupGet(it => it.IsConnected).Returns(false);
-            _serverMock.SetupGet(it => it.HasLoaded).Returns(false);
-            _serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
-            var shellViewModelMock = new Mock<IShellViewModel>();
-            CustomContainer.Register(shellViewModelMock.Object);
-            var popupControllerMock = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-            CustomContainer.Register(popupControllerMock.Object);
-            //act
-            var canExecute = _target.ToggleConnectionStateCommand.CanExecute(null);
-            _target.ToggleConnectionStateCommand.Execute(null);
-
-            //assert
-            Assert.IsTrue(canExecute);
-            popupControllerMock.Verify(it => it.ShowConnectServerVersionConflict("0.0.0.1", "0.0.0.6"), Times.Never());
-            _serverMock.Verify(it => it.ConnectAsync());
-            shellViewModelMock.Verify(it => it.SetActiveEnvironment(envId));
-        }
-
         #endregion Test commands
 
         #region Test properties
@@ -211,7 +148,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(_serverEnvironmentId));
             mainViewModelMock.Verify(it => it.NewServerSource(It.IsAny<string>()));
             Assert.IsFalse(_target.IsConnected);
-            Assert.IsFalse(_target.AllowConnection);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
             Assert.IsFalse(isSelectedEnvironmentChangedRaised);
             Assert.IsTrue(isCanExecuteChangedRaised);
@@ -249,7 +185,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(newSelectedConnectionEnvironmentId));
             mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnection.Object));
             Assert.IsTrue(_target.IsConnected);
-            Assert.IsTrue(_target.AllowConnection);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
             Assert.IsFalse(isSelectedEnvironmentChangedRaised);
             Assert.IsTrue(isCanExecuteChangedRaised);
@@ -311,7 +246,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestToggleConnectionToolTip()
         {
             //assert
-            Assert.IsTrue(!string.IsNullOrEmpty(_target.ToggleConnectionToolTip));
+            Assert.IsTrue(!string.IsNullOrEmpty(_target.NewConnectionToolTip));
 
         }
 

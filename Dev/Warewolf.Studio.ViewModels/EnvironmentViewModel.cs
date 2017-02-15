@@ -869,11 +869,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isSelected = value;
                 OnPropertyChanged(() => IsSelected);
-                if (_isSelected)
-                {
-                    _shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-                    _shellViewModel.SetActiveServer(Server);
-                }
             }
         }
 
