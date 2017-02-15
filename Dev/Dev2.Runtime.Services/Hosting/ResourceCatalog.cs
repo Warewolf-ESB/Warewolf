@@ -432,6 +432,7 @@ namespace Dev2.Runtime.Hosting
             {
                 var sa = service.Actions.FirstOrDefault();
                 MapServiceActionDependencies(workspaceID, sa);
+                ServiceActionRepo.Instance.AddToCache(resourceID, new Tuple<DynamicService, ServiceAction>(service,sa));
                 var activity = GetActivity(sa);
                 if (parser != null)
                 {
@@ -453,5 +454,42 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalogDuplicateResult DuplicateFolder(string sourcePath, string destinationPath, string newName, bool fixRefences) => _catalogPluginContainer.DuplicateProvider.DuplicateFolder(sourcePath, destinationPath, newName, fixRefences);
         
 
+    }
+
+    public class ServiceActionRepo
+    {
+        readonly Dictionary<Guid,Tuple<DynamicService,ServiceAction>> _actionsCache = new Dictionary<Guid, Tuple<DynamicService, ServiceAction>>();
+        private static ServiceActionRepo _instance;
+
+        public void AddToCache(Guid key, Tuple<DynamicService, ServiceAction> value)
+        {
+            if (_actionsCache.ContainsKey(key))
+            {
+                _actionsCache.Remove(key);
+            }
+            _actionsCache.Add(key,value);
+        }
+
+        public Tuple<DynamicService,ServiceAction> ReadCache(Guid key)
+        {
+            if (_actionsCache.ContainsKey(key))
+            {
+                return _actionsCache[key];
+            }
+            return null;
+        }
+
+        public static ServiceActionRepo Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ServiceActionRepo();
+                }
+                return _instance;
+            }
+
+        }
     }
 }
