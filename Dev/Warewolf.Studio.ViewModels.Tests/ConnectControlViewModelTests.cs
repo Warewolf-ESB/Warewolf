@@ -118,42 +118,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test properties
 
         [TestMethod]
-        public void TestSelectedConnectionNewServerLabel()
-        {
-            //arrange
-            var mainViewModelMock = new Mock<IShellViewModel>();
-            CustomContainer.Register(mainViewModelMock.Object);
-            var newSelectedConnection = new Mock<IServer>();
-            var newSelectedConnectionEnvironmentId = Guid.NewGuid();
-            newSelectedConnection.SetupGet(it => it.ResourceName).Returns("New Remote Server...");
-            newSelectedConnection.SetupGet(it => it.EnvironmentID).Returns(newSelectedConnectionEnvironmentId);
-            _changedProperties.Clear();
-            var isSelectedEnvironmentChangedRaised = false;
-            _target.SelectedEnvironmentChanged += (sender, args) =>
-                {
-                    isSelectedEnvironmentChangedRaised = sender == _target && args == _serverEnvironmentId;
-                };
-            var isCanExecuteChangedRaised = false;
-            _target.EditConnectionCommand.CanExecuteChanged += (sender, args) =>
-                {
-                    isCanExecuteChangedRaised = true;
-                };
-
-            //act
-            _target.SelectedConnection = newSelectedConnection.Object;
-            var value = _target.SelectedConnection;
-
-            //assert
-            Assert.AreNotSame(value, newSelectedConnection.Object);
-            mainViewModelMock.Verify(it => it.SetActiveEnvironment(_serverEnvironmentId));
-            mainViewModelMock.Verify(it => it.NewServerSource(It.IsAny<string>()));
-            Assert.IsFalse(_target.IsConnected);
-            Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
-            Assert.IsFalse(isSelectedEnvironmentChangedRaised);
-            Assert.IsTrue(isCanExecuteChangedRaised);
-        }
-
-        [TestMethod]
         public void TestSelectedConnectionNonLocalhostLabel()
         {
             //arrange

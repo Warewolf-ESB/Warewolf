@@ -240,27 +240,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestServerСonnect()
-        {
-            //arrange
-            var isEnvironmentChanged = false;
-            _target.PropertyChanged += (s, e) =>
-            {
-                isEnvironmentChanged = isEnvironmentChanged || e.PropertyName == "Environments";
-            };
-            _serverMock.SetupGet(it => it.IsConnected).Returns(false);
-            _serverMock.SetupGet(it => it.HasLoaded).Returns(false);
-            _serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
-
-            //act
-            //_target.ConnectControlViewModel.ToggleConnectionStateCommand.Execute(null);
-
-            //assert
-            Assert.IsTrue(isEnvironmentChanged);
-            Assert.AreEqual(2, _target.Environments.Count);
-        }
-
-        [TestMethod]
         public async Task TestOtherServerСonnect()
         {
             //arrange
@@ -280,26 +259,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsTrue(isEnvironmentChanged);
             Assert.AreEqual(1, _target.Environments.Count);
-        }
-
-        [TestMethod]
-        public void TestServerDisconnect()
-        {
-            //arrange
-            var isEnvironmentChanged = false;
-            _target.PropertyChanged += (s, e) =>
-            {
-                isEnvironmentChanged = isEnvironmentChanged || e.PropertyName == "Environments";
-            };
-            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
-            _serverMock.SetupGet(it => it.HasLoaded).Returns(true);
-
-            //act
-            //_target.ConnectControlViewModel.ToggleConnectionStateCommand.Execute(null);
-
-            //assert
-            Assert.IsTrue(isEnvironmentChanged);
-            Assert.IsFalse(_target.Environments.Any());
         }
 
         [TestMethod]
