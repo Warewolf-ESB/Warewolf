@@ -113,6 +113,18 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.EditConnectionCommand.Execute(null);
         }
 
+        [TestMethod]
+        public void TestNewConnectionCommand()
+        {
+            //arrange
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
+            _serverMock.SetupGet(it => it.AllowEdit).Returns(true);
+
+            //act
+            Assert.IsTrue(_target.NewConnectionCommand.CanExecute(null));
+            _target.NewConnectionCommand.Execute(null);
+        }
+
         #endregion Test commands
 
         #region Test properties
