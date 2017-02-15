@@ -260,7 +260,17 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var dependants = new List<Guid>();
             resources.ForEach(resource =>
             {
-                if (resource.Dependencies == null) return;
+                if (resource.Dependencies == null)
+                {
+                    if(resource.IsSource || resource.IsServer)
+                    {
+                        resource = new Resource(resource.ToXml());
+                    }
+                }
+                if (resource.Dependencies == null)
+                {
+                    return;
+                }
                 resource.Dependencies.ForEach(tree =>
                 {
                     if (tree.ResourceID == resourceId)
