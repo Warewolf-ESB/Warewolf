@@ -143,7 +143,7 @@ namespace Dev2.ViewModels
             }
             catch (Exception ex)
             {
-                Dev2Logger.Info("Closing Service Test Window from Taskbar handle exception. ", ex);
+                Dev2Logger.Info(StringResources.CloseTestViewHandledException, ex);
             }
         }
 
