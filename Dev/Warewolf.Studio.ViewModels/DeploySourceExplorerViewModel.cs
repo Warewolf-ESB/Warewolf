@@ -133,7 +133,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (value?.Count == 0)
                 {
-                    
+
                 }
                 _environments = value;
                 OnPropertyChanged(() => Environments);
@@ -172,7 +172,7 @@ namespace Warewolf.Studio.ViewModels
 
             //var windowsGroupPermission = environmentViewModel?.Server?.Permissions?[0];
             //if (windowsGroupPermission != null)
-                //environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
+            //environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
 
             //var permissions = environmentViewModel?.Server?.GetPermissions(environmentViewModel.ResourceId);
             //if (permissions != null)
@@ -189,21 +189,19 @@ namespace Warewolf.Studio.ViewModels
 
         void SelectAction(IExplorerItemViewModel ax)
         {
-
             if (ax.Parent?.ResourceType == @"Folder" || ax.Parent?.ResourceType == @"ServerSource")
                 ax.Parent.IsFolderChecked = ax.IsResourceChecked;
             _statsArea.Calculate(SelectedItems.ToList());
-
         }
 
         public virtual ICollection<IExplorerTreeItem> SelectedItems
         {
             get
             {
-                var explorerTreeItems = SelectedEnvironment?.AsList()
-                    .Select(a => a as IExplorerTreeItem)
+                var explorerItemViewModels = FlatUnfilteredChildren(SelectedEnvironment);
+                var explorerTreeItems = explorerItemViewModels?.Select(a => a as IExplorerTreeItem)
                     .Where(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value)
-                    .ToList() ?? new List<IExplorerTreeItem>();
+                    .ToList();
                 return explorerTreeItems;
             }
             set
@@ -214,12 +212,21 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
+        private IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
+        {
+            var itemViewModels = itemViewModelsModel?.AsList()?.Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>());
+            var explorerItemViewModels = itemViewModelsModel?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
+            var viewModels = explorerItemViewModels?.Union(itemViewModels ?? new List<IExplorerItemViewModel>());
+            return viewModels ?? new List<IExplorerItemViewModel>();
+        }
+
         public ICollection<IExplorerTreeItem> SourceLoadedItems
         {
             get
             {
-                return SelectedEnvironment?.AsList()
-                    .Select(a => a as IExplorerTreeItem)
+                var explorerItemViewModels = FlatUnfilteredChildren(SelectedEnvironment);
+                return explorerItemViewModels?.Select(a => a as IExplorerTreeItem)
                     .ToList() ?? new List<IExplorerTreeItem>();
             }
         }
@@ -293,6 +300,7 @@ namespace Warewolf.Studio.ViewModels
                 await environmentModel.Load(IsDeploy);
                 OnPropertyChanged(() => Environments);
                 AfterLoad(server.EnvironmentID);
+                _statsArea.Calculate(environmentModel.AsList().Select(model => model as IExplorerTreeItem).ToList());
             }
         }
 
@@ -312,7 +320,7 @@ namespace Warewolf.Studio.ViewModels
         protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
             localhostEnvironment.Connect();
-            await localhostEnvironment.Load(true,true);
+            await localhostEnvironment.Load(true, true);
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
         }
 

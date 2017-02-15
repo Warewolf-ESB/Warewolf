@@ -110,10 +110,17 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker, executor)
         {
             VerifyArgument.IsNotNull("webServiceSource", webServiceSource);
-            _webServiceSource = webServiceSource;
             _warewolfserverName = updateManager.ServerName;
-            SetupHeaderTextFromExisting();
-            FromModel(webServiceSource);
+            AsyncWorker.Start(() => updateManager.FetchSource(webServiceSource.Id), source =>
+            {
+                _webServiceSource = source;
+                _webServiceSource.Path = webServiceSource.Path;
+                // ReSharper disable once VirtualMemberCallInContructor
+                FromModel(_webServiceSource);
+                Item = ToSource();
+                SetupHeaderTextFromExisting();
+            });
+
         }
 
         public ManageWebserviceSourceViewModel() : base("WebSource")
@@ -193,6 +200,7 @@ namespace Warewolf.Studio.ViewModels
             DefaultQuery = webServiceSource.DefaultQuery;
             HostName = webServiceSource.HostName;
             Password = webServiceSource.Password;
+            SelectedGuid = webServiceSource.Id;            
         }
 
         public override string Name

@@ -9,9 +9,9 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
@@ -41,7 +41,7 @@ namespace Dev2.Studio.Factory
         public static ExceptionUiModel Create(Exception exception, bool isCritical = false)
         {
             ExceptionUiModel uiModel;
-            if(isCritical)
+            if (isCritical)
             {
                 uiModel = new ExceptionUiModel { Message = StringResources.CriticalExceptionMessage };
                 uiModel.Exception.Add(Create(exception));
@@ -51,7 +51,7 @@ namespace Dev2.Studio.Factory
                 uiModel = new ExceptionUiModel { Message = StringResources.ErrorPrefix + exception.Message };
             }
 
-            if(exception.InnerException != null)
+            if (exception.InnerException != null)
             {
                 uiModel.Exception.Add(Create(exception.InnerException));
             }
@@ -71,25 +71,25 @@ namespace Dev2.Studio.Factory
         public static StringBuilder CreateStringValue(Exception exception, StringBuilder builder = null, bool critical = false)
         {
             var appendStackTrace = false;
-            if(builder == null)
+            if (builder == null)
             {
                 builder = new StringBuilder();
                 appendStackTrace = true;
             }
 
-            if(critical)
+            if (critical)
             {
                 builder.AppendLine(StringResources.CriticalExceptionMessage);
             }
 
             builder.AppendLine("Exception: " + exception.Message);
 
-            if(exception.InnerException != null)
+            if (exception.InnerException != null)
             {
                 CreateStringValue(exception.InnerException, builder);
             }
 
-            if(appendStackTrace)
+            if (appendStackTrace)
             {
                 builder.AppendLine("StackTrace:");
                 builder.AppendLine(exception.StackTrace);
@@ -98,12 +98,11 @@ namespace Dev2.Studio.Factory
                 // Added by Michael to assist with debugging
                 string fullStackTrace = Environment.NewLine + Environment.NewLine + "Additional Trace Info" + Environment.NewLine + Environment.NewLine;
                 StackTrace theStackTrace = new StackTrace();
-                for(int j = theStackTrace.FrameCount - 1; j >= 0; j--)
+                for (int j = theStackTrace.FrameCount - 1; j >= 0; j--)
                 {
                     string module = theStackTrace.GetFrame(j).GetMethod().Module.ToString();
-                    if(module != "WindowsBase.dll" && module != "CommonLanguageRuntimeLibrary")
+                    if (module != "WindowsBase.dll" && module != "CommonLanguageRuntimeLibrary")
                     {
-
                         fullStackTrace += "--> " + theStackTrace.GetFrame(j).GetMethod().Name + " (" + theStackTrace.GetFrame(j).GetMethod().Module + ")";
                     }
                 }
@@ -127,21 +126,20 @@ namespace Dev2.Studio.Factory
         /// <author>
         /// Jurie.smit
         /// </author>
-        public static IExceptionViewModel CreateViewModel(Exception e, IEnvironmentModel environmentModel, ErrorSeverity isCritical = ErrorSeverity.Default)
+        public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IEnvironmentModel environmentModel, ErrorSeverity isCritical = ErrorSeverity.Default)
         {
             // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
             var vm = new ExceptionViewModel(new AsyncWorker())
-                {
-                    OutputText = CreateStringValue(e, null, true).ToString(),
-                    StackTrace = e.StackTrace,
-                    OutputPath = GetUniqueOutputPath(".txt"),
-                    DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle,
-                    
-                };
+            {
+                OutputText = CreateStringValue(e, null, true).ToString(),
+                StackTrace = e.StackTrace,
+                OutputPath = GetUniqueOutputPath(".txt"),
+                DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle
+            };
+            vm.GetStudioLogFile();
+            vm.ServerLogFile = await ExceptionViewModel.GetServerLogFile();
 
-            var attachedFiles = new Dictionary<string, string>();
-
-           vm.Exception.Clear();
+            vm.Exception.Clear();
             vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));
             return vm;
         }

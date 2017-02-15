@@ -59,8 +59,6 @@ Scenario: Cancel DB Source Test
 Scenario: Creating New DB Source as Windows Auth
 	Given I open New Database Source
 	And "Save" is "Disabled"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"	
 	And "Test Connection" is "Enabled"
 	Then Test Connecton is "Successful"	
 	And "Save" is "Disabled"

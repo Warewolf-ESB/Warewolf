@@ -9,18 +9,24 @@
 */
 
 using System;
+using System.Activities.Core.Presentation;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Metadata;
+using System.Activities.Presentation.View;
+using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Versioning;
 using System.Security.Permissions;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using System.Xaml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -32,10 +38,12 @@ using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
+using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Views;
 using Dev2.Threading;
+using Dev2.Utilities;
 using Infragistics.Windows.DockManager;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Core;
@@ -52,10 +60,8 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
-
-
-// ReSharper restore RedundantUsingDirective
-
+using System.Globalization;
+// ReSharper disable RedundantAssignment
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio
 // ReSharper restore CheckNamespace
@@ -168,6 +174,7 @@ namespace Dev2.Studio
             _mainViewModel = MainWindow.DataContext as MainViewModel;
             if(_mainViewModel != null)
             {
+                CreateDummyWorkflowDesignerForCaching();
                 SplashView.CloseSplash();
                 CheckForDuplicateResources();
                 var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
@@ -181,23 +188,48 @@ namespace Dev2.Studio
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
-            SetStarted();
         }
 
-        static void SetStarted()
+        private static void CreateDummyWorkflowDesignerForCaching()
         {
-            try
+            
+            var workflowDesigner = new WorkflowDesigner();
+            workflowDesigner.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
+            var designerConfigService = workflowDesigner.Context.Services.GetService<DesignerConfigurationService>();
+            if (designerConfigService != null)
             {
-                if (File.Exists(".\\StudioStarted"))
-                {
-                    File.Delete(".\\StudioStarted");
-                }
-                File.WriteAllText(".\\StudioStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+                // set the runtime Framework version to 4.5 as new features are in .NET 4.5 and do not exist in .NET 4
+                designerConfigService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
+                designerConfigService.AutoConnectEnabled = true;
+                designerConfigService.AutoSplitEnabled = true;
+                designerConfigService.PanModeEnabled = true;
+                designerConfigService.RubberBandSelectionEnabled = true;
+                designerConfigService.BackgroundValidationEnabled = true;
+
+                // prevent design-time background validation from blocking UI thread
+                // Disabled for now
+                designerConfigService.AnnotationEnabled = false;
+                designerConfigService.AutoSurroundWithSequenceEnabled = false;
             }
-            catch (Exception err)
+            var meta = new DesignerMetadata();
+            meta.Register();
+
+            var builder = new AttributeTableBuilder();
+            foreach (var designerAttribute in ActivityDesignerHelper.DesignerAttributes)
             {
-                Dev2Logger.Error(err);
+                builder.AddCustomAttributes(designerAttribute.Key, new DesignerAttribute(designerAttribute.Value));
             }
+
+            MetadataStore.AddAttributeTable(builder.CreateTable());
+            workflowDesigner.Context.Services.Subscribe<DesignerView>(instance=>
+            {
+                instance.WorkflowShellHeaderItemsVisibility = ShellHeaderItemsVisibility.All;
+                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
+                instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
+            });
+            var activityBuilder = new WorkflowHelper().CreateWorkflow("DummyWF");
+            workflowDesigner.Load(activityBuilder);
+            workflowDesigner = null;
         }
 
         private async void CheckForDuplicateResources()

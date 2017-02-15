@@ -250,7 +250,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Given(@"I Select Authentication Type as ""(.*)""")]
@@ -434,6 +434,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             if (manageDatabaseSourceViewModel != null)
             {
                 Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Windows;
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
         }
@@ -450,7 +451,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
         public void ThenAuthenticationTypeIs(string p0, string p1)
         {
-            Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
 
