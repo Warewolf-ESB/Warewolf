@@ -33,7 +33,6 @@ namespace Warewolf.Studio.ViewModels
         bool _isConnected;
         bool _isConnecing;
         IServer _selectedConnection;
-        bool _allowConnection;
         ObservableCollection<IServer> _servers;
         bool _isLoading;
         private Guid? _selectedId;
@@ -53,7 +52,7 @@ namespace Warewolf.Studio.ViewModels
             LoadServers();
             SelectedConnection = server;
             EditConnectionCommand = new DelegateCommand(AllowConnectionEdit,CanExecuteMethod);
-            ToggleConnectionStateCommand = new DelegateCommand(CheckVersionConflict);
+            NewConnectionCommand = new DelegateCommand(NewServer);
             if (Server.UpdateRepository != null)
             {
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
@@ -67,7 +66,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _shouldUpdateActiveEnvironment = value; 
-                
             }
         }
 
@@ -109,7 +107,7 @@ namespace Warewolf.Studio.ViewModels
         public void LoadServers()
         {
             var serverConnections = Server.GetAllServerConnections();
-            var servers = new ObservableCollection<IServer> { CreateNewRemoteServerEnvironment() };
+            var servers = new ObservableCollection<IServer>();
             if(serverConnections != null)
             {
                 servers.AddRange(serverConnections);
@@ -148,7 +146,6 @@ namespace Warewolf.Studio.ViewModels
         {
             if (args.State != ConnectionNetworkState.Connecting && args.State != ConnectionNetworkState.Connected && !server1.IsConnected)
             {
-
                 if (SelectedConnection.EnvironmentID == server1.EnvironmentID)
                 {
                     if (!IsConnecting && server1.EnvironmentID == Guid.Empty)
@@ -165,18 +162,8 @@ namespace Warewolf.Studio.ViewModels
                 if (args.State == ConnectionNetworkState.Connected)
                 {
                     ServerReConnected?.Invoke(this, server1);
-
                 }
             }
-        }
-
-        IServer CreateNewRemoteServerEnvironment()
-        {
-            return new Server
-            {
-                ResourceName = Resources.Languages.Core.NewServerLabel,
-                EnvironmentID = Guid.NewGuid()
-            };
         }
 
         void AllowConnectionEdit()
@@ -193,16 +180,16 @@ namespace Warewolf.Studio.ViewModels
 
         private async Task ConnectOrDisconnect()
         {
-            if (SelectedConnection == null)
+            if (_selectedConnection == null)
             {
                 return;
             }
             
-            if (SelectedConnection.IsConnected && SelectedConnection.HasLoaded)
+            if (_selectedConnection.IsConnected && _selectedConnection.HasLoaded)
             {
                 IsLoading = false;
                 IsConnecting = false;
-                Disconnect(SelectedConnection);
+                Disconnect(_selectedConnection);
                 var localhostServer = Servers.FirstOrDefault(server => server.EnvironmentID == Guid.Empty);
                 if (localhostServer != null)
                 {
@@ -215,12 +202,11 @@ namespace Warewolf.Studio.ViewModels
                 IsConnecting = true;
                 IsConnected = false;
                 IsLoading = true;
-                await Connect(SelectedConnection);
-                IsConnected = SelectedConnection.IsConnected;
+                await Connect(_selectedConnection);
+                IsConnected = _selectedConnection.IsConnected;
                 IsConnecting = false;
                 IsLoading = false;
-                var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                SetActiveEnvironment(mainViewModel);
+                SetActiveEnvironment();
             }
         }
 
@@ -228,14 +214,13 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-
                 IsLoading = true;
                 IsConnecting = true;
                 await ConnectOrDisconnect();
-                if (SelectedConnection.IsConnected)
+                if (_selectedConnection.IsConnected)
                 {
                     Version sourceVersionNumber;
-                    Version.TryParse(SelectedConnection.GetServerVersion(), out sourceVersionNumber);
+                    Version.TryParse(_selectedConnection.GetServerVersion(), out sourceVersionNumber);
                     Version destVersionNumber;
                     Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out destVersionNumber);
                     if (sourceVersionNumber != null && destVersionNumber != null)
@@ -245,7 +230,7 @@ namespace Warewolf.Studio.ViewModels
                             var popupController = CustomContainer.Get<IPopupController>();
                             popupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
                                 destVersionNumber.ToString());
-                            Disconnect(SelectedConnection);
+                            Disconnect(_selectedConnection);
                         }
                     }
                 }
@@ -277,11 +262,14 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (value != null)
+                if (value != null && _selectedConnection != value)
                 {
-                    var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                    UpdateBasedOnSelection(value, mainViewModel);
-                    SetActiveEnvironment(mainViewModel);
+                    _selectedConnection = value;
+                    if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
+                    {
+                        CheckVersionConflict();
+                    }
+                    SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);
                     SelectedEnvironmentChanged?.Invoke(this, value.EnvironmentID);
                     var delegateCommand = EditConnectionCommand as DelegateCommand;
@@ -290,62 +278,34 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateBasedOnSelection(IServer value, IShellViewModel mainViewModel)
+        private void SetActiveEnvironment()
         {
-            if (value.ResourceName != null && value.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
+            if (_selectedConnection?.ResourceName != null)
             {
-                NewServer(mainViewModel);
-            }
-            else
-            {
-                _selectedConnection = value;
-                AllowConnection = true;
-                DisallowConnectionForLocalhost();
-                IsConnected = _selectedConnection.IsConnected && _selectedConnection.HasLoaded;
-            }
-        }
-
-        private void SetActiveEnvironment(IShellViewModel mainViewModel)
-        {
-            if (mainViewModel != null)
-            {
-                if (_selectedConnection?.ResourceName != null)
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                if (mainViewModel != null && ShouldUpdateActiveEnvironment)
                 {
-                    if (ShouldUpdateActiveEnvironment && !_selectedConnection.ResourceName.Equals(Resources.Languages.Core.NewServerLabel))
-                    {
-                        mainViewModel.ShouldUpdateActiveState = _selectedConnection.IsConnected;
-                        mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
-                        mainViewModel.SetActiveServer(_selectedConnection);
-                    }
+                    mainViewModel.ShouldUpdateActiveState = _selectedConnection.IsConnected;
+                    mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
+                    mainViewModel.SetActiveServer(_selectedConnection);
                 }
             }
         }
 
-        private void DisallowConnectionForLocalhost()
+        private void NewServer()
         {
-            if (_selectedConnection.EnvironmentID == Guid.Empty &&
-                (_selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostLabel)
-                 || _selectedConnection.ResourceName.Equals(Resources.Languages.Core.LocalhostConnectedLabel)
-                    ))
-            {
-                AllowConnection = false;
-            }
-        }
-
-        private void NewServer(IShellViewModel mainViewModel)
-        {
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel != null && ShouldUpdateActiveEnvironment)
             {
                 mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
             }
             mainViewModel?.NewServerSource(string.Empty);
             IsConnected = false;
-            AllowConnection = false;
             OnPropertyChanged(() => SelectedConnection);
         }
 
         public ICommand EditConnectionCommand { get; private set; }
-        public ICommand ToggleConnectionStateCommand { get; private set; }
+        public ICommand NewConnectionCommand { get; private set; }
         public bool IsConnected
         {
             get
@@ -380,18 +340,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isLoading = value;
                 OnPropertyChanged(() => IsLoading);
-            }
-        }
-        public bool AllowConnection
-        {
-            get
-            {
-                return _allowConnection;
-            }
-            private set
-            {
-                _allowConnection = value;
-                OnPropertyChanged(() => AllowConnection);
             }
         }
 
@@ -479,7 +427,7 @@ namespace Warewolf.Studio.ViewModels
 
         public event SelectedServerChanged SelectedEnvironmentChanged;
 
-        public string ToggleConnectionToolTip => Resources.Languages.Tooltips.ConnectControlToggleConnectionToolTip;
+        public string NewConnectionToolTip => Resources.Languages.Tooltips.ConnectControlNewConnectionToolTip;
         public string EditConnectionToolTip => Resources.Languages.Tooltips.ConnectControlEditConnectionToolTip;
         public string ConnectionsToolTip => Resources.Languages.Tooltips.ConnectControlConnectionsToolTip;
         public EventHandler<IServer> ServerConnected { get; set; }

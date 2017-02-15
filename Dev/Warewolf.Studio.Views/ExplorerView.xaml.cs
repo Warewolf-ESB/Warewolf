@@ -335,8 +335,9 @@ namespace Warewolf.Studio.Views
                 var explorerItemViewModel = item as IExplorerItemViewModel;
                 if(explorerItemViewModel != null)
                 {
-                    explorerItemViewModel.IsSelected = true;
-                    if(explorerViewModel?.ConnectControlViewModel != null)
+                    SetActiveServer(explorerItemViewModel.Server);
+                    //explorerItemViewModel.IsSelected = true;
+                    if (explorerViewModel?.ConnectControlViewModel != null)
                         explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
                 }
                 else
@@ -344,12 +345,20 @@ namespace Warewolf.Studio.Views
                     var environmentViewModel = item as IEnvironmentViewModel;
                     if(environmentViewModel != null)
                     {
-                        environmentViewModel.IsSelected = true;
+                        SetActiveServer(environmentViewModel.Server);
+                        //environmentViewModel.IsSelected = true;
                         if(explorerViewModel?.ConnectControlViewModel != null)
                             explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
                     }
                 }
             }
+        }
+
+        private static void SetActiveServer(IServer server)
+        {
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            shellViewModel.SetActiveEnvironment(server.EnvironmentID);
+            shellViewModel.SetActiveServer(server);
         }
 
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)

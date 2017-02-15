@@ -326,7 +326,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the Warewolf server you want to use or click New Remote Server....
+        ///   Looks up a localized string similar to Select the Warewolf server you want to use.
         /// </summary>
         public static string ConnectControlConnectionsToolTip {
             get {
@@ -340,6 +340,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ConnectControlEditConnectionToolTip {
             get {
                 return ResourceManager.GetString("ConnectControlEditConnectionToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new server source.
+        /// </summary>
+        public static string ConnectControlNewConnectionToolTip {
+            get {
+                return ResourceManager.GetString("ConnectControlNewConnectionToolTip", resourceCulture);
             }
         }
         

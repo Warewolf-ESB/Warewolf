@@ -114,12 +114,10 @@ namespace Warewolf.Studio.Views
             if (e.OldValue.Equals(false) && e.NewValue.Equals(true))
             {
                 TheServerComboBox.IsEnabled = false;
-                ConnectButton.Visibility = Visibility.Collapsed;
             }
             if (e.OldValue.Equals(true) && e.NewValue.Equals(false))
             {
                 TheServerComboBox.IsEnabled = true;
-                ConnectButton.Visibility = Visibility.Visible;
             }
         }
 

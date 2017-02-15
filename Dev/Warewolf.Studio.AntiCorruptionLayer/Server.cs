@@ -171,7 +171,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     return displayName;
                 }
 
-                return EnvironmentConnection?.DisplayName ?? Resources.Languages.Core.NewServerLabel;
+                return EnvironmentConnection?.DisplayName ?? "Default Name";
             }
             // ReSharper disable once ValueParameterNotUsed
             set
