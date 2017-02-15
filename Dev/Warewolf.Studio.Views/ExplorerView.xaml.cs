@@ -336,7 +336,6 @@ namespace Warewolf.Studio.Views
                 if(explorerItemViewModel != null)
                 {
                     SetActiveServer(explorerItemViewModel.Server);
-                    //explorerItemViewModel.IsSelected = true;
                     if (explorerViewModel?.ConnectControlViewModel != null)
                         explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
                 }
@@ -346,7 +345,6 @@ namespace Warewolf.Studio.Views
                     if(environmentViewModel != null)
                     {
                         SetActiveServer(environmentViewModel.Server);
-                        //environmentViewModel.IsSelected = true;
                         if(explorerViewModel?.ConnectControlViewModel != null)
                             explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
                     }

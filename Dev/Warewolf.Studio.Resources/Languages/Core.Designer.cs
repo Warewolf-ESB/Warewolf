@@ -674,15 +674,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Remote Server....
-        /// </summary>
-        public static string NewServerLabel {
-            get {
-                return ResourceManager.GetString("NewServerLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No data returned.   .
         /// </summary>
         public static string NoReturnedDataExecuteSuccess {

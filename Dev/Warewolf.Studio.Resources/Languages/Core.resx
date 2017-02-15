@@ -479,9 +479,6 @@ The window will be reloaded when you click OK.</value>
   <data name="LocalhostLabel" xml:space="preserve">
     <value>localhost</value>
   </data>
-  <data name="NewServerLabel" xml:space="preserve">
-    <value>New Remote Server...</value>
-  </data>
   <data name="VirtualHostLabel" xml:space="preserve">
     <value>Virtual Host</value>
   </data>
