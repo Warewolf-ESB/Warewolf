@@ -102,10 +102,10 @@ namespace Dev2.Activities.Specs.Composition
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(_scenarioContext);
             AppSettings.LocalHost = "http://localhost:3142";
-        }        
-       
+        }
 
-       new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
+
+        new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
 
 
@@ -1135,7 +1135,7 @@ namespace Dev2.Activities.Specs.Composition
             repository.Save(resourceModel);
             repository.SaveToServer(resourceModel);
 
-            ExecuteWorkflow(resourceModel);           
+            ExecuteWorkflow(resourceModel);
         }
 
 
@@ -2503,19 +2503,20 @@ namespace Dev2.Activities.Specs.Composition
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
 
-            foreach (var activity in activityList)
-            {
-                if (TestStartNode.Action == null)
+            if (activityList != null)
+                foreach (var activity in activityList)
                 {
-                    TestStartNode.Action = activity.Value;
+                    if (TestStartNode.Action == null)
+                    {
+                        TestStartNode.Action = activity.Value;
+                    }
+                    else
+                    {
+                        var flowStep = new FlowStep { Action = activity.Value };
+                        flowSteps.Last().Next = flowStep;
+                        flowSteps.Add(flowStep);
+                    }
                 }
-                else
-                {
-                    var flowStep = new FlowStep { Action = activity.Value };
-                    flowSteps.Last().Next = flowStep;
-                    flowSteps.Add(flowStep);
-                }
-            }
 
             IContextualResourceModel resourceModel;
             IEnvironmentModel environmentModel;
@@ -2673,7 +2674,8 @@ namespace Dev2.Activities.Specs.Composition
         {
             var dsfEnhancedDotNetDllActivity = new DsfEnhancedDotNetDllActivity()
             {
-                IsObject = true, DisplayName = dotNetServiceName
+                IsObject = true,
+                DisplayName = dotNetServiceName
             };
             var Source = table.Rows[0]["Source"];
             var ClassName = table.Rows[0]["ClassName"];
