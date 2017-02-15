@@ -43,7 +43,8 @@ namespace Warewolf.UITests.Workflow
             UIMap.Filter_Explorer(HelloWorld);
             UIMap.Click_Explorer_Localhost_First_Item();
             UIMap.Open_Deploy_Using_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
+            UIMap.WaitForControlEnabled(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton);
+            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy Tab does not exist.");
             UIMap.Filter_Deploy_Source_Explorer(HelloWorld);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
         }

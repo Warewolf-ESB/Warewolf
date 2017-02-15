@@ -46,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
 
-                Dev2Logger.Info("Test DB Connection Service");
+                Dev2Logger.Info("Test Web Connection Service");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("WebService", out resourceDefinition);

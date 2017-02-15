@@ -18,6 +18,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Warewolf.Core;
 using Warewolf.Storage;
+// ReSharper disable ConvertToAutoProperty
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities

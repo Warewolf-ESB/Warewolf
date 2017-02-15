@@ -74,6 +74,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(_pluginSourceName);
             _pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(_selectedDllMock.Object);
             _selectedDllMock.SetupGet(it => it.FullName).Returns(_selectedDllFullName);
+            _updateManagerMock.Setup(model => model.GetComDllListings(It.IsAny<IFileListing>())).Returns(new List<IFileListing> { _selectedDllMock.Object });
             _asyncWorkerMock.Setup(
                 it => it.Start(It.IsAny<Action>(), It.IsAny<Action>(), It.IsAny<Action<Exception>>()))
                 .Callback<Action, Action, Action<Exception>>(
@@ -89,28 +90,42 @@ namespace Warewolf.Studio.ViewModels.Tests
                             exception(e);
                         }
                     });
-
+            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+              .Returns(_pluginSourceMock.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                  worker.Start(
+                                           It.IsAny<Func<Tuple<IComPluginSource, List<DllListingModel>>>>(),
+                                           It.IsAny<Action<Tuple<IComPluginSource, List<DllListingModel>>>>()))
+                           .Callback<Func<Tuple<IComPluginSource, List<DllListingModel>>>, Action<Tuple<IComPluginSource, List<DllListingModel>>>>((func, action) =>
+                           {
+                               var dbSource = func.Invoke();
+                               action(dbSource);
+                           });
             _changedPropertiesParameterless = new List<string>();
-            _targetParameterless = new ManageComPluginSourceViewModel();
-            _targetParameterless.DispatcherAction = action => action();
+            _targetParameterless = new ManageComPluginSourceViewModel {DispatcherAction = action => action()};
             _targetParameterless.PropertyChanged += (sender, args) => { _changedPropertiesParameterless.Add(args.PropertyName); };
 
             _changedProperties = new List<string>();
-            _target = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _asyncWorkerMock.Object);
-            _target.DispatcherAction = action => action();
+            _target = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object,
+                _asyncWorkerMock.Object) {DispatcherAction = action => action()};
             _target.PropertyChanged += (sender, args) => { _changedProperties.Add(args.PropertyName); };
 
             _changedPropertiesPluginSource = new List<string>();
-            _targetPluginSource = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _pluginSourceMock.Object, _asyncWorkerMock.Object);
-            _targetPluginSource.DispatcherAction = action => action();
+            _targetPluginSource = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object,
+                _pluginSourceMock.Object, _asyncWorkerMock.Object) {DispatcherAction = action => action()};
             _targetPluginSource.PropertyChanged += (sender, args) => { _changedPropertiesPluginSource.Add(args.PropertyName); };
 
             _changedPropertiesRequestServiceNameViewModel = new List<string>();
-            _targetRequestServiceNameViewModel = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object);
-            _targetRequestServiceNameViewModel.DispatcherAction = action => action();
+            _targetRequestServiceNameViewModel = new ManageComPluginSourceViewModel(_updateManagerMock.Object,
+                _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object)
+            {
+                DispatcherAction = action => action()
+            };
             _targetRequestServiceNameViewModel.PropertyChanged += (sender, args) => { _changedPropertiesRequestServiceNameViewModel.Add(args.PropertyName); };
 
             _changedPropertiesPluginSourceAction = new List<string>();
+            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                .Returns(_pluginSourceMock.Object);
             _targetPluginSourceAction = new ManageComPluginSourceViewModel(_updateManagerMock.Object, _aggregatorMock.Object, _pluginSourceMock.Object, _asyncWorkerMock.Object, _dispatcherAction);
             _targetPluginSourceAction.PropertyChanged += (sender, args) => { _changedPropertiesPluginSourceAction.Add(args.PropertyName); };
 
@@ -285,12 +300,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _targetPluginSource.OkCommand.Execute(null);
 
             //assert
-            _pluginSourceMock.VerifySet(it=>it.SelectedDll = It.IsAny<IFileListing>());
-            _updateManagerMock.Verify(it=>it.Save(_pluginSourceMock.Object));
+            _updateManagerMock.Verify(it=>it.Save(It.IsAny<IComPluginSource>()));
             Assert.IsTrue(_changedPropertiesPluginSource.Contains("Header"));
-            Assert.AreEqual(expectedId, _targetPluginSource.Item.Id);
-            Assert.AreEqual(expectedName, _targetPluginSource.Item.ResourceName);
-            Assert.AreSame(selectedDllMock.Object, _targetPluginSource.Item.SelectedDll);
         }
 
         [TestMethod]
@@ -407,29 +418,28 @@ namespace Warewolf.Studio.ViewModels.Tests
             var result = _targetPluginSource.ToModel();
 
             //assert
-            Assert.AreSame(_pluginSourceMock.Object, result);
-            _pluginSourceMock.VerifySet(it => it.SelectedDll = selectedDllMock.Object);
+            Assert.AreEqual(_pluginSourceMock.Object.ResourceName, result.ResourceName);
         }
 
         [TestMethod]
         public void TestFromModelFileSystem()
         {
             //arrange
-            var expectedName = "someexpectedName";
-            var expectedPath = "someexpectedPath";
+            const string ExpectedName = "someexpectedName";
+            const string ExpectedPath = "someexpectedPath";
             var pluginSourceMock = new Mock<IComPluginSource>();
             var selectedDllMock = new Mock<IFileListing>();
-            var selectedDllName = "someSelectedDLLName";
+            const string SelectedDllName = "someSelectedDLLName";
             selectedDllMock.SetupGet(listing => listing.Name).Returns("File System");
             pluginSourceMock.SetupGet(it => it.SelectedDll).Returns(selectedDllMock.Object);
-            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(expectedName);
-            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(expectedPath);
+            _pluginSourceMock.SetupGet(it => it.ResourceName).Returns(ExpectedName);
+            _pluginSourceMock.SetupGet(it => it.ResourcePath).Returns(ExpectedPath);
             var dllListingMock = new Mock<IDllListingModel>();
             dllListingMock.SetupGet(it => it.Name).Returns("File System");
             var dllListingChildrenMock = new Mock<IDllListingModel>();
             dllListingMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IDllListingModel>() { dllListingChildrenMock.Object });
-            dllListingChildrenMock.SetupGet(it => it.Name).Returns(selectedDllName);
+            dllListingChildrenMock.SetupGet(it => it.Name).Returns(SelectedDllName);
             _targetPluginSource.DllListings = new ObservableCollection<IDllListingModel>() { dllListingMock.Object };
 
             //act
@@ -440,7 +450,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             dllListingMock.VerifySet(it => it.IsExpanded = true);
             dllListingMock.VerifySet(it => it.IsSelected = true);
             Assert.AreSame(dllListingMock.Object, _targetPluginSource.SelectedDll);
-            Assert.AreEqual(expectedName, _targetPluginSource.Name);
         }
 
         [TestMethod]
@@ -520,10 +529,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _pluginSourceMock.VerifySet(it => it.SelectedDll = It.IsAny<IFileListing>());
-            _updateManagerMock.Verify(it => it.Save(_pluginSourceMock.Object));
+            _updateManagerMock.Verify(it => it.Save(It.IsAny<IComPluginSource>()));
             Assert.IsTrue(_changedPropertiesPluginSource.Contains("Header"));
-            Assert.AreEqual(expectedId, _targetPluginSource.Item.Id);
-            Assert.AreEqual(expectedName, _targetPluginSource.Item.ResourceName);
         }
 
         [TestMethod]

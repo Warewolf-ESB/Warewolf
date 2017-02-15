@@ -9,6 +9,7 @@ namespace Warewolf.UITests
     {
         const string DLLAssemblySourceName = "CodedUITestDLLDotNetPluginSource";
         const string GACAssemblySourceName = "CodedUITestGACDotNetPluginSource";
+        const string SourceNameToEdit = "DotNetPluginSourceToEdit";
 
         [TestMethod]
         [TestCategory("Plugin Sources")]
@@ -29,6 +30,28 @@ namespace Warewolf.UITests
 
         }
 
+        [TestMethod]
+        [TestCategory("Plugin Sources")]
+        public void Edit_DotNetSource_Keeps_The_Changes_On_ReOpen_UITests()
+        {
+            const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll";
+            const string newDll2 = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading2.dll";
+            UIMap.RightClick_Localhost();
+            UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();            
+            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll;
+            UIMap.Save_With_Ribbon_Button_And_Dialog("NewDotnetPluginSource_Explorer");
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
+            UIMap.Filter_Explorer("NewDotnetPluginSource_Explorer");
+            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            Assert.AreEqual(newDll, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
+            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll2;            
+            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+            UIMap.Click_Close_DotNetPlugin_Source_Tab();
+            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            Assert.AreEqual(newDll2, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
+        }
+
+       
         [TestMethod]
         [TestCategory("Plugin Sources")]
         public void Select_AssemblyAndConfigFile_Then_Validate_Clear_On_GACSelection_UITests()

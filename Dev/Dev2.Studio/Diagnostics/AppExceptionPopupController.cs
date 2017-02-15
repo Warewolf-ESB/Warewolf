@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Threading.Tasks;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
@@ -25,7 +26,7 @@ namespace Dev2.Studio.Diagnostics
             _environment = environment;
         }
 
-        protected override IExceptionViewModel CreateExceptionViewModel(Exception ex, ErrorSeverity severity)
+        protected override Task<IExceptionViewModel> CreateExceptionViewModel(Exception ex, ErrorSeverity severity)
         {
             return ExceptionFactory.CreateViewModel(ex, _environment, severity);
         }
