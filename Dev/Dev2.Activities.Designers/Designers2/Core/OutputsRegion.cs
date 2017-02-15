@@ -206,6 +206,14 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _outputs = value;
                     _modelItem.SetProperty("Outputs", value.ToList());
+                    if (!IsObject)
+                    {
+                        IsOutputsEmptyRows = Outputs.Count == 0;
+                    }
+                    else
+                    {
+                        IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
+                    }
                     OnPropertyChanged();
                 }
                 else

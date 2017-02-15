@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Microsoft.Practices.Prism.Mvvm;
@@ -221,13 +223,14 @@ namespace Warewolf.Studio.ViewModels
 
                 if (_destination.SelectedEnvironment != null)
                 {
-                    var explorerItemViewModels = _destination.SelectedEnvironment.AsList();
-                    var idConflicts = from b in explorerItemViewModels
+                    var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren?? new ObservableCollection<IExplorerItemViewModel>());
+                    var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
+                    var idConflicts = from b in explorerTreeItems
                                join explorerTreeItem in items on b.ResourceId equals explorerTreeItem.ResourceId
                                where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
                                select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId,SourceId = explorerTreeItem.ResourceId};
 
-                    var pathConflicts = from b in explorerItemViewModels
+                    var pathConflicts = from b in explorerTreeItems
                                       join explorerTreeItem in items on b.ResourcePath equals explorerTreeItem.ResourcePath
                                       where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
                                       select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
@@ -235,8 +238,8 @@ namespace Warewolf.Studio.ViewModels
                     allConflicts.AddRange(idConflicts);
                     allConflicts.AddRange(pathConflicts);
                     _conflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
-                    _new = items.Where(p=>p.IsResourceChecked == true && Conflicts.All(c => p.ResourceId != c.SourceId)).Except(explorerItemViewModels);
-                    var ren = from b in explorerItemViewModels
+                    _new = items.Where(p=>p.IsResourceChecked == true && Conflicts.All(c => p.ResourceId != c.SourceId)).Except(explorerTreeItems);
+                    var ren = from b in explorerTreeItems
                               join explorerTreeItem in items on new { b.ResourcePath } equals new { explorerTreeItem.ResourcePath }
                               where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
                               select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };

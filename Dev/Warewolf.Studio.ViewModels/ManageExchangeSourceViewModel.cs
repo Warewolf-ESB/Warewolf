@@ -8,6 +8,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -50,14 +51,19 @@ namespace Warewolf.Studio.ViewModels
             Timeout = 10000;
         }
 
-        public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator, IExchangeSource exchangeSource)
+        public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator, IExchangeSource exchangeSource, IAsyncWorker AsyncWorker)
             : this(updateManager, aggregator)
         {
             VerifyArgument.IsNotNull("exchangeSource", exchangeSource);
-            _emailServiceSource = exchangeSource;
-            // ReSharper disable once VirtualMemberCallInContructor
-            FromModel(exchangeSource);
-            SetupHeaderTextFromExisting();
+            AsyncWorker.Start(() => updateManager.FetchSource(exchangeSource.ResourceID), source =>
+            {
+                _emailServiceSource = source;
+                _emailServiceSource.Path = exchangeSource.Path;
+                // ReSharper disable once VirtualMemberCallInContructor
+                FromModel(_emailServiceSource);
+                SetupHeaderTextFromExisting();
+            });
+
         }
 
         public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, IEventAggregator aggregator)
@@ -176,8 +182,6 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var src = ToSource();
-                src.Path = Item.Path ?? "";
-                src.ResourceName = Item.ResourceName;
                 Save(src);
                 Item = src;
                 _emailServiceSource = src;
@@ -394,7 +398,7 @@ namespace Warewolf.Studio.ViewModels
             if (_emailServiceSource == null)
             {
                 var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
-                return new ExchangeSourceDefinition()
+                return new ExchangeSourceDefinition
                     {
                         AutoDiscoverUrl = AutoDiscoverUrl,
                         Password = Password,
@@ -415,8 +419,6 @@ namespace Warewolf.Studio.ViewModels
                 _emailServiceSource.UserName = UserName;
                 _emailServiceSource.Password = Password;
                 _emailServiceSource.Timeout = Timeout;
-                _emailServiceSource.ResourceType = "ExchangeSource";
-                _emailServiceSource.ResourceName = ResourceName;
                 return _emailServiceSource;
             }
         }

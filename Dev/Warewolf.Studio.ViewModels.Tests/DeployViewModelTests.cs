@@ -230,6 +230,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             deployDestinationViewModel.Environments.First().Children = destinationViewModel;
             deployDestinationViewModel.SelectedEnvironment = deployDestinationViewModel.Environments.First();
             deployDestinationViewModel.SelectedEnvironment.Connect();
+            sourceExplorerItem.First().CanDeploy = true;
             sourceExplorerItem.First().IsResourceChecked = true;
 
             var stat = new DeployStatsViewerViewModel(sourceExplorerItem, deployDestinationViewModel);

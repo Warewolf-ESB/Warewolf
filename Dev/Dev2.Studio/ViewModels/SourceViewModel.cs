@@ -6,6 +6,7 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
@@ -18,13 +19,15 @@ namespace Dev2.ViewModels
         where T : IEquatable<T>
     {
         readonly IPopupController _popupController;
+        private readonly IEnvironmentModel _environmentModel;
 
-        public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController,IView view)
+        public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController,IView view,IEnvironmentModel environmentModel)
             : base(eventPublisher)
         {
             ViewModel = vm;
             View = view;
             _popupController = popupController;
+            _environmentModel = environmentModel;
             ViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "Header")
@@ -59,7 +62,23 @@ namespace Dev2.ViewModels
             base.OnViewAttached(view, ViewModel);
         }
 
-        public override string DisplayName => ViewModel.Header;
+        public override string DisplayName
+        {
+            get
+            {
+                var header = ViewModel.Header;
+                if (!_environmentModel.IsLocalHost)
+                {
+                    var name = _environmentModel.Name;
+                    if (header.EndsWith(" *"))
+                    {
+                        return header.Replace(" *", "") + " - " + name + " *";
+                    }
+                    return header + " - " + name;
+                }
+                return header;
+            }
+        }
 
         protected override void OnViewLoaded(object view)
         {

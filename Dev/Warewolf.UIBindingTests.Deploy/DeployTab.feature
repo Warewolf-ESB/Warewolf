@@ -109,7 +109,7 @@ Scenario: Selected for deploy items type is showing on deploy tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 Then I select Destination Server as "DestinationServer"
+	 Then I select Destination Server as "DestinationServer" with items
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
 	 When I select "Utility - Date and Time" from Source Server
@@ -124,18 +124,20 @@ Scenario: Deploy Summary is showing new and overiding resources
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected
-	 Then I select Destination Server as "DestinationServer"
+	 Then I select Destination Server as "DestinationServer" with items
 	 When selected Destination Server is "DestinationServer"
 	 And destination "DestinationServer" is connected
-	 And I select "bob" from Source Server
+	 And I select "FetchPlayers" from Source Server
 	 And Calculation is invoked
 	 Then New Resource is "1"
 	 And Override is "0"
-	 When I select "FetchPlayers" from Source Server
-	 Then New Resource is "2"
-	 And Override is "0"
+	 When I select "bob" from Source Server
+	 Then New Resource is "1"
+	 And Override is "1"
 	 When I Unselect "bob" from Source Server
-	 Then Override is "0"
+	 And Calculation is invoked
+	 Then New Resource is "1"
+	 And Override is "0"
 	
 #Wolf-1106
 @DeployTab

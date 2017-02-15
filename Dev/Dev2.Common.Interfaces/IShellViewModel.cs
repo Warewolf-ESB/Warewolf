@@ -18,7 +18,6 @@ namespace Dev2.Common.Interfaces
         void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
-        void EditServer(IServerSource serverSource);
         void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key = null);
         void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key = null);
@@ -48,7 +47,6 @@ namespace Dev2.Common.Interfaces
 
     public interface IShellViewModelOpen
     {
-        void OpenResource(Guid resourceId, IServer server);
         void OpenResourceAsync(Guid resourceId, IServer server);
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
     }
@@ -57,15 +55,16 @@ namespace Dev2.Common.Interfaces
     {
         IServer LocalhostServer { get; }
         IServer ActiveServer { get; set; }
+        bool ShouldUpdateActiveState { get; set; }
         void ShowPopup(IPopupMessage getDuplicateMessage);
         void SetActiveEnvironment(Guid environmentId);
         void SetActiveServer(IServer server);
         void Debug();
         void ShowAboutBox();
-        void ShowDependencies(Guid resourceId, IServer server);
+        void ShowDependencies(Guid resourceId, IServer server, bool isSource);
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
-        void OpenResource(Guid resourceId, Guid environmentId);
+        void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);
         void CloseResource(Guid resourceId, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
         void ViewSwagger(Guid resourceId, IServer server);
@@ -79,5 +78,6 @@ namespace Dev2.Common.Interfaces
         void NewSchedule(Guid resourceId);
         void SetRefreshExplorerState(bool refresh);
         void ResetMainView();
+        void OnActiveEnvironmentChanged();
     }
 }

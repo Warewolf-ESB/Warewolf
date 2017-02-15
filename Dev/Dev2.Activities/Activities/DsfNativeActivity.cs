@@ -982,26 +982,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var cols1 = dataObject.Environment.EvalAsList(variable, 0);
             var c1 = new WarewolfAtomIterator(cols1);
             var c2 = new WarewolfAtomIterator(value);
-            var c3 = new WarewolfAtomIterator(from);
+            var c3 = new WarewolfAtomIterator(to);
             if (opt.ArgumentCount > 2)
             {
-                c2 = new WarewolfAtomIterator(to);
+                c2 = new WarewolfAtomIterator(from);
             }
             iter.AddVariableToIterateOn(c1);
             iter.AddVariableToIterateOn(c2);
             iter.AddVariableToIterateOn(c3);
             while (iter.HasMoreData())
             {
-                var val1 = iter.FetchNextValue(c1);
+                var variableValue = iter.FetchNextValue(c1);
                 var val2 = iter.FetchNextValue(c2);
                 var val3 = iter.FetchNextValue(c3);
-                if (decisionType == enDecisionType.IsBetween)
-                {
-                    val1 = iter.FetchNextValue(c1);
-                    val2 = iter.FetchNextValue(c3);
-                    val3 = iter.FetchNextValue(c2);
-                }
-                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { val1, val2, val3 });
+                var assertResult = factory.FetchDecisionFunction(decisionType).Invoke(new[] { variableValue, val2, val3 });
                 var testResult = new TestRunResult();
                 if (assertResult)
                 {
@@ -1011,7 +1005,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg, val2, variable, val1, val3);
+                    var actMsg = string.Format(msg, val2, variable, variableValue, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                     if (testResult.Message.EndsWith(Environment.NewLine))
                     {
@@ -1024,7 +1018,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (testResult.RunTestResult == RunResult.TestPassed)
                     {
                         msg = Messages.Test_PassedResult;
-                        msg += ": " + output.Variable + " " + output.AssertOp + " " + output.Value;
+                        if (opt.ArgumentCount > 2)
+                        {
+                            msg += ": " + output.Variable + " " + output.AssertOp + " " + output.From +" and "+output.To;
+                        }
+                        else
+                        {
+                            msg += ": " + output.Variable + " " + output.AssertOp + " " + output.Value;
+                        }
                     }
                     var hasError = testResult.RunTestResult == RunResult.TestFailed;
                     AddDebugAssertResultItem(new DebugItemServiceTestStaticDataParams(msg, hasError));
@@ -1085,14 +1086,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (remoteID != Guid.Empty)
             {
                 var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
-                if (resource != null)
-                {
-                    name = resource.ResourceName;
-                }
-                else
-                {
-                    name = remoteID.ToString();
-                }
+                name = resource != null ? resource.ResourceName : remoteID.ToString();
             }
             else
             {

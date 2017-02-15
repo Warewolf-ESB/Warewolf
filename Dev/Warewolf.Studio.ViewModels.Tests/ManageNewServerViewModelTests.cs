@@ -82,6 +82,18 @@ namespace Warewolf.Studio.ViewModels.Tests
                                 errorAction(ex);
                             }
                         });
+
+            _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+              .Returns(_serverSourceMock.Object);
+            _asyncWorkerMock.Setup(worker =>
+                                   worker.Start(
+                                            It.IsAny<Func<IServerSource>>(),
+                                            It.IsAny<Action<IServerSource>>()))
+                            .Callback<Func<IServerSource>, Action<IServerSource>>((func, action) =>
+                            {
+                                var dbSource = func.Invoke();
+                                action(dbSource);
+                            });
             _updateManagerMock.Setup(it => it.GetComputerNames())
                 .Returns(new List<string> { "computerName1", "computerName2" });
             _asyncWorkerMock.Setup(
@@ -232,7 +244,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                         });
             _target.Protocol = "http";
             _target.SelectedPort = "3412";
-            _target.ServerName = new ComputerName {Name = "localhost"};
+            _target.ServerName = new ComputerName { Name = "localhost" };
             _target.Address = "http://localhost/";
             _target.TestCommand.Execute(null);
 
@@ -450,7 +462,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _requestServiceNameViewModelMock.Verify(it => it.ShowSaveDialog());
-            Assert.IsInstanceOfType(_targetRequestServiceViewModel.Item,typeof(ServerSource));
+            Assert.IsInstanceOfType(_targetRequestServiceViewModel.Item, typeof(ServerSource));
             _updateManagerMock.Verify(it => it.Save(_targetRequestServiceViewModel.Item));
             Assert.AreEqual(expectedAuthenticationType, _targetRequestServiceViewModel.Item.AuthenticationType);
             Assert.AreEqual(expectedAddress, _targetRequestServiceViewModel.Item.Address);
@@ -490,7 +502,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Protocol = "http";
             _target.SelectedPort = "3142";
             _changedProperties.Clear();
-            
+
             //act
             _target.ServerName = expectedValue;
             var actualValue = _target.ServerName;
@@ -671,7 +683,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedValue, actualValue);
             Assert.IsTrue(_changedProperties.Contains("TestFailed"));
         }
-       
+
         [TestMethod]
         public void TestTesting()
         {
@@ -777,7 +789,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _target.AuthenticationType = AuthenticationType.User;
-            
+
             //act
             var actualValue = _target.UserAuthenticationSelected;
 
@@ -963,7 +975,32 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverSource.SetupGet(source => source.Address).Returns(expectedAddress);
             serverSource.SetupGet(source => source.ID).Returns(sourceId);
             serverSource.SetupGet(source => source.AuthenticationType).Returns(AuthenticationType.Public);
+            serverSourceModel.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                .Returns(serverSource.Object);
+            serverSourceModel.Setup(it => it.GetComputerNames())
+                .Returns(new List<string> { "computerName1", "computerName2" });
             var asyncWorker = new Mock<IAsyncWorker>();
+            asyncWorker.Setup(worker => worker.Start(It.IsAny<Func<IServerSource>>(), It.IsAny<Action<IServerSource>>()))
+             .Callback<Func<IServerSource>, Action<IServerSource>>((func, action) =>
+             {
+                 var dbSource = func.Invoke();
+                 action(dbSource);
+             });
+            asyncWorker.Setup(it =>it.Start(It.IsAny<Func<List<ComputerName>>>(),
+                                            It.IsAny<Action<List<ComputerName>>>(),
+                                            It.IsAny<Action<Exception>>()))
+                                    .Callback<Func<List<ComputerName>>, Action<List<ComputerName>>, Action<Exception>>(
+                                        (progress, success, errorAction) =>
+                                        {
+                                            try
+                                            {
+                                                success(progress());
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                errorAction(ex);
+                                            }
+                                        });
             var executor = new Mock<IExternalProcessExecutor>();
             var vm = new ManageNewServerViewModel(serverSourceModel.Object, evtAggregator.Object, serverSource.Object, asyncWorker.Object, executor.Object);
             //---------------Assert Precondition----------------
@@ -982,7 +1019,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //assert          
             Assert.IsNotNull(_targetSource.ComputerNames);
-            Assert.IsTrue(_targetSource.ComputerNames.Any(it=>it.Name== "computerName1"));
+            Assert.IsTrue(_targetSource.ComputerNames.Any(it => it.Name == "computerName1"));
             Assert.IsTrue(_targetSource.ComputerNames.Any(it => it.Name == "computerName2"));
         }
 
@@ -1063,7 +1100,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedAddress = expectedProtocol + "://" + expectedServerName + ":" + expectedSelectedPort;
             var expectedPassword = "somePassword";
             var expectedHeader = expectedResourceName + " *";
-            _target.ComputerNames = new List<ComputerName>() {new ComputerName() {Name=expectedServerName} };
+            _target.ComputerNames = new List<ComputerName>() { new ComputerName() { Name = expectedServerName } };
             source.SetupGet(it => it.Name).Returns(expectedResourceName);
             source.SetupGet(it => it.ServerName).Returns(expectedServerName);
             source.SetupGet(it => it.AuthenticationType).Returns(expectedAuthenticationType);
@@ -1154,7 +1191,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(expectedPassword, value.Password);
             Assert.AreEqual(expectedName, value.Name);
             Assert.AreNotEqual(Guid.Empty, value.ID);
-            Assert.AreEqual(value.ID,gd);
+            Assert.AreEqual(value.ID, gd);
         }
 
         [TestMethod]

@@ -115,7 +115,7 @@
                             <DataTemplate>
                                 <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                         VerticalAlignment="Center"
-                                                        WrapInBrackets="False"
+                                                        WrapInBrackets="True"
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsMapsToFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding MapsTo, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
@@ -270,7 +270,7 @@
                             <DataTemplate>
                                 <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                         VerticalAlignment="Center"
-                                                        WrapInBrackets="False"
+                                                        WrapInBrackets="True"
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsValueFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding Value, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
