@@ -14443,18 +14443,13 @@ namespace Warewolf.UITests
             }
         }
         
-        public WpfCustom HelloWorldWorkFlow
+        public HelloWorldWorkFlow HelloWorldWorkFlow
         {
             get
             {
                 if ((this.mHelloWorldWorkFlow == null))
                 {
-                    this.mHelloWorldWorkFlow = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mHelloWorldWorkFlow.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-                    this.mHelloWorldWorkFlow.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(ServiceDesigner)";
-                    this.mHelloWorldWorkFlow.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mHelloWorldWorkFlow = new HelloWorldWorkFlow(this);
                 }
                 return this.mHelloWorldWorkFlow;
             }
@@ -14756,7 +14751,7 @@ namespace Warewolf.UITests
         
         private SelectAndApply1 mSelectAndApply;
         
-        private WpfCustom mHelloWorldWorkFlow;
+        private HelloWorldWorkFlow mHelloWorldWorkFlow;
         
         private WpfText mErrors;
         
@@ -68836,6 +68831,351 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class HelloWorldWorkFlow : WpfCustom
+    {
+        
+        public HelloWorldWorkFlow(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(ServiceDesigner)";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public ServiceDesignerLargeView ServiceDesignerLargeView
+        {
+            get
+            {
+                if ((this.mServiceDesignerLargeView == null))
+                {
+                    this.mServiceDesignerLargeView = new ServiceDesignerLargeView(this);
+                }
+                return this.mServiceDesignerLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ServiceDesignerLargeView mServiceDesignerLargeView;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ServiceDesignerLargeView : WpfCustom
+    {
+        
+        public ServiceDesignerLargeView(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputsDataGridTable InputsDataGridTable
+        {
+            get
+            {
+                if ((this.mInputsDataGridTable == null))
+                {
+                    this.mInputsDataGridTable = new InputsDataGridTable(this);
+                }
+                return this.mInputsDataGridTable;
+            }
+        }
+        
+        public OutputsDataGridTable OutputsDataGridTable
+        {
+            get
+            {
+                if ((this.mOutputsDataGridTable == null))
+                {
+                    this.mOutputsDataGridTable = new OutputsDataGridTable(this);
+                }
+                return this.mOutputsDataGridTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputsDataGridTable mInputsDataGridTable;
+        
+        private OutputsDataGridTable mOutputsDataGridTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputsDataGridTable : WpfTable
+    {
+        
+        public InputsDataGridTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "InputsDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputsGridRowOne InputsGridRowOne
+        {
+            get
+            {
+                if ((this.mInputsGridRowOne == null))
+                {
+                    this.mInputsGridRowOne = new InputsGridRowOne(this);
+                }
+                return this.mInputsGridRowOne;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputsGridRowOne mInputsGridRowOne;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputsGridRowOne : WpfRow
+    {
+        
+        public InputsGridRowOne(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputsGridRowOneCell InputsGridRowOneCell
+        {
+            get
+            {
+                if ((this.mInputsGridRowOneCell == null))
+                {
+                    this.mInputsGridRowOneCell = new InputsGridRowOneCell(this);
+                }
+                return this.mInputsGridRowOneCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputsGridRowOneCell mInputsGridRowOneCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputsGridRowOneCell : WpfCell
+    {
+        
+        public InputsGridRowOneCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.Instance] = "1";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public InputsAutoCompleteTextBox InputsAutoCompleteTextBox
+        {
+            get
+            {
+                if ((this.mInputsAutoCompleteTextBox == null))
+                {
+                    this.mInputsAutoCompleteTextBox = new InputsAutoCompleteTextBox(this);
+                }
+                return this.mInputsAutoCompleteTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private InputsAutoCompleteTextBox mInputsAutoCompleteTextBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class InputsAutoCompleteTextBox : WpfComboBox
+    {
+        
+        public InputsAutoCompleteTextBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit InputsAutoCompleteTextBoxText
+        {
+            get
+            {
+                if ((this.mInputsAutoCompleteTextBoxText == null))
+                {
+                    this.mInputsAutoCompleteTextBoxText = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mInputsAutoCompleteTextBoxText.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mInputsAutoCompleteTextBoxText.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mInputsAutoCompleteTextBoxText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mInputsAutoCompleteTextBoxText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OutputsDataGridTable : WpfTable
+    {
+        
+        public OutputsDataGridTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "OutputsDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public OutputsGridRowOne OutputsGridRowOne
+        {
+            get
+            {
+                if ((this.mOutputsGridRowOne == null))
+                {
+                    this.mOutputsGridRowOne = new OutputsGridRowOne(this);
+                }
+                return this.mOutputsGridRowOne;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private OutputsGridRowOne mOutputsGridRowOne;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OutputsGridRowOne : WpfRow
+    {
+        
+        public OutputsGridRowOne(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public OutputsGridRowOneCell OutputsGridRowOneCell
+        {
+            get
+            {
+                if ((this.mOutputsGridRowOneCell == null))
+                {
+                    this.mOutputsGridRowOneCell = new OutputsGridRowOneCell(this);
+                }
+                return this.mOutputsGridRowOneCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private OutputsGridRowOneCell mOutputsGridRowOneCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OutputsGridRowOneCell : WpfCell
+    {
+        
+        public OutputsGridRowOneCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "To [[Variable]]";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public OutputsAutoCompleteTextBox OutputsAutoCompleteTextBox
+        {
+            get
+            {
+                if ((this.mOutputsAutoCompleteTextBox == null))
+                {
+                    this.mOutputsAutoCompleteTextBox = new OutputsAutoCompleteTextBox(this);
+                }
+                return this.mOutputsAutoCompleteTextBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private OutputsAutoCompleteTextBox mOutputsAutoCompleteTextBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class OutputsAutoCompleteTextBox : WpfComboBox
+    {
+        
+        public OutputsAutoCompleteTextBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit OutputsAutoCompleteTextBoxText
+        {
+            get
+            {
+                if ((this.mOutputsAutoCompleteTextBoxText == null))
+                {
+                    this.mOutputsAutoCompleteTextBoxText = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mOutputsAutoCompleteTextBoxText.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mOutputsAutoCompleteTextBoxText.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mOutputsAutoCompleteTextBoxText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mOutputsAutoCompleteTextBoxText;
         #endregion
     }
     
