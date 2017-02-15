@@ -5,32 +5,34 @@
 
 Scenario: Executing an empty workflow
 		Given I have a workflow "BlankWorkflow"
-		When "BlankWorkflow" is executed
-		Then the workflow execution has "AN" error
+		When workflow "BlankWorkflow" is saved "1" time
 		And I Debug "http://localhost:3142/secure/BlankWorkflow.debug?" in Browser
-		And The Debug in Browser content contains "The workflow must have at least one service or activity connected to the Start Node."
+		Then The Debug in Browser content contains "The workflow must have at least one service or activity connected to the Start Node."
 
 Scenario: Executing a workflow with no inputs and outputs
 		Given I have a workflow "NoInputsWorkflow"
-		When "NoInputsWorkflow" is executed
-		Then the workflow execution has "NO" error
+		When workflow "NoInputsWorkflow" is saved "1" time
 		And I Debug "http://localhost:3142/secure/NoInputsWorkflow.debug?" in Browser
-		And The Debug in Browser content contains has children with no Inputs and Ouputs
+		Then The Debug in Browser content contains has children with no Inputs and Ouputs
 
-Scenario: Executing Assign workflow with inputs and outputs
-		Given I have a workflow "AssignedVariableWF"
-		And I assign the value "10" to a variable "[[var]]"
-		When "AssignedVariableWF" is executed
-		Then the workflow execution has "NO" error
-		And I Debug "http://localhost:3142/secure/AssignedVariableWF.debug?" in Browser
-		And The Debug in Browser content contains has inputs and outputs
+Scenario: Executing Assign workflow with valid inputs
+		Given I have a workflow "ValidAssignedVariableWF"
+		And "ValidAssignedVariableWF" contains an Assign "ValidAssignVariables" as
+		  | variable    | value |
+		  | dateMonth | February |
+		  | dateYear | 2017 |
+		When workflow "ValidAssignedVariableWF" is saved "1" time
+		And I Debug "http://localhost:3142/secure/ValidAssignedVariableWF.debug?" in Browser
+		Then The Debug in Browser content contains has inputs and outputs
 
 Scenario: Executing Assign workflow with invalid variable
-		Given I have a workflow "AssignedVariableWF"
-		When "AssignedVariableWF" is executed
-		Then the workflow execution has "AN" error
-		And I Debug "http://localhost:3142/secure/AssignedVariableWF.debug?" in Browser
-		And The Debug in Browser content contains has invalid variables "The workflow must have valid variables"
+		Given I have a workflow "InvalidAssignedVariableWF"
+		And "InvalidAssignedVariableWF" contains an Assign "InvalidAssignVariables" as
+		  | variable    | value |
+		  | d@teMonth | February |
+		When workflow "InvalidAssignedVariableWF" is saved "1" time
+		And I Debug "http://rsaklfdylan:3142/secure/Acceptance%20Tests/InvalidAssignedVariableWF.debug?" in Browser
+		Then The Debug in Browser content contains has error messagge ""invalid variable assigned to d@teMonth""
 
 
 #Scenario: Executing Hello World workflow

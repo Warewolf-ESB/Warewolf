@@ -219,12 +219,6 @@ namespace Dev2.Activities.Specs.Composition
             CustomContainer.Register(mockshell.Object);
             _externalProcessExecutor = new SpecExternalProcessExecutor();
         }
-        private IEnumerable<IDebugState> GetDebugState()
-        {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var deserialize = serializer.Deserialize<IEnumerable<IDebugState>>(_externalProcessExecutor.WebResult.First());
-            return deserialize;
-        }
 
         [Given(@"Debug states are cleared")]
         public void GivenDebugStatesAreCleared()
@@ -1141,8 +1135,7 @@ namespace Dev2.Activities.Specs.Composition
             repository.Save(resourceModel);
             repository.SaveToServer(resourceModel);
 
-            ExecuteWorkflow(resourceModel);
-            ExecuteProcess(isDebug: true, throwException: false);
+            ExecuteWorkflow(resourceModel);           
         }
 
 
@@ -3935,80 +3928,5 @@ namespace Dev2.Activities.Specs.Composition
                 Add("debugStates", new List<IDebugState>());
             }
         }
-
-        [Then(@"I Debug ""(.*)"" in Browser")]
-        public void ThenIDebugInBrowser(string urlString)
-        {
-            _externalProcessExecutor.OpenInBrowser(new Uri(urlString));
-        }
-
-        [Then(@"The Debug in Browser content contains ""(.*)""")]
-        public void ThenTheDebugInBrowserContentContains(string containedText)
-        {
-            Assert.IsTrue(_externalProcessExecutor.WebResult.First().Contains(containedText),
-                _externalProcessExecutor.WebResult.First());
-        }
-
-        [Then(@"The Debug in Browser content contains has children with no Inputs and Ouputs")]
-        public void TheDebugInBrowserContentHaveGivenVariable()
-        {
-            var deserialize = GetDebugState();
-            Assert.IsNotNull(deserialize);
-            foreach(var debugState in deserialize)
-            {
-                Assert.AreEqual(0, debugState.Inputs.Count);
-                Assert.AreEqual(0, debugState.Outputs.Count);
-            }            
-        }                    
-
-        [Then(@"The Debug in Browser content contains has inputs and outputs")]
-        public void ThenTheDebugInBrowserContentContainsHasInputsAndOutputs()
-        {
-            var deserialize = GetDebugState();
-            foreach (var debugState in deserialize)
-            {
-                if (debugState.IsFirstStep())
-                    continue;
-                if (!debugState.IsFinalStep())
-                    Assert.IsTrue(debugState.Inputs.Count > 0);
-                Assert.IsTrue(debugState.Outputs.Count > 0);
-            }
-        }
-
-        [Then(@"The Debug in Browser content contains has invalid variables ""(.*)""")]
-        public void ThenTheDebugInBrowserContentContainsHasInvalidVariables(string p0)
-        {
-            var deserialize = GetDebugState();
-            Assert.IsTrue(deserialize.Last().HasError);
-        }
-
-        [Given(@"I assign the value (.*) to a variable ""(.*)""")]
-        [Given(@"I assign the value (.*) to a variable ""(.*)""")]
-        public void GivenIAssignTheValueToAVariable(string value, string variable)
-        {
-            List<Tuple<string, string>> variableList;
-            _scenarioContext.TryGetValue("variableList", out variableList);
-
-            List<ActivityDTO> fieldCollection;
-            _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
-
-            if (variableList == null)
-            {
-                variableList = new List<Tuple<string, string>>();
-                _scenarioContext.Add("variableList", variableList);
-            }
-
-            if (fieldCollection == null)
-            {
-                fieldCollection = new List<ActivityDTO>();
-                _scenarioContext.Add("fieldCollection", fieldCollection);
-            }
-
-            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
-        }
-
-
-
-
     }
 }
