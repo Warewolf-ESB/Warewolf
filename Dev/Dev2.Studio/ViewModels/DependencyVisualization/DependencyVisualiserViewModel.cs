@@ -225,7 +225,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 {
                     var env = CustomContainer.Get<IMainViewModel>()
                         .ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId == ResourceModel.Environment.ID);
-                    var exploreritem = env?.Children.Flatten(model => model.Children).FirstOrDefault(model => model.ResourceId== Guid.Parse(node.ID));
+                    var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId== Guid.Parse(node.ID));
                     if (exploreritem != null)
                     {
                         ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent,_popupController)

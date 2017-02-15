@@ -112,10 +112,14 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker)
         {
             VerifyArgument.IsNotNull("pluginSource", pluginSource);
-            _pluginSource = pluginSource;
-            ToItem();
-            FromModel(_pluginSource);
-            SetupHeaderTextFromExisting();
+            asyncWorker.Start(() => updateManager.FetchSource(pluginSource.Id), source =>
+            {
+                _pluginSource = source;
+                _pluginSource.Path = pluginSource.Path;
+                ToItem();
+                FromModel(_pluginSource);
+                SetupHeaderTextFromExisting();
+            });
         }
 
         public ManagePluginSourceViewModel() : base("PluginSource")
@@ -124,11 +128,11 @@ namespace Warewolf.Studio.ViewModels
 
         public override void FromModel(IPluginSource pluginSource)
         {
-            Name = _pluginSource.Name;
-            Path = _pluginSource.Path;
-            FileSystemAssemblyName = _pluginSource.FileSystemAssemblyName;
-            ConfigFilePath = _pluginSource.ConfigFilePath;
-            GACAssemblyName = _pluginSource.GACAssemblyName;
+            Name = pluginSource.Name;
+            Path = pluginSource.Path;
+            FileSystemAssemblyName = pluginSource.FileSystemAssemblyName;
+            ConfigFilePath = pluginSource.ConfigFilePath;
+            GACAssemblyName = pluginSource.GACAssemblyName;
         }
 
         public string FileSystemAssemblyName
@@ -323,21 +327,49 @@ namespace Warewolf.Studio.ViewModels
 
         public sealed override IPluginSource ToModel()
         {
+            if(Item == null)
+            {
+                Item = ToSource();
+                return Item;
+            }
+            return new PluginSourceDefinition
+            {
+                Name = ResourceName,
+                Path = Path,
+                FileSystemAssemblyName = _fileSystemAssemblyName,
+                ConfigFilePath = _configFilePath,
+                GACAssemblyName = _gacAssemblyName
+            };
+        }
+
+        private IPluginSource ToSource()
+        {
             if (_pluginSource == null)
             {
-                return new PluginSourceDefinition
-                {
-                    Name = ResourceName,
-                    Path = Path,
-                    FileSystemAssemblyName = _fileSystemAssemblyName,
-                    ConfigFilePath = _configFilePath,
-                    GACAssemblyName = _gacAssemblyName
-                };
+                return ToNewSource();
             }
-            _pluginSource.FileSystemAssemblyName = FileSystemAssemblyName;
-            _pluginSource.ConfigFilePath = ConfigFilePath;
-            _pluginSource.GACAssemblyName = GACAssemblyName;
-            return _pluginSource;
+            // ReSharper disable once RedundantIfElseBlock
+            else
+            {
+                _pluginSource.FileSystemAssemblyName = FileSystemAssemblyName;
+                _pluginSource.ConfigFilePath = ConfigFilePath;
+                _pluginSource.GACAssemblyName = GACAssemblyName;
+                return _pluginSource;
+            }
+        }
+
+        private IPluginSource ToNewSource()
+        {
+            return new PluginSourceDefinition
+            {
+                Name = ResourceName,
+                Path = Path,
+                FileSystemAssemblyName = _fileSystemAssemblyName,
+                ConfigFilePath = _configFilePath,
+                GACAssemblyName = _gacAssemblyName,
+                Id = _pluginSource?.Id ?? Guid.NewGuid()
+            };
+            
         }
 
         public IRequestServiceNameViewModel RequestServiceNameViewModel

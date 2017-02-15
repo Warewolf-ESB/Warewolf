@@ -36,6 +36,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             EnvironmentConnection = environmentModel.Connection;
             EnvironmentID = environmentModel.ID;
             _serverId = EnvironmentConnection.ServerID;
+            ResourceID = environmentModel.ID;
             var communicationControllerFactory = new CommunicationControllerFactory();
             _proxyLayer = new StudioServerProxy(communicationControllerFactory, EnvironmentConnection);
             UpdateRepository = new StudioResourceUpdateManager(communicationControllerFactory, EnvironmentConnection);
@@ -153,10 +154,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             get
             {
-                var displayName = Resources.Languages.Core.NewServerLabel;
                 if (EnvironmentConnection != null)
                 {
-                    displayName = EnvironmentConnection.DisplayName;
+                    var displayName = EnvironmentConnection.DisplayName;
                     if (IsConnected && (HasLoaded || EnvironmentConnection.IsLocalHost))
                     {
                         if (!displayName.Contains(Resources.Languages.Core.ConnectedLabel))
@@ -168,9 +168,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
                     {
                         displayName = EnvironmentConnection.DisplayName.Replace("(Connected)", "");
                     }
+                    return displayName;
                 }
 
-                return displayName;
+                return EnvironmentConnection?.DisplayName ?? Resources.Languages.Core.NewServerLabel;
             }
             // ReSharper disable once ValueParameterNotUsed
             set
@@ -204,7 +205,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {            
             var environmentModels = EnvironmentRepository.Instance.ReloadAllServers();
             var requiredEnv = environmentModels.FirstOrDefault(model => model.ID == savedServerID);
-            return new Server(requiredEnv);
+            if(requiredEnv != null)
+            {
+                return new Server(requiredEnv);
+            }
+            return null;
         }
 
         public IList<IServer> GetAllServerConnections()

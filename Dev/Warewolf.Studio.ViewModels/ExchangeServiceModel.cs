@@ -31,11 +31,7 @@ namespace Warewolf.Studio.ViewModels
         {
             _shell.EditResource(selectedSource);
         }
-
-        public void SaveService(IExchangeSource model)
-        {
-            _updateRepository.Save(model);
-        }
+        
 
         public IStudioUpdateManager UpdateRepository => _updateRepository;
     }

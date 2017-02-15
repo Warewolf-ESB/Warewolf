@@ -80,6 +80,10 @@ namespace Warewolf.Studio.Views
 
         private void ActivityDefaultWindow_OnKeyUp(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();

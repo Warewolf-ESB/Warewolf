@@ -92,6 +92,7 @@ namespace Warewolf.Studio.ServerProxyLayer
 
             var comsController = CommunicationControllerFactory.CreateController("FetchResourceDefinitionService");
             comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
+            comsController.AddPayloadArgument("PrepairForDeployment",true.ToString());
 
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, Connection.WorkspaceID);
             return result.Message;

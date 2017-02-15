@@ -983,18 +983,26 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            IExplorerItemViewModel explorerItem = null;
-                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
-                            foreach (var environmentViewModel in environmentViewModels)
-                            {
-                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
-                            }
+                            var explorerItem = GetSelected(mvm);
                             if (explorerItem != null)
                                 mvm.AddDeploySurface(explorerItem.AsList().Union(new[] { explorerItem }));
                         }
                     }
                 }));
             }
+        }
+
+        private static IExplorerItemViewModel GetSelected(MainViewModel mvm)
+        {
+            IExplorerItemViewModel explorerItem = null;
+            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
+            foreach (var environmentViewModel in environmentViewModels)
+            {
+                explorerItem =
+                    environmentViewModel.Children.Flatten(model => model.Children)
+                        .FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+            }
+            return explorerItem;
         }
 
         public ICommand ShowDependenciesCommand
@@ -1008,7 +1016,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
+                            var explorerItem = GetSelected(mvm);
+                            mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer, explorerItem.IsSource || explorerItem.IsServer);
                         }
                     }
                 }));
@@ -1235,7 +1244,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (modelService.Root == modelItem.Root && (modelItem.ItemType == typeof(DsfActivity) || modelItem.ItemType.BaseType == typeof(DsfActivity)))
             {
                 var resourceID = ModelItemUtils.TryGetResourceID(modelItem);
-                CustomContainer.Get<IShellViewModel>().OpenResource(resourceID, parentEnvironmentID);
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                shellViewModel.OpenResource(resourceID, parentEnvironmentID, shellViewModel.ActiveServer);
             }
         }
 
@@ -1587,7 +1597,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
                 _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
                 _wd.Context.Services.Publish(DesignerManagementService);
-                
+
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
@@ -1630,7 +1640,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 UpdateErrorIconWithCorrectMessage();
             }
         }
-        
+
 
         private void SetHashTable()
         {
@@ -1649,7 +1659,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 designerConfigService.PanModeEnabled = true;
                 designerConfigService.RubberBandSelectionEnabled = true;
                 designerConfigService.BackgroundValidationEnabled = true;
-                
+
                 // prevent design-time background validation from blocking UI thread
                 // Disabled for now
                 designerConfigService.AnnotationEnabled = false;
@@ -1701,7 +1711,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void ModelServiceSubscribe(ModelService instance)
         {
             ModelService = instance;
-            ModelService.ModelChanged += ModelServiceModelChanged;            
+            ModelService.ModelChanged += ModelServiceModelChanged;
         }
 
         private void SubscribeToDebugSelectionChanged()
@@ -1843,9 +1853,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void ClearSelection()
         {
             _wd.Context.Items.SetValue(new Selection());
-            if(_selectedDebugItems != null)
+            if (_selectedDebugItems != null)
             {
-                foreach(var selectedDebugItem in _selectedDebugItems)
+                foreach (var selectedDebugItem in _selectedDebugItems)
                 {
                     selectedDebugItem.SetProperty("IsSelected", false);
                 }
@@ -1873,48 +1883,44 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected void LoadDesignerXaml()
         {
-
-            var xaml = _resourceModel.WorkflowXaml;
-
-            // if null, try fetching. It appears there is more than the two routes identified to populating xaml ;(
-            if (xaml == null || xaml.Length == 0)
+            _asyncWorker.Start(() =>
             {
-                // we always want server at this point ;)
-                var workspace = GlobalConstants.ServerWorkspaceID;
+                var xaml = _resourceModel.WorkflowXaml;
 
-                // log the trace for fetch ;)
-                Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
-
-                // In the case of null of empty try fetching again ;)
-                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
-                if (msg != null)
+                if (xaml == null || xaml.Length == 0)
                 {
-                    xaml = msg.Message;
+                    var workspace = GlobalConstants.ServerWorkspaceID;
+                    Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
+                    var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
+                    if (msg != null)
+                    {
+                        xaml = msg.Message;
+                    }
                 }
-            }
 
-            // if we still cannot find it, create a new one ;)
-            if (xaml == null || xaml.Length == 0)
-            {
-                if (_resourceModel.ResourceType == ResourceType.WorkflowService)
+                if (xaml == null || xaml.Length == 0)
                 {
-                    // log the trace for fetch ;)
-                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
-                    var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
-                    _wd.Load(activityBuilder);
-                    BindToModel();
-                }
-                else
-                {
-                    // we have big issues ;(
+                    if (_resourceModel.ResourceType == ResourceType.WorkflowService)
+                    {
+                        Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
+                        var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
+                        return new System.Action(() =>
+                        {
+                            _wd.Load(activityBuilder);
+                            BindToModel();
+                        });
+
+                    }
                     throw new Exception($"Could not find resource definition for {_resourceModel.ResourceName}");
                 }
-            }
-            else
-            {
-                SetDesignerText(xaml);
-                _wd.Load();
-            }
+
+                return (() =>
+                {
+                    SetDesignerText(xaml);
+                    _wd.Load();
+                });
+            }, action => action.Invoke());
+
         }
 
         private void SetDesignerText(StringBuilder xaml)
@@ -1957,7 +1963,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
                 UpdateErrorIconWithCorrectMessage();
-                
+
                 // If we are opening from server skip this check, it cannot have "real" changes!
                 if (!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
                 {
@@ -2188,7 +2194,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 return true;
             }
-           
+
             return false;
         }
 
@@ -2563,22 +2569,22 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _wd?.View?.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-           
+
             if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
             {
 
                 var dataObject = Clipboard.GetDataObject();
-                if(dataObject != null)
+                if (dataObject != null)
                 {
                     var dataPresent = dataObject.GetDataPresent("WorkflowXamlFormat");
-                    if(dataPresent)
+                    if (dataPresent)
                     {
                         var data = dataObject.GetData("WorkflowXamlFormat") as string;
                         if (!string.IsNullOrEmpty(data))
                         {
                             var indexOf = data.IndexOf("ResourceID=", StringComparison.InvariantCultureIgnoreCase);
                             var guid = data.Substring(indexOf + 12, 36);
-                            if(guid.Equals(ResourceModel.ID.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                            if (guid.Equals(ResourceModel.ID.ToString(), StringComparison.InvariantCultureIgnoreCase))
                             {
                                 e.Handled = true;
                                 return;

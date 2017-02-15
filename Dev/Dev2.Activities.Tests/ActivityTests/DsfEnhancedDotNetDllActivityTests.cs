@@ -12,6 +12,7 @@ using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -66,6 +67,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var activity = new DsfEnhancedDotNetDllActivityMock();
             var mock = new Mock<IDSFDataObject>();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation =  typeof(Human).Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
             activity.Namespace = new NamespaceItem();
@@ -86,6 +94,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
@@ -119,6 +134,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var env = new Mock<IExecutionEnvironment>();
@@ -162,6 +184,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var env = new Mock<IExecutionEnvironment>();
@@ -231,6 +260,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var env = new Mock<IExecutionEnvironment>();
@@ -295,6 +331,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var env = new Mock<IExecutionEnvironment>();
@@ -361,6 +404,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var env = new Mock<IExecutionEnvironment>();
@@ -401,6 +451,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
@@ -442,6 +499,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
@@ -489,6 +553,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
@@ -534,6 +605,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
@@ -580,6 +658,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var knownBinder = new KnownTypesBinder();
             knownBinder.KnownTypes.Add(type);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var executionEnv = new Mock<IExecutionEnvironment>();
@@ -632,6 +717,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var knownBinder = new KnownTypesBinder();
             knownBinder.KnownTypes.Add(type);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var executionEnv = new Mock<IExecutionEnvironment>();
@@ -986,9 +1078,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var human = new Human("Micky", "Mouse", new Food { FoodName = "Lettuce" });
+
             var knownBinder = new KnownTypesBinder();
             knownBinder.KnownTypes.Add(type);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var executionEnv = new Mock<IExecutionEnvironment>();
@@ -1061,6 +1161,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var knownBinder = new KnownTypesBinder();
             knownBinder.KnownTypes.Add(type);
             var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
             var mock = new Mock<IDSFDataObject>();
             var esbChannel = new Mock<IEsbChannel>();
             var executionEnv = new Mock<IExecutionEnvironment>();

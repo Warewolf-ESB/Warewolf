@@ -427,19 +427,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             set
             {
                 _generateOutputsVisible = value;
-                if (value)
-                {
-                    ManageServiceInputViewModel.InputArea.IsEnabled = true;
-                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
-                    SetRegionVisibility(false);
-                }
-                else
-                {
-                    ManageServiceInputViewModel.InputArea.IsEnabled = false;
-                    ManageServiceInputViewModel.OutputArea.IsEnabled = false;
-                    SetRegionVisibility(true);
-                }
-
+                OutputVisibilitySetter.SetGenerateOutputsVisible(ManageServiceInputViewModel.InputArea, ManageServiceInputViewModel.OutputArea, SetRegionVisibility, value);
                 OnPropertyChanged();
             }
         }

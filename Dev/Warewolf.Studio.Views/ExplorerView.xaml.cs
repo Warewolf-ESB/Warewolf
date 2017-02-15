@@ -290,26 +290,6 @@ namespace Warewolf.Studio.Views
 
                 var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
 
-                if (e.ClickCount == 2)
-                {
-                    if (explorerItemViewModel != null && explorerItemViewModel.CanView && !explorerItemViewModel.IsFolder && explorerItemViewModel.IsSaveDialog)
-                    {
-                        e.Handled = true;
-                        return;
-                    }
-                    if (explorerItemViewModel != null && !explorerItemViewModel.CanView && !explorerItemViewModel.IsFolder)
-                    {
-                        e.Handled = true;
-                        return;
-                    }
-
-                    if (explorerItemViewModel != null && explorerItemViewModel.CanView)
-                    {
-                        explorerItemViewModel.OpenCommand.Execute(this);
-                        return;
-                    }
-                }
-
                 if (explorerItemViewModel == null || !explorerItemViewModel.CanDrag)
                 {
                     _canDrag = false;
@@ -485,6 +465,44 @@ namespace Warewolf.Studio.Views
         {
             ExplorerTree?.Items?.Refresh();
             ExplorerTree?.UpdateLayout();
+        }
+
+        private void TreeViewItemPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+            var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
+            if (explorerItemViewModel != null)
+            {
+                if (ValidateItemDoubleClick(e, explorerItemViewModel)) return;
+
+                if (explorerItemViewModel.IsFolder)
+                {
+                    explorerItemViewModel.IsExpanded = !explorerItemViewModel.IsExpanded;
+                    e.Handled = false;
+                }
+                else if (explorerItemViewModel.CanView)
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    explorerItemViewModel.OpenCommand.Execute(this);
+                    e.Handled = true;
+                    Mouse.OverrideCursor = null;
+                }
+            }
+        }
+
+        private static bool ValidateItemDoubleClick(MouseButtonEventArgs e, ExplorerItemViewModel explorerItemViewModel)
+        {
+            if (explorerItemViewModel.CanView && !explorerItemViewModel.IsFolder && explorerItemViewModel.IsSaveDialog)
+            {
+                e.Handled = true;
+                return true;
+            }
+            if (!explorerItemViewModel.CanView && !explorerItemViewModel.IsFolder)
+            {
+                e.Handled = true;
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -29,21 +29,27 @@ namespace Warewolf.UIBindingTests.PluginSource
         {
             Utils.SetupResourceDictionary();
             var sourceControl = new ManagePluginSourceControl();
-            var mockStudioUpdateManager = new Mock<IManagePluginSourceModel>();
-            mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
-            mockStudioUpdateManager.Setup(model => model.GetDllListings(null)).Returns(BuildBaseListing());
+            var pluginSourceModel = new Mock<IManagePluginSourceModel>();
+            pluginSourceModel.Setup(model => model.FetchSource(It.IsAny<Guid>()))
+                             .Returns(new PluginSourceDefinition()
+                             {
+                                 Name = "Test",
+                                 GACAssemblyName = "GAC:AuditPolicyGPManagedStubs, Version=6.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                             });
+            pluginSourceModel.Setup(model => model.ServerName).Returns("localhost");
+            pluginSourceModel.Setup(model => model.GetDllListings(null)).Returns(BuildBaseListing());
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockExecutor = new Mock<IExternalProcessExecutor>();
             var mockSynchronousAsyncWorker = new Mock<SynchronousAsyncWorker>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ManagePluginSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var viewModel = new ManagePluginSourceViewModel(pluginSourceModel.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
             sourceControl.DataContext = viewModel;
             Utils.ShowTheViewForTesting(sourceControl);
             FeatureContext.Current.Add(Utils.ViewNameKey, sourceControl);
             FeatureContext.Current.Add(Utils.ViewModelNameKey, viewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
+            FeatureContext.Current.Add("updateManager", pluginSourceModel);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
             FeatureContext.Current.Add("eventAggregator", mockEventAggregator);
@@ -184,7 +190,7 @@ namespace Warewolf.UIBindingTests.PluginSource
         [Then(@"""(.*)"" is ""(.*)""")]
         public void GivenIs(string controlName, string enabledString)
         {
-            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey));
+            Utils.CheckControlEnabled(controlName, enabledString, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
 
         [Then(@"ConfigFile textbox is ""(.*)""")]

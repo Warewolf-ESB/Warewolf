@@ -72,20 +72,18 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [TestCategory("Deploy")]
-        public void Change_Server_Details_From_DeployDestination_And_Save_Persists_Changes()
-        {            
-            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            UIMap.Click_Edit_Deploy_Destination_Server_Button();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.TabDescription.DisplayText.Contains("*"));
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected);
-            UIMap.Select_Server_Authentication_Public();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.TabDescription.DisplayText.Contains("*"));
-            UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-            UIMap.Click_Edit_Deploy_Destination_Server_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected);
-        }    
+        public void Deploy_DotnetWorkFlowForTesttingSelectAllDependencies_HasSourceSelected()
+        {
+            const string Source = "DotnetWorkflowForTesting";
+            UIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter(Source);
+            UIMap.Select_Deploy_First_Source_Item();
+            var displayText = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText;
+            Assert.AreEqual("1", displayText);
+            UIMap.Click_SelectAllDependencies_Button();
+            Playback.Wait(10);
+            displayText = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText;
+            Assert.AreEqual("2", displayText);
+        }
 
         #region Additional test attributes
 

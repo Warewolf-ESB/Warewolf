@@ -20,13 +20,19 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class DbSource : Resource, IResourceSource
+    public class DbSource : Resource, IResourceSource, IDb
     {
         #region CTOR
 
         public DbSource()
         {
             ResourceType = "DbSource";
+        }
+
+        public DbSource(enSourceType sourceType)
+        {
+            ResourceType = "DbSource";
+            ServerType = sourceType;
         }
 
         public DbSource(XElement xml)
