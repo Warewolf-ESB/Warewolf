@@ -73,6 +73,18 @@ Scenario: Executing a Foreach workflow
 		When workflow "ForEachAssigneWF" is saved "1" time
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/ForEachAssigneWF.debug?" in Browser
 		Then The Debug in Browser content contains the variable assigned executed "4" times
+  
+Scenario: Executing a Dotnet plugin workflow
+		Given I have a workflow "DotNetDLLWf"
+		And "DotNetDLLWf" contains an DotNet DLL "DotNetService" as
+	     | Source                   | ClassName                       | ObjectName | Action    | ActionOutputVaribale |
+	     | New DotNet Plugin Source | TestingDotnetDllCascading.Human | [[@human]] | BuildInts | [[rec1().num]]       |
+		And "DotNetService" constructorinputs 0 with inputs as
+		| parameterName | value |type|
 	  
-#Scenario: Executing a Dotnet plugin workflow
+		When workflow "DotNetDLLWf" is saved "1" time
+		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?" in Browser
+		Then The Debug in Browser content contains order of "AssignFlow", "CaseConvertFlow" and "ReplaceFlow" in SequenceFlow
+
+	
 #Scenario: Executing a Recordset sort workflow
