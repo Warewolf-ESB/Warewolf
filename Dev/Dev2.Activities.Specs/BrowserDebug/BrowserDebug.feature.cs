@@ -177,16 +177,60 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Hello World workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingHelloWorldWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Hello World workflow", ((string[])(null)));
+#line 37
+this.ScenarioSetup(scenarioInfo);
+#line 38
+  testRunner.Given("I have a workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 39
+  testRunner.And("I Debug \"http://localhost:3142/secure/Hello%20World.debug?Name=Bob\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 40
+  testRunner.Then("The Debug in Browser content contains has \"3\" inputs and \"1\" outputs for \"Decisio" +
+                    "n\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 41
+  testRunner.Then("The Debug in Browser content contains has \"1\" inputs and \"1\" outputs for \"Set the" +
+                    " output variable (1)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Hello World workflow with no Name Input")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingHelloWorldWorkflowWithNoNameInput()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Hello World workflow with no Name Input", ((string[])(null)));
+#line 43
+this.ScenarioSetup(scenarioInfo);
+#line 44
+  testRunner.Given("I have a workflow \"Hello World\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 45
+  testRunner.And("I Debug \"http://localhost:3142/secure/Hello%20World.debug?Name=\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+  testRunner.Then("The Debug in Browser content contains has \"3\" inputs and \"1\" outputs for \"Decisio" +
+                    "n\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 47
+  testRunner.Then("The Debug in Browser content contains has \"1\" inputs and \"1\" outputs for \"Set the" +
+                    " output variable (1)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Sequence workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
         public virtual void ExecutingASequenceWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Sequence workflow", ((string[])(null)));
-#line 40
+#line 49
 this.ScenarioSetup(scenarioInfo);
-#line 41
+#line 50
   testRunner.Given("I have a workflow \"SequenceVariableWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 42
+#line 51
   testRunner.And("\"SequenceVariableWF\" contains a Sequence \"SequenceFlow\" as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -198,7 +242,7 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "[[dateDay]]",
                         "Thursday"});
-#line 43
+#line 52
   testRunner.And("\"SequenceFlow\" contains an Assign \"AssignFlow\" as", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -210,7 +254,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "[[dateDay]]",
                         "UPPER"});
-#line 47
+#line 56
   testRunner.And("\"SequenceFlow\" contains case convert \"CaseConvertFlow\" as", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -221,14 +265,14 @@ this.ScenarioSetup(scenarioInfo);
                         "[[dateDay]]",
                         "THURSDAY",
                         "Friday"});
-#line 51
+#line 60
   testRunner.And("\"SequenceFlow\" contains Replace \"ReplaceFlow\" into \"[[replaceResult]]\" as", ((string)(null)), table5, "And ");
-#line 54
+#line 63
   testRunner.When("workflow \"SequenceVariableWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 64
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/SequenceVariableWF.debug" +
                     "?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 65
   testRunner.Then("The Debug in Browser content contains order of \"AssignFlow\", \"CaseConvertFlow\" an" +
                     "d \"ReplaceFlow\" in SequenceFlow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
