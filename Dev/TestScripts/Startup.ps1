@@ -172,7 +172,7 @@ if (!($SkipStudioStartup)) {
 			sleep 60
 		} else {
 			Start-Process $DotCoverPath "cover /TargetExecutable=`"$StudioPath`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`" /Output=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr`""
-			sleep 600
+			sleep 900
 		}
 		Write-Host Studio has started.
 	}
