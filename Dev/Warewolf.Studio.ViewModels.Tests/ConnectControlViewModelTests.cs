@@ -120,6 +120,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
             _serverMock.SetupGet(it => it.AllowEdit).Returns(true);
 
+            var mainViewModelMock = new Mock<IShellViewModel>();
+            CustomContainer.Register(mainViewModelMock.Object);
+
             //act
             Assert.IsTrue(_target.NewConnectionCommand.CanExecute(null));
             _target.NewConnectionCommand.Execute(null);
@@ -160,7 +163,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreSame(value, newSelectedConnection.Object);
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(newSelectedConnectionEnvironmentId));
             mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnection.Object));
-            Assert.IsTrue(_target.IsConnected);
+            Assert.IsTrue(_target.SelectedConnection.IsConnected);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
             Assert.IsFalse(isSelectedEnvironmentChangedRaised);
             Assert.IsTrue(isCanExecuteChangedRaised);
@@ -196,7 +199,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             mainViewModelMock.Verify(it => it.SetActiveEnvironment(newSelectedConnectionEnvironmentId));
             mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnection.Object));
-            Assert.IsTrue(_target.IsConnected);
+            Assert.IsTrue(_target.SelectedConnection.IsConnected);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
             Assert.IsFalse(isSelectedEnvironmentChangedRaised);
             Assert.IsTrue(isCanExecuteChangedRaised);
