@@ -124,11 +124,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
 
-        public void Click_Settings_Resource_Permissions_Row1_Delete_Button()
-        {
-            Mouse.Click(FindAddRemoveRowButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-        }
-
         public UITestControl FindAddResourceButton(UITestControl row)
         {
             var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(0);
@@ -182,61 +177,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer);
             Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
-        }
-
-        public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
-        {
-            FindExecutePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
-            Assert.IsTrue(FindExecutePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
-        }
-
-        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox()
-        {
-            FindViewPermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
-            Assert.IsTrue(FindViewPermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings resource permissions row1 view checkbox is not checked.");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
-        }
-
-        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox()
-        {
-            FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
-            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings resource permissions row1 view checkbox is not checked.");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
-        }
-
-        public void TryCloseAllTabs()
-        {
-            var WorkflowWizardTabCloseButtonExists = true;
-            var SettingsWizardTabCloseButtonExists = true;
-            var serverSourceWizardTabCloseButtonExists = true;
-            while (WorkflowWizardTabCloseButtonExists || SettingsWizardTabCloseButtonExists || serverSourceWizardTabCloseButtonExists)
-            {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton))
-                {
-                    Click_Close_Workflow_Tab_Button();
-                }
-                else
-                {
-                    WorkflowWizardTabCloseButtonExists = false;
-                }
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton))
-                {
-                    TryCloseSettingsWizardTab();
-                }
-                else
-                {
-                    SettingsWizardTabCloseButtonExists = false;
-                }
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.CloseButton))
-                {
-                    TryCloseServerSourceWizardTab();
-                }
-                else
-                {
-                    serverSourceWizardTabCloseButtonExists = false;
-                }
-            }
         }
 
         public void WaitForControlVisible(UITestControl control, int searchTimeout = 60000)
@@ -305,27 +245,6 @@ namespace Warewolf.UITests
                 MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text = text;
             }
             Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\' after typing that in.");
-        }
-
-        [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
-        {
-            if (!File.Exists(text))
-            {
-                text = text.Replace("Framework64", "Framework");
-                if (!File.Exists(text))
-                {
-                    throw new Exception("No suitable DLL could be found for this test to use.");
-                }
-            }
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = text;
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
-        }
-
-        public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
-        {
-            FindWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text = GroupName;
-            Assert.AreEqual(FindWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text, GroupName, "Settings security tab resource permissions row 1 windows group textbox text does not equal Public.");
         }
 
         [Given(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
@@ -400,31 +319,6 @@ namespace Warewolf.UITests
             Click_Close_Server_Source_Wizard_Tab_Button();
         }
 
-        [Given(@"I setup Public Permissions for ""(.*)"" for localhost")]
-        public void SetupPublicPermissionsForForLocalhost(string resource)
-        {
-            Click_Settings_RibbonButton();
-            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
-            if (deleteFirstResourceButton.Enabled)
-            {
-                var isViewChecked = FindViewPermissionsCheckbox(
-                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
-                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
-
-                var isExecuteChecked = FindExecutePermissionsCheckbox(
-                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
-                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
-
-                if (isViewChecked && isExecuteChecked)
-                {
-                    Click_Close_Settings_Tab_Button();
-                    return;
-                }
-            }            
-            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
-            Click_Close_Settings_Tab_Button();
-        }
-
         [Given(@"Dirty is ""(.*)"" When I Click EnableDisable test ""(.*)""")]
         [When(@"Dirty is ""(.*)"" When I Click EnableDisable test ""(.*)""")]
         [Then(@"Dirty is ""(.*)"" When I Click EnableDisable test ""(.*)""")]
@@ -463,26 +357,6 @@ namespace Warewolf.UITests
             Drag_Explorer_Localhost_Second_Item_Onto_Workflow_Design_Surface();
         }
 
-        [Given(@"I Click DB Source Wizard Test Connection Button")]
-        [When(@"I Click DB Source Wizard Test Connection Button")]
-        [Then(@"I Click DB Source Wizard Test Connection Button")]
-        public void Click_DB_Source_Wizard_Test_Connection_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.Exists, "Database Combobox is not visible.");
-        }
-
-
-        [Given(@"The DB Source Wizard Test Succeeded Image Is Visible")]
-        [When(@"The DB Source Wizard Test Succeeded Image Is Visible")]
-        [Then(@"The DB Source Wizard Test Succeeded Image Is Visible")]
-        public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
-        {
-            var point = new Point();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRGENDEV and waiting for the spinner.");
-        }
-
         [When(@"I Select ""(.*)"" from the source tab")]
         [Then(@"I Select ""(.*)"" from the source tab")]
         [Given(@"I Select ""(.*)"" from the source tab")]
@@ -517,41 +391,6 @@ namespace Warewolf.UITests
             Enter_Dice_Roll_Values();
             Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             Click_Close_Workflow_Tab_Button();
-        }
-
-        [When(@"I UnCheck Public Administrator")]
-        public void UnCheck_Public_Administrator()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = false;
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked, "Public View checkbox is unchecked after unChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked, "Public Execute checkbox unchecked after unChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked, "Public Contribute checkbox is unchecked after unChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked, "Public DeplotFrom checkbox is unchecked after unChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked, "Public DeployTo checkbox is unchecked after unChecking Administrator.");
-        }
-
-        [Given(@"I Check Resource Contribute")]
-        [When(@"I Check Resource Contribute")]
-        [Then(@"I Check Resource Contribute")]
-        public void Check_Resource_Contribute()
-        {
-            FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
-            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Resource View checkbox is NOT checked after Checking Contribute.");
-            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Resource Execute checkbox is NOT checked after Checking Contribute.");
-            Assert.IsTrue(FindAddRemoveRowButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Enabled, "Resource Delete button is disabled");
-        }
-
-        [Given(@"I UnCheck Public View")]
-        [When(@"I UnCheck Public View")]
-        [Then(@"I UnCheck Public View")]
-        public void UnCheck_Public_View()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = false;
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked, "Public View checkbox is checked after Checking Contribute.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked, "Public Contribute checkbox is checked after UnChecking Execute/View.");
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
         }
 
         private void AssertTestResults(TestResultEnum expectedTestResultEnum, int instance, WpfListItem currentTest)
@@ -831,31 +670,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Selected = true;
         }
 
-        [Given(@"I Click UserButton On Database Source")]
-        [When(@"I Click UserButton On Database Source")]
-        [Then(@"I Click UserButton On Database Source")]
-        public void Click_UserButton_On_DatabaseSource()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton);
-        }
-
-        [Given(@"I Click WindowsButton On Database Source")]
-        [When(@"I Click WindowsButton On Database Source")]
-        [Then(@"I Click WindowsButton On Database Source")]
-        public void Click_WindowsButton_On_DatabaseSource()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton);
-        }
-
-        [Given(@"I Enter TestUser Username And Password on Database source")]
-        [When(@"I Enter TestUser Username And Password on Database source")]
-        [Then(@"I Enter TestUser Username And Password on Database source")]
-        public void IEnterRunAsUserTestUserOnDatabaseSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "testuser";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
-        }
-
         [Given("Dice Is Selected InSettings Tab Permissions Row 1")]
         [When(@"I Assert Dice Is Selected InSettings Tab Permissions Row1")]
         [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
@@ -904,102 +718,6 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.VariableCell.IntellisenseCombobox.Textbox.Text = "[[SomeOtherVariable]]";
             MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.ValueCell.IntellisenseCombobox.Textbox.Text = "100";
-        }
-
-        [Given(@"I Check Public Administrator")]
-        [When(@"I Check Public Administrator")]
-        [Then(@"I Check Public Administrator")]
-        public void Check_Public_Administrator()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public Deploy To")]
-        [When(@"I Check Public Deploy To")]
-        [Then(@"I Check Public Deploy To")]
-        public void Check_Public_Deploy_To()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public Deploy From")]
-        [When(@"I Check Public Deploy From")]
-        [Then(@"I Check Public Deploy From")]
-        public void Check_Public_Deploy_From()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public View")]
-        [When(@"I Check Public View")]
-        [Then(@"I Check Public View")]
-        public void Check_Public_View()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public Execute")]
-        [When(@"I Check Public Execute")]
-        [Then(@"I Check Public Execute")]
-        public void Check_Public_Execute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public Contribute")]
-        [When(@"I Check Public Contribute")]
-        [Then(@"I Check Public Contribute")]
-        public void Check_Public_Contribute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = true;
-        }
-
-        [Given(@"I Uncheck Public Administrator")]
-        [When(@"I Uncheck Public Administrator")]
-        [Then(@"I Uncheck Public Administrator")]
-        public void Uncheck_Public_Administrator()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public Deploy To")]
-        [When(@"I Uncheck Public Deploy To")]
-        [Then(@"I Uncheck Public Deploy To")]
-        public void Uncheck_Public_Deploy_To()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public Deploy From")]
-        [When(@"I Uncheck Public Deploy From")]
-        [Then(@"I Uncheck Public Deploy From")]
-        public void Uncheck_Public_Deploy_From()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public View")]
-        [When(@"I Uncheck Public View")]
-        [Then(@"I Uncheck Public View")]
-        public void Uncheck_Public_View()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public Execute")]
-        [When(@"I Uncheck Public Execute")]
-        [Then(@"I Uncheck Public Execute")]
-        public void Uncheck_Public_Execute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public Contribute")]
-        [When(@"I Uncheck Public Contribute")]
-        [Then(@"I Uncheck Public Contribute")]
-        public void Uncheck_Public_Contribute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = false;
         }
 
         [Given(@"I Click Assign Tool Large View Done Button On Unpinned Tab")]
@@ -1098,14 +816,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.CloseButton);
         }
 
-        [Given(@"I Click Close DB Source Wizard Tab Button")]
-        [When(@"I Click Close DB Source Wizard Tab Button")]
-        [Then(@"I Click Close DB Source Wizard Tab Button")]
-        public void Click_Close_DB_Source_Wizard_Tab_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.CloseButton, new Point(13, 4));
-        }
-
         [Given(@"I Click Close Dependecy Tab")]
         [When(@"I Click Close Dependecy Tab")]
         [Then(@"I Click Close Dependecy Tab")]
@@ -1121,14 +831,6 @@ namespace Warewolf.UITests
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton.Exists, "DeployTab close tab button does not exist.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton, new Point(16, 6));
-        }
-
-        [Given(@"I Click Close DotNetPlugin Source Tab")]
-        [When(@"I Click Close DotNetPlugin Source Tab")]
-        [Then(@"I Click Close DotNetPlugin Source Tab")]
-        public void Click_Close_DotNetPlugin_Source_Tab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.CloseButton, new Point(13, 4));
         }
 
         [Given(@"I Click Close EmailSource Tab")]
@@ -1505,11 +1207,7 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(14, 13));
         }
 
-        [When(@"I Click Select Resource Button")]
-        public void Click_Select_ResourceButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton, new Point(9, 8));
-        }
+        #region SourceWizards.uitest
 
         [When(@"I Click Server Source Wizard Address Protocol Dropdown")]
         public void Click_Server_Source_Wizard_Address_Protocol_Dropdown()
@@ -1531,6 +1229,459 @@ namespace Warewolf.UITests
             Assert.IsTrue(SelectFilesWindow.Exists, "Select Files Window did not open after clicking Assembly Directory Button");
         }
 
+        [Given(@"I Click Close DotNetPlugin Source Tab")]
+        [When(@"I Click Close DotNetPlugin Source Tab")]
+        [Then(@"I Click Close DotNetPlugin Source Tab")]
+        public void Click_Close_DotNetPlugin_Source_Tab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.CloseButton, new Point(13, 4));
+        }
+
+        [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
+        public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
+        {
+            if (!File.Exists(text))
+            {
+                text = text.Replace("Framework64", "Framework");
+                if (!File.Exists(text))
+                {
+                    throw new Exception("No suitable DLL could be found for this test to use.");
+                }
+            }
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = text;
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
+        }
+
+        [Then(@"I Enter Text Into Database Server Tab")]
+        [Given(@"I Enter Text Into Database Server Tab")]
+        [Then(@"I Enter Text Into Database Server Tab")]
+        public void Enter_Text_Into_DatabaseServer_Tab()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
+        }
+
+        [When(@"I Enter RunAsUser(Root) Username And Password on Database source")]
+        [Given(@"I Enter RunAsUser(Root) Username And Password on Database source")]
+        [Then(@"I Enter RunAsUser(Root) Username And Password on Database source")]
+        public void IEnterRunAsUserRootOnDatabaseSource()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "root";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "admin";
+        }
+
+        [When(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
+        [Given(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
+        [Then(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
+        public void IEnterRunAsUserPostGresOnDatabaseSource()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "postgres";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
+        }
+
+        [When(@"I Select mysql From DB Source Wizard Database Combobox")]
+        [Given(@"I Select mysql From DB Source Wizard Database Combobox")]
+        [Then(@"I Select mysql From DB Source Wizard Database Combobox")]
+        public void Select_mysql_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsmysqlDB);
+            Assert.AreEqual("mysql", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIMysqlText.DisplayText);
+        }
+
+        [When(@"I Select postgres From DB Source Wizard Database Combobox")]
+        [Given(@"I Select postgres From DB Source Wizard Database Combobox")]
+        [Then(@"I Select postgres From DB Source Wizard Database Combobox")]
+        public void Select_postgres_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAspostgresDB);
+            Assert.AreEqual("postgres", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIPostgresText.DisplayText);
+        }
+
+        [When(@"I Select HR From DB Source Wizard Database Combobox")]
+        [Given(@"I Select HR From DB Source Wizard Database Combobox")]
+        [Then(@"I Select HR From DB Source Wizard Database Combobox")]
+        public void Select_HR_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsHRDB);
+            Assert.AreEqual("HR", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIHRText.DisplayText);
+        }
+
+        [When(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
+        [Given(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
+        [Then(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
+        public void Select_ExcelFiles_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsExcelFilesDB);
+            Assert.AreEqual("Excel Files", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIExcelFilesText.DisplayText);
+        }
+
+        [When(@"I Select MSAccess From DB Source Wizard Database Combobox")]
+        [Given(@"I Select MSAccess From DB Source Wizard Database Combobox")]
+        [Then(@"I Select MSAccess From DB Source Wizard Database Combobox")]
+        public void Select_MSAccess_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsMSAccessDB);
+            Assert.AreEqual("MS Access Database", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.MSAccessDatabaseText.DisplayText);
+        }
+
+        [When(@"I Select TestDB From DB Source Wizard Database Combobox")]
+        [Given(@"I Select TestDB From DB Source Wizard Database Combobox")]
+        [Then(@"I Select TestDB From DB Source Wizard Database Combobox")]
+        public void Select_TestDB_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsTestDB);
+            Assert.AreEqual("TestDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.TestDBText.DisplayText);
+        }
+
+        [When(@"I Select test From DB Source Wizard Database Combobox")]
+        [Given(@"I Select test From DB Source Wizard Database Combobox")]
+        [Then(@"I Select test From DB Source Wizard Database Combobox")]
+        public void Select_test_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAstest);
+            Assert.AreEqual("test", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.testText.DisplayText);
+        }
+
+        [When(@"I Select master From DB Source Wizard Database Combobox")]
+        [Given(@"I Select master From DB Source Wizard Database Combobox")]
+        [Then(@"I Select master From DB Source Wizard Database Combobox")]
+        public void Select_master_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
+            Mouse.Click(MainStudioWindow.ComboboxListItemAsmaster);
+            Assert.AreEqual("master", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
+        }
+
+        [When(@"I Select Dev2TestingDB From DB Source Wizard Database Combobox")]
+        public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox);
+            Mouse.Click(MainStudioWindow.Dev2TestingDBCustom);
+            Assert.AreEqual("Dev2TestingDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIDev2TestingDBText.DisplayText);
+        }
+
+        [When(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
+        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "rsaklfsvrgen";
+        }
+
+        [Given(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
+        [Then(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
+        public void Assert_RSAKLFSVRGENDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
+        }
+
+        [When(@"I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox")]
+        public void Type_RSAKLFSVRGENDEV_into_DB_Source_Wizard_Server_Textbox()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
+        }
+
+        [When(@"I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist")]
+        public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV, new Point(97, 17));
+            Assert.AreEqual("RSAKLFSVRGENDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
+        }
+
+        [Given(@"I Click Close DB Source Wizard Tab Button")]
+        [When(@"I Click Close DB Source Wizard Tab Button")]
+        [Then(@"I Click Close DB Source Wizard Tab Button")]
+        public void Click_Close_DB_Source_Wizard_Tab_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.CloseButton, new Point(13, 4));
+        }
+
+        [Given(@"I Click UserButton On Database Source")]
+        [When(@"I Click UserButton On Database Source")]
+        [Then(@"I Click UserButton On Database Source")]
+        public void Click_UserButton_On_DatabaseSource()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton);
+        }
+
+        [Given(@"I Click WindowsButton On Database Source")]
+        [When(@"I Click WindowsButton On Database Source")]
+        [Then(@"I Click WindowsButton On Database Source")]
+        public void Click_WindowsButton_On_DatabaseSource()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton);
+        }
+
+        [Given(@"I Enter TestUser Username And Password on Database source")]
+        [When(@"I Enter TestUser Username And Password on Database source")]
+        [Then(@"I Enter TestUser Username And Password on Database source")]
+        public void IEnterRunAsUserTestUserOnDatabaseSource()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "testuser";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
+        }
+
+        [Given(@"I Click DB Source Wizard Test Connection Button")]
+        [When(@"I Click DB Source Wizard Test Connection Button")]
+        [Then(@"I Click DB Source Wizard Test Connection Button")]
+        public void Click_DB_Source_Wizard_Test_Connection_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.Spinner);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.Exists, "Database Combobox is not visible.");
+        }
+
+
+        [Given(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        [When(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        [Then(@"The DB Source Wizard Test Succeeded Image Is Visible")]
+        public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
+        {
+            var point = new Point();
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRGENDEV and waiting for the spinner.");
+        }
+
+        #endregion
+        #region Settings\Settings.uitest
+
+        [When(@"I Select SecurityTab")]
+        public void Select_SecurityTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab, new Point(102, 10));
+        }
+
+        [When(@"I Select PerfomanceCounterTab")]
+        public void Select_PerfomanceCounterTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab, new Point(124, 14));
+        }
+
+        [When(@"I Select LoggingTab")]
+        public void Select_LoggingTab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab, new Point(57, 7));
+        }
+
+        public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
+        {
+            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Assert.IsTrue(ServicePickerDialog.Exists, "Service picker dialog does not exist.");
+        }
+
+        [When(@"I Click Select Resource Button From Resource Permissions")]
+        public void Click_Select_Resource_Button_From_Resource_Permissions()
+        {
+            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1), new Point(13, 16));
+            Assert.IsTrue(ServicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
+        }
+
+        [When(@"I Click Reset Perfomance Counter")]
+        public void Click_Reset_Perfomance_Counter()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink, new Point(49, 9));
+            Assert.IsTrue(MessageBoxWindow.Exists, "MessageBoxWindow did not show after clicking reset counters");
+            Mouse.Click(MessageBoxWindow.OKButton, new Point(50, 12));
+        }
+
+        [When(@"I Click Select Resource Button")]
+        public void Click_Select_ResourceButton()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton, new Point(9, 8));
+        }
+
+        [Given(@"I Check Public Administrator")]
+        [When(@"I Check Public Administrator")]
+        [Then(@"I Check Public Administrator")]
+        public void Check_Public_Administrator()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = true;
+        }
+
+        [Given(@"I Check Public Deploy To")]
+        [When(@"I Check Public Deploy To")]
+        [Then(@"I Check Public Deploy To")]
+        public void Check_Public_Deploy_To()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked = true;
+        }
+
+        [Given(@"I Check Public Deploy From")]
+        [When(@"I Check Public Deploy From")]
+        [Then(@"I Check Public Deploy From")]
+        public void Check_Public_Deploy_From()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked = true;
+        }
+
+        [Given(@"I Check Public View")]
+        [When(@"I Check Public View")]
+        [Then(@"I Check Public View")]
+        public void Check_Public_View()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = true;
+        }
+
+        [Given(@"I Check Public Execute")]
+        [When(@"I Check Public Execute")]
+        [Then(@"I Check Public Execute")]
+        public void Check_Public_Execute()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked = true;
+        }
+
+        [Given(@"I Check Public Contribute")]
+        [When(@"I Check Public Contribute")]
+        [Then(@"I Check Public Contribute")]
+        public void Check_Public_Contribute()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = true;
+        }
+
+        [Given(@"I Uncheck Public Administrator")]
+        [When(@"I Uncheck Public Administrator")]
+        [Then(@"I Uncheck Public Administrator")]
+        public void Uncheck_Public_Administrator()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = false;
+        }
+
+        [Given(@"I Uncheck Public Deploy To")]
+        [When(@"I Uncheck Public Deploy To")]
+        [Then(@"I Uncheck Public Deploy To")]
+        public void Uncheck_Public_Deploy_To()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked = false;
+        }
+
+        [Given(@"I Uncheck Public Deploy From")]
+        [When(@"I Uncheck Public Deploy From")]
+        [Then(@"I Uncheck Public Deploy From")]
+        public void Uncheck_Public_Deploy_From()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked = false;
+        }
+
+        [Given(@"I Uncheck Public View")]
+        [When(@"I Uncheck Public View")]
+        [Then(@"I Uncheck Public View")]
+        public void Uncheck_Public_View()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = false;
+        }
+
+        [Given(@"I Uncheck Public Execute")]
+        [When(@"I Uncheck Public Execute")]
+        [Then(@"I Uncheck Public Execute")]
+        public void Uncheck_Public_Execute()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked = false;
+        }
+
+        [Given(@"I Uncheck Public Contribute")]
+        [When(@"I Uncheck Public Contribute")]
+        [Then(@"I Uncheck Public Contribute")]
+        public void Uncheck_Public_Contribute()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = false;
+        }
+
+        [When(@"I UnCheck Public Administrator")]
+        public void UnCheck_Public_Administrator()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = false;
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Administrator.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked, "Public View checkbox is unchecked after unChecking Administrator.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked, "Public Execute checkbox unchecked after unChecking Administrator.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked, "Public Contribute checkbox is unchecked after unChecking Administrator.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked, "Public DeplotFrom checkbox is unchecked after unChecking Administrator.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked, "Public DeployTo checkbox is unchecked after unChecking Administrator.");
+        }
+
+        [Given(@"I Check Resource Contribute")]
+        [When(@"I Check Resource Contribute")]
+        [Then(@"I Check Resource Contribute")]
+        public void Check_Resource_Contribute()
+        {
+            FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
+            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Resource View checkbox is NOT checked after Checking Contribute.");
+            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Resource Execute checkbox is NOT checked after Checking Contribute.");
+            Assert.IsTrue(FindAddRemoveRowButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Enabled, "Resource Delete button is disabled");
+        }
+
+        [Given(@"I UnCheck Public View")]
+        [When(@"I UnCheck Public View")]
+        [Then(@"I UnCheck Public View")]
+        public void UnCheck_Public_View()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = false;
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked, "Public View checkbox is checked after Checking Contribute.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked, "Public Contribute checkbox is checked after UnChecking Execute/View.");
+            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
+        }
+
+        [Given(@"I setup Public Permissions for ""(.*)"" for localhost")]
+        public void SetupPublicPermissionsForForLocalhost(string resource)
+        {
+            Click_Settings_RibbonButton();
+            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
+            if (deleteFirstResourceButton.Enabled)
+            {
+                var isViewChecked = FindViewPermissionsCheckbox(
+                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
+
+                var isExecuteChecked = FindExecutePermissionsCheckbox(
+                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
+
+                if (isViewChecked && isExecuteChecked)
+                {
+                    Click_Close_Settings_Tab_Button();
+                    return;
+                }
+            }
+            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+            Click_Close_Settings_Tab_Button();
+        }
+
+        public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
+        {
+            FindWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text = GroupName;
+            Assert.AreEqual(FindWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text, GroupName, "Settings security tab resource permissions row 1 windows group textbox text does not equal Public.");
+        }
+
+        public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
+        {
+            FindExecutePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
+            Assert.IsTrue(FindExecutePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
+        }
+
+        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox()
+        {
+            FindViewPermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
+            Assert.IsTrue(FindViewPermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings resource permissions row1 view checkbox is not checked.");
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
+        }
+
+        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox()
+        {
+            FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
+            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings resource permissions row1 view checkbox is not checked.");
+            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
+        }
+
+        public void Click_Settings_Resource_Permissions_Row1_Delete_Button()
+        {
+            Mouse.Click(FindAddRemoveRowButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+        }
+
+        #endregion
         #region Deploy\Deploy.uitest
 
         [Given(@"I validate the Resource tree is loaded")]
@@ -1677,13 +1828,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(226, 13));
             Assert.AreEqual("Remote Connection Integration", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
-        }
-
-        [When(@"I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist")]
-        public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV, new Point(97, 17));
-            Assert.AreEqual("RSAKLFSVRGENDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
         }
 
         [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
@@ -2390,14 +2534,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MessageBoxWindow.Exists, "Delete Confirmation MessageBox did not Open");
         }
 
-        [When(@"I Click Reset Perfomance Counter")]
-        public void Click_Reset_Perfomance_Counter()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink, new Point(49, 9));
-            Assert.IsTrue(MessageBoxWindow.Exists, "MessageBoxWindow did not show after clicking reset counters");
-            Mouse.Click(MessageBoxWindow.OKButton, new Point(50, 12));
-        }
-
         [Given(@"I Click MessageBox No")]
         [When(@"I Click MessageBox No")]
         [Then(@"I Click MessageBox No")]
@@ -2656,13 +2792,6 @@ namespace Warewolf.UITests
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
-        [When(@"I Click Select Resource Button From Resource Permissions")]
-        public void Click_Select_Resource_Button_From_Resource_Permissions()
-        {
-            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1), new Point(13, 16));
-            Assert.IsTrue(ServicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
-        }
-
         public void Click_Service_Picker_Dialog_OK()
         {
             Mouse.Click(ServicePickerDialog.OK, new Point(52, 10));
@@ -2711,12 +2840,6 @@ namespace Warewolf.UITests
         public void Select_FirstItem_From_ServicePicker_Tree()
         {
             Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1);
-        }
-
-        public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
-        {
-            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-            Assert.IsTrue(ServicePickerDialog.Exists, "Service picker dialog does not exist.");
         }
 
         [When(@"I Click Service Picker Dialog First Service In Explorer")]
@@ -8192,25 +8315,6 @@ namespace Warewolf.UITests
             Assert.AreEqual("0", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
         }
 
-        [When(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
-        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "rsaklfsvrgen";
-        }
-
-        [Given(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
-        [Then(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
-        public void Assert_RSAKLFSVRGENDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
-        }
-
-        [When(@"I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox")]
-        public void Type_RSAKLFSVRGENDEV_into_DB_Source_Wizard_Server_Textbox()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
-        }
-
         [When(@"I Type The Testing Site into Web POST Source Wizard Address Textbox")]
         public void Type_The_Testing_Site_into_Web_POST_Source_Wizard_Address_Textbox()
         {
@@ -8647,14 +8751,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRow, new Point(74, 9));
         }
 
-        [When(@"I Select Dev2TestingDB From DB Source Wizard Database Combobox")]
-        public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox);
-            Mouse.Click(MainStudioWindow.Dev2TestingDBCustom);
-            Assert.AreEqual("Dev2TestingDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIDev2TestingDBText.DisplayText);
-        }
-
         [When(@"I Select http From Server Source Wizard Address Protocol Dropdown")]
         public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
         {
@@ -8669,12 +8765,6 @@ namespace Warewolf.UITests
         public void Select_InsertRow_FromContextMenu()
         {
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.InsertRow, new Point(66, 19));
-        }
-
-        [When(@"I Select LoggingTab")]
-        public void Select_LoggingTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab, new Point(57, 7));
         }
 
         [When(@"I Select MSSQLSERVER From DB Source Wizard Address Protocol Dropdown")]
@@ -8698,12 +8788,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Paste, new Point(52, 16));
         }
 
-        [When(@"I Select PerfomanceCounterTab")]
-        public void Select_PerfomanceCounterTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab, new Point(124, 14));
-        }
-
         public void Select_Server_Authentication_Public()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
@@ -8713,12 +8797,6 @@ namespace Warewolf.UITests
         public void Select_SaveAsImage_FromContextMenu()
         {
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.SaveasImage, new Point(38, 15));
-        }
-
-        [When(@"I Select SecurityTab")]
-        public void Select_SecurityTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab, new Point(102, 10));
         }
 
         [When(@"I Select SetAsStartNode FromContextMenu")]
@@ -8914,112 +8992,6 @@ namespace Warewolf.UITests
         public void WhenIDragATool(string tool)
         {
             Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface();
-        }
-
-        [Then(@"I Enter Text Into Database Server Tab")]
-        [Given(@"I Enter Text Into Database Server Tab")]
-        [Then(@"I Enter Text Into Database Server Tab")]
-        public void Enter_Text_Into_DatabaseServer_Tab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
-        }
-
-        [When(@"I Enter RunAsUser(Root) Username And Password on Database source")]
-        [Given(@"I Enter RunAsUser(Root) Username And Password on Database source")]
-        [Then(@"I Enter RunAsUser(Root) Username And Password on Database source")]
-        public void IEnterRunAsUserRootOnDatabaseSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "root";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "admin";
-        }
-
-        [When(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
-        [Given(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
-        [Then(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
-        public void IEnterRunAsUserPostGresOnDatabaseSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "postgres";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
-        }
-
-        [When(@"I Select mysql From DB Source Wizard Database Combobox")]
-        [Given(@"I Select mysql From DB Source Wizard Database Combobox")]
-        [Then(@"I Select mysql From DB Source Wizard Database Combobox")]
-        public void Select_mysql_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsmysqlDB);
-            Assert.AreEqual("mysql", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIMysqlText.DisplayText);
-        }
-
-        [When(@"I Select postgres From DB Source Wizard Database Combobox")]
-        [Given(@"I Select postgres From DB Source Wizard Database Combobox")]
-        [Then(@"I Select postgres From DB Source Wizard Database Combobox")]
-        public void Select_postgres_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAspostgresDB);
-            Assert.AreEqual("postgres", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIPostgresText.DisplayText);
-        }
-
-        [When(@"I Select HR From DB Source Wizard Database Combobox")]
-        [Given(@"I Select HR From DB Source Wizard Database Combobox")]
-        [Then(@"I Select HR From DB Source Wizard Database Combobox")]
-        public void Select_HR_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsHRDB);
-            Assert.AreEqual("HR", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIHRText.DisplayText);
-        }
-
-        [When(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
-        [Given(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
-        [Then(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
-        public void Select_ExcelFiles_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsExcelFilesDB);
-            Assert.AreEqual("Excel Files", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIExcelFilesText.DisplayText);
-        }
-
-        [When(@"I Select MSAccess From DB Source Wizard Database Combobox")]
-        [Given(@"I Select MSAccess From DB Source Wizard Database Combobox")]
-        [Then(@"I Select MSAccess From DB Source Wizard Database Combobox")]
-        public void Select_MSAccess_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsMSAccessDB);
-            Assert.AreEqual("MS Access Database", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.MSAccessDatabaseText.DisplayText);
-        }
-
-        [When(@"I Select TestDB From DB Source Wizard Database Combobox")]
-        [Given(@"I Select TestDB From DB Source Wizard Database Combobox")]
-        [Then(@"I Select TestDB From DB Source Wizard Database Combobox")]
-        public void Select_TestDB_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsTestDB);
-            Assert.AreEqual("TestDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.TestDBText.DisplayText);
-        }
-
-        [When(@"I Select test From DB Source Wizard Database Combobox")]
-        [Given(@"I Select test From DB Source Wizard Database Combobox")]
-        [Then(@"I Select test From DB Source Wizard Database Combobox")]
-        public void Select_test_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAstest);
-            Assert.AreEqual("test", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.testText.DisplayText);
-        }
-
-        [When(@"I Select master From DB Source Wizard Database Combobox")]
-        [Given(@"I Select master From DB Source Wizard Database Combobox")]
-        [Then(@"I Select master From DB Source Wizard Database Combobox")]
-        public void Select_master_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsmaster);
-            Assert.AreEqual("master", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
         }
 
         public void Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab()
