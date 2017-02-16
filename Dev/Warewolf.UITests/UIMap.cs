@@ -233,41 +233,6 @@ namespace Warewolf.UITests
             return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
         }
 
-        public void TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(string SourceName)
-        {
-            try
-            {
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
-                {
-                    Click_Explorer_RemoteServer_Connect_Button();
-                }
-                else
-                {
-                    Click_Connect_Control_InExplorer();
-                    if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected))
-                    {
-                        Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
-                        Click_Explorer_RemoteServer_Connect_Button();
-                    }
-                }
-                Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
-                Filter_Explorer(SourceName);
-                WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
-                {
-                    RightClick_Explorer_Localhost_FirstItem();
-                    Select_Delete_From_ExplorerContextMenu();
-                    Click_MessageBox_Yes();
-                }
-                TryClearExplorerFilter();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove remote server " + SourceName + ". Test may have crashed before remote server " + SourceName + " was connected.\n" + e.Message);
-                TryClearExplorerFilter();
-            }
-        }
-
         [Given(@"I Try Remove ""(.*)"" From Explorer")]
         [When(@"I Try Remove ""(.*)"" From Explorer")]
         [Then(@"I Try Remove ""(.*)"" From Explorer")]
@@ -299,12 +264,13 @@ namespace Warewolf.UITests
         }
 
         [When(@"I Connect To Remote Server")]
+        [Given(@"I Connect To Remote Server")]
+        [Then(@"I Connect To Remote Server")]
         public void ConnectToRemoteServer()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
             Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
-            Click_Explorer_RemoteServer_Connect_Button();
         }
 
         [When(@"I Try Connect To Remote Server")]
@@ -318,9 +284,7 @@ namespace Warewolf.UITests
             }
             else
             {
-                Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-                Click_Explorer_RemoteServer_Connect_Button();
+                ConnectToRemoteServer();
             }
         }
 
@@ -558,32 +522,6 @@ namespace Warewolf.UITests
         public void WaitForSpinner(UITestControl control, int searchTimeout = 30000)
         {
             WaitForControlNotVisible(control, searchTimeout);
-        }
-
-        [Given(@"I Try DisConnect To Remote Server")]
-        [When(@"I Try DisConnect To Remote Server")]
-        [Then(@"I Try DisConnect To Remote Server")]
-        public void TryDisConnectToRemoteServer()
-        {
-            if (ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
-            {
-                Click_Explorer_RemoteServer_Connect_Button();
-                Click_Connect_Control_InExplorer();
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-            }
-            else
-            {
-                Click_Connect_Control_InExplorer();
-                if (ControlExistsNow(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
-                {
-                    Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
-                    Click_Explorer_RemoteServer_Connect_Button();
-                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegration.Exists);
-                    Click_Connect_Control_InExplorer();
-                    Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-                }
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-            }
         }
 
         [Given(@"I Enter Invalid Service Name With Whitespace Into Save Dialog As ""(.*)""")]
@@ -1027,8 +965,7 @@ namespace Warewolf.UITests
         public void SetupPublicPermissionsForForRemoteServer(string resource)
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
-            Select_RemoteConnectionIntegration_From_Explorer();
-            Click_Explorer_RemoteServer_Connect_Button();
+            ConnectToRemoteServer();
             Playback.Wait(1000);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
             Click_Settings_RibbonButton();
@@ -3209,16 +3146,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
         }
 
-        [When(@"I Click Deploy Tab Destination Server Connect Button")]
-        [Given(@"I Click Deploy Tab Destination Server Connect Button")]
-        [Then(@"I Click Deploy Tab Destination Server Connect Button")]
-        public void Click_Deploy_Tab_Destination_Server_Connect_Button()
-        {
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
-        }
-
         [Given(@"I Click Deploy Tab Destination Server New Remote Server Item")]
         [When(@"I Click Deploy Tab Destination Server New Remote Server Item")]
         [Then(@"I Click Deploy Tab Destination Server New Remote Server Item")]
@@ -3366,14 +3293,6 @@ namespace Warewolf.UITests
         {
             WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
-        }
-
-        [Given(@"I Click Explorer Connect Remote Server Button")]
-        [When(@"I Click Explorer Connect Remote Server Button")]
-        [Then(@"I Click Explorer Connect Remote Server Button")]
-        public void Click_Explorer_RemoteServer_Connect_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
         }
 
         [Given(@"I Click First Recordset Input Checkbox")]
@@ -4475,6 +4394,12 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton, new Point(51, 8));
             WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Spinner);
+        }
+
+        [When(@"I Click New Server Source From Connect Control")]
+        public void Click_NewServerSource_From_ConnectControl()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectControlNewButton);
         }
 
         [When(@"I Click Service Picker Dialog First Service In Explorer")]
@@ -7658,17 +7583,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Selected source server in deploy is not localhost (Connected).");
         }
 
-        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
-        [When(@"I Select RemoteConnectionIntegration From Explorer")]
-        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
-        public void Select_RemoteConnectionIntegration_From_Explorer()
-        {
-            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
-            Mouse.Click(toggleButton, new Point(136, 7));
-            Playback.Wait(1000);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-        }
-
         [Given(@"I Select Connected RemoteConnectionIntegration From Explorer")]
         [When(@"I Select Connected RemoteConnectionIntegration From Explorer")]
         [Then(@"I Select Connected RemoteConnectionIntegration From Explorer")]
@@ -8205,17 +8119,6 @@ namespace Warewolf.UITests
             Mouse.Click(flowchart, new Point(74, 8));
 
             Keyboard.SendKeys(flowchart, "S", (ModifierKeys.Control));
-        }
-
-        [Given(@"I am connected on a remote server")]
-        [When(@"I am connected on a remote server")]
-        [Then(@"I am connected on a remote server")]
-        public void GivenIAmConnectedOnARemoteServer()
-        {
-            Select_RemoteConnectionIntegration_From_Explorer();
-            Click_Explorer_RemoteServer_Connect_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
         }
 
         [Then(@"Remote Server Refreshes")]
@@ -8957,7 +8860,7 @@ namespace Warewolf.UITests
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
-                Select_RemoteConnectionIntegration_From_Explorer();
+                ConnectToRemoteServer();
                 Click_Explorer_RemoteServer_Edit_Button();
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
@@ -8973,7 +8876,7 @@ namespace Warewolf.UITests
                 Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
-                Select_RemoteConnectionIntegration_From_Explorer();
+                ConnectToRemoteServer();
                 Click_Explorer_RemoteServer_Edit_Button();
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");

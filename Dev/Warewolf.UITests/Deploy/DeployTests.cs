@@ -35,34 +35,9 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [TestCategory("Deploy")]
-        public void Deploy_Connect_And_Disconnect_Destination()
-        {
-            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
-            UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Deploy tab Destin server did not change to localhost(Connected) after clicking disconnect button.");
-        }
-
-        [TestMethod]
-        [TestCategory("Deploy")]
-        public void Deploy_Connect_And_Disconnect_Source()
-        {
-            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-            UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
-            Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Source Combobox text  is: " + UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText);
-            UIMap.Click_Deploy_Tab_Source_Refresh_Button();
-            UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
-            UIMap.Click_Deploy_Tab_Source_Refresh_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Deploy tab Source server did not change to localhost(Connected) after clicking disconnect button.");
-        }
-
-        [TestMethod]
-        [TestCategory("Deploy")]
         public void Deploy_Hello_World()
         {
             UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             UIMap.Deploy_Service_From_Deploy_View("Hello World");
             UIMap.Click_Close_Deploy_Tab_Button();
             UIMap.ClickDeployVersionConflictsMessageBoxOK();            
