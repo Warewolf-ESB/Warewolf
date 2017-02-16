@@ -55,6 +55,15 @@ Scenario: Executing a Sequence workflow
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/SequenceVariableWF.debug?" in Browser
 		Then The Debug in Browser content contains order of "AssignFlow", "CaseConvertFlow" and "ReplaceFlow" in SequenceFlow
 
-#Scenario: Executing a Foreach workflow
+Scenario: Executing a Foreach workflow
+		Given I have a workflow "ForEachAssigneWF"
+		And "ForEachAssigneWF" contains a Foreach "ForEachTest" as "NumOfExecution" executions "4"
+		And "ForEachTest" contains an Assign "MyAssign" as
+	    | variable  | value |
+	    | [[Year]]	| 2017  |
+		When workflow "ForEachAssigneWF" is saved "1" time
+		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/ForEachAssigneWF.debug?" in Browser
+		Then The Debug in Browser content contains the variable assigned executed "4" times
+	  
 #Scenario: Executing a Dotnet plugin workflow
 #Scenario: Executing a Recordset sort workflow
