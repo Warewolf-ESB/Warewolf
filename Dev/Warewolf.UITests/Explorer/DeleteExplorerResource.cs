@@ -15,6 +15,7 @@ namespace Warewolf.UITests
         const string flowSequence = "DeleteResourceRemovalTestFile";
         const string uiTestDependencyOne = "UITestDependencyOne";
         const string DeleteAnywayResourceFolder = "DeleteAnyway";
+        const string DeleteRemoteServer = "RemoteServerToDelete";
 
         [TestMethod]
         [TestCategory("Explorer")]
@@ -70,6 +71,17 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists, "OK button does not exist.");
             UIMap.Click_MessageBox_DeleteAnyway();
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem), "Item did not delete");
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void DeletedRemoteServer_RemoveItemFromTree()
+        {
+            UIMap.Filter_Explorer(DeleteRemoteServer);
+            UIMap.Delete_FirstResource_From_ExplorerContextMenu();
+            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
+            UIMap.Click_MessageBox_Yes();
+            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem), "Remote server delete was not successful.");
         }
 
         #region Additional test attributes
