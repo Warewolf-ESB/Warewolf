@@ -202,7 +202,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         }
 
         public IServer FetchServer(Guid savedServerID)
-        {            
+        {
             var environmentModels = EnvironmentRepository.Instance.ReloadAllServers();
             var requiredEnv = environmentModels.FirstOrDefault(model => model.ID == savedServerID);
             if(requiredEnv != null)
