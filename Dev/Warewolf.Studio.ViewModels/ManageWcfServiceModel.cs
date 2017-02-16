@@ -56,15 +56,5 @@ namespace Warewolf.Studio.ViewModels
         {
             return _updateRepository.TestWcfService(inputValues);
         }
-
-        public IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IWcfAction action)
-        {
-            return new List<IServiceOutputMapping> { new ServiceOutputMapping("bob", "The", ""), new ServiceOutputMapping("dora", "The", ""), new ServiceOutputMapping("Tree", "The", "") };
-        }
-
-        public void SaveService(IWcfService toModel)
-        {
-            _updateRepository.Save(toModel);
-        }
     }
 }
