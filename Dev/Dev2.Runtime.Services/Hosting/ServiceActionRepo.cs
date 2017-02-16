@@ -31,5 +31,13 @@ namespace Dev2.Runtime.Hosting
 
         //Private constructor to ensure that Singleton is used
         private ServiceActionRepo() { }
+
+        public void RemoveFromCache(Guid key)
+        {
+            if (_actionsCache.ContainsKey(key))
+            {
+                _actionsCache.Remove(key);
+            }
+        }
     }
 }

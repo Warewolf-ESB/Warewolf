@@ -1291,6 +1291,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.DuplicateMatch, result.Status);
         }
 
+        
+
         #endregion
 
         #region GetDynamicObjects
@@ -2985,6 +2987,38 @@ namespace Dev2.Tests.Runtime.Hosting
             var ds2 = ServiceActionRepo.Instance.ReadCache(actId2);
             Assert.IsNotNull(ds1);
             Assert.IsNotNull(ds2);
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithSingleExistingResourceName_ShouldRemoveFromCache()
+        {
+            //---------------Set up test pack-------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
+
+            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+
+            const string propertyName = "_parsers";
+            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            fieldInfo?.SetValue(rc, _parsers);
+            rc.LoadResourceActivityCache(workspaceID);
+            var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ServiceActionRepo.Instance.ReadCache(actId));
+            //---------------Execute Test ----------------------
+            rc.DeleteResource(workspaceID, actId, "WorkflowService");
+            Assert.IsNull(ServiceActionRepo.Instance.ReadCache(actId));
+
+
         }
         #endregion
 
