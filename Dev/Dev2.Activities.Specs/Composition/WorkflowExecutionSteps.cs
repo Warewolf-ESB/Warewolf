@@ -2632,6 +2632,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
         }
+
         [Given(@"""(.*)"" contains a Sequence ""(.*)"" as")]
         public void GivenContainsASequenceAs(string parentName, string activityName)
         {
