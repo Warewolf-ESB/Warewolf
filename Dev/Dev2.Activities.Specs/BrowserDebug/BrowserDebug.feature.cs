@@ -81,7 +81,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
   testRunner.When("workflow \"BlankWorkflow\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
-  testRunner.And("I Debug \"http://localhost:3142/secure/BlankWorkflow.debug?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/BlankWorkflow.debug?\" in" +
+                    " Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
   testRunner.Then("The Debug in Browser content contains \"The workflow must have at least one servic" +
                     "e or activity connected to the Start Node.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -102,7 +103,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
   testRunner.When("workflow \"NoInputsWorkflow\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
-  testRunner.And("I Debug \"http://localhost:3142/secure/NoInputsWorkflow.debug?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/NoInputsWorkflow.debug?\"" +
+                    " in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
   testRunner.Then("The Debug in Browser content contains has children with no Inputs and Ouputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -170,6 +172,65 @@ this.ScenarioSetup(scenarioInfo);
 #line 35
   testRunner.Then("The Debug in Browser content contains has error messagge \"\"invalid variable assig" +
                     "ned to d@teMonth\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Sequence workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingASequenceWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Sequence workflow", ((string[])(null)));
+#line 40
+this.ScenarioSetup(scenarioInfo);
+#line 41
+  testRunner.Given("I have a workflow \"SequenceVariableWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 42
+  testRunner.And("\"SequenceVariableWF\" contains a Sequence \"SequenceFlow\" as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table3.AddRow(new string[] {
+                        "[[dateMonth]]",
+                        "February"});
+            table3.AddRow(new string[] {
+                        "[[dateDay]]",
+                        "Thursday"});
+#line 43
+  testRunner.And("\"SequenceFlow\" contains an Assign \"AssignFlow\" as", ((string)(null)), table3, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Type"});
+            table4.AddRow(new string[] {
+                        "[[dateMonth]]",
+                        "UPPER"});
+            table4.AddRow(new string[] {
+                        "[[dateDay]]",
+                        "UPPER"});
+#line 47
+  testRunner.And("\"SequenceFlow\" contains case convert \"CaseConvertFlow\" as", ((string)(null)), table4, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "In Fields",
+                        "Find",
+                        "Replace With"});
+            table5.AddRow(new string[] {
+                        "[[dateDay]]",
+                        "THURSDAY",
+                        "Friday"});
+#line 51
+  testRunner.And("\"SequenceFlow\" contains Replace \"ReplaceFlow\" into \"[[replaceResult]]\" as", ((string)(null)), table5, "And ");
+#line 54
+  testRunner.When("workflow \"SequenceVariableWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 55
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/SequenceVariableWF.debug" +
+                    "?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+  testRunner.Then("The Debug in Browser content contains order of \"AssignFlow\", \"CaseConvertFlow\" an" +
+                    "d \"ReplaceFlow\" in SequenceFlow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
