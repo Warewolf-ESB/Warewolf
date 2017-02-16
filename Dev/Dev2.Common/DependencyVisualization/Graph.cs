@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Common.DependencyVisualization
 {
@@ -19,7 +20,7 @@ namespace Dev2.Common.DependencyVisualization
     /// Represents a set of nodes that can be dependent upon each other,
     /// and will detect circular dependencies between its nodes.
     /// </summary>
-    public class Graph
+    public class Graph : IGraph
     {
         #region Constructor
 
@@ -52,7 +53,7 @@ namespace Dev2.Common.DependencyVisualization
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public new string ToString()
         {
-            StringBuilder result = new StringBuilder(string.Format("<graph title=\"{0}\">", Title));
+            StringBuilder result = new StringBuilder($"<graph title=\"{Title}\">");
 
             foreach (var node in Nodes)
             {
@@ -79,7 +80,7 @@ namespace Dev2.Common.DependencyVisualization
             CircularDependencies.Sort();
         }
 
-        public void ProcessCircularDependencies(List<CircularDependency> circularDependencies)
+        public void ProcessCircularDependencies(IEnumerable<CircularDependency> circularDependencies)
         {
             foreach (CircularDependency circularDependency in circularDependencies)
             {

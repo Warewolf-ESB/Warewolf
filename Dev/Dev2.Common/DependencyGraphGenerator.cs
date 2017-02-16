@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
@@ -36,7 +37,7 @@ namespace Dev2.Common
         /// <param name="nestingLevel">How deep should the graph show.</param>
         /// <returns></returns>
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public Graph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
+        public IGraph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
             if (xmlData == null || xmlData.Length == 0)
             {
