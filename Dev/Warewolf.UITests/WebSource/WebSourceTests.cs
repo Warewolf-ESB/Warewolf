@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.WebSource
 {
@@ -68,6 +69,21 @@ namespace Warewolf.UITests.WebSource
         }
 
         private UIMap _UIMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
 
         #endregion
     }

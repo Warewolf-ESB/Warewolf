@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tabs
 {
@@ -14,10 +15,10 @@ namespace Warewolf.UITests.Tabs
         public void UnpinAndRepinNewWorkflowWizardTabByDraggingOnly()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            UIMap.Unpin_Tab_With_Drag(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Pin_Unpinned_Pane_To_Default_Position();
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.UnpinnedTab), "Unpinned pane still exists after being dragged onto the central dock indicator.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not dock into it's default position after being dragged onto the central dock indicator.");
+            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not dock into it's default position after being dragged onto the central dock indicator.");
         }
 
         [TestMethod]
@@ -25,7 +26,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinnedPaneContextMenuItems()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);            
+            UIMap.Unpin_Tab_With_Drag(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);            
             Mouse.Click(UIMap.MainStudioWindow.UnpinnedTab, MouseButtons.Right, ModifierKeys.None, new Point(14, 12));
             Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTabContextMenu.Floating.Exists, "Menu item as floating does not exist after openning unpinned tab context menu with a right click.");
             Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTabContextMenu.Dockable.Exists, "Menu item as dockable does not exist after openning unpinned tab context menu with a right click.");
@@ -113,9 +114,9 @@ namespace Warewolf.UITests.Tabs
         public void AssignToolInUnpinnedWorkflowWizardTabDebugOutputUITest()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            UIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            ToolsUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            ToolsUIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
+            UIMap.Unpin_Tab_With_Drag(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             UIMap.Press_F6_On_UnPinnedTab();
             Assert.AreEqual("[[SomeVariable]]", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.VariableTextbox2.DisplayText, "Variable name does not exist in unpinned debug output.");
             Assert.AreEqual("50", UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.ValueTextbox5.DisplayText, "Variable value does not exist in unpinned debug output.");
@@ -126,8 +127,8 @@ namespace Warewolf.UITests.Tabs
         public void AssignToolInUnpinnedWorkflowWizardTabAddVariableUITest()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            ToolsUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            UIMap.Unpin_Tab_With_Drag(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
             const string Variable1Name = "SomeVariable";
             UIMap.Enter_Variable_Into_Assign_Row1_On_Unpinned_Tab("[[" + Variable1Name + "]]");
             Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.Exists, "Scalar variable list not found.");
@@ -156,6 +157,21 @@ namespace Warewolf.UITests.Tabs
         }
 
         private UIMap _uiMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
 
         #endregion
     }

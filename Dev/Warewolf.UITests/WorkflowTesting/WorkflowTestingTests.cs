@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 using Warewolf.UITests.Common;
 
 namespace Warewolf.UITests
@@ -65,9 +66,9 @@ namespace Warewolf.UITests
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "This test expects 'Hello World' to have at least 1 existing test.");
-            UIMap.Select_First_Test();
-            UIMap.Select_User_From_RunTestAs();
-            UIMap.Enter_RunAsUser_Username_And_Password();
+            ToolsUIMap.Select_First_Test();
+            ToolsUIMap.Select_User_From_RunTestAs();
+            ToolsUIMap.Enter_RunAsUser_Username_And_Password();
             UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
         }
 
@@ -89,7 +90,7 @@ namespace Warewolf.UITests
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
-            UIMap.Select_First_Test();
+            ToolsUIMap.Select_First_Test();
             UIMap.Click_Duplicate_Test_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
         }
@@ -117,6 +118,21 @@ namespace Warewolf.UITests
         }
 
         private UIMap _UIMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
 
         #endregion
     }

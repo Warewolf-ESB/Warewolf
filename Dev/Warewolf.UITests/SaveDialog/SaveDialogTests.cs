@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.SaveDialog
 {
@@ -143,8 +144,8 @@ namespace Warewolf.UITests.SaveDialog
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
-            UIMap.Make_Workflow_Savable_By_Dragging_Start();
-            UIMap.Save_Workflow_Using_Shortcut();
+            ToolsUIMap.Make_Workflow_Savable_By_Dragging_Start();
+            ToolsUIMap.Save_Workflow_Using_Shortcut();
         }
 
         UIMap UIMap
@@ -161,6 +162,21 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         private UIMap _UIMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
 
         #endregion
     }

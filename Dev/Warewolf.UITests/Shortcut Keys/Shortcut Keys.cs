@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Workflow
 {
@@ -16,10 +17,10 @@ namespace Warewolf.UITests.Workflow
             //ShortCut W Opens New Workflow
             UIMap.Click_LocalHost_Once();
             UIMap.Create_New_Workflow_Using_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
+            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
             //Short S Opens SaveWorkflow Dialog
-            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            UIMap.Save_Workflow_Using_Shortcut();
+            ToolsUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            ToolsUIMap.Save_Workflow_Using_Shortcut();
             Assert.IsTrue(UIMap.SaveDialogWindow.Exists);
             UIMap.Click_SaveDialog_CancelButton();
         }
@@ -30,9 +31,9 @@ namespace Warewolf.UITests.Workflow
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
-            UIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
+            ToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
-            UIMap.Save_Workflow_Using_Shortcut();
+            ToolsUIMap.Save_Workflow_Using_Shortcut();
             Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
 
@@ -56,9 +57,9 @@ namespace Warewolf.UITests.Workflow
             UIMap.Filter_Explorer(Folder);
             UIMap.Click_Explorer_Localhost_First_Item();
             UIMap.Create_New_Workflow_In_Explorer_First_Item_With_Shortcut();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.Exists);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(Folder));
+            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
+            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.Exists);
+            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(Folder));
         }
 
         [TestMethod]
@@ -70,6 +71,7 @@ namespace Warewolf.UITests.Workflow
             UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists);
         }
+
         #region Additional test attributes
 
         [TestInitialize()]
@@ -93,6 +95,21 @@ namespace Warewolf.UITests.Workflow
         }
 
         private UIMap _UIMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
 
         #endregion
     }
