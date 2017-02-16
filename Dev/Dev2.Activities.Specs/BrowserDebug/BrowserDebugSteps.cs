@@ -113,5 +113,19 @@ namespace Dev2.Activities.Specs.BrowserDebug
             Assert.AreEqual(expectedflow[2], actualflow[2]);
         }
 
+        [Given(@"The Debug in Browser content contains the variable assigned executed ""(.*)"" times")]
+        [When(@"The Debug in Browser content contains the variable assigned executed ""(.*)"" times")]
+        [Then(@"The Debug in Browser content contains the variable assigned executed ""(.*)"" times")]
+        public void ThenTheDebugInBrowserContentContainsTheVariableAssignedExecutedTimes(int numExecutions)
+        {
+            var allDebugStates = GetDebugStates();
+            foreach (var debugState in allDebugStates)
+            {
+                if (debugState.IsFirstStep())
+                    continue;
+                if (!debugState.IsFinalStep())
+                    Assert.IsTrue(debugState.Children.Count == numExecutions);
+            }
+        }
     }
 }

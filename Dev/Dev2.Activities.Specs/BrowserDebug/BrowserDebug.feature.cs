@@ -234,6 +234,39 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Foreach workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingAForeachWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Foreach workflow", ((string[])(null)));
+#line 58
+this.ScenarioSetup(scenarioInfo);
+#line 59
+  testRunner.Given("I have a workflow \"ForEachAssigneWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 60
+  testRunner.And("\"ForEachAssigneWF\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" execution" +
+                    "s \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table6.AddRow(new string[] {
+                        "[[Year]]",
+                        "2017"});
+#line 61
+  testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table6, "And ");
+#line 64
+  testRunner.When("workflow \"ForEachAssigneWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 65
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/ForEachAssigneWF.debug?\"" +
+                    " in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+  testRunner.Then("The Debug in Browser content contains the variable assigned executed \"4\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
