@@ -205,7 +205,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {            
             var environmentModels = EnvironmentRepository.Instance.ReloadAllServers();
             var requiredEnv = environmentModels.FirstOrDefault(model => model.ID == savedServerID);
-            return new Server(requiredEnv);
+            if(requiredEnv != null)
+            {
+                return new Server(requiredEnv);
+            }
+            return null;
         }
 
         public IList<IServer> GetAllServerConnections()
