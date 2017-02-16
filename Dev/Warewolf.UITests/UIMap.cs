@@ -9113,7 +9113,7 @@ namespace Warewolf.UITests
 
         public void Enter_TextIntoAddress_On_WebServiceSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://RSAKLFSVRTFSBLD/IntegrationTestSite";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://RSAKLFSVRTFSBLD:9810";
         }
 
         public void Enter_RunAsUser_On_WebServiceSourceTab()
@@ -9124,7 +9124,7 @@ namespace Warewolf.UITests
 
         public void Enter_DefaultQuery_On_WebServiceSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Text = "/ GetCountries.ashx ? extension = json & prefix = a";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Text = "";
         }
 
         public void Enter_Text_On_RabbitMQSourceTab()
