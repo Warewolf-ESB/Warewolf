@@ -86,3 +86,11 @@ Scenario: Clear filter
 	And I Select Connected RemoteConnectionIntegration From Explorer
 	And I Refresh Explorer Withpout Waiting For Spinner
 	Then Remote Server Refreshes	
+
+Scenario: Drag on service from Explorer and change input and output
+	Given The Warewolf Studio is running
+	When I Create New Workflow using shortcut
+	And I Filter the Explorer with "Hello World"
+	And I Drag Explorer workflow Onto Workflow Design Surface
+	And I change Hello World input variable
+	And I change Hello World output variable

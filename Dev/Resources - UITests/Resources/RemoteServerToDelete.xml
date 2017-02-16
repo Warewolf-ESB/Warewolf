@@ -1,0 +1,9 @@
+
+<Source ID="65a86a4f-fef8-49fb-990b-b4254e7572dd" Name="RemoteServerToDelete" ResourceType="Dev2Server" IsValid="false" ConnectionString="AppServerUri=http://tst-ci-remote:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Type="Connection" ServerVersion="0.0.6254.25625" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>RemoteServerToDelete</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>Dev2Server</TypeOf>
+  <VersionInfo DateTimeStamp="2017-02-14T14:30:30.8593543+02:00" ResourceId="65a86a4f-fef8-49fb-990b-b4254e7572dd" VersionId="00000000-0000-0000-0000-000000000000" />
+</Source>

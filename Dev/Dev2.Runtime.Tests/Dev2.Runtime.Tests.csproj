@@ -654,6 +654,13 @@
     <EmbeddedResource Include="XML\OauthSource.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="XML\Sharepoint Connectors Testing.xml" />
+    <EmbeddedResource Include="XML\SharePoint Test Server.xml" />
+    <EmbeddedResource Include="XML\delete.xml" />
+    <EmbeddedResource Include="XML\get.xml" />
+    <EmbeddedResource Include="XML\post.xml" />
+    <EmbeddedResource Include="XML\put.xml" />
+    <EmbeddedResource Include="XML\WebPutServiceSource.xml" />
     <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
     <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -171,6 +171,9 @@
   <data name="Saving_Error" xml:space="preserve">
     <value>Please resolve the variable(s) errors below, before saving.</value>
   </data>
+  <data name="CloseTestViewHandledException" xml:space="preserve">
+    <value>Closing Service Test Window from Taskbar handle exception. </value>
+  </data>
   <data name="Delete_Error_Title" xml:space="preserve">
     <value>Error Deleting - {0}</value>
   </data>
