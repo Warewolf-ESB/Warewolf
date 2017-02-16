@@ -27,18 +27,7 @@ namespace Dev2.Runtime.Hosting
             return null;
         }
 
-        public static ServiceActionRepo Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new ServiceActionRepo();
-                }
-                return _instance;
-            }
-
-        }
+        public static ServiceActionRepo Instance => _instance ?? (_instance = new ServiceActionRepo());
 
         //Private constructor to ensure that Singleton is used
         private ServiceActionRepo() { }
