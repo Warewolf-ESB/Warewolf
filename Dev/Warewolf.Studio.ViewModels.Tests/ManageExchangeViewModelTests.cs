@@ -122,6 +122,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(viewModel.AutoDiscoverLabel);
             Assert.IsNotNull(viewModel.EmailTo);
             Assert.IsNotNull(viewModel.EmailFromLabel);
+            Assert.IsNotNull(viewModel.TestLabel);
             Assert.IsNotNull(viewModel.EmailToLabel);
             Assert.IsNotNull(viewModel.Password);
             Assert.IsNotNull(viewModel.PasswordLabel);

@@ -25,6 +25,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Studio.AntiCorruptionLayer;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -168,11 +169,7 @@ namespace Warewolf.Studio.ViewModels
 
         void AllowConnectionEdit()
         {
-            if (SelectedConnection == null)
-            {
-                return;
-            }
-            if (SelectedConnection.AllowEdit)
+            if (SelectedConnection != null && SelectedConnection.AllowEdit)
             {
                 Edit();
             }
@@ -189,7 +186,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsLoading = false;
                 IsConnecting = false;
-                Disconnect(_selectedConnection);
                 var localhostServer = Servers.FirstOrDefault(server => server.EnvironmentID == Guid.Empty);
                 if (localhostServer != null)
                 {
@@ -230,7 +226,6 @@ namespace Warewolf.Studio.ViewModels
                             var popupController = CustomContainer.Get<IPopupController>();
                             popupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
                                 destVersionNumber.ToString());
-                            Disconnect(_selectedConnection);
                         }
                     }
                 }
@@ -395,16 +390,6 @@ namespace Warewolf.Studio.ViewModels
             mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
             mainViewModel?.SetActiveServer(connection);
             mainViewModel?.OnActiveEnvironmentChanged();
-        }
-
-        private void Disconnect(IServer connection)
-        {
-            if (connection != null)
-            {
-                connection.Disconnect();
-                OnPropertyChanged(() => connection.IsConnected);
-                ServerDisconnected?.Invoke(this, connection);
-            }
         }
         
         public void Edit()
