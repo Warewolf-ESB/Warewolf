@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.UITests
@@ -13,7 +15,7 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.Duplicate_FirstResource_From_ExplorerContextMenu();
-            UIMap.Enter_Duplicate_workflow_name("Duplicated_HelloWorld");
+            ToolsUIMap.Enter_Duplicate_workflow_name("Duplicated_HelloWorld");
             UIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
         
@@ -23,7 +25,7 @@ namespace Warewolf.UITests
         {
             UIMap.Filter_Explorer("Examples");
             UIMap.Duplicate_FirstResource_From_ExplorerContextMenu();
-            UIMap.Enter_Duplicate_workflow_name("Duplicated_ExampleFolder");
+            ToolsUIMap.Enter_Duplicate_workflow_name("Duplicated_ExampleFolder");
             UIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
 
@@ -43,12 +45,12 @@ namespace Warewolf.UITests
         {
             UIMap.Click_Duplicate_From_ExplorerContextMenu("Hello World");
             const string newName = "HelloWorld2";
-            UIMap.Enter_Duplicate_workflow_name(newName);
+            ToolsUIMap.Enter_Duplicate_workflow_name(newName);
             UIMap.Click_Duplicate_From_Duplicate_Dialog();
             UIMap.Filter_Explorer(newName);
             Assert.AreEqual(newName, UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            Assert.AreEqual(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
+            Assert.AreEqual(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
         }
         
         #region Additional test attributes
@@ -74,6 +76,21 @@ namespace Warewolf.UITests
         }
 
         private UIMap _UIMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
 
         #endregion
     }

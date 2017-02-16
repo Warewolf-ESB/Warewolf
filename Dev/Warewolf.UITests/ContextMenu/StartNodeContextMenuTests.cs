@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.ContextMenu
 {
@@ -10,7 +11,7 @@ namespace Warewolf.UITests.ContextMenu
         public void CodedUIShowStartNodeContextMenuItems()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.DisplayStartNodeContextMenu();
+            ToolsUIMap.DisplayStartNodeContextMenu();
             Assert.IsFalse(UIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.TestEditorMenuItem.Enabled, "Test Editor must be disabled on a new workflow");
             Assert.IsTrue(UIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugInputsMenuItem.Enabled, "Debug Inputs must be enabled on a new workflow");
             Assert.IsTrue(UIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugStudioMenuItem.Enabled, "Debug Studio must be enabled on a new workflow");
@@ -47,6 +48,21 @@ namespace Warewolf.UITests.ContextMenu
         }
 
         private UIMap _UIMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
 
         #endregion
     }

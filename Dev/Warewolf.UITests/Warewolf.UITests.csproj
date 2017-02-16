@@ -83,6 +83,12 @@
     <Compile Include="Tabs and Panes\WorkflowTabs.cs" />
     <Compile Include="Tools\Email\Exchange_Send.cs" />
     <Compile Include="Tools\Sharepoint\Delete List Item.cs" />
+    <Compile Include="Tools\ToolsUIMap.cs">
+      <DependentUpon>ToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ToolsUIMap.Designer.cs">
+      <DependentUpon>ToolsUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="WcfSource\WcfSourceTests.cs" />
     <Compile Include="WebSource\WebSourceTests.cs" />
     <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
@@ -205,6 +211,7 @@
     </None>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Tools\ToolsUIMap.uitest" />
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
     </None>
