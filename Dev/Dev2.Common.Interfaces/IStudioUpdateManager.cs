@@ -14,18 +14,13 @@ namespace Dev2.Common.Interfaces
         void Save(IDbSource toDbSource);
         void Save(IWebService model);
         void Save(IWebServiceSource model);
-        void Save(IDatabaseService toDbSource);
         void Save(IPluginSource source);
         void Save(IComPluginSource source);
         void Save(IEmailServiceSource emailServiceSource);
         void Save(IExchangeSource emailServiceSource);
         void Save(ISharepointServerSource sharePointServiceSource);
         void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
-        void Save(IWcfServerSource wcfSource);
-        void Save(IPluginService toDbSource);
-        void Save(IComPluginService toDbSource);
-        void Save(IWcfService toSource);
-        
+        void Save(IWcfServerSource wcfSource);        
         void Save(IOAuthSource sharePointServiceSource);
     }
 

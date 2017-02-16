@@ -335,6 +335,7 @@ namespace Warewolf.Studio.Views
                 var explorerItemViewModel = item as IExplorerItemViewModel;
                 if(explorerItemViewModel != null)
                 {
+                    explorerItemViewModel.IsSelected = true;
                     SetActiveServer(explorerItemViewModel.Server);
                     if (explorerViewModel?.ConnectControlViewModel != null)
                         explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;

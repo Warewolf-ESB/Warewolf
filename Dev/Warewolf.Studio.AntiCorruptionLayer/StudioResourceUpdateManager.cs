@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Warewolf.Studio.ServerProxyLayer;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.AntiCorruptionLayer
 {
@@ -172,21 +173,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public string TestPluginService(IComPluginService inputValues)
         {
             return UpdateManagerProxy.TestComPluginService(inputValues);
-        }
-
-        public void Save(IPluginService toDbSource)
-        {
-            UpdateManagerProxy.SavePluginService(toDbSource);
-        }
-
-        public void Save(IComPluginService toDbSource)
-        {
-            UpdateManagerProxy.SaveComPluginService(toDbSource);
-        }
-
-        public void Save(IWcfService toSource)
-        {
-            throw new NotImplementedException();
         }
 
         public void Save(IWcfServerSource wcfSource)
