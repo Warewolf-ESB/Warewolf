@@ -34,8 +34,17 @@ Scenario: Executing Assign workflow with invalid variable
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/InvalidAssignedVariableWF.debug?" in Browser
 		Then The Debug in Browser content contains has error messagge ""invalid variable assigned to d@teMonth""
 
+Scenario: Executing Hello World workflow
+		Given I have a workflow "Hello World"
+		And I Debug "http://localhost:3142/secure/Hello%20World.debug?Name=Bob" in Browser
+		Then The Debug in Browser content contains has "3" inputs and "1" outputs for "Decision"
+		Then The Debug in Browser content contains has "1" inputs and "1" outputs for "Set the output variable (1)"
 
-#Scenario: Executing Hello World workflow
+Scenario: Executing Hello World workflow with no Name Input
+		Given I have a workflow "Hello World"
+		And I Debug "http://localhost:3142/secure/Hello%20World.debug?Name=" in Browser
+		Then The Debug in Browser content contains has "3" inputs and "1" outputs for "Decision"
+		Then The Debug in Browser content contains has "1" inputs and "1" outputs for "Set the output variable (1)"
 
 Scenario: Executing a Sequence workflow
 		Given I have a workflow "SequenceVariableWF"
