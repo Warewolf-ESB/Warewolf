@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
 using Dev2.Common;
+using Dev2.Common.DependencyVisualization;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
@@ -63,8 +64,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public bool Rename(IExplorerItemViewModel vm, string newName)
         {
+            if(vm == null)
+            {
+                throw new ArgumentNullException(nameof(vm));
+            }
             if (vm.ResourceType == "Folder")
-                UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath.Replace(vm.ResourceName,newName));
+                UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath?.Replace(vm.ResourceName,newName));
             else
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
             return true;
@@ -188,7 +193,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         private IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, DependencyGraphGenerator graphGenerator, IExecuteMessage dep)
         {
-            var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
+            IGraph graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             _popupController = CustomContainer.Get<IPopupController>();
             if (graph.Nodes.Count > 1)
             {
@@ -255,23 +260,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void CreateFolder(string parentPath, string name, Guid id)
         {
             UpdateManagerProxy.AddFolder(parentPath, name, id);
-        }
-    }
-
-    public static class StudioServerProxyHelper
-    {
-        public static IEnumerable<IExplorerItem> Descendants(this IExplorerItem root)
-        {
-            var nodes = new Stack<IExplorerItem>(new[] { root });
-            while (nodes.Any())
-            {
-                IExplorerItem node = nodes.Pop();
-                yield return node;
-                if (node.Children != null)
-                {
-                    foreach (var n in node.Children) nodes.Push(n);
-                }
-            }
         }
     }
 }
