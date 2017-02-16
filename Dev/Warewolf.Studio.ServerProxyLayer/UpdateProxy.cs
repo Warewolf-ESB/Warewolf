@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using Warewolf.Resource.Errors;
+// ReSharper disable InconsistentNaming
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -274,29 +275,6 @@ namespace Warewolf.Studio.ServerProxyLayer
             if (output.HasError)
                 throw new WarewolfTestException(output.Message.ToString(), null);
             return output.Message.ToString();
-        }
-
-        public void SavePluginService(IPluginService service)
-        {
-            var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("SavePluginService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(service));
-            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
-            if (output.HasError)
-                throw new WarewolfSaveException(output.Message.ToString(), null);
-        }
-
-        public void SaveComPluginService(IComPluginService service)
-        {
-            throw new NotImplementedException();
-            /*var con = Connection;
-            var comsController = CommunicationControllerFactory.CreateController("SavePluginService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(service));
-            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
-            if (output.HasError)
-                throw new WarewolfSaveException(output.Message.ToString(), null);*/
         }
 
         public string TestEmailServiceSource(IEmailServiceSource emailServiceSource)
