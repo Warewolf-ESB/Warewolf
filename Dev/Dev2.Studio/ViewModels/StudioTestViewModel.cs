@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Media;
@@ -135,8 +136,15 @@ namespace Dev2.ViewModels
 
         public void CloseView()
         {
-            var parent = FindParentWindow((FrameworkElement)View);
-            parent?.Close();
+            try
+            {
+                var parent = FindParentWindow((FrameworkElement)View);
+                parent?.Close();
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Info(StringResources.CloseTestViewHandledException, ex);
+            }
         }
 
         public bool DoDeactivate(bool showMessage)
