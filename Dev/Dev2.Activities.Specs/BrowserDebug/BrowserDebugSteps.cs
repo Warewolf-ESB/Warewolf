@@ -85,5 +85,33 @@ namespace Dev2.Activities.Specs.BrowserDebug
                 Assert.IsTrue(debugState.Outputs.Count > 0);
             }
         }
+
+        [Given(@"The Debug in Browser content contains order of ""(.*)"", ""(.*)"" and ""(.*)"" in SequenceFlow")]
+        [When(@"The Debug in Browser content contains order of ""(.*)"", ""(.*)"" and ""(.*)"" in SequenceFlow")]
+        [Then(@"The Debug in Browser content contains order of ""(.*)"", ""(.*)"" and ""(.*)"" in SequenceFlow")]
+        public void ThenTheDebugInBrowserContentContainsOrderOfAndIn(string sequenceflow1, string sequenceflow2, string sequenceflow3)
+        {
+            var allDebugStates = GetDebugStates();
+            List<string> expectedflow = new List<string> { sequenceflow1, sequenceflow2, sequenceflow3 };
+            List<string> actualflow = new List<string>();
+
+            foreach (var debugState in allDebugStates)
+            {
+                if (debugState.IsFirstStep())
+                    continue;
+                if (!debugState.IsFinalStep())
+                {
+                    foreach (var debugStateChild in debugState.Children)
+                    {
+                        actualflow.Add(debugStateChild.DisplayName);
+                    }
+                }
+            }
+            Assert.AreEqual(expectedflow.Count, actualflow.Count);
+            Assert.AreEqual(expectedflow[0], actualflow[0]);
+            Assert.AreEqual(expectedflow[1], actualflow[1]);
+            Assert.AreEqual(expectedflow[2], actualflow[2]);
+        }
+
     }
 }
