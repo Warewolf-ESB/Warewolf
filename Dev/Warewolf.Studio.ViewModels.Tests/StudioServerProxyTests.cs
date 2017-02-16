@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -275,6 +276,38 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(item);
             Assert.IsFalse(item.Result);
+            updateManagerProxy.Verify(manager => manager.MoveItem(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("StudioServerProxy_GetVersion")]
+        public void StudioServerProxy_GetVersion_WhenFaulty_ShouldReturnfalse()
+        {
+            //------------Setup for test--------------------------
+            var studioServerProxy = new StudioServerProxy(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
+            var mockQueryManager = new Mock<IQueryManager>();
+            var mockVersionManager = new Mock<IVersionManager>();
+            mockVersionManager.Setup(manager => manager.GetVersion(new VersionInfo(), It.IsAny<Guid>())).Verifiable();
+            studioServerProxy.QueryManagerProxy = mockQueryManager.Object;
+            studioServerProxy.VersionManager = mockVersionManager.Object;
+            var updateManagerProxy = new Mock<IExplorerUpdateManager>();
+            updateManagerProxy.Setup(manager => manager.MoveItem(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(ValueFunction(ExecStatus.Fail));
+            studioServerProxy.UpdateManagerProxy =updateManagerProxy.Object;
+            var mockExplorerItemModel = new Mock<IExplorerItemViewModel>();
+            mockExplorerItemModel.SetupAllProperties();
+            mockExplorerItemModel.Setup(model => model.ResourceType).Returns("Resource");
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(),It.IsAny<string>(),MessageBoxButton.OK, MessageBoxImage.Error, "false",true,true,false,false, false, false)).Returns(MessageBoxResult.OK);
+            CustomContainer.Register(mockPopupController.Object);
+            //------------Execute Test---------------------------
+            var treeItem = new Mock<IExplorerTreeItem>();
+            treeItem.Setup(explorerTreeItem => explorerTreeItem.ResourcePath);
+            var item = studioServerProxy.GetVersion(new VersionInfo(), It.IsAny<Guid>());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(item);
+            
             updateManagerProxy.Verify(manager => manager.MoveItem(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
         }
 
