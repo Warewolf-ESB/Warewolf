@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.DialogsUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -66,9 +66,9 @@ namespace Warewolf.UITests
             UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             UIMap.Deploy_Service_From_Deploy_View("Hello World");
             UIMap.Click_Close_Deploy_Tab_Button();
-            UIMap.ClickDeployVersionConflictsMessageBoxOK();            
-            UIMap.ClickDeployConflictsMessageBoxOK();
-            UIMap.ClickDeploySuccessfulMessageBoxOK();
+            DialogsUIMap.ClickDeployVersionConflictsMessageBoxOK();
+            DialogsUIMap.ClickDeployConflictsMessageBoxOK();
+            DialogsUIMap.ClickDeploySuccessfulMessageBoxOK();
         }
 
         [TestMethod]
@@ -111,20 +111,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        DialogsUIMap DialogsUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_DialogsUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _DialogsUIMap = new DialogsUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _DialogsUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

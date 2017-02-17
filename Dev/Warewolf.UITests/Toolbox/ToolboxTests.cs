@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Toolbox
@@ -23,8 +24,8 @@ namespace Warewolf.UITests.Toolbox
             Assert.AreNotEqual(initialImage, assignImage);
             //PopUp
             UIMap.DoubleClick_Toolbox();
-            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
-            UIMap.Click_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.OKButton.Exists);
+            DialogsUIMap.Click_MessageBox_OK();
         }
 
         #region Additional test attributes
@@ -66,6 +67,21 @@ namespace Warewolf.UITests.Toolbox
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

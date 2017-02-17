@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests
@@ -33,8 +35,8 @@ namespace Warewolf.UITests
         public void ClickNewTestWithUnsavedExistingTest()
         {
             WorkflowServiceTestingUIMap.Try_Click_Create_New_Tests();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Messagebox warning about unsaved tests does not exist after clicking create new test.");
-            UIMap.Click_Save_Before_Continuing_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Messagebox warning about unsaved tests does not exist after clicking create new test.");
+            DialogsUIMap.Click_Save_Before_Continuing_MessageBox_OK();
             WorkflowServiceTestingUIMap.Click_Close_Tests_Tab();
         }
         
@@ -46,7 +48,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Passing.Exists);
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button(4);
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
         
         [TestMethod]
@@ -58,7 +60,7 @@ namespace Warewolf.UITests
             Assert.IsFalse(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.AssignAssert.TryGetClickablePoint(out point), "Test step still visible after clicking the delete button on that test step.");
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button(4);
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [TestMethod]
@@ -86,7 +88,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Failing.Exists, "Failed status icon does not exist after running a text with the wrong output message.");
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button(4);
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         #region Additional test attributes
@@ -96,8 +98,8 @@ namespace Warewolf.UITests
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Filter_Explorer(HelloWorld);
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            ExplorerUIMap.Filter_Explorer(HelloWorld);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
         }
@@ -131,6 +133,36 @@ namespace Warewolf.UITests
         }
 
         private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

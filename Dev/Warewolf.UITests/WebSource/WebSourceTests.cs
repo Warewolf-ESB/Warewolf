@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.WebSource
@@ -15,7 +16,7 @@ namespace Warewolf.UITests.WebSource
         public void Create_Save_And_Edit_WebServiceSource_From_ExplorerContextMenu_UITests()
         {
             //Create Source
-            UIMap.Click_NewWebSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Click_NewWebSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Enabled, "Anonymous Radio button is not enabled");
@@ -33,16 +34,16 @@ namespace Warewolf.UITests.WebSource
             //Save Source
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save Ribbon Button is not enabled.");
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            UIMap.Filter_Explorer(SourceName);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ExplorerUIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             //Edit Source
             UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
-            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Enabled, "Web server address textbox not enabled.");
             UIMap.Click_AnonymousButton_On_WebServiceSourceTab();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
-            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Selected);
         }
 
@@ -70,20 +71,20 @@ namespace Warewolf.UITests.WebSource
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_ExplorerUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _ExplorerUIMap = new ExplorerUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _ExplorerUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

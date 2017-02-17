@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.DialogsUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -82,7 +82,7 @@ namespace Warewolf.UITests
             UIMap.Click_Settings_Resource_Permissions_Row1_Delete_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after clicking delete row button on existing resource permission in the security tab of the settings tab.");
             UIMap.Click_Close_Settings_Tab_Button();
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         #region Additional test attributes
@@ -110,20 +110,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        DialogsUIMap DialogsUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_DialogsUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _DialogsUIMap = new DialogsUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _DialogsUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

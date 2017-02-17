@@ -14,6 +14,7 @@ using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UITests.DialogsUIMapClasses;
 
 namespace Warewolf.UITests.ExplorerUIMapClasses
 {
@@ -64,6 +65,49 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         }
 
         private UIMap _UIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
+
+        [When(@"I Drag Explorer First Item Onto The Second Item")]
+        public void Drag_Explorer_First_Item_Onto_The_Second_Item()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.EnsureClickable(new Point(90, 11));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 11));
+        }
+
+        [When(@"I Move Dice Roll To Localhost")]
+        public void Move_Dice_Roll_To_Localhost()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.EnsureClickable(new Point(10, 10));
+            Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(92, 4));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, new Point(10, 10));
+        }
+
+        public void Create_New_Workflow_In_Explorer_First_Item_With_Shortcut()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(74, 8));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, "W", (ModifierKeys.Control));
+        }
+
+        public void Create_New_Workflow_Using_Shortcut()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, new Point(74, 8));
+            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, "W", (ModifierKeys.Control));
+        }
 
         [Given(@"I have Hello World workflow on the Explorer")]
         [When(@"I have Hello World workflow on the Explorer")]
@@ -131,7 +175,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Then(@"Save Dialog Explorer Contain Item ""(.*)""")]
         public void ThenSaveDialogExplorerContainItem(string itemName)
         {
-            Assert.IsTrue(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(itemName));
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.UIItemEdit.Text.Contains(itemName));
         }
 
         [Given(@"Explorer Does Not Contain Item ""(.*)""")]
@@ -508,8 +552,8 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         public void Save_Valid_Service_With_Ribbon_Button_And_Dialog(string Name)
         {
             UIMap.Click_Save_RibbonButton();
-            UIMap.Enter_Valid_Service_Name_Into_Save_Dialog(Name);
-            UIMap.Click_SaveDialog_Save_Button();
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog(Name);
+            DialogsUIMap.Click_SaveDialog_Save_Button();
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
@@ -545,10 +589,10 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
 
         public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
         {
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(94, 10));
-            Assert.AreEqual("localhost", UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost.DisplayText, "Selected remote server is not localhost");
+            Assert.AreEqual("localhost", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost.DisplayText, "Selected remote server is not localhost");
         }
 
         public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
@@ -636,7 +680,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
                     {
                         RightClick_Explorer_Localhost_FirstItem();
                         Select_Delete_From_ExplorerContextMenu();
-                        UIMap.Click_MessageBox_Yes();
+                        DialogsUIMap.Click_MessageBox_Yes();
                     }
                 }
             }
@@ -691,7 +735,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
                     UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
                     RightClick_Explorer_FirstRemoteServer_FirstItem();
                     Select_Delete_From_ExplorerContextMenu();
-                    UIMap.Click_MessageBox_Yes();
+                    DialogsUIMap.Click_MessageBox_Yes();
                 }
             }
             catch (Exception e)
@@ -729,7 +773,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
                 {
                     RightClick_Explorer_Localhost_FirstItem();
                     Select_Delete_From_ExplorerContextMenu();
-                    UIMap.Click_MessageBox_Yes();
+                    DialogsUIMap.Click_MessageBox_Yes();
                 }
                 TryClearExplorerFilter();
             }
@@ -764,7 +808,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.Exists, "Web server address textbox does not exist on new web source wizard tab.");
         }
 
@@ -928,7 +972,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Duplicate.Exists, "Duplicate does not exist in explorer context menu.");
             Mouse.Click (UIMap.MainStudioWindow.ExplorerContextMenu.Duplicate, new Point(62, 10));
-            Assert.IsTrue(UIMap.SaveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context menu.");
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context menu.");
         }
 
         [Given(@"I Open Explorer First Item Context Menu")]
@@ -1020,8 +1064,8 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         public void Select_Delete_From_ExplorerContextMenu()
         {
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            Assert.IsTrue(UIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
         }
 
         [Given(@"I Select Deploy From Explorer Context Menu")]
@@ -1151,7 +1195,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(93, 14));
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(61, 15));
-            Mouse.Click(UIMap.MessageBoxWindow.YesButton, new Point(7, 12));
+            Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(7, 12));
         }
     }
 }

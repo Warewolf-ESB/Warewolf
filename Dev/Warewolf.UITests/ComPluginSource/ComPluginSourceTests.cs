@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -14,7 +14,7 @@ namespace Warewolf.UITests
         public void Create_ComPluginSource_From_ExplorerContextMenu_UITests()
         {
             //Create Source
-            UIMap.Select_NewCOMPluginSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Select_NewCOMPluginSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Enabled, "Search Textbox is not enabled");
             UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Enabled, "Data Tree is not enabled");
@@ -23,11 +23,11 @@ namespace Warewolf.UITests
             Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.AssemblyNameTextBox.Text), "Assembly Name Textbox is empty after selecting an assembly.");
             //Save Source
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            UIMap.Filter_Explorer(SourceName);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ExplorerUIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             UIMap.Click_COMPluginSource_CloseTabButton();
             //Open Source
-            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree);
             Assert.IsFalse(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.AssemblyNameTextBox.Text), "Assembly Name Textbox is empty after selecting an assembly.");
         }
@@ -56,20 +56,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_ExplorerUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _ExplorerUIMap = new ExplorerUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _ExplorerUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

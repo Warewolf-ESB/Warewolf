@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests.ServerSource
 {
@@ -15,7 +15,7 @@ namespace Warewolf.UITests.ServerSource
         public void Create_Save_And_Edit_ServerSQLSource_From_ExplorerContextMenu_UITests()
         {
             //Create Source
-            UIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.Enabled, "Protocol Combobox not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.Enabled, "Address Combobox not enabled");
@@ -34,18 +34,18 @@ namespace Warewolf.UITests.ServerSource
             //Save Source
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            UIMap.Filter_Explorer(SourceName);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ExplorerUIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             //Edit Source
-            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist");
             UIMap.Click_UserButton_On_ServerSourceTab();
             UIMap.Enter_RunAsUser_On_ServerSourceTab();
             UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.AreEqual("IntegrationTester", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text);
         }
 
@@ -73,20 +73,20 @@ namespace Warewolf.UITests.ServerSource
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_ExplorerUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _ExplorerUIMap = new ExplorerUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _ExplorerUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

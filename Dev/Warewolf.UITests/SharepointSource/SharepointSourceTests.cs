@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.SharepointSource
@@ -15,7 +16,7 @@ namespace Warewolf.UITests.SharepointSource
         public void Create_Save_And_Edit_SharepointSource_From_ExplorerContextMenu_UITests()
         {
             //Create Source
-            UIMap.Select_NewSharepointSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Select_NewSharepointSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists, "Sharepoint Source Tab does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Enabled,"Server Name Textbox is not enabled.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Enabled, "Windows Radio button is not enabled.");
@@ -32,18 +33,18 @@ namespace Warewolf.UITests.SharepointSource
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
             //Save Source
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            UIMap.Filter_Explorer(SourceName);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ExplorerUIMap.Filter_Explorer(SourceName);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             UIMap.Click_Close_SharepointSource_Tab_Button();
             //Edit Source
-            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists, "Sharepoint Source Tab does not exist.");
             UIMap.Click_WindowsButton_On_SharepointSource();
             UIMap.Click_Sharepoint_Server_Source_TestConnection();
             UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.DrawHighlight();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_SharepointSource_Tab_Button();
-            UIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Selected);
         }
 
@@ -85,6 +86,21 @@ namespace Warewolf.UITests.SharepointSource
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

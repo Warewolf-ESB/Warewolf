@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.DebugInputWindow
@@ -14,8 +15,8 @@ namespace Warewolf.UITests.DebugInputWindow
         [TestCategory("Debug Input")]
         public void Save_DebugInputs_AfterCancel_UITest()
         {
-            UIMap.Filter_Explorer(HelloWorld);
-            UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            ExplorerUIMap.Filter_Explorer(HelloWorld);
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Hello World workflow does not exist");
             UIMap.Click_Debug_RibbonButton();
             UIMap.Check_Debug_Input_Dialog_Remember_Inputs_Checkbox();
@@ -30,8 +31,8 @@ namespace Warewolf.UITests.DebugInputWindow
         [TestCategory("Debug Input")]
         public void Save_DebugInputs_AfterDebug_UITest()
         {
-            UIMap.Filter_Explorer(HelloWorld);
-            UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            ExplorerUIMap.Filter_Explorer(HelloWorld);
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             UIMap.Click_Debug_RibbonButton();
             UIMap.Check_Debug_Input_Dialog_Remember_Inputs_Checkbox();
             UIMap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox(InputDataText);
@@ -83,6 +84,21 @@ namespace Warewolf.UITests.DebugInputWindow
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

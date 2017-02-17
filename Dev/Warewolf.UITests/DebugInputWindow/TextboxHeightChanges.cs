@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
+using Warewolf.UITests.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -13,8 +14,8 @@ namespace Warewolf.UITests
         [TestCategory("Debug Input")]
         public void DebugInputWindow_TextboxHeightChanges_UITest()
         {
-            UIMap.Filter_Explorer("Hello World");
-            UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             UIMap.Press_F5_To_Debug();
             var varValue = UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText;
 
@@ -67,6 +68,21 @@ namespace Warewolf.UITests
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

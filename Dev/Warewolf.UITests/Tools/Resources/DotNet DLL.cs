@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 
@@ -176,7 +177,7 @@ namespace Warewolf.UITests.Tools.Resources
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
+            ExplorerUIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
             ToolsUIMap.Drag_DotNetDLLConnector_Onto_DesignSurface();
         }
 
@@ -209,6 +210,21 @@ namespace Warewolf.UITests.Tools.Resources
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

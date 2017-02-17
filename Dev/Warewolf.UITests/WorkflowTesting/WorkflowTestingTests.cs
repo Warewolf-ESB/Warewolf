@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
 using Warewolf.UITests.Common;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests
@@ -23,7 +24,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Failing.Exists, "Test failing icon is not displayed after running a failing test.");
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button(4);
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
        
 
@@ -46,19 +47,19 @@ namespace Warewolf.UITests
             WorkflowServiceTestingUIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
             WorkflowServiceTestingUIMap.Update_Test_Name("Blank Input");
             WorkflowServiceTestingUIMap.Save_Tets_With_Shortcut();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
-            UIMap.Duplicate_Test_Name_MessageBox_Ok();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
+            DialogsUIMap.Duplicate_Test_Name_MessageBox_Ok();
         }
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void Show_Save_Before_Running_Tests_Dialog()
         {
-            UIMap.Show_ExplorerSecondItemTests_With_ExplorerContextMenu(xPath);
+            ExplorerUIMap.Show_ExplorerSecondItemTests_With_ExplorerContextMenu(xPath);
             WorkflowServiceTestingUIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
             WorkflowServiceTestingUIMap.Click_Workflow_Testing_Tab_Run_All_Button();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");
-            UIMap.Click_Save_Before_Continuing_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");
+            DialogsUIMap.Click_Save_Before_Continuing_MessageBox_OK();
         }
 
         [TestMethod]
@@ -82,7 +83,7 @@ namespace Warewolf.UITests
             WorkflowServiceTestingUIMap.Click_Create_New_Tests(true, 4);
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button(4);
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [TestMethod]
@@ -120,21 +121,6 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
-        {
-            get
-            {
-                if (_ToolsUIMap == null)
-                {
-                    _ToolsUIMap = new ToolsUIMap();
-                }
-
-                return _ToolsUIMap;
-            }
-        }
-
-        private ToolsUIMap _ToolsUIMap;
-
         WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
         {
             get
@@ -149,6 +135,36 @@ namespace Warewolf.UITests
         }
 
         private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

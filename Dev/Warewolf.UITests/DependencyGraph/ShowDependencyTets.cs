@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 // ReSharper disable CyclomaticComplexity
@@ -17,8 +18,8 @@ namespace Warewolf.UITests.DependencyGraph
         {
             //---------------Set up test pack-------------------
             const string Source = "DotNetPluginSource";
-            UIMap.Filter_Explorer(Source);
-            UIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.Filter_Explorer(Source);
+            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
             var displayText = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NodesCustom.DotnetWorkflowForTesText.DisplayText;
             Assert.AreEqual("DotnetWorkflowForTesting", displayText);
@@ -30,8 +31,8 @@ namespace Warewolf.UITests.DependencyGraph
         {
             //---------------Set up test pack-------------------
             const string Source = "DotNetPluginSource";
-            UIMap.Filter_Explorer(Source);
-            UIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.Filter_Explorer(Source);
+            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
             Mouse.DoubleClick(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NodesCustom.DotnetWorkflowForTesText);
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
@@ -44,8 +45,8 @@ namespace Warewolf.UITests.DependencyGraph
         {
             //---------------Set up test pack-------------------
             const string Source = "DotNetPluginSource";
-            UIMap.Filter_Explorer(Source);
-            UIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.Filter_Explorer(Source);
+            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
             Mouse.DoubleClick(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.DotnetSourceNode.DotNetPluginSourceText);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists);
@@ -90,6 +91,21 @@ namespace Warewolf.UITests.DependencyGraph
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests
@@ -18,8 +20,8 @@ namespace Warewolf.UITests
         public void Create_Resource_InFolderUITest()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
-            UIMap.Filter_Explorer("Acceptance Tests");
-            UIMap.Create_NewWorkflow_Of_ExplorerFirstItem_With_ExplorerContextMenu();
+            ExplorerUIMap.Filter_Explorer("Acceptance Tests");
+            ExplorerUIMap.Create_NewWorkflow_Of_ExplorerFirstItem_With_ExplorerContextMenu();
             ToolsUIMap.Make_Workflow_Savable();
             UIMap.Save_With_Ribbon_Button_And_Dialog(ResourceCreatedInFolder);
             var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
@@ -32,20 +34,20 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void CreateNewFolderInLocalHostUsingShortcutKeysUITest()
         {
-            UIMap.Click_LocalHost_Once();
-            UIMap.Create_New_Folder_Using_Shortcut();
-            UIMap.Filter_Explorer("New Folder");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
+            ExplorerUIMap.Click_LocalHost_Once();
+            ExplorerUIMap.Create_New_Folder_Using_Shortcut();
+            ExplorerUIMap.Filter_Explorer("New Folder");
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
         }
 
         [TestMethod]
         [TestCategory("Explorer")]
         public void MergeFolders_InFileredExplorer_UITest()
         {
-            UIMap.Filter_Explorer("DragAndDropMergeFolder");
-            UIMap.Drag_Explorer_First_Item_Onto_Second_Item();
-            UIMap.Filter_Explorer("DragAndDropMergeResource1");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
+            ExplorerUIMap.Filter_Explorer("DragAndDropMergeFolder");
+            ExplorerUIMap.Drag_Explorer_First_Item_Onto_Second_Item();
+            ExplorerUIMap.Filter_Explorer("DragAndDropMergeResource1");
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
         }
 
         [TestMethod]
@@ -53,7 +55,7 @@ namespace Warewolf.UITests
         public void Right_Click_On_The_FolderCount_ContextMenu_UITest()
         {
             ToolsUIMap.Right_Click_On_The_Folder_Count();
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.ErrorWindow), "The studio throws an error when you right click on the folder count part of the explorer.");
+            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ErrorWindow), "The studio throws an error when you right click on the folder count part of the explorer.");
         }
 
         #region Additional test attributes
@@ -94,6 +96,36 @@ namespace Warewolf.UITests
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

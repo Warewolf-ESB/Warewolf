@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
@@ -49,7 +50,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinServerSourceWizardTab()
         {
-            UIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
+            ExplorerUIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab);
         }
 
@@ -57,7 +58,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinDBSourceWizardTab()
         {
-            UIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab);
         }
 
@@ -65,7 +66,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinDotNetPluginSourceWizardTab()
         {
-            UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab);
         }
 
@@ -73,7 +74,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinWebSourceWizardTab()
         {
-            UIMap.Click_NewWebSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Click_NewWebSource_From_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab);
         }
 
@@ -89,7 +90,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinDependencyGraphWizardTab()
         {
-            UIMap.Select_ShowDependencies_In_ExplorerContextMenu("Hello World");
+            ExplorerUIMap.Select_ShowDependencies_In_ExplorerContextMenu("Hello World");
             UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
         }
 
@@ -97,8 +98,8 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinTestsWizardTab()
         {
-            UIMap.Filter_Explorer("Hello World");
-            UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
+            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
             UIMap.Unpin_Tab_With_Drag(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab);
         }
 
@@ -188,6 +189,21 @@ namespace Warewolf.UITests.Tabs
         }
 
         private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

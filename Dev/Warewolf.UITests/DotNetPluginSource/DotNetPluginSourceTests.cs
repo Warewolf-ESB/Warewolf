@@ -1,6 +1,8 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests
@@ -16,7 +18,7 @@ namespace Warewolf.UITests
         [TestCategory("Plugin Sources")]
         public void Select_GACAssembly_DotNetPluginSource_UITests()
         {
-            UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.Enabled, "Assembly Combobox is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyDirectoryButton.Enabled, "Assembly Combobox Button is not enabled");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File Combobox is enabled");
@@ -24,10 +26,10 @@ namespace Warewolf.UITests
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton.Enabled, "GAC Assembly Combobox Button is not enabled");
             Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton);
-            UIMap.Select_GACAssemblyFile_From_ChooseDLLWindow("Microsoft");
+            DialogsUIMap.Select_GACAssemblyFile_From_ChooseDLLWindow("Microsoft");
             UIMap.Save_With_Ribbon_Button_And_Dialog(GACAssemblySourceName);
-            UIMap.Filter_Explorer(GACAssemblySourceName);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ExplorerUIMap.Filter_Explorer(GACAssemblySourceName);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
 
         }
 
@@ -37,18 +39,18 @@ namespace Warewolf.UITests
         {
             const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll";
             const string newDll2 = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading2.dll";
-            UIMap.RightClick_Localhost();
-            UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();            
+            ExplorerUIMap.RightClick_Localhost();
+            ExplorerUIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();            
             UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll;
             UIMap.Save_With_Ribbon_Button_And_Dialog("NewDotnetPluginSource_Explorer");
             UIMap.Click_Close_DotNetPlugin_Source_Tab();
-            UIMap.Filter_Explorer("NewDotnetPluginSource_Explorer");
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            ExplorerUIMap.Filter_Explorer("NewDotnetPluginSource_Explorer");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             Assert.AreEqual(newDll, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
             UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll2;            
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
             UIMap.Click_Close_DotNetPlugin_Source_Tab();
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             Assert.AreEqual(newDll2, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
         }
 
@@ -61,17 +63,17 @@ namespace Warewolf.UITests
             var fileStream = File.Create(filePath);
             fileStream.Close();
 
-            UIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
             UIMap.Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab();
-            Assert.IsTrue(UIMap.ChooseDLLWindow.Exists, "Choose DLL Window does not exist.");
-            UIMap.Select_DLLAssemblyFile_From_ChooseDLLWindow(filePath);
+            Assert.IsTrue(DialogsUIMap.ChooseDLLWindow.Exists, "Choose DLL Window does not exist.");
+            DialogsUIMap.Select_DLLAssemblyFile_From_ChooseDLLWindow(filePath);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File ComboBox is not enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton.Enabled, "Config File Directory button is not enabled");
             UIMap.Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab();
-            UIMap.Enter_ConfigFile_In_SelectFilesWindow();
+            DialogsUIMap.Enter_ConfigFile_In_SelectFilesWindow();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
             Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton);
-            UIMap.Select_GACAssemblyFile_From_ChooseDLLWindow("Microsoft");
+            DialogsUIMap.Select_GACAssemblyFile_From_ChooseDLLWindow("Microsoft");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File Combobox is enabled.");
             Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox did not clear text.");
 
@@ -105,20 +107,35 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_ExplorerUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _ExplorerUIMap = new ExplorerUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _ExplorerUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

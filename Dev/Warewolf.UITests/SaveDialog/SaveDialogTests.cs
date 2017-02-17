@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.SaveDialog
@@ -15,124 +17,124 @@ namespace Warewolf.UITests.SaveDialog
         [TestCategory("Save Dialog")]
         public void Save_Dialog_Filter_Given_HelloWorld_Filters_Explorer_Tree()
         {
-            UIMap.Filter_Save_Dialog_Explorer(HelloWorld);
-            Assert.IsTrue(UIMap.ControlExistsNow(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
-            UIMap.Click_SaveDialog_CancelButton();
+            DialogsUIMap.Filter_Save_Dialog_Explorer(HelloWorld);
+            Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
+            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
+            DialogsUIMap.Click_SaveDialog_CancelButton();
         }
         
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void Server_Context_Menu_Has_New_Folder_Only()
         {
-            UIMap.RightClick_Save_Dialog_Localhost();
-            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
-            UIMap.Click_SaveDialog_CancelButton();
+            DialogsUIMap.RightClick_Save_Dialog_Localhost();
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.SaveDialogContextMenu.NewFolderMenuItem.Exists);
+            DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void Folder_Items_Context_Menu_Has_New_Folder_And_Rename()
         {
-            UIMap.Filter_Save_Dialog_Explorer(FolderToRename);
-            UIMap.RightClick_Save_Dialog_Localhost_First_Item();
-            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
-            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem.Exists);
-            UIMap.Click_SaveDialog_CancelButton();
+            DialogsUIMap.Filter_Save_Dialog_Explorer(FolderToRename);
+            DialogsUIMap.RightClick_Save_Dialog_Localhost_First_Item();
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.SaveDialogContextMenu.UINewFolderMenuItem.Exists);
+            DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void Resources_Items_Context_Menu_Has_Delete_And_Rename()
-        {            
-            UIMap.Filter_Save_Dialog_Explorer(HelloWorld);
-            UIMap.RightClick_Save_Dialog_Localhost_First_Item();
-            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem.Exists);
-            Assert.IsTrue(UIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
-            UIMap.Click_SaveDialog_CancelButton();
+        {
+            DialogsUIMap.Filter_Save_Dialog_Explorer(HelloWorld);
+            DialogsUIMap.RightClick_Save_Dialog_Localhost_First_Item();
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.SaveDialogContextMenu.DeleteMenuItem.Exists);
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.SaveDialogContextMenu.RenameMenuItem.Exists);
+            DialogsUIMap.Click_SaveDialog_CancelButton();
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationInvalidChars()
         {
-            UIMap.I_Enter_Invalid_Service_Name_Into_SaveDialog("Inv@lid N&m#");            
-            Assert.IsFalse(UIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is ENABLED.");
+            DialogsUIMap.I_Enter_Invalid_Service_Name_Into_SaveDialog("Inv@lid N&m#");            
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is ENABLED.");
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationNameEndsWithNumber()
         {
-            UIMap.Enter_Valid_Service_Name_Into_Save_Dialog("TestingWF1");
-            Assert.IsTrue(UIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("TestingWF1");
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void SaveDialogServiceNameValidationNameEndsWithEmptySpace()
         {
-            UIMap.I_Enter_Invalid_Service_Name_With_Whitespace_Into_SaveDialog("Test ");
-            Assert.IsFalse(UIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
+            DialogsUIMap.I_Enter_Invalid_Service_Name_With_Whitespace_Into_SaveDialog("Test ");
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.SaveButton.Enabled, "Save dialog save button is not enabled. Check workflow name is valid and that another workflow by that name does not already exist.");
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void CloseSaveDialogRemovesExplorerFilter()
         {
-            UIMap.Filter_Save_Dialog_Explorer("Hello World");
-            Assert.IsTrue(UIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
-            UIMap.Click_SaveDialog_CancelButton();
-            UIMap.ExplorerItemsAppearOnTheExplorerTree();
+            DialogsUIMap.Filter_Save_Dialog_Explorer("Hello World");
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
+            DialogsUIMap.Click_SaveDialog_CancelButton();
+            ExplorerUIMap.ExplorerItemsAppearOnTheExplorerTree();
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void RenameFolderFromSaveDialog()
         {
-            UIMap.Filter_Save_Dialog_Explorer("FolderToRename");
-            UIMap.RenameItemUsingShortcut();
-            UIMap.Rename_Folder_From_Save_Dialog("FolderToRename_Renamed");
-            UIMap.Click_SaveDialog_CancelButton();
-            UIMap.Filter_Explorer("FolderToRename_Renamed");
-            UIMap.ExplorerContainItem("FolderToRename_Renamed");
+            DialogsUIMap.Filter_Save_Dialog_Explorer("FolderToRename");
+            DialogsUIMap.RenameItemUsingShortcut();
+            DialogsUIMap.Rename_Folder_From_Save_Dialog("FolderToRename_Renamed");
+            DialogsUIMap.Click_SaveDialog_CancelButton();
+            ExplorerUIMap.Filter_Explorer("FolderToRename_Renamed");
+            ExplorerUIMap.ExplorerContainItem("FolderToRename_Renamed");
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void MoveFolderToSameLocationFromSaveDialog()
         {
-            UIMap.Filter_Save_Dialog_Explorer("FolderToRename");
-            UIMap.MoveFolderToRenameIntoLocalhost();
-            UIMap.ResourceIsChildOfLocalhost("FolderToRename");
+            DialogsUIMap.Filter_Save_Dialog_Explorer("FolderToRename");
+            DialogsUIMap.MoveFolderToRenameIntoLocalhost();
+            DialogsUIMap.ResourceIsChildOfLocalhost("FolderToRename");
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void MoveFolderToFolderToRenameFromSaveDialog()
         {
-            UIMap.Filter_Save_Dialog_Explorer("FolderTo");
-            UIMap.MoveFolderToMoveIntoFolderToRename();
-            UIMap.Filter_Save_Dialog_Explorer("FolderToMove");
-            UIMap.FolderIsChildOfParentFolder("FolderToMove", "FolderToRename");
+            DialogsUIMap.Filter_Save_Dialog_Explorer("FolderTo");
+            DialogsUIMap.MoveFolderToMoveIntoFolderToRename();
+            DialogsUIMap.Filter_Save_Dialog_Explorer("FolderToMove");
+            DialogsUIMap.FolderIsChildOfParentFolder("FolderToMove", "FolderToRename");
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void MoveResourceToLocalhostFromSaveDialog()
         {
-            UIMap.Filter_Save_Dialog_Explorer("ResourceToMove");
-            UIMap.MoveResourceToLocalhost();
-            UIMap.Filter_Save_Dialog_Explorer("FolderToMove");
-            UIMap.ExplorerDoesNotContainItem("ResourceToMove");
+            DialogsUIMap.Filter_Save_Dialog_Explorer("ResourceToMove");
+            DialogsUIMap.MoveResourceToLocalhost();
+            DialogsUIMap.Filter_Save_Dialog_Explorer("FolderToMove");
+            ExplorerUIMap.ExplorerDoesNotContainItem("ResourceToMove");
         }
 
         [TestMethod]
         [TestCategory("Save Dialog")]
         public void DoubleClickItemInSaveDialogDoesNotOpenResource()
         {
-            UIMap.Filter_Save_Dialog_Explorer("Hello World");
-            UIMap.DoubleClickResourceOnTheSaveDialog();
-            UIMap.Click_SaveDialog_CancelButton();
+            DialogsUIMap.Filter_Save_Dialog_Explorer("Hello World");
+            DialogsUIMap.DoubleClickResourceOnTheSaveDialog();
+            DialogsUIMap.Click_SaveDialog_CancelButton();
             UIMap.ResourceDidNotOpen();
         }
         
@@ -143,7 +145,7 @@ namespace Warewolf.UITests.SaveDialog
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
+            ExplorerUIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
             ToolsUIMap.Make_Workflow_Savable_By_Dragging_Start();
             ToolsUIMap.Save_Workflow_Using_Shortcut();
         }
@@ -177,6 +179,36 @@ namespace Warewolf.UITests.SaveDialog
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }
