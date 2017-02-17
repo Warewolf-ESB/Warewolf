@@ -157,6 +157,12 @@
     <Compile Include="WorkflowTesting\TestFrameworkMockingTests.cs" />
     <Compile Include="WorkflowTesting\TestsResults.cs" />
     <Compile Include="WorkflowTesting\HelloWorldTestFrameworkMockingTests.cs" />
+    <Compile Include="WorkflowTesting\WorkflowServiceTestingUIMap.cs">
+      <DependentUpon>WorkflowServiceTestingUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="WorkflowTesting\WorkflowServiceTestingUIMap.Designer.cs">
+      <DependentUpon>WorkflowServiceTestingUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\Refresh.cs" />
@@ -213,6 +219,9 @@
     <None Include="packages.config" />
     <None Include="Tools\ToolsUIMap.uitest" />
     <None Include="UIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WorkflowTesting\WorkflowServiceTestingUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

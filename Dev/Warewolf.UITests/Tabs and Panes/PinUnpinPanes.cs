@@ -4,6 +4,7 @@ using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests.Tabs
 {
@@ -98,7 +99,7 @@ namespace Warewolf.UITests.Tabs
         {
             UIMap.Filter_Explorer("Hello World");
             UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab);
+            UIMap.Unpin_Tab_With_Drag(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab);
         }
 
         [TestMethod]
@@ -172,6 +173,21 @@ namespace Warewolf.UITests.Tabs
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
+        {
+            get
+            {
+                if (_WorkflowServiceTestingUIMap == null)
+                {
+                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
+                }
+
+                return _WorkflowServiceTestingUIMap;
+            }
+        }
+
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
 
         #endregion
     }

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 using Warewolf.UITests.Common;
+using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -20,11 +21,11 @@ namespace Warewolf.UITests
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists);
             UIMap.Press_F6();            
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
-            UIMap.Click_MockRadioButton_On_TestStep();
-            UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
+            WorkflowServiceTestingUIMap.Click_MockRadioButton_On_TestStep();
+            WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
             Point point;
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
+            Assert.IsFalse(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
         }
         
         #region Additional test attributes
@@ -65,6 +66,21 @@ namespace Warewolf.UITests
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
+        {
+            get
+            {
+                if (_WorkflowServiceTestingUIMap == null)
+                {
+                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
+                }
+
+                return _WorkflowServiceTestingUIMap;
+            }
+        }
+
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
 
         #endregion
     }
