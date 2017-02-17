@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
@@ -21,7 +20,6 @@ using Dev2.Studio.Core;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
 {
-
     public class StudioServerProxy : IExplorerRepository
     {
         IPopupController _popupController;
@@ -87,108 +85,10 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel)
         {
-            try
-            {
-                if (explorerItemViewModel != null)
-                {
-                    var graphGenerator = new DependencyGraphGenerator();
-                    if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
-                    {
-                        var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
-                        var deleteFileMeta = HasDependencies(explorerItemViewModel, graphGenerator, dep);
-                        if (deleteFileMeta.IsDeleted || deleteFileMeta.DeleteAnyway)
-                        {
-                            deleteFileMeta.IsDeleted = true;
-                            UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
-                        }
-                        return deleteFileMeta;
-                    }
-                    if (explorerItemViewModel.ResourceType == "Version")
-                    {
-                        VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber,explorerItemViewModel.ResourcePath);
-                    }
-                    else if (explorerItemViewModel.ResourceType == "Folder")
-                    {
-                        var explorerItemViewModels = explorerItemViewModel.AsList();
-                        // ReSharper disable once LoopCanBeConvertedToQuery
-                        var deleteFileMetaData = new DeletedFileMetadata
-                        {
-                            IsDeleted = true,
-                            ShowDependencies = false
-                        };
-                        bool showDependenciesApplyToAll = false;
-                        foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
-                        {
-                            if (itemViewModel.ResourceType != "Folder")
-                            {
-                                var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
-                                if (dependants != null)
-                                {
-                                    if (showDependenciesApplyToAll)
-                                    {
-                                        var graph = graphGenerator.BuildGraph(dependants.Message, "", 1000, 1000, 1);
-                                        if (graph.Nodes.Count > 1)
-                                        {
-                                            itemViewModel.ShowDependencies();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var deletedFileMetadata = HasDependencies(itemViewModel, graphGenerator, dependants);
-                                        
-                                        if (deletedFileMetadata.DeleteAnyway && deletedFileMetadata.ApplyToAll)
-                                        {
-                                            deleteFileMetaData.IsDeleted = true;
-                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
-                                            break;
-                                        }
-                                        if (deletedFileMetadata.DeleteAnyway && !deletedFileMetadata.ApplyToAll)
-                                        {
-                                            explorerItemViewModel.RemoveChild(itemViewModel);
-                                            UpdateManagerProxy.DeleteResource(itemViewModel.ResourceId);
-                                        }
 
-                                        if (!deletedFileMetadata.IsDeleted)
-                                        {
-                                            deleteFileMetaData.IsDeleted = false;
-                                            deleteFileMetaData.ShowDependencies = true;
-                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
-
-                                            if (deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies)
-                                            {
-                                                showDependenciesApplyToAll = deletedFileMetadata.ShowDependencies;
-                                            }
-                                            else if (deletedFileMetadata.ApplyToAll)
-                                            {
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (deleteFileMetaData.IsDeleted)
-                        {
-                            if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
-                            {
-                                UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
-                            }
-                        }
-                        return deleteFileMetaData;
-                    }
-                }
-                return new DeletedFileMetadata
-                {
-                    IsDeleted = true
-                };
-            }
-            catch (Exception)
-            {
-                return new DeletedFileMetadata
-                {
-                    IsDeleted = false
-                };
-            }
+            var explorerDeleteProvider = new ExplorerDeleteProvider(this);
+            var deletedFileMetadata = explorerDeleteProvider.Delete(explorerItemViewModel);
+            return deletedFileMetadata;
         }
 
         public IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep)

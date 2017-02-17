@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -284,55 +283,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             updateManagerProxy.Verify(manager => manager.MoveItem(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
         }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("StudioServerProxy_Delete")]
-        public void StudioServerProxy_Delete_WhenFolder_ShouldShowDependencies()
-        {
-            //------------Setup for test--------------------------
-            var mock = new Mock<StudioServerProxy>(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
-            mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
-                .Returns(() => new DeletedFileMetadata()
-                {
-                    ApplyToAll = true,
-                    DeleteAnyway = true
-                });
-            var studioServerProxy = mock.Object;
-            var mockQueryManager = new Mock<IQueryManager>();
-            var mockVersionManager = new Mock<IVersionManager>();
-            mockQueryManager.Setup(manager => manager.FetchDependants(It.IsAny<Guid>())).Returns(new ExecuteMessage());
-            mockVersionManager.Setup(manager => manager.DeleteVersion(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
-            studioServerProxy.QueryManagerProxy = mockQueryManager.Object;
-            studioServerProxy.VersionManager = mockVersionManager.Object;
-            var updateManagerProxy = new Mock<IExplorerUpdateManager>();
-            updateManagerProxy.Setup(manager => manager.MoveItem(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(ValueFunction(ExecStatus.Fail));
-            studioServerProxy.UpdateManagerProxy = updateManagerProxy.Object;
-            var mockExplorerItemModel = new Mock<IExplorerItemViewModel>();
-            var child = new Mock<IExplorerItemViewModel>();
-            
-            child.SetupGet(model => model.ResourceType).Returns("Resourse");
-            mockExplorerItemModel.Setup(model => model.ResourceType).Returns("Folder");
-            mockExplorerItemModel.Setup(model => model.ResourcePath).Returns("path");
-            mockExplorerItemModel.Setup(model => model.AsList())
-                                 .Returns(new List<IExplorerItemViewModel>()
-                                 {
-                                     child.Object
-                                 });
-            var mockPopupController = new Mock<IPopupController>();
-            mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false, false, false)).Returns(MessageBoxResult.OK);
-            CustomContainer.Register(mockPopupController.Object);
-            //------------Execute Test---------------------------
-            var treeItem = new Mock<IExplorerTreeItem>();
-            treeItem.Setup(explorerTreeItem => explorerTreeItem.ResourcePath);
-            var item = studioServerProxy.Delete(mockExplorerItemModel.Object);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(item);
-            mockQueryManager.Verify(manager => manager.FetchDependants(It.IsAny<Guid>()));
-            updateManagerProxy.Verify(manager => manager.MoveItem(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
-            Assert.AreEqual(true,item.IsDeleted);
-            Assert.AreEqual(Guid.Empty,item.ResourceId);
-        }
+      
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -445,18 +396,16 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var studioServerProxy = new StudioServerProxy(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
-            var methodInfo = typeof(StudioServerProxy).GetMethod("HasDependencies", BindingFlags.Instance | BindingFlags.NonPublic);
             var mock = new Mock<IExplorerItemViewModel>();
             var dependencyGraphGenerator = new Mock<IDependencyGraphGenerator>();
             dependencyGraphGenerator.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(new Graph("myGraph"));
             var msgMock = new Mock<IExecuteMessage>();
             //------------Execute Test---------------------------
-            Assert.IsNotNull(methodInfo);
-            var metaData = methodInfo.Invoke(studioServerProxy, new object[] { mock.Object, dependencyGraphGenerator.Object, msgMock.Object });
+            var metaData = studioServerProxy.HasDependencies(mock.Object, dependencyGraphGenerator.Object, msgMock.Object);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(metaData, typeof(IDeletedFileMetadata));
-            var deletedFileMetadata = metaData as IDeletedFileMetadata;
+            var deletedFileMetadata = metaData;
             Assert.IsNotNull(deletedFileMetadata);
             Assert.AreEqual(true, deletedFileMetadata.IsDeleted);
             Assert.AreEqual(false, deletedFileMetadata.ShowDependencies);
@@ -471,7 +420,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var studioServerProxy = new StudioServerProxy(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
-            var methodInfo = typeof(StudioServerProxy).GetMethod("HasDependencies", BindingFlags.Instance | BindingFlags.NonPublic);
             var mock1 = new Mock<IPopupController>();
             mock1.Setup(controller => controller.DeleteAnyway).Returns(true);
             CustomContainer.Register(mock1.Object);
@@ -484,11 +432,10 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Returns(value);
             var msgMock = new Mock<IExecuteMessage>();
             //------------Execute Test---------------------------
-            Assert.IsNotNull(methodInfo);
-            var metaData = methodInfo.Invoke(studioServerProxy, new object[] { mock.Object, dependencyGraphGenerator.Object, msgMock.Object });
+            var metaData = studioServerProxy.HasDependencies(mock.Object, dependencyGraphGenerator.Object, msgMock.Object);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(metaData, typeof(IDeletedFileMetadata));
-            var deletedFileMetadata = metaData as IDeletedFileMetadata;
+            var deletedFileMetadata = metaData;
             Assert.IsNotNull(deletedFileMetadata);
             Assert.AreEqual(false, deletedFileMetadata.IsDeleted);
             Assert.AreEqual(false, deletedFileMetadata.ShowDependencies);
@@ -505,7 +452,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var studioServerProxy = new StudioServerProxy(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
-            var methodInfo = typeof(StudioServerProxy).GetMethod("HasDependencies", BindingFlags.Instance | BindingFlags.NonPublic);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.DeleteAnyway).Returns(false);
             mockPopupController.Setup(controller => controller.Show(
@@ -531,11 +477,10 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Returns(value);
             var msgMock = new Mock<IExecuteMessage>();
             //------------Execute Test---------------------------
-            Assert.IsNotNull(methodInfo);
-            var metaData = methodInfo.Invoke(studioServerProxy, new object[] { mock.Object, dependencyGraphGenerator.Object, msgMock.Object });
+            var metaData = studioServerProxy.HasDependencies(mock.Object, dependencyGraphGenerator.Object, msgMock.Object);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(metaData, typeof(IDeletedFileMetadata));
-            var deletedFileMetadata = metaData as IDeletedFileMetadata;
+            var deletedFileMetadata = metaData;
             Assert.IsNotNull(deletedFileMetadata);
             Assert.AreEqual(false, deletedFileMetadata.IsDeleted);
             Assert.AreEqual(false, deletedFileMetadata.ShowDependencies);
@@ -552,7 +497,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var studioServerProxy = new StudioServerProxy(new Mock<ICommunicationControllerFactory>().Object, new Mock<IEnvironmentConnection>().Object);
-            var methodInfo = typeof(StudioServerProxy).GetMethod("HasDependencies", BindingFlags.Instance | BindingFlags.NonPublic);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.DeleteAnyway).Returns(false);
             mockPopupController.Setup(controller => controller.Show(
@@ -579,12 +523,11 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Returns(value);
             var msgMock = new Mock<IExecuteMessage>();
             //------------Execute Test---------------------------
-            Assert.IsNotNull(methodInfo);
-            var metaData = methodInfo.Invoke(studioServerProxy, new object[] { mock.Object, dependencyGraphGenerator.Object, msgMock.Object });
+            var metaData = studioServerProxy.HasDependencies(mock.Object, dependencyGraphGenerator.Object, msgMock.Object);
             //------------Assert Results-------------------------
             mock.Verify(model => model.ShowDependencies());
             Assert.IsInstanceOfType(metaData, typeof(IDeletedFileMetadata));
-            var deletedFileMetadata = metaData as IDeletedFileMetadata;
+            var deletedFileMetadata = metaData;
             Assert.IsNotNull(deletedFileMetadata);
             Assert.AreEqual(false, deletedFileMetadata.IsDeleted);
             Assert.AreEqual(true, deletedFileMetadata.ShowDependencies);
