@@ -152,7 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public IResourceCatalog ResourceCatalog
         {
-            protected get
+            get
             {
                 return _resourceCatalog ?? Dev2.Runtime.Hosting.ResourceCatalog.Instance;
             }
