@@ -16,5 +16,6 @@ namespace Dev2.Common.Interfaces
         double NodeHeight { get; }
         bool IsBroken { get; }
         List<ICircularDependency> FindCircularDependencies();
+        string ToString();
     }
 }

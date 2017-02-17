@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
 using Dev2.Common;
-using Dev2.Common.DependencyVisualization;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
@@ -17,6 +16,7 @@ using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Warewolf.Studio.ServerProxyLayer;
 using Dev2.Studio.Core;
+
 // ReSharper disable LoopCanBeConvertedToQuery
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -64,12 +64,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public bool Rename(IExplorerItemViewModel vm, string newName)
         {
-            if(vm == null)
+            if (vm == null)
             {
                 throw new ArgumentNullException(nameof(vm));
             }
             if (vm.ResourceType == "Folder")
-                UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath?.Replace(vm.ResourceName,newName));
+                UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath?.Replace(vm.ResourceName, newName));
             else
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
             return true;
@@ -191,7 +191,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             }
         }
 
-        private IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, DependencyGraphGenerator graphGenerator, IExecuteMessage dep)
+        public IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep)
         {
             IGraph graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             _popupController = CustomContainer.Get<IPopupController>();
@@ -215,30 +215,29 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
                 if (result == MessageBoxResult.OK)
                 {
-                    return new DeletedFileMetadata
-                    {
-                        IsDeleted = false,
-                        ResourceId = explorerItemViewModel.ResourceId,
-                        ShowDependencies = false,
-                        ApplyToAll = _popupController.ApplyToAll,
-                        DeleteAnyway = _popupController.DeleteAnyway
-                    };
+                    return BuildMetadata(explorerItemViewModel.ResourceId, false, false, _popupController.ApplyToAll, _popupController.DeleteAnyway);
                 }
                 explorerItemViewModel.ShowDependencies();
-                return new DeletedFileMetadata
-                {
-                    IsDeleted = false,
-                    ResourceId = explorerItemViewModel.ResourceId,
-                    ShowDependencies = true,
-                    ApplyToAll = _popupController.ApplyToAll,
-                    DeleteAnyway = _popupController.DeleteAnyway
-                };
+                return BuildMetadata(explorerItemViewModel.ResourceId, false, true, _popupController.ApplyToAll, _popupController.DeleteAnyway);
+              
             }
             return new DeletedFileMetadata
             {
                 IsDeleted = true,
                 ResourceId = explorerItemViewModel.ResourceId,
                 ShowDependencies = false
+            };
+        }
+
+        private IDeletedFileMetadata BuildMetadata(Guid resourceId, bool isDeleted, bool showDependecnies, bool applyToAll, bool deleteAnyway)
+        {
+            return new DeletedFileMetadata
+            {
+                IsDeleted = isDeleted,
+                ResourceId = resourceId,
+                ShowDependencies = showDependecnies,
+                ApplyToAll = applyToAll,
+                DeleteAnyway = deleteAnyway
             };
         }
         
