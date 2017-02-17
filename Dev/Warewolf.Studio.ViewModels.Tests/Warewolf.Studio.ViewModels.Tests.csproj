@@ -131,6 +131,7 @@
     <Compile Include="DLLChooserTests.cs" />
     <Compile Include="DummyServiceTestTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
+    <Compile Include="ExplorerDeleteProviderTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="FileChooserModelTests.cs" />
