@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 // ReSharper disable InconsistentNaming
@@ -21,13 +22,13 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void RenameFolder_ThenFolderItem()
         {
-            UIMap.Filter_Explorer("FolderItem");
-            UIMap.Rename_LocalFolder_To_SecondFolder(newFolderName);
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            UIMap.Rename_FolderItem_ToNewFolderItem(newResourceName);
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-            UIMap.Click_Explorer_Refresh_Button();
-            var itemEdit = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ResourceNameTextBlock;
+            ExplorerUIMap.Filter_Explorer("FolderItem");
+            ExplorerUIMap.Rename_LocalFolder_To_SecondFolder(newFolderName);
+            UIMap.WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            ExplorerUIMap.Rename_FolderItem_ToNewFolderItem(newResourceName);
+            UIMap.WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            ExplorerUIMap.Click_Explorer_Refresh_Button();
+            var itemEdit = ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.ResourceNameTextBlock;
             Assert.AreEqual(newResourceName, itemEdit.DisplayText);
         }
 
@@ -36,8 +37,8 @@ namespace Warewolf.UITests
         public void RenameFolder_UsingF2_Shortcut()
         {            
             var renamedFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\";
-            UIMap.Filter_Explorer(Folder);
-            UIMap.Rename_Folder_Using_Shortcut(Folder + "_Renamed");
+            ExplorerUIMap.Filter_Explorer(Folder);
+            ExplorerUIMap.Rename_Folder_Using_Shortcut(Folder + "_Renamed");
             Assert.IsTrue(Directory.Exists(renamedFolder + Folder + "_Renamed"), "Folder did not rename");
             
         }
@@ -52,12 +53,12 @@ namespace Warewolf.UITests
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
             var renamedFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests_Renamed";
 
-            UIMap.Filter_Explorer(WorkflowName);
-            UIMap.Open_ExplorerFirstSubItem_From_ExplorerContextMenu();
-            UIMap.Rename_Folder_Using_Shortcut(AcceptanceTestsRenamed);
-            UIMap.WaitForSpinner(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
+            ExplorerUIMap.Filter_Explorer(WorkflowName);
+            ExplorerUIMap.Open_ExplorerFirstSubItem_From_ExplorerContextMenu();
+            ExplorerUIMap.Rename_Folder_Using_Shortcut(AcceptanceTestsRenamed);
+            UIMap.WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.Open_ExplorerFirstSubItem_From_ExplorerContextMenu();
+            ExplorerUIMap.Open_ExplorerFirstSubItem_From_ExplorerContextMenu();
             Directory.Move(renamedFolder, resourcesFolder);
         }
 
@@ -65,14 +66,14 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void Rename_Resource_Close_And_ReOpen_Resource_Keeps_New_Name()
         {
-            UIMap.Filter_Explorer(ResourceToRename);
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            
-            UIMap.Rename_Explorer_First_Item(newName);
+            ExplorerUIMap.Filter_Explorer(ResourceToRename);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+
+            ExplorerUIMap.Rename_Explorer_First_Item(newName);
             ToolsUIMap.Make_Workflow_Savable_By_Dragging_Start();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_Workflow_Tab_Button();
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             Assert.AreEqual(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.KeepNewNameRenamedListItem.DisplayText, newName);
         }
 
@@ -114,6 +115,21 @@ namespace Warewolf.UITests
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

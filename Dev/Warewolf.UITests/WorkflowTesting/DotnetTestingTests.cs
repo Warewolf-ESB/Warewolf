@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowTesting
@@ -111,7 +113,7 @@ namespace Warewolf.UITests.WorkflowTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists);
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button();
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [TestMethod]
@@ -125,7 +127,7 @@ namespace Warewolf.UITests.WorkflowTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Failing.Exists);
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button();
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [TestMethod]
@@ -138,7 +140,7 @@ namespace Warewolf.UITests.WorkflowTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists);
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button();
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [TestMethod]
@@ -152,7 +154,7 @@ namespace Warewolf.UITests.WorkflowTesting
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Fail);
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button();
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [TestMethod]
@@ -165,7 +167,7 @@ namespace Warewolf.UITests.WorkflowTesting
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button();
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         #region Additional test attributes
@@ -175,8 +177,8 @@ namespace Warewolf.UITests.WorkflowTesting
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Filter_Explorer(DotnetWorkflowForTesting);
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
+            ExplorerUIMap.Filter_Explorer(DotnetWorkflowForTesting);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
         }
@@ -212,6 +214,36 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

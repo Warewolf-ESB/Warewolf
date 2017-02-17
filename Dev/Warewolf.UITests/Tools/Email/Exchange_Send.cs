@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools
@@ -78,7 +79,7 @@ namespace Warewolf.UITests.Tools
                 UIMap.CreateAttachmentsForTest(filePath2);
                 ToolsUIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
                 ToolsUIMap.Click_SelectFilesButton_On_ExchangeEmailTool_LargeView();
-                UIMap.Select_Attachments_From_SelectFilesWindow();
+                DialogsUIMap.Select_Attachments_From_SelectFilesWindow();
                 Assert.IsFalse(string.IsNullOrEmpty(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.AttachmentsComboBox.TextEdit.Text), "File Directory Textbox is empty");
                 UIMap.RemoveTestFiles(filePath1, filePath2, folderName);
             }
@@ -98,24 +99,6 @@ namespace Warewolf.UITests.Tools
             UIMap.InitializeABlankWorkflow();
             ToolsUIMap.Drag_Toolbox_Exchange_Send_Onto_DesignSurface();
         }
-        
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        private TestContext testContextInstance;
 
         UIMap UIMap
         {
@@ -146,6 +129,21 @@ namespace Warewolf.UITests.Tools
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

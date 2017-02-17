@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Control_Flow
@@ -32,13 +33,13 @@ namespace Warewolf.UITests.Tools.Control_Flow
             //Large View
             ToolsUIMap.SequenceTool_ChangeView_With_DoubleClick();
             ToolsUIMap.Drag_Toolbox_Switch_Onto_Sequence_LargeTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            UIMap.Click_DropNotAllowed_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
+            DialogsUIMap.Click_DropNotAllowed_MessageBox_OK();
             //Small View
             ToolsUIMap.SequenceTool_ChangeView_With_DoubleClick();
             ToolsUIMap.Drag_Toolbox_Switch_Onto_Sequence_SmallTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            UIMap.Click_DropNotAllowed_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
+            DialogsUIMap.Click_DropNotAllowed_MessageBox_OK();
         }
 
         [TestMethod]
@@ -48,13 +49,13 @@ namespace Warewolf.UITests.Tools.Control_Flow
             //Large View 
             ToolsUIMap.SequenceTool_ChangeView_With_DoubleClick();
             ToolsUIMap.Drag_Toolbox_Decision_Onto_Sequence_LargeTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            UIMap.Click_DropNotAllowed_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
+            DialogsUIMap.Click_DropNotAllowed_MessageBox_OK();
             //Small View
             ToolsUIMap.SequenceTool_ChangeView_With_DoubleClick();
             ToolsUIMap.Drag_Toolbox_Decision_Onto_Sequence_SmallTool();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Message box does not exist");
-            UIMap.Click_DropNotAllowed_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
+            DialogsUIMap.Click_DropNotAllowed_MessageBox_OK();
         }
 
         #region Additional test attributes
@@ -97,6 +98,21 @@ namespace Warewolf.UITests.Tools.Control_Flow
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

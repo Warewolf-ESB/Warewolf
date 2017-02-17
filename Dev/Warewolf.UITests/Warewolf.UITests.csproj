@@ -95,6 +95,12 @@
     <Compile Include="Tools\ToolsUIMap.Designer.cs">
       <DependentUpon>ToolsUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="DialogsUIMap.cs">
+      <DependentUpon>DialogsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="DialogsUIMap.Designer.cs">
+      <DependentUpon>DialogsUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="WcfSource\WcfSourceTests.cs" />
     <Compile Include="WebSource\WebSourceTests.cs" />
     <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
@@ -227,6 +233,9 @@
     </None>
     <None Include="packages.config" />
     <None Include="Tools\ToolsUIMap.uitest" />
+    <None Include="DialogsUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
     </None>

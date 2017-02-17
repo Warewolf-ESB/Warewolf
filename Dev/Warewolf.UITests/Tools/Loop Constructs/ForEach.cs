@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools
@@ -33,11 +34,11 @@ namespace Warewolf.UITests.Tools
         public void Drag_Decision_And_SwitchTools_Into_ForEachActivityDrop_ExpectError_UITest()
         {
             ToolsUIMap.Drag_Toolbox_Decision_Onto_Foreach();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            UIMap.Click_DropNotAllowed_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists);
+            DialogsUIMap.Click_DropNotAllowed_MessageBox_OK();
             ToolsUIMap.Drag_Toolbox_Switch_Onto_Foreach();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            UIMap.Click_DropNotAllowed_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists);
+            DialogsUIMap.Click_DropNotAllowed_MessageBox_OK();
         }
 
         [TestMethod]
@@ -87,6 +88,21 @@ namespace Warewolf.UITests.Tools
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Workflow
@@ -11,7 +12,7 @@ namespace Warewolf.UITests.Workflow
         [TestCategory("Tabs and Panes")]
         public void Workflow_Name_Counter()
         {
-            UIMap.Create_New_Workflow_Using_Shortcut();
+            ExplorerUIMap.Create_New_Workflow_Using_Shortcut();
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow exists after creating it with shortcut");
             ToolsUIMap.Make_Workflow_Savable_By_Dragging_Start();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savable was unsucessful.");
@@ -55,6 +56,21 @@ namespace Warewolf.UITests.Workflow
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

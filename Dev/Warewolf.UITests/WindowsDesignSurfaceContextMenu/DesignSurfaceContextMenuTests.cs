@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
@@ -12,12 +13,12 @@ namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
         public void CopyAndPasteWorkflowToItselfDoesNotCopy()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Filter_Explorer("stackoverflowTestWorkflow");
+            ExplorerUIMap.Filter_Explorer("stackoverflowTestWorkflow");
             ToolsUIMap.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface();
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF.Exists);
             ToolsUIMap.RightClick_StackOverFlowService_OnDesignSurface();
             UIMap.Select_Copy_FromContextMenu();
-            UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             ToolsUIMap.RightClick_AssignOnDesignSurface();
             UIMap.Select_Paste_FromContextMenu();
             var controlExistsNow = UIMap.ControlExistsNow(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StackoverflowWorkflow);
@@ -64,6 +65,21 @@ namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

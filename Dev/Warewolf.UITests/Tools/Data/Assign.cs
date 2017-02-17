@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Data
@@ -47,7 +48,7 @@ namespace Warewolf.UITests.Tools.Data
         [TestCategory("Data Tools")]
         public void AssignTool_Url_UITest()
         {
-            UIMap.Click_Assign_Tool_url();
+            DialogsUIMap.Click_Assign_Tool_url();
         }
 
         [TestMethod]
@@ -127,6 +128,21 @@ namespace Warewolf.UITests.Tools.Data
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

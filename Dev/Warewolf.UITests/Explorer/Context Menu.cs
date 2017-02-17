@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
 // ReSharper disable CyclomaticComplexity
 
 namespace Warewolf.UITests
@@ -13,8 +13,8 @@ namespace Warewolf.UITests
         public void Explorer_Workflow_And_Folder_ContextMenuItems_UITest()
         {
             //Workflow Context Menu
-            UIMap.Filter_Explorer("Hello World");
-            UIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.DebugInputsMenuItem.Exists, "DebugInputsMenuItem Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.DebugStudioMenuItem.Exists, "DebugStudioMenuItem Context menu item does not exist on explorer context menu for workflows.");
@@ -33,8 +33,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Exists, "MakeCurrentVersionMenuItem Context menu item does not exist on explorer context menu for workflows.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.OpenVersionMenuItem.Exists, "OpenVersionMenuItem Context menu item does not exist on explorer context menu for workflows.");
             //Folder Context Menu
-            UIMap.Filter_Explorer("Examples");
-            UIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.Filter_Explorer("Examples");
+            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.NewWorkflowItem.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.NewFolderMenuItem.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Rename.Exists);
@@ -44,7 +44,7 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ViewApisJsonMenuItem.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists);
             //Server Context Menu
-            UIMap.RightClick_Localhost();
+            ExplorerUIMap.RightClick_Localhost();
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists, "Sources Context menu item does not exist on explorer context menu for workflows.");
         }
 
@@ -55,8 +55,8 @@ namespace Warewolf.UITests
         {
             //---------------Set up test pack-------------------
             const string Source = "DotNetPlugInSource";
-            UIMap.Filter_Explorer(Source);
-            UIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.Filter_Explorer(Source);
+            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies.Exists, "Show Dependencies Context menu item does not exist on explorer context menu for Sources.");
@@ -93,20 +93,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_ExplorerUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _ExplorerUIMap = new ExplorerUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _ExplorerUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

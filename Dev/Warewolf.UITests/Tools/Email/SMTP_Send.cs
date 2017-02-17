@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Email
@@ -81,7 +82,7 @@ namespace Warewolf.UITests.Tools.Email
                 UIMap.CreateAttachmentsForTest(filePath2);
                 ToolsUIMap.Open_SMTPSendTool_LargeView();
                 ToolsUIMap.Click_SelectFilesButton_On_SMTPEmailTool_LargeView();
-                UIMap.Select_Attachments_From_SelectFilesWindow();
+                DialogsUIMap.Select_Attachments_From_SelectFilesWindow();
                 Assert.IsFalse(string.IsNullOrEmpty(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.LargeViewContent.AttachmentsComboBox.TextEdit.Text), "File Directory Textbox is empty");
                 UIMap.RemoveTestFiles(filePath1, filePath2, folderName);
             }
@@ -149,6 +150,21 @@ namespace Warewolf.UITests.Tools.Email
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

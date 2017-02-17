@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests
@@ -12,7 +13,7 @@ namespace Warewolf.UITests
         // ReSharper disable once InconsistentNaming
         public void Create_DropboxSource_From_ExplorerContextMenu_UITests()
         {
-            UIMap.Select_NewDropboxSource_From_ExplorerContextMenu();
+            ExplorerUIMap.Select_NewDropboxSource_From_ExplorerContextMenu();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.Exists, "OAuth Source Tab does not exist");
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton.Enabled, "Authorise button is enabled");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.ServerTypeComboBox.Enabled, "Server Type Combobox is not enabled");
@@ -45,20 +46,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        ExplorerUIMap ExplorerUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_ExplorerUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _ExplorerUIMap = new ExplorerUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _ExplorerUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

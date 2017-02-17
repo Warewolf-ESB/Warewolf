@@ -14,6 +14,7 @@ using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.DialogsUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
 {
@@ -64,6 +65,21 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         [Given("I Drag Dice Roll Example Onto DesignSurface")]
         [When("I Drag Dice Roll Example Onto DesignSurface")]
@@ -415,7 +431,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         {
             Click_EnableDisable_This_Test_CheckBox(true, 4);
             Click_Delete_Test_Button(4);
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
             Click_Close_Tests_Tab();
         }
 
@@ -510,7 +526,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.TestEnabledSelector, new Point(10, 10));
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.DeleteButton, new Point(10, 10));
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [Given(@"I delete Added Test")]
@@ -519,7 +535,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         public void ThenIDeleteAddedTest()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.DeleteButton, new Point(10, 10));
-            UIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [Given(@"That The Added Test ""(.*)"" Unsaved Star")]
@@ -559,7 +575,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 if (MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.TestEnabledSelector.Checked && MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.TestEnabledSelector.TryGetClickablePoint(out point))
                     Click_EnableDisable_This_Test_CheckBox(true, 5);
                 Click_Delete_Test_Button(5);
-                UIMap.Click_MessageBox_Yes();
+                DialogsUIMap.Click_MessageBox_Yes();
             }
             if (testsListBox.GetContent().Length >= 5)
             {
@@ -568,7 +584,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 if (MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestEnabledSelector.Checked && MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.TestEnabledSelector.TryGetClickablePoint(out point))
                     Click_EnableDisable_This_Test_CheckBox(true, 4);
                 Click_Delete_Test_Button(4);
-                UIMap.Click_MessageBox_Yes();
+                DialogsUIMap.Click_MessageBox_Yes();
             }
             if (testsListBox.GetContent().Length >= 4)
             {
@@ -577,7 +593,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 if (MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.TestEnabledSelector.Checked && MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.TestEnabledSelector.TryGetClickablePoint(out point))
                     Click_EnableDisable_This_Test_CheckBox(true, 3);
                 Click_Delete_Test_Button(3);
-                UIMap.Click_MessageBox_Yes();
+                DialogsUIMap.Click_MessageBox_Yes();
             }
             if (testsListBox.GetContent().Length >= 3)
             {
@@ -586,7 +602,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 if (MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.TestEnabledSelector.Checked && MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.TestEnabledSelector.TryGetClickablePoint(out point))
                     Click_EnableDisable_This_Test_CheckBox(true, 2);
                 Click_Delete_Test_Button(2);
-                UIMap.Click_MessageBox_Yes();
+                DialogsUIMap.Click_MessageBox_Yes();
             }
             if (testsListBox.GetContent().Length >= 2)
             {
@@ -595,7 +611,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 if (MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector.Checked && MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.TestEnabledSelector.TryGetClickablePoint(out point))
                     Click_EnableDisable_This_Test_CheckBox(true);
                 Click_Delete_Test_Button();
-                UIMap.Click_MessageBox_Yes();
+                DialogsUIMap.Click_MessageBox_Yes();
             }
             Click_Close_Tests_Tab();
         }
@@ -707,7 +723,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
             var currentTest = GetCurrentTest(testInstance);
             var selectedTestDeleteButton = GetSelectedTestDeleteButton(currentTest, testInstance);
             Mouse.Click(selectedTestDeleteButton);
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "Delete Confirmation MessageBox did not Open");
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Delete Confirmation MessageBox did not Open");
         }
 
         [Given(@"I Click Close Tests Tab")]
@@ -972,15 +988,15 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
             string DuplicateNameError = "DuplicateNameError";
             string UnsavedResourceError = "UnsavedResourceError";
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.RunAllButton, new Point(35, 10));
-            Assert.AreEqual("Window", UIMap.MessageBoxWindow.ControlType.ToString(), "Messagebox does not exist after clicking RunAll button");
+            Assert.AreEqual("Window", DialogsUIMap.MessageBoxWindow.ControlType.ToString(), "Messagebox does not exist after clicking RunAll button");
 
             if (!string.IsNullOrEmpty(BrokenRule))
             {
                 if (BrokenRule.ToUpper().Equals(UnsavedResourceError))
-                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", UIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
+                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", DialogsUIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
                             "ests.");
                 if (BrokenRule.ToUpper().Equals(DuplicateNameError))
-                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", UIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Messagebox does not show duplicated name error");
+                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", DialogsUIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Messagebox does not show duplicated name error");
             }
         }
     }
