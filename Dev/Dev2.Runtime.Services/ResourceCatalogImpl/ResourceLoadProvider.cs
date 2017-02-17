@@ -514,6 +514,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         private static T GetResource<T>(StringBuilder resourceContents) where T : Resource, new()
         {
+            if (resourceContents == null)
+                return default(T);
             var elm = resourceContents.ToXElement();
             object[] args = { elm };
             return (T)Activator.CreateInstance(typeof(T), args);
