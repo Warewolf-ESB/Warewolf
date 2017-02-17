@@ -523,8 +523,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
             var debugItemResults = debugForTest[3].AssertResultList.First().ResultsList;
             var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
-            var errorExpected = actualAssetMessage.Split('\n').Last();
-            Assert.AreEqual(assertString.ToUpper(), errorExpected.ToUpper());
+            StringAssert.Contains(actualAssetMessage.ToLower(),assertString.ToLower());
         }
 
 
@@ -2105,7 +2104,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         var decisionNode = foundNode as FlowStep;
                         // ReSharper disable once PossibleNullReferenceException
                         var action = decisionNode.Action;
-                        var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivityAbstract<string>)action;
+                        var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
                         var value = tableRow["Output Value"];
                         var from = tableRow["Output From"];
