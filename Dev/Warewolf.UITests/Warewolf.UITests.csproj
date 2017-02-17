@@ -70,6 +70,12 @@
     <Compile Include="DotNetPluginSource\DotNetPluginSourceTests.cs" />
     <Compile Include="DropboxSource\DropboxSourceTests.cs" />
     <Compile Include="DependencyGraph\ShowDependencyTets.cs" />
+    <Compile Include="Explorer\ExplorerUIMap.cs">
+      <DependentUpon>ExplorerUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Explorer\ExplorerUIMap.Designer.cs">
+      <DependentUpon>ExplorerUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="ODBCSource\ODBCSourceTests.cs" />
     <Compile Include="OracleSource\OracleSourceTests.cs" />
     <Compile Include="PostgreSQLSource\PostgreSQLSourceTests.cs" />
@@ -216,6 +222,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
+    <None Include="Explorer\ExplorerUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Tools\ToolsUIMap.uitest" />
     <None Include="UIMap.uitest">
