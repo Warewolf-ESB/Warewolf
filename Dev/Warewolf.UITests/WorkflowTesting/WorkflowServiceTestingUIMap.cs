@@ -13,6 +13,7 @@ using System.Drawing;
 using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
+using Warewolf.UITests.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
 {
@@ -48,6 +49,30 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        [Given("I Drag Dice Roll Example Onto DesignSurface")]
+        [When("I Drag Dice Roll Example Onto DesignSurface")]
+        [Then("I Drag Dice Roll Example Onto DesignSurface")]
+        public void Drag_Dice_Roll_Example_Onto_DesignSurface()
+        {
+            ExplorerUIMap.Filter_Explorer("Dice Roll");
+            ToolsUIMap.Drag_Explorer_Localhost_Second_Item_Onto_Workflow_Design_Surface();
+        }
 
         [When(@"I Enter RunAsUser Username And Password")]
         public void Enter_RunAsUser_Username_And_Password()
