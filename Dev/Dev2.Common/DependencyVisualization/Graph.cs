@@ -26,8 +26,8 @@ namespace Dev2.Common.DependencyVisualization
 
         public Graph(string title)
         {
-            CircularDependencies = new List<CircularDependency>();
-            Nodes = new List<Node>();
+            CircularDependencies = new List<ICircularDependency>();
+            Nodes = new List<IDependencyVisualizationNode>();
             Title = title;
         }
 
@@ -38,13 +38,13 @@ namespace Dev2.Common.DependencyVisualization
         public int GridColumn { get; set; }
         public int ColSpan { get; set; }
 
-        public List<CircularDependency> CircularDependencies { get; private set; }
+        public List<ICircularDependency> CircularDependencies { get; }
 
         public bool HasCircularDependency => CircularDependencies.Any();
 
-        public List<Node> Nodes { get; private set; }
+        public List<IDependencyVisualizationNode> Nodes { get; }
 
-        public string Title { get; private set; }
+        public string Title { get; }
 
         #endregion Properties
 
@@ -53,11 +53,11 @@ namespace Dev2.Common.DependencyVisualization
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         public new string ToString()
         {
-            StringBuilder result = new StringBuilder($"<graph title=\"{Title}\">");
+            var result = new StringBuilder($"<graph title=\"{Title}\">");
 
             foreach (var node in Nodes)
             {
-                result.Append(node.ToString());
+                result.Append(((DependencyVisualizationNode)node).ToString());
             }
 
             result.Append("</graph>");
@@ -70,7 +70,7 @@ namespace Dev2.Common.DependencyVisualization
         /// </summary>
         public void CheckForCircularDependencies()
         {
-            foreach (Node node in Nodes)
+            foreach (var node in Nodes)
             {
                 var circularDependencies = node.FindCircularDependencies();
                 if (circularDependencies != null)
@@ -80,9 +80,9 @@ namespace Dev2.Common.DependencyVisualization
             CircularDependencies.Sort();
         }
 
-        public void ProcessCircularDependencies(IEnumerable<CircularDependency> circularDependencies)
+        public void ProcessCircularDependencies(IEnumerable<ICircularDependency> circularDependencies)
         {
-            foreach (CircularDependency circularDependency in circularDependencies)
+            foreach (var circularDependency in circularDependencies)
             {
                 if (circularDependency.Nodes.Count == 0)
                     continue;
@@ -96,7 +96,7 @@ namespace Dev2.Common.DependencyVisualization
                 CircularDependencies.Add(circularDependency);
 
                 // Inform each node that it is a member of the circular dependency.
-                foreach (Node dependency in circularDependency.Nodes)
+                foreach (var dependency in circularDependency.Nodes)
                     dependency.CircularDependencies.Add(circularDependency);
             }
         }

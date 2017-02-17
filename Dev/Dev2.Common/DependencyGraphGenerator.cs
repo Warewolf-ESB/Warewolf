@@ -25,7 +25,7 @@ namespace Dev2.Common
     /// Used to generate dependency graphs.
     /// Extracted From View Model ;)
     /// </summary>
-    public class DependencyGraphGenerator
+    public class DependencyGraphGenerator : IDependencyGraphGenerator
     {
         /// <summary>
         /// Builds the graph.
@@ -69,7 +69,7 @@ namespace Dev2.Common
                     var node = CreateNode(nodeElem, modelName, width, height, ref count);
 
                     bool alreadyAdded = false;
-                    foreach (Node n in graph.Nodes)
+                    foreach (DependencyVisualizationNode n in graph.Nodes)
                     {
                         if (n.ID == id)
                         {
@@ -96,7 +96,7 @@ namespace Dev2.Common
                         }
                     }
                 }
-                foreach (Node node in graph.Nodes)
+                foreach (DependencyVisualizationNode node in graph.Nodes)
                 {
                     var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
                     var dependencyElems = nodeElem.Elements("dependency");
@@ -128,7 +128,7 @@ namespace Dev2.Common
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        private Node CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
+        private DependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
             double screenWidth = width;
             double screenHeight = height - 150;
@@ -183,7 +183,7 @@ namespace Dev2.Common
                 count++;
             }
 
-            return new Node(id, x, y, isTarget, broken);
+            return new DependencyVisualizationNode(id, x, y, isTarget, broken);
         }
     }
 }
