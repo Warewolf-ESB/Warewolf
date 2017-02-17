@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
 using RabbitMQ.Client.Framing;
@@ -39,29 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             Assert.AreEqual(Guid.Empty, dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId);
             Assert.IsNull(dsfConsumeRabbitMQActivity.Prefetch);
         }
-
-        [TestMethod]
-        [Owner("Mthembu Sanele")]
-        [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
-        public void DsfConsumeRabbitMQActivity_Constructor_ResourceCatalog_Should_SetsDefaultPropertyValues()
-        {
-            //------------Setup for test--------------------------
-            var resourceCatalog = new Mock<IResourceCatalog>().Object;
-            //------------Execute Test---------------------------
-            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(resourceCatalog)
-            {
-                RabbitMQSourceResourceId = Guid.Empty,
-                QueueName = string.Empty,
-                Prefetch = null
-            };
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(dsfConsumeRabbitMQActivity);
-            Assert.AreEqual("RabbitMQ Consume", dsfConsumeRabbitMQActivity.DisplayName);
-            Assert.IsTrue(string.IsNullOrEmpty(dsfConsumeRabbitMQActivity.QueueName));
-            Assert.AreEqual(Guid.Empty, dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId);
-            Assert.IsNull(dsfConsumeRabbitMQActivity.Prefetch);
-            Assert.AreEqual(resourceCatalog,dsfConsumeRabbitMQActivity.ResourceCatalog);
-        }
+        
 
         [TestMethod]
         [Owner("Mthembu Sanele")]
@@ -446,6 +425,54 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
             //------------Assert Results-------------------------            
+        }
+
+        [TestMethod]
+        [Owner("Mthembu Sanele")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
+        public void PerformSerialization_ShouldNotError()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var rabbitMQSource = new RabbitMQSource
+            {
+                HostName = "rsaklfsvrgendev",
+                Port = 5672,
+                UserName = "test",
+                Password = "test"
+            };
+
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource);
+           
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfConsumeRabbitMQActivity.ReQueue = true;
+            try
+            {
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "HuggsTest" } });
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Queue Q1 not found", ex.Message);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+
+            //------------Execute Test---------------------------
+            try
+            {
+                var serializedAct = serializer.SerializeToBuilder(dsfConsumeRabbitMQActivity);
+                //------------Assert Results-------------------------            
+                Assert.IsNotNull(serializedAct);                
+            }
+            catch(Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            
+            
         }
 
         [TestMethod]

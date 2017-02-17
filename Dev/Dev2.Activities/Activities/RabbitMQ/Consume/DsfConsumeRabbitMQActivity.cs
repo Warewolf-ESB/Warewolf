@@ -49,21 +49,19 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public ushort _prefetch;
         public int _timeOut = TimeSpan.FromMilliseconds(5000).Seconds;
 
-        #region Ctor
-
         public DsfConsumeRabbitMQActivity()
         {
             DisplayName = "RabbitMQ Consume";
             _messages = new List<string>();
         }
 
-        public DsfConsumeRabbitMQActivity(IResourceCatalog catalog)
+        public DsfConsumeRabbitMQActivity(IResourceCatalog resourceCatalog)
         {
-            ResourceCatalog = catalog;
             DisplayName = "RabbitMQ Consume";
+            _messages = new List<string>();
+            ResourceCatalog = resourceCatalog;
         }
 
-        #endregion Ctor
 
         public Guid RabbitMQSourceResourceId { get; set; }
 
@@ -87,6 +85,11 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         public QueueingBasicConsumer Consumer { get; set; }
 
+        public bool ShouldSerializeConsumer()
+        {
+            return false;
+        }
+
         [NonSerialized]
         private ConnectionFactory _connectionFactory;
 
@@ -102,12 +105,30 @@ namespace Dev2.Activities.RabbitMQ.Consume
             }
         }
 
+        public bool ShouldSerializeConnectionFactory()
+        {
+            return false;
+        }
+
         internal IConnection Connection { get; set; }
 
+        public bool ShouldSerializeConnection()
+        {
+            return false;
+        }
+
+
         internal IModel Channel { get; set; }
+        public bool ShouldSerializeChannel()
+        {
+            return false;
+        }
 
         internal RabbitMQSource RabbitSource { get; set; }
-
+        public bool ShouldSerializeRabbitSource()
+        {
+            return false;
+        }
 
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)

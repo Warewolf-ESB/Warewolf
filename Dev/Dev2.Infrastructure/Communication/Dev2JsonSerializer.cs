@@ -72,8 +72,13 @@ namespace Dev2.Communication
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
-                using(var jsonTextWriter = new JsonTextWriter(sw))
+                jsonSerializer.Error += (sender, args) =>
                 {
+                    args.ErrorContext.Handled = true;
+                };
+                using (var jsonTextWriter = new JsonTextWriter(sw))
+                {
+                    
                     jsonSerializer.Serialize(jsonTextWriter, obj);
                     jsonTextWriter.Flush();
                     jsonTextWriter.Close();
