@@ -521,7 +521,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            var debugItemResults = debugForTest[3].AssertResultList.First().ResultsList;
+            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType==StateType.End).AssertResultList.First().ResultsList;
             var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(),assertString.ToLower());
         }
