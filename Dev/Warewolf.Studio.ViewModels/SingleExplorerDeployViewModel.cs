@@ -17,7 +17,6 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
-using Warewolf.Studio.Core.Popup;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBeProtected.Global
@@ -68,7 +67,6 @@ namespace Warewolf.Studio.ViewModels
             _shell = shell;
             _stats.CalculateAction = () =>
             {
-
                 ServicesCount = _stats.Services.ToString();
                 SourcesCount = _stats.Sources.ToString();
                 NewResourcesCount = _stats.NewResources.ToString();
@@ -343,25 +341,7 @@ namespace Warewolf.Studio.ViewModels
             IsDeploying = false;
 
         }
-
-        private void DisplayServerData(string data)
-        {
-            
-            _shell.ShowPopup(new PopupMessage
-            {
-                Buttons = MessageBoxButton.OK,
-                DefaultResult = MessageBoxResult.OK,
-                Description = data,
-                DontShowAgainKey = "true",
-                Header = "Info",
-                Image = MessageBoxImage.Information,
-                IsDependenciesButtonVisible = false,
-                IsError =false,
-                IsInfo =false,
-                IsQuestion = false
-            });
-        }
-
+        
         void CheckResourceNameConflict()
         {
             var selected = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
