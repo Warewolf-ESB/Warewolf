@@ -20,11 +20,25 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
+    public interface IDependencyGraphGenerator
+    {
+        /// <summary>
+        /// Builds the graph.
+        /// </summary>
+        /// <param name="xmlData">The XML data.</param>
+        /// <param name="modelName">Name of the model.</param>
+        /// <param name="width">The width.</param>
+        /// <param name="height">The height.</param>
+        /// <param name="nestingLevel">How deep should the graph show.</param>
+        /// <returns></returns>
+        Graph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel);
+    }
+
     /// <summary>
     /// Used to generate dependency graphs.
     /// Extracted From View Model ;)
     /// </summary>
-    public class DependencyGraphGenerator
+    public class DependencyGraphGenerator : IDependencyGraphGenerator
     {
         /// <summary>
         /// Builds the graph.
