@@ -59,7 +59,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         public DsfConsumeRabbitMQActivity(IResourceCatalog catalog)
         {
-            ResourceCatalog = catalog;   
+            ResourceCatalog = catalog;
+            DisplayName = "RabbitMQ Consume";
         }
 
         #endregion Ctor
@@ -107,9 +108,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         internal RabbitMQSource RabbitSource { get; set; }
 
-        #region Overrides of DsfBaseActivity
 
-        public override string DisplayName { get; set; }
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
@@ -220,6 +219,15 @@ namespace Dev2.Activities.RabbitMQ.Consume
             }
         }
 
+        #region Overrides of DsfBaseActivity
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> {Response,Result};
+        }
+
+        #endregion
+
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             if (env == null)
@@ -234,7 +242,6 @@ namespace Dev2.Activities.RabbitMQ.Consume
             return _debugInputs;
         }
 
-        #region Overrides of DsfBaseActivity
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
@@ -250,7 +257,6 @@ namespace Dev2.Activities.RabbitMQ.Consume
             return _debugOutputs;
         }
 
-        #endregion Overrides of DsfBaseActivity
 
         protected override void AssignResult(IDSFDataObject dataObject, int update)
         {
@@ -272,6 +278,5 @@ namespace Dev2.Activities.RabbitMQ.Consume
            
         }
 
-        #endregion Overrides of DsfBaseActivity
     }
 }

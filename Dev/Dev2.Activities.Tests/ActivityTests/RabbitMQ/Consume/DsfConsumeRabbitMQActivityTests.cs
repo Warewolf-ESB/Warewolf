@@ -42,6 +42,29 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
         [TestMethod]
         [Owner("Mthembu Sanele")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
+        public void DsfConsumeRabbitMQActivity_Constructor_ResourceCatalog_Should_SetsDefaultPropertyValues()
+        {
+            //------------Setup for test--------------------------
+            var resourceCatalog = new Mock<IResourceCatalog>().Object;
+            //------------Execute Test---------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(resourceCatalog)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null
+            };
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfConsumeRabbitMQActivity);
+            Assert.AreEqual("RabbitMQ Consume", dsfConsumeRabbitMQActivity.DisplayName);
+            Assert.IsTrue(string.IsNullOrEmpty(dsfConsumeRabbitMQActivity.QueueName));
+            Assert.AreEqual(Guid.Empty, dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId);
+            Assert.IsNull(dsfConsumeRabbitMQActivity.Prefetch);
+            Assert.AreEqual(resourceCatalog,dsfConsumeRabbitMQActivity.ResourceCatalog);
+        }
+
+        [TestMethod]
+        [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_NoSource_Should_Return_NullSourceException()
         {
@@ -386,8 +409,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out actualRecset, out error);
             Assert.AreEqual(2,actualRecset.Count);
         }
-
-
+        
         [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
@@ -424,6 +446,26 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
             //------------Assert Results-------------------------            
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfConsumeRabbitMQActivity_GetOutputs")]
+        public void DsfConsumeRabbitMQActivity_GetOutputs_ShouldIncludeResponse()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity
+            {
+                Result = "[[res]]",
+                Response = "[[data]]"
+            };
+            //------------Execute Test---------------------------
+            var outputs = dsfConsumeRabbitMQActivity.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(outputs);
+            Assert.AreEqual(2,outputs.Count);
+            Assert.AreEqual("[[data]]",outputs[0]);
+            Assert.AreEqual("[[res]]",outputs[1]);
         }
     }
 }
