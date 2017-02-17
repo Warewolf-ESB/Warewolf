@@ -43,9 +43,16 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
         bool _getDependsOnOther;
         string _nestingLevel;
         public Guid EnvironmentId { get; set; }
-        readonly IServer _server;
-        IPopupController _popupController;
+        private readonly IServer _server;
+        private readonly IPopupController _popupController;
+        private readonly IDependencyGraphGenerator _graphGenerator;
 
+        public DependencyVisualiserViewModel(IDependencyGraphGenerator generator, IEventAggregator aggregator, IServer server)
+            : this(aggregator)
+        {
+            _graphGenerator = generator;
+            _server = server;
+        }
         public DependencyVisualiserViewModel(IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
@@ -168,7 +175,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
         public override string DisplayName => string.Format(GetDependsOnMe ? "Dependency - {0}" : "{0}*Dependencies", ResourceModel.ResourceName);
 
         // NOTE: This method is invoked from DependencyVisualiser.xaml
-        async void BuildGraphs()
+        private async void BuildGraphs()
         {
             var repo = ResourceModel.Environment.ResourceRepository;
             var graphData = await repo.GetDependenciesXmlAsync(ResourceModel, GetDependsOnMe);
@@ -178,13 +185,13 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "GetDependenciesXml"));
             }
 
-            int nestingLevel = int.Parse(NestingLevel);
-            var graphGenerator = new DependencyGraphGenerator();
+            int nestingLevel = int.Parse(NestingLevel ?? "0");
+            var graphGenerator = _graphGenerator ?? new DependencyGraphGenerator();
             var graph = graphGenerator.BuildGraph(graphData.Message, ResourceModel.ResourceName, AvailableWidth, AvailableHeight, nestingLevel);
 
             if (graph.Nodes.Count > 0)
             {
-                List<Guid> seenResource = new List<Guid>();
+                var seenResource = new List<Guid>();
                 var acc = new List<ExplorerItemNodeViewModel>();
                 GetItems(new List<Node> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
                 if (acc.Count == 0 || acc.LastOrDefault() == null)
@@ -197,6 +204,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 }
             }
         }
+
 
         public string FavoritesLabel => "Show what depends on " + ResourceModel.ResourceName;
 
@@ -223,12 +231,13 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             {
                 if (!seenResource.Contains(Guid.Parse(node.ID)))
                 {
-                    var env = CustomContainer.Get<IMainViewModel>()
+                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var env = mainViewModel?
                         .ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId == ResourceModel.Environment.ID);
-                    var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId== Guid.Parse(node.ID));
+                    var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == Guid.Parse(node.ID));
                     if (exploreritem != null)
                     {
-                        ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent,_popupController)
+                        ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent, _popupController)
                         {
                             ResourceName = exploreritem.ResourceName,
                             TextVisibility = true,
