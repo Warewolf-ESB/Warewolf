@@ -74,16 +74,13 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="JsonResource.cs" />
     <None Include="..\TestScripts\**\*.*">
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MapperTests.cs" />
-    <Compile Include="RecursiveJoinExtensionsTests.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
-    <EmbeddedResource Include="Json\FlatStates.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
@@ -93,10 +90,6 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
       <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
-      <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
-      <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
