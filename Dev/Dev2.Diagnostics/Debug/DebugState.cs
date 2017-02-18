@@ -42,7 +42,7 @@ namespace Dev2.Diagnostics.Debug
         string _server;
         Guid _environmentID;
         Guid _disconnectedID;
-        private Guid _parentID;
+        private Guid? _parentID;
         private Guid _id;
 
         #region Ctor
@@ -95,7 +95,7 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the parent ID.
         /// </summary>
-        public Guid ParentID
+        public Guid? ParentID
         {
             get { return _parentID; }
             set { _parentID = value; }
@@ -365,7 +365,7 @@ namespace Dev2.Diagnostics.Debug
         {
             writer.Write(WorkspaceID);
             writer.Write(ID);
-            writer.Write(ParentID);
+            writer.Write(ParentID.GetValueOrDefault());
             writer.Write((int)StateType);
             writer.Write(DisplayName);
             writer.Write(Name);
