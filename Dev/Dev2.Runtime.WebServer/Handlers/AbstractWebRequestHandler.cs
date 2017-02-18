@@ -23,7 +23,6 @@ using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Decision;
@@ -384,21 +383,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
-                var remoteDebugItems = fetchDebugItems?.ToArray();
-                var debugStates = DebugStateTreeBuilder.BuildTree(remoteDebugItems);
-                //var recursiveJoin = remoteDebugItems.RecursiveJoin(state => state.ID.ToString(), state => state.ParentID.ToString(),
-                //    (IDebugState state, IEnumerable<IDebugState> children) =>
-                //    {
-                //        var debugState = new DebugState();
-                //        Mapper.AddMap<DebugState, DebugState>();
-                //        Mapper.Map(state, debugState);
-                //        //debugState.Children = state.Children;
-                //        return debugState;
-                //    });
-
-
-                //var debugs = DebugStateTreeBuilder.BuildTree(debugStates).ToList();
-                var serialize = serializer.Serialize(debugStates);
+                var remoteDebugItems = fetchDebugItems?.ToList();
+                var debugs = DebugStateTreeBuilder.BuildTree(remoteDebugItems).ToList();
+                var serialize = serializer.Serialize(debugs);
                 return new StringResponseWriter(serialize, formatter.ContentType);
             }
 
