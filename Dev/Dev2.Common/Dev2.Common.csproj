@@ -168,6 +168,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="PropertyApi.cs" />
     <Compile Include="RecordSetSearchPayload.cs" />
+    <Compile Include="RecursiveJoinExtensions.cs" />
     <Compile Include="SaveResult.cs" />
     <Compile Include="ServiceNotAuthorizedException.cs" />
     <Compile Include="SharepointSourceTo.cs" />
