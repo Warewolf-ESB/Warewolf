@@ -234,6 +234,7 @@
     <Compile Include="Hosting\TestCatalogTests.cs" />
     <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
+    <Compile Include="JsonResource.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="Plugins\ServiceConstructorListTests.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />

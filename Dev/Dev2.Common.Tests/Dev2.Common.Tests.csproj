@@ -74,6 +74,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="JsonResource.cs" />
     <None Include="..\TestScripts\**\*.*">
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
@@ -81,7 +82,6 @@
     </None>
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MapperTests.cs" />
-    <Compile Include="RecursiveJoinExtensionsTests.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
     <EmbeddedResource Include="Json\FlatStates.json" />
   </ItemGroup>
