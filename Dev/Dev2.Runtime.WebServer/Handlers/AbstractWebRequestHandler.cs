@@ -386,18 +386,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
                 var remoteDebugItems = fetchDebugItems?.ToArray();
                 var debugStates = DebugStateTreeBuilder.BuildTree(remoteDebugItems);
-                //var recursiveJoin = remoteDebugItems.RecursiveJoin(state => state.ID.ToString(), state => state.ParentID.ToString(),
-                //    (IDebugState state, IEnumerable<IDebugState> children) =>
-                //    {
-                //        var debugState = new DebugState();
-                //        Mapper.AddMap<DebugState, DebugState>();
-                //        Mapper.Map(state, debugState);
-                //        //debugState.Children = state.Children;
-                //        return debugState;
-                //    });
-
-
-                //var debugs = DebugStateTreeBuilder.BuildTree(debugStates).ToList();
                 var serialize = serializer.Serialize(debugStates);
                 return new StringResponseWriter(serialize, formatter.ContentType);
             }
