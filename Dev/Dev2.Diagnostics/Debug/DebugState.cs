@@ -52,6 +52,7 @@ namespace Dev2.Diagnostics.Debug
             Inputs = new List<IDebugItem>();
             Outputs = new List<IDebugItem>();
             AssertResultList = new List<IDebugItem>();
+            Children = new List<IDebugState>();
             DisconnectedID = Guid.NewGuid();
 
             IsDurationVisible = true;
