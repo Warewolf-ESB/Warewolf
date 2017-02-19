@@ -3313,6 +3313,19 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
 
+        [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" and Queue Name '(.*)' into ""(.*)""")]
+        public void GivenContainsRabbitMQConsumeAndQueueNameInto(string parentName, string activityName, string queueName, string resultVariable)
+        {
+            var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
+                Result = resultVariable,
+                QueueName = queueName,
+                DisplayName = activityName
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
+        }
+
         [Given(@"""(.*)"" contains an Read File ""(.*)"" as")]
         public void GivenContainsAnReadFileAs(string parentName, string activityName, Table table)
         {
