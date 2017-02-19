@@ -268,7 +268,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             base.GetDebugOutputs(dataList, update);
 
-            if (dataList == null)
+            if (dataList == null || string.IsNullOrEmpty(Response))
                 return new List<DebugItem>();
 
             DebugItem debugItem = new DebugItem();
