@@ -167,11 +167,13 @@ namespace Dev2.Runtime.ESB.Control
 
             var principle = Thread.CurrentPrincipal;
             Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
-
+            var oldStartTime = dataObject.StartTime;
+            dataObject.StartTime = DateTime.Now;
             if (dataObject.RunWorkflowAsync)
             {
 
                 ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors, update);
+                dataObject.StartTime = oldStartTime;
                 errors.MergeErrors(invokeErrors);
             }
             else
@@ -181,7 +183,7 @@ namespace Dev2.Runtime.ESB.Control
                     if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
                     {
                         errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
-
+                        dataObject.StartTime = oldStartTime;
                         return null;
                     }
                 }
@@ -205,11 +207,13 @@ namespace Dev2.Runtime.ESB.Control
                         string errorString = dataObject.Environment.FetchErrors();
                         invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                         errors.MergeErrors(invokeErrors);
+                        dataObject.StartTime = oldStartTime;
                         return env;
                     }
                     errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
                 }
             }
+            dataObject.StartTime = oldStartTime;
             return new ExecutionEnvironment();
         }
 
