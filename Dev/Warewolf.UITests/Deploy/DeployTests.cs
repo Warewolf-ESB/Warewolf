@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 
 namespace Warewolf.UITests
@@ -38,10 +39,10 @@ namespace Warewolf.UITests
         [TestCategory("Deploy")]
         public void Deploy_Connect_And_Disconnect_Destination()
         {
-            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Deploy tab destination server did not connect after clicking connect button.");
-            UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
+            DeployUIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Deploy tab Destin server did not change to localhost(Connected) after clicking disconnect button.");
         }
 
@@ -49,12 +50,12 @@ namespace Warewolf.UITests
         [TestCategory("Deploy")]
         public void Deploy_Connect_And_Disconnect_Source()
         {
-            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-            UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
             Assert.AreEqual("Remote Connection Integration (Connected)", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Source Combobox text  is: " + UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText);
-            UIMap.Click_Deploy_Tab_Source_Refresh_Button();
-            UIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
-            UIMap.Click_Deploy_Tab_Source_Refresh_Button();
+            DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
+            DeployUIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
+            DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Deploy tab Source server did not change to localhost(Connected) after clicking disconnect button.");
         }
 
@@ -62,9 +63,9 @@ namespace Warewolf.UITests
         [TestCategory("Deploy")]
         public void Deploy_Hello_World()
         {
-            UIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
-            UIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
-            UIMap.Deploy_Service_From_Deploy_View("Hello World");
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            DeployUIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
+            DeployUIMap.Deploy_Service_From_Deploy_View("Hello World");
             UIMap.Click_Close_Deploy_Tab_Button();
             DialogsUIMap.ClickDeployVersionConflictsMessageBoxOK();
             DialogsUIMap.ClickDeployConflictsMessageBoxOK();
@@ -76,11 +77,11 @@ namespace Warewolf.UITests
         public void Deploy_DotnetWorkFlowForTesttingSelectAllDependencies_HasSourceSelected()
         {
             const string Source = "DotnetWorkflowForTesting";
-            UIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter(Source);
-            UIMap.Select_Deploy_First_Source_Item();
+            DeployUIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter(Source);
+            DeployUIMap.Select_Deploy_First_Source_Item();
             var displayText = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText;
             Assert.AreEqual("1", displayText);
-            UIMap.Click_SelectAllDependencies_Button();
+            DeployUIMap.Click_SelectAllDependencies_Button();
             Playback.Wait(10);
             displayText = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText;
             Assert.AreEqual("2", displayText);
@@ -125,6 +126,21 @@ namespace Warewolf.UITests
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        DeployUIMap DeployUIMap
+        {
+            get
+            {
+                if (_DeployUIMap == null)
+                {
+                    _DeployUIMap = new DeployUIMap();
+                }
+
+                return _DeployUIMap;
+            }
+        }
+
+        private DeployUIMap _DeployUIMap;
 
         #endregion
     }

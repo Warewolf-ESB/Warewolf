@@ -67,6 +67,12 @@
     <Compile Include="Common\Common.cs" />
     <Compile Include="ComPluginSource\ComPluginSourceTests.cs" />
     <Compile Include="DebugOutputTests\DebugOutputWindowTests.cs" />
+    <Compile Include="Deploy\DeployUIMap.cs">
+      <DependentUpon>DeployUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Deploy\DeployUIMap.Designer.cs">
+      <DependentUpon>DeployUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="DotNetPluginSource\DotNetPluginSourceTests.cs" />
     <Compile Include="DropboxSource\DropboxSourceTests.cs" />
     <Compile Include="DependencyGraph\ShowDependencyTets.cs" />
@@ -82,7 +88,19 @@
     <Compile Include="MySQLSource\MySQLSourceTests.cs" />
     <Compile Include="Explorer\Duplicate.cs" />
     <Compile Include="RabbitMQSource\RabbitMQSourceTests.cs" />
+    <Compile Include="Scheduler\SchedulerUIMap.cs">
+      <DependentUpon>SchedulerUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Scheduler\SchedulerUIMap.Designer.cs">
+      <DependentUpon>SchedulerUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="ServerSource\ServerSourceTests.cs" />
+    <Compile Include="Settings\SettingsUIMap.cs">
+      <DependentUpon>SettingsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SettingsUIMap.Designer.cs">
+      <DependentUpon>SettingsUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="SharepointSource\SharepointSourceTests.cs" />
     <Compile Include="Shortcut Keys\Shortcut Keys.cs" />
     <Compile Include="SQLServerSource\SQLServerSourceTests.cs" />
@@ -228,10 +246,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
+    <None Include="Deploy\DeployUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Explorer\ExplorerUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Scheduler\SchedulerUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Settings\SettingsUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Tools\ToolsUIMap.uitest" />
     <None Include="DialogsUIMap.uitest">
       <SubType>Designer</SubType>

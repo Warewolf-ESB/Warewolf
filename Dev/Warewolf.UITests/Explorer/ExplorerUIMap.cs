@@ -15,6 +15,7 @@ using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Settings.SettingsUIMapClasses;
 
 namespace Warewolf.UITests.ExplorerUIMapClasses
 {
@@ -80,6 +81,21 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
 
         [When(@"I Drag Explorer First Item Onto The Second Item")]
         public void Drag_Explorer_First_Item_Onto_The_Second_Item()
@@ -528,11 +544,11 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             var deleteFirstResourceButton = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
             if (deleteFirstResourceButton.Enabled)
             {
-                var isViewChecked = UIMap.FindViewPermissionsCheckbox(
+                var isViewChecked = SettingsUIMap.FindViewPermissionsCheckbox(
                     UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
                         .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
 
-                var isExecuteChecked = UIMap.FindExecutePermissionsCheckbox(
+                var isExecuteChecked = SettingsUIMap.FindExecutePermissionsCheckbox(
                     UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
                         .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
 
@@ -542,7 +558,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
                     return;
                 }
             }
-            UIMap.Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
+            SettingsUIMap.Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
             UIMap.Click_Close_Settings_Tab_Button();
         }
 

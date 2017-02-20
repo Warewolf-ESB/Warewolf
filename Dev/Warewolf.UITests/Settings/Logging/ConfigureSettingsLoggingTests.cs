@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests
@@ -26,9 +27,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ViewCell.ViewCheckBox.Checked, "View checkbox is Unchecked");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.WarewolfAdminROW.ContributeCell.ContributeCheckBox.Checked, "Contribute checkbox is Unchecked");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Exists, "Public row does not exist");
-            UIMap.Select_LoggingTab();
-            UIMap.Click_Server_Log_File_Button();
-            UIMap.Click_Studio_Log_File();
+            SettingsUIMap.Select_LoggingTab();
+            SettingsUIMap.Click_Server_Log_File_Button();
+            SettingsUIMap.Click_Studio_Log_File();
         }
 
         #region Additional test attributes
@@ -55,20 +56,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        SettingsUIMap SettingsUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_SettingsUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _SettingsUIMap = new SettingsUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _SettingsUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private SettingsUIMap _SettingsUIMap;
 
         #endregion
     }
