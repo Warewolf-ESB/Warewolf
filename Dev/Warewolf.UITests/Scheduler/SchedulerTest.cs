@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Scheduler.SchedulerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Scheduler
@@ -15,7 +16,7 @@ namespace Warewolf.UITests.Scheduler
         {
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.Exists, "SchedulerNewTask Tab does not exist.");
             //Assert NewScheduleTask Controls
-            UIMap.Create_Scheduler_Using_Shortcut();
+            SchedulerUIMap.Create_Scheduler_Using_Shortcut();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EditTriggerButton.Exists, "EditTrigger Button does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.NameTextbox.Exists, "Name Textbox does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.EnabledRadioButton.Exists, "Enabled RadioButton does not exist.");
@@ -28,20 +29,20 @@ namespace Warewolf.UITests.Scheduler
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Exists, "Password Textbox does not exist.");
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.HistoryTable.Exists, "History Table does not exist.");
             //Create Hello World Schedule Task
-            UIMap.Click_Scheduler_ResourcePickerButton();
+            SchedulerUIMap.Click_Scheduler_ResourcePickerButton();
             Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Exists, "Service Picker Window does not exist.");
             DialogsUIMap.Filter_ServicePicker_Explorer("GenericResource");
             DialogsUIMap.Click_Service_Picker_Dialog_First_Service_In_Explorer();
             DialogsUIMap.Click_Service_Picker_Dialog_OK();
             Assert.AreEqual("GenericResource", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.NameTextbox.Text);
-            UIMap.Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab();
+            SchedulerUIMap.Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab();
             UIMap.Click_Save_RibbonButton();
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.Exists, "Generic Resource schedule did not save.");
-            UIMap.Click_HelloWorldSchedule_EnableOrDisableCheckbox();
-            UIMap.Click_HelloWorldSchedule_EraseSchedulerButton();
+            SchedulerUIMap.Click_HelloWorldSchedule_EnableOrDisableCheckbox();
+            SchedulerUIMap.Click_HelloWorldSchedule_EraseSchedulerButton();
             DialogsUIMap.Click_MessageBox_Yes();
             Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.Exists, "Generic Resource schedule did not delete.");
-            UIMap.Click_SchedulerTab_CloseButton();
+            SchedulerUIMap.Click_SchedulerTab_CloseButton();
         }
 
         #region Additional test attributes
@@ -83,6 +84,21 @@ namespace Warewolf.UITests.Scheduler
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        SchedulerUIMap SchedulerUIMap
+        {
+            get
+            {
+                if (_SchedulerUIMap == null)
+                {
+                    _SchedulerUIMap = new SchedulerUIMap();
+                }
+
+                return _SchedulerUIMap;
+            }
+        }
+
+        private SchedulerUIMap _SchedulerUIMap;
 
         #endregion
     }

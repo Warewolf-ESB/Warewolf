@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
@@ -48,7 +49,7 @@ namespace Warewolf.UITests.Workflow
             UIMap.Open_Deploy_Using_Shortcut();
             UIMap.WaitForControlEnabled(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy Tab does not exist.");
-            UIMap.Filter_Deploy_Source_Explorer(HelloWorld);
+            DeployUIMap.Filter_Deploy_Source_Explorer(HelloWorld);
             Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
         }
 
@@ -142,6 +143,21 @@ namespace Warewolf.UITests.Workflow
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        DeployUIMap DeployUIMap
+        {
+            get
+            {
+                if (_DeployUIMap == null)
+                {
+                    _DeployUIMap = new DeployUIMap();
+                }
+
+                return _DeployUIMap;
+            }
+        }
+
+        private DeployUIMap _DeployUIMap;
 
         #endregion
     }

@@ -2074,12 +2074,6 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
             UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text = "100";
         }
 
-        [When(@"I Enter Public As Windows Group")]
-        public void Enter_Public_As_Windows_Group()
-        {
-            UIMap.FindWindowsGroupTextbox(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text = "Public";
-        }
-
         [When(@"I Enter Sharepoint Server Path From OnCopyFile Tool")]
         public void Enter_Sharepoint_Server_Path_From_OnCopyFile_Tool()
         {

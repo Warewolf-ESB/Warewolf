@@ -16,6 +16,7 @@ using Warewolf.UITests.Common;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Deploy.DeployUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -81,6 +82,21 @@ namespace Warewolf.UITests
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        DeployUIMap DeployUIMap
+        {
+            get
+            {
+                if (_DeployUIMap == null)
+                {
+                    _DeployUIMap = new DeployUIMap();
+                }
+
+                return _DeployUIMap;
+            }
+        }
+
+        private DeployUIMap _DeployUIMap;
 
         const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
@@ -178,54 +194,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text == string.Empty, "Toolbox filter textbox text value of " + MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text + " is not empty after clicking clear filter button.");
         }
 
-        public UITestControl FindAddResourceButton(UITestControl row)
-        {
-            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(0);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
-        }
-
-        public WpfText FindSelectedResourceText(UITestControl row)
-        {
-            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(0);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Text) as WpfText;
-        }
-
-        public UITestControl FindAddWindowsGroupButton(UITestControl row)
-        {
-            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(1);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
-        }
-
-        public WpfEdit FindWindowsGroupTextbox(UITestControl row)
-        {
-            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(1);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Edit) as WpfEdit;
-        }
-
-        public WpfCheckBox FindViewPermissionsCheckbox(UITestControl row)
-        {
-            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(2);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
-        }
-
-        public WpfCheckBox FindExecutePermissionsCheckbox(UITestControl row)
-        {
-            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(3);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
-        }
-
-        public WpfCheckBox FindContributePermissionsCheckbox(UITestControl row)
-        {
-            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(4);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
-        }
-
-        public UITestControl FindAddRemoveRowButton(UITestControl row)
-        {
-            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(5);
-            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Button);
-        }
-
         public void Close_And_Lock_Side_Menu_Bar()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.LockMenuButton);
@@ -299,103 +267,6 @@ namespace Warewolf.UITests
                 MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text = text;
             }
             Assert.AreEqual(text, MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.InputValueCell.InputValueComboboxl.InputValueText.Text, "Debug input data row1 textbox text is not equal to \'" + text + "\' after typing that in.");
-        }
-
-        [Given(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
-        [When(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
-        [Then(@"I Set Resource Permissions For ""(.*)"" to Group ""(.*)"" and Permissions for View to ""(.*)"" and Contribute to ""(.*)"" and Execute to ""(.*)""")]
-        public void SetResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
-        {
-            Click_Settings_RibbonButton();
-            Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
-            DialogsUIMap.Select_SubItem_Service_From_Service_Picker_Dialog(ResourceName);
-            Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
-            if (setView)
-            {
-                Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox();
-            }
-            if (setExecute)
-            {
-                Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox();
-            }
-            if (setContribute)
-            {
-                Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox();
-            }
-            Click_Save_Ribbon_Button_With_No_Save_Dialog();
-        }
-
-        public void Set_FirstResource_ResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
-        {            
-            Click_Settings_Resource_Permissions_Row1_Add_Resource_Button();
-            DialogsUIMap.Select_First_Service_From_Service_Picker_Dialog(ResourceName);
-            Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(WindowsGroupName);
-            if (setView)
-            {
-                Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox();
-            }
-            if (setExecute)
-            {
-                Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox();
-            }
-            if (setContribute)
-            {
-                Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox();
-            }
-            Click_Save_Ribbon_Button_With_No_Save_Dialog();
-        }
-
-        [Given(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
-        [When(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
-        [Then(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
-        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress)
-        {
-            CreateRemoteServerSource(ServerSourceName, ServerAddress, false);
-        }
-
-        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
-        {
-            Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext
-                .NewServerSource.AddressComboBox.AddressEditBox.Text = ServerAddress;
-            if (ServerAddress == "tst-ci-")
-            {
-                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.TSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list after starting by typing tst-ci-.");
-                ToolsUIMap.Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist();
-            }
-            if (PublicAuth)
-            {
-                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
-            }
-            Click_Server_Source_Wizard_Test_Connection_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ErrorText.Spinner);
-            Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
-            Click_Close_Server_Source_Wizard_Tab_Button();
-        }
-
-        [When(@"I Select ""(.*)"" from the source tab")]
-        [Then(@"I Select ""(.*)"" from the source tab")]
-        [Given(@"I Select ""(.*)"" from the source tab")]
-        public void WhenISelectFromTheSourceTab(string ServiceName)
-        {
-            Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
-            Select_Deploy_First_Source_Item();
-        }
-
-        [When(@"I filter for ""(.*)"" on the source filter")]
-        [Then(@"I filter for ""(.*)"" on the source filter")]
-        [Given(@"I filter for ""(.*)"" on the source filter")]
-        public void WhenIFilterForOnTheSourceFilter(string ServiceName)
-        {
-            Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
-        }
-
-        [Then(@"I Click Deploy button")]
-        [Given(@"I Click Deploy button")]
-        [When(@"I Click Deploy button")]
-        public void ThenIClickDeployButton()
-        {
-            Click_Deploy_Tab_Deploy_Button();
         }
         
         public void CreateAndSave_Dice_Workflow(string WorkflowName)
@@ -569,14 +440,6 @@ namespace Warewolf.UITests
         public void Click_WindowsButton_On_SharepointSource()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Selected = true;
-        }
-
-        [Given("Dice Is Selected InSettings Tab Permissions Row 1")]
-        [When(@"I Assert Dice Is Selected InSettings Tab Permissions Row1")]
-        [Then("Dice Is Selected InSettings Tab Permissions Row 1")]
-        public void Assert_Dice_Is_Selected_InSettings_Tab_Permissions_Row_1()
-        {
-            Assert.AreEqual("Dice1", FindSelectedResourceText(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
 
         public void Enter_Dice_Roll_Values()
@@ -1029,52 +892,41 @@ namespace Warewolf.UITests
             Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused, new Point(30, 4));
         }
 
-        #region Scheduler\Scheduler.uitest
-
-        public void Create_Scheduler_Using_Shortcut()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList, new Point(151, 13));
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList, "N", ModifierKeys.Control);
-        }
-
-        [When(@"I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab")]
-        public void Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = @"Warewolf Administrators\IntegrationTester";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "I73573r0";
-        }
-
-        [When(@"I Click Scheduler Create New Task Button")]
-        public void Click_Scheduler_NewTaskButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.ScheduleNewTaskListItem.SchedulerNewTaskButton, new Point(151, 13));
-        }
-
-        public void Click_SchedulerTab_CloseButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.CloseButton);
-        }
-
-        [When(@"I Click Hello World Erase Schedule Button")]
-        public void Click_HelloWorldSchedule_EraseSchedulerButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton, new Point(6, 16));
-        }
-
-        [When(@"I Click Scheduler Enable Disable Checkbox Button")]
-        public void Click_HelloWorldSchedule_EnableOrDisableCheckbox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EnableOrDisableCheckBox);
-        }
-
-        [When(@"I Click Scheduler ResourcePicker Button")]
-        public void Click_Scheduler_ResourcePickerButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.ResourcePickerButton, new Point(14, 13));
-        }
-
-        #endregion
         #region SourceWizards.uitest
+
+        [When(@"I Click Sharepoint Server Source TestConnection")]
+        public void Click_Sharepoint_Server_Source_TestConnection()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton, new Point(58, 16));
+        }
+
+        [Given(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
+        [When(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
+        [Then(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
+        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress)
+        {
+            CreateRemoteServerSource(ServerSourceName, ServerAddress, false);
+        }
+
+        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
+        {
+            Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext
+                .NewServerSource.AddressComboBox.AddressEditBox.Text = ServerAddress;
+            if (ServerAddress == "tst-ci-")
+            {
+                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.TSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list after starting by typing tst-ci-.");
+                ToolsUIMap.Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist();
+            }
+            if (PublicAuth)
+            {
+                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
+            }
+            Click_Server_Source_Wizard_Test_Connection_Button();
+            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ErrorText.Spinner);
+            Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
+            Click_Close_Server_Source_Wizard_Tab_Button();
+        }
 
         public void Enter_TextIntoOAuthKey_On_OAuthSourceTab()
         {
@@ -1433,604 +1285,6 @@ namespace Warewolf.UITests
         }
 
         #endregion
-        #region Settings\Settings.uitest
-
-        [When(@"I Select SecurityTab")]
-        public void Select_SecurityTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab, new Point(102, 10));
-        }
-
-        [When(@"I Select PerfomanceCounterTab")]
-        public void Select_PerfomanceCounterTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab, new Point(124, 14));
-        }
-
-        [When(@"I Select LoggingTab")]
-        public void Select_LoggingTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab, new Point(57, 7));
-        }
-
-        public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
-        {
-            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-            Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
-        }
-
-        [When(@"I Click Select Resource Button From Resource Permissions")]
-        public void Click_Select_Resource_Button_From_Resource_Permissions()
-        {
-            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1), new Point(13, 16));
-            Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Exists, "Service window does not exist after clicking SelectResource button");
-        }
-
-        [When(@"I Click Reset Perfomance Counter")]
-        public void Click_Reset_Perfomance_Counter()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResetCounter.ItemHyperlink, new Point(49, 9));
-            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "MessageBoxWindow did not show after clicking reset counters");
-            Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton, new Point(50, 12));
-        }
-
-        [When(@"I Click Select Resource Button")]
-        public void Click_Select_ResourceButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceButton, new Point(9, 8));
-        }
-
-        [Given(@"I Check Public Administrator")]
-        [When(@"I Check Public Administrator")]
-        [Then(@"I Check Public Administrator")]
-        public void Check_Public_Administrator()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public Deploy To")]
-        [When(@"I Check Public Deploy To")]
-        [Then(@"I Check Public Deploy To")]
-        public void Check_Public_Deploy_To()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public Deploy From")]
-        [When(@"I Check Public Deploy From")]
-        [Then(@"I Check Public Deploy From")]
-        public void Check_Public_Deploy_From()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public View")]
-        [When(@"I Check Public View")]
-        [Then(@"I Check Public View")]
-        public void Check_Public_View()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public Execute")]
-        [When(@"I Check Public Execute")]
-        [Then(@"I Check Public Execute")]
-        public void Check_Public_Execute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked = true;
-        }
-
-        [Given(@"I Check Public Contribute")]
-        [When(@"I Check Public Contribute")]
-        [Then(@"I Check Public Contribute")]
-        public void Check_Public_Contribute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = true;
-        }
-
-        [Given(@"I Uncheck Public Administrator")]
-        [When(@"I Uncheck Public Administrator")]
-        [Then(@"I Uncheck Public Administrator")]
-        public void Uncheck_Public_Administrator()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public Deploy To")]
-        [When(@"I Uncheck Public Deploy To")]
-        [Then(@"I Uncheck Public Deploy To")]
-        public void Uncheck_Public_Deploy_To()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public Deploy From")]
-        [When(@"I Uncheck Public Deploy From")]
-        [Then(@"I Uncheck Public Deploy From")]
-        public void Uncheck_Public_Deploy_From()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public View")]
-        [When(@"I Uncheck Public View")]
-        [Then(@"I Uncheck Public View")]
-        public void Uncheck_Public_View()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public Execute")]
-        [When(@"I Uncheck Public Execute")]
-        [Then(@"I Uncheck Public Execute")]
-        public void Uncheck_Public_Execute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked = false;
-        }
-
-        [Given(@"I Uncheck Public Contribute")]
-        [When(@"I Uncheck Public Contribute")]
-        [Then(@"I Uncheck Public Contribute")]
-        public void Uncheck_Public_Contribute()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked = false;
-        }
-
-        [When(@"I UnCheck Public Administrator")]
-        public void UnCheck_Public_Administrator()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked = false;
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked, "Public View checkbox is unchecked after unChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked, "Public Execute checkbox unchecked after unChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked, "Public Contribute checkbox is unchecked after unChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployFromCell.Public_DeployFromCheckBox.Checked, "Public DeplotFrom checkbox is unchecked after unChecking Administrator.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_DeployToCell.Public_DeployToCheckBox.Checked, "Public DeployTo checkbox is unchecked after unChecking Administrator.");
-        }
-
-        [Given(@"I Check Resource Contribute")]
-        [When(@"I Check Resource Contribute")]
-        [Then(@"I Check Resource Contribute")]
-        public void Check_Resource_Contribute()
-        {
-            FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
-            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Resource View checkbox is NOT checked after Checking Contribute.");
-            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Resource Execute checkbox is NOT checked after Checking Contribute.");
-            Assert.IsTrue(FindAddRemoveRowButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Enabled, "Resource Delete button is disabled");
-        }
-
-        [Given(@"I UnCheck Public View")]
-        [When(@"I UnCheck Public View")]
-        [Then(@"I UnCheck Public View")]
-        public void UnCheck_Public_View()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked = false;
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ViewCell.Public_ViewCheckBox.Checked, "Public View checkbox is checked after Checking Contribute.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ExecuteCell.Public_ExecuteCheckBox.Checked, "Public Execute checkbox is NOT checked after Checking Contribute.");
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_ContributeCell.Public_ContributeCheckBox.Checked, "Public Contribute checkbox is checked after UnChecking Execute/View.");
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.PublicROW.Public_AdministratorCell.Public_AdministratorCheckBox.Checked, "Public Administrator checkbox is checked after UnChecking Contribute.");
-        }
-
-        [Given(@"I setup Public Permissions for ""(.*)"" for localhost")]
-        public void SetupPublicPermissionsForForLocalhost(string resource)
-        {
-            Click_Settings_RibbonButton();
-            var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
-            if (deleteFirstResourceButton.Enabled)
-            {
-                var isViewChecked = FindViewPermissionsCheckbox(
-                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
-                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
-
-                var isExecuteChecked = FindExecutePermissionsCheckbox(
-                    MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
-                        .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
-
-                if (isViewChecked && isExecuteChecked)
-                {
-                    Click_Close_Settings_Tab_Button();
-                    return;
-                }
-            }
-            Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
-            Click_Close_Settings_Tab_Button();
-        }
-
-        public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
-        {
-            FindWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text = GroupName;
-            Assert.AreEqual(FindWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text, GroupName, "Settings security tab resource permissions row 1 windows group textbox text does not equal Public.");
-        }
-
-        public void Click_Settings_Security_Tab_ResourcePermissions_Row1_Execute_Checkbox()
-        {
-            FindExecutePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
-            Assert.IsTrue(FindExecutePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings security tab resource permissions row 1 execute checkbox is not checked.");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
-        }
-
-        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_View_Checkbox()
-        {
-            FindViewPermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
-            Assert.IsTrue(FindViewPermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings resource permissions row1 view checkbox is not checked.");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
-        }
-
-        public void Click_Settings_Security_Tab_Resource_Permissions_Row1_Contribute_Checkbox()
-        {
-            FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked = true;
-            Assert.IsTrue(FindContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked, "Settings resource permissions row1 view checkbox is not checked.");
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled");
-        }
-
-        public void Click_Settings_Resource_Permissions_Row1_Delete_Button()
-        {
-            Mouse.Click(FindAddRemoveRowButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
-        }
-
-        #endregion
-        #region Deploy\Deploy.uitest
-
-        [Given(@"I validate the Resource tree is loaded")]
-        [When(@"I validate the Resource tree is loaded")]
-        [Then(@"I validate the Resource tree is loaded")]
-        public void WhenIValidateTheResourceTreeIsLoaded()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.Exists);
-        }
-
-        [Given(@"I change Server Authentication type")]
-        [When(@"I change Server Authentication type")]
-        [Then(@"I change Server Authentication type")]
-        public void ChangeServerAuthenticationType()
-        {
-            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
-            var windowsRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
-            if (publicRadioButton.Selected)
-            {
-                windowsRadioButton.Selected = true;
-                Click_Server_Source_Wizard_Test_Connection_Button();
-                Click_Save_Ribbon_Button_With_No_Save_Dialog();
-                Playback.Wait(1000);
-                Click_Close_Server_Source_Wizard_Tab_Button();
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
-                Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(windowsRadioButton.Selected);
-            }
-            else
-            {
-                publicRadioButton.Selected = true;
-                Click_Server_Source_Wizard_Test_Connection_Button();
-                Click_Save_Ribbon_Button_With_No_Save_Dialog();
-                Playback.Wait(1000);
-                Click_Close_Server_Source_Wizard_Tab_Button();
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
-                Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
-                Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(publicRadioButton.Selected);
-            }
-        }
-
-        [Given(@"Destination Remote Server Is Connected")]
-        [Then(@"Destination Remote Server Is Connected")]
-        public void ThenDestinationRemoteServerIsConnected()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Remote Server is Disconnected");
-        }
-
-        [Then(@"The deploy validation message is ""(.*)""")]
-        [When(@"The deploy validation message is ""(.*)""")]
-        [Given(@"The deploy validation message is ""(.*)""")]
-        public void ThenTheDeployValidationMessageIs(string message)
-        {
-            Assert.AreEqual(message, MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButtonMessageText.DisplayText);
-        }
-
-        [Given(@"Deploy Window Is Still Open")]
-        [When(@"Deploy Window Is Still Open")]
-        [Then(@"Deploy Window Is Still Open")]
-        public void ThenDeployWindowIsStillOpen()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.Exists);
-        }
-
-        [Then(@"Destination Deploy Information Clears")]
-        public void ThenDestinationDeployInformationClears()
-        {
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.ShowDependenciesButton.Enabled);
-        }
-
-        public void Click_SelectAllDependencies_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.ShowDependenciesButton);
-        }
-
-        [Then(@"Deploy Button Is Enabled")]
-        public void ThenDeployButtonIsEnabled()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, "Deploy button is not enabled");
-        }
-
-        [Then(@"Filtered Resourse Is Checked For Deploy")]
-        public void ThenFilteredResourseIsCheckedForDeploy()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
-        }
-
-        [Given(@"I Click Edit Deploy Destination Server Button")]
-        [When(@"I Click Edit Deploy Destination Server Button")]
-        [Then(@"I Click Edit Deploy Destination Server Button")]
-        public void Click_Edit_Deploy_Destination_Server_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditDestinationButton);
-        }
-
-        [When(@"I Select localhost From Deploy Tab Destination Server Combobox")]
-        public void Select_localhost_From_Deploy_Tab_Destination_Server_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (Connected) option does not exist in Destination server combobox.");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(226, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedLocalhostText.Exists, "Selected destination server in deploy is not localhost (Connected).");
-        }
-
-        [When(@"I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox")]
-        [Then(@"I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox")]
-        [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox")]
-        public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
-        {
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration.");
-        }
-
-        [When(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
-        [Then(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
-        [Given(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
-        public void WhenISelectLocalhostConnectedFromDeployWizardTabSourceServerCombobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhost);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration.");
-        }
-
-
-        [When(@"I Select localhost From Deploy Tab Source Server Combobox")]
-        public void Select_localhost_From_Deploy_Tab_Source_Server_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (Connected) option does not exist in Destination server combobox.");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(226, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Selected source server in deploy is not localhost (Connected).");
-        }
-
-        [When(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Source Server Combobox")]
-        public void Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(226, 13));
-            Assert.AreEqual("Remote Connection Integration", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
-        }
-
-        [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
-        [When(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
-        [Then(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
-        public void Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(226, 13));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected destination server in deploy is not Remote Connection Integration.");
-        }
-
-        [When(@"I Select LocalhostConnected From Deploy Tab Destination Server Combobox")]
-        public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(226, 13));
-        }
-
-        [Given(@"I Enter ""(.*)"" Into Deploy Source Filter")]
-        [When(@"I Enter ""(.*)"" Into Deploy Source Filter")]
-        [Then(@"I Enter ""(.*)"" Into Deploy Source Filter")]
-        public void Enter_DeployViewOnly_Into_Deploy_Source_Filter(string SearchTextboxText)
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.SearchTextbox.Text = SearchTextboxText;
-            if (SearchTextboxText.ToLower() == "localhost".ToLower()) return;
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.Exists, "First deploy tab source explorer item does not exist after filter is applied.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Exists, "Deploy source server explorer tree first item checkbox does not exist.");
-        }
-
-        public void Filter_Deploy_Source_Explorer(string FilterText)
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.SearchTextbox.Text = FilterText;
-        }
-
-        [Given(@"I Click Deploy Tab Destination Server Combobox")]
-        [When(@"I Click Deploy Tab Destination Server Combobox")]
-        [Then(@"I Click Deploy Tab Destination Server Combobox")]
-        public void Click_Deploy_Tab_Destination_Server_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
-        }
-
-        [When(@"I Click Deploy Tab Destination Server Connect Button")]
-        [Given(@"I Click Deploy Tab Destination Server Connect Button")]
-        [Then(@"I Click Deploy Tab Destination Server Connect Button")]
-        public void Click_Deploy_Tab_Destination_Server_Connect_Button()
-        {
-            WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
-        }
-
-        [Given(@"I Click Deploy Tab Destination Server New Remote Server Item")]
-        [When(@"I Click Deploy Tab Destination Server New Remote Server Item")]
-        [Then(@"I Click Deploy Tab Destination Server New Remote Server Item")]
-        public void Click_Deploy_Tab_Destination_Server_New_Remote_Server_Item()
-        {
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsNewRemoteServer, new Point(223, 10));
-        }
-
-        [When(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
-        [Then(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
-        [Given(@"I Click Deploy Tab Destination Server Remote Connection Intergration Item")]
-        public void Click_Deploy_Tab_Destination_Server_Remote_Connection_Intergration_Item()
-        {
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration, new Point(223, 10));
-        }
-
-        [Given(@"I Click Deploy Tab Source Server Combobox")]
-        [When(@"I Click Deploy Tab Source Server Combobox")]
-        [Then(@"I Click Deploy Tab Source Server Combobox")]
-        public void Click_Deploy_Tab_Source_Server_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Source server combobox.");
-        }
-
-        [Given(@"I Click Deploy Tab Source Server Connect Button")]
-        [When(@"I Click Deploy Tab Source Server Connect Button")]
-        [Then(@"I Click Deploy Tab Source Server Connect Button")]
-        public void Click_Deploy_Tab_Source_Server_Connect_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.ConnectSourceButton, new Point(13, 8));
-        }
-
-        [Given(@"I Click Deploy Tab Source Server Edit Button")]
-        [When(@"I Click Deploy Tab Source Server Edit Button")]
-        [Then(@"I Click Deploy Tab Source Server Edit Button")]
-        public void Click_Deploy_Tab_Source_Server_Edit_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton, new Point(13, 8));
-        }
-
-        [Given(@"I Click Deploy Tab Source Refresh Button")]
-        [When(@"I Click Deploy Tab Source Refresh Button")]
-        [Then(@"I Click Deploy Tab Source Refresh Button")]
-        public void Click_Deploy_Tab_Source_Refresh_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.RefreshButton);
-        }
-
-        [Given(@"I Click Deploy Tab WarewolfStore Item")]
-        [When(@"I Click Deploy Tab WarewolfStore Item")]
-        [Then(@"I Click Deploy Tab WarewolfStore Item")]
-        public void Click_Deploy_Tab_WarewolfStore_Item()
-        {
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsWarewolfStore, new Point(214, 9));
-        }
-
-        [Given(@"I Deploy ""(.*)"" From Deploy View")]
-        [When(@"I Deploy ""(.*)"" From Deploy View")]
-        [Then(@"I Deploy ""(.*)"" From Deploy View")]
-        public void Deploy_Service_From_Deploy_View(string ServiceName)
-        {
-            Enter_DeployViewOnly_Into_Deploy_Source_Filter(ServiceName);
-            Select_Deploy_First_Source_Item();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled,
-                "Deploy button is not enabled after valid server and resource are selected.");
-            Click_Deploy_Tab_Deploy_Button();
-        }
-
-        [When(@"Resources is visible on the tree")]
-        [Then(@"Resources is visible on the tree")]
-        public void WhenResourcesIsVisibleOnTheTree()
-        {
-            var controlExistsNow = ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem);
-            Assert.IsTrue(controlExistsNow);
-        }
-
-
-        [Then(@"Deploy Button is enabled  ""(.*)""")]
-        [When(@"Deploy Button is enabled  ""(.*)""")]
-        [Given(@"Deploy Button is enabled  ""(.*)""")]
-        public void ThenDeployButtonIsEnabled(string enabled)
-        {
-            var isEnabled = bool.Parse(enabled);
-            if (isEnabled)
-            {
-                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.WaitForControlEnabled();
-            }
-            Assert.AreEqual(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, isEnabled);
-        }
-
-        [Given(@"I Select localhost from the source tab")]
-        [When(@"I Select localhost from the source tab")]
-        [Then(@"I Select localhost from the source tab")]
-        public void WhenISelectLocalhostFromTheSourceTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.EnvironmentNameCheckCheckBox);
-        }
-
-        [Then(@"I validate I can not Deploy ""(.*)""")]
-        public void ValidateICanNotDeploy(string resource)
-        {
-            Filter_Deploy_Source_Explorer(resource);
-            Playback.Wait(2000);
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled, "The Deploy selection checkbox is Enabled");
-        }
-
-        [Then(@"I validate I can Deploy ""(.*)""")]
-        public void ValidateICanDeploy(string resource)
-        {
-            Filter_Deploy_Source_Explorer(resource);
-            Playback.Wait(1000);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled, "The Deploy selection checkbox is not Enabled");
-        }
-
-        [When(@"I Select Deploy First Source Item")]
-        [Then(@"I Select Deploy First Source Item")]
-        [Given(@"I Select Deploy First Source Item")]
-        public void Select_Deploy_First_Source_Item()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
-        }
-
-        [Given(@"I Click Deploy Tab Deploy Button")]
-        [When(@"I Click Deploy Tab Deploy Button")]
-        [Then(@"I Click Deploy Tab Deploy Button")]
-        public void Click_Deploy_Tab_Deploy_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
-        }
-
-        #endregion
-        #region Settings\Settings.uitest
-
-        [When(@"I Click Server Log File Button")]
-        public void Click_Server_Log_File_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.ServerLogs.ServerLogFile.ItemHyperlink, new Point(83, 6));
-        }
-
-        [When(@"I Click Settings Security Resource Permissions Add Resource Button")]
-        public void Click_Settings_Security_Resource_Permissions_Add_Resource_Button()
-        {
-            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1), new Point(6, 15));
-        }
-
-        [When(@"I Click Sharepoint Server Source TestConnection")]
-        public void Click_Sharepoint_Server_Source_TestConnection()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton, new Point(58, 16));
-        }
-
-        [When(@"I Click Studio Log File")]
-        public void Click_Studio_Log_File()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink, new Point(79, 10));
-        }
-
-        #endregion
 
         [Given(@"I Press F6")]
         [When(@"I Press F6")]
@@ -2285,8 +1539,8 @@ namespace Warewolf.UITests
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
                 Click_Deploy_Ribbon_Button();
-                Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-                Click_Deploy_Tab_Source_Server_Edit_Button();
+                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
             }
             else
@@ -2301,8 +1555,8 @@ namespace Warewolf.UITests
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
                 Click_Deploy_Ribbon_Button();
-                Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-                Click_Deploy_Tab_Source_Server_Edit_Button();
+                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
             }
         }
