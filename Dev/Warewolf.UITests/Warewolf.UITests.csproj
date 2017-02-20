@@ -158,19 +158,97 @@
     <Compile Include="SharepointSource\SharepointSourceTests.cs" />
     <Compile Include="Shortcut Keys\Shortcut Keys.cs" />
     <Compile Include="Tabs and Panes\WorkflowTabs.cs" />
-    <Compile Include="Tools\Email\Exchange_Send.cs" />
-    <Compile Include="Tools\Sharepoint\Delete List Item.cs" />
-    <Compile Include="Tools\ToolsUIMap.cs">
-      <DependentUpon>ToolsUIMap.uitest</DependentUpon>
+    <Compile Include="Tools\Control Flow\ControlFlowToolsUIMap.cs">
+      <DependentUpon>ControlFlowToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\ToolsUIMap.Designer.cs">
-      <DependentUpon>ToolsUIMap.uitest</DependentUpon>
+    <Compile Include="Tools\Control Flow\ControlFlowToolsUIMap.Designer.cs">
+      <DependentUpon>ControlFlowToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Database\DatabaseToolsUIMap.cs">
+      <DependentUpon>DatabaseToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Database\DatabaseToolsUIMap.Designer.cs">
+      <DependentUpon>DatabaseToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Data\DataToolsUIMap.cs">
+      <DependentUpon>DataToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Data\DataToolsUIMap.Designer.cs">
+      <DependentUpon>DataToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Email\Exchange_Send.cs" />
+    <Compile Include="Tools\Email\EmailToolsUIMap.cs">
+      <DependentUpon>EmailToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Email\EmailToolsUIMap.Designer.cs">
+      <DependentUpon>EmailToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.cs">
+      <DependentUpon>FileToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.Designer.cs">
+      <DependentUpon>FileToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\HTTP Web Methods\HTTPToolsUIMap.cs">
+      <DependentUpon>HTTPToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\HTTP Web Methods\HTTPToolsUIMap.Designer.cs">
+      <DependentUpon>HTTPToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Loop Constructs\LoopConstructToolsUIMap.cs">
+      <DependentUpon>LoopConstructToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Loop Constructs\LoopConstructToolsUIMap.Designer.cs">
+      <DependentUpon>LoopConstructToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Recordset\RecordsetToolsUIMap.cs">
+      <DependentUpon>RecordsetToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Recordset\RecordsetToolsUIMap.Designer.cs">
+      <DependentUpon>RecordsetToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Resources\ResourcesToolsUIMap.cs">
+      <DependentUpon>ResourcesToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Resources\ResourcesToolsUIMap.Designer.cs">
+      <DependentUpon>ResourcesToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Scripting\ScriptingToolsUIMap.cs">
+      <DependentUpon>ScriptingToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Scripting\ScriptingToolsUIMap.Designer.cs">
+      <DependentUpon>ScriptingToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Sharepoint\Delete List Item.cs" />
+    <Compile Include="Tools\Sharepoint\SharepointToolsUIMap.cs">
+      <DependentUpon>SharepointToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Sharepoint\SharepointToolsUIMap.Designer.cs">
+      <DependentUpon>SharepointToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Storage Dropbox\DropboxToolsUIMap.cs">
+      <DependentUpon>DropboxToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Storage Dropbox\DropboxToolsUIMap.Designer.cs">
+      <DependentUpon>DropboxToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\WorkflowTabUIMap.cs">
+      <DependentUpon>WorkflowTabUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\WorkflowTabUIMap.Designer.cs">
+      <DependentUpon>WorkflowTabUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="DialogsUIMap.cs">
       <DependentUpon>DialogsUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="DialogsUIMap.Designer.cs">
       <DependentUpon>DialogsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Utility\UtilityToolsUIMap.cs">
+      <DependentUpon>UtilityToolsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Utility\UtilityToolsUIMap.Designer.cs">
+      <DependentUpon>UtilityToolsUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="WcfSource\WcfSourceUIMap.cs">
       <DependentUpon>WcfSourceUIMap.uitest</DependentUpon>
@@ -351,10 +429,23 @@
     <None Include="SharepointSource\SharepointSourceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Tools\ToolsUIMap.uitest" />
+    <None Include="Tools\Control Flow\ControlFlowToolsUIMap.uitest" />
+    <None Include="Tools\Database\DatabaseToolsUIMap.uitest" />
+    <None Include="Tools\Data\DataToolsUIMap.uitest" />
+    <None Include="Tools\Email\EmailToolsUIMap.uitest" />
+    <None Include="Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.uitest" />
+    <None Include="Tools\HTTP Web Methods\HTTPToolsUIMap.uitest" />
+    <None Include="Tools\Loop Constructs\LoopConstructToolsUIMap.uitest" />
+    <None Include="Tools\Recordset\RecordsetToolsUIMap.uitest" />
+    <None Include="Tools\Resources\ResourcesToolsUIMap.uitest" />
+    <None Include="Tools\Scripting\ScriptingToolsUIMap.uitest" />
+    <None Include="Tools\Sharepoint\SharepointToolsUIMap.uitest" />
+    <None Include="Tools\Storage Dropbox\DropboxToolsUIMap.uitest" />
+    <None Include="Tools\WorkflowTabUIMap.uitest" />
     <None Include="DialogsUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Tools\Utility\UtilityToolsUIMap.uitest" />
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
     </None>

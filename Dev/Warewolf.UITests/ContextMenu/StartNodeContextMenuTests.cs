@@ -12,7 +12,7 @@ namespace Warewolf.UITests.ContextMenu
         public void CodedUIShowStartNodeContextMenuItems()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.DisplayStartNodeContextMenu();
+            WorkflowTabUIMap.DisplayStartNodeContextMenu();
             Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.TestEditorMenuItem.Enabled, "Test Editor must be disabled on a new workflow");
             Assert.IsTrue(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugInputsMenuItem.Enabled, "Debug Inputs must be enabled on a new workflow");
             Assert.IsTrue(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugStudioMenuItem.Enabled, "Debug Studio must be enabled on a new workflow");
@@ -50,20 +50,20 @@ namespace Warewolf.UITests.ContextMenu
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         DialogsUIMap DialogsUIMap
         {

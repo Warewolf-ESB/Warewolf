@@ -36,20 +36,20 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
@@ -87,7 +87,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         public void Drag_Dice_Roll_Example_Onto_DesignSurface()
         {
             ExplorerUIMap.Filter_Explorer("Dice Roll");
-            ToolsUIMap.Drag_Explorer_Localhost_Second_Item_Onto_Workflow_Design_Surface();
+            WorkflowTabUIMap.Drag_Explorer_Localhost_Second_Item_Onto_Workflow_Design_Surface();
         }
 
         [When(@"I Enter RunAsUser Username And Password")]
@@ -456,7 +456,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         [Then(@"I wait for output spinner")]
         public void WhenIWaitForOutputSpinner()
         {
-            UIMap.WaitForSpinner(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            UIMap.WaitForSpinner(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
         [Given("I Click Run All Button")]

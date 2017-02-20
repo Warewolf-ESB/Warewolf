@@ -22,7 +22,7 @@ namespace Warewolf.UITests
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";
             ExplorerUIMap.Filter_Explorer("Acceptance Tests");
             ExplorerUIMap.Create_NewWorkflow_Of_ExplorerFirstItem_With_ExplorerContextMenu();
-            ToolsUIMap.Make_Workflow_Savable();
+            WorkflowTabUIMap.Make_Workflow_Savable();
             UIMap.Save_With_Ribbon_Button_And_Dialog(ResourceCreatedInFolder);
             var allFiles = Directory.GetFiles(resourcesFolder, "*.xml", SearchOption.AllDirectories);
             var firstOrDefault = allFiles.FirstOrDefault(s => s.Contains("Resource Created In Folder.xml"));
@@ -54,7 +54,7 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void Right_Click_On_The_FolderCount_ContextMenu_UITest()
         {
-            ToolsUIMap.Right_Click_On_The_Folder_Count();
+            WorkflowTabUIMap.Right_Click_On_The_Folder_Count();
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ErrorWindow), "The studio throws an error when you right click on the folder count part of the explorer.");
         }
 
@@ -82,20 +82,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {

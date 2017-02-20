@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
+using Warewolf.UITests.Tools.Database.DatabaseToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Database
@@ -15,23 +16,23 @@ namespace Warewolf.UITests.Tools.Database
         [TestCategory("Database Tools")]
         public void PostgreSQLDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
         {
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.Exists, "Postgre database tool does not exist after dragging in from the toolbox");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.Exists, "Postgre database tool does not exist after dragging in from the toolbox");
             // Small View
-            ToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.SmallView.Exists, "PostgreSQL database connector tool small view does not exist after collapsing large view with a double click.");
+            DatabaseToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.SmallView.Exists, "PostgreSQL database connector tool small view does not exist after collapsing large view with a double click.");
             // Large View
-            ToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.SourcesComboBox.Exists, "Sources combobox does not exist on PostgreSQL database connector tool large view.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.EditSourceButton.Exists, "Edit Source button does not exist on PostgreSQL database connector tool large view.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.NewSourceButton.Exists, "New Source button does not exist on PostgreSQL database connector tool large view.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.ActionsComboBox.Exists, "Action Command combobox does not exist on PostgreSQL database connector tool large view.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.GenerateOutputsButton.Exists, "Generate Outputs button does not exist on PostgreSQL database connector tool large view.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.OutputsMappingDataGrTable.Exists, "Outputs Mapping table does not exist on PostgreSQL database connector tool large view.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.RecordSetTextBoxEdit.Exists, "Recordset textbox does not exist on PostgreSQL database connector tool large view.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.OnErrorCustom.Exists, "OnError panel does not exist on PostgreSQL database connector tool large view.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.DoneButton.Exists, "Done button does not exist on PostgreSQL database connector tool large view.");
+            DatabaseToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.SourcesComboBox.Exists, "Sources combobox does not exist on PostgreSQL database connector tool large view.");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.EditSourceButton.Exists, "Edit Source button does not exist on PostgreSQL database connector tool large view.");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.NewSourceButton.Exists, "New Source button does not exist on PostgreSQL database connector tool large view.");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.ActionsComboBox.Exists, "Action Command combobox does not exist on PostgreSQL database connector tool large view.");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.GenerateOutputsButton.Exists, "Generate Outputs button does not exist on PostgreSQL database connector tool large view.");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.OutputsMappingDataGrTable.Exists, "Outputs Mapping table does not exist on PostgreSQL database connector tool large view.");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.RecordSetTextBoxEdit.Exists, "Recordset textbox does not exist on PostgreSQL database connector tool large view.");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.OnErrorCustom.Exists, "OnError panel does not exist on PostgreSQL database connector tool large view.");
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.DoneButton.Exists, "Done button does not exist on PostgreSQL database connector tool large view.");
             // New Source
-            ToolsUIMap.Click_NewSourceButton_From_PostgreSQLTool();
+            DatabaseToolsUIMap.Click_NewSourceButton_From_PostgreSQLTool();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "PostgreSQL Source Tab does not exist");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "PostgreSQL Server Address combobox is disabled new PostgreSQL Source wizard tab");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User authentification rabio button is not enabled.");
@@ -46,16 +47,16 @@ namespace Warewolf.UITests.Tools.Database
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             DBSourceUIMap.Click_Close_DB_Source_Wizard_Tab_Button();
             //Edit Source
-            ToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
-            ToolsUIMap.Select_Source_From_PostgreTool();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
-            ToolsUIMap.Click_EditSourceButton_On_PostgreSQLTool();
+            DatabaseToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
+            DatabaseToolsUIMap.Select_Source_From_PostgreTool();
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            DatabaseToolsUIMap.Click_EditSourceButton_On_PostgreSQLTool();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "PostgreSQL Source Tab does not exist");
             DBSourceUIMap.Select_TestDB_From_DB_Source_Wizard_Database_Combobox();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             DBSourceUIMap.Click_Close_DB_Source_Wizard_Tab_Button();
-            ToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
-            ToolsUIMap.Click_EditSourceButton_On_PostgreSQLTool();
+            DatabaseToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
+            DatabaseToolsUIMap.Click_EditSourceButton_On_PostgreSQLTool();
             Assert.AreEqual("TestDB", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.TestDBText.DisplayText);
         }
 
@@ -67,7 +68,7 @@ namespace Warewolf.UITests.Tools.Database
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_Toolbox_PostgreSql_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_PostgreSql_Onto_DesignSurface();
         }
 
         UIMap UIMap
@@ -85,20 +86,20 @@ namespace Warewolf.UITests.Tools.Database
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         DBSourceUIMap DBSourceUIMap
         {
@@ -114,6 +115,21 @@ namespace Warewolf.UITests.Tools.Database
         }
 
         private DBSourceUIMap _DBSourceUIMap;
+
+        DatabaseToolsUIMap DatabaseToolsUIMap
+        {
+            get
+            {
+                if (_DatabaseToolsUIMap == null)
+                {
+                    _DatabaseToolsUIMap = new DatabaseToolsUIMap();
+                }
+
+                return _DatabaseToolsUIMap;
+            }
+        }
+
+        private DatabaseToolsUIMap _DatabaseToolsUIMap;
 
         #endregion
     }

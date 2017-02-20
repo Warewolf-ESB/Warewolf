@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 // ReSharper disable CyclomaticComplexity
@@ -36,8 +37,8 @@ namespace Warewolf.UITests.DependencyGraph
             ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
             Mouse.DoubleClick(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NodesCustom.DotnetWorkflowForTesText);
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
+            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists);
         }
 
         [TestMethod]
@@ -78,20 +79,20 @@ namespace Warewolf.UITests.DependencyGraph
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
@@ -122,6 +123,21 @@ namespace Warewolf.UITests.DependencyGraph
         }
 
         private DotNetPluginSourceUIMap _DotNetPluginSourceUIMap;
+
+        ResourcesToolsUIMap ResourcesToolsUIMap
+        {
+            get
+            {
+                if (_ResourcesToolsUIMap == null)
+                {
+                    _ResourcesToolsUIMap = new ResourcesToolsUIMap();
+                }
+
+                return _ResourcesToolsUIMap;
+            }
+        }
+
+        private ResourcesToolsUIMap _ResourcesToolsUIMap;
 
         #endregion
     }

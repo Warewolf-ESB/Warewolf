@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Control_Flow
@@ -30,7 +31,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
         [TestCategory("Tools")]
         public void DecisionTool_MatchType_Combobox_ListItems_UITest()
         {
-            ToolsUIMap.Click_Decision_Large_View_Match_Type_Combobox();
+            ControlFlowToolsUIMap.Click_Decision_Large_View_Match_Type_Combobox();
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsContains.Exists, "Contains match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsDoesntContain.Exists, "Doesnt Contains match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsDoesntEndWith.Exists, "Doesnt End With match type combobox list item does not exist.");
@@ -67,9 +68,9 @@ namespace Warewolf.UITests.Tools.Control_Flow
         public void CopyDecisions_With_ContextMenu_And_Paste_UITest()
         {
             DialogsUIMap.Click_Decision_Dialog_Done_Button();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision.Exists, "Decision on the design surface does not exist after dragging in from the toolbox and clicking done on the dialog.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging in from the toolbox and clicking done on the dialog.");
-            ToolsUIMap.CopyAndPaste_Decision_Tool_On_The_Designer();
+            Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Decision.Exists, "Decision on the design surface does not exist after dragging in from the toolbox and clicking done on the dialog.");
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging in from the toolbox and clicking done on the dialog.");
+            ControlFlowToolsUIMap.CopyAndPaste_Decision_Tool_On_The_Designer();
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.DecisionOrSwitchDialog), "Decision large view dialog openned after copy and paste.");
         }
 
@@ -81,7 +82,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
-            ToolsUIMap.Drag_Toolbox_Decision_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_Decision_Onto_DesignSurface();
         }
 
         public UIMap UIMap
@@ -99,20 +100,20 @@ namespace Warewolf.UITests.Tools.Control_Flow
 
         private UIMap _uiMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         DialogsUIMap DialogsUIMap
         {
@@ -128,6 +129,21 @@ namespace Warewolf.UITests.Tools.Control_Flow
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        ControlFlowToolsUIMap ControlFlowToolsUIMap
+        {
+            get
+            {
+                if (_ControlFlowToolsUIMap == null)
+                {
+                    _ControlFlowToolsUIMap = new ControlFlowToolsUIMap();
+                }
+
+                return _ControlFlowToolsUIMap;
+            }
+        }
+
+        private ControlFlowToolsUIMap _ControlFlowToolsUIMap;
 
         #endregion
     }

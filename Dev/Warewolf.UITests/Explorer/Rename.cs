@@ -70,11 +70,11 @@ namespace Warewolf.UITests
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
 
             ExplorerUIMap.Rename_Explorer_First_Item(newName);
-            ToolsUIMap.Make_Workflow_Savable_By_Dragging_Start();
+            WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Click_Close_Workflow_Tab_Button();
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            Assert.AreEqual(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.KeepNewNameRenamedListItem.DisplayText, newName);
+            Assert.AreEqual(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.KeepNewNameRenamedListItem.DisplayText, newName);
         }
 
         #region Additional test attributes
@@ -101,20 +101,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {

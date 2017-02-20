@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Resources
@@ -26,11 +27,11 @@ namespace Warewolf.UITests.Tools.Resources
             Assert.IsTrue(DialogsUIMap.ServicePickerDialog.OK.Enabled, "OK Button is not enabled");
             // Hello World workflow opens
             DialogsUIMap.Click_Service_Picker_Dialog_OK();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists, "Hello World work flow does not exist after selecting OK from Service Picker");
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists, "Hello World work flow does not exist after selecting OK from Service Picker");
             // Deletion successful
-            ToolsUIMap.Delete_HelloWorld_With_Context_Menu();
-            Assert.IsFalse(UIMap.ControlExistsNow(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow), "Hello World work flow still exist after deletion.");
-            ToolsUIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
+            WorkflowTabUIMap.Delete_HelloWorld_With_Context_Menu();
+            Assert.IsFalse(UIMap.ControlExistsNow(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow), "Hello World work flow still exist after deletion.");
+            WorkflowTabUIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
             // Cancel Button Behaviour
             DialogsUIMap.Click_ServicePickerDialog_CancelButton();
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ServicePickerDialog.OK), "Service picker dialog still exists after clicking cancel button.");
@@ -44,7 +45,7 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_Service_Picker_Onto_DesignSurface();
         }
 
         UIMap UIMap
@@ -62,20 +63,20 @@ namespace Warewolf.UITests.Tools.Resources
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         DialogsUIMap DialogsUIMap
         {
@@ -91,6 +92,21 @@ namespace Warewolf.UITests.Tools.Resources
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        ResourcesToolsUIMap ResourcesToolsUIMap
+        {
+            get
+            {
+                if (_ResourcesToolsUIMap == null)
+                {
+                    _ResourcesToolsUIMap = new ResourcesToolsUIMap();
+                }
+
+                return _ResourcesToolsUIMap;
+            }
+        }
+
+        private ResourcesToolsUIMap _ResourcesToolsUIMap;
 
         #endregion
     }
