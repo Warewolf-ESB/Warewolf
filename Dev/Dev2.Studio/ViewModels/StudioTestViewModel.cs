@@ -57,14 +57,14 @@ namespace Dev2.ViewModels
         {
             return View;
         }
-
+        [ExcludeFromCodeCoverage]
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, ViewModel);
         }
 
         public override string DisplayName => ViewModel.DisplayName;
-
+        [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
             var loadedView = view as IView;
@@ -117,6 +117,7 @@ namespace Dev2.ViewModels
 
         public bool IsDirty => ViewModel.CanSave;
 
+        [ExcludeFromCodeCoverage]
         public void CloseView()
         {
         }
