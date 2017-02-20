@@ -1,4 +1,5 @@
 ﻿using System.Activities.Presentation.Model;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
@@ -115,7 +116,7 @@ namespace Dev2.Activities.Designers2.Switch
                 return dev2Switch;
             }
         }
-
+        [ExcludeFromCodeCoverage]
         public override void Validate()
         {
         }
