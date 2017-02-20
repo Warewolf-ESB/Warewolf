@@ -856,13 +856,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private IDebugTreeViewItemViewModel CreateParentTreeViewItem(IDebugState content, IDebugTreeViewItemViewModel child)
         {
             IDebugTreeViewItemViewModel parent;
-            if (!_contentItemMap.TryGetValue(content.ParentID, out parent))
+            if (!_contentItemMap.TryGetValue(content.ParentID.GetValueOrDefault(), out parent))
             {
                 parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
                 {
                     ActivityTypeName = content.ActualType
                 };
-                _contentItemMap.Add(content.ParentID, parent);
+                _contentItemMap.Add(content.ParentID.GetValueOrDefault(), parent);
             }
             child.Parent = parent;
             parent.Children.Add(child);

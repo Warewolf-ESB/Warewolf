@@ -313,6 +313,50 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Dotnet plugin workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingADotnetPluginWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Dotnet plugin workflow", ((string[])(null)));
+#line 77
+this.ScenarioSetup(scenarioInfo);
+#line 78
+  testRunner.Given("I have a workflow \"DotNetDLLWf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Source",
+                        "ClassName",
+                        "ObjectName",
+                        "Action",
+                        "ActionOutputVaribale"});
+            table7.AddRow(new string[] {
+                        "New DotNet Plugin Source",
+                        "TestingDotnetDllCascading.Human",
+                        "[[@human]]",
+                        "BuildInts",
+                        "[[rec1().num]]"});
+#line 79
+  testRunner.And("\"DotNetDLLWf\" contains an DotNet DLL \"DotNetService\" as", ((string)(null)), table7, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "parameterName",
+                        "value",
+                        "type"});
+#line 82
+  testRunner.And("\"DotNetService\" constructorinputs 0 with inputs as", ((string)(null)), table8, "And ");
+#line 85
+  testRunner.When("workflow \"DotNetDLLWf\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 86
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?\" in B" +
+                    "rowser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 87
+  testRunner.Then("The Debug in Browser content contains order of \"AssignFlow\", \"CaseConvertFlow\" an" +
+                    "d \"ReplaceFlow\" in SequenceFlow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Forward Sort Recordset workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
         public virtual void ExecutingAForwardSortRecordsetWorkflow()
