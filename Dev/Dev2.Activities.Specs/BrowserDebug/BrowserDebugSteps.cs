@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,8 +31,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
 
         private List<IDebugState> GetDebugStates()
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var deserialize = serializer.Deserialize<List<IDebugState>>(_externalProcessExecutor.WebResult.First());
+            var deserialize = _externalProcessExecutor.WebResult.First().DeserializeToObject<List<IDebugState>>();
             return deserialize.ToList();
         }
 
@@ -125,6 +125,29 @@ namespace Dev2.Activities.Specs.BrowserDebug
                     continue;
                 if (!debugState.IsFinalStep())
                     Assert.IsTrue(debugState.Children.Count == numExecutions);
+            }
+        }
+
+        [Given(@"The Debug in Browser content contains the correct recordset order of ""(.*)"" ""(.*)"" ""(.*)"" ""(.*)""")]
+        [When(@"The Debug in Browser content contains the correct recordset order of ""(.*)"" ""(.*)"" ""(.*)"" ""(.*)""")]
+        [Then(@"The Debug in Browser content contains the correct recordset order of ""(.*)"" ""(.*)"" ""(.*)"" ""(.*)""")]
+        public void ThenTheDebugInBrowserContentContainsTheCorrectRecordsetOrderOf(string orderPos1, string orderPos2, string orderPos3, string orderPos4)
+        {
+            var allDebugStates = GetDebugStates();
+            List<string> expectedflow = new List<string> {orderPos1, orderPos2, orderPos3, orderPos4};
+            List<string> actualflow = new List<string>();
+
+            foreach (var debugState in allDebugStates)
+            {
+                if (debugState.IsFirstStep())
+                    continue;
+                if (!debugState.IsFinalStep())
+                {
+                    foreach (var debugStateChild in debugState.Children)
+                    {
+                        actualflow.Add(debugStateChild.Inputs.ToString());
+                    }
+                }
             }
         }
     }
