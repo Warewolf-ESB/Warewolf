@@ -13,7 +13,7 @@ namespace Dev2.Common
         {
 
             var groups = source.GroupBy(i => i.ParentID);
-            var roots = groups.First(g => g.Key == Guid.Empty).ToList();
+            var roots = groups.First(g => !g.Key.HasValue).ToList();
 
             if (roots.Any())
             {
