@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Data
@@ -11,16 +12,16 @@ namespace Warewolf.UITests.Tools.Data
 		[TestCategory("Data Tools")]
         public void BaseConvertTool_Small_And_Large_Then_QVIView_UITest()
         {
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.Exists, "Base Conversion on the design surface does not exist");
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.Exists, "Base Conversion on the design surface does not exist");
             //Small View
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Exists, "Data Grid does not exist in tool Base Convert Small View");
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Exists, "Data Grid does not exist in tool Base Convert Small View");
             //Large View
-            ToolsUIMap.Open_BaseConvertTool_LargeView();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Exists, "Data Grid does not exist in tool Base Convert Large View");
+            DataToolsUIMap.Open_BaseConvertTool_LargeView();
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Exists, "Data Grid does not exist in tool Base Convert Large View");
             //QVI View
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.OpenQuickVariableInpToggleButton.Exists, "QVI Toggle Button does not exist");
-            ToolsUIMap.Open_BaseConvertTool_QVIView();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent.Exists, "Base Conversion QVI Window does not exist on the design surface");
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.OpenQuickVariableInpToggleButton.Exists, "QVI Toggle Button does not exist");
+            DataToolsUIMap.Open_BaseConvertTool_QVIView();
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent.Exists, "Base Conversion QVI Window does not exist on the design surface");
         }
 
         [TestMethod]
@@ -28,14 +29,14 @@ namespace Warewolf.UITests.Tools.Data
         public void BaseConvertTool_EnterData_Then_Debug_UITest()
         {
             //Enter Data
-            ToolsUIMap.Open_BaseConvertTool_LargeView();
-            ToolsUIMap.Enter_SomeData_Into_BaseConvertTool_Row1ValueTextbox();
-            Assert.AreEqual("SomeData", ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text);
-            ToolsUIMap.Click_BaseConvertTool_LargeView_DoneButton();
+            DataToolsUIMap.Open_BaseConvertTool_LargeView();
+            DataToolsUIMap.Enter_SomeData_Into_BaseConvertTool_Row1ValueTextbox();
+            Assert.AreEqual("SomeData", DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.LargeView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text);
+            DataToolsUIMap.Click_BaseConvertTool_LargeView_DoneButton();
             //Debug
             UIMap.Press_F6();
-            UIMap.WaitForControlNotVisible(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            ToolsUIMap.Click_Debug_Output_BaseConvert_Cell();
+            UIMap.WaitForControlNotVisible(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            WorkflowTabUIMap.Click_Debug_Output_BaseConvert_Cell();
         }
 
         #region Additional test attributes
@@ -46,7 +47,7 @@ namespace Warewolf.UITests.Tools.Data
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_Toolbox_Base_Conversion_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_Base_Conversion_Onto_DesignSurface();
         }
 
         UIMap UIMap
@@ -64,20 +65,35 @@ namespace Warewolf.UITests.Tools.Data
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_DataToolsUIMap == null)
+                {
+                    _DataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _DataToolsUIMap;
+            }
+        }
+
+        private DataToolsUIMap _DataToolsUIMap;
 
         #endregion
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.DebugOutputTests
@@ -15,10 +16,10 @@ namespace Warewolf.UITests.DebugOutputTests
         public void WorkFlowSelection_Validation_UITest()
         {
             ExplorerUIMap.Click_AssignStep_InDebugOutput();
-            var assignFocus = ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
+            var assignFocus = DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
             Assert.IsTrue(assignFocus);
             ExplorerUIMap.Click_DesicionStep_InDebugOutput();
-            var assignHasNoFocus = ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
+            var assignHasNoFocus = DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
             Assert.IsTrue(assignHasNoFocus);
         }
 
@@ -49,20 +50,20 @@ namespace Warewolf.UITests.DebugOutputTests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
@@ -78,6 +79,21 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_DataToolsUIMap == null)
+                {
+                    _DataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _DataToolsUIMap;
+            }
+        }
+
+        private DataToolsUIMap _DataToolsUIMap;
 
         #endregion
     }

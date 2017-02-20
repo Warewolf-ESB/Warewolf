@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UITests.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Resources
@@ -14,91 +15,91 @@ namespace Warewolf.UITests.Tools.Resources
         public void ComDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.Exists,
                 "Com DLL tool does not exist on the design surface after dragging in from the toolbox.");
             //Small View
-            ToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.SmallView.Exists,
                 "Com DLL tool small view does not exist after double clicking tool large view.");
             //Large View
-            ToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.SourcesCombobox.Exists,
                 "Sources Combobox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.EditSourceButton.Exists,
                 "EditSources Button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.NewSourceButton.Exists,
                 "NewSource Button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.NamespaceCombobox.Exists,
                 "Namespace Combobox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.RefreshNamespaceButton.Exists,
                 "RefeshNamespace Button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.ActionsCombobox.Exists,
                 "Actions Combobox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.ActionRefreshButton.Exists,
                 "ActionRefresh Button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.InputsTable.Exists,
                 "Inputs Table does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.GenerateOutputsButton.Exists,
                 "Generate Outputs Button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.OutputToObjectCheckbox.Exists,
                 "OutputToObjective Checkbox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.OutputsTable.Exists,
                 "Outputs Table does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.RecordsetNameTextbox.Exists,
                 "RecrodsetName Textbox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.OnErrorPanel.Exists,
                 "OnError Pane does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.DoneButton.Exists,
                 "Done button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             //New Source
-            ToolsUIMap.Click_NewSourceButton_From_COMDLLPluginTool();
+            ResourcesToolsUIMap.Click_NewSourceButton_From_COMDLLPluginTool();
             Assert.IsTrue(
                 ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                     .WorkSurfaceContext.SearchTextBox.Enabled, "Search Textbox is not enabled");
@@ -119,9 +120,9 @@ namespace Warewolf.UITests.Tools.Resources
                 "Assembly Name Textbox is empty after selecting an assembly.");
             UIMap.Save_With_Ribbon_Button_And_Dialog("COMPluginSourceToEdit");
             Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
-            ToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
-            ToolsUIMap.Select_Source_From_ComDLLTool();
-            ToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
+            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+            ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
+            ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
             UIMap.WaitForControlVisible(
              ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                  .WorkSurfaceContext.DataTree);
@@ -135,9 +136,9 @@ namespace Warewolf.UITests.Tools.Resources
                     .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
             Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
-            ToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
-            ToolsUIMap.Select_Source_From_ComDLLTool();
-            ToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
+            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+            ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
+            ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
             UIMap.WaitForControlVisible(
                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                    .WorkSurfaceContext.DataTree);
@@ -155,7 +156,7 @@ namespace Warewolf.UITests.Tools.Resources
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_ComDLLConnector_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_ComDLLConnector_Onto_DesignSurface();
         }
 
         UIMap UIMap
@@ -173,20 +174,20 @@ namespace Warewolf.UITests.Tools.Resources
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ComPluginSourceUIMap ComPluginSourceUIMap
         {
@@ -202,6 +203,21 @@ namespace Warewolf.UITests.Tools.Resources
         }
 
         private ComPluginSourceUIMap _ComPluginSourceUIMap;
+
+        ResourcesToolsUIMap ResourcesToolsUIMap
+        {
+            get
+            {
+                if (_ResourcesToolsUIMap == null)
+                {
+                    _ResourcesToolsUIMap = new ResourcesToolsUIMap();
+                }
+
+                return _ResourcesToolsUIMap;
+            }
+        }
+
+        private ResourcesToolsUIMap _ResourcesToolsUIMap;
 
         #endregion
     }

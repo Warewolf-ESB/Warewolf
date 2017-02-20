@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.FileFTPFTPSSFTP.FileToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools
@@ -11,19 +12,19 @@ namespace Warewolf.UITests.Tools
 		[TestCategory("File Tools")]
         public void FileReadTool_Small_And_LargeView_UITest()
         {
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.Exists, "Read File tool on the design surface does not exist");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.Exists, "Read File tool on the design surface does not exist");
             // Small View
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.SmallViewContentCustom.FileNameComboBox.Exists, "FileName Combobox does not exist on the design surface");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.SmallViewContentCustom.ResultComboBox.Exists, "Result Combobox does not exist on the design surface");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.SmallViewContentCustom.FileNameComboBox.Exists, "FileName Combobox does not exist on the design surface");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.SmallViewContentCustom.ResultComboBox.Exists, "Result Combobox does not exist on the design surface");
             // Large View
-            ToolsUIMap.Open_ReadFileTool_LargeView();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.FileNameComboBox.Exists, "FileName ComboBox does not exist on the design surface");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.UserNameComboBox.Exists, "Username ComboBox does not exist on the design surface");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.PasswordEdit.Exists, "Password TextBox does not exist on the design surface");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.PrivateKeyComboBox.Exists, "Private Key ComboBox does not exist on the design surface");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.ResultComboBox.Exists, "Result ComboBox does not exist on the design surface");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.OnErrorCustom.Exists, "OnError Pane does not exist on the design surface");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.DoneButton.Exists, "Done Button does not exist on the design surface");
+            FileToolsUIMap.Open_ReadFileTool_LargeView();
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.FileNameComboBox.Exists, "FileName ComboBox does not exist on the design surface");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.UserNameComboBox.Exists, "Username ComboBox does not exist on the design surface");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.PasswordEdit.Exists, "Password TextBox does not exist on the design surface");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.PrivateKeyComboBox.Exists, "Private Key ComboBox does not exist on the design surface");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.ResultComboBox.Exists, "Result ComboBox does not exist on the design surface");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.LargeViewContentCustom.OnErrorCustom.Exists, "OnError Pane does not exist on the design surface");
+            Assert.IsTrue(FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.FileRead.DoneButton.Exists, "Done Button does not exist on the design surface");
         }
 
         #region Additional test attributes
@@ -34,7 +35,7 @@ namespace Warewolf.UITests.Tools
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_Toolbox_Read_File_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_Read_File_Onto_DesignSurface();
         }
 
         UIMap UIMap
@@ -52,20 +53,35 @@ namespace Warewolf.UITests.Tools
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        FileToolsUIMap FileToolsUIMap
+        {
+            get
+            {
+                if (_FileToolsUIMap == null)
+                {
+                    _FileToolsUIMap = new FileToolsUIMap();
+                }
+
+                return _FileToolsUIMap;
+            }
+        }
+
+        private FileToolsUIMap _FileToolsUIMap;
 
         #endregion
     }

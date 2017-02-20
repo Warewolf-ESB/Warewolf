@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Control_Flow
@@ -18,7 +19,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Switch dialog done button does not exist after dragging switch tool in from the toolbox.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.CancelButton.Exists, "Switch dialog cancel button does not exist after dragging switch tool in from the toolbox.");
             DialogsUIMap.Click_Switch_Dialog_Done_Button();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
         #region Additional test attributes
@@ -29,7 +30,7 @@ namespace Warewolf.UITests.Tools.Control_Flow
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.InitializeABlankWorkflow();
-            ToolsUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
         }
 
         UIMap UIMap
@@ -47,20 +48,20 @@ namespace Warewolf.UITests.Tools.Control_Flow
 
         private UIMap _uiMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         DialogsUIMap DialogsUIMap
         {
@@ -76,6 +77,21 @@ namespace Warewolf.UITests.Tools.Control_Flow
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        ControlFlowToolsUIMap ControlFlowToolsUIMap
+        {
+            get
+            {
+                if (_ControlFlowToolsUIMap == null)
+                {
+                    _ControlFlowToolsUIMap = new ControlFlowToolsUIMap();
+                }
+
+                return _ControlFlowToolsUIMap;
+            }
+        }
+
+        private ControlFlowToolsUIMap _ControlFlowToolsUIMap;
 
         #endregion
     }

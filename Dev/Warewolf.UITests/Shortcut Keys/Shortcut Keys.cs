@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Workflow
@@ -20,10 +21,10 @@ namespace Warewolf.UITests.Workflow
             //ShortCut W Opens New Workflow
             ExplorerUIMap.Click_LocalHost_Once();
             ExplorerUIMap.Create_New_Workflow_Using_Shortcut();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
             //Short S Opens SaveWorkflow Dialog
-            ToolsUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            ToolsUIMap.Save_Workflow_Using_Shortcut();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists);
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
@@ -34,9 +35,9 @@ namespace Warewolf.UITests.Workflow
         {
             ExplorerUIMap.Filter_Explorer("Hello World");
             ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
-            ToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
+            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
-            ToolsUIMap.Save_Workflow_Using_Shortcut();
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
 
@@ -60,9 +61,9 @@ namespace Warewolf.UITests.Workflow
             ExplorerUIMap.Filter_Explorer(Folder);
             ExplorerUIMap.Click_Explorer_Localhost_First_Item();
             ExplorerUIMap.Create_New_Workflow_In_Explorer_First_Item_With_Shortcut();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.Exists);
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(Folder));
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.HttpLocalHostText.NewWorkflowHyperLink.Alt.Contains(Folder));
         }
 
         [TestMethod]
@@ -99,20 +100,20 @@ namespace Warewolf.UITests.Workflow
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
@@ -158,6 +159,21 @@ namespace Warewolf.UITests.Workflow
         }
 
         private DeployUIMap _DeployUIMap;
+
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_DataToolsUIMap == null)
+                {
+                    _DataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _DataToolsUIMap;
+            }
+        }
+
+        private DataToolsUIMap _DataToolsUIMap;
 
         #endregion
     }

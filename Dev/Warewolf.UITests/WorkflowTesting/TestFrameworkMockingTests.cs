@@ -4,6 +4,8 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests
@@ -22,7 +24,7 @@ namespace Warewolf.UITests
         public void StepsWithoutOutputsShouldBeMarkedInvalid()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Save_With_Ribbon_Button_And_Dialog("AssignWorkflow");
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
@@ -37,9 +39,9 @@ namespace Warewolf.UITests
         {
             ExplorerUIMap.Filter_Explorer(HelloWorld);
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            ToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
+            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             UIMap.Press_F6();
-            Assert.IsFalse(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
+            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
         }
 
         [TestMethod]
@@ -47,8 +49,8 @@ namespace Warewolf.UITests
         public void CreateTestFromDebugButtonDisabledForUnsavedWorkflows()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Make_Workflow_Savable_By_Dragging_Start();
-            Assert.IsFalse(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
+            WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
+            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
         }
 
         [TestMethod]
@@ -57,8 +59,8 @@ namespace Warewolf.UITests
         {
             UIMap.Click_NewWorkflow_RibbonButton();
             ExplorerUIMap.Filter_Explorer(DiceRoll);
-            ToolsUIMap.Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
-            ToolsUIMap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
+            WorkflowTabUIMap.Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
+            WorkflowTabUIMap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
             UIMap.Press_F6();
             UIMap.Save_With_Ribbon_Button_And_Dialog(Nestedwf);
             UIMap.Click_Create_Test_From_Debug();
@@ -105,8 +107,8 @@ namespace Warewolf.UITests
         public void CreateTestFromDebugOutputDeleteTestButDontCloseTestTabGoBackAndCreateTestAgain()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_Toolbox_Random_Onto_DesignSurface();
-            UIMap.Enter_Dice_Roll_Values();
+            WorkflowTabUIMap.Drag_Toolbox_Random_Onto_DesignSurface();
+            UtilityToolsUIMap.Enter_Dice_Roll_Values();
             UIMap.Save_With_Ribbon_Button_And_Dialog(RandomNewWorkFlow);
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
@@ -126,8 +128,8 @@ namespace Warewolf.UITests
         public void CreateTestFromDebugOutputDontSaveCreateAnotherTestFromDebugOutput()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_Toolbox_Random_Onto_DesignSurface();
-            UIMap.Enter_Dice_Roll_Values();
+            WorkflowTabUIMap.Drag_Toolbox_Random_Onto_DesignSurface();
+            UtilityToolsUIMap.Enter_Dice_Roll_Values();
             UIMap.Save_With_Ribbon_Button_And_Dialog("RandomWFForSaveButtonState");
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
@@ -161,20 +163,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
         {
@@ -220,6 +222,36 @@ namespace Warewolf.UITests
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        UtilityToolsUIMap UtilityToolsUIMap
+        {
+            get
+            {
+                if (_UtilityToolsUIMap == null)
+                {
+                    _UtilityToolsUIMap = new UtilityToolsUIMap();
+                }
+
+                return _UtilityToolsUIMap;
+            }
+        }
+
+        private UtilityToolsUIMap _UtilityToolsUIMap;
+
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_DataToolsUIMap == null)
+                {
+                    _DataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _DataToolsUIMap;
+            }
+        }
+
+        private DataToolsUIMap _DataToolsUIMap;
 
         #endregion
     }

@@ -13,8 +13,8 @@ namespace Warewolf.UITests.Toolbox
         public void ToolboxBehaviourCheck_ClearFilter_Then_PopUp_Then_UpdateHelpText_UITest()
         {
             //Clear Filter
-            ToolsUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
             UIMap.Click_Clear_Toolbox_Filter_Clear_Button();
             Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text));
             //Update Help Text
@@ -53,20 +53,20 @@ namespace Warewolf.UITests.Toolbox
 
         private UIMap _uiMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         DialogsUIMap DialogsUIMap
         {

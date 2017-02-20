@@ -19,6 +19,7 @@ using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
 using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
+using Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 
 namespace Warewolf.UITests.DialogsUIMapClasses
 {
@@ -118,7 +119,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         [Then(@"The Case Dialog Must Be Open")]
         public void ThenTheCaseDialogMustBeOpen()
         {
-            Mouse.DoubleClick(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
+            Mouse.DoubleClick(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
             Assert.IsTrue(DecisionOrSwitchDialog.Exists, "Switch case dialog does not exist after dragging onto switch case arm.");
             Mouse.Click(DecisionOrSwitchDialog.DoneButton);
         }
@@ -146,7 +147,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         public void Click_Switch_Dialog_Done_Button()
         {
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
+            Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
         }
 
         [Given(@"Filtered Item Exists")]
@@ -628,8 +629,8 @@ namespace Warewolf.UITests.DialogsUIMapClasses
 
         public void Click_Assign_Tool_url()
         {
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist");
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink.Exists, "Url hyperlink does not exist");
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnsavedWorkflowLinkText.Hyperlink, new Point(201, 10));
             Assert.IsTrue(MessageBoxWindow.OKButton.Exists, "Did you know popup does not exist after clicking workflow hyperlink.");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
@@ -773,20 +774,20 @@ namespace Warewolf.UITests.DialogsUIMapClasses
 
         private UIMap _uiMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
         {
@@ -817,5 +818,20 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        ControlFlowToolsUIMap ControlFlowToolsUIMap
+        {
+            get
+            {
+                if (_ControlFlowToolsUIMap == null)
+                {
+                    _ControlFlowToolsUIMap = new ControlFlowToolsUIMap();
+                }
+
+                return _ControlFlowToolsUIMap;
+            }
+        }
+
+        private ControlFlowToolsUIMap _ControlFlowToolsUIMap;
     }
 }

@@ -146,8 +146,8 @@ namespace Warewolf.UITests.SaveDialog
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             ExplorerUIMap.Create_New_Workflow_In_LocalHost_With_Shortcut();
-            ToolsUIMap.Make_Workflow_Savable_By_Dragging_Start();
-            ToolsUIMap.Save_Workflow_Using_Shortcut();
+            WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
         }
 
         UIMap UIMap
@@ -165,20 +165,20 @@ namespace Warewolf.UITests.SaveDialog
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {

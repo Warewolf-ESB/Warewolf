@@ -17,7 +17,7 @@ namespace Warewolf.UITests
         {
             ExplorerUIMap.Filter_Explorer("Hello World");
             ExplorerUIMap.Duplicate_FirstResource_From_ExplorerContextMenu();
-            ToolsUIMap.Enter_Duplicate_workflow_name("Duplicated_HelloWorld");
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name("Duplicated_HelloWorld");
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
         
@@ -27,7 +27,7 @@ namespace Warewolf.UITests
         {
             ExplorerUIMap.Filter_Explorer("Examples");
             ExplorerUIMap.Duplicate_FirstResource_From_ExplorerContextMenu();
-            ToolsUIMap.Enter_Duplicate_workflow_name("Duplicated_ExampleFolder");
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name("Duplicated_ExampleFolder");
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
         }
 
@@ -47,12 +47,12 @@ namespace Warewolf.UITests
         {
             ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("Hello World");
             const string newName = "HelloWorld2";
-            ToolsUIMap.Enter_Duplicate_workflow_name(newName);
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
             DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
             ExplorerUIMap.Filter_Explorer(newName);
             Assert.AreEqual(newName, ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            Assert.AreEqual(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
+            Assert.AreEqual(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
         }
         
         #region Additional test attributes
@@ -79,20 +79,20 @@ namespace Warewolf.UITests
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {

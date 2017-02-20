@@ -19,117 +19,13 @@ using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
 
 namespace Warewolf.UITests
 {
     [Binding]
     public partial class UIMap
     {
-        ToolsUIMap ToolsUIMap
-        {
-            get
-            {
-                if (_ToolsUIMap == null)
-                {
-                    _ToolsUIMap = new ToolsUIMap();
-                }
-
-                return _ToolsUIMap;
-            }
-        }
-
-        private ToolsUIMap _ToolsUIMap;
-
-        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
-        {
-            get
-            {
-                if (_WorkflowServiceTestingUIMap == null)
-                {
-                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
-                }
-
-                return _WorkflowServiceTestingUIMap;
-            }
-        }
-
-        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
-
-        ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if (_ExplorerUIMap == null)
-                {
-                    _ExplorerUIMap = new ExplorerUIMap();
-                }
-
-                return _ExplorerUIMap;
-            }
-        }
-
-        private ExplorerUIMap _ExplorerUIMap;
-
-        DialogsUIMap DialogsUIMap
-        {
-            get
-            {
-                if (_DialogsUIMap == null)
-                {
-                    _DialogsUIMap = new DialogsUIMap();
-                }
-
-                return _DialogsUIMap;
-            }
-        }
-
-        private DialogsUIMap _DialogsUIMap;
-
-        DeployUIMap DeployUIMap
-        {
-            get
-            {
-                if (_DeployUIMap == null)
-                {
-                    _DeployUIMap = new DeployUIMap();
-                }
-
-                return _DeployUIMap;
-            }
-        }
-
-        private DeployUIMap _DeployUIMap;
-
-        SettingsUIMap SettingsUIMap
-        {
-            get
-            {
-                if (_SettingsUIMap == null)
-                {
-                    _SettingsUIMap = new SettingsUIMap();
-                }
-
-                return _SettingsUIMap;
-            }
-        }
-
-        private SettingsUIMap _SettingsUIMap;
-
-        ServerSourceUIMap ServerSourceUIMap
-        {
-            get
-            {
-                if (_ServerSourceUIMap == null)
-                {
-                    _ServerSourceUIMap = new ServerSourceUIMap();
-                }
-
-                return _ServerSourceUIMap;
-            }
-        }
-
-        private ServerSourceUIMap _ServerSourceUIMap;
-
         const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
         const int _strictSearchTimeout = 3000;
@@ -270,12 +166,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = FilterText;
         }
 
-        [When(@"I Enter Dice Roll Values")]
-        public void WhenIEnterDiceRollValues()
-        {
-            Enter_Dice_Roll_Values();
-        }
-
         [When(@"I Save With Ribbon Button and Dialog As ""(.*)"" and Append Unique Guid")]
         public void WhenISaveWithRibbonButtonAndDialogAsAndAppendUniqueGuid(string p0)
         {
@@ -304,8 +194,8 @@ namespace Warewolf.UITests
         public void CreateAndSave_Dice_Workflow(string WorkflowName)
         {
             ExplorerUIMap.Select_NewWorkFlowService_From_ContextMenu();
-            ToolsUIMap.Drag_Toolbox_Random_Onto_DesignSurface();
-            Enter_Dice_Roll_Values();
+            WorkflowTabUIMap.Drag_Toolbox_Random_Onto_DesignSurface();
+            UtilityToolsUIMap.Enter_Dice_Roll_Values();
             Save_With_Ribbon_Button_And_Dialog(WorkflowName);
             Click_Close_Workflow_Tab_Button();
         }
@@ -359,7 +249,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Clean Workflow Tab")]
         public void ThenIClickCloseCleanWorkflowTab()
         {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton);
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton);
         }
 
         [Given(@"I Click View Tests In Explorer Context Menu for ""(.*)""")]
@@ -391,7 +281,7 @@ namespace Warewolf.UITests
         {
             Click_Debug_RibbonButton();
             Click_DebugInput_Debug_Button();
-            WaitForSpinner(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            WaitForSpinner(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
         }
 
         public void Debug_Unpinned_Workflow_With_F6()
@@ -450,15 +340,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
         }
 
-        public void Enter_Dice_Roll_Values()
-        {
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.FromComboBox.FromTextEdit.Exists, "From textbox does not exist");
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.FromComboBox.FromTextEdit.Text = "1";
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.ToComboBox.ToTextEdit.Exists, "To textbox does not exist");
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.ToComboBox.ToTextEdit.Text = "6";
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.ResultComboBox.TextEdit.Text = "[[out]]";
-        }
-
         public void Drag_Toolbox_MultiAssign_Onto_Unpinned_DesignSurface()
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
@@ -508,7 +389,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.DoneButton, new Point(35, 6));
             Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Error1.Hyperlink.Exists, "Error popup does not exist on flowchart designer.");
-            Assert.AreEqual("", ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Variable list scalar row 1 textbox text is not blank with invalid variable.");
+            Assert.AreEqual("", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Variable list scalar row 1 textbox text is not blank with invalid variable.");
         }
 
         [Given(@"I Click Cancel DebugInput Window")]
@@ -576,7 +457,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Close Workflow Tab Button")]
         public void Click_Close_Workflow_Tab_Button()
         {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton, new Point(5, 5));
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.CloseButton, new Point(5, 5));
         }
 
         [Given(@"I Click ConfigureSetting From Menu")]
@@ -627,7 +508,7 @@ namespace Warewolf.UITests
         [Then(@"I Click First Recordset Input Checkbox")]
         public void Click_First_Recordset_Input_Checkbox()
         {
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox.Checked = true;
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox.Checked = true;
         }
 
         [Given(@"I Click FullScreen TopRibbon Button")]
@@ -644,8 +525,8 @@ namespace Warewolf.UITests
         public void Click_NewWorkflow_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.NewWorkflowButton, new Point(6, 6));
-            WaitForControlVisible(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
+            WaitForControlVisible(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode.Exists, "Start Node Does Not Exist after clicking new workflow ribbon button.");
         }
 
         [Given(@"I Click Save Ribbon Button")]
@@ -750,7 +631,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Nested Workflow Name")]
         public void Click_Nested_Workflow_Name()
         {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.UIHelloWorldTreeItem1.UIHelloWorldButton, new Point(37, 10));
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SubWorkflow.UIHelloWorldTreeItem1.UIHelloWorldButton, new Point(37, 10));
         }
 
         [Given(@"I Click New Workflow Tab")]
@@ -758,7 +639,7 @@ namespace Warewolf.UITests
         [Then(@"I Click New Workflow Tab")]
         public void Click_New_Workflow_Tab()
         {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab, new Point(63, 18));
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab, new Point(63, 18));
         }
 
         [Given(@"I Click NewVersion button")]
@@ -775,7 +656,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Output OnRecordset InVariableList")]
         public void Click_Output_OnRecordset_InVariableList()
         {
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.OutputCheckbox.Checked = true;
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.OutputCheckbox.Checked = true;
         }
 
         [Given(@"I Click Output OnVariable InVariableList")]
@@ -783,7 +664,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Output OnVariable InVariableList")]
         public void Click_Output_OnVariable_InVariableList()
         {
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.OutputCheckbox.Checked = true;
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.OutputCheckbox.Checked = true;
         }
 
         [Given(@"I Click Pin Toggle DebugOutput")]
@@ -791,7 +672,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Pin Toggle DebugOutput")]
         public void Click_Pin_Toggle_DebugOutput()
         {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputUnpinBtn, new Point(11, 10));
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputUnpinBtn, new Point(11, 10));
         }
 
         [Given(@"I Click Pin Toggle Documentor")]
@@ -815,7 +696,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Pin Toggle VariableList")]
         public void Click_Pin_Toggle_VariableList()
         {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.VariableUnpinBtn, new Point(10, 14));
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.VariableUnpinBtn, new Point(10, 14));
         }
 
         [Given(@"I Click Position Button")]
@@ -831,7 +712,7 @@ namespace Warewolf.UITests
         [Then(@"I Click Remove Unused Variables")]
         public void Click_Remove_Unused_Variables()
         {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused, new Point(30, 4));
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused, new Point(30, 4));
         }
 
         [Given(@"I Press F6")]
@@ -901,13 +782,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Cut, new Point(53, 16));
         }
 
-        [When(@"I Select DatabaseAndTable From BulkInsert Tool")]
-        public void Select_DatabaseAndTable_From_BulkInsert_Tool()
-        {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox);
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.LargeViewContentCustom.DatabaseComboBox.TestingDB);
-        }
-
         [When(@"I Select DeleteRow FromContextMenu")]
         public void Select_DeleteRow_FromContextMenu()
         {
@@ -965,9 +839,9 @@ namespace Warewolf.UITests
         public void Click_Create_Test_From_Debug()
         {
             int CreateTestButtonEnabledTimeout = 60000;
-            WaitForControlEnabled(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, CreateTestButtonEnabledTimeout);
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Debug Output New Test button not enabled after waiting for " + CreateTestButtonEnabledTimeout + "ms.");
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
+            WaitForControlEnabled(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, CreateTestButtonEnabledTimeout);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Debug Output New Test button not enabled after waiting for " + CreateTestButtonEnabledTimeout + "ms.");
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton, new Point(5, 5));
         }
 
         public void Save_Button_IsEnabled()
@@ -979,20 +853,20 @@ namespace Warewolf.UITests
         [Given(@"Hello World Workflow Tab Is Open")]
         public void Hello_World_Workflow_Tab_Is_Open()
         {
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIHelloWorldText.Exists, "Hello World workflow tab does not exist.");
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.UIHelloWorldText.Exists, "Hello World workflow tab does not exist.");
         }
 
         [When(@"I Expand Debug Output Recordset")]
         public void Expand_Debug_Output_Recordset()
         {
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.Expanded = true;
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.Expanded = true;
         }
 
         [Then(@"The GetCountries Recordset Is Visible in Debug Output")]
         public void ThenTheDebugOutputShowsGetCountriesRecordset()
         {
-            Assert.AreEqual("[[dbo_GetCountries(204).CountryID]]", ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetName.DisplayText, "Wrong recordset name in debug output for new DB connector.");
-            Assert.AreEqual("155", ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetValue.DisplayText, "Wrong recordset value in debug output for new DB connector.");
+            Assert.AreEqual("[[dbo_GetCountries(204).CountryID]]", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetName.DisplayText, "Wrong recordset name in debug output for new DB connector.");
+            Assert.AreEqual("155", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetValue.DisplayText, "Wrong recordset value in debug output for new DB connector.");
         }
 
         public void Open_Deploy_Using_Shortcut()
@@ -1005,7 +879,7 @@ namespace Warewolf.UITests
         [Then(@"Unit Tests Url Exists")]
         public void UnitTestUrlExists()
         {
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnitTestsUrlWorkflowUrlText.UnitTestsUrlWorkflowUrlHyperlink.Exists, "UnitTestsUrlWorkflowUrl does not exist");
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.TopScrollViewerPane.UnitTestsUrlWorkflowUrlText.UnitTestsUrlWorkflowUrlHyperlink.Exists, "UnitTestsUrlWorkflowUrl does not exist");
         }
 
         [Given(@"Resource Did not Open")]
@@ -1013,8 +887,8 @@ namespace Warewolf.UITests
         [Then(@"Resource Did not Open")]
         public void ResourceDidNotOpen()
         {
-            WaitForControlVisible(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
-            Assert.IsFalse(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Hello World"));
+            WaitForControlVisible(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("Hello World"));
         }
 
         [Given(@"I Filter Variable List ""(.*)""")]
@@ -1022,7 +896,7 @@ namespace Warewolf.UITests
         [Then(@"I Filter Variable List ""(.*)""")]
         public void Filter_VariableList(string text)
         {
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.Text = text;
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.Text = text;
         }
 
         [Given(@"I Click Clear Variable List Filter")]
@@ -1030,13 +904,13 @@ namespace Warewolf.UITests
         [Then(@"I Click Clear Variable List Filter")]
         public void Click_Clear_Variable_List_Filter()
         {
-            Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton);
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.SearchTextbox.ClearSearchButton);
         }
 
         public void Set_Input_Output_Variables()
         {
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
-            ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.OutputCheckbox.Checked = true;
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = true;
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.OutputCheckbox.Checked = true;
         }
 
         [Given(@"I drag a ""(.*)"" tool")]
@@ -1044,7 +918,7 @@ namespace Warewolf.UITests
         [Then(@"I drag a ""(.*)"" tool")]
         public void WhenIDragATool(string tool)
         {
-            ToolsUIMap.Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface();
         }
 
         public void CreateAttachmentsForTest(string filepath)
@@ -1068,5 +942,124 @@ namespace Warewolf.UITests
                 Assert.IsFalse(Directory.Exists(folderName));
             }
         }
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
+        {
+            get
+            {
+                if (_WorkflowServiceTestingUIMap == null)
+                {
+                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
+                }
+
+                return _WorkflowServiceTestingUIMap;
+            }
+        }
+
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
+
+        DeployUIMap DeployUIMap
+        {
+            get
+            {
+                if (_DeployUIMap == null)
+                {
+                    _DeployUIMap = new DeployUIMap();
+                }
+
+                return _DeployUIMap;
+            }
+        }
+
+        private DeployUIMap _DeployUIMap;
+
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
+
+        ServerSourceUIMap ServerSourceUIMap
+        {
+            get
+            {
+                if (_ServerSourceUIMap == null)
+                {
+                    _ServerSourceUIMap = new ServerSourceUIMap();
+                }
+
+                return _ServerSourceUIMap;
+            }
+        }
+
+        private ServerSourceUIMap _ServerSourceUIMap;
+
+        UtilityToolsUIMap UtilityToolsUIMap
+        {
+            get
+            {
+                if (_UtilityToolsUIMap == null)
+                {
+                    _UtilityToolsUIMap = new UtilityToolsUIMap();
+                }
+
+                return _UtilityToolsUIMap;
+            }
+        }
+
+        private UtilityToolsUIMap _UtilityToolsUIMap;
     }
 }

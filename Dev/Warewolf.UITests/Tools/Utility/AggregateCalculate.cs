@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Utility
 {
@@ -11,16 +12,16 @@ namespace Warewolf.UITests.Tools.Utility
 		[TestCategory("Utility Tools")]
         public void AggregateCalculateTool_Small_And_LargeView_UITest()
         {
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.Exists, "AggregateCalculate Tool on the design surface does not exist");
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.Exists, "AggregateCalculate Tool on the design surface does not exist");
             //Small View
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.fxComboBox.Exists, "FX Combobox does not exist after opening Aggregate Calculate tool.");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.ResultComboBox.Exists, "Result Combobox does not exist after opening Aggregate Calculate tool.");
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.fxComboBox.Exists, "FX Combobox does not exist after opening Aggregate Calculate tool.");
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.SmallViewContentCustom.ResultComboBox.Exists, "Result Combobox does not exist after opening Aggregate Calculate tool.");
             //Large View
-            ToolsUIMap.Open_AggregateCalculateTool_Largeview();
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.fxComboBox.Exists, "FX Combobox does not exist after opening Aggregate Calculate tool large view");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.ResultComboBox.Exists, "Results Combobox does not exist after opening Aggregate Calculate tool large view");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.Exists, "On Error group does not exist after opening Aggregate Calculate tool large view");
-            Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.DoneButton.Exists, "Done button does not exist after opening Aggregate Calculate tool large view");
+            UtilityToolsUIMap.Open_AggregateCalculateTool_Largeview();
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.fxComboBox.Exists, "FX Combobox does not exist after opening Aggregate Calculate tool large view");
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.ResultComboBox.Exists, "Results Combobox does not exist after opening Aggregate Calculate tool large view");
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.LargeViewContentCustom.OnErrorCustom.OnErrorGroup.Exists, "On Error group does not exist after opening Aggregate Calculate tool large view");
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AggregateCalculat.DoneButton.Exists, "Done button does not exist after opening Aggregate Calculate tool large view");
         }
 
         #region Additional test attributes
@@ -31,7 +32,7 @@ namespace Warewolf.UITests.Tools.Utility
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            ToolsUIMap.Drag_Toolbox_AggregateCalculate_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_AggregateCalculate_Onto_DesignSurface();
         }
         
         UIMap UIMap
@@ -49,20 +50,35 @@ namespace Warewolf.UITests.Tools.Utility
 
         private UIMap _UIMap;
 
-        ToolsUIMap ToolsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_ToolsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _ToolsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private ToolsUIMap _ToolsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        UtilityToolsUIMap UtilityToolsUIMap
+        {
+            get
+            {
+                if (_UtilityToolsUIMap == null)
+                {
+                    _UtilityToolsUIMap = new UtilityToolsUIMap();
+                }
+
+                return _UtilityToolsUIMap;
+            }
+        }
+
+        private UtilityToolsUIMap _UtilityToolsUIMap;
 
         #endregion
     }
