@@ -66,6 +66,19 @@
   <ItemGroup>
     <Compile Include="Common\Common.cs" />
     <Compile Include="ComPluginSource\ComPluginSourceTests.cs" />
+    <Compile Include="ComPluginSource\ComPluginSourceUIMap.cs">
+      <DependentUpon>ComPluginSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="ComPluginSource\ComPluginSourceUIMap.Designer.cs">
+      <DependentUpon>ComPluginSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="DBSource\SQLServerSource\SQLServerSourceTests.cs" />
+    <Compile Include="DBSource\DBSourceUIMap.cs">
+      <DependentUpon>DBSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="DBSource\DBSourceUIMap.Designer.cs">
+      <DependentUpon>DBSourceUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="DebugOutputTests\DebugOutputWindowTests.cs" />
     <Compile Include="Deploy\DeployUIMap.cs">
       <DependentUpon>DeployUIMap.uitest</DependentUpon>
@@ -74,25 +87,60 @@
       <DependentUpon>DeployUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="DotNetPluginSource\DotNetPluginSourceTests.cs" />
+    <Compile Include="DotNetPluginSource\DotNetPluginSourceUIMap.cs">
+      <DependentUpon>DotNetPluginSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="DotNetPluginSource\DotNetPluginSourceUIMap.Designer.cs">
+      <DependentUpon>DotNetPluginSourceUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="DropboxSource\DropboxSourceTests.cs" />
-    <Compile Include="DependencyGraph\ShowDependencyTets.cs" />
+    <Compile Include="DependencyGraph\ShowDependencyTests.cs" />
+    <Compile Include="DropboxSource\DropboxSourceUIMap.cs">
+      <DependentUpon>DropboxSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="DropboxSource\DropboxSourceUIMap.Designer.cs">
+      <DependentUpon>DropboxSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="EmailSource\EmailSourceUIMap.cs">
+      <DependentUpon>EmailSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="EmailSource\EmailSourceUIMap.Designer.cs">
+      <DependentUpon>EmailSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="ExchangeSource\ExchangeSourceUIMap.cs">
+      <DependentUpon>ExchangeSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="ExchangeSource\ExchangeSourceUIMap.Designer.cs">
+      <DependentUpon>ExchangeSourceUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="Explorer\ExplorerUIMap.cs">
       <DependentUpon>ExplorerUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Explorer\ExplorerUIMap.Designer.cs">
       <DependentUpon>ExplorerUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="ODBCSource\ODBCSourceTests.cs" />
-    <Compile Include="OracleSource\OracleSourceTests.cs" />
-    <Compile Include="PostgreSQLSource\PostgreSQLSourceTests.cs" />
-    <Compile Include="MySQLSource\MySQLSourceTests.cs" />
     <Compile Include="Explorer\Duplicate.cs" />
+    <Compile Include="DBSource\MySQLSource\MySqlSourceTests.cs" />
+    <Compile Include="DBSource\OracleSource\OracleSourceTests.cs" />
+    <Compile Include="DBSource\PostgreSQLSource\PostgreSQLSourceTests.cs" />
+    <Compile Include="RabbitMQSource\RabbitMQSourceUIMap.cs">
+      <DependentUpon>RabbitMQSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="RabbitMQSource\RabbitMQSourceUIMap.Designer.cs">
+      <DependentUpon>RabbitMQSourceUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="RabbitMQSource\RabbitMQSourceTests.cs" />
     <Compile Include="Scheduler\SchedulerUIMap.cs">
       <DependentUpon>SchedulerUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Scheduler\SchedulerUIMap.Designer.cs">
       <DependentUpon>SchedulerUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSource\ServerSourceUIMap.cs">
+      <DependentUpon>ServerSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSource\ServerSourceUIMap.Designer.cs">
+      <DependentUpon>ServerSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="ServerSource\ServerSourceTests.cs" />
     <Compile Include="Settings\SettingsUIMap.cs">
@@ -101,9 +149,14 @@
     <Compile Include="Settings\SettingsUIMap.Designer.cs">
       <DependentUpon>SettingsUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="SharepointSource\SharepointSourceUIMap.cs">
+      <DependentUpon>SharepointSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="SharepointSource\SharepointSourceUIMap.Designer.cs">
+      <DependentUpon>SharepointSourceUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="SharepointSource\SharepointSourceTests.cs" />
     <Compile Include="Shortcut Keys\Shortcut Keys.cs" />
-    <Compile Include="SQLServerSource\SQLServerSourceTests.cs" />
     <Compile Include="Tabs and Panes\WorkflowTabs.cs" />
     <Compile Include="Tools\Email\Exchange_Send.cs" />
     <Compile Include="Tools\Sharepoint\Delete List Item.cs" />
@@ -119,7 +172,19 @@
     <Compile Include="DialogsUIMap.Designer.cs">
       <DependentUpon>DialogsUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="WcfSource\WcfSourceUIMap.cs">
+      <DependentUpon>WcfSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="WcfSource\WcfSourceUIMap.Designer.cs">
+      <DependentUpon>WcfSourceUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="WcfSource\WcfSourceTests.cs" />
+    <Compile Include="WebSource\WebSourceUIMap.cs">
+      <DependentUpon>WebSourceUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="WebSource\WebSourceUIMap.Designer.cs">
+      <DependentUpon>WebSourceUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="WebSource\WebSourceTests.cs" />
     <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
     <Compile Include="Explorer\ResourceVersion.cs" />
@@ -246,17 +311,44 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
+    <None Include="ComPluginSource\ComPluginSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBSource\DBSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Deploy\DeployUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DotNetPluginSource\DotNetPluginSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DropboxSource\DropboxSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="EmailSource\EmailSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ExchangeSource\ExchangeSourceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
     <None Include="Explorer\ExplorerUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Scheduler\SchedulerUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="ServerSource\ServerSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Settings\SettingsUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SharepointSource\SharepointSourceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
     <None Include="Tools\ToolsUIMap.uitest" />
@@ -264,6 +356,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="UIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WcfSource\WcfSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WebSource\WebSourceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
     <None Include="WorkflowTesting\WorkflowServiceTestingUIMap.uitest">

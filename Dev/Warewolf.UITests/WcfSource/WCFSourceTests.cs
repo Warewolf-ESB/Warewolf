@@ -1,8 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WcfSource.WcfSourceUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -15,12 +14,12 @@ namespace Warewolf.UITests
         public void Create_WcfSource_From_ExplorerContextMenu_UITests()
         {
             ExplorerUIMap.Select_NewWcfSource_From_ExplorerContextMenu();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.Exists, "WCF Source Tab does now exist");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Enabled, "WCF Endpoint URL Textbox is not enabled");
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
-            UIMap.Enter_TextIntoAddress_On_WCFServiceTab();
-            UIMap.Click_WCFServiceSource_TestConnectionButton();
-            UIMap.Click_Close_WCFServiceSource_TabButton();
+            Assert.IsTrue(WcfSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.Exists, "WCF Source Tab does now exist");
+            Assert.IsTrue(WcfSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Enabled, "WCF Endpoint URL Textbox is not enabled");
+            Assert.IsFalse(WcfSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
+            WcfSourceUIMap.Enter_TextIntoAddress_On_WCFServiceTab();
+            WcfSourceUIMap.Click_WCFServiceSource_TestConnectionButton();
+            WcfSourceUIMap.Click_Close_WCFServiceSource_TabButton();
         }
         
         #region Additional test attributes
@@ -61,6 +60,21 @@ namespace Warewolf.UITests
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        WcfSourceUIMap WcfSourceUIMap
+        {
+            get
+            {
+                if (_WcfSourceUIMap == null)
+                {
+                    _WcfSourceUIMap = new WcfSourceUIMap();
+                }
+
+                return _WcfSourceUIMap;
+            }
+        }
+
+        private WcfSourceUIMap _WcfSourceUIMap;
 
         #endregion
     }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DropboxSource.DropboxSourceUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -14,12 +14,12 @@ namespace Warewolf.UITests
         public void Create_DropboxSource_From_ExplorerContextMenu_UITests()
         {
             ExplorerUIMap.Select_NewDropboxSource_From_ExplorerContextMenu();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.Exists, "OAuth Source Tab does not exist");
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton.Enabled, "Authorise button is enabled");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.ServerTypeComboBox.Enabled, "Server Type Combobox is not enabled");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Enabled, "OAuth Key Textbox is not enabled");
-            UIMap.Enter_TextIntoOAuthKey_On_OAuthSourceTab();
-            UIMap.Click_OAuthSource_CloseTabButton();
+            Assert.IsTrue(DropboxSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.Exists, "OAuth Source Tab does not exist");
+            Assert.IsFalse(DropboxSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton.Enabled, "Authorise button is enabled");
+            Assert.IsTrue(DropboxSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.ServerTypeComboBox.Enabled, "Server Type Combobox is not enabled");
+            Assert.IsTrue(DropboxSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Enabled, "OAuth Key Textbox is not enabled");
+            DropboxSourceUIMap.Enter_TextIntoOAuthKey_On_OAuthSourceTab();
+            DropboxSourceUIMap.Click_OAuthSource_CloseTabButton();
         }
 
         #region Additional test attributes
@@ -60,6 +60,21 @@ namespace Warewolf.UITests
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        DropboxSourceUIMap DropboxSourceUIMap
+        {
+            get
+            {
+                if (_DropboxSourceUIMap == null)
+                {
+                    _DropboxSourceUIMap = new DropboxSourceUIMap();
+                }
+
+                return _DropboxSourceUIMap;
+            }
+        }
+
+        private DropboxSourceUIMap _DropboxSourceUIMap;
 
         #endregion
     }

@@ -1,16 +1,18 @@
 ﻿using TechTalk.SpecFlow;
 using Warewolf.UITests.DialogsUIMapClasses;
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using System.Drawing;
+using System.Windows.Input;
+using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
+using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
 
 namespace Warewolf.UITests.Tools.ToolsUIMapClasses
 {
-    using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    using System.Drawing;
-    using System.Windows.Input;
-    using ExplorerUIMapClasses;
 
     public partial class ToolsUIMap
     {
@@ -58,6 +60,36 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        DotNetPluginSourceUIMap DotNetPluginSourceUIMap
+        {
+            get
+            {
+                if (_DotNetPluginSourceUIMap == null)
+                {
+                    _DotNetPluginSourceUIMap = new DotNetPluginSourceUIMap();
+                }
+
+                return _DotNetPluginSourceUIMap;
+            }
+        }
+
+        private DotNetPluginSourceUIMap _DotNetPluginSourceUIMap;
+
+        ComPluginSourceUIMap ComPluginSourceUIMap
+        {
+            get
+            {
+                if (_ComPluginSourceUIMap == null)
+                {
+                    _ComPluginSourceUIMap = new ComPluginSourceUIMap();
+                }
+
+                return _ComPluginSourceUIMap;
+            }
+        }
+
+        private ComPluginSourceUIMap _ComPluginSourceUIMap;
 
         public void Click_SelectFilesButton_On_SMTPEmailTool_LargeView()
         {
@@ -2110,19 +2142,6 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointUploadFile.SmallView.ServerPathToIntellisenseCombobox.Textbox.Text = "TestFolder/clocks.dat";
         }
 
-        [When(@"I Enter Sharepoint ServerSource ServerName")]
-        public void Enter_Sharepoint_ServerSource_ServerName()
-        {
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://rsaklfsvrsharep/";
-        }
-
-        [When(@"I Enter Sharepoint ServerSource User Credentials")]
-        public void Enter_Sharepoint_ServerSource_User_Credentials()
-        {
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserNameTextBox.Text = "IntegrationTester";
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Text = "I73573r0";
-        }
-
         [When(@"I Enter SomeData Into Base Convert Large View Row1 Value Textbox")]
         public void Enter_SomeData_Into_BaseConvertTool_Row1ValueTextbox()
         {
@@ -3594,14 +3613,6 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox, new Point(216, 7));
         }
 
-        [When(@"I Select TSTCIREMOTE From Server Source Wizard Dropdownlist")]
-        public void Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist()
-        {
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.TSTCIREMOTE, new Point(70, 19));
-            Assert.AreEqual("TST-CI-REMOTE", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.AddressEditBox.Text, "Server source address textbox text does not equal TST-CI-REMOTE");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Exists, "Server source wizard does not contain a test connection button");
-        }
-
         [When(@"I Select UITestingDBSource From SQL Server Large View Source Combobox")]
         public void Select_UITestingDBSource_From_SQL_Server_Large_View_Source_Combobox()
         {
@@ -3638,27 +3649,6 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text = "0";
             Assert.AreEqual("0", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
-        }
-
-        [When(@"I Type The Testing Site into Web POST Source Wizard Address Textbox")]
-        public void Type_The_Testing_Site_into_Web_POST_Source_Wizard_Address_Textbox()
-        {
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://rsaklfsvrtfsbld:9810/api/products/Post";
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a valid web post address.");
-        }
-
-        [When(@"I Type The Testing Site into Web DELETE Source Wizard Address Textbox")]
-        public void Type_The_Testing_Site_into_Web_DELETE_Source_Wizard_Address_Textbox()
-        {
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://rsaklfsvrtfsbld:9810/api/products/Delete";
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a valid web delete address.");
-        }
-
-        [When(@"I Type The Testing Site into Web PUT Source Wizard Address Textbox")]
-        public void Type_The_Testing_Site_into_Web_PUT_Source_Wizard_Address_Textbox()
-        {
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://rsaklfsvrtfsbld:9810/api/products/Put";
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "New web source wizard test connection button is not enabled after entering a valid web put address.");
         }
 
         [When(@"I Click Decision Large View Match Type Combobox")]
@@ -3736,13 +3726,13 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
         public void Click_COMDLLPluginTool_LargeView_NewSourceButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.NewSourceButton);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.Exists, "New COM Plugin source wizard tab does not exist after clicking new source from COM DLL Tool");
+            Assert.IsTrue(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.Exists, "New COM Plugin source wizard tab does not exist after clicking new source from COM DLL Tool");
         }
 
         public void Click_DotNetPluginTool_LargeView_NewSourceButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NewSourceButton);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists, "New DotNet Plugin source wizard tab does not exist after clicking new source from DotNet DLL Tool");
+            Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists, "New DotNet Plugin source wizard tab does not exist after clicking new source from DotNet DLL Tool");
         }
 
         [When(@"I Drag Start Node")]

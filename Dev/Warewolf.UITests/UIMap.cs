@@ -17,6 +17,8 @@ using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
+using Warewolf.UITests.Settings.SettingsUIMapClasses;
+using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -97,6 +99,36 @@ namespace Warewolf.UITests
         }
 
         private DeployUIMap _DeployUIMap;
+
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
+
+        ServerSourceUIMap ServerSourceUIMap
+        {
+            get
+            {
+                if (_ServerSourceUIMap == null)
+                {
+                    _ServerSourceUIMap = new ServerSourceUIMap();
+                }
+
+                return _ServerSourceUIMap;
+            }
+        }
+
+        private ServerSourceUIMap _ServerSourceUIMap;
 
         const int _lenientSearchTimeout = 30000;
         const int _lenientMaximumRetryCount = 3;
@@ -322,14 +354,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.TabItemsTabList.JSONTab.Exists, "Assert Json tab does not exist in the debug input window.");
         }
 
-        [Given(@"I Click New Web Source Test Connection Button")]
-        [When(@"I Click New Web Source Test Connection Button")]
-        [Then(@"I Click New Web Source Test Connection Button")]
-        public void Click_NewWebSource_TestConnectionButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton, new Point(52, 14));
-        }
-
         [Given(@"I Click Close Clean Workflow Tab")]
         [When(@"I Click Close Clean Workflow Tab")]
         [Then(@"I Click Close Clean Workflow Tab")]
@@ -426,22 +450,6 @@ namespace Warewolf.UITests
             MainStudioWindow.DebugInputDialog.RememberDebugInputCheckBox.Checked = true;
         }
 
-        [Given(@"I Click User Button On Sharepoint Source")]
-        [When(@"I Click User Button On Sharepoint Source")]
-        [Then(@"I Click User Button On Sharepoint Source")]
-        public void Click_UserButton_On_SharepointSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.UserRadioButton.Selected = true;
-        }
-
-        [Given(@"I Click Windows Button On Sharepoint Source")]
-        [When(@"I Click Windows Button On Sharepoint Source")]
-        [Then(@"I Click Windows Button On Sharepoint Source")]
-        public void Click_WindowsButton_On_SharepointSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.WindowsRadioButton.Selected = true;
-        }
-
         public void Enter_Dice_Roll_Values()
         {
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.FromComboBox.FromTextEdit.Exists, "From textbox does not exist");
@@ -531,31 +539,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
         }
 
-        [Given(@"I Click Close Sharepoint Server Source Tab")]
-        [When(@"I Click Close Sharepoint Server Source Tab")]
-        [Then(@"I Click Close Sharepoint Server Source Tab")]
-        public void WhenIClickCloseSharepointServerSourceWizardTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.CloseButton);
-        }
-
-        [Given(@"I Click Close WCFService Source Tab Button")]
-        [When(@"I Click Close WCFService Source Tab Button")]
-        [Then(@"I Click Close WCFService Source Tab Button")]
-
-        public void Click_Close_WCFServiceSource_TabButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.CloseTabButton);
-        }
-
-        [Given(@"I Click Close OAuthSource Source Tab Button")]
-        [When(@"I Click Close OAuthSource Source Tab Button")]
-        [Then(@"I Click Close OAuthSource Source Tab Button")]
-        public void Click_OAuthSource_CloseTabButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.CloseTabButton);
-        }
-
         [Given(@"I Click Close Dependecy Tab")]
         [When(@"I Click Close Dependecy Tab")]
         [Then(@"I Click Close Dependecy Tab")]
@@ -564,45 +547,12 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.CloseButton, new Point(13, 10));
         }
 
-        [Given(@"I Click Close Deploy Tab Button")]
-        [When(@"I Click Close Deploy Tab Button")]
-        [Then(@"I Click Close Deploy Tab Button")]
-        public void Click_Close_Deploy_Tab_Button()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton.Exists, "DeployTab close tab button does not exist.");
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton, new Point(16, 6));
-        }
-
         [Given(@"I Click Close FullScreen")]
         [When(@"I Click Close FullScreen")]
         [Then(@"I Click Close FullScreen")]
         public void Click_Close_FullScreen()
         {
             Mouse.Click(MainStudioWindow.ExitFullScreenF11Text.ExitFullScreenF11Hyperlink, new Point(64, 5));
-        }
-
-        [Given(@"I Click Close Server Source Wizard Tab Button")]
-        [When(@"I Click Close Server Source Wizard Tab Button")]
-        [Then(@"I Click Close Server Source Wizard Tab Button")]
-        public void Click_Close_Server_Source_Wizard_Tab_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.CloseButton, new Point(5, 5));
-        }
-
-        [Given(@"I Click Close Settings Tab Button")]
-        [When(@"I Click Close Settings Tab Button")]
-        [Then(@"I Click Close Settings Tab Button")]
-        public void Click_Close_Settings_Tab_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton, new Point(16, 6));
-        }
-
-        [Given(@"I Click Close SharepointSource Tab Button")]
-        [When(@"I Click Close SharepointSource Tab Button")]
-        [Then(@"I Click Close SharepointSource Tab Button")]
-        public void Click_Close_SharepointSource_Tab_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.CloseButton, new Point(13, 7));
         }
 
         [Given(@"I Click Close Studio TopRibbon Button")]
@@ -619,14 +569,6 @@ namespace Warewolf.UITests
         public void Click_Close_Tab_Context_Menu_Button()
         {
             Mouse.Click(MainStudioWindow.TabContextMenu.Close, new Point(27, 13));
-        }
-
-        [Given(@"I Click Close Web Source Wizard Tab Button")]
-        [When(@"I Click Close Web Source Wizard Tab Button")]
-        [Then(@"I Click Close Web Source Wizard Tab Button")]
-        public void Click_Close_Web_Source_Wizard_Tab_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.CloseButton, new Point(9, 6));
         }
 
         [Given(@"I Click Close Workflow Tab Button")]
@@ -721,7 +663,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
             Playback.Wait(2000);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
+            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
         }
 
         [Given(@"I Click Scheduler Ribbon Button")]
@@ -748,7 +690,7 @@ namespace Warewolf.UITests
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 2));
             MainStudioWindow.DockManager.SplitPaneMiddle.DrawHighlight();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "Settings tab does not exist after clicking settings ribbon button.");
+            Assert.IsTrue(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.Exists, "Settings tab does not exist after clicking settings ribbon button.");
         }
 
         [Given(@"I Click Knowledge Ribbon Button")]
@@ -892,400 +834,6 @@ namespace Warewolf.UITests
             Mouse.Click(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused, new Point(30, 4));
         }
 
-        #region SourceWizards.uitest
-
-        [When(@"I Click Sharepoint Server Source TestConnection")]
-        public void Click_Sharepoint_Server_Source_TestConnection()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton, new Point(58, 16));
-        }
-
-        [Given(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
-        [When(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
-        [Then(@"I Create Remote Server Source As ""(.*)"" with address ""(.*)""")]
-        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress)
-        {
-            CreateRemoteServerSource(ServerSourceName, ServerAddress, false);
-        }
-
-        public void CreateRemoteServerSource(string ServerSourceName, string ServerAddress, bool PublicAuth = false)
-        {
-            Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext
-                .NewServerSource.AddressComboBox.AddressEditBox.Text = ServerAddress;
-            if (ServerAddress == "tst-ci-")
-            {
-                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.TSTCIREMOTE.Exists, "TSTCIREMOTE does not exist in server source wizard drop down list after starting by typing tst-ci-.");
-                ToolsUIMap.Select_TSTCIREMOTE_From_Server_Source_Wizard_Dropdownlist();
-            }
-            if (PublicAuth)
-            {
-                MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
-            }
-            Click_Server_Source_Wizard_Test_Connection_Button();
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ErrorText.Spinner);
-            Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
-            Click_Close_Server_Source_Wizard_Tab_Button();
-        }
-
-        public void Enter_TextIntoOAuthKey_On_OAuthSourceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "test";
-        }
-
-        public void Click_OAuthSource_AuthoriseButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton);
-        }
-
-        public void Select_AssemblyFile_From_COMPluginDataTree(string filter)
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.SearchTextBox.Text = filter;
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.DataTree.Nodes[1]);
-        }
-
-        [Given(@"I Click Close COMPlugin Source Tab Button")]
-        [When(@"I Click Close COMPlugin Source Tab Button")]
-        [Then(@"I Click Close COMPlugin Source Tab Button")]
-        public void Click_COMPluginSource_CloseTabButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
-        }
-
-        public void Enter_Text_Into_Exchange_Tab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.AutoDiscoverUrlTxtBox.Text = "https://outlook.office365.com/EWS/Exchange.asmx";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.UserNameTextBox.Text = "Nkosinathi.Sangweni@TheUnlimited.co.za";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.PasswordTextBox.Text = "Password123";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.Text = "dev2warewolf@gmail.com";
-        }
-
-        [When(@"I Click ExchangeSource TestConnection Button")]
-        public void Click_ExchangeSource_TestConnection_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.TestConnectionButton, new Point(58, 16));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.Spinner);
-        }
-
-        [Given(@"I Click Close Exchange Source Tab Button")]
-        [When(@"I Click Close Exchange Source Tab Button")]
-        [Then(@"I Click Close RabExchangebitMQ Source Tab Button")]
-        public void Click_ExchangeSource_CloseTabButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.CloseButton);
-        }
-
-        [Given(@"I Click EmailSource TestConnection Button")]
-        [When(@"I Click EmailSource TestConnection Button")]
-        [Then(@"I Click EmailSource TestConnection Button")]
-        public void Click_EmailSource_TestConnection_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TestConnectionButton, new Point(58, 16));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.Spinner);
-        }
-
-        [Given(@"I Click Close EmailSource Tab")]
-        [When(@"I Click Close EmailSource Tab")]
-        [Then(@"I Click Close EmailSource Tab")]
-        public void Click_Close_EmailSource_Tab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.CloseButton, new Point(13, 10));
-        }
-
-        public void Enter_Text_Into_EmailSource_Tab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.HostTextBoxEdit.Text = "localhost";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.UserNameTextBoxEdit.Text = "test";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.PasswordTextBoxEdit.Text = "test";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.PortTextBoxEdit.Text = "2";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.FromTextBoxEdit.Text = "AThorLocal@norsegods.com";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.ToTextBoxEdit.Text = "dev2warewolf@gmail.com";
-        }
-
-        public void Edit_Timeout_On_EmailSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text = "2000";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.FromTextBoxEdit.Text = "AThorLocal@norsegods.com";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.ToTextBoxEdit.Text = "dev2warewolf@gmail.com";
-        }
-
-        public void Edit_Timeout_On_ExchangeSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text = "2000";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.Text = "dev2warewolf@gmail.com";
-        }
-
-        public void Enter_Text_On_RabbitMQSourceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.HostTextBoxEdit.Text = "rsaklfsvrgendev";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PortTextBoxEdit.Text = "5672";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.UserNameTextBoxEdit.Text = "test";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PasswordTextBoxEdit.Text = "test";
-        }
-
-        public void Click_RabbitMQSource_TestConnectionButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.TestConnectionButton);
-        }
-
-        [Given(@"I RabbitMqAsserts")]
-        [When(@"I RabbitMqAsserts")]
-        [Then(@"I RabbitMqAsserts")]
-        public void RabbitMqAsserts()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.VirtualHostTextBoxEdit.Exists, "VirtualHoast textbox does not exist after opening RabbitMq Source tab");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PasswordTextBoxEdit.Exists, "Password textbox does not exist after opening RabbitMq Source");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.UserNameTextBoxEdit.Exists, "Username textbox does not exist after opening RabbitMq Source");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.HostTextBoxEdit.Exists, "Host textbox does not exist after opening RabbitMq Source");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.RabbitMQSourceCustom.PortTextBoxEdit.Exists, "Port textbox does not exist after opening RabbitMq Source");
-        }
-
-        [Given(@"I Click Close RabbitMQ Source Tab Button")]
-        [When(@"I Click Close RabbitMQ Source Tab Button")]
-        [Then(@"I Click Close RabbitMQ Source Tab Button")]
-        public void Click_Close_RabbitMQSource_Tab_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.CloseTabButton, new Point(13, 4));
-        }
-
-        [When(@"I Click Server Source Wizard Address Protocol Dropdown")]
-        public void Click_Server_Source_Wizard_Address_Protocol_Dropdown()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown, new Point(54, 8));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
-        }
-
-        [When(@"I Click Server Source Wizard Test Connection Button")]
-        public void Click_Server_Source_Wizard_Test_Connection_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton, new Point(51, 8));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Spinner);
-        }
-
-        public void Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton);
-            Assert.IsTrue(DialogsUIMap.SelectFilesWindow.Exists, "Select Files Window did not open after clicking Assembly Directory Button");
-        }
-
-        [Given(@"I Click Close DotNetPlugin Source Tab")]
-        [When(@"I Click Close DotNetPlugin Source Tab")]
-        [Then(@"I Click Close DotNetPlugin Source Tab")]
-        public void Click_Close_DotNetPlugin_Source_Tab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.CloseButton, new Point(13, 4));
-        }
-
-        [When(@"I Type ""(.*)"" into Plugin Source Wizard Assembly Textbox")]
-        public void Type_dll_into_Plugin_Source_Wizard_Assembly_Textbox(string text)
-        {
-            if (!File.Exists(text))
-            {
-                text = text.Replace("Framework64", "Framework");
-                if (!File.Exists(text))
-                {
-                    throw new Exception("No suitable DLL could be found for this test to use.");
-                }
-            }
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = text;
-            Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after DLL has been selected in plugin source wizard.");
-        }
-
-        [Then(@"I Enter Text Into Database Server Tab")]
-        [Given(@"I Enter Text Into Database Server Tab")]
-        [Then(@"I Enter Text Into Database Server Tab")]
-        public void Enter_Text_Into_DatabaseServer_Tab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
-        }
-
-        [When(@"I Enter RunAsUser(Root) Username And Password on Database source")]
-        [Given(@"I Enter RunAsUser(Root) Username And Password on Database source")]
-        [Then(@"I Enter RunAsUser(Root) Username And Password on Database source")]
-        public void IEnterRunAsUserRootOnDatabaseSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "root";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "admin";
-        }
-
-        [When(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
-        [Given(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
-        [Then(@"I Enter RunAsUser(PostGres) Username And Password on Database source")]
-        public void IEnterRunAsUserPostGresOnDatabaseSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "postgres";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
-        }
-
-        [When(@"I Select mysql From DB Source Wizard Database Combobox")]
-        [Given(@"I Select mysql From DB Source Wizard Database Combobox")]
-        [Then(@"I Select mysql From DB Source Wizard Database Combobox")]
-        public void Select_mysql_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsmysqlDB);
-            Assert.AreEqual("mysql", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIMysqlText.DisplayText);
-        }
-
-        [When(@"I Select postgres From DB Source Wizard Database Combobox")]
-        [Given(@"I Select postgres From DB Source Wizard Database Combobox")]
-        [Then(@"I Select postgres From DB Source Wizard Database Combobox")]
-        public void Select_postgres_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAspostgresDB);
-            Assert.AreEqual("postgres", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIPostgresText.DisplayText);
-        }
-
-        [When(@"I Select HR From DB Source Wizard Database Combobox")]
-        [Given(@"I Select HR From DB Source Wizard Database Combobox")]
-        [Then(@"I Select HR From DB Source Wizard Database Combobox")]
-        public void Select_HR_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsHRDB);
-            Assert.AreEqual("HR", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIHRText.DisplayText);
-        }
-
-        [When(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
-        [Given(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
-        [Then(@"I Select ExcelFiles From DB Source Wizard Database Combobox")]
-        public void Select_ExcelFiles_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsExcelFilesDB);
-            Assert.AreEqual("Excel Files", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIExcelFilesText.DisplayText);
-        }
-
-        [When(@"I Select MSAccess From DB Source Wizard Database Combobox")]
-        [Given(@"I Select MSAccess From DB Source Wizard Database Combobox")]
-        [Then(@"I Select MSAccess From DB Source Wizard Database Combobox")]
-        public void Select_MSAccess_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsMSAccessDB);
-            Assert.AreEqual("MS Access Database", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.MSAccessDatabaseText.DisplayText);
-        }
-
-        [When(@"I Select TestDB From DB Source Wizard Database Combobox")]
-        [Given(@"I Select TestDB From DB Source Wizard Database Combobox")]
-        [Then(@"I Select TestDB From DB Source Wizard Database Combobox")]
-        public void Select_TestDB_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsTestDB);
-            Assert.AreEqual("TestDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.TestDBText.DisplayText);
-        }
-
-        [When(@"I Select test From DB Source Wizard Database Combobox")]
-        [Given(@"I Select test From DB Source Wizard Database Combobox")]
-        [Then(@"I Select test From DB Source Wizard Database Combobox")]
-        public void Select_test_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAstest);
-            Assert.AreEqual("test", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.testText.DisplayText);
-        }
-
-        [When(@"I Select master From DB Source Wizard Database Combobox")]
-        [Given(@"I Select master From DB Source Wizard Database Combobox")]
-        [Then(@"I Select master From DB Source Wizard Database Combobox")]
-        public void Select_master_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.ToggleButton);
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsmaster);
-            Assert.AreEqual("master", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
-        }
-
-        [When(@"I Select Dev2TestingDB From DB Source Wizard Database Combobox")]
-        public void Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox);
-            Mouse.Click(MainStudioWindow.Dev2TestingDBCustom);
-            Assert.AreEqual("Dev2TestingDB", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.UIDev2TestingDBText.DisplayText);
-        }
-
-        [When(@"I Type rsaklfsvrgen into DB Source Wizard Server Textbox")]
-        public void Type_rsaklfsvrgen_into_DB_Source_Wizard_Server_Textbox()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "rsaklfsvrgen";
-        }
-
-        [Given(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
-        [Then(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
-        public void Assert_RSAKLFSVRGENDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
-        {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
-        }
-
-        [When(@"I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox")]
-        public void Type_RSAKLFSVRGENDEV_into_DB_Source_Wizard_Server_Textbox()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
-        }
-
-        [When(@"I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist")]
-        public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV, new Point(97, 17));
-            Assert.AreEqual("RSAKLFSVRGENDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
-        }
-
-        [Given(@"I Click Close DB Source Wizard Tab Button")]
-        [When(@"I Click Close DB Source Wizard Tab Button")]
-        [Then(@"I Click Close DB Source Wizard Tab Button")]
-        public void Click_Close_DB_Source_Wizard_Tab_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.CloseButton, new Point(13, 4));
-        }
-
-        [Given(@"I Click UserButton On Database Source")]
-        [When(@"I Click UserButton On Database Source")]
-        [Then(@"I Click UserButton On Database Source")]
-        public void Click_UserButton_On_DatabaseSource()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserRadioButton);
-        }
-
-        [Given(@"I Click WindowsButton On Database Source")]
-        [When(@"I Click WindowsButton On Database Source")]
-        [Then(@"I Click WindowsButton On Database Source")]
-        public void Click_WindowsButton_On_DatabaseSource()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton);
-        }
-
-        [Given(@"I Enter TestUser Username And Password on Database source")]
-        [When(@"I Enter TestUser Username And Password on Database source")]
-        [Then(@"I Enter TestUser Username And Password on Database source")]
-        public void IEnterRunAsUserTestUserOnDatabaseSource()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "testuser";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
-        }
-
-        [Given(@"I Click DB Source Wizard Test Connection Button")]
-        [When(@"I Click DB Source Wizard Test Connection Button")]
-        [Then(@"I Click DB Source Wizard Test Connection Button")]
-        public void Click_DB_Source_Wizard_Test_Connection_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton, new Point(21, 16));
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.Exists, "Database Combobox is not visible.");
-        }
-
-
-        [Given(@"The DB Source Wizard Test Succeeded Image Is Visible")]
-        [When(@"The DB Source Wizard Test Succeeded Image Is Visible")]
-        [Then(@"The DB Source Wizard Test Succeeded Image Is Visible")]
-        public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
-        {
-            var point = new Point();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRGENDEV and waiting for the spinner.");
-        }
-
-        #endregion
-
         [Given(@"I Press F6")]
         [When(@"I Press F6")]
         [Then(@"I Press F6")]
@@ -1366,16 +914,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.DeleteRow, new Point(74, 9));
         }
 
-        [When(@"I Select http From Server Source Wizard Address Protocol Dropdown")]
-        public void Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown, new Point(54, 8));
-            Assert.IsTrue(MainStudioWindow.ComboboxListItemAsHttp.Exists, "Http does not exist in server source wizard address protocol dropdown list.");
-            Mouse.Click(MainStudioWindow.ComboboxListItemAsHttp, new Point(31, 12));
-            Assert.AreEqual("http", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.HttpSelectedItemText.DisplayText, "Server source wizard address protocol is not equal to http.");
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.AddressEditBox.Exists, "Server source wizard address textbox does not exist");
-        }
-
         [When(@"I Select InsertRow FromContextMenu")]
         public void Select_InsertRow_FromContextMenu()
         {
@@ -1401,11 +939,6 @@ namespace Warewolf.UITests
         public void Select_Paste_FromContextMenu()
         {
             Mouse.Click(MainStudioWindow.DesignSurfaceContextMenu.Paste, new Point(52, 16));
-        }
-
-        public void Select_Server_Authentication_Public()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected = true;
         }
 
         [When(@"I Select SaveAsImage FromContextMenu")]
@@ -1514,130 +1047,6 @@ namespace Warewolf.UITests
             ToolsUIMap.Drag_Toolbox_Sharepoint_CopyFile_Onto_DesignSurface();
         }
 
-        public void Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyDirectoryButton);
-        }
-
-        [Given(@"I change Server Authentication From Deploy And Validate Changes From Explorer")]
-        [When(@"I change Server Authentication From Deploy And Validate Changes From Explorer")]
-        [Then(@"I change Server Authentication From Deploy And Validate Changes From Explorer")]
-        public void ChangeServerAuthenticationFromDeployAndValidateChangesFromExplorer()
-        {
-            var windowsRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
-            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
-
-            if (publicRadioButton.Selected)
-            {
-                windowsRadioButton.Selected = true;
-                Click_Server_Source_Wizard_Test_Connection_Button();
-                Click_Save_Ribbon_Button_With_No_Save_Dialog();
-                Playback.Wait(1000);
-                Click_Close_Server_Source_Wizard_Tab_Button();
-                ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-                ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
-                Playback.Wait(1000);
-                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
-                Click_Deploy_Ribbon_Button();
-                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-                DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
-            }
-            else
-            {
-                publicRadioButton.Selected = true;
-                Click_Server_Source_Wizard_Test_Connection_Button();
-                Click_Save_Ribbon_Button_With_No_Save_Dialog();
-                Playback.Wait(1000);
-                Click_Close_Server_Source_Wizard_Tab_Button();
-                ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-                ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
-                Playback.Wait(1000);
-                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
-                Click_Deploy_Ribbon_Button();
-                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-                DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
-            }
-        }
-
-        [Given(@"I set AuthenticationType to Public")]
-        [When(@"I set AuthenticationType to Public")]
-        [Then(@"I set AuthenticationType to Public")]
-        public void ChangeServerAuthenticationTypeToPublic()
-        {
-            ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
-            var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
-            if (!publicRadioButton.Selected)
-            {
-                publicRadioButton.Selected = true;
-                Click_Server_Source_Wizard_Test_Connection_Button();
-                Click_Save_Ribbon_Button_With_No_Save_Dialog();
-                Click_Close_Server_Source_Wizard_Tab_Button();
-            }
-            else
-            {
-                Click_Close_Server_Source_Wizard_Tab_Button();
-            }
-        }
-        
-        public void Click_UserButton_On_ServerSourceTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton);
-        }
-
-        public void Enter_TextIntoAddress_On_ServerSourceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.AddressEditBox.Text = "RSAKLFSVRGENDEV";
-        }
-
-        public void Enter_RunAsUser_On_ServerSourceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text = "IntegrationTester";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
-        }
-
-        public void Click_UserButton_On_WebServiceSourceTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserRadioButton);
-        }
-
-        public void Click_AnonymousButton_On_WebServiceSourceTab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton);
-        }
-
-        public void Enter_TextIntoAddress_On_WebServiceSourceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://RSAKLFSVRTFSBLD:9810";
-        }
-
-        public void Enter_RunAsUser_On_WebServiceSourceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "IntegrationTester";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
-        }
-
-        public void Enter_DefaultQuery_On_WebServiceSourceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Text = "";
-        }
-
-        public void Enter_TextIntoAddress_In_SharepointServiceSourceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://rsaklfsvrsharep";
-        }
-
-        public void Enter_TextIntoAddress_On_WCFServiceTab()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Text = "test";
-        }
-
-        public void Click_WCFServiceSource_TestConnectionButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton);
-        }
-
         public void CreateAttachmentsForTest(string filepath)
         {
             var fileStream = File.Create(filepath);
@@ -1658,13 +1067,6 @@ namespace Warewolf.UITests
                 Directory.Delete(folderName);
                 Assert.IsFalse(Directory.Exists(folderName));
             }
-        }
-
-        public void Change_Dll_And_Save(string newDll)
-        {
-            AssemblyComboBox assembly = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox;            
-            assembly.TextEdit.Text = newDll;
-            Keyboard.SendKeys(assembly.TextEdit, "S", (ModifierKeys.Control));
         }
     }
 }

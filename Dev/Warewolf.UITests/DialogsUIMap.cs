@@ -15,72 +15,16 @@ using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UITests.Settings.SettingsUIMapClasses;
+using Warewolf.UITests.Deploy.DeployUIMapClasses;
+using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
 
 namespace Warewolf.UITests.DialogsUIMapClasses
 {
     [Binding]
     public partial class DialogsUIMap
     {
-        ToolsUIMap ToolsUIMap
-        {
-            get
-            {
-                if (_ToolsUIMap == null)
-                {
-                    _ToolsUIMap = new ToolsUIMap();
-                }
-
-                return _ToolsUIMap;
-            }
-        }
-
-        private ToolsUIMap _ToolsUIMap;
-
-        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
-        {
-            get
-            {
-                if (_WorkflowServiceTestingUIMap == null)
-                {
-                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
-                }
-
-                return _WorkflowServiceTestingUIMap;
-            }
-        }
-
-        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
-
-        ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if (_ExplorerUIMap == null)
-                {
-                    _ExplorerUIMap = new ExplorerUIMap();
-                }
-
-                return _ExplorerUIMap;
-            }
-        }
-
-        private ExplorerUIMap _ExplorerUIMap;
-
-        UIMap UIMap
-        {
-            get
-            {
-                if (_uiMap == null)
-                {
-                    _uiMap = new UIMap();
-                }
-
-                return _uiMap;
-            }
-        }
-
-        private UIMap _uiMap;
-        
         public void ServicePickerDialog_CancelButton()
         {
             Mouse.Click(ServicePickerDialog.Cancel, new Point(57, 6));
@@ -698,81 +642,6 @@ namespace Warewolf.UITests.DialogsUIMapClasses
             Mouse.Click(MessageBoxWindow.OKButton, new Point(38, 12));
         }
 
-        public void TryCloseDeployWizardTab()
-        {
-            try
-            {
-                if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab))
-                {
-                    UIMap.Click_Close_Deploy_Tab_Button();
-                }
-                if (UIMap.ControlExistsNow(MessageBoxWindow.NoButton))
-                {
-                    Click_MessageBox_No();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
-            }
-        }
-
-        public void TryCloseNewWebSourceWizardTab()
-        {
-            if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.CloseButton))
-            {
-                UIMap.Click_Close_Web_Source_Wizard_Tab_Button();
-                if (UIMap.ControlExistsNow(MessageBoxWindow.NoButton))
-                {
-                    Click_MessageBox_No();
-                }
-            }
-        }
-
-        private void TryCloseServerSourceWizardTab()
-        {
-            try
-            {
-                if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.CloseButton))
-                {
-                    UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-                }
-                if (UIMap.ControlExistsNow(MessageBoxWindow.NoButton))
-                {
-                    Click_MessageBox_No();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("TryClose method failed to close Server Source tab.\n" + e.Message);
-            }
-        }
-
-        [When(@"I Try Close Settings Tab")]
-        public void TryCloseSettingsWizardTab()
-        {
-            var TimeBefore = System.DateTime.Now;
-            try
-            {
-                if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab))
-                {
-                    UIMap.Click_Close_Settings_Tab_Button();
-                }
-                if (UIMap.ControlExistsNow(MessageBoxWindow.NoButton))
-                {
-                    Click_MessageBox_No();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception trying to close settings tab.\n" + e.Message);
-            }
-            finally
-            {
-                Console.WriteLine("No hanging settings tab to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
-            }
-        }
-
         [When(@"I Click Yes On The Confirm Delete")]
         public void Click_Yes_On_The_Confirm_Delete()
         {
@@ -888,5 +757,65 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         {
             Mouse.Click(ServicePickerDialog.Explorer.ExplorerTree.Localhost.TreeItem1, new Point(91, 9));
         }
+
+        UIMap UIMap
+        {
+            get
+            {
+                if (_uiMap == null)
+                {
+                    _uiMap = new UIMap();
+                }
+
+                return _uiMap;
+            }
+        }
+
+        private UIMap _uiMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
+
+        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
+        {
+            get
+            {
+                if (_WorkflowServiceTestingUIMap == null)
+                {
+                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
+                }
+
+                return _WorkflowServiceTestingUIMap;
+            }
+        }
+
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
     }
 }

@@ -16,6 +16,11 @@ using Warewolf.UITests.Common;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
+using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
+using Warewolf.UITests.EmailSource.EmailSourceUIMapClasses;
+using Warewolf.UITests.ExchangeSource.ExchangeSourceUIMapClasses;
+using Warewolf.UITests.Deploy.DeployUIMapClasses;
 
 namespace Warewolf.UITests.ExplorerUIMapClasses
 {
@@ -96,6 +101,81 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         }
 
         private SettingsUIMap _SettingsUIMap;
+
+        ServerSourceUIMap ServerSourceUIMap
+        {
+            get
+            {
+                if (_ServerSourceUIMap == null)
+                {
+                    _ServerSourceUIMap = new ServerSourceUIMap();
+                }
+
+                return _ServerSourceUIMap;
+            }
+        }
+
+        private ServerSourceUIMap _ServerSourceUIMap;
+
+        WebSourceUIMap WebSourceUIMap
+        {
+            get
+            {
+                if (_WebSourceUIMap == null)
+                {
+                    _WebSourceUIMap = new WebSourceUIMap();
+                }
+
+                return _WebSourceUIMap;
+            }
+        }
+
+        private WebSourceUIMap _WebSourceUIMap;
+
+        EmailSourceUIMap EmailSourceUIMap
+        {
+            get
+            {
+                if (_EmailSourceUIMap == null)
+                {
+                    _EmailSourceUIMap = new EmailSourceUIMap();
+                }
+
+                return _EmailSourceUIMap;
+            }
+        }
+
+        private EmailSourceUIMap _EmailSourceUIMap;
+
+        ExchangeSourceUIMap ExchangeSourceUIMap
+        {
+            get
+            {
+                if (_ExchangeSourceUIMap == null)
+                {
+                    _ExchangeSourceUIMap = new ExchangeSourceUIMap();
+                }
+
+                return _ExchangeSourceUIMap;
+            }
+        }
+
+        private ExchangeSourceUIMap _ExchangeSourceUIMap;
+
+        DeployUIMap DeployUIMap
+        {
+            get
+            {
+                if (_DeployUIMap == null)
+                {
+                    _DeployUIMap = new DeployUIMap();
+                }
+
+                return _DeployUIMap;
+            }
+        }
+
+        private DeployUIMap _DeployUIMap;
 
         [When(@"I Drag Explorer First Item Onto The Second Item")]
         public void Drag_Explorer_First_Item_Onto_The_Second_Item()
@@ -514,7 +594,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         public void Click_Explorer_RemoteServer_Edit_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton, new Point(11, 10));
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab was not open.");
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab was not open.");
         }
 
         [Given(@"I Refresh Explorer")]
@@ -541,25 +621,25 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Playback.Wait(1000);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
             UIMap.Click_Settings_RibbonButton();
-            var deleteFirstResourceButton = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
+            var deleteFirstResourceButton = SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
             if (deleteFirstResourceButton.Enabled)
             {
                 var isViewChecked = SettingsUIMap.FindViewPermissionsCheckbox(
-                    UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                    SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
                         .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
 
                 var isExecuteChecked = SettingsUIMap.FindExecutePermissionsCheckbox(
-                    UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
+                    SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
                         .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
 
                 if (isViewChecked && isExecuteChecked)
                 {
-                    UIMap.Click_Close_Settings_Tab_Button();
+                    SettingsUIMap.Click_Close_Settings_Tab_Button();
                     return;
                 }
             }
             SettingsUIMap.Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
-            UIMap.Click_Close_Settings_Tab_Button();
+            SettingsUIMap.Click_Close_Settings_Tab_Button();
         }
 
         [Given(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
@@ -599,8 +679,8 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer.NewRemoteServerItemText, new Point(114, 10));
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Exists, "Server source wizard does not exist.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard protocol dropdown does not exist.");
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Exists, "Server source wizard does not exist.");
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard protocol dropdown does not exist.");
         }
 
         public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
@@ -825,7 +905,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewWebServiceSource);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.LocalhostConnectedText.Exists);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.Exists, "Web server address textbox does not exist on new web source wizard tab.");
+            Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.Exists, "Web server address textbox does not exist on new web source wizard tab.");
         }
 
         [Given(@"I Click New SQLServerSource Explorer Context Menu")]
@@ -919,7 +999,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewEmailSource);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "New email source tab does not exist after opening Email source tab");
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "New email source tab does not exist after opening Email source tab");
         }
 
         [When(@"I Select NewExchangeSource From Explorer Contex tMenu")]
@@ -929,7 +1009,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Exists, "Explorer Context Menu did not appear after Right click on localhost");
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewExchangeSource);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.Exists, "New exchange source tab does not exist after opening Email source tab");
+            Assert.IsTrue(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.Exists, "New exchange source tab does not exist after opening Email source tab");
         }
 
         [When(@"I Select NewPluginSource From Explorer Context Menu")]
@@ -1091,7 +1171,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         {
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.DeployItem, new Point(57, 11));
             Playback.Wait(2000);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "DeployTab does not exist after clicking Deploy");
+            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "DeployTab does not exist after clicking Deploy");
         }
 
         [Given(@"I Select NewWorkflow From Explorer Context Menu")]

@@ -1,5 +1,6 @@
 ﻿    using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Warewolf.UITests.EmailSource.EmailSourceUIMapClasses;
     using Warewolf.UITests.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests
@@ -15,30 +16,30 @@ namespace Warewolf.UITests
         {
             //Create Source
             ExplorerUIMap.Select_NewEmailSource_From_ExplorerContextMenu();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.HostTextBoxEdit.Exists, "Host textbox does not exist after opening Email source tab");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.UserNameTextBoxEdit.Exists, "Username textbox does not exist after opening Email source tab");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.PasswordTextBoxEdit.Exists, "Password textbox does not exist after opening Email source tab");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.PortTextBoxEdit.Exists, "Port textbox does not exist after opening Email source tab");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Exists, "Timeout textbox does not exist after opening Email source tab")  ;   
-            UIMap.Enter_Text_Into_EmailSource_Tab();
-            UIMap.Click_EmailSource_TestConnection_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.ToTextBoxEdit.ItemImage.Exists, "Connection test Failed");
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.HostTextBoxEdit.Exists, "Host textbox does not exist after opening Email source tab");
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.UserNameTextBoxEdit.Exists, "Username textbox does not exist after opening Email source tab");
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.PasswordTextBoxEdit.Exists, "Password textbox does not exist after opening Email source tab");
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.PortTextBoxEdit.Exists, "Port textbox does not exist after opening Email source tab");
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Exists, "Timeout textbox does not exist after opening Email source tab")  ;
+            EmailSourceUIMap.Enter_Text_Into_EmailSource_Tab();
+            EmailSourceUIMap.Click_EmailSource_TestConnection_Button();
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.ToTextBoxEdit.ItemImage.Exists, "Connection test Failed");
             //Save Source
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             ExplorerUIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
-            UIMap.Click_Close_EmailSource_Tab();
+            EmailSourceUIMap.Click_Close_EmailSource_Tab();
             //Edit Source
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
-            UIMap.Edit_Timeout_On_EmailSource();
-            UIMap.Click_EmailSource_TestConnection_Button();
+            Assert.IsTrue(EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.Exists, "Email Source Tab does not exist");
+            EmailSourceUIMap.Edit_Timeout_On_EmailSource();
+            EmailSourceUIMap.Click_EmailSource_TestConnection_Button();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            UIMap.Click_Close_EmailSource_Tab();
+            EmailSourceUIMap.Click_Close_EmailSource_Tab();
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
-            Assert.AreEqual("2000", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
+            Assert.AreEqual("2000", EmailSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.EmailSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
         }
 
         #region Additional test attributes
@@ -79,6 +80,21 @@ namespace Warewolf.UITests
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        EmailSourceUIMap EmailSourceUIMap
+        {
+            get
+            {
+                if (_EmailSourceUIMap == null)
+                {
+                    _EmailSourceUIMap = new EmailSourceUIMap();
+                }
+
+                return _EmailSourceUIMap;
+            }
+        }
+
+        private EmailSourceUIMap _EmailSourceUIMap;
 
         #endregion
     }

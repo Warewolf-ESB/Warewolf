@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Resources
@@ -99,49 +100,49 @@ namespace Warewolf.UITests.Tools.Resources
             //New Source
             ToolsUIMap.Click_NewSourceButton_From_COMDLLPluginTool();
             Assert.IsTrue(
-                UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                     .WorkSurfaceContext.SearchTextBox.Enabled, "Search Textbox is not enabled");
             Assert.IsTrue(
-                UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                     .WorkSurfaceContext.RefreshButton.RefreshSpinner.Exists);
             UIMap.WaitForControlVisible(
-                UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                     .WorkSurfaceContext.DataTree);
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+            ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                 .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.CONNECTION";
             Mouse.Click(
-                UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                     .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
             Assert.AreEqual("ADODB.Connection.6.0",
-                    UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+                    ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                         .WorkSurfaceContext.AssemblyNameTextBox.Text,
                 "Assembly Name Textbox is empty after selecting an assembly.");
             UIMap.Save_With_Ribbon_Button_And_Dialog("COMPluginSourceToEdit");
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
+            Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
             ToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             ToolsUIMap.Select_Source_From_ComDLLTool();
             ToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
             UIMap.WaitForControlVisible(
-             UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+             ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                  .WorkSurfaceContext.DataTree);
             Assert.AreEqual("ADODB.Connection.6.0",
-                     UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+                     ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                          .WorkSurfaceContext.AssemblyNameTextBox.Text,
-                 "Assembly Name Textbox is not equal to ADODB.Connection.6.0.");            
-            UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+                 "Assembly Name Textbox is not equal to ADODB.Connection.6.0.");
+            ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                 .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.Parameter";
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+            Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                     .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
-            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
+            Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
             ToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             ToolsUIMap.Select_Source_From_ComDLLTool();
             ToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
             UIMap.WaitForControlVisible(
-               UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+               ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                    .WorkSurfaceContext.DataTree);
             Assert.AreEqual("ADODB.Parameter.6.0",
-                    UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+                    ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                         .WorkSurfaceContext.AssemblyNameTextBox.Text,
                 "Assembly Name Textbox is not equal to ADODB.Parameter.6.0.");
         }
@@ -186,6 +187,21 @@ namespace Warewolf.UITests.Tools.Resources
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        ComPluginSourceUIMap ComPluginSourceUIMap
+        {
+            get
+            {
+                if (_ComPluginSourceUIMap == null)
+                {
+                    _ComPluginSourceUIMap = new ComPluginSourceUIMap();
+                }
+
+                return _ComPluginSourceUIMap;
+            }
+        }
+
+        private ComPluginSourceUIMap _ComPluginSourceUIMap;
 
         #endregion
     }

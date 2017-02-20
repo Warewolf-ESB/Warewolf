@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Database
@@ -30,19 +31,19 @@ namespace Warewolf.UITests.Tools.Database
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.DoneButton.Exists, "Done button does not exist on ODBC database connector tool large view.");
             // New Source
             ToolsUIMap.Click_NewSourceButton_From_ODBCTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "ODBC Source Tab does not exist");
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "ODBC server combobox is enabled");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
-            UIMap.Click_DB_Source_Wizard_Test_Connection_Button();
-            UIMap.Select_ExcelFiles_From_DB_Source_Wizard_Database_Combobox();
+            Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "ODBC Source Tab does not exist");
+            Assert.IsFalse(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Enabled, "ODBC server combobox is enabled");
+            Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
+            DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
+            DBSourceUIMap.Select_ExcelFiles_From_DB_Source_Wizard_Database_Combobox();
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            UIMap.Click_Close_DB_Source_Wizard_Tab_Button();
+            DBSourceUIMap.Click_Close_DB_Source_Wizard_Tab_Button();
             //Edit Source
             ToolsUIMap.ODBCDatabaseTool_ChangeView_With_DoubleClick();
             ToolsUIMap.Select_Source_From_ODBCTool();
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ODBCDatabaseActivCustom.LargeView.EdistSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
             ToolsUIMap.Click_EditSourceButton_On_ODBCTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "ODBC Source Tab does not exist");
+            Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "ODBC Source Tab does not exist");
         }
 
         #region Additional test attributes
@@ -85,6 +86,21 @@ namespace Warewolf.UITests.Tools.Database
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        DBSourceUIMap DBSourceUIMap
+        {
+            get
+            {
+                if (_DBSourceUIMap == null)
+                {
+                    _DBSourceUIMap = new DBSourceUIMap();
+                }
+
+                return _DBSourceUIMap;
+            }
+        }
+
+        private DBSourceUIMap _DBSourceUIMap;
 
         #endregion
     }
