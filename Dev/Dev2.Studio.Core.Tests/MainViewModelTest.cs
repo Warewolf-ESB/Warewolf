@@ -968,6 +968,58 @@ namespace Dev2.Core.Tests
             PopupController.Verify(s => s.Show(), Times.Never());
         }
 
+        [TestMethod]
+        public void TestFromDebugAddAndActivateWorkSurface()
+        {
+            CreateFullExportsAndVm();
+            var msg = new NewTestFromDebugMessage
+            {
+                ResourceModel = FirstResource.Object,
+                ResourceID = FirstResourceId,
+                RootItems = new List<IDebugTreeViewItemViewModel>()
+            };
+            try
+            {
+                MainViewModel.Handle(msg);
+            }
+            catch (Exception)
+            {
+                //Suppress because of real calls happening                
+            }
+
+            PopupController.Verify(s => s.Show(), Times.Never());
+        }
+
+        [TestMethod]
+        public void TestFromDebugExistingWorkSurface()
+        {
+            CreateFullExportsAndVm();
+            var msg = new NewTestFromDebugMessage
+            {
+                ResourceModel = FirstResource.Object,
+                ResourceID = FirstResourceId,
+                RootItems = new List<IDebugTreeViewItemViewModel>()
+            };
+
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            var workflowHelper = new Mock<IWorkflowHelper>();
+
+            var workSurfaceKey = MainViewModel.WorksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(null, WorkSurfaceContext.ServiceTestsViewer, msg.ResourceID);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, msg.ResourceModel, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, false);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey as WorkSurfaceKey, designerViewModel);
+            MainViewModel.Items.Add(workSurfaceContextViewModel);
+            try
+            {
+                MainViewModel.Handle(msg);
+            }
+            catch (Exception)
+            {
+                //Suppress because of real calls happening                
+            }
+
+            PopupController.Verify(s => s.Show(), Times.Never());
+        }
+
 
 
         [TestMethod]
