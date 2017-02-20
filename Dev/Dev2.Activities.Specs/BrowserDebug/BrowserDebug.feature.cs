@@ -285,11 +285,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingAForeachWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Foreach workflow", ((string[])(null)));
-#line 58
+#line 67
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 68
   testRunner.Given("I have a workflow \"ForEachAssigneWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 69
   testRunner.And("\"ForEachAssigneWF\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" execution" +
                     "s \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -299,15 +299,55 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "[[Year]]",
                         "2017"});
-#line 61
+#line 70
   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table6, "And ");
-#line 64
+#line 73
   testRunner.When("workflow \"ForEachAssigneWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 65
+#line 74
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/ForEachAssigneWF.debug?\"" +
                     " in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 75
   testRunner.Then("The Debug in Browser content contains the variable assigned executed \"4\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Forward Sort Recordset workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingAForwardSortRecordsetWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Forward Sort Recordset workflow", ((string[])(null)));
+#line 79
+this.ScenarioSetup(scenarioInfo);
+#line 80
+  testRunner.Given("I have a workflow \"SortRecordsetWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table7.AddRow(new string[] {
+                        "[[Degree(1).YearCompleted]]",
+                        "2015"});
+            table7.AddRow(new string[] {
+                        "[[Degree(2).YearCompleted]]",
+                        "2012"});
+            table7.AddRow(new string[] {
+                        "[[Degree(3).YearCompleted]]",
+                        "2014"});
+            table7.AddRow(new string[] {
+                        "[[Degree(4).YearCompleted]]",
+                        "2013"});
+#line 81
+  testRunner.And("\"SortRecordsetWF\" contains an Assign \"ExampleRecordSet\" as", ((string)(null)), table7, "And ");
+#line 89
+  testRunner.When("workflow \"SortRecordsetWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 90
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/SortRecordsetWF.debug?\" " +
+                    "in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 91
+  testRunner.Then("The Debug in Browser content contains the correct recordset order of \"2012\" \"2013" +
+                    "\" \"2014\" \"2015\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -75,4 +75,17 @@ Scenario: Executing a Foreach workflow
 		Then The Debug in Browser content contains the variable assigned executed "4" times
 	  
 #Scenario: Executing a Dotnet plugin workflow
-#Scenario: Executing a Recordset sort workflow
+
+Scenario: Executing a Forward Sort Recordset workflow
+		Given I have a workflow "SortRecordsetWF"
+		And "SortRecordsetWF" contains an Assign "ExampleRecordSet" as
+			|			variable			|	value	|
+			|	[[Degree(1).YearCompleted]]	|	2015	|
+			|	[[Degree(2).YearCompleted]]	|	2012	|
+			|	[[Degree(3).YearCompleted]]	|	2014	|
+			|	[[Degree(4).YearCompleted]]	|	2013	|
+		#And I sort a record "[[Degree().YearCompleted]]"
+		#And my sort order is "Forward"
+		When workflow "SortRecordsetWF" is saved "1" time
+		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/SortRecordsetWF.debug?" in Browser
+		Then The Debug in Browser content contains the correct recordset order of "2012" "2013" "2014" "2015"
