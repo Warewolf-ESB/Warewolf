@@ -123,7 +123,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             UniqueID = Guid.NewGuid().ToString();
         }
 
-
+        #endregion
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IResourceCatalog ResourceCatalog
         {
             protected get
