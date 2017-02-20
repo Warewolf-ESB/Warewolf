@@ -23,10 +23,13 @@ namespace Dev2.Diagnostics.Debug
         {
             lock (Lock)
             {
+                if (ds.ParentID == default(Guid))
+                    ds.ParentID = null;
                 IList<IDebugState> list;
                 var key = new Tuple<Guid, Guid>(clientId, sessionId);
                 if (_data.TryGetValue(key, out list))
                 {
+                   
                     list.Add(ds);
                 }
                 else
