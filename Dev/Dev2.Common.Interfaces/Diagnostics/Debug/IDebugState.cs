@@ -41,7 +41,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the parent ID.
         /// </summary>
-        Guid ParentID { get; set; } 
+        Guid? ParentID { get; set; } 
         
         /// <summary>
         ///     Gets or sets the Source Resource ID.
