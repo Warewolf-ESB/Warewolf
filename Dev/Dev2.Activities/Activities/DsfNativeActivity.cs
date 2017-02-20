@@ -122,8 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _isExecuteAsync = isExecuteAsync;
             UniqueID = Guid.NewGuid().ToString();
         }
-
-        #endregion
+        
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IResourceCatalog ResourceCatalog
         {
