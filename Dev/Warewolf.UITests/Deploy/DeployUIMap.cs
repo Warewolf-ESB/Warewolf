@@ -16,86 +16,31 @@ using Warewolf.UITests.Common;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
 
 namespace Warewolf.UITests.Deploy.DeployUIMapClasses
 {
     [Binding]
     public partial class DeployUIMap
     {
-        ToolsUIMap ToolsUIMap
+        public void TryCloseDeployWizardTab()
         {
-            get
+            try
             {
-                if (_ToolsUIMap == null)
+                if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab))
                 {
-                    _ToolsUIMap = new ToolsUIMap();
+                    Click_Close_Deploy_Tab_Button();
                 }
-
-                return _ToolsUIMap;
+                if (UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.NoButton))
+                {
+                    DialogsUIMap.Click_MessageBox_No();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("TryClose method failed to close Deploy tab.\n" + e.Message);
             }
         }
-
-        private ToolsUIMap _ToolsUIMap;
-
-        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
-        {
-            get
-            {
-                if (_WorkflowServiceTestingUIMap == null)
-                {
-                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
-                }
-
-                return _WorkflowServiceTestingUIMap;
-            }
-        }
-
-        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
-
-        ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if (_ExplorerUIMap == null)
-                {
-                    _ExplorerUIMap = new ExplorerUIMap();
-                }
-
-                return _ExplorerUIMap;
-            }
-        }
-
-        private ExplorerUIMap _ExplorerUIMap;
-
-        DialogsUIMap DialogsUIMap
-        {
-            get
-            {
-                if (_DialogsUIMap == null)
-                {
-                    _DialogsUIMap = new DialogsUIMap();
-                }
-
-                return _DialogsUIMap;
-            }
-        }
-
-        private DialogsUIMap _DialogsUIMap;
-
-        UIMap UIMap
-        {
-            get
-            {
-                if (_UIMap == null)
-                {
-                    _UIMap = new UIMap();
-                }
-
-                return _UIMap;
-            }
-        }
-
-        private UIMap _UIMap;
 
         [Given(@"I validate the Resource tree is loaded")]
         [When(@"I validate the Resource tree is loaded")]
@@ -103,39 +48,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         public void WhenIValidateTheResourceTreeIsLoaded()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.Exists);
-        }
-
-        [Given(@"I change Server Authentication type")]
-        [When(@"I change Server Authentication type")]
-        [Then(@"I change Server Authentication type")]
-        public void ChangeServerAuthenticationType()
-        {
-            var publicRadioButton = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
-            var windowsRadioButton = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
-            if (publicRadioButton.Selected)
-            {
-                windowsRadioButton.Selected = true;
-                UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-                Playback.Wait(1000);
-                UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
-                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
-                Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(windowsRadioButton.Selected);
-            }
-            else
-            {
-                publicRadioButton.Selected = true;
-                UIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-                Playback.Wait(1000);
-                UIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-                Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
-                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
-                Click_Deploy_Tab_Source_Server_Edit_Button();
-                Assert.IsTrue(publicRadioButton.Selected);
-            }
         }
 
         [Given(@"Destination Remote Server Is Connected")]
@@ -453,5 +365,99 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         {
             Click_Deploy_Tab_Deploy_Button();
         }
+
+        [Given(@"I Click Close Deploy Tab Button")]
+        [When(@"I Click Close Deploy Tab Button")]
+        [Then(@"I Click Close Deploy Tab Button")]
+        public void Click_Close_Deploy_Tab_Button()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton.Exists, "DeployTab close tab button does not exist.");
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton, new Point(16, 6));
+        }
+
+        [Given(@"I Click Deploy Ribbon Button")]
+        [When(@"I Click Deploy Ribbon Button")]
+        [Then(@"I Click Deploy Ribbon Button")]
+        public void Click_Deploy_Ribbon_Button()
+        {
+            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
+            Playback.Wait(2000);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
+        }
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if (_UIMap == null)
+                {
+                    _UIMap = new UIMap();
+                }
+
+                return _UIMap;
+            }
+        }
+
+        private UIMap _UIMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
+
+        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
+        {
+            get
+            {
+                if (_WorkflowServiceTestingUIMap == null)
+                {
+                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
+                }
+
+                return _WorkflowServiceTestingUIMap;
+            }
+        }
+
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
     }
 }

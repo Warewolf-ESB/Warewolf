@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
@@ -9,7 +10,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 namespace Warewolf.UITests.DependencyGraph
 {
     [CodedUITest]
-    public class ShowDependencyTets
+    public class ShowDependencyTests
     {
         //WOLF-2474
         [TestMethod]
@@ -49,8 +50,8 @@ namespace Warewolf.UITests.DependencyGraph
             ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
             Mouse.DoubleClick(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.DotnetSourceNode.DotNetPluginSourceText);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists);
-            Assert.AreEqual(@"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text);
+            Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists);
+            Assert.AreEqual(@"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll", DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text);
         }
 
         #region Additional test attributes
@@ -106,6 +107,21 @@ namespace Warewolf.UITests.DependencyGraph
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        DotNetPluginSourceUIMap DotNetPluginSourceUIMap
+        {
+            get
+            {
+                if (_DotNetPluginSourceUIMap == null)
+                {
+                    _DotNetPluginSourceUIMap = new DotNetPluginSourceUIMap();
+                }
+
+                return _DotNetPluginSourceUIMap;
+            }
+        }
+
+        private DotNetPluginSourceUIMap _DotNetPluginSourceUIMap;
 
         #endregion
     }

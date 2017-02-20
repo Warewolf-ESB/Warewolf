@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WcfSource.WcfSourceUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Resources
 {
@@ -31,8 +32,8 @@ namespace Warewolf.UITests.Tools.Resources
             Assert.IsTrue(ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WcfService.DoneButton.Exists, "Done button does not exist on WCFService tool");
             //New Source
             ToolsUIMap.Click_NewSourceButton_From_WCFTool();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Enabled, "WCF Endpoint URL Textbox is not enabled");
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
+            Assert.IsTrue(WcfSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Enabled, "WCF Endpoint URL Textbox is not enabled");
+            Assert.IsFalse(WcfSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button is enabled");
         }
 
         #region Additional test attributes
@@ -75,6 +76,21 @@ namespace Warewolf.UITests.Tools.Resources
         }
 
         private ToolsUIMap _ToolsUIMap;
+
+        WcfSourceUIMap WcfSourceUIMap
+        {
+            get
+            {
+                if (_WcfSourceUIMap == null)
+                {
+                    _WcfSourceUIMap = new WcfSourceUIMap();
+                }
+
+                return _WcfSourceUIMap;
+            }
+        }
+
+        private WcfSourceUIMap _WcfSourceUIMap;
 
         #endregion
     }

@@ -16,12 +16,54 @@ using Warewolf.UITests.Common;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UITests.Deploy.DeployUIMapClasses;
 
 namespace Warewolf.UITests.Settings.SettingsUIMapClasses
 {
     [Binding]
     public partial class SettingsUIMap
     {
+        [When(@"I Try Close Settings Tab")]
+        public void TryCloseSettingsWizardTab()
+        {
+            var TimeBefore = System.DateTime.Now;
+            try
+            {
+                if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab))
+                {
+                    Click_Close_Settings_Tab_Button();
+                }
+                if (UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow.NoButton))
+                {
+                    DialogsUIMap.Click_MessageBox_No();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception trying to close settings tab.\n" + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("No hanging settings tab to clean up after trying for " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms.");
+            }
+        }
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if (_UIMap == null)
+                {
+                    _UIMap = new UIMap();
+                }
+
+                return _UIMap;
+            }
+        }
+
+        private UIMap _UIMap;
+
         ToolsUIMap ToolsUIMap
         {
             get
@@ -82,20 +124,35 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
 
         private DialogsUIMap _DialogsUIMap;
 
-        UIMap UIMap
+        ServerSourceUIMap ServerSourceUIMap
         {
             get
             {
-                if (_UIMap == null)
+                if (_ServerSourceUIMap == null)
                 {
-                    _UIMap = new UIMap();
+                    _ServerSourceUIMap = new ServerSourceUIMap();
                 }
 
-                return _UIMap;
+                return _ServerSourceUIMap;
             }
         }
 
-        private UIMap _UIMap;
+        private ServerSourceUIMap _ServerSourceUIMap;
+
+        DeployUIMap DeployUIMap
+        {
+            get
+            {
+                if (_DeployUIMap == null)
+                {
+                    _DeployUIMap = new DeployUIMap();
+                }
+
+                return _DeployUIMap;
+            }
+        }
+
+        private DeployUIMap _DeployUIMap;
 
         public UITestControl FindAddResourceButton(UITestControl row)
         {
@@ -338,12 +395,12 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
 
                 if (isViewChecked && isExecuteChecked)
                 {
-                    UIMap.Click_Close_Settings_Tab_Button();
+                    Click_Close_Settings_Tab_Button();
                     return;
                 }
             }
             Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
-            UIMap.Click_Close_Settings_Tab_Button();
+            Click_Close_Settings_Tab_Button();
         }
 
         public void Enter_GroupName_Into_Settings_Dialog_Resource_Permissions_Row1_Windows_Group_Textbox(string GroupName)
@@ -419,7 +476,7 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
         [When(@"I Enter Public As Windows Group")]
         public void Enter_Public_As_Windows_Group()
         {
-            FindWindowsGroupTextbox(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text = "Public";
+            FindWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Text = "Public";
         }
 
         public void Set_FirstResource_ResourcePermissions(string ResourceName, string WindowsGroupName, bool setView = false, bool setExecute = false, bool setContribute = false)
@@ -452,6 +509,47 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
         public void Click_Studio_Log_File()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.StudioLogs.StudioLogFile.ItemHyperlink, new Point(79, 10));
+        }
+
+        [Given(@"I Click Close Settings Tab Button")]
+        [When(@"I Click Close Settings Tab Button")]
+        [Then(@"I Click Close Settings Tab Button")]
+        public void Click_Close_Settings_Tab_Button()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton, new Point(16, 6));
+        }
+
+        [Given(@"I change Server Authentication type")]
+        [When(@"I change Server Authentication type")]
+        [Then(@"I change Server Authentication type")]
+        public void ChangeServerAuthenticationType()
+        {
+            var publicRadioButton = ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+            var windowsRadioButton = ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
+            if (publicRadioButton.Selected)
+            {
+                windowsRadioButton.Selected = true;
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
+                ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+                Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
+                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
+                DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
+                Assert.IsTrue(windowsRadioButton.Selected);
+            }
+            else
+            {
+                publicRadioButton.Selected = true;
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
+                ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+                Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton);
+                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
+                DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
+                Assert.IsTrue(publicRadioButton.Selected);
+            }
         }
     }
 }

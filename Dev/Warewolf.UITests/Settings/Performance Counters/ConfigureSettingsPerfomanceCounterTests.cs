@@ -16,7 +16,7 @@ namespace Warewolf.UITests.Settings.Performance_Counters
             SettingsUIMap.Click_Select_ResourceButton();
             var serviceName = "Hello World";
             DialogsUIMap.Select_First_Service_From_Service_Picker_Dialog(serviceName);
-            Assert.AreEqual(serviceName, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceTextBox.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
+            Assert.AreEqual(serviceName, SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceTextBox.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
         }
 
         #region Additional test attributes

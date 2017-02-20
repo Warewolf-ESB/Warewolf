@@ -3,8 +3,15 @@ using System.Windows.Forms;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
+using Warewolf.UITests.Deploy.DeployUIMapClasses;
+using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Scheduler.SchedulerUIMapClasses;
+using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests.Tabs
@@ -43,7 +50,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinSettingsWizardTab()
         {
             UIMap.Click_Settings_RibbonButton();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab);
+            UIMap.Unpin_Tab_With_Drag(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab);
         }
 
         [TestMethod]
@@ -51,7 +58,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinServerSourceWizardTab()
         {
             ExplorerUIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab);
+            UIMap.Unpin_Tab_With_Drag(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab);
         }
 
         [TestMethod]
@@ -59,7 +66,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinDBSourceWizardTab()
         {
             ExplorerUIMap.Click_NewSQLServerSource_From_ExplorerContextMenu();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab);
+            UIMap.Unpin_Tab_With_Drag(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab);
         }
 
         [TestMethod]
@@ -67,7 +74,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinDotNetPluginSourceWizardTab()
         {
             ExplorerUIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab);
+            UIMap.Unpin_Tab_With_Drag(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab);
         }
 
         [TestMethod]
@@ -75,7 +82,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinWebSourceWizardTab()
         {
             ExplorerUIMap.Click_NewWebSource_From_ExplorerContextMenu();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab);
+            UIMap.Unpin_Tab_With_Drag(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab);
         }
 
         [TestMethod]
@@ -83,7 +90,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinDeployWizardTab()
         {
             UIMap.Click_Deploy_Ribbon_Button();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
+            UIMap.Unpin_Tab_With_Drag(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab);
         }
 
         [TestMethod]
@@ -108,7 +115,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinSchedulerWizardTab()
         {
             UIMap.Click_Scheduler_RibbonButton();
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab);
+            UIMap.Unpin_Tab_With_Drag(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab);
         }
 
         [TestMethod]
@@ -204,6 +211,111 @@ namespace Warewolf.UITests.Tabs
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        SchedulerUIMap SchedulerUIMap
+        {
+            get
+            {
+                if (_SchedulerUIMap == null)
+                {
+                    _SchedulerUIMap = new SchedulerUIMap();
+                }
+
+                return _SchedulerUIMap;
+            }
+        }
+
+        private  SchedulerUIMap _SchedulerUIMap;
+
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
+
+        DBSourceUIMap DBSourceUIMap
+        {
+            get
+            {
+                if (_DBSourceUIMap == null)
+                {
+                    _DBSourceUIMap = new DBSourceUIMap();
+                }
+
+                return _DBSourceUIMap;
+            }
+        }
+
+        private DBSourceUIMap _DBSourceUIMap;
+
+        ServerSourceUIMap ServerSourceUIMap
+        {
+            get
+            {
+                if (_ServerSourceUIMap == null)
+                {
+                    _ServerSourceUIMap = new ServerSourceUIMap();
+                }
+
+                return _ServerSourceUIMap;
+            }
+        }
+
+        private ServerSourceUIMap _ServerSourceUIMap;
+
+        DotNetPluginSourceUIMap DotNetPluginSourceUIMap
+        {
+            get
+            {
+                if (_DotNetPluginSourceUIMap == null)
+                {
+                    _DotNetPluginSourceUIMap = new DotNetPluginSourceUIMap();
+                }
+
+                return _DotNetPluginSourceUIMap;
+            }
+        }
+
+        private DotNetPluginSourceUIMap _DotNetPluginSourceUIMap;
+
+        WebSourceUIMap WebSourceUIMap
+        {
+            get
+            {
+                if (_WebSourceUIMap == null)
+                {
+                    _WebSourceUIMap = new WebSourceUIMap();
+                }
+
+                return _WebSourceUIMap;
+            }
+        }
+
+        private WebSourceUIMap _WebSourceUIMap;
+
+        DeployUIMap DeployUIMap
+        {
+            get
+            {
+                if (_DeployUIMap == null)
+                {
+                    _DeployUIMap = new DeployUIMap();
+                }
+
+                return _DeployUIMap;
+            }
+        }
+
+        private DeployUIMap _DeployUIMap;
 
         #endregion
     }
