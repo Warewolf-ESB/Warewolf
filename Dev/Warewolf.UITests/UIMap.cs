@@ -56,7 +56,7 @@ namespace Warewolf.UITests
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
 #if !DEBUG
             var TimeBefore = System.DateTime.Now;
-            WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
+            WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
 #endif
         }
