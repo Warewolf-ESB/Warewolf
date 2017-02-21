@@ -190,7 +190,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrpdc:1001/FORTESTING/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -200,7 +200,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CreateFileAtLocation_4()
         {
-            this.CreateFileAtLocation("4", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/test.txt", "True", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
+            this.CreateFileAtLocation("4", "FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt", "True", "\"\"", "\"\"", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -212,7 +212,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrpdc:1002/FORTESTING/test.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "IntegrationTester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -222,7 +222,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void CreateFileAtLocation_5()
         {
-            this.CreateFileAtLocation("5", "FTPS", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/test.txt", "True", "IntegrationTester", "I73573r0", "[[result]]", "Success", "NO", "", ((string[])(null)));
+            this.CreateFileAtLocation("5", "FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt", "True", "IntegrationTester", "I73573r0", "[[result]]", "Success", "NO", "", ((string[])(null)));
 #line hidden
         }
         
