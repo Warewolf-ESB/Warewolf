@@ -22,7 +22,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
     public class Server : Resource, IServer, INotifyPropertyChanged
     {
         readonly Guid _serverId;
-        readonly StudioServerProxy _proxyLayer;
+        readonly IExplorerRepository _proxyLayer;
         IList<IToolDescriptor> _tools;
         readonly IEnvironmentModel _environmentModel;
         bool _hasloaded;
@@ -44,7 +44,13 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             ResourceName = EnvironmentConnection.DisplayName;
             EnvironmentConnection.NetworkStateChanged += RaiseNetworkStateChangeEvent;
             EnvironmentConnection.ItemAddedMessageAction += ItemAdded;
-            _environmentModel = environmentModel;            
+            _environmentModel = environmentModel;
+        }
+
+        public Server(IExplorerRepository repository, IEnvironmentModel environmentModel)
+            : this(environmentModel)
+        {
+            _proxyLayer = repository;
         }
 
         public bool CanDeployTo => _environmentModel.IsAuthorizedDeployTo;
@@ -82,7 +88,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             ItemAddedEvent?.Invoke(obj);
         }
 
-        public Dictionary<string,string> GetServerInformation()
+        public Dictionary<string, string> GetServerInformation()
         {
             if (!EnvironmentConnection.IsConnected)
             {
@@ -95,11 +101,11 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public string GetServerVersion()
         {
-                if (!EnvironmentConnection.IsConnected)
-                {
-                    EnvironmentConnection.Connect(Guid.Empty);
-                }
-                _version = ProxyLayer.AdminManagerProxy.GetServerVersion();
+            if (!EnvironmentConnection.IsConnected)
+            {
+                EnvironmentConnection.Connect(Guid.Empty);
+            }
+            _version = ProxyLayer.AdminManagerProxy.GetServerVersion();
 
             return _version;
         }
@@ -187,16 +193,16 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             HasLoaded = true;
             return result;
         }
-        
+
         public Task<List<string>> LoadExplorerDuplicates()
         {
             var result = ProxyLayer.LoadExplorerDuplicates();
             HasLoaded = true;
             return result;
         }
-        
+
         public IList<IServer> GetServerConnections()
-        {            
+        {
             var environmentModels = EnvironmentRepository.Instance.ReloadServers();
             return environmentModels.Select(environmentModel => new Server(environmentModel)).Cast<IServer>().ToList();
         }
@@ -205,7 +211,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         {
             var environmentModels = EnvironmentRepository.Instance.ReloadAllServers();
             var requiredEnv = environmentModels.FirstOrDefault(model => model.ID == savedServerID);
-            if(requiredEnv != null)
+            if (requiredEnv != null)
             {
                 return new Server(requiredEnv);
             }
@@ -213,7 +219,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         }
 
         public IList<IServer> GetAllServerConnections()
-        {            
+        {
             var environmentModels = EnvironmentRepository.Instance.ReloadAllServers();
             return environmentModels.Select(environmentModel => new Server(environmentModel)).Cast<IServer>().ToList();
         }
