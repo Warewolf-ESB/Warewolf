@@ -670,19 +670,19 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
             switch (testInstance)
             {
                 case 2:
-                    var test2 = test as UITests.Test2;
+                    var test2 = test as Test2;
                     value = test2.TestEnabledSelector;
                     break;
                 case 3:
-                    var test3 = test as UITests.Test3;
+                    var test3 = test as Test3;
                     value = test3.TestEnabledSelector;
                     break;
                 case 4:
-                    var test4 = test as UITests.Test4;
+                    var test4 = test as Test4;
                     value = test4.TestEnabledSelector;
                     break;
                 default:
-                    var test1 = test as UITests.Test1;
+                    var test1 = test as Test1;
                     value = test1.TestEnabledSelector;
                     break;
             }
@@ -695,19 +695,19 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
             switch (instance)
             {
                 case 2:
-                    var test2 = test as UITests.Test2;
+                    var test2 = test as Test2;
                     property = test2.TestNameDisplay;
                     break;
                 case 3:
-                    var test3 = test as UITests.Test3;
+                    var test3 = test as Test3;
                     property = test3.TestNameDisplay;
                     break;
                 case 4:
-                    var test4 = test as UITests.Test4;
+                    var test4 = test as Test4;
                     property = test4.TestNameDisplay;
                     break;
                 default:
-                    var test1 = test as UITests.Test1;
+                    var test1 = test as Test1;
                     property = test1.TestNameDisplay;
                     break;
             }
