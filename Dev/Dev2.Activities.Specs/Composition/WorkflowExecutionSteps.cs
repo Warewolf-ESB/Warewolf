@@ -2479,6 +2479,8 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [When(@"workflow ""(.*)"" is saved ""(.*)"" time")]
+        [Then(@"workflow ""(.*)"" is saved ""(.*)"" time")]
+        [Given(@"workflow ""(.*)"" is saved ""(.*)"" time")]
         public void WhenWorkflowIsSavedTime(string workflowName, int count)
         {
             Guid id;

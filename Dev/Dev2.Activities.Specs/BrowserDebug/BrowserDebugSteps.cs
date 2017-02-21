@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.ToolsSpecs.Toolbox.Recordset.Sort;
 
 namespace Dev2.Activities.Specs.BrowserDebug
 {
@@ -99,7 +103,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
             {
                 if (debugState.IsFirstStep())
                     continue;
-                if (!debugState.IsFinalStep())
+                if (debugState.StateType != StateType.End)
                 {
                     foreach (var debugStateChild in debugState.Children)
                     {
@@ -123,31 +127,26 @@ namespace Dev2.Activities.Specs.BrowserDebug
             {
                 if (debugState.IsFirstStep())
                     continue;
-                if (!debugState.IsFinalStep())
+                if (debugState.StateType != StateType.End)                             
                     Assert.IsTrue(debugState.Children.Count == numExecutions);
             }
         }
 
-        [Given(@"The Debug in Browser content contains the correct recordset order of ""(.*)"" ""(.*)"" ""(.*)"" ""(.*)""")]
-        [When(@"The Debug in Browser content contains the correct recordset order of ""(.*)"" ""(.*)"" ""(.*)"" ""(.*)""")]
-        [Then(@"The Debug in Browser content contains the correct recordset order of ""(.*)"" ""(.*)"" ""(.*)"" ""(.*)""")]
-        public void ThenTheDebugInBrowserContentContainsTheCorrectRecordsetOrderOf(string orderPos1, string orderPos2, string orderPos3, string orderPos4)
+        [Then(@"Debugstate in index (.*) has output as")]
+        public void ThenDebugstateInIndexHasOutputAs(int p0, Table table)
         {
             var allDebugStates = GetDebugStates();
-            List<string> expectedflow = new List<string> {orderPos1, orderPos2, orderPos3, orderPos4};
-            List<string> actualflow = new List<string>();
+            var actualOrder = allDebugStates[p0].Outputs;
+            List<TableRow> expectedOrder = table.Rows.ToList();
 
-            foreach (var debugState in allDebugStates)
+            Assert.AreEqual(expectedOrder.Count, actualOrder[0].ResultsList.Count);
+
+            for (int i = 0; i < expectedOrder.Count; i++)
             {
-                if (debugState.IsFirstStep())
-                    continue;
-                if (!debugState.IsFinalStep())
-                {
-                    foreach (var debugStateChild in debugState.Children)
-                    {
-                        actualflow.Add(debugStateChild.Inputs.ToString());
-                    }
-                }
+                var val1 = actualOrder[0].ResultsList[i].Value;
+                var val2 = expectedOrder[i].Values.Single();
+
+                Assert.AreEqual(val1, val2);
             }
         }
     }
