@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Decision;
+using Dev2.Activities.Designers2.Switch;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Warewolf.Studio.Core;
@@ -45,22 +47,51 @@ namespace Warewolf.Studio.Views
             bool valid = true;
             var content = ControlContentPresenter.Content as ActivityDesignerTemplate;
 
-            var dataContext = content?.DataContext as DecisionDesignerViewModel;
-            if(dataContext != null)
+            if (content == null)
             {
-                dataContext.Validate();
-                if (dataContext.Errors != null)
+                valid = ValidateSwitchCase(true);
+            }
+            else
+            {
+                var dataContext = content.DataContext as DecisionDesignerViewModel;
+                if (dataContext != null)
                 {
-                    PopupController.Show(dataContext.Errors[0].Message, "Decision Error", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
-                    valid = false;
+                    dataContext.Validate();
+                    if (dataContext.Errors != null)
+                    {
+                        PopupController.Show(dataContext.Errors[0].Message, "Decision Error", MessageBoxButton.OK,
+                            MessageBoxImage.Error, "", false, true, false, false, false, false);
+                        valid = false;
+                    }
                 }
             }
-
             if (valid)
             {
                 DialogResult = true;
                 Close();
             }
+        }
+
+        private bool ValidateSwitchCase(bool valid)
+        {
+            var configureSwitchArm = ControlContentPresenter.Content as ConfigureSwitchArm;
+
+            var switchDesignerViewModel = configureSwitchArm?.DataContext as SwitchDesignerViewModel;
+            if (switchDesignerViewModel?.ModelItem?.Parent?.Source?.Collection != null)
+            {
+                var validExpression = true;
+                if ((from value in switchDesignerViewModel.ModelItem.Parent.Source.Collection where value?.Properties.Any(property => property.Name == "Key") ?? false select value.Properties["Key"]?.ComputedValue).Any(modelItem => modelItem?.ToString() == switchDesignerViewModel.SwitchExpression))
+                {
+                    validExpression = false;
+                    valid = false;
+                }
+                if (!validExpression)
+                {
+                    PopupController.Show("FlowSwitch cases must be unique", "FlowSwitch Case Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+                }
+            }
+            return valid;
         }
 
         void CancelButton_OnClick(object sender, RoutedEventArgs e)
