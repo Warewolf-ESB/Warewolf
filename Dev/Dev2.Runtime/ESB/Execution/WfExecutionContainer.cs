@@ -56,15 +56,7 @@ namespace Dev2.Runtime.ESB.Execution
             if(DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
 
-            // Set resource ID, only if not set yet - original resource;
-            if(DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
-                DataObject.ResourceID = ServiceAction.Service.ID;
-
-            // Travis : Now set Data List
-            DataObject.DataList = ServiceAction.DataListSpecification;
-            // Set original instance ID, only if not set yet - original resource;
-            if(DataObject.OriginalInstanceID == Guid.Empty)
-                DataObject.OriginalInstanceID = DataObject.DataListID;
+           
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
             //Set execution origin
             if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
