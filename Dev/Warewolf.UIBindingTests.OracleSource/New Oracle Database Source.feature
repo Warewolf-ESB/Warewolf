@@ -31,7 +31,7 @@ Scenario: Creating New DB Source General Testing
    Then the intellisense contains these options
    | Options         |
    | RSAKLFSVRGENDEV |
-   | RSAKLFSVRSBSPDC |
+   | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
    And I type Select The Server as "RSAKLFSVRGENDEV"

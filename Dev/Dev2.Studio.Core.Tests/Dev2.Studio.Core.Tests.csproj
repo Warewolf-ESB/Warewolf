@@ -222,6 +222,8 @@
     <Compile Include="Controller\CommunicationControllerTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
     <Compile Include="DependencyVisualiserViewModelTests.cs" />
+    <Compile Include="DependencyGraph\CircularDependencyTests.cs" />
+    <Compile Include="DependencyGraph\GraphTests.cs" />
     <Compile Include="DeployDtoTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
     <Compile Include="ExceptionViewModelTest.cs" />
