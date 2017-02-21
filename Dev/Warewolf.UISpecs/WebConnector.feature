@@ -55,9 +55,6 @@ Scenario: Right click adorner control with error
 	And I Enter invalid data on the DELETE Web Large View
 	And I Click DELETE Web Large View Generate Outputs
 	And I Click DELETE Web Large View Test Inputs Button
-	Then There is an error
-	And I RightClick Ardoner Hyperlink
-	And There is an error
 
 
 	
