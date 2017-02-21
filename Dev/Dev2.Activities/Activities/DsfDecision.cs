@@ -80,7 +80,7 @@ namespace Dev2.Activities
             if (dataObject.IsDebugMode())
             {
                 _debugInputs = CreateDebugInputs(dataObject.Environment);
-                DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
+                DispatchDebugState(dataObject, StateType.Before, 0);
             }
 
             var errorIfNull = !Conditions.TheStack.Any(decision => decision.EvaluationFn == enDecisionType.IsNull || decision.EvaluationFn == enDecisionType.IsNotNull);
@@ -195,7 +195,6 @@ namespace Dev2.Activities
 
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
-                    DispatchDebugState(dataObject, StateType.Duration, update);
                 }
             }            
         }
