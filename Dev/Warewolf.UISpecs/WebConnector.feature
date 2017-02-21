@@ -46,7 +46,6 @@ Scenario: Create and Execute New Web DELETE Connector
 	And I Click DELETE Web Tool Outputs Done Button
 	And I Click DELETE Web Large View Done Button
 
-@ignore
 Scenario: Right click adorner control with error
 	Given The Warewolf Studio is running
 	When I Filter the Explorer with "BrokenDeleteWeb" 

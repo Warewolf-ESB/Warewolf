@@ -6,7 +6,6 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Database
 {
-    [Ignore]
     [CodedUITest]
     public class SQL_Bulk_Insert
     {
