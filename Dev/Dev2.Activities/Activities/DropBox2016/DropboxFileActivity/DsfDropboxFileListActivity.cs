@@ -54,7 +54,6 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
 
-        public override string DisplayName { get; set; }
         // ReSharper restore MemberCanBePrivate.Global
 
         private DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
