@@ -313,58 +313,14 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Dotnet plugin workflow")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
-        public virtual void ExecutingADotnetPluginWorkflow()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Dotnet plugin workflow", ((string[])(null)));
-#line 77
-this.ScenarioSetup(scenarioInfo);
-#line 78
-  testRunner.Given("I have a workflow \"DotNetDLLWf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Source",
-                        "ClassName",
-                        "ObjectName",
-                        "Action",
-                        "ActionOutputVaribale"});
-            table7.AddRow(new string[] {
-                        "New DotNet Plugin Source",
-                        "TestingDotnetDllCascading.Human",
-                        "[[@human]]",
-                        "BuildInts",
-                        "[[rec1().num]]"});
-#line 79
-  testRunner.And("\"DotNetDLLWf\" contains an DotNet DLL \"DotNetService\" as", ((string)(null)), table7, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
-                        "parameterName",
-                        "value",
-                        "type"});
-#line 82
-  testRunner.And("\"DotNetService\" constructorinputs 0 with inputs as", ((string)(null)), table8, "And ");
-#line 85
-  testRunner.When("workflow \"DotNetDLLWf\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 86
-  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?\" in B" +
-                    "rowser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
-  testRunner.Then("The Debug in Browser content contains order of \"AssignFlow\", \"CaseConvertFlow\" an" +
-                    "d \"ReplaceFlow\" in SequenceFlow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Forward Sort Recordset workflow")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
         public virtual void ExecutingAForwardSortRecordsetWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Forward Sort Recordset workflow", ((string[])(null)));
-#line 79
+#line 89
 this.ScenarioSetup(scenarioInfo);
-#line 80
+#line 90
   testRunner.Given("I have a workflow \"SortRecordsetWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -382,16 +338,35 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "[[Degree(4).YearCompleted]]",
                         "2013"});
-#line 81
+#line 91
   testRunner.And("\"SortRecordsetWF\" contains an Assign \"ExampleRecordSet\" as", ((string)(null)), table7, "And ");
-#line 89
-  testRunner.When("workflow \"SortRecordsetWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table8.AddRow(new string[] {
+                        "[[Degree().YearCompleted]]",
+                        "Forward"});
+#line 97
+  testRunner.And("\"SortRecordsetWF\" contains an Sort \"Degree\" as", ((string)(null)), table8, "And ");
+#line 100
+  testRunner.And("workflow \"SortRecordsetWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/SortRecordsetWF.debug?\" " +
                     "in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
-  testRunner.Then("The Debug in Browser content contains the correct recordset order of \"2012\" \"2013" +
-                    "\" \"2014\" \"2015\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Values"});
+            table9.AddRow(new string[] {
+                        "2012"});
+            table9.AddRow(new string[] {
+                        "2013"});
+            table9.AddRow(new string[] {
+                        "2014"});
+            table9.AddRow(new string[] {
+                        "2015"});
+#line 102
+  testRunner.Then("Debugstate in index 2 has output as", ((string)(null)), table9, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
