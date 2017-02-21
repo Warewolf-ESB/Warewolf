@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Interfaces;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -22,7 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     {
 
         public TestActivity()
-            : this(null)
+            : this(new Mock<IDebugDispatcher>().Object)
         {
         }
 
@@ -40,9 +41,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             return new List<string>();
         }
         public Guid UniqueGuid { get; private set; }
+        public bool ErrorExecute { get; set; }
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            if (ErrorExecute)
+            {
+                throw new Exception("Error in execution");
+            }
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
@@ -72,7 +78,15 @@ namespace Dev2.Tests.Activities.ActivityTests
         public IDebugState TestInitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
         {
             InitializeDebugState(stateType, dataObject, remoteID, hasError, errorMessage);
+            return GetDebugState();
+        }
+
+        public IDebugState TestDispatchDebugState(IDSFDataObject dataObject, StateType stateType)
+        {
+            DispatchDebugState(dataObject, stateType,0);
             return DebugState;
         }
     }
+
+    
 }

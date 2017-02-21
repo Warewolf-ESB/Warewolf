@@ -55,29 +55,35 @@ namespace Dev2.Runtime.ESB.WF
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
             var hasError = dataObject.Environment.HasErrors();
             var errorMessage = string.Empty;
-            if(hasError)
+            if (hasError)
             {
                 errorMessage = dataObject.Environment.FetchErrors();
             }
-            if(string.IsNullOrEmpty(existingErrors))
+            if (string.IsNullOrEmpty(existingErrors))
             {
                 existingErrors = errorMessage;
             }
-            else if(!existingErrors.Contains(errorMessage))
+            else if (!existingErrors.Contains(errorMessage))
             {
                 existingErrors += Environment.NewLine + errorMessage;
             }
             var name = "localhost";
             Guid remoteID;
             var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
-            if(hasRemote)
+            if (hasRemote)
             {
                 var res = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
-                if(res != null)
+                if (res != null)
                     name = remoteID != Guid.Empty ? _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
             }
             var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
 
+            
+            if (stateType == StateType.End)
+            {
+                debugState.StartTime = dataObject.StartTime;
+                debugState.EndTime = DateTime.Now;
+            }
             if(interrogateInputs)
             {
                 ErrorResultTO invokeErrors;
