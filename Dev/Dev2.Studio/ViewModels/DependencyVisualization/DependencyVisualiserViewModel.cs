@@ -193,7 +193,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             {
                 var seenResource = new List<Guid>();
                 var acc = new List<ExplorerItemNodeViewModel>();
-                GetItems(new List<Node> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
+                GetItems(new List<IDependencyVisualizationNode> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
                 if (acc.Count == 0 || acc.LastOrDefault() == null)
                 {
                     AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>();
@@ -224,7 +224,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
         }
 
-        public ICollection<ExplorerItemNodeViewModel> GetItems(List<Node> nodes, IExplorerItemNodeViewModel parent, List<ExplorerItemNodeViewModel> acc, List<Guid> seenResource)
+        public ICollection<ExplorerItemNodeViewModel> GetItems(List<IDependencyVisualizationNode> nodes, IExplorerItemNodeViewModel parent, List<ExplorerItemNodeViewModel> acc, List<Guid> seenResource)
         {
             List<ExplorerItemNodeViewModel> items = new List<ExplorerItemNodeViewModel>(nodes.Count);
             foreach (var node in nodes)

@@ -87,6 +87,5 @@ namespace Dev2.Runtime.Security
                     endPoint.Address, endPoint.Port, certHash);
             return ProcessHost.Invoke(null, "netsh.exe", args);
         }
-
     }
 }
