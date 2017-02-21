@@ -9,7 +9,6 @@ namespace Warewolf.UITests.Tools
     [CodedUITest]
     public class HttpWebPut
     {
-        [Ignore]
         [TestMethod]
         [TestCategory("HTTP Tools")]
         public void HTTPWebPUTTool_Small_And_LargeView_UITest()
