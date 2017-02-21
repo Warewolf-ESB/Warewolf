@@ -16,6 +16,7 @@ using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
 {
+    [Binding]
     public partial class ControlFlowToolsUIMap
     {
         [When(@"I CopyAndPaste Decision Tool On The Designer")]

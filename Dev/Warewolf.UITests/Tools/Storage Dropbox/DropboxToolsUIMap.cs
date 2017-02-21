@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.StorageDropbox.DropboxToolsUIMapClasses
 {
+    [Binding]
     public partial class DropboxToolsUIMap
     {
         [When(@"I Double Click DropboxDelete Tool to Change View")]

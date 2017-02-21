@@ -26,7 +26,7 @@ using Warewolf.UITests.Tools.Sharepoint.SharepointToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.ToolsUIMapClasses
 {
-
+    [Binding]
     public partial class WorkflowTabUIMap
     {
         [Given(@"I Click PrefixContainsInvalidText Hyperlink")]
@@ -977,7 +977,7 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(304, 129));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
-
+        
         [When(@"I Drag Toolbox SQL Server Tool Onto DesignSurface")]
         public void Drag_Toolbox_SQL_Server_Tool_Onto_DesignSurface()
         {

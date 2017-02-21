@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Sharepoint.SharepointToolsUIMapClasses
 {
+    [Binding]
     public partial class SharepointToolsUIMap
     {
         [When(@"I Open Sharepoint Copy Tool Large View")]

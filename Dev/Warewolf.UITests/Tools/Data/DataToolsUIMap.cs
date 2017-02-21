@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Data.DataToolsUIMapClasses
 {
+    [Binding]
     public partial class DataToolsUIMap
     {
         [When(@"I RightClick FindIndex OnDesignSurface")]
