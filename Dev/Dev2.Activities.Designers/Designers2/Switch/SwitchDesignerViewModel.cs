@@ -1,8 +1,10 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Interfaces;
@@ -119,7 +121,44 @@ namespace Dev2.Activities.Designers2.Switch
         [ExcludeFromCodeCoverage]
         public override void Validate()
         {
+            ValidExpression = true;
+            if (ModelItem?.Parent?.Source?.Collection != null)
+            {
+                foreach (var value in ModelItem.Parent.Source.Collection)
+                {
+                    if (value?.Properties.Any(property => property.Name == "Key") ?? false)
+                    {
+                        var modelItem = value.Properties["Key"]?.ComputedValue;
+                        if (modelItem?.ToString() == SwitchExpression)
+                        {
+                            ValidExpression = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (ModelItem != null)
+                {
+                    foreach (var property in ModelItem.Properties)
+                    {
+                        if (property?.Name == "Case")
+                        {
+                            var modelItem = property.ComputedValue;
+                            if (modelItem?.ToString() == SwitchExpression)
+                            {
+                                ValidExpression = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+        public bool ValidExpression;
+        private static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
 
         public override void UpdateHelpDescriptor(string helpText)
         {

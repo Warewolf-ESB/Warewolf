@@ -75,17 +75,12 @@ namespace Warewolf.Studio.Views
         private bool ValidateSwitchCase(bool valid)
         {
             var configureSwitchArm = ControlContentPresenter.Content as ConfigureSwitchArm;
-
             var switchDesignerViewModel = configureSwitchArm?.DataContext as SwitchDesignerViewModel;
-            if (switchDesignerViewModel?.ModelItem?.Parent?.Source?.Collection != null)
+
+            if (switchDesignerViewModel != null)
             {
-                var validExpression = true;
-                if ((from value in switchDesignerViewModel.ModelItem.Parent.Source.Collection where value?.Properties.Any(property => property.Name == "Key") ?? false select value.Properties["Key"]?.ComputedValue).Any(modelItem => modelItem?.ToString() == switchDesignerViewModel.SwitchExpression))
-                {
-                    validExpression = false;
-                    valid = false;
-                }
-                if (!validExpression)
+                switchDesignerViewModel.Validate();
+                if (!switchDesignerViewModel.ValidExpression)
                 {
                     PopupController.Show("FlowSwitch cases must be unique", "FlowSwitch Case Error",
                         MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
