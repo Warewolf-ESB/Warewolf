@@ -134,7 +134,7 @@
     <Compile Include="DependencyGraphGenerator.cs" />
     <Compile Include="DependencyVisualization\CircularDependency.cs" />
     <Compile Include="DependencyVisualization\Graph.cs" />
-    <Compile Include="DependencyVisualization\Node.cs" />
+    <Compile Include="DependencyVisualization\DependencyVisualizationNode.cs" />
     <Compile Include="Dev2EnumConverter.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
     <Compile Include="Exchange\ExchangeEmailSender.cs" />
