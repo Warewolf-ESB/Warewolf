@@ -402,7 +402,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 var guids = Source.SelectedEnvironment.Server.QueryProxy.FetchDependenciesOnList(Source.SelectedItems.Select(a => a.ResourceId));
                 var explorerItemViewModels = Source.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren);
-                explorerItemViewModels.Where(a => guids.Contains(a.ResourceId)).Apply(a => a.IsResourceChecked = true);
+                explorerItemViewModels.Where(a => guids.Contains(a.ResourceId))
+                    .Apply(a => a.IsResourceChecked = true);
             }
         }
 

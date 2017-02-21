@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.Core;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -34,8 +38,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _sourceView = new Mock<IDeploySourceExplorerViewModel>();
             _statsView = new Mock<IDeployStatsViewerViewModel>();
             _statsView.SetupAllProperties();
-            _shellVm = new Mock<IShellViewModel>(); 
+            _shellVm = new Mock<IShellViewModel>();
             _serverMock = new Mock<IServer>();
+            _differentServerMock = new Mock<IServer>();
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _updateRepositoryMock = new Mock<IStudioUpdateManager>();
             _sourceView.Setup(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>());
@@ -117,7 +122,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             bool wasCalled = false;
             singleExplorerDeployViewModel.Destination.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "IsConnected")
+                if (args.PropertyName == "IsConnected")
                 {
                     wasCalled = true;
                 }
@@ -132,7 +137,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             });
             var propertyChangedEventArgs = new PropertyChangedEventArgs("IsConnected");
-            _destView.Raise(model => model.PropertyChanged += (sender, args) => {}, singleExplorerDeployViewModel, propertyChangedEventArgs );
+            _destView.Raise(model => model.PropertyChanged += (sender, args) => { }, singleExplorerDeployViewModel, propertyChangedEventArgs);
             //---------------Test Result -----------------------
             Assert.IsTrue(wasCalled);
         }
@@ -193,6 +198,289 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Core.DeploySourceNotConnected, singleExplorerDeployViewModel.ErrorMessage);
         }
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CanDeploy_GivenSourceAndDestinationAreSameServer_ShouldHaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            var canDeploy = privateObject.GetProperty("CanDeploy");
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, canDeploy);
+            Assert.AreEqual(Resources.Languages.Core.DeploySourceDestinationAreSame, singleExplorerDeployViewModel.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CanDeploy_GivenSourceServerSelectedItemsIsNull_ShouldHaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var connectControl2 = new Mock<IConnectControlViewModel>();
+            connectControl2.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl2.Object);
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+                DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            var canDeploy = privateObject.GetProperty("CanDeploy");
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, canDeploy);
+            Assert.AreEqual(Resources.Languages.Core.DeployNoResourcesSelected, singleExplorerDeployViewModel.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CanDeploy_GivenNoSourceServerPermissions_ShouldHaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _serverMock.Setup(server => server.CanDeployFrom).Returns(false);
+            _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var connectControl2 = new Mock<IConnectControlViewModel>();
+            connectControl2.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl2.Object);
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
+            };
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(explorerTreeItems);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+                DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            var canDeploy = privateObject.GetProperty("CanDeploy");
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, canDeploy);
+            Assert.AreEqual(StringResources.SourcePermission_Error, singleExplorerDeployViewModel.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CanDeploy_GivenNoDestinarionSourcePermissions_ShouldHaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _serverMock.Setup(server => server.CanDeployFrom).Returns(true);
+            _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _differentServerMock.Setup(server => server.CanDeployTo).Returns(false);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var connectControl2 = new Mock<IConnectControlViewModel>();
+            connectControl2.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl2.Object);
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
+            };
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(explorerTreeItems);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+                DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            var canDeploy = privateObject.GetProperty("CanDeploy");
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, canDeploy);
+            Assert.AreEqual(StringResources.DestinationPermission_Error, singleExplorerDeployViewModel.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CanDeploy_GivenIsDeployingIsTrue_ShouldHaveFalse()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _serverMock.Setup(server => server.CanDeployFrom).Returns(true);
+            _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _differentServerMock.Setup(server => server.CanDeployTo).Returns(false);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var connectControl2 = new Mock<IConnectControlViewModel>();
+            connectControl2.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl2.Object);
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
+            };
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(explorerTreeItems);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+                DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying").SetValue(privateObject.Target, true);
+            var canDeploy = privateObject.GetProperty("CanDeploy");
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, canDeploy);
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CanDeploy_GivenAllValidRequirements_ShouldHaveTrue()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _serverMock.Setup(server => server.CanDeployFrom).Returns(true);
+            _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _differentServerMock.Setup(server => server.CanDeployTo).Returns(true);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var connectControl2 = new Mock<IConnectControlViewModel>();
+            connectControl2.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl2.Object);
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
+            };
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(explorerTreeItems);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+                DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            var canDeploy = privateObject.GetProperty("CanDeploy");
+            //---------------Test Result -----------------------
+            Assert.AreEqual(true, canDeploy);
+            Assert.IsTrue(string.IsNullOrEmpty(singleExplorerDeployViewModel.ErrorMessage));
+        }
+
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -210,6 +498,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var connectControl = new Mock<IConnectControlViewModel>();
             connectControl.SetupAllProperties();
             _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object)
             {
@@ -281,7 +570,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock = new Mock<IServer>();
             differentConnectControl.Setup(model => model.SelectedConnection).Returns(_differentServerMock.Object);
             _destView.Setup(model => model.ConnectControlViewModel).Returns(differentConnectControl.Object);
-            _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());            
+            _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
             _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             _sourceView.Setup(model => model.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
             _sourceView.Setup(model => model.SelectedEnvironment.IsConnected).Returns(true);
@@ -297,7 +586,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(false, canDeploy);
             Assert.AreEqual(Resources.Languages.Core.DeployDestinationNotConnected, singleExplorerDeployViewModel.ErrorMessage);
         }
-        
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void DestinationServerStateChanged_GivenDestinationIsDisconnected_Should()
@@ -383,7 +672,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
-            var popupController = new Mock<IPopupController>();            
+            var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             connectControl.SetupAllProperties();
             _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
@@ -437,11 +726,90 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
             var privateObject = new PrivateObject(singleExplorerDeployViewModel);
+
             singleExplorerDeployViewModel.DestinationConnectControlViewModel.SelectedConnection = _differentServerMock.Object;
             singleExplorerDeployViewModel.SourceConnectControlViewModel.SelectedConnection = _serverMock.Object;
             //---------------Test Result -----------------------
             privateObject.Invoke("CheckVersionConflict");
             Assert.IsFalse(singleExplorerDeployViewModel.IsDeploying);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void IsDeploying_GivenSameServerVersions_ShouldHaveIsDeployingTrue()
+        {
+            //---------------Set up test pack-------------------
+            _differentServerMock = new Mock<IServer>();
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _serverMock.Setup(server => server.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.VersionInfo.VersionNumber).Returns("1.0.0.0");
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeployServerMinVersionConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel);
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
+            _destView.Setup(model => model.SelectedServer).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.MinSupportedVersion).Returns(new Version("1.0.0.0"));
+            _sourceView.Setup(model => model.ServerVersion).Returns(new Version("1.0.0.0"));
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
+            });
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
+            var privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying").SetValue(privateObject.Target, true);
+            singleExplorerDeployViewModel.DestinationConnectControlViewModel.SelectedConnection = _differentServerMock.Object;
+            singleExplorerDeployViewModel.SourceConnectControlViewModel.SelectedConnection = _serverMock.Object;
+            //---------------Test Result -----------------------
+            privateObject.Invoke("CheckVersionConflict");
+            Assert.IsTrue(singleExplorerDeployViewModel.IsDeploying);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void IsDeploying_GivenSourceServerIsOldVersionAndPopupCancelClick_ShouldHaveIsDeployingTrue()
+        {
+            //---------------Set up test pack-------------------
+            _differentServerMock = new Mock<IServer>();
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _serverMock.Setup(server => server.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.VersionInfo.VersionNumber).Returns("1.0.0.0");
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeployServerMinVersionConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.OK);
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
+            _destView.Setup(model => model.SelectedServer).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.MinSupportedVersion).Returns(new Version("2.0.0.0"));
+            _sourceView.Setup(model => model.ServerVersion).Returns(new Version("1.0.0.0"));
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
+            });
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
+            var privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying").SetValue(privateObject.Target, true);
+            singleExplorerDeployViewModel.DestinationConnectControlViewModel.SelectedConnection = _differentServerMock.Object;
+            singleExplorerDeployViewModel.SourceConnectControlViewModel.SelectedConnection = _serverMock.Object;
+            //---------------Test Result -----------------------
+            privateObject.Invoke("CheckVersionConflict");
+            Assert.IsTrue(singleExplorerDeployViewModel.IsDeploying);
         }
 
 
@@ -467,7 +835,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _destView.Setup(model => model.SelectedServer).Returns(_differentServerMock.Object);
             _destView.Setup(model => model.ServerVersion).Returns(new Version("1.0.0.0"));
             _sourceView.Setup(model => model.ServerVersion).Returns(new Version("2.0.0.0"));
-            popupController.Setup(controller => controller.ShowDeployServerVersionConflict(_sourceView.Object.ServerVersion.ToString(), _destView.Object.ServerVersion.ToString())).Returns(MessageBoxResult.Cancel);
+            popupController.Setup(controller => controller.ShowDeployServerVersionConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel);
             _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             _sourceView.Setup(model => model.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
             _sourceView.SetupGet(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>
@@ -481,7 +849,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             privateObject.Invoke("CheckVersionConflict");
             Assert.IsFalse(singleExplorerDeployViewModel.IsDeploying);
-            popupController.Verify(model => model.ShowDeployServerVersionConflict(_sourceView.Object.ServerVersion.ToString(), _destView.Object.ServerVersion.ToString()));
+            popupController.Verify(model => model.ShowDeployServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()));
         }
 
 
@@ -513,7 +881,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.IsNotNull(singleExplorerDeployViewModel.StatsViewModel);
         }
-        
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ConflictNewResourceText_GivenViewOverrides_ShouldHaveText()
@@ -717,7 +1085,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _statsView.Object.CalculateAction.Invoke();
             //---------------Test Result -----------------------
             Assert.AreEqual(singleExplorerDeployViewModel.SourcesCount, _statsView.Object.Sources.ToString());
-        } 
+        }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -774,6 +1142,385 @@ namespace Warewolf.Studio.ViewModels.Tests
             _statsView.Object.CalculateAction.Invoke();
             //---------------Test Result -----------------------
             Assert.AreEqual(singleExplorerDeployViewModel.ConflictItems, _statsView.Object.Conflicts);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void UpdateServerCompareChanged_ShouldRecalculate_Items()
+        {
+            //---------------Set up test pack-------------------            
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var explorerTreeItems = new List<IExplorerTreeItem>();
+            _statsView.Setup(model => model.New).Returns(explorerTreeItems);
+            _statsView.Setup(model => model.Services).Returns(5);
+            _statsView.Setup(model => model.Sources).Returns(2);
+            _statsView.Setup(model => model.NewResources).Returns(3);
+            _statsView.Setup(model => model.Overrides).Returns(1);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
+            //---------------Assert Precondition----------------
+            _statsView.Object.CalculateAction();
+            Assert.IsNotNull(singleExplorerDeployViewModel);
+            Assert.AreEqual("5", singleExplorerDeployViewModel.ServicesCount);
+            Assert.AreEqual("2", singleExplorerDeployViewModel.SourcesCount);
+            Assert.AreEqual("3", singleExplorerDeployViewModel.NewResourcesCount);
+            Assert.AreEqual("1", singleExplorerDeployViewModel.OverridesCount);
+            //---------------Execute Test ----------------------
+            _statsView.Setup(model => model.Services).Returns(50);
+            _statsView.Setup(model => model.Sources).Returns(20);
+            _statsView.Setup(model => model.NewResources).Returns(30);
+            _statsView.Setup(model => model.Overrides).Returns(10);
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            privateObject.Invoke("UpdateServerCompareChanged", new object[] { null, null });
+            //---------------Test Result -----------------------
+            Assert.IsFalse(singleExplorerDeployViewModel.ShowConflicts);
+            Assert.AreEqual("50", singleExplorerDeployViewModel.ServicesCount);
+            Assert.AreEqual("20", singleExplorerDeployViewModel.SourcesCount);
+            Assert.AreEqual("30", singleExplorerDeployViewModel.NewResourcesCount);
+            Assert.AreEqual("10", singleExplorerDeployViewModel.OverridesCount);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void SelectDependencies_GivenSourceWithDependencies_ShouldHaveItemsSelected()
+        {
+            //---------------Set up test pack-------------------            
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var selectedEnv = new Mock<IEnvironmentViewModel>();
+            var newServer = new Mock<IServer>();
+            var explorerTreeItem1 = new Mock<IExplorerTreeItem>();
+            Guid newGuid = Guid.NewGuid();
+            explorerTreeItem1.Setup(item => item.ResourceId).Returns(newGuid);
+            explorerTreeItem1.Setup(item => item.AllowResourceCheck).Returns(true);
+
+
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                explorerTreeItem1.Object
+            };
+            var query = new Mock<IQueryManager>();
+            query.Setup(manager => manager.FetchDependenciesOnList(It.IsAny<IEnumerable<Guid>>())).Returns(explorerTreeItems.Select(item => item.ResourceId).ToList());
+            newServer.Setup(server => server.QueryProxy).Returns(query.Object);
+            selectedEnv.Setup(model => model.Server).Returns(newServer.Object);
+            var explorerItemViewModels = new ObservableCollection<IExplorerItemViewModel>();
+            var explorerItemViewModels2 = new ObservableCollection<IExplorerItemViewModel>();
+
+            var mock = new Mock<IExplorerItemViewModel>();
+            mock.SetupGet(model => model.ResourceId).Returns(newGuid);
+            mock.Setup(model => model.UnfilteredChildren).Returns(explorerItemViewModels2);
+            mock.SetupProperty(item => item.IsResourceChecked);
+            explorerItemViewModels.Add(mock.Object);
+
+            selectedEnv.Setup(model => model.UnfilteredChildren).Returns(explorerItemViewModels);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(selectedEnv.Object);
+            _sourceView.Setup(model => model.SelectedItems).Returns(explorerTreeItems);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            privateObject.Invoke("SelectDependencies");
+            //---------------Test Result -----------------------
+            mock.VerifySet(model => model.IsResourceChecked = true, Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void DestinationConnectControlViewModel_GivenDestinationConnectControlViewModelIsSetToSameValue_ShouldReturn()
+        {
+            //---------------Set up test pack-------------------            
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeployResourceNameConflict(It.IsAny<string>())).Returns(MessageBoxResult.OK);
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var explorerTreeItem1 = new Mock<IExplorerTreeItem>();
+            explorerTreeItem1.Setup(item => item.ResourceId).Returns(Guid.NewGuid);
+            explorerTreeItem1.Setup(model => model.ResourcePath).Returns("Somepath");
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                explorerTreeItem1.Object
+            };
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var explorerItemViewModels = new List<IExplorerItemViewModel>
+            {
+                new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourcePath = "Somepath" }
+            };
+            _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.SelectedItems).Returns(explorerTreeItems);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(singleExplorerDeployViewModel.DestinationConnectControlViewModel);
+            Assert.IsNotNull(singleExplorerDeployViewModel.SourceConnectControlViewModel);
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("DestinationConnectControlViewModel").SetValue(privateObject.Target, connectControl.Object);
+            typeof(SingleExplorerDeployViewModel).GetProperty("SourceConnectControlViewModel").SetValue(privateObject.Target, connectControl.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(singleExplorerDeployViewModel.DestinationConnectControlViewModel);
+            Assert.IsNotNull(singleExplorerDeployViewModel.SourceConnectControlViewModel);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CheckResourceNameConflict_GivenSourceWith1ItemAndDestinationWith1Item_ShouldSetIsDeployingToFalse()
+        {
+            //---------------Set up test pack-------------------            
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeployResourceNameConflict(It.IsAny<string>())).Returns(MessageBoxResult.OK);
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var explorerTreeItem1 = new Mock<IExplorerTreeItem>();
+            explorerTreeItem1.Setup(item => item.ResourceId).Returns(Guid.NewGuid);
+            explorerTreeItem1.Setup(model => model.ResourcePath).Returns("Somepath");
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                explorerTreeItem1.Object
+            };
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var explorerItemViewModels = new List<IExplorerItemViewModel>
+            {
+                new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourcePath = "Somepath" }
+            };
+            _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.SelectedItems).Returns(explorerTreeItems);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            privateObject.Invoke("CheckResourceNameConflict");
+            //---------------Test Result -----------------------
+            Assert.IsFalse(singleExplorerDeployViewModel.IsDeploying);
+            popupController.Verify(controller => controller.ShowDeployResourceNameConflict(It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Deploy_ShouldSetIsDeployingToTrue()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _serverMock.Setup(server => server.CanDeployFrom).Returns(true);
+            _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _differentServerMock.Setup(server => server.CanDeployTo).Returns(true);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var connectControl2 = new Mock<IConnectControlViewModel>();
+            connectControl2.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl2.Object);
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object) {ResourcePath = "SomeOtherpath"}
+            };
+            var explorerItemViewModels = new List<IExplorerItemViewModel>
+            {
+                new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourcePath = "Somepath" }
+            };
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            sourceEnv.Setup(model => model.AsList()).Returns(explorerItemViewModels);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            var valueFunction = new Dictionary<string, string> { { "some key", "some value" } };
+            _serverMock.Setup(server => server.GetServerInformation()).Returns(valueFunction);
+            _sourceView.Setup(model => model.SelectedServer).Returns(_serverMock.Object);
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(explorerTreeItems);
+            var environmentViewModels = new ObservableCollection<IEnvironmentViewModel> { sourceEnv.Object };
+            _sourceView.SetupGet(model => model.Environments).Returns(environmentViewModels);
+            _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+                DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
+            };
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            privateObject.Invoke("Deploy");
+            //---------------Test Result -----------------------
+            Assert.IsTrue(singleExplorerDeployViewModel.DeploySuccessfull);
+            Assert.IsTrue(singleExplorerDeployViewModel.DeploySuccessMessage.Contains("Deployed Successfully."));
+            popupController.Verify(controller => controller.ShowDeploySuccessful(It.IsAny<string>()));
+            _statsView.Verify(model => model.ReCalculate(), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Deploy_GivenConflictsAndMessageBoxResultCancel_ShouldSetIsDeployingToFalse()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _serverMock.Setup(server => server.CanDeployFrom).Returns(true);
+            _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _differentServerMock.Setup(server => server.CanDeployTo).Returns(true);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var connectControl2 = new Mock<IConnectControlViewModel>();
+            connectControl2.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl2.Object);
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object) {ResourcePath = "SomeOtherpath"}
+            };
+            var explorerItemViewModels = new List<IExplorerItemViewModel>
+            {
+                new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourcePath = "Somepath" }
+            };
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            sourceEnv.Setup(model => model.AsList()).Returns(explorerItemViewModels);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.SelectedServer).Returns(_serverMock.Object);
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(explorerTreeItems);
+            var environmentViewModels = new ObservableCollection<IEnvironmentViewModel> { sourceEnv.Object };
+            _sourceView.SetupGet(model => model.Environments).Returns(environmentViewModels);
+            _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+                DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
+            };
+            popupController.Setup(controller => controller.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.Cancel);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var conflicts = new List<Conflict>
+            {
+                new Conflict()
+            };
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("ConflictItems").SetValue(privateObject.Target, conflicts);
+            privateObject.Invoke("Deploy");
+            //---------------Test Result -----------------------
+            popupController.Verify(controller => controller.ShowDeployConflict(It.IsAny<int>()), Times.AtLeastOnce);
+            Assert.IsFalse(singleExplorerDeployViewModel.IsDeploying);
+            Assert.IsTrue(singleExplorerDeployViewModel.ShowConflictItemsList);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Deploy_GivenConflictsAndMessageBoxResultOK_ShouldSetIsDeployingToTrue()
+        {
+            //---------------Set up test pack-------------------
+            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
+            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
+            _serverMock.SetupGet(it => it.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _serverMock.Setup(server => server.CanDeployFrom).Returns(true);
+            _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
+            _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
+            _differentServerMock.Setup(server => server.CanDeployTo).Returns(true);
+            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverEnvironmentId = Guid.NewGuid();
+            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var popupController = new Mock<IPopupController>();
+            var connectControl = new Mock<IConnectControlViewModel>();
+            connectControl.SetupAllProperties();
+            var connectControl2 = new Mock<IConnectControlViewModel>();
+            connectControl2.SetupAllProperties();
+            var destEnv = new Mock<IEnvironmentViewModel>();
+            destEnv.Setup(model => model.IsConnected).Returns(true);
+            destEnv.Setup(model => model.Server).Returns(_differentServerMock.Object);
+            _destView.Setup(model => model.SelectedEnvironment).Returns(destEnv.Object);
+            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl2.Object);
+            var explorerTreeItems = new List<IExplorerTreeItem>
+            {
+                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object) {ResourcePath = "SomeOtherpath"}
+            };
+            var explorerItemViewModels = new List<IExplorerItemViewModel>
+            {
+                new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourcePath = "Somepath" }
+            };
+            var sourceEnv = new Mock<IEnvironmentViewModel>();
+            sourceEnv.Setup(model => model.IsConnected).Returns(true);
+            sourceEnv.Setup(model => model.Server).Returns(_serverMock.Object);
+            sourceEnv.Setup(model => model.AsList()).Returns(explorerItemViewModels);
+            _sourceView.Setup(model => model.SelectedEnvironment).Returns(sourceEnv.Object);
+            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
+            _sourceView.Setup(model => model.SelectedServer).Returns(_serverMock.Object);
+            _sourceView.SetupGet(model => model.SelectedItems).Returns(explorerTreeItems);
+            var environmentViewModels = new ObservableCollection<IEnvironmentViewModel> { sourceEnv.Object };
+            _sourceView.SetupGet(model => model.Environments).Returns(environmentViewModels);
+            _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            {
+                SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
+                DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
+            };
+            popupController.Setup(controller => controller.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.OK);
+            popupController.Setup(controller => controller.ShowDeploySuccessful(It.IsAny<string>())).Returns(MessageBoxResult.OK);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var conflicts = new List<Conflict>
+            {
+                new Conflict()
+            };
+            PrivateObject privateObject = new PrivateObject(singleExplorerDeployViewModel);
+            typeof(SingleExplorerDeployViewModel).GetProperty("ConflictItems").SetValue(privateObject.Target, conflicts);
+            privateObject.Invoke("Deploy");
+            //---------------Test Result -----------------------
+            popupController.Verify(controller => controller.ShowDeployConflict(It.IsAny<int>()), Times.AtLeastOnce);
+            popupController.Verify(controller => controller.ShowDeploySuccessful(It.IsAny<string>()), Times.AtLeastOnce);
+            Assert.IsFalse(singleExplorerDeployViewModel.IsDeploying);
         }
     }
 }
