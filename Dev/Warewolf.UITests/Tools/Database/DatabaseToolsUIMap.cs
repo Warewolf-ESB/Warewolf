@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Database.DatabaseToolsUIMapClasses
 {
+    [Binding]
     public partial class DatabaseToolsUIMap
     {
         [When(@"I Select DatabaseAndTable From BulkInsert Tool")]

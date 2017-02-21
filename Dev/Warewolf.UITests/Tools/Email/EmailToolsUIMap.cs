@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Email.EmailToolsUIMapClasses
 {
+    [Binding]
     public partial class EmailToolsUIMap
     {
         [Given(@"I Open SMTP Email Tool Large View")]

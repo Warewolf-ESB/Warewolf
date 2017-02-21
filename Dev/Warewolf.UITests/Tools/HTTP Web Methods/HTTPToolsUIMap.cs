@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.HTTPWebMethods.HTTPToolsUIMapClasses
 {
+    [Binding]
     public partial class HTTPToolsUIMap
     {
         [Given(@"I Enter invalid data on the DELETE Web Large View")]

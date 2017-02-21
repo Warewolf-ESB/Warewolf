@@ -16,6 +16,7 @@ using Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.LoopConstructs.LoopConstructToolsUIMapClasses
 {
+    [Binding]
     public partial class LoopConstructToolsUIMap
     {
         public void Drag_Toolbox_AssignObject_Onto_Foreach()

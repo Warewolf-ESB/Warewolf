@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses
 {
+    [Binding]
     public partial class UtilityToolsUIMap
     {
         [When(@"I Open AggregateCalculate Tool large view")]

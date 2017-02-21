@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.FileFTPFTPSSFTP.FileToolsUIMapClasses
 {
+    [Binding]
     public partial class FileToolsUIMap
     {
         [When(@"I Click Zip Done Button")]

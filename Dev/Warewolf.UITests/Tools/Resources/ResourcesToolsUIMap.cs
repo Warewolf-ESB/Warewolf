@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Resources.ResourcesToolsUIMapClasses
 {
+    [Binding]
     public partial class ResourcesToolsUIMap
     {
         [Given(@"I Click New Source Button From DotNetDLLPlugin Tool")]

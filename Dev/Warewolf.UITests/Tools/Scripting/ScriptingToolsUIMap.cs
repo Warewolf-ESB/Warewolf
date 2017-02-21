@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Scripting.ScriptingToolsUIMapClasses
 {
+    [Binding]
     public partial class ScriptingToolsUIMap
     {
         [When(@"I Open Javascript Large View")]

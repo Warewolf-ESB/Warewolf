@@ -14,6 +14,7 @@ using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Tools.Recordset.RecordsetToolsUIMapClasses
 {
+    [Binding]
     public partial class RecordsetToolsUIMap
     {
         [Given(@"I RightClick DeleteRecord OnDesignSurface")]
