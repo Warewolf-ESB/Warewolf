@@ -24,8 +24,8 @@ Scenario Outline: Delete file at location
 	| Local      | [[path]] | c:\filetodelete.txt                                                 | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| UNC        | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\filetodelete.txt        | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| UNC Secure | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | "Success" | NO           |                      |
-	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORTESTING/filetodelete.txt                 | ""                           | ""       | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORTESTING/filetodelet.txt                  | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
+	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.txt                 | ""                           | ""       | [[result]] | "Success" | NO           |                      |
+	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodelet.txt                  | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
 	| SFTP       | [[path]] | sftp://rsaklfsvrgendev/filetodelete.txt                             | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
 	| SFTP PK    | [[path]] | sftp://rsaklfsvrgendev/filetodelete1.txt                            | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
@@ -43,8 +43,8 @@ Scenario Outline: Delete file at location Null
 	| Local      | [[path]] | G:\filetodelete                                                     | ""                           | ""       | [[result]] | "Failure" | NO           |                      |
 	| UNC        | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\Memo.txt                | ""                           | ""       | [[result]] | "Success" | NO           |                      |
 	| UNC Secure | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | password | [[result]] | "Failure" | NO           |                      |
-	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORTESTING/filetodelete.xtx                 | ""                           | ""       | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORTESTING/filetodelet.txt                  | IntegrationTester            | I73573r0 | [[result]] | ""        | NO           |                      |
+	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetodelete.xtx                 | ""                           | ""       | [[result]] | "Success" | NO           |                      |
+	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodelet.txt                  | IntegrationTester            | I73573r0 | [[result]] | ""        | NO           |                      |
 	| SFTP       | [[path]] | sftp://rsaklfsvrgendev/Memo.txt                                     | dev2.local                   | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 
 Scenario Outline: Delete file Validation

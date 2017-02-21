@@ -166,7 +166,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/FORTESTING/")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Files")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -175,7 +175,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_3()
         {
-            this.ReadFolderFileAtLocation("3", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/", "Files", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("3", "FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/", "Files", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -187,7 +187,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1002/FORTESTING/")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Files")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -196,7 +196,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_4()
         {
-            this.ReadFolderFileAtLocation("4", "FTPS", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/", "Files", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("4", "FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/", "Files", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -229,7 +229,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[rec(1).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -238,7 +238,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_8()
         {
-            this.ReadFolderFileAtLocation("8", "FTP", "[[rec(1).a]]", "ftp://rsaklfsvrpdc:1001/", "Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("8", "FTP", "[[rec(1).a]]", "ftp://rsaklfsvrsbspdc:1001/", "Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -250,7 +250,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[rec(1).a]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1002/")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -259,7 +259,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_9()
         {
-            this.ReadFolderFileAtLocation("9", "FTPS", "[[rec(1).a]]", "ftp://rsaklfsvrpdc:1002/", "Folders", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("9", "FTPS", "[[rec(1).a]]", "ftp://rsaklfsvrsbspdc:1002/", "Folders", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -313,7 +313,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/FORTESTING/")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Files & Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -322,7 +322,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_13()
         {
-            this.ReadFolderFileAtLocation("13", "FTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/", "Files & Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("13", "FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/", "Files & Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -334,7 +334,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1002/FORTESTING/")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Files & Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -343,7 +343,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_14()
         {
-            this.ReadFolderFileAtLocation("14", "FTPS", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/", "Files & Folders", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("14", "FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/", "Files & Folders", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -397,7 +397,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Empty_FTP_Files")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/FORTESTING/emptydir")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Files")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -406,7 +406,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_18()
         {
-            this.ReadFolderFileAtLocation("18", "Empty_FTP_Files", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/emptydir", "Files", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("18", "Empty_FTP_Files", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir", "Files", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -418,7 +418,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Empty_FTPS_Files")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1002/FORTESTING/emptydir")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Files")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -427,7 +427,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_19()
         {
-            this.ReadFolderFileAtLocation("19", "Empty_FTPS_Files", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/emptydir", "Files", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("19", "Empty_FTPS_Files", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir", "Files", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -481,7 +481,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Empty_FTP_Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/FORTESTING/emptydir")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -490,7 +490,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_23()
         {
-            this.ReadFolderFileAtLocation("23", "Empty_FTP_Folders", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/emptydir", "Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("23", "Empty_FTP_Folders", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir", "Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -502,7 +502,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Empty_FTPS_Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1002/FORTESTING/emptydir")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -511,7 +511,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_24()
         {
-            this.ReadFolderFileAtLocation("24", "Empty_FTPS_Folders", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/emptydir", "Folders", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("24", "Empty_FTPS_Folders", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir", "Folders", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -565,7 +565,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Empty_FTP_Files_Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/FORTESTING/emptydir")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Files & Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
@@ -574,7 +574,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_28()
         {
-            this.ReadFolderFileAtLocation("28", "Empty_FTP_Files_Folders", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/emptydir", "Files & Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("28", "Empty_FTP_Files_Folders", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/emptydir", "Files & Folders", "\"\"", "\"\"", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -586,7 +586,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Empty_FTPS_Files_Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1002/FORTESTING/emptydir")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:read", "Files & Folders")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
@@ -595,7 +595,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void ReadFolderFileAtLocation_29()
         {
-            this.ReadFolderFileAtLocation("29", "Empty_FTPS_Files_Folders", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/emptydir", "Files & Folders", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
+            this.ReadFolderFileAtLocation("29", "Empty_FTPS_Files_Folders", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/emptydir", "Files & Folders", "integrationtester", "I73573r0", "[[result]]", "String", "NO", ((string[])(null)));
 #line hidden
         }
         
@@ -822,7 +822,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]][[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "ftp://rsaklfsvrpdc:")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", ":1001/FORTESTING/")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrpdc:1001/FORTESTING/")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -833,7 +833,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public virtual void ReadFolderFileValidation_7()
         {
-            this.ReadFolderFileValidation("7", "Local Files", "[[a]][[b]]", "ftp://rsaklfsvrpdc:", ":1001/FORTESTING/", "ftp://rsaklfsvrpdc:1001/FORTESTING/", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
+            this.ReadFolderFileValidation("7", "Local Files", "[[a]][[b]]", "ftp://rsaklfsvrpdc:", ":1001/FORTESTING/", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
         
