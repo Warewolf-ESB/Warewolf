@@ -374,17 +374,7 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton.Exists, "DeployTab close tab button does not exist.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton, new Point(16, 6));
         }
-
-        [Given(@"I Click Deploy Ribbon Button")]
-        [When(@"I Click Deploy Ribbon Button")]
-        [Then(@"I Click Deploy Ribbon Button")]
-        public void Click_Deploy_Ribbon_Button()
-        {
-            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.DeployButton, new Point(16, 11));
-            Playback.Wait(2000);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.Exists, "Deploy tab does not exist after clicking deploy ribbon button.");
-        }
-
+        
         public UIMap UIMap
         {
             get
