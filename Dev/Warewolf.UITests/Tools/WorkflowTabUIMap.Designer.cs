@@ -243,7 +243,7 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
         {
             get
             {
-                if ((this.mWorkflowTab == null))
+                if ((this.mWorkflowTab == null) || !(this.mWorkflowTab.Exists))
                 {
                     this.mWorkflowTab = new WorkflowTab(this);
                 }
@@ -898,7 +898,7 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
         {
             get
             {
-                if ((this.mAdornert_numbernText == null))
+                if ((this.mAdornert_numbernText == null) || !(this.mAdornert_numbernText.Exists))
                 {
                     this.mAdornert_numbernText = new Adornert_numbernText(this);
                 }
