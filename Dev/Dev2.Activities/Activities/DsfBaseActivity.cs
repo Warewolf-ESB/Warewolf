@@ -21,7 +21,6 @@ namespace Dev2.Activities
     public abstract class DsfBaseActivity : DsfActivityAbstract<string>
     {
         private List<string> _executionResult;
-        public new abstract string DisplayName { get; set; }
 
         #region Get Debug Inputs/Outputs
 
@@ -54,14 +53,11 @@ namespace Dev2.Activities
             ExecuteTool(dataObject, 0);
         }
 
-        #region Overrides of DsfNativeActivity<string>
 
         public override List<string> GetOutputs()
         {
             return new List<string> {Result};
         }
-
-        #endregion
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

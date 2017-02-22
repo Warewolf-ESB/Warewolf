@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _changedProperties = new List<string>();
-            _target = new ConnectControlViewModel(_serverMock.Object, _eventAggregatorMock.Object);
+            _target = new ConnectControlViewModel(_serverMock.Object, _eventAggregatorMock.Object) { ShouldUpdateActiveEnvironment = true };
             _target.ShouldUpdateActiveEnvironment = true;
             _target.PropertyChanged += _target_PropertyChanged;
         }
@@ -66,7 +66,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestConnectControlViewModelServerNull()
         {
             //act
-            new ConnectControlViewModel(null, _eventAggregatorMock.Object);
+            var connectControlViewModel = new ConnectControlViewModel(null, _eventAggregatorMock.Object);
+            Assert.IsNotNull(connectControlViewModel);
         }
 
         [TestMethod]
@@ -74,7 +75,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestConnectControlViewModelEventAggregatorNull()
         {
             //act
-            new ConnectControlViewModel(_serverMock.Object, null);
+            var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, null);
+            Assert.IsNotNull(connectControlViewModel);
         }
 
         #endregion Test construction
@@ -121,8 +123,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.IsConnected).Returns(true);
             _serverMock.SetupGet(it => it.HasLoaded).Returns(true);
             var popupControllerMock = new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>();
-            CustomContainer.Register<Dev2.Common.Interfaces.Studio.Controller.IPopupController>(
-                popupControllerMock.Object);
+            CustomContainer.Register(popupControllerMock.Object);
             bool disconnectedEventRaised = false;
             _target.ServerDisconnected =
                 (s, e) => { disconnectedEventRaised = s == _target && e == _serverMock.Object; };
@@ -296,14 +297,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             _changedProperties.Clear();
-            var expectedValue = true;
+            const bool ExpectedValue = true;
 
             //act
-            _target.IsLoading = expectedValue;
+            _target.IsLoading = ExpectedValue;
             var value = _target.IsLoading;
 
             //assert
-            Assert.AreEqual(expectedValue, value);
+            Assert.AreEqual(ExpectedValue, value);
             Assert.IsTrue(_changedProperties.Contains("IsLoading"));
         }
 
@@ -341,13 +342,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             var helpViewModelMock = new Mock<IHelpWindowViewModel>();
             mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpViewModelMock.Object);
             CustomContainer.Register(mainViewModelMock.Object);
-            var helpText = "someText";
+            const string HelpText = "someText";
 
             //act
-            _target.UpdateHelpDescriptor(helpText);
+            _target.UpdateHelpDescriptor(HelpText);
 
             //assert
-            helpViewModelMock.Verify(it => it.UpdateHelpText(helpText));
+            helpViewModelMock.Verify(it => it.UpdateHelpText(HelpText));
         }
 
         [TestMethod]
@@ -590,7 +591,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.Object.ServerSaved.Invoke(serverConnectionMock.Object.ResourceID);
 
             //assert
-            var createdServers = _target.Servers.OfType<Server>();
+            var createdServers = _target.Servers.OfType<Server>().ToList();
             Assert.IsTrue(createdServers.Any());
             var server = createdServers.First();
             Assert.IsTrue(!string.IsNullOrEmpty(server.ResourceName));
@@ -600,7 +601,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("ConnectControlViewModel_EditServer")]
-        public void ConnectControlViewModel_EditServer_ServerIDMatch_IsTrue()
+        public void ConnectControlViewModelEditServerServerIDMatchIsTrue()
         {
             var serverGuid = Guid.NewGuid();
             Uri uri = new Uri("http://bravo.com/");
@@ -640,7 +641,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var e1 = new EnvironmentModel(serverGuid, mockEnvironmentConnection.Object);
             var repo = new TestEnvironmentRespository(environmentModel.Object, e1) { ActiveEnvironment = e1 };
-            new EnvironmentRepository(repo);
+            var environmentRepository = new EnvironmentRepository(repo);
+            Assert.IsNotNull(environmentRepository);
 
             bool passed = false;
             mockShellViewModel.Setup(a => a.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()))

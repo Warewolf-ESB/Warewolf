@@ -1,0 +1,483 @@
+<?xml version="1.0"?>
+<UITest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="" Id="45640482-0581-473c-94ee-16c8c82c3b14" AssemblyVersion="12.0.40629.0" Version="1.0" xmlns="http://schemas.microsoft.com/VisualStudio/TeamTest/UITest/2010">
+  <Configuration>
+    <Group Name="IE">
+      <Setting Name="Version" Value="9.0.8112.16421" WarningLevel="1" />
+      <Setting Name="InformationBar" WarningLevel="1" />
+      <Setting Name="AutoCompletePassword" WarningLevel="1" />
+      <Setting Name="AutoCompleteForm" WarningLevel="1" />
+      <Setting Name="DefaultBrowser" Value="IEXPLORE.EXE" WarningLevel="1" />
+      <Setting Name="PopupBlocker" Value="yes" WarningLevel="1" />
+      <Setting Name="TabbedBrowsing" WarningLevel="2" />
+      <Setting Name="InternetZoneSecurity" Value="66816" WarningLevel="2" />
+      <Setting Name="IntranetZoneSecurity" Value="69632" WarningLevel="2" />
+      <Setting Name="TrustedZoneSecurity" Value="70912" WarningLevel="2" />
+      <Setting Name="RestrictedZoneSecurity" Value="73728" WarningLevel="2" />
+      <Setting Name="PhishingFilter" WarningLevel="1" />
+      <Setting Name="EnhancedSecurityConfiguration" WarningLevel="1" />
+    </Group>
+    <Group Name="OS">
+      <Setting Name="Name" Value="Microsoft Windows 7 Professional " WarningLevel="2" />
+      <Setting Name="Version" Value="Microsoft Windows NT 6.1.7601 Service Pack 1" WarningLevel="2" />
+      <Setting Name="IsUserAdmin" Value="True" WarningLevel="2" />
+      <Setting Name="Is64BitOperatingSystem" Value="True" WarningLevel="2" />
+      <Setting Name="IsTerminalServerSession" Value="False" WarningLevel="2" />
+      <Setting Name="OSLanguage" Value="1033" WarningLevel="1" />
+      <Setting Name="UserLocale" Value="7177" WarningLevel="1" />
+      <Setting Name="DragFullWindows" Value="True" WarningLevel="2" />
+      <Setting Name="ScreenResolutionWidth" Value="1920" WarningLevel="2" />
+      <Setting Name="ScreenResolutionHeight" Value="1080" WarningLevel="2" />
+      <Setting Name="SystemDPIX" Value="96" WarningLevel="2" />
+      <Setting Name="SystemDPIY" Value="96" WarningLevel="2" />
+      <Setting Name="Aero" Value="1" WarningLevel="1" />
+      <Setting Name="UACEnabled" Value="0" WarningLevel="2" />
+      <Setting Name="UACPromptEnabled" Value="0" WarningLevel="1" />
+    </Group>
+    <Group Name="TechnologyManagers">
+      <Setting Name="Web" WarningLevel="1" />
+      <Setting Name="Web" WarningLevel="1" />
+      <Setting Name="UIA" WarningLevel="1" />
+    </Group>
+  </Configuration>
+  <InitializeActions />
+  <ExecuteActions />
+  <CleanupActions />
+  <OnErrorActions />
+  <Maps>
+    <UIMap Id="SchedulerUIMap">
+      <TopLevelWindows>
+        <TopLevelWindow ControlType="Window" Id="MainStudioWindow" FriendlyName="Warewolf" SpecialControlType="None" SessionId="2230694">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf</WindowTitle>
+          </WindowTitles>
+          <SearchConfigurations>
+            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+          </SearchConfigurations>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name" Operator="Contains">Warewolf</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="DockManager" FriendlyName="DockManager" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                <PropertyCondition Name="AutomationId">DockManager</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Custom" Id="SplitPaneMiddle" FriendlyName="" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>NextTo</SearchConfiguration>
+                    <SearchConfiguration>Distinct</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="Custom" Id="TabManSplitPane" FriendlyName="SplitPaneMiddle" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="TabList" Id="TabMan" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf</WindowTitle>
+                            <WindowTitle>Warewolf</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="TabPage" Id="SchedulerTab" FriendlyName="Dev2.Settings.Scheduler.SchedulerViewModel" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                <PropertyCondition Name="Name">Dev2.Settings.Scheduler.SchedulerViewModel</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Custom" Id="WorkSurfaceContext" FriendlyName="UI_SchedulerView_AutoID" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Custom" Id="SchedulerView" FriendlyName="UI_SchedulerView_AutoID" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.SchedulerView</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UI_SchedulerView_AutoID</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="CheckBox" Id="RunTaskCheckBox" FriendlyName="Run task as soon as possible after a scheduled sta..." SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_RunAsapCheckBox</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Text" Id="RunasthefollowinguseText" FriendlyName="Run as the following user account " SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                            <PropertyCondition Name="Name">Run as the following user account </PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Button" Id="ResourcePickerButton" FriendlyName="..." SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_WorkflowSelectorButton_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Edit" Id="PasswordTextbox" FriendlyName="UI_PasswordBox" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_PasswordBox</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Edit" Id="NumOfHistoryTextBoxEdit" FriendlyName="UI_NumOfHisTextBox" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_NumOfHisTextBox</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Edit" Id="NameTextbox" FriendlyName="UI_NameTextbox" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_NameTextbox</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Table" Id="HistoryTable" FriendlyName="" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Text" Id="ErrorMessageText" FriendlyName="Please select a workflow to schedule" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                            <PropertyCondition Name="Name">Please select a workflow to schedule</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="RadioButton" Id="EnabledRadioButton" FriendlyName="Enabled" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_EnabledRadioButton</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Button" Id="EditTriggerButton" FriendlyName="?" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_EditTriggerButton_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="List" Id="SchedulesList" FriendlyName="schedules" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">List</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">Schedules</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="ListItem" Id="ScheduleNewTaskListItem" FriendlyName="Dev2.Scheduler.DummyResource" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                <PropertyCondition Name="Name">Dev2.Scheduler.DummyResource</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Button" Id="SchedulerNewTaskButton" FriendlyName="UI_NewSchedule_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_NewSchedule_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="ListItem" Id="HelloWorldListItem" FriendlyName="Name:Hello World ResourceId:acb75027-ddeb-47d7-814..." SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                <PropertyCondition Name="Name">Name:Hello World ResourceId:acb75027-ddeb-47d7-814e-a54c37247ec1</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="CheckBox" Id="EnableOrDisableCheckBox" FriendlyName="Enable or Disable the schedule" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                    <PropertyCondition Name="HelpText">Enable or Disable the schedule</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="Button" Id="EraseScheduleButton" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="HelpText">Delete this scheduled task</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="ListItem" Id="GenericResourceListItem" FriendlyName="GenericResourceListItem" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                <PropertyCondition Name="Name">Name:GenericResource ResourceId:cb1e9256-95e8-4479-a223-10555b904bce</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="CheckBox" Id="EnableOrDisableCheckBox" FriendlyName="Enable or Disable the schedule" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                    <PropertyCondition Name="HelpText">Enable or Disable the schedule</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="Button" Id="EraseScheduleButton" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="HelpText">Delete this scheduled task</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="Edit" Id="UserNameTextBoxEdit" FriendlyName="UI_UserNameTextBox" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_UserNameTextBox</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Edit" Id="WorkflowNameTextBox" FriendlyName="UI_WorkflowNameTextBox_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_WorkflowNameTextBox_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="RadioButton" Id="DisabledRadioButton" FriendlyName="Disabled" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_DisabledRadioButton</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                                <UIObject ControlType="Button" Id="CloseButton" FriendlyName="" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">closeBtn</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+      </TopLevelWindows>
+    </UIMap>
+  </Maps>
+  <ValueMap>
+    <ParameterList />
+  </ValueMap>
+</UITest>
