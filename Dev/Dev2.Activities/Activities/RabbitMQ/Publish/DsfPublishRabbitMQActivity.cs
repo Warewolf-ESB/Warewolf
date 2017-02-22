@@ -83,8 +83,6 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         #region Overrides of DsfBaseActivity
 
-        public override string DisplayName { get; set; }
-
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             try
