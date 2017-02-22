@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Common.DependencyVisualization;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
@@ -182,8 +181,8 @@ namespace Dev2.Core.Tests
             var depGrap = new Mock<IDependencyGraphGenerator>();
             var server = new Mock<IServer>();
             var value = new Graph("a");
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
@@ -234,8 +233,8 @@ namespace Dev2.Core.Tests
             var depGrap = new Mock<IDependencyGraphGenerator>();
             var server = new Mock<IServer>();
             var value = new Graph("a");
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
@@ -274,8 +273,8 @@ namespace Dev2.Core.Tests
             var depGrap = new Mock<IDependencyGraphGenerator>();
             var server = new Mock<IServer>();
             var value = new Graph("a");
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
@@ -309,8 +308,8 @@ namespace Dev2.Core.Tests
             var depGrap = new Mock<IDependencyGraphGenerator>();
             var server = new Mock<IServer>();
             var value = new Graph("a");
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
@@ -344,8 +343,8 @@ namespace Dev2.Core.Tests
             var depGrap = new Mock<IDependencyGraphGenerator>();
             var server = new Mock<IServer>();
             var value = new Graph("a");
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
@@ -379,8 +378,8 @@ namespace Dev2.Core.Tests
             var depGrap = new Mock<IDependencyGraphGenerator>();
             var server = new Mock<IServer>();
             var value = new Graph("a");
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
-            value.Nodes.Add(new Node(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(Guid.NewGuid().ToString(), 2, 2, true, false));
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
@@ -397,7 +396,7 @@ namespace Dev2.Core.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dependencyVisualiserViewModel);
             //---------------Execute Test ----------------------
-            var itemNodeViewModels = dependencyVisualiserViewModel.GetItems(new List<Node>(), mock.Object, explorerItemNodeViewModels, guids);
+            var itemNodeViewModels = dependencyVisualiserViewModel.GetItems(new List<IDependencyVisualizationNode>(), mock.Object, explorerItemNodeViewModels, guids);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, itemNodeViewModels.Count);
         }
@@ -440,8 +439,8 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(shell.Object);
             var value = new Graph("a");
 
-            value.Nodes.Add(new Node(resourceId.ToString(), 2, 2, true, false));
-            value.Nodes.Add(new Node(resourceId.ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(resourceId.ToString(), 2, 2, true, false));
+            value.Nodes.Add(new DependencyVisualizationNode(resourceId.ToString(), 2, 2, true, false));
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
@@ -455,10 +454,10 @@ namespace Dev2.Core.Tests
             var mock = new Mock<IExplorerItemNodeViewModel>();
             var explorerItemNodeViewModels = new List<ExplorerItemNodeViewModel>();
             var guids = new List<Guid>();
-            var item = new Node(resourceId.ToString(), 2, 2, true, true);
-            item.NodeDependencies.Add(new Node(resourceId1.ToString(), 50, 50, true, true));
+            var item = new DependencyVisualizationNode(resourceId.ToString(), 2, 2, true, true);
+            item.NodeDependencies.Add(new DependencyVisualizationNode(resourceId1.ToString(), 50, 50, true, true));
 
-            var nodes = new List<Node>
+            var nodes = new List<IDependencyVisualizationNode>
             {
                 item,
             };
