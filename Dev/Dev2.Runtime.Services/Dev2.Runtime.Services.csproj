@@ -320,6 +320,7 @@
     <Compile Include="Hosting\ResourceUpgraderFactory.cs" />
     <Compile Include="Hosting\ServerToolRepository.cs" />
     <Compile Include="Hosting\ServerVersionRepository.cs" />
+    <Compile Include="Hosting\ServiceActionRepo.cs" />
     <Compile Include="Hosting\UpgradePath.cs" />
     <Compile Include="Hosting\VersionStrategy.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />

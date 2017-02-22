@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
@@ -24,7 +25,7 @@ namespace Dev2.Common
     /// Used to generate dependency graphs.
     /// Extracted From View Model ;)
     /// </summary>
-    public class DependencyGraphGenerator
+    public class DependencyGraphGenerator : IDependencyGraphGenerator
     {
         /// <summary>
         /// Builds the graph.
@@ -36,14 +37,14 @@ namespace Dev2.Common
         /// <param name="nestingLevel">How deep should the graph show.</param>
         /// <returns></returns>
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public Graph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
+        public IGraph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
             if (xmlData == null || xmlData.Length == 0)
             {
                 return new Graph(ErrorResource.DependencyMissing);
             }
 
-            XElement xe = xmlData.ToXElement();
+            var xe = xmlData.ToXElement();
 
             // Create a graph.
             var graphElem = xe.AncestorsAndSelf("graph").FirstOrDefault();
@@ -54,21 +55,21 @@ namespace Dev2.Common
 
             try
             {
-                string title = graphElem.Attribute("title").Value;
+                var title = graphElem.Attribute("title").Value;
                 var graph = new Graph(title);
                 double count = 0;
 
                 var nodeElems = graphElem.Elements("node").ToList();
 
                 // Create all of the nodes and add them to the graph.
-                foreach (XElement nodeElem in nodeElems)
+                foreach (var nodeElem in nodeElems)
                 {
                     // build the graph position data
-                    string id = nodeElem.Attribute("id").Value;
+                    var id = nodeElem.Attribute("id").Value;
                     var node = CreateNode(nodeElem, modelName, width, height, ref count);
 
-                    bool alreadyAdded = false;
-                    foreach (Node n in graph.Nodes)
+                    var alreadyAdded = false;
+                    foreach (var n in graph.Nodes)
                     {
                         if (n.ID == id)
                         {
@@ -83,10 +84,10 @@ namespace Dev2.Common
                 }
 
                 // Associate each node with its dependencies.
-                int graphCount = graph.Nodes.Count - 1;
+                var graphCount = graph.Nodes.Count - 1;
                 if (nestingLevel > 0)
                 {
-                    for (int i = 0; i <= nestingLevel; i++)
+                    for (var i = 0; i <= nestingLevel; i++)
                     {
                         if (nestingLevel < graphCount)
                         {
@@ -95,13 +96,13 @@ namespace Dev2.Common
                         }
                     }
                 }
-                foreach (Node node in graph.Nodes)
+                foreach (var node in graph.Nodes)
                 {
                     var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
                     var dependencyElems = nodeElem.Elements("dependency");
-                    foreach (XElement dependencyElem in dependencyElems)
+                    foreach (var dependencyElem in dependencyElems)
                     {
-                        string depID = dependencyElem.Attribute("id").Value;
+                        var depID = dependencyElem.Attribute("id").Value;
 
                         var dependency = graph.Nodes.FirstOrDefault(n => n.ID == depID);
                         if (dependency != null)
@@ -127,16 +128,16 @@ namespace Dev2.Common
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        private Node CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
+        private DependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
-            double screenWidth = width;
-            double screenHeight = height - 150;
-            int centerX = Convert.ToInt32(screenWidth / 2);
-            int centerY = Convert.ToInt32(screenHeight / 2);
-            int maxX = Convert.ToInt32(screenWidth);
-            int maxY = Convert.ToInt32(screenHeight);
+            var screenWidth = width;
+            var screenHeight = height - 150;
+            var centerX = Convert.ToInt32(screenWidth / 2);
+            var centerY = Convert.ToInt32(screenHeight / 2);
+            var maxX = Convert.ToInt32(screenWidth);
+            var maxY = Convert.ToInt32(screenHeight);
             const int Distance = 300;
-            Point centerPoint = new Point(centerX, centerY);
+            var centerPoint = new Point(centerX, centerY);
 
             double x;
             double y;
@@ -147,10 +148,10 @@ namespace Dev2.Common
             double.TryParse(tmpY, out y);
 
             // ReSharper disable once PossibleNullReferenceException
-            string id = nodeElm.Attribute("id").Value;
-            bool isTarget = id == resourceName;
+            var id = nodeElm.Attribute("id").Value;
+            var isTarget = id == resourceName;
             // ReSharper disable once PossibleNullReferenceException
-            bool broken = String.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
+            var broken = string.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
 
             if (isTarget)
             {
@@ -164,8 +165,8 @@ namespace Dev2.Common
                     count = 1.5;
                 }
 
-                int xCoOrd = (int)Math.Round(centerPoint.X - Distance * Math.Sin(count));
-                int yCoOrd = (int)Math.Round(centerPoint.Y - Distance * Math.Cos(count));
+                var xCoOrd = (int)Math.Round(centerPoint.X - Distance * Math.Sin(count));
+                var yCoOrd = (int)Math.Round(centerPoint.Y - Distance * Math.Cos(count));
 
                 if (xCoOrd >= maxX)
                 {
@@ -182,7 +183,7 @@ namespace Dev2.Common
                 count++;
             }
 
-            return new Node(id, x, y, isTarget, broken);
+            return new DependencyVisualizationNode(id, x, y, isTarget, broken);
         }
     }
 }
