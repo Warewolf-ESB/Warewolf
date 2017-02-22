@@ -158,9 +158,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 if (resource != null)
                 {
+                    ServiceActionRepo.Instance.RemoveFromCache(resource.ResourceID);
                     ServerAuthorizationService.Instance.Remove(resource.ResourceID);
                 }
             }
+            
             ((ResourceCatalog)_resourceCatalog).RemoveFromResourceActivityCache(workspaceID, resource);
             return ResourceCatalogResultBuilder.CreateSuccessResult("Success");
         }

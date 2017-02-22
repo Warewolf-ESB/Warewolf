@@ -14,7 +14,8 @@ namespace Warewolf.Studio.ServerProxyLayer
     {
         #region Implementation of IExplorerUpdateManager
 
-        public ExplorerUpdateManagerProxy(ICommunicationControllerFactory communicationControllerFactory, Dev2.Studio.Core.Interfaces.IEnvironmentConnection connection):base(communicationControllerFactory,connection)
+        public ExplorerUpdateManagerProxy(ICommunicationControllerFactory communicationControllerFactory, Dev2.Studio.Core.Interfaces.IEnvironmentConnection connection)
+            :base(communicationControllerFactory,connection)
         {
 
         }

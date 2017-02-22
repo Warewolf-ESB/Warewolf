@@ -131,6 +131,7 @@
     <Compile Include="DLLChooserTests.cs" />
     <Compile Include="DummyServiceTestTests.cs" />
     <Compile Include="EnvironmentViewModelTests.cs" />
+    <Compile Include="ExplorerDeleteProviderTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="FileChooserModelTests.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="ServiceTestInputTests.cs" />
     <Compile Include="ServiceTestModelTests.cs" />
     <Compile Include="ServiceTestOutputTests.cs" />
+    <Compile Include="ServerTests.cs" />
     <Compile Include="StudioServerProxyTests.cs" />
     <Compile Include="ToolBox\ToolBoxCategoryViewModelTests.cs" />
     <Compile Include="ToolBox\ToolboxViewModelTests.cs" />

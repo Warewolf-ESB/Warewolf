@@ -94,7 +94,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "RSAKLFSVRGENDEV"});
             table1.AddRow(new string[] {
-                        "RSAKLFSVRSBSPDC"});
+                        "RSAKLFSVRPDC"});
             table1.AddRow(new string[] {
                         "RSAKLFSVRTFSBLD"});
             table1.AddRow(new string[] {
@@ -506,7 +506,7 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "RSAKLFSVRGENDEV"});
             table3.AddRow(new string[] {
-                        "RSAKLFSVRSBSPDC"});
+                        "RSAKLFSVRPDC"});
             table3.AddRow(new string[] {
                         "RSAKLFSVRTFSBLD"});
             table3.AddRow(new string[] {
@@ -534,7 +534,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 217
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 218
-   testRunner.And("I type Select The Server as \"RSAKLFSVRSBSPDC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Select The Server as \"RSAKLFSVRPDC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 219
    testRunner.Then("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 220

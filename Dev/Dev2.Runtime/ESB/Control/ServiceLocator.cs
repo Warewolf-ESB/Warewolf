@@ -39,9 +39,20 @@ namespace Dev2.Runtime.ESB.Control
         {
             if(string.IsNullOrEmpty(serviceName))
                 throw new InvalidDataException(ErrorResource.ServiceIsNull);
-            var ret = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, serviceName).FirstOrDefault();
+            var res = _resourceCatalog.GetResource(workspaceID, serviceName);
+            DynamicService ret = null;
+            if (res != null)
+            {
+                ret = ServiceActionRepo.Instance.ReadCache(res.ResourceID);
+            }
             if (ret == null)
-                _perfCounter.Increment();
+            {
+                ret = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, serviceName).FirstOrDefault();                
+                if (ret == null)
+                {
+                    _perfCounter.Increment();
+                }
+            }
             return ret;
         }
 
@@ -56,17 +67,24 @@ namespace Dev2.Runtime.ESB.Control
         {
             if(serviceID == Guid.Empty)
                 throw new InvalidDataException(ErrorResource.ServiceIsNull);
-            var firstOrDefault = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, serviceID).FirstOrDefault();
-            if (firstOrDefault != null)
-            {
-                firstOrDefault.ServiceId = serviceID;
-                firstOrDefault.Actions.ForEach(action =>
-                {
-                    action.ServiceID = serviceID;
-                });
-            }
+            var firstOrDefault = ServiceActionRepo.Instance.ReadCache(serviceID);
+                        
             if (firstOrDefault == null)
-                _perfCounter.Increment();
+            {
+                firstOrDefault = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, serviceID).FirstOrDefault();
+                if (firstOrDefault != null)
+                {
+                    firstOrDefault.ServiceId = serviceID;
+                    firstOrDefault.Actions.ForEach(action =>
+                    {
+                        action.ServiceID = serviceID;
+                    });
+                }
+                if (firstOrDefault == null)
+                {
+                    _perfCounter.Increment();
+                }
+            }
 
             return firstOrDefault;
         }
