@@ -55,7 +55,7 @@ namespace Warewolf.UITests.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
             ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
             Assert.IsFalse(string.IsNullOrEmpty(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox is not enabled");
-            string newDll = "Changed_Dll_Source";
+            string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading2.dll";
             DotNetPluginSourceUIMap.Change_Dll_And_Save(newDll);
             DotNetPluginSourceUIMap.Click_Close_DotNetPlugin_Source_Tab();
             ResourcesToolsUIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
