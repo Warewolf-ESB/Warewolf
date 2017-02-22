@@ -58,33 +58,33 @@ $TestSettingsFile = "$PSScriptRoot\ExplorerUITests.testsettings"
 
 # Find test assembly
 $TestAssemblyPath = ""
-if (Test-Path "$WorkingDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UITests.dll"
-} elseif (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll") {
-	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll"
+if (Test-Path "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UISpecs.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UISpecs.dll"
 }
 if ($TestAssemblyPath -eq "") {
-	Write-Host Cannot find Warewolf.UITests.dll at $WorkingDir\Warewolf.UITests\bin\Debug or $WorkingDir
+	Write-Host Cannot find Warewolf.UISpecs.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir
 	exit 1
 }
 
