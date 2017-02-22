@@ -31,7 +31,7 @@ Scenario: Creating New DB Source General Testing
    Then the intellisense contains these options
    | Options         |
    | RSAKLFSVRGENDEV |
-   | RSAKLFSVRSBSPDC |
+   | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
    And type options contains
@@ -202,7 +202,7 @@ Scenario: Changing database type after testing connection
    Then the intellisense contains these options
    | Options         |
    | RSAKLFSVRGENDEV |
-   | RSAKLFSVRSBSPDC |
+   | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
    And I type Select The Server as "RSAKLFSVRGENDEV"
@@ -215,7 +215,7 @@ Scenario: Changing database type after testing connection
    Then Database dropdown is "Visible"
    Then I select "postgres" as Database
    And "Save" is "Enabled"   
-   And I type Select The Server as "RSAKLFSVRSBSPDC"
+   And I type Select The Server as "RSAKLFSVRPDC"
    Then "Save" is "Disabled"
    And "Test Connection" is "Enabled"
 

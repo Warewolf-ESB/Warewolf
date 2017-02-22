@@ -126,6 +126,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                 dataObject.SourceResourceID = resource.ResourceID;
                 isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
+            else
+            {
+                if (request.ResourceID != Guid.Empty)
+                {
+                    dataObject.ResourceID = request.ResourceID;
+                }
+            }
 
             dataObject.ClientID = Guid.Parse(connectionId);
             Common.Utilities.OrginalExecutingUser = ExecutingUser;
