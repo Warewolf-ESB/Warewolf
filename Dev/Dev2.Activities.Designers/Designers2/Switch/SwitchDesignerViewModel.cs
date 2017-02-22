@@ -1,10 +1,8 @@
 ﻿using System.Activities.Presentation.Model;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Interfaces;
@@ -161,7 +159,6 @@ namespace Dev2.Activities.Designers2.Switch
         }
 
         public bool ValidExpression;
-        private static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
 
         public override void UpdateHelpDescriptor(string helpText)
         {

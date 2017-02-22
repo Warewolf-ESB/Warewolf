@@ -2,6 +2,7 @@
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Common.Interfaces.Help;
@@ -10,6 +11,7 @@ using Dev2.Core.Tests;
 using Dev2.Core.Tests.Environments;
 using Dev2.Interfaces;
 using Dev2.Studio.Controller;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -356,83 +358,5 @@ namespace Dev2.Activities.Designers.Tests.Switch
             Assert.AreEqual("", dev2Switch.SwitchVariable);
             Assert.IsNull(dev2Switch.SwitchExpression);
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("SwitchDesignerViewModel_Switch")]
-        public void SwitchDesignerViewModel_Switch_Dev2Switch_Validate()
-        {
-            //------------Setup for test--------------------------      
-            #region setup first Mock ModelItem
-            var popupController = new Mock<IPopupController>();
-            CustomContainer.Register(popupController.Object);
-
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
-
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = new DsfFlowSwitchActivity { ExpressionText = "Not Null Test Value" };
-
-            var prop = new Mock<ModelProperty>();
-            prop.Setup(p => p.ComputedValue).Returns(testAct);
-            properties.Add("Condition", prop);
-
-            var testActCase = new DsfFlowSwitchActivity { ExpressionText = "Case1" };
-
-            var propCase = new Mock<ModelProperty>();
-            propCase.Setup(p => p.ComputedValue).Returns(testActCase);
-            properties.Add("Case", propCase);
-
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(prop.Object);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Case", true).Returns(propCase.Object);
-
-            var mockModelItem = new Mock<ModelItem>();
-            mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);
-
-            #endregion
-
-            #region setup decision Mock ModelItem
-
-            var crmDecision = new Mock<IContextualResourceModel>();
-            crmDecision.Setup(r => r.Environment).Returns(env.Object);
-            crmDecision.Setup(r => r.ResourceName).Returns("Test");
-            crmDecision.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
-
-            var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
-            var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
-
-            var decisionProp = new Mock<ModelProperty>();
-            decisionProp.Setup(p => p.ComputedValue).Returns(string.Empty);
-            decisionProperties.Add("Condition", decisionProp);
-
-            decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "Condition", true).Returns(decisionProp.Object);
-
-            var decisionModelItem = new Mock<ModelItem>();
-            decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
-            decisionModelItem.Setup(s => s.ItemType).Returns(typeof(FlowSwitch<string>));
-
-            prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
-
-            #endregion
-
-            #region setup Environment Model
-
-            env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
-
-            #endregion
-
-            var switchDesigner = new SwitchDesignerViewModel(mockModelItem.Object, "TrueArm");
-            //------------Execute Test---------------------------
-            var dev2Switch = switchDesigner.Switch;
-
-            Assert.AreEqual("TrueArm", dev2Switch.DisplayText);
-            Assert.AreEqual("", dev2Switch.SwitchVariable);
-            Assert.AreEqual(": Switch", dev2Switch.SwitchExpression);
-
-            switchDesigner.Validate();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(switchDesigner.ValidExpression);
-        }
-
     }
 }
