@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 using Warewolf.UITests.Common;
 
 // ReSharper disable InconsistentNaming
@@ -58,6 +59,21 @@ namespace Warewolf.UITests.DebugOutputWindow
         }
 
         private UIMap _uiMap;
+
+        ToolsUIMap ToolsUIMap
+        {
+            get
+            {
+                if (_ToolsUIMap == null)
+                {
+                    _ToolsUIMap = new ToolsUIMap();
+                }
+
+                return _ToolsUIMap;
+            }
+        }
+
+        private ToolsUIMap _ToolsUIMap;
 
         #endregion
     }

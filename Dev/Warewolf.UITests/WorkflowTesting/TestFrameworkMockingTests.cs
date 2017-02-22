@@ -1,5 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.Common;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -17,12 +24,12 @@ namespace Warewolf.UITests
         public void StepsWithoutOutputsShouldBeMarkedInvalid()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
             UIMap.Save_With_Ribbon_Button_And_Dialog("AssignWorkflow");
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.Exists);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AssignToNameTreeItem.Exists);
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
         }
 
@@ -30,11 +37,11 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugUsingUnsvaceWorkflow()
         {
-            UIMap.Filter_Explorer(HelloWorld);
-            UIMap.DoubleClick_Explorer_Localhost_First_Item();
-            UIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
+            ExplorerUIMap.Filter_Explorer(HelloWorld);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
             UIMap.Press_F6();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
+            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
         }
 
         [TestMethod]
@@ -42,8 +49,8 @@ namespace Warewolf.UITests
         public void CreateTestFromDebugButtonDisabledForUnsavedWorkflows()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Make_Workflow_Savable_By_Dragging_Start();
-            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
+            WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
+            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
         }
 
         [TestMethod]
@@ -51,50 +58,48 @@ namespace Warewolf.UITests
         public void NestedWorkflowCreatsATestStepAfterClickingCreateTestFromDebugButton()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Filter_Explorer(DiceRoll);
-            UIMap.Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
-            UIMap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
+            ExplorerUIMap.Filter_Explorer(DiceRoll);
+            WorkflowTabUIMap.Drag_Explorer_Localhost_First_Items_First_Sub_Item_Onto_Workflow_Design_Surface();
+            WorkflowTabUIMap.Drag_Dice_Onto_Dice_On_The_DesignSurface();
             UIMap.Press_F6();
             UIMap.Save_With_Ribbon_Button_And_Dialog(Nestedwf);
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);
         }
 
-        //        Re-Introduce this test when the decision can be click on the test editor design surface
-        //        Test was added as part of work for WOLF-2381
-        //        [TestMethod]
-        //        [Owner("Hagashen Naidu")]
-        //        [TestCategory("WorkflowTesting_AddTestStep")]
-        //        public void WorkflowTesting_AddTestStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
-        //        {
-        //            //------------Setup for test--------------------------           
-        //            UIMap.Filter_Explorer(HelloWorld);
-        //            UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
-        //            UIMap.Click_Create_New_Tests(true, 4);
-        //            UIMap.Click_Run_Test_Button(TestResultEnum.Fail, 4);
-        //            //------------Assert Preconditions-------------------
-        //            //------------Execute Test---------------------------            
-        //            Mouse.Click(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom);
-        //            //------------Assert Results-------------------------
-        //            Assert.IsFalse(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists);
-        //            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.Exists);
-        //        }
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowTesting_AddTestStep")]
+        public void WorkflowTesting_AddTestStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
+        {
+            //------------Setup for test--------------------------           
+            ExplorerUIMap.Filter_Explorer(HelloWorld);
+            ExplorerUIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
+            WorkflowServiceTestingUIMap.Click_Create_New_Tests(true, 4);
+            WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Fail, 4);
+            //------------Assert Preconditions-------------------
+            //------------Execute Test---------------------------            
+            Mouse.Click(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.Exists);
+        }
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void CreateNewTestThenCreateTestFromDebugOutput()
         {
-            UIMap.Filter_Explorer(RandomWorkFlow);
-            UIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
-            UIMap.Click_Create_New_Tests(true);
-            UIMap.Open_Explorer_First_Item_With_Double_Click();
+            ExplorerUIMap.Filter_Explorer(RandomWorkFlow);
+            ExplorerUIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
+            WorkflowServiceTestingUIMap.Click_Create_New_Tests(true);
+            ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists);
-            Assert.IsTrue(UIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists);
-            UIMap.Click_Save_Before_Continuing_MessageBox_OK();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.Exists);
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists);
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.SaveBeforeAddingTest.Exists);
+            DialogsUIMap.Click_Save_Before_Continuing_MessageBox_OK();
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.Exists);
         }
 
         [TestMethod]
@@ -102,20 +107,20 @@ namespace Warewolf.UITests
         public void CreateTestFromDebugOutputDeleteTestButDontCloseTestTabGoBackAndCreateTestAgain()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
-            UIMap.Enter_Dice_Roll_Values();
+            WorkflowTabUIMap.Drag_Toolbox_Random_Onto_DesignSurface();
+            UtilityToolsUIMap.Enter_Dice_Roll_Values();
             UIMap.Save_With_Ribbon_Button_And_Dialog(RandomNewWorkFlow);
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
-            UIMap.Click_EnableDisable_This_Test_CheckBox(true);
-            UIMap.Click_Delete_Test_Button();
-            UIMap.Click_MessageBox_Yes();
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
+            WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true);
+            WorkflowServiceTestingUIMap.Click_Delete_Test_Button();
+            DialogsUIMap.Click_MessageBox_Yes();
             UIMap.Click_New_Workflow_Tab();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.RandomTreeItem.Exists);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.RandomTreeItem.Exists);
         }
 
         [TestMethod]
@@ -123,18 +128,17 @@ namespace Warewolf.UITests
         public void CreateTestFromDebugOutputDontSaveCreateAnotherTestFromDebugOutput()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Drag_Toolbox_Random_Onto_DesignSurface();
-            UIMap.Enter_Dice_Roll_Values();
+            WorkflowTabUIMap.Drag_Toolbox_Random_Onto_DesignSurface();
+            UtilityToolsUIMap.Enter_Dice_Roll_Values();
             UIMap.Save_With_Ribbon_Button_And_Dialog("RandomWFForSaveButtonState");
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_New_Workflow_Tab();
             UIMap.Click_Create_Test_From_Debug();
-            UIMap.Click_MessageBox_OK();
+            DialogsUIMap.Click_MessageBox_OK();
             UIMap.Save_Button_IsEnabled();
         }
-
-
+        
         #region Additional test attributes
 
         [TestInitialize()]
@@ -158,6 +162,96 @@ namespace Warewolf.UITests
         }
 
         private UIMap _UIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
+        {
+            get
+            {
+                if (_WorkflowServiceTestingUIMap == null)
+                {
+                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
+                }
+
+                return _WorkflowServiceTestingUIMap;
+            }
+        }
+
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
+
+        UtilityToolsUIMap UtilityToolsUIMap
+        {
+            get
+            {
+                if (_UtilityToolsUIMap == null)
+                {
+                    _UtilityToolsUIMap = new UtilityToolsUIMap();
+                }
+
+                return _UtilityToolsUIMap;
+            }
+        }
+
+        private UtilityToolsUIMap _UtilityToolsUIMap;
+
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_DataToolsUIMap == null)
+                {
+                    _DataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _DataToolsUIMap;
+            }
+        }
+
+        private DataToolsUIMap _DataToolsUIMap;
 
         #endregion
     }
