@@ -31,7 +31,7 @@ Scenario: Creating New DB Source General Testing
    Then the intellisense contains these options
    | Options         |
    | RSAKLFSVRGENDEV |
-   | RSAKLFSVRSBSPDC |
+   | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
    And type options contains
@@ -227,7 +227,7 @@ Scenario: Changing database type after testing connection
    Then the intellisense contains these options
    | Options         |
    | RSAKLFSVRGENDEV |
-   | RSAKLFSVRSBSPDC |
+   | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
    And type options contains

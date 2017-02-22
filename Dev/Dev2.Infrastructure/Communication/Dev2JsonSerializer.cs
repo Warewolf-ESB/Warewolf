@@ -71,9 +71,10 @@ namespace Dev2.Communication
                     TypeNameAssemblyFormat = _serializerSettings.TypeNameAssemblyFormat,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
-                };
-                using(var jsonTextWriter = new JsonTextWriter(sw))
+                };                
+                using (var jsonTextWriter = new JsonTextWriter(sw))
                 {
+                    
                     jsonSerializer.Serialize(jsonTextWriter, obj);
                     jsonTextWriter.Flush();
                     jsonTextWriter.Close();

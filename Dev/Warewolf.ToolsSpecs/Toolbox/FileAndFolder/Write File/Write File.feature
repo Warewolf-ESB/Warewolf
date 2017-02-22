@@ -21,24 +21,24 @@ Scenario Outline: Write file at location
 		|                        |
 		| <resultVar> = <result> |
 		Examples: 
-		| Name                       | source   | sourceLocation                                                  | method        | content        | username          | password | resultVar  | result  | errorOccured | sourcePrivateKeyFile |
-		| Local with Overwrite       | [[path]] | c:\Temp\filetowrite0.txt                                        | Overwrite     | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
-		| UNC with Overwrite         | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetowrite0.txt | Overwrite     | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
+		| Name                       | source   | sourceLocation                                               | method        | content        | username          | password | resultVar  | result  | errorOccured | sourcePrivateKeyFile |
+		| Local with Overwrite       | [[path]] | c:\Temp\filetowrite0.txt                                     | Overwrite     | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
+		| UNC with Overwrite         | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\filetowrite0.txt | Overwrite     | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
 		| FTP with Overwrite         | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetowrite0.txt          | Overwrite     | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
 		| FTPS with Overwrite        | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite0.txt          | Overwrite     | warewolf rules | integrationtester | I73573r0 | [[result]] | Success | NO           |                      |
-		| SFTP with Overwrite        | [[path]] | sftp://rsaklfsvrgendev/filetowrite0.txt                               | Overwrite     | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |                      |
-		| Local with Append Top      | [[path]] | c:\Temp\filetowrite1.txt                                        | Append Top    | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
-		| UNC with Append Top        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetowrite1.txt | Append Top    | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
+		| SFTP with Overwrite        | [[path]] | sftp://rsaklfsvrgendev/filetowrite0.txt                      | Overwrite     | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |                      |
+		| Local with Append Top      | [[path]] | c:\Temp\filetowrite1.txt                                     | Append Top    | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
+		| UNC with Append Top        | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\filetowrite1.txt | Append Top    | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
 		| FTP with Append Top        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetowrite1.txt          | Append Top    | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
 		| FTPS with Append Top       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite1.txt          | Append Top    | warewolf rules | integrationtester | I73573r0 | [[result]] | Success | NO           |                      |
-		| SFTP with Append Top       | [[path]] | sftp://rsaklfsvrgendev/filetowrite1.txt                               | Append Top    | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |                      |
-		| Local with Append Bottom   | [[path]] | c:\Temp\filetowrite2.txt                                        | Append Bottom | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
-		| UNC with Append Bottom     | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetowrite2.txt | Append Bottom | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
+		| SFTP with Append Top       | [[path]] | sftp://rsaklfsvrgendev/filetowrite1.txt                      | Append Top    | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |                      |
+		| Local with Append Bottom   | [[path]] | c:\Temp\filetowrite2.txt                                     | Append Bottom | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
+		| UNC with Append Bottom     | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\filetowrite2.txt | Append Bottom | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
 		| FTP with Append Bottom     | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetowrite2.txt          | Append Bottom | warewolf rules | ""                | ""       | [[result]] | Success | NO           |                      |
 		| FTPS with Append Bottom    | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetowrite2.txt          | Append Bottom | warewolf rules | integrationtester | I73573r0 | [[result]] | Success | NO           |                      |
-		| SFTP with Append Bottom    | [[path]] | sftp://rsaklfsvrgendev/filetowrite2.txt                               | Append Bottom | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |                      |
-		| SFTP with Append Bottom PK | [[path]] | sftp://rsaklfsvrgendev/filetowrite21.txt                              | Append Bottom | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk    |
-		| Local with Overwrite       | [[path]] |                                                                 | Overwrite     | warewolf rules | ""                | ""       | [[result]] |         | AN           |                      |
+		| SFTP with Append Bottom    | [[path]] | sftp://rsaklfsvrgendev/filetowrite2.txt                      | Append Bottom | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           |                      |
+		| SFTP with Append Bottom PK | [[path]] | sftp://rsaklfsvrgendev/filetowrite21.txt                     | Append Bottom | warewolf rules | dev2              | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk    |
+		| Local with Overwrite       | [[path]] |                                                              | Overwrite     | warewolf rules | ""                | ""       | [[result]] |         | AN           |                      |
 
 
 Scenario Outline: Write file at location Null

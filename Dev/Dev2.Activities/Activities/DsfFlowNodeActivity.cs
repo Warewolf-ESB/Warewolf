@@ -129,7 +129,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.After, 0);
                 }
 
-                OnExecutedCompleted(context, false, false);
+                OnExecutedCompleted(context);
             }
             finally
             {
@@ -150,7 +150,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 DispatchDebugState(dataObject, StateType.After, 0);
             }
-            OnExecutedCompleted(faultContext, true, false);
+            OnExecutedCompleted(faultContext);
         }
 
         #endregion

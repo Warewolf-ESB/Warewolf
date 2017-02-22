@@ -73,14 +73,7 @@ namespace Dev2.DynamicServices
 
         public Guid ID { get; set; }
 
-        public Guid ServiceId
-        {
-            get { throw new NotImplementedException(); }
-            // ReSharper disable ValueParameterNotUsed
-            set
-                // ReSharper restore ValueParameterNotUsed
-            { }
-        }
+        public Guid ServiceId { get; set; }
 
         #region Constructors
 
