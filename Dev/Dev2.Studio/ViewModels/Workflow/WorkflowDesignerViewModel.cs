@@ -1090,7 +1090,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     InitializeFlowStep(mi);
                 }
-                else if (mi.ItemType.Name == "ModelItemKeyValuePair`2")
+                else
                 {
                     AddSwitch(mi);
                 }
@@ -1118,11 +1118,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;
-
             var switchExpressionValue = string.Empty;
-
             var tmpProperty = tmpModelItem?.Properties["ExpressionText"];
-
             var tmp = tmpProperty?.Value?.ToString();
 
             if (!string.IsNullOrEmpty(tmp))
