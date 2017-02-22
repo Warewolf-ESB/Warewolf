@@ -113,6 +113,7 @@ namespace Dev2.Studio.Controller
 
         public static string ConfigureSwitchExpression(ConfigureSwitchExpressionMessage args)
         {
+            OldSwitchValue = string.Empty;
             var expression = ConfigureActivity<DsfFlowSwitchActivity>(args.ModelItem, GlobalConstants.SwitchExpressionPropertyText, args.IsNew);
             if (expression == null)
             {
@@ -184,6 +185,7 @@ namespace Dev2.Studio.Controller
 
         public static void ConfigureSwitchCaseExpression(ConfigureCaseExpressionMessage args)
         {
+            OldSwitchValue = string.Empty;
             if (args.ExpressionText != null)
                 _callBackHandler = ShowSwitchDragDialog(args.ModelItem, args.ExpressionText);
             if (_callBackHandler != null)
@@ -202,10 +204,14 @@ namespace Dev2.Studio.Controller
             }
         }
 
-        static Dev2DecisionCallbackHandler ShowSwitchDragDialog(ModelItem modelData, string variable = "")
+        static Dev2DecisionCallbackHandler ShowSwitchDragDialog(ModelItem modelData, string variable = "", bool isNew = true)
         {
-            var dataContext = new SwitchDesignerViewModel(modelData, "") { SwitchVariable = variable };
-            return ShowSwitchArmDialog(dataContext);
+            var switchDesignerViewModel = new SwitchDesignerViewModel(modelData, "") { SwitchVariable = variable };
+            if (isNew)
+            {
+                switchDesignerViewModel.SwitchExpression = string.Empty;
+            }
+            return ShowSwitchArmDialog(switchDesignerViewModel);
         }
 
         [ExcludeFromCodeCoverage]
@@ -242,7 +248,7 @@ namespace Dev2.Studio.Controller
             if (switchVal != null)
             {
                 var variable = SwitchExpressionValue(switchVal);
-                _callBackHandler = ShowSwitchDragDialog(args.ModelItem, variable);
+                _callBackHandler = ShowSwitchDragDialog(args.ModelItem, variable, false);
             }
             if (_callBackHandler != null)
             {
@@ -263,7 +269,7 @@ namespace Dev2.Studio.Controller
 
                         if (!validExpression)
                         {
-                            PopupController.Show("FlowSwitch cases must be unique", "FlowSwitch Case Error",
+                            PopupController.Show(Warewolf.Studio.Resources.Languages.Core.SwitchCaseUniqueMessage, Warewolf.Studio.Resources.Languages.Core.SwitchFlowErrorHeader,
                                 MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
                         }
                         else

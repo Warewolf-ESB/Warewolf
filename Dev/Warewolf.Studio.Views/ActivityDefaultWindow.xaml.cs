@@ -79,13 +79,22 @@ namespace Warewolf.Studio.Views
 
             if (switchDesignerViewModel != null)
             {
-                switchDesignerViewModel.Validate();
-                if (!switchDesignerViewModel.ValidExpression)
+                if (string.IsNullOrWhiteSpace(switchDesignerViewModel.SwitchExpression))
                 {
-                    PopupController.Show("FlowSwitch cases must be unique", "FlowSwitch Case Error",
+                    PopupController.Show(Studio.Resources.Languages.Core.SwitchCaseEmptyExpressionMessage, Studio.Resources.Languages.Core.SwitchFlowErrorHeader,
                         MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
-
                     valid = false;
+                }
+                else
+                {
+                    switchDesignerViewModel.Validate();
+                    if (!switchDesignerViewModel.ValidExpression)
+                    {
+                        PopupController.Show(Studio.Resources.Languages.Core.SwitchCaseUniqueMessage, Studio.Resources.Languages.Core.SwitchFlowErrorHeader,
+                            MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+
+                        valid = false;
+                    }
                 }
             }
             return valid;
