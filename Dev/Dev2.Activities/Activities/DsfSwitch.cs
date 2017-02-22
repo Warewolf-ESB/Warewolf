@@ -74,19 +74,16 @@ namespace Dev2.Activities
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
-
+            var startTime = DateTime.Now;
             try
             {
-
-
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
                 var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
-
                 if (dataObject.IsDebugMode())
                 {
                     InitializeDebug(dataObject);
                     Debug(dataObject, firstOrDefault, ds);
-                    DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
+                    DispatchDebugState(dataObject, StateType.Before, update);
                 }
                 if (firstOrDefault != null)
                 {
@@ -124,11 +121,8 @@ namespace Dev2.Activities
             {
                 if (dataObject.IsDebugMode())
                 {
-
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
-                    _debugOutputs = new List<DebugItem>();
-                    DispatchDebugState(dataObject, StateType.Duration, update);
                 }
             }
 

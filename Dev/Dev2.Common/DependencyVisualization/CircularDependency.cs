@@ -11,26 +11,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Common.DependencyVisualization
 {
     /// <summary>
     /// Represents a set of nodes in a graph that form a circular dependency.
     /// </summary>
-    public class CircularDependency : IComparable<CircularDependency>
+    public class CircularDependency : IComparable<CircularDependency>, ICircularDependency
     {
         #region Constructor
 
-        public CircularDependency(IEnumerable<Node> nodes)
+        public CircularDependency(IEnumerable<IDependencyVisualizationNode> nodes)
         {
-            Nodes = new List<Node>(nodes);
+            Nodes = new List<IDependencyVisualizationNode>(nodes);
         }
 
         #endregion Constructor
 
         #region Properties
 
-        public List<Node> Nodes { get; private set; }
+        public List<IDependencyVisualizationNode> Nodes { get; private set; }
 
         #endregion Properties
 
