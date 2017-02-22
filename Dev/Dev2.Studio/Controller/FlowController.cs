@@ -293,6 +293,7 @@ namespace Dev2.Studio.Controller
 
         public static string OldSwitchValue { get; private set; }
 
+        [ExcludeFromCodeCoverage]
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;

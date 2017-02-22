@@ -122,18 +122,7 @@ namespace Dev2.Activities.Designers2.Switch
             ValidExpression = true;
             if (ModelItem?.Parent?.Source?.Collection != null)
             {
-                foreach (var value in ModelItem.Parent.Source.Collection)
-                {
-                    if (value?.Properties.Any(property => property.Name == "Key") ?? false)
-                    {
-                        var modelItem = value.Properties["Key"]?.ComputedValue;
-                        if (modelItem?.ToString() == SwitchExpression)
-                        {
-                            ValidExpression = false;
-                            break;
-                        }
-                    }
-                }
+                ValidateProperties();
             }
             else
             {
@@ -152,6 +141,25 @@ namespace Dev2.Activities.Designers2.Switch
                                     break;
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ValidateProperties()
+        {
+            if (ModelItem?.Parent?.Source?.Collection != null)
+            {
+                foreach (var value in ModelItem.Parent.Source.Collection)
+                {
+                    if (value?.Properties.Any(property => property.Name == "Key") ?? false)
+                    {
+                        var modelItem = value.Properties["Key"]?.ComputedValue;
+                        if (modelItem?.ToString() == SwitchExpression)
+                        {
+                            ValidExpression = false;
+                            break;
                         }
                     }
                 }

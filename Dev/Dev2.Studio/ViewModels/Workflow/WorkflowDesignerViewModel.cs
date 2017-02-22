@@ -1115,6 +1115,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        [ExcludeFromCodeCoverage]
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;
