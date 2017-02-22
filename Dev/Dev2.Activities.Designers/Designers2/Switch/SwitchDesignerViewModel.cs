@@ -118,7 +118,7 @@ namespace Dev2.Activities.Designers2.Switch
                 return dev2Switch;
             }
         }
-        [ExcludeFromCodeCoverage]
+        
         public override void Validate()
         {
             ValidExpression = true;
@@ -141,15 +141,18 @@ namespace Dev2.Activities.Designers2.Switch
             {
                 if (ModelItem != null)
                 {
-                    foreach (var property in ModelItem.Properties)
+                    if (ModelItem.Properties.Any())
                     {
-                        if (property?.Name == "Case")
+                        foreach (var property in ModelItem.Properties)
                         {
-                            var modelItem = property.ComputedValue;
-                            if (modelItem?.ToString() == SwitchExpression)
+                            if (property?.Name == "Case")
                             {
-                                ValidExpression = false;
-                                break;
+                                var modelItem = property.ComputedValue;
+                                if (modelItem?.ToString() == SwitchExpression)
+                                {
+                                    ValidExpression = false;
+                                    break;
+                                }
                             }
                         }
                     }

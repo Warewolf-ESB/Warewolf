@@ -84,6 +84,8 @@ namespace Warewolf.Studio.Views
                 {
                     PopupController.Show("FlowSwitch cases must be unique", "FlowSwitch Case Error",
                         MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+
+                    valid = false;
                 }
             }
             return valid;

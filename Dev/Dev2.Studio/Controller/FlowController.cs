@@ -14,6 +14,7 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
@@ -234,10 +235,27 @@ namespace Dev2.Studio.Controller
                 try
                 {
                     var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-
                     if (ds != null)
                     {
-                        switchCaseValue?.SetValue(ds.SwitchExpression);
+                        var validExpression = true;
+                        var flowSwitch = switchVal?.ComputedValue as System.Activities.Statements.FlowSwitch<string>;
+                        if (flowSwitch != null)
+                        {
+                            if (flowSwitch.Cases.Any(flowNode => flowNode.Key == ds.SwitchExpression))
+                            {
+                                validExpression = false;
+                            }
+                        }
+
+                        if (!validExpression)
+                        {
+                            PopupController.Show("FlowSwitch cases must be unique", "FlowSwitch Case Error",
+                                MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+                        }
+                        else
+                        {
+                            switchCaseValue?.SetValue(ds.SwitchExpression);
+                        }
                     }
                 }
                 catch
