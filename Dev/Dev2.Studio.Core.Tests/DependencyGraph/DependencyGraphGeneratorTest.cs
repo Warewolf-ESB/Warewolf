@@ -9,6 +9,7 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -46,6 +47,72 @@ namespace Dev2.Core.Tests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, result.ToString());
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DependencyGraphGenerator_BuildGraph")]
+        public void DependencyGraphGenerator_BuildGraph_WhenGraphDataValidAndNestingLevel_ExpectValidGraph()
+        {
+            //------------Setup for test--------------------------
+            const string graphData = "<graph title=\"Local Dependants Graph: 45e1fcc5-9f68-4d4a-9e01-20d587dee532\">" +
+                                        "<node id=\"45e1fcc5-9f68-4d4a-9e01-20d587dee532\" x=\"\" y=\"\" broken=\"false\">" +
+                                            "<dependency id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" />" +
+                                        "</node>" +
+                                        "<node id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" x=\"\" y=\"\" broken=\"false\">" +
+                                            "<dependency id=\"e0e2cb45-aa63-417f-bc41-2fe4e906ba56\" />" +
+                                        "</node>" + 
+                                        "<node id=\"a839fe54-3f33-482a-b3e4-de74189e9g00\" x=\"\" y=\"\" broken=\"false\">" +
+                                            "<dependency id=\"e0e2cb45-aa63-417f-bc41-1fe4e906ba56\" />" +
+                                        "</node>" +
+                                     "</graph>";
+
+            var data = new StringBuilder(graphData);
+            var dependencyGraphGenerator = new DependencyGraphGenerator();
+
+            const string expected = "<graph title=\"Local Dependants Graph: 45e1fcc5-9f68-4d4a-9e01-20d587dee532\"><node id=\"45e1fcc5-9f68-4d4a-9e01-20d587dee532\" x=\"-100\" y=\"-400\" broken=\"False\"><dependency id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" /></node><node id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" x=\"-352\" y=\"-262\" broken=\"False\"></node></graph>";
+
+            //------------Execute Test---------------------------
+            // for some silly reason this is what comes through when you debug?
+            var result = dependencyGraphGenerator.BuildGraph(data, "Test Model", 0, 0, 1);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, result.ToString());
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DependencyGraphGenerator_BuildGraph")]
+        public void DependencyGraphGenerator_BuildGraph_WhenIdEqualsName_ExpectCenterCoordinates()
+        {
+            //------------Setup for test--------------------------
+            const string graphData = "<graph title=\"Local Dependants Graph: 45e1fcc5-9f68-4d4a-9e01-20d587dee532\">" +
+                                         "<node id=\"Test Model\" x=\"\" y=\"\" broken=\"false\">" +
+                                             "<dependency id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" />" +
+                                         "</node>" +
+                                         "<node id=\"a839fe54-3f33-482a-b3e4-de74189e9f00\" x=\"\" y=\"\" broken=\"false\">" +
+                                             "<dependency id=\"e0e2cb45-aa63-417f-bc41-2fe4e906ba56\" />" +
+                                         "</node>" +
+                                         "<node id=\"a839fe54-3f33-482a-b3e4-de74189e9g00\" x=\"\" y=\"\" broken=\"false\">" +
+                                             "<dependency id=\"e0e2cb45-aa63-417f-bc41-1fe4e906ba56\" />" +
+                                         "</node>" +
+                                      "</graph>";
+
+            var data = new StringBuilder(graphData);
+            var dependencyGraphGenerator = new DependencyGraphGenerator();
+
+
+            //------------Execute Test---------------------------
+            // for some silly reason this is what comes through when you debug?
+            var result = dependencyGraphGenerator.BuildGraph(data, "Test Model", 4, 4, -1);
+
+            //------------Assert Results-------------------------
+            var x = result.Nodes.Any(node => node.LocationX == -98);
+            var y = result.Nodes.Any(node => node.LocationY == -98);
+            Assert.IsTrue(x);
+            Assert.IsTrue(y);
 
         }
 

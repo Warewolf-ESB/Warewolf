@@ -153,8 +153,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             DisplayName = "MySimpleActivty";
         }
 
-        public override string DisplayName { get; set; }
-
         [Inputs("My Input 1")]
         public string Input1 { get; set; }
 
