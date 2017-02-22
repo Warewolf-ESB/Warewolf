@@ -1090,7 +1090,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     InitializeFlowStep(mi);
                 }
-                else
+                else if (mi.ItemType.Name == "ModelItemKeyValuePair`2")
                 {
                     AddSwitch(mi);
                 }
@@ -1107,7 +1107,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     var switchExpressionValue = SwitchExpressionValue(activityExpression);
                     ModelProperty modelProperty = mi.Properties["Key"];
-                    if (modelProperty?.Value != null && modelProperty.Value.ToString().Contains("Case"))
+                    if (modelProperty?.Value != null && (FlowController.OldSwitchValue == null || modelProperty.Value.ToString() == FlowController.OldSwitchValue))
                     {
                         FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
                     }

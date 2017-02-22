@@ -226,6 +226,7 @@ namespace Dev2.Studio.Controller
         // 28.01.2013 - Travis.Frisinger : Added for Case Edits
         public static void EditSwitchCaseExpression(EditCaseExpressionMessage args)
         {
+            OldSwitchValue = string.Empty;
             ModelProperty switchCaseValue = args.ModelItem.Properties["Case"];
             var switchVal = args.ModelItem.Properties["ParentFlowSwitch"];
             var variable = SwitchExpressionValue(switchVal);
@@ -254,7 +255,11 @@ namespace Dev2.Studio.Controller
                         }
                         else
                         {
-                            switchCaseValue?.SetValue(ds.SwitchExpression);
+                            OldSwitchValue = switchCaseValue?.ComputedValue.ToString();
+                            if (switchCaseValue?.ComputedValue.ToString() != ds.SwitchExpression)
+                            {
+                                switchCaseValue?.SetValue(ds.SwitchExpression);
+                            }
                         }
                     }
                 }
@@ -266,6 +271,8 @@ namespace Dev2.Studio.Controller
                 }
             }
         }
+
+        public static string OldSwitchValue { get; set; }
 
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
