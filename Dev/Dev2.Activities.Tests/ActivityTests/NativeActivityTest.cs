@@ -306,7 +306,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             IDebugState passedDebugState = null;
             var mockDebugDispatcher = new Mock<IDebugDispatcher>();
-            mockDebugDispatcher.Setup(dispatcher => dispatcher.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>())).Callback((IDebugState ds,bool isTestExecution,string testName,bool isRemoteInvoke,string remoteID,string parentId,IList<IDebugState> remoteItems) =>
+            mockDebugDispatcher.Setup(dispatcher => dispatcher.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(),It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>())).Callback((IDebugState ds,bool isTestExecution,string testName,bool isRemoteInvoke,string remoteID,string parentId,IList<IDebugState> remoteItems) =>
                   {
                       passedDebugState = ds;
                   });
