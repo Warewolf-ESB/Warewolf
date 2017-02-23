@@ -173,24 +173,29 @@ namespace Dev2.Activities
                 var testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed || result.RunTestResult == RunResult.None);
                 var serviceTestFailureMessage = string.Join("", testRunResults.Select(result => result.Message));
 
-                var finalResult = new TestRunResult();
-                if(testPassed)
-                {
-                    finalResult.RunTestResult = RunResult.TestPassed;
-                }
-                if(testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
-                {
-                    finalResult.RunTestResult = RunResult.TestFailed;
-                    finalResult.Message = serviceTestFailureMessage;
-                }
-                if(testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
-                {
-                    finalResult.RunTestResult = RunResult.TestInvalid;
-                    finalResult.Message = serviceTestFailureMessage;
-                }
-                stepToBeAsserted.Result = finalResult;
-                dataObject.StopExecution = !testPassed;
+                UpdateBasedOnFinalResult(dataObject, stepToBeAsserted, testPassed, testRunResults, serviceTestFailureMessage);
             }
+        }
+
+        public static void UpdateBasedOnFinalResult(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted, bool testPassed, IList<TestRunResult> testRunResults, string serviceTestFailureMessage)
+        {
+            var finalResult = new TestRunResult();
+            if(testPassed)
+            {
+                finalResult.RunTestResult = RunResult.TestPassed;
+            }
+            if(testRunResults.Any(result => result.RunTestResult == RunResult.TestFailed))
+            {
+                finalResult.RunTestResult = RunResult.TestFailed;
+                finalResult.Message = serviceTestFailureMessage;
+            }
+            if(testRunResults.Any(result => result.RunTestResult == RunResult.TestInvalid))
+            {
+                finalResult.RunTestResult = RunResult.TestInvalid;
+                finalResult.Message = serviceTestFailureMessage;
+            }
+            stepToBeAsserted.Result = finalResult;
+            dataObject.StopExecution = !testPassed;
         }
     }
 }

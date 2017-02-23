@@ -1,5 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.DebugOutputTests
 {
@@ -12,11 +15,11 @@ namespace Warewolf.UITests.DebugOutputTests
         // ReSharper disable once InconsistentNaming
         public void WorkFlowSelection_Validation_UITest()
         {
-            UIMap.Click_AssignStep_InDebugOutput();
-            var assignFocus = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
+            ExplorerUIMap.Click_AssignStep_InDebugOutput();
+            var assignFocus = DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
             Assert.IsTrue(assignFocus);
-            UIMap.Click_DesicionStep_InDebugOutput();
-            var assignHasNoFocus = UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
+            ExplorerUIMap.Click_DesicionStep_InDebugOutput();
+            var assignHasNoFocus = DataToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
             Assert.IsTrue(assignHasNoFocus);
         }
 
@@ -27,8 +30,8 @@ namespace Warewolf.UITests.DebugOutputTests
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Filter_Explorer(SelectionHighlightWf);
-            UIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            ExplorerUIMap.Filter_Explorer(SelectionHighlightWf);
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             UIMap.Press_F6();
         }
 
@@ -46,6 +49,51 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         private UIMap _UIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_DataToolsUIMap == null)
+                {
+                    _DataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _DataToolsUIMap;
+            }
+        }
+
+        private DataToolsUIMap _DataToolsUIMap;
 
         #endregion
     }

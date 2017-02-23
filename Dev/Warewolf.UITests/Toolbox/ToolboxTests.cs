@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Tools.ToolsUIMapClasses;
 
 namespace Warewolf.UITests.Toolbox
 {
@@ -11,8 +13,8 @@ namespace Warewolf.UITests.Toolbox
         public void ToolboxBehaviourCheck_ClearFilter_Then_PopUp_Then_UpdateHelpText_UITest()
         {
             //Clear Filter
-            UIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
             UIMap.Click_Clear_Toolbox_Filter_Clear_Button();
             Assert.IsTrue(string.IsNullOrEmpty(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text));
             //Update Help Text
@@ -22,8 +24,8 @@ namespace Warewolf.UITests.Toolbox
             Assert.AreNotEqual(initialImage, assignImage);
             //PopUp
             UIMap.DoubleClick_Toolbox();
-            Assert.IsTrue(UIMap.MessageBoxWindow.OKButton.Exists);
-            UIMap.Click_MessageBox_OK();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.OKButton.Exists);
+            DialogsUIMap.Click_MessageBox_OK();
         }
 
         #region Additional test attributes
@@ -50,6 +52,36 @@ namespace Warewolf.UITests.Toolbox
         }
 
         private UIMap _uiMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }
