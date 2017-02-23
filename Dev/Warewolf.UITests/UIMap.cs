@@ -31,7 +31,7 @@ namespace Warewolf.UITests
         const int _strictSearchTimeout = 3000;
         const int _strictMaximumRetryCount = 1;
 
-        public void SetPlaybackSettings()
+        public static void SetPlaybackSettings()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
@@ -46,6 +46,22 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+
+            Playback.PlaybackError -= OnPlaybackError;
+            Playback.PlaybackError += OnPlaybackError;
+        }
+
+        private static void OnPlaybackError(object sender, PlaybackErrorEventArgs e)
+        {
+            var errorType = e.Error.GetType().ToString();
+            switch (errorType)
+            {
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.FailedToPerformActionOnBlockedControlException":
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
+                    e.Result = PlaybackErrorOptions.Retry;
+                    break;
+            }
         }
 
         [Given("The Warewolf Studio is running")]
