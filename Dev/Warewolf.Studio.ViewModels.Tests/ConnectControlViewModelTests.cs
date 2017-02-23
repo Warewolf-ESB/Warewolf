@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
@@ -354,26 +353,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             popupControllerMock.Verify(it => it.ShowConnectionTimeoutConfirmation("DisplayName"));
             mainViewModelMock.Verify(it => it.SetActiveServer(serverMock.Object));
         }
-
-
-        [TestMethod]
-        public void TestLoadServers()
-        {
-            //arrange
-            var serverConnectionMock = new Mock<IServer>();
-            var serverConnectionEnvironmentId = Guid.NewGuid();
-            serverConnectionMock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
-            serverConnectionMock.SetupGet(server => server.ResourceID).Returns(Guid.NewGuid);
-
-            _serverMock.Setup(server => server.FetchServer(serverConnectionEnvironmentId))
-                .Returns(serverConnectionMock.Object);
-            //act
-            _updateRepositoryMock.Object.ServerSaved.Invoke(serverConnectionEnvironmentId);
-
-            //assert
-            Assert.IsTrue(_target.Servers.Contains(serverConnectionMock.Object));
-        }
-
+        
         [TestMethod]
         public void TestOnServerOnNetworkStateChanged()
         {
@@ -431,35 +411,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsFalse(serverReconnectedRaised);
         }
-
-        [TestMethod]
-        public void TestLoadAllNewServers()
-        {
-            //arrange
-            var serverConnectionMock = new Mock<IServer>();
-            var serverConnectionEnvironmentId = Guid.NewGuid();
-            serverConnectionMock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
-            serverConnectionMock.SetupGet(server => server.ResourceID).Returns(Guid.NewGuid);
-            _serverMock.Setup(server => server.FetchServer(serverConnectionEnvironmentId))
-                .Returns(serverConnectionMock.Object);
-            _updateRepositoryMock.Object.ServerSaved.Invoke(serverConnectionEnvironmentId);
-            var server1Mock = new Mock<IServer>();
-            server1Mock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
-            server1Mock.SetupGet(it => it.DisplayName).Returns("server1MockDisplayName");
-            var newEnvironmentID = Guid.NewGuid();
-            var server2Mock = new Mock<IServer>();
-            server2Mock.SetupGet(it => it.EnvironmentID).Returns(newEnvironmentID);
-
-            _serverMock.Setup(it => it.GetAllServerConnections()).Returns(new List<IServer> { server1Mock.Object, server2Mock.Object });
-
-            //act
-            _target.LoadServers();
-
-            //assert
-            Assert.IsTrue(_target.Servers.Contains(server1Mock.Object));
-            Assert.IsTrue(_target.Servers.Contains(server2Mock.Object));
-        }
-
+        
         [TestMethod]
         public void TestEditSelectedConnectionShouldSetSelectedConnection()
         {
@@ -488,29 +440,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.IsNotNull(_target.SelectedConnection);
         }
-
-        [TestMethod]
-        public void TestCreateNewRemoteServerEnvironment()
-        {
-            //arrange
-            var serverConnectionMock = new Mock<IServer>();
-            var serverConnectionEnvironmentId = Guid.NewGuid();
-            serverConnectionMock.SetupGet(it => it.EnvironmentID).Returns(serverConnectionEnvironmentId);
-            serverConnectionMock.SetupGet(server1 => server1.ResourceID).Returns(Guid.NewGuid);
-            _serverMock.Setup(it => it.GetServerConnections()).Returns(new List<IServer>() { serverConnectionMock.Object });
-
-            //act
-            _updateRepositoryMock.SetupGet(manager => manager.ServerSaved).Returns(new Mock<Action<Guid>>().Object);
-            _updateRepositoryMock.Object.ServerSaved.Invoke(serverConnectionMock.Object.ResourceID);
-
-            //assert
-            var createdServers = _target.Servers.OfType<Server>();
-            Assert.IsTrue(createdServers.Any());
-            var server = createdServers.First();
-            Assert.IsTrue(!string.IsNullOrEmpty(server.ResourceName));
-            Assert.AreNotEqual(Guid.Empty, server.EnvironmentID);
-        }
-
+        
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("ConnectControlViewModel_EditServer")]
