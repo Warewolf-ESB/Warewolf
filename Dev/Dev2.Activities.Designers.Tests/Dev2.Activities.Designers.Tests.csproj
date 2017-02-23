@@ -254,6 +254,7 @@
     <Compile Include="SqlBulkInsert\TestSqlBulkInsertDesignerViewModel.cs" />
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
     <Compile Include="SqlServer\TestSqlServerViewModel.cs" />
+    <Compile Include="Switch\SwitchDesignerViewModelTests.cs" />
     <Compile Include="TestToolBaseViewModel.cs" />
     <Compile Include="Unzip\UnzipDesignerViewModelTests.cs" />
     <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />

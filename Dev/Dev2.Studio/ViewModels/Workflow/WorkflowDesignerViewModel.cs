@@ -1107,7 +1107,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     var switchExpressionValue = SwitchExpressionValue(activityExpression);
                     ModelProperty modelProperty = mi.Properties["Key"];
-                    if (modelProperty != null && ((modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case")))
+                    if (modelProperty?.Value != null && (FlowController.OldSwitchValue == null || string.IsNullOrWhiteSpace(FlowController.OldSwitchValue)))
                     {
                         FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
                     }
@@ -1115,32 +1115,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        [ExcludeFromCodeCoverage]
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;
-
             var switchExpressionValue = string.Empty;
+            var tmpProperty = tmpModelItem?.Properties["ExpressionText"];
+            var tmp = tmpProperty?.Value?.ToString();
 
-            if (tmpModelItem != null)
+            if (!string.IsNullOrEmpty(tmp))
             {
-                var tmpProperty = tmpModelItem.Properties["ExpressionText"];
+                int start = tmp.IndexOf("(", StringComparison.Ordinal);
+                int end = tmp.IndexOf(",", StringComparison.Ordinal);
 
-                if (tmpProperty != null)
+                if (start < end && start >= 0)
                 {
-                    var tmp = tmpProperty.Value?.ToString();
-
-                    if (!string.IsNullOrEmpty(tmp))
-                    {
-                        int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                        int end = tmp.IndexOf(",", StringComparison.Ordinal);
-
-                        if (start < end && start >= 0)
-                        {
-                            start += 2;
-                            end -= 1;
-                            switchExpressionValue = tmp.Substring(start, (end - start));
-                        }
-                    }
+                    start += 2;
+                    end -= 1;
+                    switchExpressionValue = tmp.Substring(start, (end - start));
                 }
             }
             return switchExpressionValue;

@@ -66,10 +66,10 @@ namespace Warewolf.UITests
             DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             DeployUIMap.Click_Deploy_Tab_Destination_Server_Connect_Button();
             DeployUIMap.Deploy_Service_From_Deploy_View("Hello World");
-            DeployUIMap.Click_Close_Deploy_Tab_Button();
             DialogsUIMap.ClickDeployVersionConflictsMessageBoxOK();
             DialogsUIMap.ClickDeployConflictsMessageBoxOK();
             DialogsUIMap.ClickDeploySuccessfulMessageBoxOK();
+            DeployUIMap.Click_Close_Deploy_Tab_Button();
         }
 
         [TestMethod]
