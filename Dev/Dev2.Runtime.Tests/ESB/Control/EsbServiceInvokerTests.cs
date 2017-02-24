@@ -531,7 +531,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
             StringAssert.Contains(errorResultTO.FetchErrors().Single(), ErrorResource.ServiceNotFound);
             locater.VerifyAll();
-            var serviceTestModelTO = executeRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>();
+            // ReSharper disable once RedundantNameQualifier
+            var toTypes = typeof(Dev2.Data.ServiceTestModelTO);
+            var common = typeof(Dev2.Common.Interfaces.TestRunResult);
+            var enumerable = toTypes.Assembly.ExportedTypes.Where(type => !type.IsInterface);
+            var types = enumerable as Type[] ?? enumerable.ToArray();
+            var allTypes = types.Union(common.Assembly.ExportedTypes.Where(type => !type.IsInterface));
+            var serviceTestModelTO = (ServiceTestModelTO)executeRequest.ExecuteResult.ToString().DeserializeToObject(toTypes, new KnownTypesBinder()
+            {
+                KnownTypes = allTypes.ToList()
+            });
             Assert.AreEqual(false, serviceTestModelTO.TestPassed);
             Assert.AreEqual(true, serviceTestModelTO.TestInvalid);
             Assert.AreEqual("Resource has been deleted", serviceTestModelTO.FailureMessage);
