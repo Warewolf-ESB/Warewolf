@@ -80,6 +80,12 @@
       <DependentUpon>DBSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="DebugOutputTests\DebugOutputWindowTests.cs" />
+    <Compile Include="DependencyGraph\DependencyGraphUIMap.cs">
+      <DependentUpon>DependencyGraphUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="DependencyGraph\DependencyGraphUIMap.Designer.cs">
+      <DependentUpon>DependencyGraphUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="Deploy\DeployUIMap.cs">
       <DependentUpon>DeployUIMap.uitest</DependentUpon>
     </Compile>
@@ -393,6 +399,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="DBSource\DBSourceUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DependencyGraph\DependencyGraphUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
     <None Include="Deploy\DeployUIMap.uitest">

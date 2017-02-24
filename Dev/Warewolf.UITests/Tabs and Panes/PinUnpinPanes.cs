@@ -4,6 +4,7 @@ using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
+using Warewolf.UITests.DependencyGraph.DependencyGraphUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
@@ -99,7 +100,7 @@ namespace Warewolf.UITests.Tabs
         public void UnpinDependencyGraphWizardTab()
         {
             ExplorerUIMap.Select_ShowDependencies_In_ExplorerContextMenu("Hello World");
-            UIMap.Unpin_Tab_With_Drag(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
+            UIMap.Unpin_Tab_With_Drag(DependencyGraphUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab);
         }
 
         [TestMethod]
@@ -332,6 +333,21 @@ namespace Warewolf.UITests.Tabs
         }
 
         private DataToolsUIMap _DataToolsUIMap;
+
+        DependencyGraphUIMap DependencyGraphUIMap
+        {
+            get
+            {
+                if (_DependencyGraphUIMap == null)
+                {
+                    _DependencyGraphUIMap = new DependencyGraphUIMap();
+                }
+
+                return _DependencyGraphUIMap;
+            }
+        }
+
+        private DependencyGraphUIMap _DependencyGraphUIMap;
 
         #endregion
     }

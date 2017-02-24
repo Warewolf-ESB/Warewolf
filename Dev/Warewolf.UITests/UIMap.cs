@@ -453,14 +453,6 @@ namespace Warewolf.UITests
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
         }
 
-        [Given(@"I Click Close Dependecy Tab")]
-        [When(@"I Click Close Dependecy Tab")]
-        [Then(@"I Click Close Dependecy Tab")]
-        public void Click_Close_Dependecy_Tab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.CloseButton, new Point(13, 10));
-        }
-
         [Given(@"I Click Close FullScreen")]
         [When(@"I Click Close FullScreen")]
         [Then(@"I Click Close FullScreen")]
