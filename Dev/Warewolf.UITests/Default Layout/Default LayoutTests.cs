@@ -35,7 +35,7 @@ namespace Warewolf.UITests.Workflow
             UIMap.WaitForControlVisible(UIMap.MainStudioWindow);
             var dockWidthAfter = UIMap.MainStudioWindow.DockManager.Width;
             Assert.IsTrue(dockWidthBefore > dockWidthAfter, "Then Menu Bar did not Open/Close");
-            Assert.IsTrue(UIMap.ControlExistsNow(UIMap.MainStudioWindow.SideMenuBar.LockunlockthemenuButton.UnlockMenuText), "Side Menu Bar is Open.");
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.LockunlockthemenuButton.UnlockMenuText.Exists, "Side Menu Bar is Open.");
         }
         
         static void ExecuteCommand(string fileName)
