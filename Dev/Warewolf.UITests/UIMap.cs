@@ -53,32 +53,39 @@ namespace Warewolf.UITests
 
         private static void OnPlaybackError(object sender, PlaybackErrorEventArgs e)
         {
-            var errorType = e.Error.GetType().ToString().TrimStart("Microsoft.VisualStudio.TestTools.UITest.Extension.".ToCharArray());
-            switch (errorType)
-            {
-                case "UITestControlNotAvailableException":
-                    RetryOnPlaybackError(e, errorType);
-                    break;
-                case "FailedToPerformActionOnBlockedControlException":
-                    RetryOnPlaybackError(e, errorType);
-                    break;
-                case "UITestControlNotFoundException":
-                    RetryOnPlaybackError(e, errorType);
-                    break;
-            }
-        }
-
-        private static void RetryOnPlaybackError(PlaybackErrorEventArgs e, string errorType)
-        {
+            var errorType = e.Error.GetType().ToString();
             string messageText;
             object exceptionSource;
-            messageText = errorType + "\n" + e.Error.Message;
-            exceptionSource = (e.Error as UITestControlNotAvailableException).ExceptionSource;
-            if(exceptionSource is UITestControl)
+            switch (errorType)
             {
-                Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
+                    messageText = errorType + "\n" + e.Error.Message;
+                    exceptionSource = (e.Error as UITestControlNotAvailableException).ExceptionSource;
+                    if (exceptionSource is UITestControl)
+                    {
+                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
+                    }
+                    e.Result = PlaybackErrorOptions.Retry;
+                    break;
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.FailedToPerformActionOnBlockedControlException":
+                    messageText = errorType + "\n" + e.Error.Message;
+                    exceptionSource = (e.Error as FailedToPerformActionOnBlockedControlException).ExceptionSource;
+                    if (exceptionSource is UITestControl)
+                    {
+                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
+                    }
+                    e.Result = PlaybackErrorOptions.Retry;
+                    break;
+                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
+                    messageText = errorType + "\n" + e.Error.Message;
+                    exceptionSource = (e.Error as UITestControlNotFoundException).ExceptionSource;
+                    if (exceptionSource is UITestControl)
+                    {
+                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
+                    }
+                    e.Result = PlaybackErrorOptions.Retry;
+                    break;
             }
-            e.Result = PlaybackErrorOptions.Retry;
         }
 
         [Given("The Warewolf Studio is running")]
