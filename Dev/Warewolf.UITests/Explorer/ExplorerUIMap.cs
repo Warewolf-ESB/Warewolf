@@ -425,7 +425,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Then(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));            
         }
 
         [Given(@"I Click Connect Control InExplorer")]
