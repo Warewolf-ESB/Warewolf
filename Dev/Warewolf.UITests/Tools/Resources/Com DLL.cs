@@ -14,20 +14,12 @@ namespace Warewolf.UITests.Tools.Resources
         [TestCategory("Resource Tools")]
         public void ComDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            //Large View
             Assert.IsTrue(
                 ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.Exists,
                 "Com DLL tool does not exist on the design surface after dragging in from the toolbox.");
-            //Small View
-            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
-            Assert.IsTrue(
-                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
-                    .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
-                    .Flowchart.ComDll.SmallView.Exists,
-                "Com DLL tool small view does not exist after double clicking tool large view.");
-            //Large View
-            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(
                 ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
@@ -98,7 +90,15 @@ namespace Warewolf.UITests.Tools.Resources
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.DoneButton.Exists,
                 "Done button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
+            //Small View
+            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                    .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
+                    .Flowchart.ComDll.SmallView.Exists,
+                "Com DLL tool small view does not exist after double clicking tool large view.");
             //New Source
+            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             ResourcesToolsUIMap.Click_NewSourceButton_From_COMDLLPluginTool();
             Assert.IsTrue(
                 ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
@@ -123,8 +123,7 @@ namespace Warewolf.UITests.Tools.Resources
             ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
             ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
-            UIMap.WaitForControlVisible(
-             ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+            UIMap.WaitForControlVisible(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
                  .WorkSurfaceContext.DataTree);
             Assert.AreEqual("ADODB.Connection.6.0",
                      ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab

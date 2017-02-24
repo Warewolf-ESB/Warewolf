@@ -67,8 +67,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Duplicate.Exists);
         }
 
-        
-
         #region Additional test attributes
 
         [TestInitialize]

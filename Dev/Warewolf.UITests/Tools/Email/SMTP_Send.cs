@@ -13,7 +13,7 @@ namespace Warewolf.UITests.Tools.Email
         const string SourceName = "EmailSourceFromTool";
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Email Tools")]
         public void SMTPSendTool_Small_And_LargeView_Then_NewSource_UITest()
         {
             Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SMTPEmail.Exists, "SMTP Email tool does not exist after dragging in from the toolbox");
@@ -71,7 +71,7 @@ namespace Warewolf.UITests.Tools.Email
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Email Tools")]
         public void SMTPMultipleAttachmentsUITest()
         {
             string folderName = @"c:\$$AttachmentsForEmail";
