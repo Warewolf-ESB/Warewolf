@@ -16,6 +16,7 @@ namespace Warewolf.UITests.DependencyGraph
     {
         //WOLF-2474
         [TestMethod]
+        [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenSources_ShouldHaveShowDependencyMenuItem()
         {
@@ -29,6 +30,7 @@ namespace Warewolf.UITests.DependencyGraph
         }
 
         [TestMethod]
+        [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenDotnetWorkflowAsDependencyIsDoubleClicked_ShouldOpenWorkflowTabWithToolsInside()
         {
@@ -43,6 +45,7 @@ namespace Warewolf.UITests.DependencyGraph
         }
 
         [TestMethod]
+        [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
         public void Explorer_GivenSourceIsDoubleClicked_ShouldOpenSourceTab()
         {
@@ -55,7 +58,9 @@ namespace Warewolf.UITests.DependencyGraph
             Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.Exists);
             Assert.AreEqual(@"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll", DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text);
         }
+
         [TestMethod]
+        [TestCategory("Dependency Graph")]
         [TestCategory("Explorer")]
         public void ShowDependencies_ExplorerContextMenuItem_UITest()
         {
