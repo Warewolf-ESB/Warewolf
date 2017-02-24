@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Collections;
@@ -2080,7 +2081,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(resourceToFind);
         }
 
-        
+
 
         [TestMethod]
         [Owner("Huggs")]
@@ -2216,7 +2217,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }, saveToWSPath);
         }
 
-        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef=false)
+        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef = false)
         {
             lock (syncRoot)
             {
@@ -2273,15 +2274,15 @@ namespace Dev2.Tests.Runtime.Hosting
                     }
                     result.Add(res);
                     count++;
-                   
+
                 }
                 return result;
             }
         }
 
-        
 
-        
+
+
 
         #endregion
 
@@ -2558,7 +2559,7 @@ namespace Dev2.Tests.Runtime.Hosting
         #endregion
 
         #region Rename Resource
-        
+
         #endregion
 
         #region GetResourceList
@@ -3143,12 +3144,12 @@ namespace Dev2.Tests.Runtime.Hosting
             const string destinationPath = "SomeName";
             var resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), destinationPath);
             //------------Assert Results-------------------------
-             result = rc.GetResources(workspaceID);
+            result = rc.GetResources(workspaceID);
             IResource dupResource = result.FirstOrDefault(resource => resource.ResourceName == destinationPath);
             Assert.IsNotNull(dupResource);
             var dupXelement = dupResource.ToXml();
-             var newNamecontains = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(destinationPath);
-              containsOrgName = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(resourceName);
+            var newNamecontains = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(destinationPath);
+            containsOrgName = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(resourceName);
             Assert.IsTrue(newNamecontains);
             Assert.IsNotNull(resourceCatalogResult);
             Assert.IsFalse(containsOrgName);
@@ -3209,6 +3210,94 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 //
             }
+
+            //------------Assert Results-------------------------
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_GetResourceListGivenWorkspace_ExpectResources()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            var resourceList = rc.GetResourceList(workspaceID);
+            //------------Assert Precondition-----------------
+            Assert.IsNotNull(resourceList);
+            //------------Execute Test---------------------------
+            var count = resourceList.Count;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, count);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_GetResourceCountGivenWorkspace_ExpectCorrectResources()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            var resourceList = rc.GetResourceCount(workspaceID);
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, resourceList);
+
+        }
+     
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(XmlException))]
+        public void ResourceCatalog_UnitTest_GetResourceOfTNotExist_ExpectNull()
+        {
+            //------------Setup for test--------------------------
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var resourceList = rc.GetResource<PluginSource>(Guid.NewGuid(), Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.IsNull(resourceList);
+
+        }
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_GetDependantsInvalidArgs_ExpectExceptions()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            rc.GetDependants(workspaceID, null);
 
             //------------Assert Results-------------------------
 

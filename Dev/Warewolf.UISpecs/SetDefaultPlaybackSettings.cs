@@ -11,23 +11,7 @@ namespace Warewolf.UISpecs
         [BeforeScenario]
         public void UseDefaultPlaybackSettings()
         {
-            Uimap.SetPlaybackSettings();
+            UIMap.SetPlaybackSettings();
         }
-        
-
-        UIMap Uimap
-        {
-            get
-            {
-                if (_uiMap == null)
-                {
-                    _uiMap = new UIMap();
-                }
-
-                return _uiMap;
-            }
-        }
-
-        static UIMap _uiMap;
     }
 }
