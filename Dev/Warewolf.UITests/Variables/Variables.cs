@@ -10,6 +10,7 @@ namespace Warewolf.UITests
     public class VariablesTests
     {
         [TestMethod]
+        [TestCategory("Variables")]
         public void Sort_Variable_List_Aphalbetivally()
         {
             WorkflowTabUIMap.Add_Variables("Name,Surname,Age,Race,Gender");
@@ -29,6 +30,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Variables")]
         public void Sort_RecordsetFields_List_Aphalbetivally()
         {
             WorkflowTabUIMap.Add_Recordsets("Person1,Person2");
@@ -55,6 +57,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
+        [TestCategory("Variables")]
         public void Recordsets_Usage_in_Debug_Input()
         {
             DataToolsUIMap.Open_AssignTool_LargeView();
@@ -67,6 +70,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Variables")]
         public void VariableList_DeleteAColumnOffARecorset_DeleteAllButtonIsEnbaled_UITest()
         {
             Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.RemoveUnused.Enabled);
@@ -80,6 +84,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
+        [TestCategory("Variables")]
         public void Fileter_Then_Clear_VariableList_Returns_All_Variables()
         {
             WorkflowTabUIMap.Add_Variables("nums,result,delim,negnumbers");
