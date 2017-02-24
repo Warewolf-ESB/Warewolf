@@ -53,39 +53,32 @@ namespace Warewolf.UITests
 
         private static void OnPlaybackError(object sender, PlaybackErrorEventArgs e)
         {
-            var errorType = e.Error.GetType().ToString();
-            string messageText;
-            object exceptionSource;
+            var errorType = e.Error.GetType().ToString().TrimStart("Microsoft.VisualStudio.TestTools.UITest.Extension.".ToCharArray());
             switch (errorType)
             {
-                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
-                    messageText = errorType + "\n" + e.Error.Message;
-                    exceptionSource = (e.Error as UITestControlNotAvailableException).ExceptionSource;
-                    if (exceptionSource is UITestControl)
-                    {
-                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
-                    }
-                    e.Result = PlaybackErrorOptions.Retry;
+                case "UITestControlNotAvailableException":
+                    RetryOnPlaybackError(e, errorType);
                     break;
-                case "Microsoft.VisualStudio.TestTools.UITest.Extension.FailedToPerformActionOnBlockedControlException":
-                    messageText = errorType + "\n" + e.Error.Message;
-                    exceptionSource = (e.Error as FailedToPerformActionOnBlockedControlException).ExceptionSource;
-                    if (exceptionSource is UITestControl)
-                    {
-                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
-                    }
-                    e.Result = PlaybackErrorOptions.Retry;
+                case "FailedToPerformActionOnBlockedControlException":
+                    RetryOnPlaybackError(e, errorType);
                     break;
-                case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotFoundException":
-                    messageText = errorType + "\n" + e.Error.Message;
-                    exceptionSource = (e.Error as UITestControlNotFoundException).ExceptionSource;
-                    if (exceptionSource is UITestControl)
-                    {
-                        Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
-                    }
-                    e.Result = PlaybackErrorOptions.Retry;
+                case "UITestControlNotFoundException":
+                    RetryOnPlaybackError(e, errorType);
                     break;
             }
+        }
+
+        private static void RetryOnPlaybackError(PlaybackErrorEventArgs e, string errorType)
+        {
+            string messageText;
+            object exceptionSource;
+            messageText = errorType + "\n" + e.Error.Message;
+            exceptionSource = (e.Error as UITestControlNotAvailableException).ExceptionSource;
+            if(exceptionSource is UITestControl)
+            {
+                Console.WriteLine(messageText + "\n" + (exceptionSource as UITestControl).FriendlyName);
+            }
+            e.Result = PlaybackErrorOptions.Retry;
         }
 
         [Given("The Warewolf Studio is running")]
@@ -458,14 +451,6 @@ namespace Warewolf.UITests
         {
             MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign, new Point(2, 10));
-        }
-
-        [Given(@"I Click Close Dependecy Tab")]
-        [When(@"I Click Close Dependecy Tab")]
-        [Then(@"I Click Close Dependecy Tab")]
-        public void Click_Close_Dependecy_Tab()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.CloseButton, new Point(13, 10));
         }
 
         [Given(@"I Click Close FullScreen")]

@@ -21,66 +21,6 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
     [Binding]
     public partial class WorkflowServiceTestingUIMap
     {
-        UIMap UIMap
-        {
-            get
-            {
-                if (_UIMap == null)
-                {
-                    _UIMap = new UIMap();
-                }
-
-                return _UIMap;
-            }
-        }
-
-        private UIMap _UIMap;
-
-        WorkflowTabUIMap WorkflowTabUIMap
-        {
-            get
-            {
-                if (_WorkflowTabUIMap == null)
-                {
-                    _WorkflowTabUIMap = new WorkflowTabUIMap();
-                }
-
-                return _WorkflowTabUIMap;
-            }
-        }
-
-        private WorkflowTabUIMap _WorkflowTabUIMap;
-
-        ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if (_ExplorerUIMap == null)
-                {
-                    _ExplorerUIMap = new ExplorerUIMap();
-                }
-
-                return _ExplorerUIMap;
-            }
-        }
-
-        private ExplorerUIMap _ExplorerUIMap;
-
-        DialogsUIMap DialogsUIMap
-        {
-            get
-            {
-                if (_DialogsUIMap == null)
-                {
-                    _DialogsUIMap = new DialogsUIMap();
-                }
-
-                return _DialogsUIMap;
-            }
-        }
-
-        private DialogsUIMap _DialogsUIMap;
-
         [Given("I Drag Dice Roll Example Onto DesignSurface")]
         [When("I Drag Dice Roll Example Onto DesignSurface")]
         [Then("I Drag Dice Roll Example Onto DesignSurface")]
@@ -999,5 +939,76 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                     Assert.AreEqual("Please save currently edited Test(s) before running the tests.", DialogsUIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Messagebox does not show duplicated name error");
             }
         }
+
+        [When(@"I Click Decision On Workflow Service Test View")]
+        public void Click_Decision_On_Workflow_Service_Test_View()
+        {
+            Point point;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom.WaitForControlCondition((uitestcontrol) => { return uitestcontrol.TryGetClickablePoint(out point); }, 60000);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom);
+        }
+
+        #region UIMaps
+        UIMap UIMap
+        {
+            get
+            {
+                if (_UIMap == null)
+                {
+                    _UIMap = new UIMap();
+                }
+
+                return _UIMap;
+            }
+        }
+
+        private UIMap _UIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
+
+        #endregion
     }
 }
