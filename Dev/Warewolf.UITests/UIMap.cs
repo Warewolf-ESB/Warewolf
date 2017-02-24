@@ -586,6 +586,7 @@ namespace Warewolf.UITests
         public void Click_Debug_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
+            MainStudioWindow.DebugInputDialog.WaitForControlExist(60000);
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input Dialog does not exist after clicking debug ribbon button.");
         }
 
