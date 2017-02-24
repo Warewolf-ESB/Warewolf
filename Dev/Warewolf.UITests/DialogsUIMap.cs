@@ -1,4 +1,8 @@
-﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Linq;
@@ -148,6 +152,12 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         {
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
             Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
+        }
+
+        [When(@"I Click Switch Dialog Cancel Button")]
+        public void Click_Switch_Dialog_Cancel_Button()
+        {
+            Mouse.Click(DecisionOrSwitchDialog.CancelButton, new Point(23, 10));
         }
 
         [Given(@"Filtered Item Exists")]
