@@ -80,7 +80,7 @@ namespace Warewolf.UITests
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Fail, 4);
             //------------Assert Preconditions-------------------
             //------------Execute Test---------------------------            
-            Mouse.Click(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom);
+            WorkflowServiceTestingUIMap.Click_Decision_On_Workflow_Service_Test_View();
             //------------Assert Results-------------------------
             Assert.IsFalse(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists);
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.Exists);
