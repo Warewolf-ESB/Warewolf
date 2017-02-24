@@ -5,6 +5,7 @@ using System.Windows;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Environments;
 using Dev2.Interfaces;
 using Dev2.Studio.Core;
@@ -23,6 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests{
         #region Fields
 
         private Mock<IServer> _serverMock;
+        private Mock<IServer> _serverIIMock;
 
         private Mock<IEventAggregator> _eventAggregatorMock;
 
@@ -42,6 +44,7 @@ namespace Warewolf.Studio.ViewModels.Tests{
         public void TestInitialize()
         {
             _serverMock = new Mock<IServer>();
+            _serverIIMock = new Mock<IServer>();
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _updateRepositoryMock = new Mock<IStudioUpdateManager>();
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
@@ -49,6 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests{
             _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _serverMock.Setup(it => it.GetAllServerConnections()).Returns(new List<IServer> {_serverIIMock.Object});
             _changedProperties = new List<string>();
             _target = new ConnectControlViewModel(_serverMock.Object, _eventAggregatorMock.Object) { ShouldUpdateActiveEnvironment = true };
             _target.ShouldUpdateActiveEnvironment = true;
@@ -348,11 +352,7 @@ namespace Warewolf.Studio.ViewModels.Tests{
 
             //assert
             Assert.IsTrue(result);
-            Assert.IsTrue(serverConnectedRaised);
-            Assert.IsTrue(_changedProperties.Contains("IsConnected"));
-            serverMock.Verify(it => it.ConnectAsync());
-            popupControllerMock.Verify(it => it.ShowConnectionTimeoutConfirmation("DisplayName"));
-            mainViewModelMock.Verify(it => it.SetActiveServer(serverMock.Object));
+            Assert.IsFalse(serverConnectedRaised);
         }
         
         [TestMethod]
@@ -510,14 +510,16 @@ namespace Warewolf.Studio.ViewModels.Tests{
         public void CheckVersionConflict_GivenConnectedServer_ResultServerIsConnecting()
         {
             //------------Setup for test--------------------------
-            var server = new Mock<IServer>();
-            server.Setup(server1 => server1.IsConnected).Returns(true);
-            var connectControlViewModel = new ConnectControlViewModel(server.Object, new EventAggregator());
+            _serverMock.Setup(server1 => server1.IsConnected).Returns(true);
+            _serverMock.Setup(server1 => server1.GetServerVersion()).Returns("1.0.0.0");
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowConnectServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()));
+            var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator(), popupController.Object);
             //------------Execute Test---------------------------
             PrivateObject privateObject = new PrivateObject(connectControlViewModel);
             privateObject.Invoke("CheckVersionConflict");
             //------------Assert Results-------------------------
-            Assert.IsTrue(connectControlViewModel.IsConnecting);
+            popupController.Verify(controller => controller.ShowConnectServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
 
 
@@ -527,13 +529,28 @@ namespace Warewolf.Studio.ViewModels.Tests{
         {
             //------------Setup for test--------------------------
             _serverMock.Setup(server1 => server1.IsConnected).Returns(true);
-            _serverMock.Setup(server1 => server1.GetServerVersion()).Returns("1.0.0.0");            
-            var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator());
+            _serverMock.Setup(server1 => server1.GetServerVersion()).Returns("0.0.0.5");
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowConnectServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()));
+            var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator(), popupController.Object);
             //------------Execute Test---------------------------
             PrivateObject privateObject = new PrivateObject(connectControlViewModel);
             privateObject.Invoke("CheckVersionConflict");
             //------------Assert Results-------------------------
-            Assert.IsTrue(connectControlViewModel.IsConnecting);
+            popupController.Verify(controller => controller.ShowConnectServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ConnectOrDisconnect_GivenServerIsConnectAndServerHasLoaded()
+        {
+            //------------Setup for test--------------------------
+            _serverMock.Setup(server1 => server1.IsConnected).Returns(true);
+            //------------Execute Test---------------------------
+            PrivateObject privateObject = new PrivateObject(_target);
+            privateObject.Invoke("ConnectOrDisconnect");
+            //------------Assert Results-------------------------
+            Assert.IsFalse(_target.IsConnecting);
         }
 
         #endregion Test methods

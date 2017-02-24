@@ -37,6 +37,7 @@ namespace Warewolf.Studio.ViewModels
         ObservableCollection<IServer> _servers;
         bool _isLoading;
         private Guid? _selectedId;
+        public IPopupController PopupController { get; set; }
         private bool _shouldUpdateActiveEnvironment;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
@@ -59,6 +60,12 @@ namespace Warewolf.Studio.ViewModels
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
             ShouldUpdateActiveEnvironment = false;
+        }
+
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController)
+            :this(server, aggregator)
+        {
+            PopupController = popupController;
         }
 
         public bool ShouldUpdateActiveEnvironment
@@ -223,8 +230,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (sourceVersionNumber < destVersionNumber)
                         {
-                            var popupController = CustomContainer.Get<IPopupController>();
-                            popupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
+                            PopupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
                                 destVersionNumber.ToString());
                         }
                     }
@@ -353,9 +359,8 @@ namespace Warewolf.Studio.ViewModels
                         }
                     }
                     else
-                    {
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        var result = popupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
+                    {                        
+                        var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
                         if (result == MessageBoxResult.Yes)
                         {
                             await Connect(connection);
