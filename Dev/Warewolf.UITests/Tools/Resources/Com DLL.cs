@@ -14,20 +14,12 @@ namespace Warewolf.UITests.Tools.Resources
         [TestCategory("Resource Tools")]
         public void ComDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
+            //Large View
             Assert.IsTrue(
                 ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.Exists,
                 "Com DLL tool does not exist on the design surface after dragging in from the toolbox.");
-            //Small View
-            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
-            Assert.IsTrue(
-                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
-                    .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
-                    .Flowchart.ComDll.SmallView.Exists,
-                "Com DLL tool small view does not exist after double clicking tool large view.");
-            //Large View
-            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             Assert.IsTrue(
                 ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
@@ -98,55 +90,68 @@ namespace Warewolf.UITests.Tools.Resources
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.DoneButton.Exists,
                 "Done button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
-            //New Source
-            ResourcesToolsUIMap.Click_NewSourceButton_From_COMDLLPluginTool();
-            Assert.IsTrue(
-                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                    .WorkSurfaceContext.SearchTextBox.Enabled, "Search Textbox is not enabled");
-            Assert.IsTrue(
-                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                    .WorkSurfaceContext.RefreshButton.RefreshSpinner.Exists);
-            UIMap.WaitForControlVisible(
-                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                    .WorkSurfaceContext.DataTree);
-            ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.CONNECTION";
-            Mouse.Click(
-                ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                    .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
-            Assert.AreEqual("ADODB.Connection.6.0",
-                    ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                        .WorkSurfaceContext.AssemblyNameTextBox.Text,
-                "Assembly Name Textbox is empty after selecting an assembly.");
-            UIMap.Save_With_Ribbon_Button_And_Dialog("COMPluginSourceToEdit");
-            Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
+            //Small View
             ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
-            ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
-            ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
-            UIMap.WaitForControlVisible(
-             ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                 .WorkSurfaceContext.DataTree);
-            Assert.AreEqual("ADODB.Connection.6.0",
-                     ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                         .WorkSurfaceContext.AssemblyNameTextBox.Text,
-                 "Assembly Name Textbox is not equal to ADODB.Connection.6.0.");
-            ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.Parameter";
-            Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                    .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
-            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
-            Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
-            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
-            ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
-            ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
-            UIMap.WaitForControlVisible(
-               ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                   .WorkSurfaceContext.DataTree);
-            Assert.AreEqual("ADODB.Parameter.6.0",
-                    ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
-                        .WorkSurfaceContext.AssemblyNameTextBox.Text,
-                "Assembly Name Textbox is not equal to ADODB.Parameter.6.0.");
+            Assert.IsTrue(
+                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+                    .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
+                    .Flowchart.ComDll.SmallView.Exists,
+                "Com DLL tool small view does not exist after double clicking tool large view.");
+            
         }
+
+        //[TestMethod]        
+        //[TestCategory("Resource Tools")]
+        //public void ComDLLTool_NewSource_AndEdit_UITest()
+        //{
+        //    //New Source
+        //    ResourcesToolsUIMap.Click_NewSourceButton_From_COMDLLPluginTool();
+        //    Assert.IsTrue(
+        //        ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //            .WorkSurfaceContext.SearchTextBox.Enabled, "Search Textbox is not enabled");
+        //    Assert.IsTrue(
+        //        ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //            .WorkSurfaceContext.RefreshButton.RefreshSpinner.Exists);
+        //    UIMap.WaitForControlVisible(
+        //        ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //            .WorkSurfaceContext.DataTree);
+        //    ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //        .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.CONNECTION";
+        //    Mouse.Click(
+        //        ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //            .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
+        //    Assert.AreEqual("ADODB.Connection.6.0",
+        //            ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //                .WorkSurfaceContext.AssemblyNameTextBox.Text,
+        //        "Assembly Name Textbox is empty after selecting an assembly.");
+        //    UIMap.Save_With_Ribbon_Button_And_Dialog("COMPluginSourceToEdit");
+        //    Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
+        //    ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+        //    ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
+        //    ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
+        //    UIMap.WaitForControlVisible(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //         .WorkSurfaceContext.DataTree);
+        //    Assert.AreEqual("ADODB.Connection.6.0",
+        //             ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //                 .WorkSurfaceContext.AssemblyNameTextBox.Text,
+        //         "Assembly Name Textbox is not equal to ADODB.Connection.6.0.");
+        //    ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //        .WorkSurfaceContext.SearchTextBox.SearchText.Text = "ADODB.Parameter";
+        //    Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //            .WorkSurfaceContext.DataTree.ItemTreeItem, new Point(55, 27));
+        //    UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+        //    Mouse.Click(ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.CloseTabButton);
+        //    ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+        //    ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
+        //    ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
+        //    UIMap.WaitForControlVisible(
+        //       ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //           .WorkSurfaceContext.DataTree);
+        //    Assert.AreEqual("ADODB.Parameter.6.0",
+        //            ComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab
+        //                .WorkSurfaceContext.AssemblyNameTextBox.Text,
+        //        "Assembly Name Textbox is not equal to ADODB.Parameter.6.0.");
+        //}
 
         #region Additional test attributes
 
