@@ -9,7 +9,7 @@ namespace Warewolf.UITests.Toolbox
     public class ToolboxTests
     {
         [TestMethod]
-        [TestCategory("ToolBox")]
+        [TestCategory("Tools")]
         public void ToolboxBehaviourCheck_ClearFilter_Then_PopUp_Then_UpdateHelpText_UITest()
         {
             //Clear Filter
