@@ -1,6 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
+using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -15,13 +18,13 @@ namespace Warewolf.UITests
         public void Run_Failing_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "First 'Hello World' test does not exist as expected.");
-            UIMap.Click_Create_New_Tests(true, 4);
-            UIMap.Click_Test_Run_Button(4);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Failing.Exists, "Test failing icon is not displayed after running a failing test.");
-            UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
-            UIMap.Click_Delete_Test_Button(4);
-            UIMap.Click_MessageBox_Yes();
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "First 'Hello World' test does not exist as expected.");
+            WorkflowServiceTestingUIMap.Click_Create_New_Tests(true, 4);
+            WorkflowServiceTestingUIMap.Click_Test_Run_Button(4);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Failing.Exists, "Test failing icon is not displayed after running a failing test.");
+            WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
+            WorkflowServiceTestingUIMap.Click_Delete_Test_Button(4);
+            DialogsUIMap.Click_MessageBox_Yes();
         }
        
 
@@ -30,9 +33,9 @@ namespace Warewolf.UITests
         public void Run_Passing_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Exists,
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Exists,
                 "Third 'Hello World' test does not exist as expected.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Invalid.Exists, "Test passing icon is not displayed after running a passing test.");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test3.Invalid.Exists, "Test passing icon is not displayed after running a passing test.");
         }
 
         [TestMethod]
@@ -40,23 +43,23 @@ namespace Warewolf.UITests
         public void Show_Duplicate_Test_Dialog()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "First 'Hello World' test does not exist as expected.");
-            UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
-            UIMap.Update_Test_Name("Blank Input");
-            UIMap.Save_Tets_With_Shortcut();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
-            UIMap.Duplicate_Test_Name_MessageBox_Ok();
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "First 'Hello World' test does not exist as expected.");
+            WorkflowServiceTestingUIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
+            WorkflowServiceTestingUIMap.Update_Test_Name("Blank Input");
+            WorkflowServiceTestingUIMap.Save_Tets_With_Shortcut();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "No duplicate test error dialog when saving a test with the name of an existing test.");
+            DialogsUIMap.Duplicate_Test_Name_MessageBox_Ok();
         }
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void Show_Save_Before_Running_Tests_Dialog()
         {
-            UIMap.Show_ExplorerSecondItemTests_With_ExplorerContextMenu(xPath);
-            UIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
-            UIMap.Click_Workflow_Testing_Tab_Run_All_Button();
-            Assert.IsTrue(UIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");
-            UIMap.Click_Save_Before_Continuing_MessageBox_OK();
+            ExplorerUIMap.Show_ExplorerSecondItemTests_With_ExplorerContextMenu(xPath);
+            WorkflowServiceTestingUIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
+            WorkflowServiceTestingUIMap.Click_Workflow_Testing_Tab_Run_All_Button();
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "No save before running tests error dialog when clicking run all button while a test is unsaved.");
+            DialogsUIMap.Click_Save_Before_Continuing_MessageBox_OK();
         }
 
         [TestMethod]
@@ -64,11 +67,11 @@ namespace Warewolf.UITests
         public void RunTestAsSpecificUser()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "This test expects 'Hello World' to have at least 1 existing test.");
-            UIMap.Select_First_Test();
-            UIMap.Select_User_From_RunTestAs();
-            UIMap.Enter_RunAsUser_Username_And_Password();
-            UIMap.Click_Run_Test_Button(TestResultEnum.Pass);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "This test expects 'Hello World' to have at least 1 existing test.");
+            WorkflowServiceTestingUIMap.Select_First_Test();
+            WorkflowServiceTestingUIMap.Select_User_From_RunTestAs();
+            WorkflowServiceTestingUIMap.Enter_RunAsUser_Username_And_Password();
+            WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
         }
 
         [TestMethod]
@@ -76,11 +79,11 @@ namespace Warewolf.UITests
         public void Delete_Test()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
-            UIMap.Click_Create_New_Tests(true, 4);
-            UIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
-            UIMap.Click_Delete_Test_Button(4);
-            UIMap.Click_MessageBox_Yes();
+            Assert.IsFalse(UIMap.ControlExistsNow(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
+            WorkflowServiceTestingUIMap.Click_Create_New_Tests(true, 4);
+            WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
+            WorkflowServiceTestingUIMap.Click_Delete_Test_Button(4);
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [TestMethod]
@@ -88,10 +91,10 @@ namespace Warewolf.UITests
         public void Click_Duplicate_Test_Button()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
-            UIMap.Select_First_Test();
-            UIMap.Click_Duplicate_Test_Button();
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
+            Assert.IsFalse(UIMap.ControlExistsNow(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
+            WorkflowServiceTestingUIMap.Select_First_Test();
+            WorkflowServiceTestingUIMap.Click_Duplicate_Test_Button();
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
         }
 
         #region Additional test attributes
@@ -117,6 +120,51 @@ namespace Warewolf.UITests
         }
 
         private UIMap _UIMap;
+
+        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
+        {
+            get
+            {
+                if (_WorkflowServiceTestingUIMap == null)
+                {
+                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
+                }
+
+                return _WorkflowServiceTestingUIMap;
+            }
+        }
+
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }
