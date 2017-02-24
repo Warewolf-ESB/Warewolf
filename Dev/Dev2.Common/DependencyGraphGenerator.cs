@@ -21,6 +21,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
+  
     /// <summary>
     /// Used to generate dependency graphs.
     /// Extracted From View Model ;)
@@ -128,7 +129,7 @@ namespace Dev2.Common
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        private DependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
+        private IDependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
             var screenWidth = width;
             var screenHeight = height - 150;
