@@ -335,6 +335,15 @@ The window will be reloaded when you click OK.</value>
   <data name="SwitchDropNotAllowedMessage" xml:space="preserve">
     <value>The Switch tool cannot be dropped onto this tool.</value>
   </data>
+  <data name="SwitchCaseEmptyExpressionMessage" xml:space="preserve">
+    <value>Please enter a value for the Switch case</value>
+  </data>
+  <data name="SwitchCaseUniqueMessage" xml:space="preserve">
+    <value>FlowSwitch cases must be unique</value>
+  </data>
+  <data name="SwitchFlowErrorHeader" xml:space="preserve">
+    <value>FlowSwitch Case Error</value>
+  </data>
   <data name="SelectAndApplyDropNotAllowedMessage" xml:space="preserve">
     <value>The Select And Apply tool cannot be dropped onto this tool.</value>
   </data>
