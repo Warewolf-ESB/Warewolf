@@ -16,8 +16,7 @@ using Moq;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Testing;
 
-namespace Warewolf.Studio.ViewModels.Tests
-{
+namespace Warewolf.Studio.ViewModels.Tests{
     [TestClass]
     public class ConnectControlViewModelTests
     {
@@ -504,6 +503,37 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //------------Assert Results-------------------------
             Assert.IsTrue(passed);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CheckVersionConflict_GivenConnectedServer_ResultServerIsConnecting()
+        {
+            //------------Setup for test--------------------------
+            var server = new Mock<IServer>();
+            server.Setup(server1 => server1.IsConnected).Returns(true);
+            var connectControlViewModel = new ConnectControlViewModel(server.Object, new EventAggregator());
+            //------------Execute Test---------------------------
+            PrivateObject privateObject = new PrivateObject(connectControlViewModel);
+            privateObject.Invoke("CheckVersionConflict");
+            //------------Assert Results-------------------------
+            Assert.IsTrue(connectControlViewModel.IsConnecting);
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CheckVersionConflict_GivenNoVersionConflicts()
+        {
+            //------------Setup for test--------------------------
+            _serverMock.Setup(server1 => server1.IsConnected).Returns(true);
+            _serverMock.Setup(server1 => server1.GetServerVersion()).Returns("1.0.0.0");            
+            var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator());
+            //------------Execute Test---------------------------
+            PrivateObject privateObject = new PrivateObject(connectControlViewModel);
+            privateObject.Invoke("CheckVersionConflict");
+            //------------Assert Results-------------------------
+            Assert.IsTrue(connectControlViewModel.IsConnecting);
         }
 
         #endregion Test methods
