@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
 using Warewolf.UITests.Tools.Resources.ResourcesToolsUIMapClasses;
