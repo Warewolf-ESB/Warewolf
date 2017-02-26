@@ -11,7 +11,7 @@ namespace Warewolf.UITests.WebSource
         const string SourceName = "CodedUITestWebServiceSource";
 
         [TestMethod]
-        [TestCategory("Web Source")]
+        [TestCategory("Web Sources")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_WebServiceSource_From_ExplorerContextMenu_UITests()
         {
