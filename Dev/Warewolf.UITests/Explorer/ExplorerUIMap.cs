@@ -128,7 +128,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Given(@"Explorer Does Not Contain Item ""(.*)""")]
         [When(@"Explorer Does Not Contain Item ""(.*)""")]
         [Then(@"Explorer Does Not Contain Item ""(.*)""")]
-        public void ExplorerDoesNotContainItem(string p0)
+        public void ExplorerDoesNotContainItem(string itemName)
         {
             Assert.IsFalse(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem));
         }
