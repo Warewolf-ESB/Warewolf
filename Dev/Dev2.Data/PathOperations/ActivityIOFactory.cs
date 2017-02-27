@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace

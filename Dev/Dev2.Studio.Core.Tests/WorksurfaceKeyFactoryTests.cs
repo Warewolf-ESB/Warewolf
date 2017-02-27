@@ -1,6 +1,5 @@
 ﻿using System;
 using Dev2.Factory;
-using Dev2.Studio.Core.AppResources.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests

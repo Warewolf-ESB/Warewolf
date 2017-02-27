@@ -15,8 +15,8 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.Data.Enums;
-using Dev2.Interfaces;
+using Dev2.Data.Interfaces.Enums;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.Foreach
 {

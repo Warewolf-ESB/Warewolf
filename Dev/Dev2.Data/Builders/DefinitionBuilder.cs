@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Interfaces.Enums;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming

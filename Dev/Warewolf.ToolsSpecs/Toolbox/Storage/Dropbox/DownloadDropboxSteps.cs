@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Moq;
 using TechTalk.SpecFlow;
 using System.Linq.Expressions;
@@ -11,12 +10,13 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Storage;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common.ExtMethods;
-using Dev2.Data.Enums;
 using Dev2.Data.Exceptions;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Warewolf.Resource.Errors;
@@ -17,7 +17,7 @@ namespace Dev2.Data.Util
     {
         #region Implementation of IParserHelper
 
-        public bool ProcessOpenRegion(string payload, bool openRegion, int i, ref ParseTO currentNode, ref StringBuilder region, ref char cur)
+        public bool ProcessOpenRegion(string payload, bool openRegion, int i, ref IParseTO currentNode, ref StringBuilder region, ref char cur)
         {
             if (openRegion)
             {
@@ -33,7 +33,7 @@ namespace Dev2.Data.Util
             return openRegion;
         }
 
-        private bool CloseNode(ParseTO currentNode, int i, StringBuilder region)
+        private bool CloseNode(IParseTO currentNode, int i, StringBuilder region)
         {
             const bool OpenRegion = false;
             currentNode.EndIndex = i;
@@ -44,11 +44,11 @@ namespace Dev2.Data.Util
             return OpenRegion;
         }
 
-        public ParseTO CurrentNode(ParseTO currentNode, StringBuilder region, int i)
+        public IParseTO CurrentNode(IParseTO currentNode, StringBuilder region, int i)
         {
             currentNode.Payload = region.ToString();
             region.Clear();
-            ParseTO child = new ParseTO();
+            IParseTO child = new ParseTO();
             currentNode.Child = child;
             child.HangingOpen = true;
             child.Parent = currentNode;
@@ -58,7 +58,7 @@ namespace Dev2.Data.Util
             return currentNode;
         }
 
-        private ParseTO ProcessNode(string payload, ParseTO currentNode, ref StringBuilder region, ref bool openRegion)
+        private IParseTO ProcessNode(string payload, IParseTO currentNode, ref StringBuilder region, ref bool openRegion)
         {
             if (!currentNode.IsRoot)
             {
@@ -89,7 +89,7 @@ namespace Dev2.Data.Util
             return shouldAddToRegion;
         }
 
-        public bool CheckValidIndex(ParseTO to, string part, int start, int end)
+        public bool CheckValidIndex(IParseTO to, string part, int start, int end)
         {
             int partAsInt;
             if (int.TryParse(part, out partAsInt))
@@ -110,7 +110,7 @@ namespace Dev2.Data.Util
             return true;
         }
 
-        public bool CheckCurrentIndex(ParseTO to, int start, string raw, int end)
+        public bool CheckCurrentIndex(IParseTO to, int start, string raw, int end)
         {
             start += 1;
             string part = raw.Substring(start, raw.Length - (start + 1));
@@ -186,7 +186,7 @@ namespace Dev2.Data.Util
             return null;
         }
 
-        public bool ProcessFieldsForRecordSet(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, out string search, out bool emptyOk, string display, IDev2DataLanguageIntellisensePart recordsetPart, string partName)
+        public bool ProcessFieldsForRecordSet(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, out string search, out bool emptyOk, string display, IDev2DataLanguageIntellisensePart recordsetPart, string partName)
         {
             emptyOk = false;
             search = "";
@@ -259,7 +259,7 @@ namespace Dev2.Data.Util
             return false;
         }
 
-        public bool AddFieldResult(ParseTO payload, IList<IIntellisenseResult> result, string tmpString, string[] parts, bool isRs)
+        public bool AddFieldResult(IParseTO payload, IList<IIntellisenseResult> result, string tmpString, string[] parts, bool isRs)
         {
             if ((tmpString.EndsWith(".") || tmpString.StartsWith(".") || (parts.Length > 1 && !isRs)) && payload.Child == null)
             {
@@ -273,7 +273,7 @@ namespace Dev2.Data.Util
             return false;
         }
 
-        public bool IsValidIndex(ParseTO to)
+        public bool IsValidIndex(IParseTO to)
         {
             bool result = false;
             string raw = to.Payload;
@@ -313,7 +313,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        public IIntellisenseResult AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen)
+        public IIntellisenseResult AddErrorToResults(bool isRs, string part, IDev2DataLangaugeParseError e, bool isOpen)
         {
             // add error
             IDataListVerifyPart pTo;

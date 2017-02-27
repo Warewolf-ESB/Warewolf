@@ -1,4 +1,4 @@
-using Dev2.Interfaces;
+using Dev2.Common.Interfaces.Interfaces;
 
 namespace Dev2.Common.Interfaces
 {

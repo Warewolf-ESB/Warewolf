@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.PathOperations.Interfaces;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.Simulation
 {

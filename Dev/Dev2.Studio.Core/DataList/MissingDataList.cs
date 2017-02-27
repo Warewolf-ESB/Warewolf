@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.DataList
 {

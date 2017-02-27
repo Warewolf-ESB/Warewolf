@@ -14,7 +14,6 @@ using System.Text;
 using Dev2.Common.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

@@ -15,11 +15,11 @@ using System.Linq;
 using System.Parsing.Intellisense;
 using Dev2.Data.Exceptions;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Interfaces;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.Utils
 {

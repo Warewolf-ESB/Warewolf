@@ -12,12 +12,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList;
-using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList

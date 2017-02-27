@@ -5,10 +5,10 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 using Dev2.Controller;
-using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.AntiCorruptionLayer

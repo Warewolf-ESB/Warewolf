@@ -9,7 +9,7 @@
 */
 
 using Dev2.Common.ExtMethods;
-using Dev2.Data.Enums;
+using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.EnumTests

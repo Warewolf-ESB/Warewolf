@@ -9,7 +9,6 @@
 */
 
 using Dev2.Common;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Data
 {

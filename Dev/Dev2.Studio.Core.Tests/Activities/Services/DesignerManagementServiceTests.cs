@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Studio.Core.Activities.Services;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

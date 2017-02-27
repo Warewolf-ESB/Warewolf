@@ -7,15 +7,15 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Designers2.DropBox2016.Delete;
-using Dev2.Studio.Core.Interfaces;
 using Caliburn.Micro;
-using Warewolf.Storage;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Runtime.Interfaces;
+using Dev2.Studio.Interfaces;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {

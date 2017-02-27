@@ -11,11 +11,8 @@
 using System;
 using System.Text;
 using System.Xml;
-using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Network;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models

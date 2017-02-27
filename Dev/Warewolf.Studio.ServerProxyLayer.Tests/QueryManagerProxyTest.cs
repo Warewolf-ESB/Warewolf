@@ -13,12 +13,11 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Data.Binary_Objects;
+
 // ReSharper disable AccessToForEachVariableInClosure
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedVariable

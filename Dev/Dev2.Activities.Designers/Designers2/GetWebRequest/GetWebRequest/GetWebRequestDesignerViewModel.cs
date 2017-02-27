@@ -19,8 +19,8 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Preview;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.DataList.Contract;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
+using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace

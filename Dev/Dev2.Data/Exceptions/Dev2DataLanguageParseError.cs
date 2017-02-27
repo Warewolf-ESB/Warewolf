@@ -9,8 +9,8 @@
 */
 
 using System;
-using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Data.Exceptions
 {

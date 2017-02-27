@@ -12,7 +12,7 @@ using System;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Messages;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Utils;
 
 namespace Dev2.Webs.Callbacks

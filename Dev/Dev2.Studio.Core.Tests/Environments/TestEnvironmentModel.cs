@@ -11,7 +11,6 @@
 using System;
 using Caliburn.Micro;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Moq;
 
