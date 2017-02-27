@@ -181,7 +181,6 @@
     <Resource Include="Fonts\grabbing.cur" />
     <Resource Include="Fonts\Copy.cur" />
     <Content Include="Fonts\SourceSansPro-Regular.ttf" />
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
