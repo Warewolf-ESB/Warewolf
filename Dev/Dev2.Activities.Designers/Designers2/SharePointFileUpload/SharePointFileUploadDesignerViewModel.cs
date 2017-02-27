@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
 

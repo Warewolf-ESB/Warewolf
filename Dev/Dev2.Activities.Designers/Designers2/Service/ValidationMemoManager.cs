@@ -4,11 +4,11 @@ using System.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
-using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Services;
-using Dev2.Studio.Core.Interfaces;
 using Warewolf.Resource.Errors;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Studio.Interfaces;
 // ReSharper disable ParameterTypeCanBeEnumerable.Global
 
 namespace Dev2.Activities.Designers2.Service

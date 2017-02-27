@@ -4,15 +4,15 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.DataList
 {
@@ -179,7 +179,7 @@ namespace Dev2.Studio.Core.DataList
         }
 
 
-        public void AddComplexObjectFromXmlNode(XmlNode xmlNode, ComplexObjectItemModel parent)
+        public void AddComplexObjectFromXmlNode(XmlNode xmlNode, IComplexObjectItemModel parent)
         {
             var isArray = false;
             var ioDirection = enDev2ColumnArgumentDirection.None;

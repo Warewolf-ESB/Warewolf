@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.DataList.Contract.Translators
 {

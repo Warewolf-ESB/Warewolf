@@ -9,7 +9,7 @@
 */
 
 using System;
-using Dev2.PathOperations.Interfaces;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.Simulation
 {

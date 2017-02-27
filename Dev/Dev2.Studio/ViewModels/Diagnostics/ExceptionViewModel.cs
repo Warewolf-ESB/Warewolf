@@ -29,7 +29,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Interfaces;
 using Dev2.Studio.Controller;
 
 // ReSharper disable CheckNamespace

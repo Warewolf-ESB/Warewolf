@@ -15,10 +15,11 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
+
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 

@@ -5,7 +5,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
-using Dev2.Data.PathOperations.Enums;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
 using Ionic.Zip;
 using Ionic.Zlib;

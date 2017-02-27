@@ -13,7 +13,6 @@ using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Dialogs;
 using Dev2.Services.Security;
 using Dev2.Settings.Security;
-using Dev2.Studio.Core.Interfaces;
 using Moq;
 
 namespace Dev2.Core.Tests.Settings

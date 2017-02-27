@@ -7,7 +7,7 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Controller;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

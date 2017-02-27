@@ -12,9 +12,9 @@ using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Controller;
-using Dev2.Studio.Core.Interfaces;
 using Warewolf.Studio.ServerProxyLayer;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 

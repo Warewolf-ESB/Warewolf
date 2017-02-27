@@ -10,9 +10,10 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable MergeConditionalExpression
 
 namespace Warewolf.Studio.ViewModels

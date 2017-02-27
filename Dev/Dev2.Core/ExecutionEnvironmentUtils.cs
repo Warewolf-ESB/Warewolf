@@ -10,12 +10,12 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
 namespace Dev2

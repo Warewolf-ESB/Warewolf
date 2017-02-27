@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.CreateJSON;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

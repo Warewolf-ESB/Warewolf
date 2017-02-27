@@ -10,9 +10,9 @@
 
 using System;
 using System.Globalization;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Operations;
 using Dev2.Data.TO;
-using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 

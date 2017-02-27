@@ -1,7 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.ErrorHandling;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
@@ -9,11 +8,11 @@ using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel;
-using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 // ReSharper disable InconsistentNaming
 

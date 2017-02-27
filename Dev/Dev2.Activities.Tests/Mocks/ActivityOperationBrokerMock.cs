@@ -10,7 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.PathOperations;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Tests.Activities.Mocks
 {
@@ -18,10 +19,10 @@ namespace Dev2.Tests.Activities.Mocks
     {
         public IActivityIOOperationsEndPoint Source { get; set; }
         public IActivityIOOperationsEndPoint Destination { get; set; }
-        public Dev2CRUDOperationTO Dev2CrudOperationTO { get; set; }
-        public Dev2PutRawOperationTO Dev2PutRawOperationTo { get; set; }
-        public Dev2ZipOperationTO Dev2ZipOperationTO { get; set; }
-        public Dev2UnZipOperationTO Dev2UnZipOperationTO   { get; set; }
+        public IDev2CRUDOperationTO Dev2CrudOperationTO { get; set; }
+        public IDev2PutRawOperationTO Dev2PutRawOperationTo { get; set; }
+        public IDev2ZipOperationTO Dev2ZipOperationTO { get; set; }
+        public IDev2UnZipOperationTO Dev2UnZipOperationTO   { get; set; }
 
         public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
         {
@@ -30,7 +31,7 @@ namespace Dev2.Tests.Activities.Mocks
             return "Successful";
         }
 
-        public string PutRaw(IActivityIOOperationsEndPoint dst, Dev2PutRawOperationTO args)
+        public string PutRaw(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args)
         {
             Destination = dst;
             Dev2PutRawOperationTo = args;
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Activities.Mocks
             throw new NotImplementedException();
         }
 
-        public string Create(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
+        public string Create(IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args, bool createToFile)
         {
             CreateToFile = createToFile;
             Destination = dst;
@@ -56,7 +57,7 @@ namespace Dev2.Tests.Activities.Mocks
             return "Successful";
         }
 
-        public string Copy(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
+        public string Copy(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
             Source = src;
             Destination = dst;
@@ -70,7 +71,7 @@ namespace Dev2.Tests.Activities.Mocks
         /// <param name="src"></param>
         /// <param name="dst"></param>
         /// <param name="args"></param>
-        public string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
+        public string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
             Source = src;
             Destination = dst;
@@ -78,7 +79,7 @@ namespace Dev2.Tests.Activities.Mocks
             return "Successful";
         }
 
-        public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
+        public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
             Source = src;
             Destination = dst;
@@ -86,7 +87,7 @@ namespace Dev2.Tests.Activities.Mocks
             return "Successful";
         }
 
-        public string Zip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2ZipOperationTO args)
+        public string Zip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2ZipOperationTO args)
         {
             Source = src;
             Destination = dst;
@@ -94,7 +95,7 @@ namespace Dev2.Tests.Activities.Mocks
             return "Successful";
         }
 
-        public string UnZip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2UnZipOperationTO args)
+        public string UnZip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2UnZipOperationTO args)
         {
             Source = src;
             Destination = dst;

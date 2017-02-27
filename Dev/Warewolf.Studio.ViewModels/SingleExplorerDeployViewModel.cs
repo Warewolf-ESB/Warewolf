@@ -12,10 +12,10 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.ServiceModel;
-using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.AntiCorruptionLayer;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global

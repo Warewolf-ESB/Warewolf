@@ -10,6 +10,8 @@
 
 using System;
 using System.IO;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations;
 using Dev2.PathOperations;
 using Dev2.Tests;

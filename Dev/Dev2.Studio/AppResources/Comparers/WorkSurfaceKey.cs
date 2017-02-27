@@ -11,7 +11,7 @@
 using System;
 using System.Text;
 using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Interfaces.Enums;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.AppResources.Comparers

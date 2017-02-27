@@ -9,8 +9,6 @@
 */
 
 using System;
-using Dev2.Intellisense.Provider;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests

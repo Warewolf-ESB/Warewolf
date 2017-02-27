@@ -10,7 +10,7 @@
 
 using System.ComponentModel;
 
-namespace Dev2.Interfaces
+namespace Dev2.Common.Interfaces.Interfaces
 {
     public interface IDev2TOFn : INotifyPropertyChanged
     {

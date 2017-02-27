@@ -12,7 +12,6 @@ using System.Activities.Presentation.Model;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 
 namespace Dev2.Activities.Designers.Tests.Email

@@ -19,7 +19,6 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
-using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Services;
 using Dev2.Studio;

@@ -16,6 +16,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable MemberCanBePrivate.Global

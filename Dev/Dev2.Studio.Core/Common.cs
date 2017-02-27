@@ -1,6 +1,6 @@
 using System;
 using System.Xml;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Studio.Core
 {

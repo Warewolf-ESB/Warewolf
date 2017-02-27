@@ -13,7 +13,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;

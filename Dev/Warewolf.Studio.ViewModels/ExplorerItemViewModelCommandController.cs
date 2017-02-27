@@ -5,7 +5,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable NonLocalizedString
 // ReSharper disable InconsistentNaming
 

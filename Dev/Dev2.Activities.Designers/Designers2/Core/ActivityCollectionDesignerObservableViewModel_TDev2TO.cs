@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Interfaces;
+using Dev2.Common.Interfaces.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable NonLocalizedString
 // ReSharper disable ConvertToAutoProperty

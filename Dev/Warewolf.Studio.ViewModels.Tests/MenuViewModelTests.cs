@@ -5,7 +5,6 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Security;
 using Dev2.Services.Security;
-using Dev2.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

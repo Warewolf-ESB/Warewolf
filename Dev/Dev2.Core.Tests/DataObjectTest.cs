@@ -13,8 +13,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
-using Dev2.Data.Enums;
-using Dev2.DataList.Contract;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Web;
@@ -421,12 +420,12 @@ namespace Dev2.Tests
             // Default Data Merge Checks
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
-            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data_With_Blank_OverWrite.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.OnCompletion.ToString());
 
             StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), Guid.Empty.ToString());
             StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
-            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data_With_Blank_OverWrite.ToString());
 
         }
 
@@ -482,12 +481,12 @@ namespace Dev2.Tests
             // Default Data Merge Checks
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
-            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data_With_Blank_OverWrite.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.OnCompletion.ToString());
 
             StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), Guid.Empty.ToString());
             StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
-            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data_With_Blank_OverWrite.ToString());
 
         }
 
@@ -541,12 +540,12 @@ namespace Dev2.Tests
             // Default Data Merge Checks
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
-            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data_With_Blank_OverWrite.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.OnCompletion.ToString());
 
             StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), Guid.Empty.ToString());
             StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Intersection.ToString());
-            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), enTranslationDepth.Data_With_Blank_OverWrite.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data_With_Blank_OverWrite.ToString());
 
         }
 
@@ -611,12 +610,12 @@ namespace Dev2.Tests
             // Data Merge Checks
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), mergeIDOut.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Union.ToString());
-            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), enTranslationDepth.Data.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.Never.ToString());
 
             StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), mergeIDIn.ToString());
             StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Union.ToString());
-            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), enTranslationDepth.Data.ToString());
+            StringAssert.Contains(dataObjct.DatalistInMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data.ToString());
 
         }
 

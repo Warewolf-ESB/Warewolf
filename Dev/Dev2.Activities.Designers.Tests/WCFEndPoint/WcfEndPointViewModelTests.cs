@@ -14,7 +14,6 @@ using Warewolf.Core;
 using Warewolf.Testing;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Interfaces;
 
 namespace Dev2.Activities.Designers.Tests.WCFEndPoint
 {
