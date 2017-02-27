@@ -7,6 +7,7 @@ using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
@@ -75,18 +76,13 @@ namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.UISacdVerticalConnectoCustom);
         }
 
-        [When(@"I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
-        public void WhenIFirstDragToolboxCommentOntoSwitchLeftArmOnDesignSurface()
-        {
-            First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface();
-        }
-
         [When(@"I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
         public void WhenIThenDragToolboxCommentOntoSwitchRightArmOnDesignSurface()
         {
             var switchRightAutoConnector = new Point(360, 200);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(switchRightAutoConnector);
             Mouse.StartDragging(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment, new Point(16, 25));
+            Mouse.Move(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, switchRightAutoConnector);
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, switchRightAutoConnector);
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.Exists, "DecisionSwitch Dialog did not open");
         }
@@ -147,19 +143,20 @@ namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.Enabled, "Switch dialog does not exist after opening switch large view");
         }
 
-        [Given(@"I Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
-        [When(@"I Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
-        [Then(@"I Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
+        [When(@"I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
         public void First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface()
         {
             UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Comment";
             var switchLeftAutoConnector = new Point(250, 200);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(switchLeftAutoConnector);
             Mouse.StartDragging(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment, new Point(16, 25));
+            Mouse.Move(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, switchLeftAutoConnector);
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, switchLeftAutoConnector);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector2.Exists, "Second connector does not exist on design surface after drop onto autoconnector.");
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
         }
+
+        #region UIMaps
 
         UIMap UIMap
         {
@@ -206,7 +203,7 @@ namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
 
         private ExplorerUIMap _ExplorerUIMap;
 
-         DotNetPluginSourceUIMap DotNetPluginSourceUIMap
+        DotNetPluginSourceUIMap DotNetPluginSourceUIMap
         {
             get
             {
@@ -280,5 +277,7 @@ namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
         }
 
         private UtilityToolsUIMap _UtilityToolsUIMap;
+
+        #endregion
     }
 }
