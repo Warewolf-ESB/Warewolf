@@ -172,11 +172,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             return _debugInputs;
 
         }
-        #region Overrides of DsfActivity
 
-        public override string DisplayName { get; set; }
-
-        #endregion Overrides of DsfActivity
     }
 
         #endregion Overrides of DsfActivity

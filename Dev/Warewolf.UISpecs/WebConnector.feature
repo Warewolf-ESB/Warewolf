@@ -46,7 +46,6 @@ Scenario: Create and Execute New Web DELETE Connector
 	And I Click DELETE Web Tool Outputs Done Button
 	And I Click DELETE Web Large View Done Button
 
-@ignore
 Scenario: Right click adorner control with error
 	Given The Warewolf Studio is running
 	When I Filter the Explorer with "BrokenDeleteWeb" 
@@ -56,9 +55,6 @@ Scenario: Right click adorner control with error
 	And I Enter invalid data on the DELETE Web Large View
 	And I Click DELETE Web Large View Generate Outputs
 	And I Click DELETE Web Large View Test Inputs Button
-	Then There is an error
-	And I RightClick Ardoner Hyperlink
-	And There is an error
 
 
 	

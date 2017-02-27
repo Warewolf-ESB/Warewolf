@@ -633,11 +633,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var testRunReuslt = new ServiceTestModelTO { TestFailing = true };
                 return testRunReuslt;
             }
-            var controller = new CommunicationController { ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category };
+            var controller = new CommunicationController
+            {
+                ServiceName = string.IsNullOrEmpty(resourceModel.Category) ? resourceModel.ResourceName : resourceModel.Category,
+                ServicePayload = { ResourceID = resourceModel.ID }
+            };
             controller.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
             controller.AddPayloadArgument("IsDebug", true.ToString());
             controller.ServicePayload.TestName = testName;
-            var res = controller.ExecuteCommand<IServiceTestModelTO>(clientContext, clientContext.WorkspaceID);
+            var res = controller.ExecuteCommand<IServiceTestModelTO>(clientContext, GlobalConstants.ServerWorkspaceID);
             return res;
 
         }

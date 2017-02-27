@@ -140,11 +140,6 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             throw new Exception(executionError);
         }
 
-        #region Overrides of DsfActivity
-
-        public override string DisplayName { get; set; }
-
-        #endregion Overrides of DsfActivity
 
         public WriteMode GetWriteMode()
         {

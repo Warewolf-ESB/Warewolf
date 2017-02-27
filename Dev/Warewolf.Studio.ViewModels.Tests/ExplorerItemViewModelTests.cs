@@ -836,6 +836,33 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.CanCreateWorkflowService, createdFolder.CanCreateWorkflowService);
             Assert.AreEqual(_target.ShowContextMenu, createdFolder.ShowContextMenu);
             Assert.IsTrue(createdFolder.IsRenaming);
+
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.OpenVersionTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewServiceTooltip, _target.NewServiceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewServerSourceTooltip, _target.NewServerSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewSqlServerSourceTooltip, _target.NewSqlServerSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewMySqlSourceTooltip, _target.NewMySqlSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewPostgreSqlSourceTooltip, _target.NewPostgreSqlSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewOracleSourceTooltip, _target.NewOracleSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewOdbcSourceTooltip, _target.NewOdbcSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewWebSourceTooltip, _target.NewWebSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewPluginSourceTooltip, _target.NewPluginSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewComPluginSourceTooltip, _target.NewComPluginSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewEmailSourceTooltip, _target.NewEmailSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewExchangeSourceTooltip, _target.NewExchangeSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewRabbitMqSourceTooltip, _target.NewRabbitMqSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewDropboxSourceTooltip, _target.NewDropboxSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewSharepointSourceTooltip, _target.NewSharepointSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NewFolderTooltip, _target.NewFolderTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.RenameFolderTooltip, _target.RenameTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.DuplicateToolTip, _target.DuplicateTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.TestEditorToolTip, _target.CreateTestTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.DeployToolTip, _target.DeployTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.DependenciesToolTip, _target.DependenciesTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.ViewSwaggerTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.ViewApisJsonTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.ShowHideVersionsTooltip, _target.ShowHideVersionsTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.RollbackTooltip);
         }
 
         [TestMethod]

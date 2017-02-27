@@ -317,6 +317,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             _selectAction = selectAction;
             localhostEnvironment.SelectAction = selectAction ?? (a => { });
+            localhostEnvironment.IsSelected = true;
             // ReSharper disable VirtualMemberCallInContructor
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             if (loadLocalHost)
@@ -338,6 +339,7 @@ namespace Warewolf.Studio.ViewModels
             SearchText = string.Empty;
             IsLoading = true;
             var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
+            environmentModel.IsSelected = true;
             _environments.Add(environmentModel);
             Environments = _environments;
             var result = await LoadEnvironment(environmentModel, IsDeploy);

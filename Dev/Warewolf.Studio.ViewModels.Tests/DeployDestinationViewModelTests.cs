@@ -129,28 +129,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        public void TestServerСonnect()
-        {
-            //arrange
-            var isEnvironmentChanged = false;
-            _target.PropertyChanged += (s, e) =>
-            {
-                isEnvironmentChanged = isEnvironmentChanged || e.PropertyName == "Environments";
-            };
-            _serverMock.SetupGet(it => it.IsConnected).Returns(false);
-            _serverMock.SetupGet(it => it.HasLoaded).Returns(false);
-            _serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
-
-            //act
-            //_target.ConnectControlViewModel.ToggleConnectionStateCommand.Execute(null);
-
-            //assert
-            Assert.IsTrue(isEnvironmentChanged);
-            Assert.AreEqual(2, _target.Environments.Count);
-            Assert.AreSame(_target.SelectedEnvironment, _target.Environments.FirstOrDefault());
-        }
-
-        [TestMethod]
         public async Task TestOtherServerСonnect()
         {
             //arrange

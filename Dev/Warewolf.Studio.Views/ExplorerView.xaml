@@ -419,6 +419,15 @@
                                        FontSize="12"
                                        Padding="0,4,0,4"
                                        Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
                                 <Run Text=" (" />
                                 <Run Text="{Binding ChildrenCount, Mode=OneWay}" />
                                 <Run Text=")" />

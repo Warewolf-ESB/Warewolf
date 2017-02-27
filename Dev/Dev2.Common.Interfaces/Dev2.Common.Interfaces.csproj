@@ -229,6 +229,7 @@
     <Compile Include="IAssignValue.cs" />
     <Compile Include="ICheckControlEnabledView.cs" />
     <Compile Include="IChooseDLLView.cs" />
+    <Compile Include="ICircularDependency.cs" />
     <Compile Include="IComPlugin.cs" />
     <Compile Include="IComPluginService.cs" />
     <Compile Include="IComPluginServiceModel.cs" />
@@ -241,6 +242,8 @@
     <Compile Include="IDatabaseSourceViewModel.cs" />
     <Compile Include="IDbSource.cs" />
     <Compile Include="IDeletedFileMetadata.cs" />
+    <Compile Include="IDependencyGraphGenerator.cs" />
+    <Compile Include="IDependencyVisualizationNode.cs" />
     <Compile Include="IDev2MethodInfo.cs" />
     <Compile Include="IDLLChooser.cs" />
     <Compile Include="IDllListing.cs" />
@@ -266,6 +269,7 @@
     <Compile Include="IFilenameValidator.cs" />
     <Compile Include="IFileResource.cs" />
     <Compile Include="IFrameworkRepository.cs" />
+    <Compile Include="IGraph.cs" />
     <Compile Include="IHelpView.cs" />
     <Compile Include="IIntellisenseStringResult.cs" />
     <Compile Include="IIntellisenseStringResultBuilder.cs" />

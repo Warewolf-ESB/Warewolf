@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -12,6 +13,7 @@ using Dev2.Controller;
 using Dev2.Diagnostics.Test;
 using Dev2.Dialogs;
 using Dev2.PerformanceCounters.Management;
+using Dev2.Services.Security;
 using Dev2.Settings.Perfcounters;
 using Dev2.Studio.Core;
 using Dev2.Util;
@@ -28,19 +30,76 @@ namespace Dev2.Core.Tests.Settings
     [TestClass]
     public class PerfCounterViewModelTests
     {
+        private Mock<IEnvironmentModel> _mockEnvironment;
+        private Mock<IEnvironmentConnection> _mockConnection;
 
         [TestInitialize]
         public void Setup()
         {
 
             AppSettings.LocalHost = "http://localhost:3142";
-            var mockEnvironment = new Mock<IEnvironmentModel>();
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(connection => connection.ID).Returns(Guid.Empty);
-            mockConnection.Setup(connection => connection.ServerID).Returns(Guid.Empty);
-            mockEnvironment.Setup(model => model.Connection).Returns(mockConnection.Object);
-            EnvironmentRepository.Instance.ActiveEnvironment = mockEnvironment.Object;
+            _mockEnvironment = new Mock<IEnvironmentModel>();
+            _mockConnection = new Mock<IEnvironmentConnection>();
+            _mockConnection.Setup(connection => connection.ID).Returns(Guid.Empty);
+            _mockConnection.Setup(connection => connection.ServerID).Returns(Guid.Empty);
+            _mockEnvironment.Setup(model => model.Connection).Returns(_mockConnection.Object);
+            EnvironmentRepository.Instance.ActiveEnvironment = _mockEnvironment.Object;
             CustomContainer.Register(new Mock<IShellViewModel>().Object);
+        }
+
+        [TestMethod]
+        [TestCategory("PerfcounterViewModel_Constructor")]
+        public void PerfcounterViewModel_ServerCountersCompare_Given_Null_Server_Counters_Returns_False()
+        {
+            var authorizationService = new Mock<IAuthorizationService>();
+            var securityService = new Mock<ISecurityService>();
+            var permissions = new List<WindowsGroupPermission> { new WindowsGroupPermission() };
+            securityService.Setup(service => service.Permissions).Returns(permissions);
+            authorizationService.Setup(service => service.SecurityService).Returns(securityService.Object);
+            _mockEnvironment.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
+            EnvironmentRepository.Instance.ActiveEnvironment = _mockEnvironment.Object;
+            var counters = new PrivateType(typeof(PerfcounterViewModel));
+            //------------Setup for test------------------------
+            //------------Execute Test--------------------------
+            var invokeStatic = counters.InvokeStatic("GetEnvironment");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(invokeStatic);
+        }
+
+        [TestMethod]
+        [TestCategory("PerfcounterViewModel_Constructor")]
+        public void PerfcounterViewModel_Equals_Given_Null_Server_Counters_Returns_False()
+        {
+            var perfCounterTo = new Mock<IPerformanceCounterTo>();
+            perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
+            perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
+            var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IEnvironmentModel>().Object);
+            var counters = new PrivateObject(perfcounterViewModel);
+            //------------Setup for test--------------------------
+            var ItemServerCounters = perfcounterViewModel.ServerCounters = null;
+            //------------Execute Test---------------------------
+            var areEqual = counters.Invoke("Equals", args: new object[] { null, ItemServerCounters });
+            //------------Assert Results-------------------------
+            Assert.IsFalse(areEqual.Equals(true));
+        }
+
+        [TestMethod]
+        [TestCategory("PerfcounterViewModel_Constructor")]
+        public void PerfcounterViewModel_Equals_Given_Null_Resource_Counters_Returns_False()
+        {
+            var perfCounterTo = new Mock<IPerformanceCounterTo>();
+            perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
+            perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
+            var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IEnvironmentModel>().Object);
+            var counters = new PrivateObject(perfcounterViewModel);
+
+            var ItemServerCounters = new List<IPerformanceCountersByMachine>();
+            var ItemResourceCounters = perfcounterViewModel.ResourceCounters = null;
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var areEqual = counters.Invoke("Equals", args: new object[] { ItemServerCounters, ItemResourceCounters });
+            //------------Assert Results-------------------------
+            Assert.IsFalse(areEqual.Equals(true));
         }
 
         [TestMethod]

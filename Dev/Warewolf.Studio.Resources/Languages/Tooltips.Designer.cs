@@ -3433,7 +3433,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rool back to this version.
+        ///   Looks up a localized string similar to Roll back to this version.
         /// </summary>
         public static string RollbackTooltip {
             get {
