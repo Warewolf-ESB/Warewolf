@@ -16,7 +16,7 @@ using System.Security.Principal;
 using System.Threading;
 using ActivityUnitTests;
 using Dev2.Activities;
-using Dev2.Data.Enums;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

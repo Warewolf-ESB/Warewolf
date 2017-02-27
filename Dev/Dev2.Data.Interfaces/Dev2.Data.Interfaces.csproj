@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D7189600-3C18-4D35-97A4-8095DE1A4504}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Data.Interfaces</RootNamespace>
+    <AssemblyName>Dev2.Data.Interfaces</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\DataListMergeFrequency.cs" />
+    <Compile Include="Enums\Dev2ArgumentType.cs" />
+    <Compile Include="Enums\enActionType.cs" />
+    <Compile Include="Enums\enActivityPathType.cs" />
+    <Compile Include="Enums\enDataListMergeTypes.cs" />
+    <Compile Include="Enums\enDev2ColumnArgumentDirection.cs" />
+    <Compile Include="Enums\enForEachExecutionType.cs" />
+    <Compile Include="Enums\enForEachType.cs" />
+    <Compile Include="Enums\enIndexFinderDirection.cs" />
+    <Compile Include="Enums\enIndexFinderOccurrence.cs" />
+    <Compile Include="Enums\enIntellisenseErrorCode.cs" />
+    <Compile Include="Enums\enIntellisenseResultType.cs" />
+    <Compile Include="Enums\enMergeAlignment.cs" />
+    <Compile Include="Enums\enMergeType.cs" />
+    <Compile Include="Enums\enPathType.cs" />
+    <Compile Include="Enums\enRecordsetIndexType.cs" />
+    <Compile Include="Enums\enRoundingType.cs" />
+    <Compile Include="Enums\enSystemTags.cs" />
+    <Compile Include="Enums\enTranslationDepth.cs" />
+    <Compile Include="Enums\enTranslationTypes.cs" />
+    <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
+    <Compile Include="Enums\ReadTypes.cs" />
+    <Compile Include="Enums\WriteType.cs" />
+    <Compile Include="IActivityIOOperationsEndPoint.cs" />
+    <Compile Include="IActivityIOPath.cs" />
+    <Compile Include="IActivityOperationsBroker.cs" />
+    <Compile Include="ICommon.cs" />
+    <Compile Include="ICommonRecordSetUtil.cs" />
+    <Compile Include="ICommonScalarUtil.cs" />
+    <Compile Include="IDataListCompiler.cs" />
+    <Compile Include="IDataListItem.cs" />
+    <Compile Include="IDataListVerifyPart.cs" />
+    <Compile Include="IDataListVerifyPartDuplicationParser.cs" />
+    <Compile Include="IDestinationUserNamePassword.cs" />
+    <Compile Include="IDev2CRUDOperationTO.cs" />
+    <Compile Include="IDev2DataLangaugeParseError.cs" />
+    <Compile Include="IDev2DataLanguageIntellisensePart.cs" />
+    <Compile Include="IDev2DataLanguageParser.cs" />
+    <Compile Include="IDev2IndexFinder.cs" />
+    <Compile Include="IDev2LanguageParser.cs" />
+    <Compile Include="IDev2MergeOperations.cs" />
+    <Compile Include="IDev2NumberFormatter.cs" />
+    <Compile Include="IDev2PutRawOperationTO.cs" />
+    <Compile Include="IDev2ReplaceOperation.cs" />
+    <Compile Include="IDev2StudioDataLanguageParser.cs" />
+    <Compile Include="IDev2UnZipOperationTO.cs" />
+    <Compile Include="IDev2ZipOperationTO.cs" />
+    <Compile Include="IFileWrite.cs" />
+    <Compile Include="IFormatNumberTO.cs" />
+    <Compile Include="IInputLanguageDefinition.cs" />
+    <Compile Include="IIntellisenseFilterOpsTO.cs" />
+    <Compile Include="IIntellisenseResult.cs" />
+    <Compile Include="IParserHelper.cs" />
+    <Compile Include="IParseTO.cs" />
+    <Compile Include="IPathAuth.cs" />
+    <Compile Include="IPathCertVerify.cs" />
+    <Compile Include="IPathInput.cs" />
+    <Compile Include="IPathOutput.cs" />
+    <Compile Include="IPathOverwrite.cs" />
+    <Compile Include="IRecordSetCollection.cs" />
+    <Compile Include="IRecordSetDefinition.cs" />
+    <Compile Include="IRecordsetScopingObject.cs" />
+    <Compile Include="IRecsetSearch.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="IRepositoryItem.cs" />
+    <Compile Include="ISystemTag.cs" />
+    <Compile Include="IUnZip.cs" />
+    <Compile Include="IZip.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+      <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
+      <Name>Warewolf.Storage.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

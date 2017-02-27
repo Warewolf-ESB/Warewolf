@@ -20,8 +20,8 @@ using System.Security.Principal;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Data.PathOperations.Enums;
-using Dev2.Data.PathOperations.Interfaces;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Microsoft.Win32.SafeHandles;
 using Warewolf.Resource.Errors;
 
@@ -137,7 +137,7 @@ namespace Dev2.PathOperations
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
+        public int Put(Stream src, IActivityIOPath dst, IDev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
         {
             int result = -1;
             using (src)
@@ -323,7 +323,7 @@ namespace Dev2.PathOperations
          * Check for the existence of each directory?!
          */
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public bool CreateDirectory(IActivityIOPath dst, Dev2CRUDOperationTO args)
+        public bool CreateDirectory(IActivityIOPath dst, IDev2CRUDOperationTO args)
         {
             bool result = false;
 

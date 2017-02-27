@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Core.Tests.Environments
 {

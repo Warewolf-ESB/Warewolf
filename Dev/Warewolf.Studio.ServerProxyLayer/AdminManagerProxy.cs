@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Controller;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {

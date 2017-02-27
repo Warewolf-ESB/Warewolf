@@ -16,13 +16,14 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ServiceStack.Text;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {

@@ -12,7 +12,7 @@ using System;
 using System.Activities;
 using System.Activities.Statements;
 using ActivityUnitTests;
-using Dev2.Data.Enums;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
@@ -28,7 +28,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class ForEachActivityTest : BaseActivityUnitTest
     {
-       
+
 
 
         /// <summary>
@@ -247,16 +247,16 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void DsfForEach_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!
                 ServerID = Guid.NewGuid(),
-                IsDebug =  true,
+                IsDebug = true,
             };
 
             DsfForEachActivity act = new DsfForEachActivity();
@@ -265,16 +265,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateDebugParentID(dataObject);
             Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
             Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
-          
+
 
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfForEach_UpdateDebugParentID")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void DsfForEach_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
@@ -326,12 +326,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         private DsfActivity CreateWorkflow()
         {
             DsfActivity activity = new DsfActivity
-                {
-                    ServiceName = "MyTestService",
-                    InputMapping = ActivityStrings.ForEach_Input_Mapping,
-                    OutputMapping = ActivityStrings.ForEach_Output_Mapping
-                   
-                };
+            {
+                ServiceName = "MyTestService",
+                InputMapping = ActivityStrings.ForEach_Input_Mapping,
+                OutputMapping = ActivityStrings.ForEach_Output_Mapping
+
+            };
 
             TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
 
@@ -341,7 +341,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         private DsfActivity CreateWorkflow(string mapping, bool isInputMapping)
         {
             DsfActivity activity = new DsfActivity();
-            if(isInputMapping)
+            if (isInputMapping)
             {
                 activity.InputMapping = mapping;
                 activity.OutputMapping = ActivityStrings.ForEach_Output_Mapping;
@@ -366,9 +366,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             activityFunction.Handler = activity;
             var id = Guid.NewGuid().ToString();
             DsfForEachActivity dsfForEachActivity = new DsfForEachActivity
-                {
-                    DataFunc = activityFunction, ForEachType = type, NumOfExections = numberExecutions, From = @from, To = to, CsvIndexes = csvIndexes, UniqueID = id
-                };
+            {
+                DataFunc = activityFunction,
+                ForEachType = type,
+                NumOfExections = numberExecutions,
+                From = @from,
+                To = to,
+                CsvIndexes = csvIndexes,
+                UniqueID = id
+            };
             TestStartNode = new FlowStep
             {
                 Action = dsfForEachActivity

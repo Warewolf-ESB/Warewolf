@@ -17,7 +17,8 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Warewolf.Core;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+
 // ReSharper disable ConvertToAutoProperty
 
 // ReSharper disable CheckNamespace

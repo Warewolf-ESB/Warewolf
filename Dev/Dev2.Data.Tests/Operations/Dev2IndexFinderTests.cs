@@ -9,8 +9,8 @@
 */
 
 using System.Linq;
-using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -14,10 +14,10 @@ using Caliburn.Micro;
 using Dev2.Messages;
 using Dev2.Security;
 using Dev2.Studio.AppResources.Comparers;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.Diagnostics;
 
 // ReSharper disable CheckNamespace

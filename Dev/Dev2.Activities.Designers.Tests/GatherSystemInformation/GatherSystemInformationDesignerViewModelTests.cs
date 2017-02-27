@@ -12,8 +12,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.GatherSystemInformation;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Data.Enums;
-using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

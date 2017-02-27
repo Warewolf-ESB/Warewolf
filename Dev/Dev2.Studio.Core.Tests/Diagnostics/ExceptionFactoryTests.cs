@@ -10,7 +10,6 @@
 
 using System;
 using System.Text;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

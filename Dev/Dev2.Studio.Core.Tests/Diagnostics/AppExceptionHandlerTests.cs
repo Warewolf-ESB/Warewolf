@@ -11,7 +11,6 @@
 using System;
 using System.Threading;
 using Caliburn.Micro;
-using Dev2.Interfaces;
 using Dev2.Studio;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Diagnostics;

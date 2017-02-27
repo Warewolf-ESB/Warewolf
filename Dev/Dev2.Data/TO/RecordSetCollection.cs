@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.DataList.Contract
 {

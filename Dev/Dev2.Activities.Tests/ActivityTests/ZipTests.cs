@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Dev2.Data.PathOperations.Interfaces;
+using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Tests.Activities;

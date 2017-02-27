@@ -14,7 +14,7 @@ using Dev2.Controller;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
 {

@@ -9,8 +9,6 @@
 */
 
 using System.Text;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

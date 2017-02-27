@@ -9,10 +9,11 @@
 */
 
 using System;
-using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Warewolf.Tools.Specs.BaseTypes
 {

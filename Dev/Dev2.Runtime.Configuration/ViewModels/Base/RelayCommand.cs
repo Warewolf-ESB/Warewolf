@@ -11,10 +11,11 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Runtime.Configuration.ViewModels.Base
 {
-    public class RelayCommand : ICommand
+    public class RelayCommand : IRelayCommand
     {
         readonly Action<object> _handlingMethod;
         readonly Predicate<object> _canHandlingMethodExecute;

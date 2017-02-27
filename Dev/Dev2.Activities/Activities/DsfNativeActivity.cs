@@ -23,6 +23,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Decisions.Operations;
@@ -43,6 +44,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+
 // ReSharper disable NonReadonlyMemberInGetHashCode
 // ReSharper disable ReturnTypeCanBeEnumerable.Global
 // ReSharper disable CheckNamespace
@@ -996,8 +999,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             dest.AddRange(src);
         }
-
-        protected static void DisplayAndWriteError(string serviceName, ErrorResultTO errors)
+        
+        protected static void DisplayAndWriteError(string serviceName, IErrorResultTO errors)
         {
             var errorBuilder = new StringBuilder();
             foreach (var e in errors.FetchErrors())

@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Utils;

@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.DataList.Contract;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.Data.TO
 {

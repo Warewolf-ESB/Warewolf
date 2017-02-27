@@ -19,7 +19,7 @@ using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ValueParameterNotUsed
@@ -1274,9 +1274,9 @@ namespace Warewolf.Studio.ViewModels
                 AllowResourceCheck = isDeploy,
                 ShowContextMenu = !isDeploy,
                 IsFolder = false,
-                IsService = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService,
-                IsSource = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source,
-                IsServer = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server
+                IsService = explorerItem.ResourceType == Dev2.Studio.Interfaces.Enums.ResourceType.WorkflowService,
+                IsSource = explorerItem.ResourceType == Dev2.Studio.Interfaces.Enums.ResourceType.Source,
+                IsServer = explorerItem.ResourceType == Dev2.Studio.Interfaces.Enums.ResourceType.Server
             };
 
             if (string.IsNullOrWhiteSpace(itemCreated.ResourcePath))

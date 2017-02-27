@@ -10,9 +10,9 @@
 
 using System;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
 
 // ReSharper disable CheckNamespace

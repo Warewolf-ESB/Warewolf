@@ -9,8 +9,6 @@
 */
 
 using System.Windows;
-using Dev2.Common.ExtMethods;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core;
 
 // ReSharper disable once CheckNamespace

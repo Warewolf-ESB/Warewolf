@@ -10,9 +10,9 @@
 
 using System;
 using System.Text;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace

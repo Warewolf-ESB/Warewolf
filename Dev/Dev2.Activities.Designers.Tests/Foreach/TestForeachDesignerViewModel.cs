@@ -10,7 +10,6 @@
 
 using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Foreach;
-using Dev2.Data.Enums;
 
 namespace Dev2.Activities.Designers.Tests.Foreach
 {

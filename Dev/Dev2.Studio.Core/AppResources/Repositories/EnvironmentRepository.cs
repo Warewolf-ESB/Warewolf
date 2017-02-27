@@ -20,9 +20,9 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 
 // ReSharper disable CheckNamespace
@@ -103,7 +103,7 @@ namespace Dev2.Studio.Core
         #endregion
 
         public event EventHandler ItemAdded;
-        public event EventHandler<EnvironmentEditedArgs> ItemEdited;
+        public event EventHandler<IEnvironmentEditedArgs> ItemEdited;
 
         public IEnvironmentModel Source { get; private set; }
         public IEnvironmentModel ActiveEnvironment { get; set; }
@@ -695,7 +695,7 @@ namespace Dev2.Studio.Core
         #endregion
     }
 
-    public class EnvironmentEditedArgs : EventArgs
+    public class EnvironmentEditedArgs : EventArgs, IEnvironmentEditedArgs
     {
         public IEnvironmentModel Environment { get; set; }
         public bool IsConnected { get; set; }

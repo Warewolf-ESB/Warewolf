@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Interfaces;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels

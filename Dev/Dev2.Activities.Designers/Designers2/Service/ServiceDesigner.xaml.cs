@@ -9,7 +9,7 @@
 */
 
 using System.Windows;
-using Dev2.Studio.Core.Activities.Services;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.Service
 {

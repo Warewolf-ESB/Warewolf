@@ -12,8 +12,8 @@
 
 using System.Collections.Generic;
 using Caliburn.Micro;
-using Dev2.Studio.Core.Interfaces.DataList;
 using System.Collections.ObjectModel;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Models.DataList
 {

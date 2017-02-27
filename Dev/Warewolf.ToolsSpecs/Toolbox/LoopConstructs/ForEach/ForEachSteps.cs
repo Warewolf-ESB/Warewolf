@@ -17,16 +17,16 @@ using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
-using Dev2.Data.Enums;
-using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
+using Dev2.Data.Interfaces.Enums;
+using Dev2.DataList.Contract;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {

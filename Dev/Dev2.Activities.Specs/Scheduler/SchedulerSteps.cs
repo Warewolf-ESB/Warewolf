@@ -24,7 +24,6 @@ using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

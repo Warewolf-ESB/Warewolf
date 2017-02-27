@@ -12,6 +12,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
 using RabbitMQ.Client.Framing;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable InconsistentNaming
 

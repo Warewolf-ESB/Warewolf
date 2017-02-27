@@ -9,7 +9,7 @@
 */
 
 using Dev2.Data.TO;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
 {

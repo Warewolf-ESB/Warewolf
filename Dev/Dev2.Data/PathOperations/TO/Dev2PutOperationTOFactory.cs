@@ -9,6 +9,7 @@
 */
 
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.PathOperations
 {

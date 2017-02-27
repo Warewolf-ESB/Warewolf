@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.ExtMethods;
-using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Operations

@@ -10,7 +10,7 @@
 
 
 
-namespace Dev2.Common.Interfaces.Studio.Core.Network
+namespace Dev2.Common.Interfaces.Studio.Core
 {
     public enum ConnectResult
     {
