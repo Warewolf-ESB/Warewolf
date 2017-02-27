@@ -381,7 +381,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppResources\XMLFile1.xml" />
-    <None Include="app.config" />
     <None Include="SignalR.txt" />
   </ItemGroup>
   <ItemGroup>
