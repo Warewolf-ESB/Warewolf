@@ -999,11 +999,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             dest.AddRange(src);
         }
-
-        #endregion
-
-        #region DisplayAndWriteError
-
+        
         protected static void DisplayAndWriteError(string serviceName, IErrorResultTO errors)
         {
             var errorBuilder = new StringBuilder();
