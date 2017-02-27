@@ -46,6 +46,8 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Mouse.MouseMoveSpeed = 2500;
+            Mouse.MouseDragSpeed = 2500;
 
             Playback.PlaybackError -= OnPlaybackError;
             Playback.PlaybackError += OnPlaybackError;
@@ -974,6 +976,8 @@ namespace Warewolf.UITests
                 Assert.IsFalse(Directory.Exists(folderName));
             }
         }
+
+        #region UIMaps
         WorkflowTabUIMap WorkflowTabUIMap
         {
             get
@@ -1093,5 +1097,7 @@ namespace Warewolf.UITests
         }
 
         private UtilityToolsUIMap _UtilityToolsUIMap;
+
+        #endregion
     }
 }
