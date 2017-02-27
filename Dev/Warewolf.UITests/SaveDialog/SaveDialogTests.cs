@@ -84,6 +84,7 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Filter_Save_Dialog_Explorer("Hello World");
             Assert.IsTrue(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
             DialogsUIMap.Click_SaveDialog_CancelButton();
+            Playback.Wait(2000);
             ExplorerUIMap.ExplorerItemsAppearOnTheExplorerTree();
         }
 

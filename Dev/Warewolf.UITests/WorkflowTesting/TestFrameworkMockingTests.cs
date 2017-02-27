@@ -70,7 +70,7 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("WorkflowTesting_AddTestStep")]
+        [TestCategory("Workflow Testing")]
         public void WorkflowTesting_AddTestStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
         {
             //------------Setup for test--------------------------           
