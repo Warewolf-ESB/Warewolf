@@ -350,29 +350,30 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         
         public IResource GetResource(Guid workspaceID, string resourceName, string resourceType = "Unknown", string version = null)
         {
+            if (string.IsNullOrEmpty(resourceName))
+            {
+                throw new ArgumentNullException(nameof(resourceName));
+            }
+            var resourceNameToSearchFor = resourceName.Replace("/", "\\");
+            var resourcePath = resourceNameToSearchFor;
+            var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
+            if (endOfResourcePath >= 0)
+            {
+                resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
+            }
             while (true)
             {
-                if (string.IsNullOrEmpty(resourceName))
-                {
-                    throw new ArgumentNullException(nameof(resourceName));
-                }
-                var resourceNameToSearchFor = resourceName.Replace("/", "\\");
-                var resourcePath = resourceNameToSearchFor;
-                var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
-                if (endOfResourcePath >= 0)
-                {
-                    resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
-                }
                 var resources = GetResources(workspaceID);
                 if (resources != null)
                 {
-                    var foundResource = resources.FirstOrDefault(r =>
+                    var id = workspaceID;
+                    var foundResource = resources.AsParallel().FirstOrDefault(r =>
                     {
                         if (r == null)
                         {
                             return false;
                         }
-                        return string.Equals(r.GetResourcePath(workspaceID) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
+                        return string.Equals(r.GetResourcePath(id) ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == "Unknown" || r.ResourceType == resourceType.ToString());
                     });
                     if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                     {
@@ -394,14 +395,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 List<IResource> resources;
                 if(_workspaceResources.TryGetValue(workspaceID, out resources))
                 {
-                    foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                    foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
                 }
 
                 if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
                 {
                     if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                     {
-                        foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                        foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
                     }
                 }
             }
