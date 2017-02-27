@@ -115,6 +115,9 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
 
             //------------Execute Test---------------------------
+            var mvm = new Mock<IMainViewModel>();
+            mvm.Setup(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
+            CustomContainer.Register(mvm.Object);
             CustomContainer.Register(new Mock<IPopupController>().Object);
             var eventAggregator = new Mock<IEventAggregator>();
             var resourceModel = new Mock<IContextualResourceModel>();
@@ -152,6 +155,7 @@ namespace Dev2.Core.Tests
             vm.Handle(new DebugOutputMessage(testViewModel.SelectedServiceTest?.DebugForTest));
 
             Assert.AreEqual(DebugStatus.Ready, vm.DebugOutputViewModel.DebugStatus);
+            mvm.Verify(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -170,6 +174,9 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
 
             //------------Execute Test---------------------------
+            var mvm = new Mock<IMainViewModel>();
+            mvm.Setup(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
+            CustomContainer.Register(mvm.Object);
             CustomContainer.Register(new Mock<IPopupController>().Object);
             var eventAggregator = new Mock<IEventAggregator>();
             var resourceModel = new Mock<IContextualResourceModel>();
@@ -211,6 +218,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(vm.IsDirty);
             Assert.AreEqual(string.Empty, vm.HelpText);
             Assert.IsTrue(expectedValue);
+            mvm.Verify(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
         }
 
         [TestMethod]

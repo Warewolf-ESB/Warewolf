@@ -90,7 +90,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.And("I Open Switch Tool Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("I Click Switch Dialog Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Switch Dialog Cancel Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.And("I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
@@ -122,7 +122,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 24
  testRunner.And("I Open Switch Tool Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
- testRunner.And("I Click Switch Dialog Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Click Switch Dialog Cancel Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
  testRunner.And("I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27

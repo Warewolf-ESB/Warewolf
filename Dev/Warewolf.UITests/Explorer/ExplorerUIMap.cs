@@ -128,7 +128,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Given(@"Explorer Does Not Contain Item ""(.*)""")]
         [When(@"Explorer Does Not Contain Item ""(.*)""")]
         [Then(@"Explorer Does Not Contain Item ""(.*)""")]
-        public void ExplorerDoesNotContainItem(string p0)
+        public void ExplorerDoesNotContainItem(string itemName)
         {
             Assert.IsFalse(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem));
         }
@@ -146,8 +146,8 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Then(@"Explorer Items appear on the Explorer Tree")]
         public void ExplorerItemsAppearOnTheExplorerTree()
         {
-            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
-            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem));
+            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem), "First item does not Exist on the Explorer");
+            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem), "Second item does not Exist on the Explorer");
         }
 
         [Given(@"Filter Textbox is cleared")]
@@ -425,7 +425,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Then(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));            
         }
 
         [Given(@"I Click Connect Control InExplorer")]
