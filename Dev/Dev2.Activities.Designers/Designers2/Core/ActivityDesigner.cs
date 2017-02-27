@@ -28,7 +28,7 @@ using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Studio.Core.Activities.Services;
+using Dev2.Studio.Interfaces;
 using Dev2.Utilities;
 using FontAwesome.WPF;
 

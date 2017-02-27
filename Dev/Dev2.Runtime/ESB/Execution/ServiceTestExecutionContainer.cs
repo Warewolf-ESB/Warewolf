@@ -33,6 +33,8 @@ using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
 
 // ReSharper disable CyclomaticComplexity

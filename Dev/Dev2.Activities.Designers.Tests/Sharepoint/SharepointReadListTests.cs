@@ -3,7 +3,6 @@ using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Activities.Sharepoint;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -10,7 +10,7 @@ using Dev2.Services.Execution;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable ConvertToAutoProperty
 

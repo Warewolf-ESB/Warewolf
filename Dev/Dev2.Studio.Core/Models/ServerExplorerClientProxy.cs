@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Models
 {

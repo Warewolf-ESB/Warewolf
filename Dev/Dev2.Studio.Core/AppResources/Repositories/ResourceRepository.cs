@@ -29,12 +29,12 @@ using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Utils;
 using Warewolf.Resource.Errors;
 // ReSharper disable NonLocalizedString

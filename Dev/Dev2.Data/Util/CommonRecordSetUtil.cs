@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Parsers;
-using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Util
@@ -249,7 +249,7 @@ namespace Dev2.Data.Util
             return search;
         }
 
-        public void ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
+        public void ProcessRecordSetFields(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
         {
             IDataListVerifyPart part;
 
@@ -275,7 +275,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public void ProcessNonRecordsetFields(ParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
+        public void ProcessNonRecordsetFields(IParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
         {
             if (payload.Parent != null && payload.Parent.Payload.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal) >= 0)
             {
@@ -299,7 +299,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public void ProcessRecordSetMatch(ParseTO payload, IList<IIntellisenseResult> result, string rawSearch, string search, IDev2DataLanguageIntellisensePart t1)
+        public void ProcessRecordSetMatch(IParseTO payload, IList<IIntellisenseResult> result, string rawSearch, string search, IDev2DataLanguageIntellisensePart t1)
         {
             // only process if it is an open region
             // we need to add all children
@@ -333,7 +333,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public bool AddRecordSetIndex(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, IDev2DataLanguageIntellisensePart t1, bool emptyOk)
+        public bool AddRecordSetIndex(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, IDev2DataLanguageIntellisensePart t1, bool emptyOk)
         {
             if (addCompleteParts)
             {
@@ -351,7 +351,7 @@ namespace Dev2.Data.Util
             return emptyOk;
         }
 
-        public bool RecordsetMatch(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string rawSearch, string search, bool emptyOk, string[] parts, IDev2DataLanguageIntellisensePart t1)
+        public bool RecordsetMatch(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string rawSearch, string search, bool emptyOk, string[] parts, IDev2DataLanguageIntellisensePart t1)
         {
             if (payload.HangingOpen)
             {
@@ -365,7 +365,7 @@ namespace Dev2.Data.Util
             return emptyOk;
         }
 
-        public void OpenRecordsetItem(ParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
+        public void OpenRecordsetItem(IParseTO payload, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
         {
             if (payload.Child != null)
             {

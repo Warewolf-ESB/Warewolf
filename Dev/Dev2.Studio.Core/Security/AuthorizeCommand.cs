@@ -12,12 +12,13 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable CheckNamespace
 
 namespace Dev2.Security
 {
-    public class AuthorizeCommand<T> : DependencyObject, ICommand
+    public class AuthorizeCommand<T> : DependencyObject, IAuthorizeCommand<T>
     {
         readonly Action<T> _action;
         readonly Predicate<T> _canExecute;

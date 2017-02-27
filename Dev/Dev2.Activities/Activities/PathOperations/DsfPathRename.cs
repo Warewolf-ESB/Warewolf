@@ -10,7 +10,7 @@
 
 using Dev2.Activities.PathOperations;
 using Dev2.Common.Interfaces.Toolbox;
-using Dev2.Data.PathOperations.Interfaces;
+using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
 using Warewolf.Core;
 

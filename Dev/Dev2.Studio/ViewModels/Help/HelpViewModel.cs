@@ -14,7 +14,6 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;

@@ -20,7 +20,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities

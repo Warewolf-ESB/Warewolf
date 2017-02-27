@@ -144,6 +144,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="WatermarkTextBox.cs" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -177,6 +178,10 @@
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using Dev2.Data.Interfaces;
 
 namespace Dev2.PathOperations
 {
@@ -18,7 +18,7 @@ namespace Dev2.PathOperations
     /// Status : New
     /// Purpose : To provide overwrite value to CRUD path operations
     /// </summary>
-    public class Dev2CRUDOperationTO : IPathOverwrite
+    public class Dev2CRUDOperationTO : IDev2CRUDOperationTO
     {
 
         public Dev2CRUDOperationTO(bool overwrite,bool doRecursiveCopy = true)

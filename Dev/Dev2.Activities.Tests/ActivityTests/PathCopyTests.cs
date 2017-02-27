@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ActivityUnitTests;
-using Dev2.Data.PathOperations.Interfaces;
+using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

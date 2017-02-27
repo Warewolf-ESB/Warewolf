@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 using Dev2.Communication;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Workspaces;
 
 // ReSharper disable once CheckNamespace

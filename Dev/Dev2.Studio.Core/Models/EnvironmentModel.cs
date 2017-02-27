@@ -15,7 +15,7 @@ using Dev2.Common;
 using Dev2.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models

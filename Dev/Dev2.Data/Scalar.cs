@@ -1,7 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Data
 {

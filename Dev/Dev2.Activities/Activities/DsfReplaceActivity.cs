@@ -17,6 +17,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
@@ -32,6 +33,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -118,8 +120,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
             IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
-            ErrorResultTO errors;
-            ErrorResultTO allErrors = new ErrorResultTO();
+            IErrorResultTO errors;
+            IErrorResultTO allErrors = new ErrorResultTO();
 
             int replacementCount = 0;
             int replacementTotal = 0;

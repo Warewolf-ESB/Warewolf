@@ -10,7 +10,6 @@
 
 using System.Text;
 using Dev2.DataList;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

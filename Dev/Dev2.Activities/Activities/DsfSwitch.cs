@@ -9,7 +9,8 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable UnusedMember.Global

@@ -9,7 +9,7 @@
 */
 
 using Dev2.Activities.PathOperations;
-using Dev2.PathOperations;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.Tests.Activities.Mocks
 {

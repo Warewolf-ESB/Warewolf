@@ -4,7 +4,6 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -17,6 +16,7 @@ using Dev2.Common.Interfaces.Core;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {

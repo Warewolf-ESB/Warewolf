@@ -10,7 +10,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
 

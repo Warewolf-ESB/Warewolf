@@ -16,7 +16,7 @@ using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;

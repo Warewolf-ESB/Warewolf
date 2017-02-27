@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 
 namespace Dev2.Data

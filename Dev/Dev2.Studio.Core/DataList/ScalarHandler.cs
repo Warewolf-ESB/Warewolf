@@ -4,8 +4,8 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.Studio.Core.DataList

@@ -23,25 +23,24 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Utils;
 using Dev2.Communication;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Views;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Common.Common;
 // ReSharper disable NonLocalizedString
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable MemberCanBePrivate.Global

@@ -9,7 +9,7 @@
 */
 
 using System;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract.Binary_Objects

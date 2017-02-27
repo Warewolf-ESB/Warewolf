@@ -11,6 +11,8 @@
 using System;
 using System.IO;
 using System.Text;
+using Dev2.Data.Interfaces.Enums;
+
 // ReSharper disable CheckNamespace
 
 namespace Dev2.PathOperations

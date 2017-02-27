@@ -9,8 +9,9 @@ using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
-using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable UnusedMember.Global
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global

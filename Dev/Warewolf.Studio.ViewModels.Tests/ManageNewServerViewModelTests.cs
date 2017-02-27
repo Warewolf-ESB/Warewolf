@@ -11,7 +11,6 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 
 using Microsoft.Practices.Prism.PubSubEvents;

@@ -15,7 +15,7 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {

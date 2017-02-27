@@ -6,8 +6,9 @@ using System.Text;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable UnusedMemberInSuper.Global
 // ReSharper disable CheckNamespace
 

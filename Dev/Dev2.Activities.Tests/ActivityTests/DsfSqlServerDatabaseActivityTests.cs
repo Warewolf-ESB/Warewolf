@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.DB;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {

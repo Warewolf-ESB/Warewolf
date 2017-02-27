@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming

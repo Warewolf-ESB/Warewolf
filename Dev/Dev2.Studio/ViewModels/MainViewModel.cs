@@ -23,7 +23,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
-using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Threading;
@@ -31,7 +30,6 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Factory;
-using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Security;
 using Dev2.Security;
@@ -42,13 +40,10 @@ using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.ViewModels.Help;
@@ -65,7 +60,10 @@ using Dev2.Studio.Views;
 using IPopupController = Dev2.Common.Interfaces.Studio.Controller.IPopupController;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Data.ServiceModel;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 
 // ReSharper disable CatchAllClause
 // ReSharper disable InconsistentNaming
@@ -212,7 +210,7 @@ namespace Dev2.Studio.ViewModels
             SaveCommand.UpdateContext(ActiveEnvironment);
         }
 
-        public AuthorizeCommand SaveCommand
+        public IAuthorizeCommand SaveCommand
         {
             get
             {
@@ -232,7 +230,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand DebugCommand
+        public IAuthorizeCommand DebugCommand
         {
             get
             {
@@ -244,7 +242,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand QuickDebugCommand
+        public IAuthorizeCommand QuickDebugCommand
         {
             get
             {
@@ -256,7 +254,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand QuickViewInBrowserCommand
+        public IAuthorizeCommand QuickViewInBrowserCommand
         {
             get
             {
@@ -267,7 +265,7 @@ namespace Dev2.Studio.ViewModels
                 return ActiveItem.QuickViewInBrowserCommand;
             }
         }
-        public AuthorizeCommand ViewInBrowserCommand
+        public IAuthorizeCommand ViewInBrowserCommand
         {
             get
             {
@@ -292,7 +290,7 @@ namespace Dev2.Studio.ViewModels
             get { return _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage())); }
         }
 
-        public AuthorizeCommand SettingsCommand
+        public IAuthorizeCommand SettingsCommand
         {
             get
             {
@@ -301,7 +299,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand SchedulerCommand
+        public IAuthorizeCommand SchedulerCommand
         {
             get
             {
@@ -313,7 +311,7 @@ namespace Dev2.Studio.ViewModels
 
 
 
-        public AuthorizeCommand<string> NewServiceCommand
+        public IAuthorizeCommand<string> NewServiceCommand
         {
             get
             {
@@ -322,7 +320,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewPluginSourceCommand
+        public IAuthorizeCommand<string> NewPluginSourceCommand
         {
             get
             {
@@ -331,7 +329,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewSqlServerSourceCommand
+        public IAuthorizeCommand<string> NewSqlServerSourceCommand
         {
             get
             {
@@ -340,7 +338,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewMySqlSourceCommand
+        public IAuthorizeCommand<string> NewMySqlSourceCommand
         {
             get
             {
@@ -349,7 +347,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewPostgreSqlSourceCommand
+        public IAuthorizeCommand<string> NewPostgreSqlSourceCommand
         {
             get
             {
@@ -358,7 +356,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewOracleSourceCommand
+        public IAuthorizeCommand<string> NewOracleSourceCommand
         {
             get
             {
@@ -367,7 +365,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewOdbcSourceCommand
+        public IAuthorizeCommand<string> NewOdbcSourceCommand
         {
             get
             {
@@ -376,7 +374,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewWebSourceCommand
+        public IAuthorizeCommand<string> NewWebSourceCommand
         {
             get
             {
@@ -385,7 +383,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewServerSourceCommand
+        public IAuthorizeCommand<string> NewServerSourceCommand
         {
             get
             {
@@ -394,7 +392,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewEmailSourceCommand
+        public IAuthorizeCommand<string> NewEmailSourceCommand
         {
             get
             {
@@ -404,7 +402,7 @@ namespace Dev2.Studio.ViewModels
         }
 
 
-        public AuthorizeCommand<string> NewExchangeSourceCommand
+        public IAuthorizeCommand<string> NewExchangeSourceCommand
         {
             get
             {
@@ -413,7 +411,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewRabbitMQSourceCommand
+        public IAuthorizeCommand<string> NewRabbitMQSourceCommand
         {
             get
             {
@@ -422,7 +420,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewSharepointSourceCommand
+        public IAuthorizeCommand<string> NewSharepointSourceCommand
         {
             get
             {
@@ -431,7 +429,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewDropboxSourceCommand
+        public IAuthorizeCommand<string> NewDropboxSourceCommand
         {
             get
             {
@@ -440,7 +438,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public AuthorizeCommand<string> NewWcfSourceCommand
+        public IAuthorizeCommand<string> NewWcfSourceCommand
         {
             get
             {

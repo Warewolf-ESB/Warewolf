@@ -10,7 +10,7 @@
 
 using System;
 using System.ComponentModel;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace

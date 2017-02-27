@@ -1,12 +1,12 @@
-﻿using Dev2.Data.Binary_Objects;
-using Dev2.Studio.Core.Interfaces.DataList;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Common;
 using Dev2.Data;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Models.DataList
 {

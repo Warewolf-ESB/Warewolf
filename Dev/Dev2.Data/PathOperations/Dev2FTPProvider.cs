@@ -19,7 +19,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Data.PathOperations.Enums;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
 using Renci.SshNet;
 using Warewolf.Resource.Errors;
@@ -216,7 +217,7 @@ namespace Dev2.Data.PathOperations
             return string.Empty;
         }
 
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
+        public int Put(Stream src, IActivityIOPath dst, IDev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
         {
             var result = -1;
 
@@ -463,7 +464,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public bool CreateDirectory(IActivityIOPath dst, Dev2CRUDOperationTO args)
+        public bool CreateDirectory(IActivityIOPath dst, IDev2CRUDOperationTO args)
         {
             bool result = false;
 

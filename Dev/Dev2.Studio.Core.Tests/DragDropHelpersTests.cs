@@ -14,8 +14,6 @@ using System.Windows;
 using Castle.DynamicProxy.Generators;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Views.Workflow;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

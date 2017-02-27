@@ -19,8 +19,8 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Explorer;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Warewolf.Resource.Errors;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {

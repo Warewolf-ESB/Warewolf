@@ -132,6 +132,7 @@
     <Compile Include="Provider\DefaultIntellisenseProvider.cs" />
     <Compile Include="Provider\FileSystemIntellisenseProvider.cs" />
     <Compile Include="Provider\ProviderExtensions.cs" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -186,6 +187,10 @@
       <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
@@ -201,6 +206,10 @@
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149e8e-fef2-47c0-8391-80dcce86d26d}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj">
       <Project>{17125877-2cf0-42b2-89d3-418e40bde5d0}</Project>

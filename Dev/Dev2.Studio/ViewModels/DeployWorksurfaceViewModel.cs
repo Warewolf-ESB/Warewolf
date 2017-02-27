@@ -4,7 +4,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;

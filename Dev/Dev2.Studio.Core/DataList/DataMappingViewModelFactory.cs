@@ -9,7 +9,7 @@
 */
 
 using System.Collections.Specialized;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Studio.ViewModels.DataList
 {

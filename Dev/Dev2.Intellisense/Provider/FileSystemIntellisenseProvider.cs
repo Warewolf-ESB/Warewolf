@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Intellisense.Helper;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Intellisense.Provider
 {

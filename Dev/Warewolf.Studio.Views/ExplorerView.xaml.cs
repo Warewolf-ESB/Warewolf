@@ -6,7 +6,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Interfaces;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable MemberCanBePrivate.Global
 
