@@ -571,6 +571,24 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
+        [When(@"I validate and delete the existing resource with ""(.*)""")]
+        public void WhenIValidateAndDeleteTheExistingResourceWith(string filterText)
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = filterText;
+
+            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists)
+            {
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+                Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
+                Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
+                Assert.IsTrue(DialogsUIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
+
+                Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
+            }
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = string.Empty;
+        }
+
         [Given(@"I Try DisConnect To Remote Server")]
         [When(@"I Try DisConnect To Remote Server")]
         [Then(@"I Try DisConnect To Remote Server")]
