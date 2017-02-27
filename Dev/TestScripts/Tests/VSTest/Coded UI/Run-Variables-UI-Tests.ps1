@@ -39,7 +39,7 @@ $TestSettingsFile = "$PSScriptRoot\VariablesUITesting.testsettings"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run Variables UI Tests.</Description>
-  <Variablesment enabled=`"false`" />
+  <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
     <Timeouts testTimeout=`"600000`" />
