@@ -359,7 +359,7 @@ namespace Warewolf.Studio.ViewModels
                         }
                     }
                     else
-                    {                        
+                    {
                         var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
                         if (result == MessageBoxResult.Yes)
                         {
