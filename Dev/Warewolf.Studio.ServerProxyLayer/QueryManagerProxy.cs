@@ -146,7 +146,8 @@ namespace Warewolf.Studio.ServerProxyLayer
             {
                 if (!Connection.IsConnected)
                 {
-                    ShowServerDisconnectedPopup();
+                    var application = Application.Current;
+                    application?.Dispatcher?.BeginInvoke(new Action(ShowServerDisconnectedPopup));
                     return new List<string>();
                 }
                 if (result != null)

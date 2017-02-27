@@ -309,8 +309,10 @@ namespace Dev2.Studio.ViewModels
         public void RunAllTestsForService(IContextualResourceModel resourceModel)
         {
             var workflow = new WorkflowDesignerViewModel(resourceModel);
-            var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow);
-            testViewModel.RunAllTestsInBrowserCommand.Execute(null);
+            using (var testViewModel = new ServiceTestViewModel(resourceModel, new AsyncWorker(), _mainViewModel.EventPublisher, new ExternalProcessExecutor(), workflow))
+            {
+                testViewModel.RunAllTestsInBrowserCommand.Execute(null);
+            }
         }
         
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)

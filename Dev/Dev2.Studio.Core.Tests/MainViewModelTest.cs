@@ -577,6 +577,78 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [TestCategory("MainViewModel_CreateTest")]
+        [Description("An exisiting workflow with unsaved changes that is saved, must commit the resource model.")]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_CreateTest()
+        {
+            CreateFullExportsAndVm();
+            Assert.IsTrue(MainViewModel.Items.Count == 2);
+            FirstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            FirstResource.Setup(r => r.Commit()).Verifiable();
+            FirstResource.Setup(r => r.Rollback()).Verifiable();
+            var resourceId = Guid.NewGuid();
+            FirstResource.Setup(a => a.ID).Returns(resourceId);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            var mckEnv = new Mock<IEnvironmentRepository>();
+            var mockEnv = new Mock<IEnvironmentModel>();
+            mckEnv.Setup(a => a.Get(resourceId)).Returns(mockEnv.Object);
+            var res = new Mock<IResourceRepository>();
+            mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
+            res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(FirstResource.Object);
+            MainViewModel.CreateTest(resourceId);
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_RunAllTests")]
+        [Description("An exisiting workflow with unsaved changes that is saved, must commit the resource model.")]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_RunAllTests()
+        {
+            CreateFullExportsAndVm();
+            Assert.IsTrue(MainViewModel.Items.Count == 2);
+            FirstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            FirstResource.Setup(r => r.Commit()).Verifiable();
+            FirstResource.Setup(r => r.Rollback()).Verifiable();
+            var resourceId = Guid.NewGuid();
+            FirstResource.Setup(a => a.ID).Returns(resourceId);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            var mckEnv = new Mock<IEnvironmentRepository>();
+            var mockEnv = new Mock<IEnvironmentModel>();
+            mckEnv.Setup(a => a.Get(resourceId)).Returns(mockEnv.Object);
+            var res = new Mock<IResourceRepository>();
+            mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
+            res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(FirstResource.Object);
+            MainViewModel.RunAllTests(resourceId);
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_CloseResourceTestView")]
+        [Description("An exisiting workflow with unsaved changes that is saved, must commit the resource model.")]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_CloseResourceTestView()
+        {
+            CreateFullExportsAndVm();
+            Assert.IsTrue(MainViewModel.Items.Count == 2);
+            FirstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            FirstResource.Setup(r => r.Commit()).Verifiable();
+            FirstResource.Setup(r => r.Rollback()).Verifiable();
+            var resourceId = Guid.NewGuid();
+            FirstResource.Setup(a => a.ID).Returns(resourceId);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            var mckEnv = new Mock<IEnvironmentRepository>();
+            var mockEnv = new Mock<IEnvironmentModel>();
+            mckEnv.Setup(a => a.Get(resourceId)).Returns(mockEnv.Object);
+            var res = new Mock<IResourceRepository>();
+            mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
+            res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(FirstResource.Object);
+            MainViewModel.CloseResourceTestView(resourceId, ServerId, mockEnv.Object.ID);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("MainViewModel_CloseWorkSurfaceContext")]
         public void MainViewModel_CloseWorkSurfaceContext_UnsavedWorkflowAndResourceCanSaveIsFalse_ResourceModelIsNotSaved()
@@ -953,6 +1025,58 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             var msg = new NewTestFromDebugMessage();
+            try
+            {
+                MainViewModel.Handle(msg);
+            }
+            catch (Exception)
+            {
+                //Suppress because of real calls happening                
+            }
+
+            PopupController.Verify(s => s.Show(), Times.Never());
+        }
+
+        [TestMethod]
+        public void TestFromDebugAddAndActivateWorkSurface()
+        {
+            CreateFullExportsAndVm();
+            var msg = new NewTestFromDebugMessage
+            {
+                ResourceModel = FirstResource.Object,
+                ResourceID = FirstResourceId,
+                RootItems = new List<IDebugTreeViewItemViewModel>()
+            };
+            try
+            {
+                MainViewModel.Handle(msg);
+            }
+            catch (Exception)
+            {
+                //Suppress because of real calls happening                
+            }
+
+            PopupController.Verify(s => s.Show(), Times.Never());
+        }
+
+        [TestMethod]
+        public void TestFromDebugExistingWorkSurface()
+        {
+            CreateFullExportsAndVm();
+            var msg = new NewTestFromDebugMessage
+            {
+                ResourceModel = FirstResource.Object,
+                ResourceID = FirstResourceId,
+                RootItems = new List<IDebugTreeViewItemViewModel>()
+            };
+
+            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            var workflowHelper = new Mock<IWorkflowHelper>();
+
+            var workSurfaceKey = MainViewModel.WorksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(null, WorkSurfaceContext.ServiceTestsViewer, msg.ResourceID);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, msg.ResourceModel, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, false);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey as WorkSurfaceKey, designerViewModel);
+            MainViewModel.Items.Add(workSurfaceContextViewModel);
             try
             {
                 MainViewModel.Handle(msg);

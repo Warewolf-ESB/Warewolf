@@ -126,7 +126,10 @@ namespace Dev2.Runtime.ESB
 
                         if(theService == null)
                         {
-                            theService = _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID);
+                            if (!dataObject.IsServiceTestExecution)
+                            {
+                                theService = _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID);
+                            }
                             if (theService == null)
                             {
                                 if (dataObject.IsServiceTestExecution)

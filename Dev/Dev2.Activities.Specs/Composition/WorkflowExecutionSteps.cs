@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.SelectAndApply;
@@ -3293,6 +3294,33 @@ namespace Dev2.Activities.Specs.Composition
                 DisplayName = activityName
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
+        }
+
+        [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" into ""(.*)""")]
+        public void GivenContainsRabbitMQConsumeInto(string parentName, string activityName, string variable)
+        {
+            var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
+                ,
+                Result = variable
+                ,
+                DisplayName = activityName
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
+        }
+
+        [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" and Queue Name '(.*)' into ""(.*)""")]
+        public void GivenContainsRabbitMQConsumeAndQueueNameInto(string parentName, string activityName, string queueName, string resultVariable)
+        {
+            var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
+                Result = resultVariable,
+                QueueName = queueName,
+                DisplayName = activityName
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
 
         [Given(@"""(.*)"" contains an Read File ""(.*)"" as")]

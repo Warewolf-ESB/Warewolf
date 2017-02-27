@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Interfaces;
 using RabbitMQ.Client.Framing;
@@ -40,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             Assert.AreEqual(Guid.Empty, dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId);
             Assert.IsNull(dsfConsumeRabbitMQActivity.Prefetch);
         }
+        
 
         [TestMethod]
         [Owner("Mthembu Sanele")]
@@ -387,8 +389,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out actualRecset, out error);
             Assert.AreEqual(2,actualRecset.Count);
         }
-
-
+        
         [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
@@ -425,6 +426,134 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
             //------------Assert Results-------------------------            
+        }
+
+        [TestMethod]
+        [Owner("Mthembu Sanele")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
+        public void PerformSerialization_ShouldNotError()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var rabbitMQSource = new RabbitMQSource
+            {
+                HostName = "rsaklfsvrgendev",
+                Port = 5672,
+                UserName = "test",
+                Password = "test"
+            };
+
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource);
+           
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            dsfConsumeRabbitMQActivity.ReQueue = true;
+            try
+            {
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", "HuggsTest" } });
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual("Queue Q1 not found", ex.Message);
+            }
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+
+            //------------Execute Test---------------------------
+            try
+            {
+                var serializedAct = serializer.SerializeToBuilder(dsfConsumeRabbitMQActivity);
+                //------------Assert Results-------------------------            
+                Assert.IsNotNull(serializedAct);                
+            }
+            catch(Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            
+            
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfConsumeRabbitMQActivity_GetOutputs")]
+        public void DsfConsumeRabbitMQActivity_GetOutputs_ShouldIncludeResponse()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity
+            {
+                Result = "[[res]]",
+                Response = "[[data]]"
+            };
+            //------------Execute Test---------------------------
+            var outputs = dsfConsumeRabbitMQActivity.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(outputs);
+            Assert.AreEqual(2,outputs.Count);
+            Assert.AreEqual("[[data]]",outputs[0]);
+            Assert.AreEqual("[[res]]",outputs[1]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void DsfConsumeRabbitMQActivity_ShouldSerializeChannel_ShouldReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();         
+            //------------Execute Test---------------------------
+            var shouldSerialize = dsfConsumeRabbitMQActivity.ShouldSerializeChannel();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(shouldSerialize);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void DsfConsumeRabbitMQActivity_ShouldSerializeConnection_ShouldReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();         
+            //------------Execute Test---------------------------
+            var shouldSerialize = dsfConsumeRabbitMQActivity.ShouldSerializeConnection();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(shouldSerialize);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void DsfConsumeRabbitMQActivity_ShouldSerializeConnectionFactory_ShouldReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();         
+            //------------Execute Test---------------------------
+            var shouldSerialize = dsfConsumeRabbitMQActivity.ShouldSerializeConnectionFactory();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(shouldSerialize);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void DsfConsumeRabbitMQActivity_ShouldSerializeConsumer_ShouldReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();         
+            //------------Execute Test---------------------------
+            var shouldSerialize = dsfConsumeRabbitMQActivity.ShouldSerializeConsumer();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(shouldSerialize);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void DsfConsumeRabbitMQActivity_ShouldSerializeRabbitSource_ShouldReturnFalse()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();         
+            //------------Execute Test---------------------------
+            var shouldSerialize = dsfConsumeRabbitMQActivity.ShouldSerializeRabbitSource();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(shouldSerialize);
         }
     }
 }

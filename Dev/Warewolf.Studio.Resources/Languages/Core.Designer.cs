@@ -674,15 +674,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Remote Server....
-        /// </summary>
-        public static string NewServerLabel {
-            get {
-                return ResourceManager.GetString("NewServerLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No data returned.   .
         /// </summary>
         public static string NoReturnedDataExecuteSuccess {
@@ -1172,11 +1163,38 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter a value for the Switch case.
+        /// </summary>
+        public static string SwitchCaseEmptyExpressionMessage {
+            get {
+                return ResourceManager.GetString("SwitchCaseEmptyExpressionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FlowSwitch cases must be unique.
+        /// </summary>
+        public static string SwitchCaseUniqueMessage {
+            get {
+                return ResourceManager.GetString("SwitchCaseUniqueMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Switch tool cannot be dropped onto this tool..
         /// </summary>
         public static string SwitchDropNotAllowedMessage {
             get {
                 return ResourceManager.GetString("SwitchDropNotAllowedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FlowSwitch Case Error.
+        /// </summary>
+        public static string SwitchFlowErrorHeader {
+            get {
+                return ResourceManager.GetString("SwitchFlowErrorHeader", resourceCulture);
             }
         }
         

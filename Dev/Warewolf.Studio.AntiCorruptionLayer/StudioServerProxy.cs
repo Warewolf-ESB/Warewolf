@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
@@ -21,7 +20,6 @@ using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
 {
-
     public class StudioServerProxy : IExplorerRepository
     {
         IPopupController _popupController;
@@ -64,8 +62,12 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public bool Rename(IExplorerItemViewModel vm, string newName)
         {
+            if (vm == null)
+            {
+                throw new ArgumentNullException(nameof(vm));
+            }
             if (vm.ResourceType == "Folder")
-                UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath.Replace(vm.ResourceName,newName));
+                UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath?.Replace(vm.ResourceName, newName));
             else
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
             return true;
@@ -83,113 +85,15 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         public IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel)
         {
-            try
-            {
-                if (explorerItemViewModel != null)
-                {
-                    var graphGenerator = new DependencyGraphGenerator();
-                    if (explorerItemViewModel.ResourceType != "Version" && explorerItemViewModel.ResourceType != "Folder")
-                    {
-                        var dep = QueryManagerProxy.FetchDependants(explorerItemViewModel.ResourceId);
-                        var deleteFileMeta = HasDependencies(explorerItemViewModel, graphGenerator, dep);
-                        if (deleteFileMeta.IsDeleted || deleteFileMeta.DeleteAnyway)
-                        {
-                            deleteFileMeta.IsDeleted = true;
-                            UpdateManagerProxy.DeleteResource(explorerItemViewModel.ResourceId);
-                        }
-                        return deleteFileMeta;
-                    }
-                    if (explorerItemViewModel.ResourceType == "Version")
-                    {
-                        VersionManager.DeleteVersion(explorerItemViewModel.ResourceId, explorerItemViewModel.VersionNumber,explorerItemViewModel.ResourcePath);
-                    }
-                    else if (explorerItemViewModel.ResourceType == "Folder")
-                    {
-                        var explorerItemViewModels = explorerItemViewModel.AsList();
-                        // ReSharper disable once LoopCanBeConvertedToQuery
-                        var deleteFileMetaData = new DeletedFileMetadata
-                        {
-                            IsDeleted = true,
-                            ShowDependencies = false
-                        };
-                        bool showDependenciesApplyToAll = false;
-                        foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
-                        {
-                            if (itemViewModel.ResourceType != "Folder")
-                            {
-                                var dependants = QueryManagerProxy.FetchDependants(itemViewModel.ResourceId);
-                                if (dependants != null)
-                                {
-                                    if (showDependenciesApplyToAll)
-                                    {
-                                        var graph = graphGenerator.BuildGraph(dependants.Message, "", 1000, 1000, 1);
-                                        if (graph.Nodes.Count > 1)
-                                        {
-                                            itemViewModel.ShowDependencies();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var deletedFileMetadata = HasDependencies(itemViewModel, graphGenerator, dependants);
-                                        
-                                        if (deletedFileMetadata.DeleteAnyway && deletedFileMetadata.ApplyToAll)
-                                        {
-                                            deleteFileMetaData.IsDeleted = true;
-                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
-                                            break;
-                                        }
-                                        if (deletedFileMetadata.DeleteAnyway && !deletedFileMetadata.ApplyToAll)
-                                        {
-                                            explorerItemViewModel.RemoveChild(itemViewModel);
-                                            UpdateManagerProxy.DeleteResource(itemViewModel.ResourceId);
-                                        }
 
-                                        if (!deletedFileMetadata.IsDeleted)
-                                        {
-                                            deleteFileMetaData.IsDeleted = false;
-                                            deleteFileMetaData.ShowDependencies = true;
-                                            deleteFileMetaData.ResourceId = itemViewModel.ResourceId;
-
-                                            if (deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies)
-                                            {
-                                                showDependenciesApplyToAll = deletedFileMetadata.ShowDependencies;
-                                            }
-                                            else if (deletedFileMetadata.ApplyToAll)
-                                            {
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (deleteFileMetaData.IsDeleted)
-                        {
-                            if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
-                            {
-                                UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
-                            }
-                        }
-                        return deleteFileMetaData;
-                    }
-                }
-                return new DeletedFileMetadata
-                {
-                    IsDeleted = true
-                };
-            }
-            catch (Exception)
-            {
-                return new DeletedFileMetadata
-                {
-                    IsDeleted = false
-                };
-            }
+            var explorerDeleteProvider = new ExplorerDeleteProvider(this);
+            var deletedFileMetadata = explorerDeleteProvider.Delete(explorerItemViewModel);
+            return deletedFileMetadata;
         }
 
-        private IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, DependencyGraphGenerator graphGenerator, IExecuteMessage dep)
+        public IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep)
         {
-            var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
+            IGraph graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             _popupController = CustomContainer.Get<IPopupController>();
             if (graph.Nodes.Count > 1)
             {
@@ -211,30 +115,29 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
                 if (result == MessageBoxResult.OK)
                 {
-                    return new DeletedFileMetadata
-                    {
-                        IsDeleted = false,
-                        ResourceId = explorerItemViewModel.ResourceId,
-                        ShowDependencies = false,
-                        ApplyToAll = _popupController.ApplyToAll,
-                        DeleteAnyway = _popupController.DeleteAnyway
-                    };
+                    return BuildMetadata(explorerItemViewModel.ResourceId, false, false, _popupController.ApplyToAll, _popupController.DeleteAnyway);
                 }
                 explorerItemViewModel.ShowDependencies();
-                return new DeletedFileMetadata
-                {
-                    IsDeleted = false,
-                    ResourceId = explorerItemViewModel.ResourceId,
-                    ShowDependencies = true,
-                    ApplyToAll = _popupController.ApplyToAll,
-                    DeleteAnyway = _popupController.DeleteAnyway
-                };
+                return BuildMetadata(explorerItemViewModel.ResourceId, false, true, _popupController.ApplyToAll, _popupController.DeleteAnyway);
+              
             }
             return new DeletedFileMetadata
             {
                 IsDeleted = true,
                 ResourceId = explorerItemViewModel.ResourceId,
                 ShowDependencies = false
+            };
+        }
+
+        private IDeletedFileMetadata BuildMetadata(Guid resourceId, bool isDeleted, bool showDependecnies, bool applyToAll, bool deleteAnyway)
+        {
+            return new DeletedFileMetadata
+            {
+                IsDeleted = isDeleted,
+                ResourceId = resourceId,
+                ShowDependencies = showDependecnies,
+                ApplyToAll = applyToAll,
+                DeleteAnyway = deleteAnyway
             };
         }
         
@@ -256,23 +159,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
         public void CreateFolder(string parentPath, string name, Guid id)
         {
             UpdateManagerProxy.AddFolder(parentPath, name, id);
-        }
-    }
-
-    public static class StudioServerProxyHelper
-    {
-        public static IEnumerable<IExplorerItem> Descendants(this IExplorerItem root)
-        {
-            var nodes = new Stack<IExplorerItem>(new[] { root });
-            while (nodes.Any())
-            {
-                IExplorerItem node = nodes.Pop();
-                yield return node;
-                if (node.Children != null)
-                {
-                    foreach (var n in node.Children) nodes.Push(n);
-                }
-            }
         }
     }
 }

@@ -14,6 +14,8 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.View;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
@@ -59,7 +61,6 @@ namespace Dev2.Studio.Controller
 
         public FlowController()
         {
-            
             EventPublishers.Aggregator.Subscribe(this);
             _callBackHandler = new Dev2DecisionCallbackHandler();
         }
@@ -88,7 +89,6 @@ namespace Dev2.Studio.Controller
             {
                 try
                 {
-
                     string tmp = FlowNodeHelper.CleanModelData(_callBackHandler.ModelData);
                     var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
@@ -113,6 +113,7 @@ namespace Dev2.Studio.Controller
 
         public static string ConfigureSwitchExpression(ConfigureSwitchExpressionMessage args)
         {
+            OldSwitchValue = string.Empty;
             var expression = ConfigureActivity<DsfFlowSwitchActivity>(args.ModelItem, GlobalConstants.SwitchExpressionPropertyText, args.IsNew);
             if (expression == null)
             {
@@ -144,13 +145,19 @@ namespace Dev2.Studio.Controller
 
         private static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
         {
-            var large = new ConfigureSwitch();
-            var dataContext = new SwitchDesignerViewModel(modelItem,display);
-            large.DataContext = dataContext;
-            var window = new ActivityDefaultWindow
+            var dataContext = new SwitchDesignerViewModel(modelItem, display);
+            return ShowSwitchDialogWindow(modelItem, dataContext);
+        }
+
+        [ExcludeFromCodeCoverage]
+        private static Dev2DecisionCallbackHandler ShowSwitchDialogWindow(ModelItem modelItem, SwitchDesignerViewModel dataContext)
+        {
+            var large = new ConfigureSwitch {DataContext = dataContext};
+            var window = new ActivityDefaultWindow();
+            if (Application.Current != null)
             {
-                Style = Application.Current.TryFindResource("SwitchMainWindowStyle") as Style
-            };
+                window.Style = Application.Current.TryFindResource("SwitchMainWindowStyle") as Style;
+            }
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
@@ -170,7 +177,7 @@ namespace Dev2.Studio.Controller
             window.SetEnableDoneButtonState(true);
             if (showDialog.HasValue && showDialog.Value)
             {
-                var callBack = new Dev2DecisionCallbackHandler { ModelData = JsonConvert.SerializeObject(dataContext.Switch) };
+                var callBack = new Dev2DecisionCallbackHandler {ModelData = JsonConvert.SerializeObject(dataContext.Switch)};
                 return callBack;
             }
             return null;
@@ -178,7 +185,9 @@ namespace Dev2.Studio.Controller
 
         public static void ConfigureSwitchCaseExpression(ConfigureCaseExpressionMessage args)
         {
-            _callBackHandler = ShowSwitchDragDialog(args.ModelItem, args.ExpressionText);
+            OldSwitchValue = string.Empty;
+            if (args.ExpressionText != null)
+                _callBackHandler = ShowSwitchDragDialog(args.ModelItem, args.ExpressionText);
             if (_callBackHandler != null)
             {
                 try
@@ -195,26 +204,36 @@ namespace Dev2.Studio.Controller
             }
         }
 
-        static Dev2DecisionCallbackHandler ShowSwitchDragDialog(ModelItem modelData, string variable = "")
+        static Dev2DecisionCallbackHandler ShowSwitchDragDialog(ModelItem modelData, string variable = "", bool isNew = true)
         {
-            var large = new ConfigureSwitchArm();
-            var dataContext = new SwitchDesignerViewModel(modelData,"") { SwitchVariable = variable };
-            large.DataContext = dataContext;
-            var window = new ActivityDefaultWindow
+            var switchDesignerViewModel = new SwitchDesignerViewModel(modelData, "") { SwitchVariable = variable };
+            if (isNew)
             {
-                Style = Application.Current.TryFindResource("SwitchCaseWindowStyle") as Style
-            };
+                switchDesignerViewModel.SwitchExpression = string.Empty;
+            }
+            return ShowSwitchArmDialog(switchDesignerViewModel);
+        }
+
+        [ExcludeFromCodeCoverage]
+        private static Dev2DecisionCallbackHandler ShowSwitchArmDialog(SwitchDesignerViewModel dataContext)
+        {
+            var large = new ConfigureSwitchArm {DataContext = dataContext};
+            var window = new ActivityDefaultWindow();
+            if (Application.Current != null)
+            {
+                window.Style = Application.Current.TryFindResource("SwitchCaseWindowStyle") as Style;
+            }
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
                 contentPresenter.Content = large;
             }
             window.SetEnableDoneButtonState(true);
-            
+
             var showDialog = window.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
-                var callBack = new Dev2DecisionCallbackHandler { ModelData = JsonConvert.SerializeObject(dataContext.Switch) };
+                var callBack = new Dev2DecisionCallbackHandler {ModelData = JsonConvert.SerializeObject(dataContext.Switch)};
                 return callBack;
             }
             return null;
@@ -223,19 +242,44 @@ namespace Dev2.Studio.Controller
         // 28.01.2013 - Travis.Frisinger : Added for Case Edits
         public static void EditSwitchCaseExpression(EditCaseExpressionMessage args)
         {
+            OldSwitchValue = string.Empty;
             ModelProperty switchCaseValue = args.ModelItem.Properties["Case"];
             var switchVal = args.ModelItem.Properties["ParentFlowSwitch"];
-            var variable = SwitchExpressionValue(switchVal);
-            _callBackHandler = ShowSwitchDragDialog(args.ModelItem, variable);
+            if (switchVal != null)
+            {
+                var variable = SwitchExpressionValue(switchVal);
+                _callBackHandler = ShowSwitchDragDialog(args.ModelItem, variable, false);
+            }
             if (_callBackHandler != null)
             {
                 try
                 {
                     var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-
                     if (ds != null)
                     {
-                        switchCaseValue?.SetValue(ds.SwitchExpression);
+                        var validExpression = true;
+                        var flowSwitch = switchVal?.ComputedValue as System.Activities.Statements.FlowSwitch<string>;
+                        if (flowSwitch != null)
+                        {
+                            if (flowSwitch.Cases.Any(flowNode => flowNode.Key == ds.SwitchExpression))
+                            {
+                                validExpression = false;
+                            }
+                        }
+
+                        if (!validExpression)
+                        {
+                            PopupController.Show(Warewolf.Studio.Resources.Languages.Core.SwitchCaseUniqueMessage, Warewolf.Studio.Resources.Languages.Core.SwitchFlowErrorHeader,
+                                MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+                        }
+                        else
+                        {
+                            OldSwitchValue = switchCaseValue?.ComputedValue.ToString();
+                            if (switchCaseValue?.ComputedValue.ToString() != ds.SwitchExpression)
+                            {
+                                switchCaseValue?.SetValue(ds.SwitchExpression);
+                            }
+                        }
                     }
                 }
                 catch
@@ -247,6 +291,9 @@ namespace Dev2.Studio.Controller
             }
         }
 
+        public static string OldSwitchValue { get; private set; }
+
+        [ExcludeFromCodeCoverage]
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;
@@ -280,13 +327,20 @@ namespace Dev2.Studio.Controller
 
         private static Dev2DecisionCallbackHandler StartDecisionWizard(ModelItem mi)
         {
-            var large = new Large();
             var dataContext = new DecisionDesignerViewModel(mi);
-            large.DataContext = dataContext;
-            var window = new ActivityDefaultWindow
+
+            return ShowDecisionDialogWindow(mi, dataContext);
+        }
+
+        [ExcludeFromCodeCoverage]
+        private static Dev2DecisionCallbackHandler ShowDecisionDialogWindow(ModelItem mi, DecisionDesignerViewModel dataContext)
+        {
+            var large = new Large {DataContext = dataContext};
+            var window = new ActivityDefaultWindow();
+            if (Application.Current != null)
             {
-                Style = Application.Current.TryFindResource("DecisionWindowStyle") as Style
-            };
+                window.Style = Application.Current.TryFindResource("DecisionWindowStyle") as Style;
+            }
             var contentPresenter = window.FindChild<ContentPresenter>();
             if (contentPresenter != null)
             {
@@ -378,6 +432,5 @@ namespace Dev2.Studio.Controller
         }
 
         #endregion
-
     }
 }
