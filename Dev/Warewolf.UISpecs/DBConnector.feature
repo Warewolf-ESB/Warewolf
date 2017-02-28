@@ -15,7 +15,7 @@ Scenario: Create New DB Connector With Variables
 	And I Click DB Source Wizard Test Connection Button
 	Given The DB Source Wizard Test Succeeded Image Is Visible
 	When I Select Dev2TestingDB From DB Source Wizard Database Combobox
-	And I Save With Ribbon Button And Dialog As "UITestingDBSourceCreated"
+	And I Save With Ribbon Button And Dialog As "CodedUITestingDBSource"
 
 Scenario: Execute New DB Connector With Variables
 	Given The Warewolf Studio is running
