@@ -7997,24 +7997,10 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 return this.mFlowchartCustom;
             }
         }
-        
-        public UIFlowchartCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
         #endregion
         
         #region Fields
         private FlowchartCustom mFlowchartCustom;
-        
-        private UIFlowchartCustom mUIFlowchartCustom;
         #endregion
     }
     
@@ -8033,48 +8019,48 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         }
         
         #region Properties
-        public DsfMultiAssignActiviCustom DsfMultiAssignActiviCustom
+        public MultiAssign MultiAssign
         {
             get
             {
-                if ((this.mDsfMultiAssignActiviCustom == null))
+                if ((this.mMultiAssign == null))
                 {
-                    this.mDsfMultiAssignActiviCustom = new DsfMultiAssignActiviCustom(this);
+                    this.mMultiAssign = new MultiAssign(this);
                 }
-                return this.mDsfMultiAssignActiviCustom;
+                return this.mMultiAssign;
             }
         }
         
-        public DsfDecisioActiviCustom DsfDecisioActiviCustom
+        public Decision Decision
         {
             get
             {
-                if ((this.mDsfDecisioActiviCustom == null))
+                if ((this.mDecision == null))
                 {
-                    this.mDsfDecisioActiviCustom = new DsfDecisioActiviCustom(this);
+                    this.mDecision = new Decision(this);
                 }
-                return this.mDsfDecisioActiviCustom;
+                return this.mDecision;
             }
         }
         #endregion
         
         #region Fields
-        private DsfMultiAssignActiviCustom mDsfMultiAssignActiviCustom;
+        private MultiAssign mMultiAssign;
         
-        private DsfDecisioActiviCustom mDsfDecisioActiviCustom;
+        private Decision mDecision;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DsfMultiAssignActiviCustom : WpfCustom
+    public class MultiAssign : WpfCustom
     {
         
-        public DsfMultiAssignActiviCustom(UITestControl searchLimitContainer) : 
+        public MultiAssign(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Assign a value to Name if blank (1)(MultiAssignDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.ClassName, "MultiAssignDesigner", PropertyExpressionOperator.Contains));
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "MultiAssignDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -8103,15 +8089,15 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DsfDecisioActiviCustom : WpfCustom
+    public class Decision : WpfCustom
     {
         
-        public DsfDecisioActiviCustom(UITestControl searchLimitContainer) : 
+        public Decision(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "FlowDecisionDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "FlowDecisionDesigner";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "FlowDecisionDesigner", PropertyExpressionOperator.Contains));
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.ClassName, "FlowDecisionDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -8136,44 +8122,6 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         
         #region Fields
         private WpfEdit mDisplayNameEdit;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIFlowchartCustom : WpfCustom
-    {
-        
-        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIDsfMultiAssignActiviCustom
-        {
-            get
-            {
-                if ((this.mUIDsfMultiAssignActiviCustom == null))
-                {
-                    this.mUIDsfMultiAssignActiviCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIDsfMultiAssignActiviCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
-                    this.mUIDsfMultiAssignActiviCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Set the output variable (1)(MultiAssignDesigner)";
-                    this.mUIDsfMultiAssignActiviCustom.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mUIDsfMultiAssignActiviCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIDsfMultiAssignActiviCustom;
         #endregion
     }
     
