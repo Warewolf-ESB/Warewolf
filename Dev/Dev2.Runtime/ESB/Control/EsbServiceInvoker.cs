@@ -167,10 +167,10 @@ namespace Dev2.Runtime.ESB
                             }
                             Dev2Logger.Debug("Mapping Action Dependencies");
                             MapServiceActionDependencies(theStart);
-
-
+                            
                             if (theStart != null)
                             {
+                                theStart.Service = theService;
                                 var oldActionType = theStart.ActionType;
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container");
@@ -249,6 +249,7 @@ namespace Dev2.Runtime.ESB
                 {
                     sa = theService.Actions.FirstOrDefault();
                     MapServiceActionDependencies(sa);
+                    sa.Service = theService;
                     _cache.TryAdd(dataObject.ResourceID, sa);
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
@@ -291,6 +292,7 @@ namespace Dev2.Runtime.ESB
                     {
                         var sa = theService.Actions.FirstOrDefault();
                         MapServiceActionDependencies(sa);
+                        sa.Service = theService;
                         _cache.TryAdd(dataObject.ResourceID, sa);
                         executionContainer = GenerateContainer(sa, dataObject, _workspace);
                     }
@@ -354,7 +356,6 @@ namespace Dev2.Runtime.ESB
         {
             if (serviceAction != null)
             {
-                serviceAction.Service = GetService(serviceAction.ServiceName, serviceAction.ServiceID);
                 if (!string.IsNullOrWhiteSpace(serviceAction.SourceName))
                 {
                     serviceAction.Source = _serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
