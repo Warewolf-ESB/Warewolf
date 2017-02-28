@@ -26,7 +26,6 @@ Scenario: Deploy From RemoteConnection
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
     And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-	And I Click Deploy Tab Source Server Connect Button
     And Resources is visible on the tree
 	And I Select "Hello World" from the source tab 
 	And I Click Deploy button	
@@ -39,9 +38,10 @@ Scenario: Deploy button is enabling when selecting resource in source side
 	 Given The Warewolf Studio is running
 	 When I Click Deploy Ribbon Button
 	 And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	 Then Deploy Button is enabled  "false"
 	 And I Select "Hello world" from the source tab 
 	 Then Deploy Button is enabled  "true"	
-	 Then Deploy Button is enabled  "false"
+	 
 
 Scenario: Filtering and clearing filter on source side
 	Given The Warewolf Studio is running
@@ -158,7 +158,6 @@ Scenario: Changing Seleced Server On desploy Source While Connected To Remote Se
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-	And I Click Deploy Tab Source Server Connect Button
 	And I Connect To Remote Server
 	And I Select localhost From Deploy Tab Source Server Combobox
 	And I validate the Resource tree is loaded
