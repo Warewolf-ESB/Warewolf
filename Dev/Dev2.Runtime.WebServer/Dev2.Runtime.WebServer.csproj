@@ -137,6 +137,7 @@
     </None>
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
+    <Compile Include="Handlers\DebugListener.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
     <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
@@ -207,6 +208,10 @@
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.SignalR.Wrappers\Dev2.SignalR.Wrappers.Interfaces.csproj">
+      <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
+      <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
