@@ -20,7 +20,6 @@ using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Scheduler;
-using Dev2.Services.Security;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

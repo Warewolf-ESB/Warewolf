@@ -9,7 +9,6 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.Dialogs;
 using Dev2.Scheduler;
-using Dev2.Services.Security;
 using Dev2.Studio.Enums;
 using Dev2.TaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
