@@ -9,14 +9,21 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Services.Security;
+using Newtonsoft.Json;
 
 namespace Dev2.Studio.Interfaces
 // ReSharper restore CheckNamespace
 {
     public interface IEnvironmentModel : IEquatable<IEnvironmentModel>
     {
-        // BUG 9940 - 2013.07.29 - TWR - added
         event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
         IAuthorizationService AuthorizationService { get; }
@@ -31,25 +38,42 @@ namespace Dev2.Studio.Interfaces
         bool HasLoadedResources { get; }
         IEnvironmentConnection Connection { get; set; }
         IResourceRepository ResourceRepository { get; }
-
         void Connect();
         void Disconnect();
-        void Connect(IEnvironmentModel model);
         void ForceLoadResources();
         void LoadResources();
         bool IsLocalHostCheck();
-
-        // BUG: 8786 - TWR - 2013.02.20 - Added category
-        string Category { get; set; }
         string DisplayName { get;  }
-
         event EventHandler AuthorizationServiceSet;
+        Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
+        IList<IServer> GetServerConnections();
+        IList<IToolDescriptor> LoadTools();
+        [JsonIgnore]
+        IExplorerRepository ExplorerRepository { get; }
+        [JsonIgnore]
+        IStudioUpdateManager UpdateRepository { get; }
+        [JsonIgnore]
+        IQueryManager QueryProxy { get; }
+        bool AllowEdit { get; }
+        List<IWindowsGroupPermission> Permissions { get; set; }
+        Guid EnvironmentID { get; set; }
+        Guid? ServerID { get; }
+        event PermissionsChanged PermissionsChanged;
+        event NetworkStateChanged NetworkStateChanged;
+        event ItemAddedEvent ItemAddedEvent;
+        string GetServerVersion();
+        Task<bool> ConnectAsync();
+        bool HasLoaded { get; }
+        bool CanDeployTo { get; }
+        bool CanDeployFrom { get; }
+        IExplorerRepository ProxyLayer { get; }
+        string GetMinSupportedVersion();
+        Task<List<string>> LoadExplorerDuplicates();
+        Permissions GetPermissions(Guid resourceID);
+        IList<IEnvironmentModel> GetAllServerConnections();
+        Dictionary<string, string> GetServerInformation();
+        IEnvironmentModel FetchServer(Guid savedServerID);
 
-        void FireWorkflowSaved();
-
-        event EventHandler WorkflowSaved;
-
-     
     }
 
     public class ConnectedEventArgs : EventArgs

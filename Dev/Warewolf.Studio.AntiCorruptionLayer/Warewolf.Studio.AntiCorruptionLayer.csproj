@@ -92,7 +92,6 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="Server.cs" />
     <Compile Include="StudioResourceUpdateManager.cs" />
     <Compile Include="StudioServerProxy.cs" />
     <Compile Include="Utils.cs" />
