@@ -4,6 +4,7 @@ using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.RabbitMQ;
 using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;

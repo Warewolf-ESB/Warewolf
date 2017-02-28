@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
-using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Deploy;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels

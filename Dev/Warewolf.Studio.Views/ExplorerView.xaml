@@ -11,9 +11,10 @@
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:interfaces1="clr-namespace:Dev2.Studio.Interfaces;assembly=Dev2.Studio.Interfaces"
              x:Name="ExplorerViewControl"
              KeyUp="ExplorerView_OnKeyUp"
-             d:DataContext="{d:DesignInstance Type=interfaces:IExplorerViewModel, IsDesignTimeCreatable=False}"
+             d:DataContext="{d:DesignInstance Type=interfaces1:IExplorerViewModel, IsDesignTimeCreatable=False}"
              d:DesignHeight="480"
              d:DesignWidth="640"
              mc:Ignorable="d">
@@ -140,7 +141,7 @@
                     </Style>
                 </TreeView.ItemContainerStyle>
                 <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate x:Name="EnvironmentDataTemplate"  DataType="{x:Type interfaces:IEnvironmentViewModel}" ItemsSource="{Binding Children}">
+                    <HierarchicalDataTemplate x:Name="EnvironmentDataTemplate"  DataType="{x:Type interfaces1:IEnvironmentViewModel}" ItemsSource="{Binding Children}">
                         <Grid Background="Transparent">
                             <Grid.ContextMenu>
                                 <ContextMenu Style="{StaticResource ContextMenuStyle}"
@@ -435,7 +436,7 @@
                         </Grid>
 
                         <HierarchicalDataTemplate.ItemTemplate>
-                            <HierarchicalDataTemplate x:Name="ExplorerItemDataTemplate"  DataType="{x:Type interfaces:IExplorerItemViewModel}" ItemsSource="{Binding Children}">
+                            <HierarchicalDataTemplate x:Name="ExplorerItemDataTemplate"  DataType="{x:Type interfaces1:IExplorerItemViewModel}" ItemsSource="{Binding Children}">
                                 <Grid Background="Transparent">
                                     <Grid.ContextMenu>
                                         <ContextMenu Style="{StaticResource ContextMenuStyle}" StaysOpen="true"

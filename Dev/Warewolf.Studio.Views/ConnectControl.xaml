@@ -10,9 +10,10 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:interfaces1="clr-namespace:Dev2.Studio.Interfaces;assembly=Dev2.Studio.Interfaces"
              x:Name="ConnectUserControl"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=interfaces:IConnectControlViewModel, IsDesignTimeCreatable=False}" >
+             d:DataContext="{d:DesignInstance Type=interfaces1:IConnectControlViewModel, IsDesignTimeCreatable=False}" >
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -5,7 +5,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.DropboxFile;
 using Dev2.Activities.DropBox2016.DropboxFileActivity;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
@@ -37,7 +36,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             var mock = new Mock<IServer>();
 
-            var mockShellVm = new Mock<Dev2.Common.Interfaces.IShellViewModel>();
+            var mockShellVm = new Mock<IShellViewModel>();
             mockShellVm.SetupGet(model => model.ActiveServer).Returns(mock.Object);
             CustomContainer.Register(mockShellVm.Object);
             var dropboxFileListActivity = new DsfDropboxFileListActivity();

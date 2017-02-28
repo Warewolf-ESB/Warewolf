@@ -14,7 +14,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core.Popup;
 
 namespace Dev2.Activities.Utils

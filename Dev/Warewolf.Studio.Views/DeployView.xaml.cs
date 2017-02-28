@@ -2,7 +2,8 @@
 using System.Windows.Controls;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Deploy;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Views

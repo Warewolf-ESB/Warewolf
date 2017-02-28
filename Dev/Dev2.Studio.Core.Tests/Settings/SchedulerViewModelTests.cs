@@ -19,7 +19,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;

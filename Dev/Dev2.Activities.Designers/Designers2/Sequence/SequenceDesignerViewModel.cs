@@ -18,7 +18,6 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.Versioning;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Interfaces
 {
 
     public interface IExplorerDeleteProvider
@@ -26,7 +27,7 @@ namespace Dev2.Common.Interfaces
         IAdminManager AdminManagerProxy { get; set; }
         IQueryManager QueryManagerProxy { get; set; }
         IExplorerUpdateManager UpdateManagerProxy { get; set; }
-        ServerProxyLayer.IVersionManager VersionManager { get; set; }
+        Common.Interfaces.ServerProxyLayer.IVersionManager VersionManager { get; set; }
         ICollection<IVersionInfo> GetVersions(Guid id);
         StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId);
 

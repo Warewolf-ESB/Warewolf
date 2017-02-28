@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:interfaces1="clr-namespace:Dev2.Studio.Interfaces;assembly=Dev2.Studio.Interfaces"
         Title="SplashPage" 
         Height="400"
         Width="800"
@@ -17,7 +18,7 @@
         mc:Ignorable="d"
         KeyUp="SplashPage_OnKeyUp"
         Closing="SplashPage_OnClosing"
-        d:DataContext="{d:DesignInstance Type=interfaces:ISplashViewModel, IsDesignTimeCreatable=False}">
+        d:DataContext="{d:DesignInstance Type=interfaces1:ISplashViewModel, IsDesignTimeCreatable=False}">
 
     <Window.Resources>
         <ResourceDictionary>
