@@ -94,7 +94,7 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "RSAKLFSVRGENDEV"});
             table1.AddRow(new string[] {
-                        "RSAKLFSVRSBSPDC"});
+                        "RSAKLFSVRPDC"});
             table1.AddRow(new string[] {
                         "RSAKLFSVRTFSBLD"});
             table1.AddRow(new string[] {

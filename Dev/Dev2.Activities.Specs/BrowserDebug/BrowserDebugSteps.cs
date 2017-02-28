@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.ToolsSpecs.Toolbox.Recordset.Sort;
 
 namespace Dev2.Activities.Specs.BrowserDebug
 {
@@ -30,8 +35,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
 
         private List<IDebugState> GetDebugStates()
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var deserialize = serializer.Deserialize<List<IDebugState>>(_externalProcessExecutor.WebResult.First());
+            var deserialize = _externalProcessExecutor.WebResult.First().DeserializeToObject<List<IDebugState>>();
             return deserialize.ToList();
         }
 
@@ -99,7 +103,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
             {
                 if (debugState.IsFirstStep())
                     continue;
-                if (!debugState.IsFinalStep())
+                if (debugState.StateType != StateType.End)
                 {
                     foreach (var debugStateChild in debugState.Children)
                     {
@@ -123,8 +127,26 @@ namespace Dev2.Activities.Specs.BrowserDebug
             {
                 if (debugState.IsFirstStep())
                     continue;
-                if (!debugState.IsFinalStep())
+                if (debugState.StateType != StateType.End)                             
                     Assert.IsTrue(debugState.Children.Count == numExecutions);
+            }
+        }
+
+        [Then(@"Debugstate in index (.*) has output as")]
+        public void ThenDebugstateInIndexHasOutputAs(int p0, Table table)
+        {
+            var allDebugStates = GetDebugStates();
+            var actualOrder = allDebugStates[p0].Outputs;
+            List<TableRow> expectedOrder = table.Rows.ToList();
+
+            Assert.AreEqual(expectedOrder.Count, actualOrder[0].ResultsList.Count);
+
+            for (int i = 0; i < expectedOrder.Count; i++)
+            {
+                var val1 = actualOrder[0].ResultsList[i].Value;
+                var val2 = expectedOrder[i].Values.Single();
+
+                Assert.AreEqual(val1, val2);
             }
         }
     }

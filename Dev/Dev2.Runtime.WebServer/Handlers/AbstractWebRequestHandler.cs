@@ -529,7 +529,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     if (interTestRequest.ExecuteResult != null)
                     {
-                        var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString());
+                        var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString()) ?? new TestRunResult {TestName = dataObjectToUse.TestName};
                         result = new ServiceTestModelTO { Result = r, TestName = r.TestName };
                     }
                 }

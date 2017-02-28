@@ -78,7 +78,13 @@ namespace Dev2.Runtime.ESB.WF
             }
             var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
 
-            if (interrogateInputs)
+            
+            if (stateType == StateType.End)
+            {
+                debugState.StartTime = dataObject.StartTime;
+                debugState.EndTime = DateTime.Now;
+            }
+            if(interrogateInputs)
             {
                 ErrorResultTO invokeErrors;
                 var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);

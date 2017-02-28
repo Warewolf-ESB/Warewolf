@@ -285,11 +285,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingAForeachWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Foreach workflow", ((string[])(null)));
-#line 58
+#line 67
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 68
   testRunner.Given("I have a workflow \"ForEachAssigneWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 69
   testRunner.And("\"ForEachAssigneWF\" contains a Foreach \"ForEachTest\" as \"NumOfExecution\" execution" +
                     "s \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -299,15 +299,130 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "[[Year]]",
                         "2017"});
-#line 61
+#line 70
   testRunner.And("\"ForEachTest\" contains an Assign \"MyAssign\" as", ((string)(null)), table6, "And ");
-#line 64
+#line 73
   testRunner.When("workflow \"ForEachAssigneWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 65
+#line 74
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/ForEachAssigneWF.debug?\"" +
                     " in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 75
   testRunner.Then("The Debug in Browser content contains the variable assigned executed \"4\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Dotnet plugin workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingADotnetPluginWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Dotnet plugin workflow", ((string[])(null)));
+#line 77
+this.ScenarioSetup(scenarioInfo);
+#line 78
+  testRunner.Given("I have a workflow \"DotNetDLLWf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Source",
+                        "ClassName",
+                        "ObjectName",
+                        "Action",
+                        "ActionOutputVaribale"});
+            table7.AddRow(new string[] {
+                        "New DotNet Plugin Source",
+                        "TestingDotnetDllCascading.Human",
+                        "[[@human]]",
+                        "BuildInts",
+                        "[[rec1().num]]"});
+#line 79
+  testRunner.And("\"DotNetDLLWf\" contains an DotNet DLL \"DotNetService\" as", ((string)(null)), table7, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "parameterName",
+                        "value",
+                        "type"});
+#line 82
+  testRunner.And("\"DotNetService\" constructorinputs 0 with inputs as", ((string)(null)), table8, "And ");
+#line 84
+  testRunner.When("workflow \"DotNetDLLWf\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 85
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?\" in B" +
+                    "rowser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 86
+  testRunner.Then("The Debug in Browser content contains order of \"AssignFlow\", \"CaseConvertFlow\" an" +
+                    "d \"ReplaceFlow\" in SequenceFlow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing a Forward Sort Recordset workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingAForwardSortRecordsetWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Forward Sort Recordset workflow", ((string[])(null)));
+#line 88
+this.ScenarioSetup(scenarioInfo);
+#line 89
+  testRunner.Given("I have a workflow \"SortRecordsetWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table9.AddRow(new string[] {
+                        "[[Degree(1).YearCompleted]]",
+                        "2015"});
+            table9.AddRow(new string[] {
+                        "[[Degree(2).YearCompleted]]",
+                        "2012"});
+            table9.AddRow(new string[] {
+                        "[[Degree(3).YearCompleted]]",
+                        "2014"});
+            table9.AddRow(new string[] {
+                        "[[Degree(4).YearCompleted]]",
+                        "2013"});
+#line 90
+  testRunner.And("\"SortRecordsetWF\" contains an Assign \"ExampleRecordSet\" as", ((string)(null)), table9, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table10.AddRow(new string[] {
+                        "[[Degree().YearCompleted]]",
+                        "Forward"});
+#line 96
+  testRunner.And("\"SortRecordsetWF\" contains an Sort \"Degree\" as", ((string)(null)), table10, "And ");
+#line 99
+  testRunner.And("workflow \"SortRecordsetWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 100
+  testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/SortRecordsetWF.debug?\" " +
+                    "in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Values"});
+            table11.AddRow(new string[] {
+                        "2012"});
+            table11.AddRow(new string[] {
+                        "2013"});
+            table11.AddRow(new string[] {
+                        "2014"});
+            table11.AddRow(new string[] {
+                        "2015"});
+#line 101
+  testRunner.Then("Debugstate in index 2 has output as", ((string)(null)), table11, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Hello Wolrd in a Foreach Looped Three times")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BrowserDebug")]
+        public virtual void ExecutingHelloWolrdInAForeachLoopedThreeTimes()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Hello Wolrd in a Foreach Looped Three times", ((string[])(null)));
+#line 109
+this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }

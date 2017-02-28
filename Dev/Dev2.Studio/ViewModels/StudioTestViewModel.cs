@@ -1,7 +1,5 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using System.Windows.Media;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
@@ -14,7 +12,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Infragistics.Windows.DockManager;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels
@@ -60,14 +57,14 @@ namespace Dev2.ViewModels
         {
             return View;
         }
-
+        [ExcludeFromCodeCoverage]
         protected override void OnViewAttached(object view, object context)
         {
             base.OnViewAttached(view, ViewModel);
         }
 
         public override string DisplayName => ViewModel.DisplayName;
-
+        [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
             var loadedView = view as IView;
@@ -120,31 +117,9 @@ namespace Dev2.ViewModels
 
         public bool IsDirty => ViewModel.CanSave;
 
-        public PaneToolWindow FindParentWindow(DependencyObject child)
-        {
-            DependencyObject parent = VisualTreeHelper.GetParent(child);
-
-            if (parent == null) return null;
-
-            PaneToolWindow parentWindow = parent as PaneToolWindow;
-            if (parentWindow != null)
-            {
-                return parentWindow;
-            }
-            return FindParentWindow(parent);
-        }
-
+        [ExcludeFromCodeCoverage]
         public void CloseView()
         {
-            try
-            {
-                var parent = FindParentWindow((FrameworkElement)View);
-                parent?.Close();
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Info(StringResources.CloseTestViewHandledException, ex);
-            }
         }
 
         public bool DoDeactivate(bool showMessage)

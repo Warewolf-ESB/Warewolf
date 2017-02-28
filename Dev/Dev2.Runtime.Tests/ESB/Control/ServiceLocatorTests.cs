@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -80,13 +83,45 @@ namespace Dev2.Tests.Runtime.ESB.Control
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void FindService_GivenServiceName_ReturnsNull_ShouldUpdatePerfCounter()
+        {
+            //---------------Set up test pack-------------------
+            var mockWarewolfPerformanceCounterLocater = new Mock<IWarewolfPerformanceCounterLocater>();
+            var mockPerformanceCounter = new Mock<IPerformanceCounter>();
+            mockPerformanceCounter.Setup(counter => counter.Increment()).Verifiable();
+            mockWarewolfPerformanceCounterLocater.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(mockPerformanceCounter.Object);
+            CustomContainer.Register(mockWarewolfPerformanceCounterLocater.Object);
+            var recCat = new Mock<IResourceCatalog>();
+            recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service", false)).Returns(new List<DynamicService> { null });
+            var locator = new ServiceLocator();
+            var privateObject = new PrivateObject(locator);
+            privateObject.SetField("_resourceCatalog", recCat.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(locator);
+            //---------------Execute Test ----------------------
+            try
+            {
+                var dynamicService = locator.FindService("service", Guid.Empty);
+                recCat.Verify(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service", false));
+                mockPerformanceCounter.Verify(counter => counter.Increment());
+                Assert.IsNull(dynamicService);
+            }
+            catch (Exception e)
+            {
+                //---------------Test Result -----------------------
+                Assert.Fail(e.Message);
+            }
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void FindService_GivenServiceName_ShouldReturnsCorreclty()
         {
             //---------------Set up test pack-------------------
-            //GetDynamicObjects<DynamicService>(workspaceID, serviceName).FirstOrDefault();
             var recCat = new Mock<IResourceCatalog>();
-            recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service", false)).Returns(new List<DynamicService>() {new DynamicService()});
+            var service = new DynamicService();
+            recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service", false)).Returns(new List<DynamicService> {service});
             var locator = new ServiceLocator();
             var privateObject = new PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
@@ -103,6 +138,99 @@ namespace Dev2.Tests.Runtime.ESB.Control
             {
                 //---------------Test Result -----------------------
                Assert.Fail(e.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void FindService_GivenServiceName_InCache_ShouldReturnFromCache()
+        {
+            //---------------Set up test pack-------------------
+            var recCat = new Mock<IResourceCatalog>();
+            var res = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            res.Setup(resource => resource.ResourceID).Returns(resourceId);
+            recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service", false)).Returns(new List<DynamicService>() { new DynamicService() });
+            recCat.Setup(catalog => catalog.GetResource(Guid.Empty, "service","Unknown",null)).Returns(res.Object);
+            ServiceActionRepo.Instance.AddToCache(resourceId,new DynamicService());
+            var locator = new ServiceLocator();
+            var privateObject = new PrivateObject(locator);
+            privateObject.SetField("_resourceCatalog", recCat.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(locator);
+            //---------------Execute Test ----------------------
+            try
+            {
+                var dynamicService = locator.FindService("service", Guid.Empty);
+                recCat.Verify(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, "service", false),Times.Never());
+                Assert.IsNotNull(dynamicService);
+            }
+            catch (Exception e)
+            {
+                //---------------Test Result -----------------------
+                Assert.Fail(e.Message);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void FindService_GivenServiceID_InCache_ShouldReturnFromCache()
+        {
+            //---------------Set up test pack-------------------
+            var recCat = new Mock<IResourceCatalog>();
+            var res = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            res.Setup(resource => resource.ResourceID).Returns(resourceId);
+            recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, resourceId)).Returns(new List<DynamicService>() { new DynamicService() });
+            ServiceActionRepo.Instance.AddToCache(resourceId,new DynamicService());
+            var locator = new ServiceLocator();
+            var privateObject = new PrivateObject(locator);
+            privateObject.SetField("_resourceCatalog", recCat.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(locator);
+            //---------------Execute Test ----------------------
+            try
+            {
+                var dynamicService = locator.FindService(resourceId, Guid.Empty);
+                recCat.Verify(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty,resourceId),Times.Never());
+                Assert.IsNotNull(dynamicService);
+            }
+            catch (Exception e)
+            {
+                //---------------Test Result -----------------------
+                Assert.Fail(e.Message);
+            }
+        }
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void FindService_GivenResourceID_ReturnsNull_ShouldUpdatePerfCounter()
+        {
+            //---------------Set up test pack-------------------
+            var mockWarewolfPerformanceCounterLocater = new Mock<IWarewolfPerformanceCounterLocater>();
+            var mockPerformanceCounter = new Mock<IPerformanceCounter>();
+            var resourceId = Guid.NewGuid();
+            mockPerformanceCounter.Setup(counter => counter.Increment()).Verifiable();
+            mockWarewolfPerformanceCounterLocater.Setup(locater => locater.GetCounter(It.IsAny<string>())).Returns(mockPerformanceCounter.Object);
+            CustomContainer.Register(mockWarewolfPerformanceCounterLocater.Object);
+            var recCat = new Mock<IResourceCatalog>();
+            recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, resourceId)).Returns(new List<DynamicService> { null });
+            var locator = new ServiceLocator();
+            var privateObject = new PrivateObject(locator);
+            privateObject.SetField("_resourceCatalog", recCat.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(locator);
+            //---------------Execute Test ----------------------
+            try
+            {
+                var dynamicService = locator.FindService(resourceId, Guid.Empty);
+                recCat.Verify(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, resourceId));
+                mockPerformanceCounter.Verify(counter => counter.Increment());
+                Assert.IsNull(dynamicService);
+            }
+            catch (Exception e)
+            {
+                //---------------Test Result -----------------------
+                Assert.Fail(e.Message);
             }
         }
         [TestMethod]
@@ -133,10 +261,12 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public void FindService_GivenServiceName_ShouldReturnsCorreclty_serviceID()
         {
             //---------------Set up test pack-------------------
-            //GetDynamicObjects<DynamicService>(workspaceID, serviceName).FirstOrDefault();
             var recCat = new Mock<IResourceCatalog>();
             var newGuid = Guid.NewGuid();
-            recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, newGuid)).Returns(new List<DynamicService>() {new DynamicService()});
+            var service = new DynamicService();
+            var serviceAction = new ServiceAction();
+            service.Actions = new List<ServiceAction> { serviceAction };
+            recCat.Setup(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, newGuid)).Returns(new List<DynamicService> {service});
             var locator = new ServiceLocator();
             var privateObject = new PrivateObject(locator);
             privateObject.SetField("_resourceCatalog", recCat.Object);
@@ -148,6 +278,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 var dynamicService = locator.FindService(newGuid, Guid.Empty);
                 recCat.Verify(catalog => catalog.GetDynamicObjects<DynamicService>(Guid.Empty, newGuid));
                 Assert.IsNotNull(dynamicService);
+                Assert.AreEqual(newGuid,serviceAction.ServiceID);
             }
             catch (Exception e)
             {
