@@ -233,15 +233,15 @@
                               <SupportLevel>0</SupportLevel>
                               <Descendants />
                             </UIObject>
-                            <UIObject ControlType="Button" Id="ConnectServerButton" FriendlyName="UI_ConnectServerBtn_AutoID" SpecialControlType="None">
+                            <UIObject ControlType="Button" Id="NewServerButton" FriendlyName="UI_ConnectServerBtn_AutoID" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                 <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                <PropertyCondition Name="AutomationId">UI_ConnectServerBtn_AutoID</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">UI_NewServerButton_AutoID</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants />
