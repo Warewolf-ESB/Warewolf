@@ -128,7 +128,7 @@ namespace Dev2.Activities.Designers2.Sequence
                 try
                 {
                     IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envId);
-                    var resource = environmentModel?.ResourceRepository.FindSingle(c => c.ID == resourceId) as IContextualResourceModel;
+                    var resource = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
                     if (resource != null)
                     {
