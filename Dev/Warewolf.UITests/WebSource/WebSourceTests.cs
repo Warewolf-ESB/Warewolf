@@ -30,9 +30,9 @@ namespace Warewolf.UITests.WebSource
             WebSourceUIMap.Enter_DefaultQuery_On_WebServiceSourceTab();
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button not enabled");
             WebSourceUIMap.Click_NewWebSource_TestConnectionButton();
-            Playback.Wait(1000);
             //Save Source
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save Ribbon Button is not enabled.");
+            UIMap.MainStudioWindow.SideMenuBar.SaveButton.WaitForControlEnabled(60000);
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save Ribbon Button is not enabled after clicking new web source test button and waiting one minute (60000ms).");
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             ExplorerUIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
