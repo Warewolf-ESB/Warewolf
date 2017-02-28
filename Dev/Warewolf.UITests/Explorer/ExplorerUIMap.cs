@@ -21,162 +21,13 @@ using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
 using Warewolf.UITests.EmailSource.EmailSourceUIMapClasses;
 using Warewolf.UITests.ExchangeSource.ExchangeSourceUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
+using Warewolf.UITests.DependencyGraph.DependencyGraphUIMapClasses;
 
 namespace Warewolf.UITests.ExplorerUIMapClasses
 {
     [Binding]
     public partial class ExplorerUIMap
     {
-        WorkflowTabUIMap WorkflowTabUIMap
-        {
-            get
-            {
-                if (_WorkflowTabUIMap == null)
-                {
-                    _WorkflowTabUIMap = new WorkflowTabUIMap();
-                }
-
-                return _WorkflowTabUIMap;
-            }
-        }
-
-        private WorkflowTabUIMap _WorkflowTabUIMap;
-
-        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
-        {
-            get
-            {
-                if (_WorkflowServiceTestingUIMap == null)
-                {
-                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
-                }
-
-                return _WorkflowServiceTestingUIMap;
-            }
-        }
-
-        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
-
-        UIMap UIMap
-        {
-            get
-            {
-                if (_UIMap == null)
-                {
-                    _UIMap = new UIMap();
-                }
-
-                return _UIMap;
-            }
-        }
-
-        private UIMap _UIMap;
-
-        DialogsUIMap DialogsUIMap
-        {
-            get
-            {
-                if (_DialogsUIMap == null)
-                {
-                    _DialogsUIMap = new DialogsUIMap();
-                }
-
-                return _DialogsUIMap;
-            }
-        }
-
-        private DialogsUIMap _DialogsUIMap;
-
-        SettingsUIMap SettingsUIMap
-        {
-            get
-            {
-                if (_SettingsUIMap == null)
-                {
-                    _SettingsUIMap = new SettingsUIMap();
-                }
-
-                return _SettingsUIMap;
-            }
-        }
-
-        private SettingsUIMap _SettingsUIMap;
-
-        ServerSourceUIMap ServerSourceUIMap
-        {
-            get
-            {
-                if (_ServerSourceUIMap == null)
-                {
-                    _ServerSourceUIMap = new ServerSourceUIMap();
-                }
-
-                return _ServerSourceUIMap;
-            }
-        }
-
-        private ServerSourceUIMap _ServerSourceUIMap;
-
-        WebSourceUIMap WebSourceUIMap
-        {
-            get
-            {
-                if (_WebSourceUIMap == null)
-                {
-                    _WebSourceUIMap = new WebSourceUIMap();
-                }
-
-                return _WebSourceUIMap;
-            }
-        }
-
-        private WebSourceUIMap _WebSourceUIMap;
-
-        EmailSourceUIMap EmailSourceUIMap
-        {
-            get
-            {
-                if (_EmailSourceUIMap == null)
-                {
-                    _EmailSourceUIMap = new EmailSourceUIMap();
-                }
-
-                return _EmailSourceUIMap;
-            }
-        }
-
-        private EmailSourceUIMap _EmailSourceUIMap;
-
-        ExchangeSourceUIMap ExchangeSourceUIMap
-        {
-            get
-            {
-                if (_ExchangeSourceUIMap == null)
-                {
-                    _ExchangeSourceUIMap = new ExchangeSourceUIMap();
-                }
-
-                return _ExchangeSourceUIMap;
-            }
-        }
-
-        private ExchangeSourceUIMap _ExchangeSourceUIMap;
-
-        DeployUIMap DeployUIMap
-        {
-            get
-            {
-                if (_DeployUIMap == null)
-                {
-                    _DeployUIMap = new DeployUIMap();
-                }
-
-                return _DeployUIMap;
-            }
-        }
-
-        private DeployUIMap _DeployUIMap;
-
         [When(@"I Drag Explorer First Item Onto The Second Item")]
         public void Drag_Explorer_First_Item_Onto_The_Second_Item()
         {
@@ -277,7 +128,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Given(@"Explorer Does Not Contain Item ""(.*)""")]
         [When(@"Explorer Does Not Contain Item ""(.*)""")]
         [Then(@"Explorer Does Not Contain Item ""(.*)""")]
-        public void ExplorerDoesNotContainItem(string p0)
+        public void ExplorerDoesNotContainItem(string itemName)
         {
             Assert.IsFalse(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem));
         }
@@ -295,8 +146,8 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Then(@"Explorer Items appear on the Explorer Tree")]
         public void ExplorerItemsAppearOnTheExplorerTree()
         {
-            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem));
-            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem));
+            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem), "First item does not Exist on the Explorer");
+            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem), "Second item does not Exist on the Explorer");
         }
 
         [Given(@"Filter Textbox is cleared")]
@@ -574,7 +425,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         [Then(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));            
         }
 
         [Given(@"I Click Connect Control InExplorer")]
@@ -718,6 +569,24 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         public void Filter_Explorer(string FilterText)
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+        }
+
+        [When(@"I validate and delete the existing resource with ""(.*)""")]
+        public void WhenIValidateAndDeleteTheExistingResourceWith(string filterText)
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = filterText;
+
+            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists)
+            {
+                Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+
+                Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(87, 12));
+                Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
+                Assert.IsTrue(DialogsUIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
+
+                Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
+            }
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = string.Empty;
         }
 
         [Given(@"I Try DisConnect To Remote Server")]
@@ -1036,16 +905,6 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewSharepointSource);
         }
 
-        [When(@"I Click Show Dependencies From Explorer Context Menu")]
-        public void Click_ShowDependencies_From_ExplorerContextMenu()
-        {
-            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.ShowwhatdependsonthisRadioButton.Selected, "Dependency graph show dependencies radio button is not selected.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NestingLevelsText.Textbox.Exists, "Dependency graph nesting levels textbox does not exist.");
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.RefreshButton.Exists, "Refresh button does not exist on dependency graph");
-            Assert.AreEqual("RemoteServerUITestWorkflow", UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.Node1.Text.DisplayText, "Dependant workflow not shown in dependency diagram");
-        }
-
         [When(@"I Click Show Server Version From Explorer Context Menu")]
         public void Click_ShowServerVersion_From_ExplorerContextMenu()
         {
@@ -1221,7 +1080,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies);
-            Assert.IsTrue(UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.Exists, "Dependency graph tab is not showen after clicking show dependancies explorer content menu item.");
+            Assert.IsTrue(DependencyGraphUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.Exists, "Dependency graph tab is not showen after clicking show dependancies explorer content menu item.");
         }
 
         public void Create_NewWorkflow_Of_ExplorerFirstItem_With_ExplorerContextMenu()
@@ -1293,5 +1152,172 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(61, 15));
             Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(7, 12));
         }
+        #region UIMaps
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        WorkflowServiceTestingUIMap WorkflowServiceTestingUIMap
+        {
+            get
+            {
+                if (_WorkflowServiceTestingUIMap == null)
+                {
+                    _WorkflowServiceTestingUIMap = new WorkflowServiceTestingUIMap();
+                }
+
+                return _WorkflowServiceTestingUIMap;
+            }
+        }
+
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        UIMap UIMap
+        {
+            get
+            {
+                if (_UIMap == null)
+                {
+                    _UIMap = new UIMap();
+                }
+
+                return _UIMap;
+            }
+        }
+
+        private UIMap _UIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
+
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
+
+        ServerSourceUIMap ServerSourceUIMap
+        {
+            get
+            {
+                if (_ServerSourceUIMap == null)
+                {
+                    _ServerSourceUIMap = new ServerSourceUIMap();
+                }
+
+                return _ServerSourceUIMap;
+            }
+        }
+
+        private ServerSourceUIMap _ServerSourceUIMap;
+
+        WebSourceUIMap WebSourceUIMap
+        {
+            get
+            {
+                if (_WebSourceUIMap == null)
+                {
+                    _WebSourceUIMap = new WebSourceUIMap();
+                }
+
+                return _WebSourceUIMap;
+            }
+        }
+
+        private WebSourceUIMap _WebSourceUIMap;
+
+        EmailSourceUIMap EmailSourceUIMap
+        {
+            get
+            {
+                if (_EmailSourceUIMap == null)
+                {
+                    _EmailSourceUIMap = new EmailSourceUIMap();
+                }
+
+                return _EmailSourceUIMap;
+            }
+        }
+
+        private EmailSourceUIMap _EmailSourceUIMap;
+
+        ExchangeSourceUIMap ExchangeSourceUIMap
+        {
+            get
+            {
+                if (_ExchangeSourceUIMap == null)
+                {
+                    _ExchangeSourceUIMap = new ExchangeSourceUIMap();
+                }
+
+                return _ExchangeSourceUIMap;
+            }
+        }
+
+        private ExchangeSourceUIMap _ExchangeSourceUIMap;
+
+        DeployUIMap DeployUIMap
+        {
+            get
+            {
+                if (_DeployUIMap == null)
+                {
+                    _DeployUIMap = new DeployUIMap();
+                }
+
+                return _DeployUIMap;
+            }
+        }
+
+        private DeployUIMap _DeployUIMap;
+
+        DependencyGraphUIMap DependencyGraphUIMap
+        {
+            get
+            {
+                if (_DependencyGraphUIMap == null)
+                {
+                    _DependencyGraphUIMap = new DependencyGraphUIMap();
+                }
+
+                return _DependencyGraphUIMap;
+            }
+        }
+
+        private DependencyGraphUIMap _DependencyGraphUIMap;
+
+        #endregion
     }
 }

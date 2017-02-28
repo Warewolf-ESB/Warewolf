@@ -488,7 +488,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         startTime = DateTime.Now;
                     }
-                    _debugState.StartTime = startTime.Value;
+                    if (_debugState.StartTime == DateTime.MinValue)
+                    {
+                        _debugState.StartTime = startTime.Value;
+                    }
                 }
                 _debugState.Name = IsWorkflow ? ActivityType.Workflow.GetDescription() : IsService ? ActivityType.Service.GetDescription() : ActivityType.Step.GetDescription();
                 try
@@ -970,6 +973,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
                 ActualType = typeName,
+                StartTime = DateTime.Now,
                 ActivityType = IsWorkflow ? ActivityType.Workflow : ActivityType.Step,
                 DisplayName = DisplayName,
                 IsSimulation = false,
