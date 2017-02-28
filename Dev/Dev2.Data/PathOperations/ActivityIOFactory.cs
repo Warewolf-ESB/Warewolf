@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
@@ -94,24 +95,23 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public static IActivityIOOperationsEndPoint CreateOperationEndPointFromIOPath(IActivityIOPath target)
         {
-
-            lock (EndPointsLock)
+            lock(EndPointsLock)
             {
                 // load end-points if need be... aka first load
-                if (_endPoints == null)
+                if(_endPoints == null)
                 {
                     _endPoints = new List<Type>();
                     _referenceCheckers = new List<IActivityIOOperationsEndPoint>();
 
                     var type = typeof(IActivityIOOperationsEndPoint);
 
-                    List<Type> types = typeof(IActivityIOOperationsEndPoint).Assembly.GetTypes()
-                                                                             .Where(t => type.IsAssignableFrom(t))
-                                                                             .ToList();
+                    List<Type> types = Assembly.GetExecutingAssembly().GetTypes()
+                        .Where(t => type.IsAssignableFrom(t))
+                        .ToList();
 
-                    foreach (Type t in types)
+                    foreach(Type t in types)
                     {
-                        if (t != typeof(IActivityIOOperationsEndPoint))
+                        if(t != typeof(IActivityIOOperationsEndPoint))
                         {
                             _endPoints.Add(t);
                             _referenceCheckers.Add((IActivityIOOperationsEndPoint)Activator.CreateInstance(t));
@@ -123,17 +123,23 @@ namespace Dev2.PathOperations
             // now find the right match ;)
             int pos = 0;
 
-            while (pos < _referenceCheckers.Count && !_referenceCheckers[pos].HandlesType(target.PathType))
+            while(pos < _referenceCheckers.Count && !_referenceCheckers[pos].HandlesType(target.PathType))
             {
                 pos++;
             }
+            IActivityIOOperationsEndPoint result;
+            if (_endPoints != null && _endPoints.Count > 0)
+            {
+                 result =
+                    (IActivityIOOperationsEndPoint)Activator.CreateInstance(_endPoints[pos]);
+                result.IOPath = target;
 
-            // will throw exception if cannot find handling type
-            IActivityIOOperationsEndPoint result =
-                (IActivityIOOperationsEndPoint)Activator.CreateInstance(_endPoints[pos]);
-            result.IOPath = target;
 
-
+            }
+            else
+            {
+                result = new Dev2FileSystemProvider { IOPath = target };
+            }
             return result;
         }
 
