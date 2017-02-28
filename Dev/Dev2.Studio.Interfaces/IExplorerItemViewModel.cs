@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -9,7 +9,7 @@ using Dev2.Common.Interfaces.Security;
 // ReSharper disable UnusedMemberInSuper.Global
 // ReSharper disable UnusedMember.Global
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Interfaces
 {
     public interface IExplorerItemViewModel : IExplorerTreeItem
     {

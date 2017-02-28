@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Dev2.Common.Interfaces.Deploy
+namespace Dev2.Studio.Interfaces.Deploy
 {
     public interface IDeployViewModel
     {

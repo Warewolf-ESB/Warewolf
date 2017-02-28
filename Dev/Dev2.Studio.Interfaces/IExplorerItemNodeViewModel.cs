@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Interfaces
 {
     public interface IExplorerItemNodeViewModel : IExplorerItemViewModel
     {

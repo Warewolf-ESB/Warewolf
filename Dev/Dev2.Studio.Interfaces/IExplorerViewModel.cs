@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Interfaces
 {
 
     public delegate void SelectedExplorerEnvironmentChanged(object sender, IEnvironmentViewModel e);

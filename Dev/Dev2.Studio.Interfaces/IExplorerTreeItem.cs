@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Interfaces
 {
     public interface IExplorerTreeItem : IDisposable,IEqualityComparer<IExplorerTreeItem>
     {

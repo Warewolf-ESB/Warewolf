@@ -1,7 +1,8 @@
 using System;
 using System.Windows.Input;
+using Dev2.Common.Interfaces;
 
-namespace Dev2.Common.Interfaces
+namespace Dev2.Studio.Interfaces
 {
     public interface ISplashViewModel
     {

@@ -32,7 +32,7 @@ namespace Warewolf.Studio.ViewModels
     public class ConnectControlViewModel : BindableBase, IConnectControlViewModel, IUpdatesHelp
     {
         bool _isConnected;
-        bool _isConnecing;
+        bool _isConnecting;
         IServer _selectedConnection;
         ObservableCollection<IServer> _servers;
         bool _isLoading;
@@ -323,11 +323,11 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _isConnecing;
+                return _isConnecting;
             }
             private set
             {
-                _isConnecing = value;
+                _isConnecting = value;
                 OnPropertyChanged(() => IsConnecting);                
             }
         }

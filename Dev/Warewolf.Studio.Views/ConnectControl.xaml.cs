@@ -11,8 +11,8 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
-using Dev2.Common.Interfaces;
 using Dev2.ConnectionHelpers;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.Views
 {

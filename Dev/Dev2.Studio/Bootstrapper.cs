@@ -16,7 +16,6 @@ using System.Net;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
 using Dev2.Network;

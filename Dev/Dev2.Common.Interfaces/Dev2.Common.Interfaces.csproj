@@ -199,11 +199,7 @@
     <Compile Include="DB\IServiceInput.cs" />
     <Compile Include="DB\IServiceOutputMapping.cs" />
     <Compile Include="DB\ISourceBase.cs" />
-    <Compile Include="Deploy\IDeployDestinationExplorerViewModel.cs" />
     <Compile Include="Deploy\IDeployResult.cs" />
-    <Compile Include="Deploy\IDeploySourceExplorerViewModel.cs" />
-    <Compile Include="Deploy\IDeployStatsViewer.cs" />
-    <Compile Include="Deploy\IDeployViewModel.cs" />
     <Compile Include="Diagnostics\Debug\Enums.cs" />
     <Compile Include="Diagnostics\Debug\IDebugDispatcher.cs" />
     <Compile Include="Diagnostics\Debug\IDebugItem.cs" />
@@ -237,7 +233,6 @@
     <Compile Include="IComPluginServiceModel.cs" />
     <Compile Include="IComPluginSource.cs" />
     <Compile Include="IComputerName.cs" />
-    <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IConnection.cs" />
     <Compile Include="IConstructorParameter.cs" />
     <Compile Include="ICreateDuplicateResourceView.cs" />
@@ -253,17 +248,11 @@
     <Compile Include="IDropboxResult.cs" />
     <Compile Include="IEmailServiceSource.cs" />
     <Compile Include="IEmailSource.cs" />
-    <Compile Include="IEnvironmentViewModel.cs" />
     <Compile Include="IExchange.cs" />
     <Compile Include="IExchangeEmailSender.cs" />
     <Compile Include="IExchangeServiceFactory.cs" />
     <Compile Include="IExecutionToken.cs" />
-    <Compile Include="IExplorerItemNodeViewModel.cs" />
-    <Compile Include="IExplorerItemViewModel.cs" />
-    <Compile Include="IExplorerRepository.cs" />
-    <Compile Include="IExplorerTreeItem.cs" />
     <Compile Include="IExplorerUpdateManager.cs" />
-    <Compile Include="IExplorerViewModel.cs" />
     <Compile Include="IExternalProcessExecutor.cs" />
     <Compile Include="IFileChooser.cs" />
     <Compile Include="IFileChooserModel.cs" />
@@ -343,9 +332,7 @@
     <Compile Include="IServiceTestModelTO.cs" />
     <Compile Include="IServiceTestStep.cs" />
     <Compile Include="ISharepointServerSource.cs" />
-    <Compile Include="IShellViewModel.cs" />
     <Compile Include="ISplashView.cs" />
-    <Compile Include="ISplashViewModel.cs" />
     <Compile Include="IStudioUpdateManager.cs" />
     <Compile Include="ISuggestionProvider.cs" />
     <Compile Include="IServiceTestModel.cs" />
