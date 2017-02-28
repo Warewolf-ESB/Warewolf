@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Tools.ToolsUIMapClasses;
-using Warewolf.UITests.Common;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
