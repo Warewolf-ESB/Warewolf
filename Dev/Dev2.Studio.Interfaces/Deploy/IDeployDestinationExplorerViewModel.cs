@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dev2.Common.Interfaces.Deploy
+namespace Dev2.Studio.Interfaces.Deploy
 {
 
     public delegate void ServerSate(object sender, IServer server);

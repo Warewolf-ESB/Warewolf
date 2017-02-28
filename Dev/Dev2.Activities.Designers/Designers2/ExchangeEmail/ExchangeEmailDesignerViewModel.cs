@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Exchange;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Threading;

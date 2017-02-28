@@ -42,6 +42,7 @@ using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Views;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Infragistics.Windows.DockManager;

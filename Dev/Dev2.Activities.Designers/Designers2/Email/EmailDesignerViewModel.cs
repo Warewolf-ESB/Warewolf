@@ -19,7 +19,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;

@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.DropBox2016.Delete;
 using Dev2.Activities.DropBox2016.DeleteActivity;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Activities.Utils;

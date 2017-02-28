@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dev2.Common.Interfaces.Deploy
+namespace Dev2.Studio.Interfaces.Deploy
 {
     public class Conflict
     {

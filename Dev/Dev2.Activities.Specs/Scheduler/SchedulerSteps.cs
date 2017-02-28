@@ -17,7 +17,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Core.Tests.Utils;
 using Dev2.Services.Events;

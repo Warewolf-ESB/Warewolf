@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
+using Dev2.Studio.Interfaces;
 using Moq;
 using Newtonsoft.Json;
 
