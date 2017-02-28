@@ -52,7 +52,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
         }
 
-        [BeforeScenario("DbSource")]
+        [BeforeScenario("SQLDbSource")]
         public void SetupForDatabaseSource()
         {
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
@@ -431,15 +431,22 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             mockRequestServiceNameViewModel.Verify();
         }
 
-        [AfterScenario("DbSource")]
+        [AfterScenario("SQLDbSource")]
         public void Cleanup()
         {
+            CleanupResources();
+        }
+
+        private static void CleanupResources()
+        {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel =
+                ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ManageSqlServerSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var viewModel = new ManageSqlServerSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
+                new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
@@ -447,6 +454,12 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
                 Utils.ResetViewModel<ManageSqlServerSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
+        }
+
+        [AfterFeature("DbSource")]
+        public static void FeaureCleanup()
+        {
+            CleanupResources();
         }
 
         [When(@"I click ""(.*)""")]

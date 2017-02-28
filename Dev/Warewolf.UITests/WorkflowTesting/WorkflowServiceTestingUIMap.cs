@@ -1,4 +1,7 @@
-﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Linq;
@@ -1010,5 +1013,23 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         private DialogsUIMap _DialogsUIMap;
 
         #endregion
+
+        /// <summary>
+        /// PinUnpinOutPutButton
+        /// </summary>
+        public void PinUnpinOutPutButton()
+        {
+            #region Variable Declarations
+            WpfButton uIUnpinBtnButton = this.MainStudioWindow.SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIOUTPUTCustom.UIUnpinBtnButton;
+            #endregion
+
+            // Click 'unpinBtn' button
+            Mouse.Click(uIUnpinBtnButton, new Point(12, 14));
+        }
+
+        public void Click_DecisionOn_Service_TestView()
+        {
+            Mouse.Click(MainStudioWindow.SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_ServiceTestView_ACustom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIFlowDecisionCustom);
+        }
     }
 }

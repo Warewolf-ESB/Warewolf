@@ -51,7 +51,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
         }
 
-        [BeforeScenario("DbSource")]
+        [BeforeScenario("MySqlDbSource")]
         public void SetupForDatabaseSource()
         {
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey));
@@ -420,15 +420,22 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             mockRequestServiceNameViewModel.Verify();
         }
 
-        [AfterScenario("DbSource")]
+        [AfterScenario("MySqlDbSource")]
         public void Cleanup()
         {
+            DisposeResources();
+        }
+
+        private static void DisposeResources()
+        {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel =
+                ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ManageMySqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var viewModel = new ManageMySqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
+                new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
@@ -437,6 +444,12 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
                 manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Windows;
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
+        }
+
+        [AfterFeature("DbSource")]
+        public static void FeaureCleanup()
+        {
+            DisposeResources();
         }
 
         [When(@"I click ""(.*)""")]
