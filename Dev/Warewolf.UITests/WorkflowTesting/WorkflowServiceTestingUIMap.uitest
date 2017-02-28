@@ -4474,16 +4474,16 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="Custom" Id="DsfMultiAssignActiviCustom" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="MultiAssign" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">Assign a value to Name if blank (1)(MultiAssignDesigner)</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName" Operator="Contains">MultiAssignDesigner</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId" Operator="Contains">MultiAssignDesigner</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
@@ -4502,7 +4502,7 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
-                                                            <UIObject ControlType="Custom" Id="DsfDecisioActiviCustom" FriendlyName="DsfDecisioActiviCustom" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="Decision" FriendlyName="DsfDecisioActiviCustom" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf</WindowTitle>
@@ -4510,8 +4510,8 @@
                                                               <AndCondition>
                                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">FlowDecisionDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">FlowDecisionDesigner</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId" Operator="Contains">FlowDecisionDesigner</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName" Operator="Contains">FlowDecisionDesigner</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
@@ -4529,35 +4529,6 @@
                                                                   <Descendants />
                                                                 </UIObject>
                                                               </Descendants>
-                                                            </UIObject>
-                                                          </Descendants>
-                                                        </UIObject>
-                                                        <UIObject ControlType="Custom" Id="UIFlowchartCustom" FriendlyName="Flowchart" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                            <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Hello World(FlowchartDesigner)</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants>
-                                                            <UIObject ControlType="Custom" Id="UIDsfMultiAssignActiviCustom" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
-                                                              <TechnologyName>UIA</TechnologyName>
-                                                              <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
-                                                              </WindowTitles>
-                                                              <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">Set the output variable (1)(MultiAssignDesigner)</PropertyCondition>
-                                                              </AndCondition>
-                                                              <SupportLevel>0</SupportLevel>
-                                                              <Descendants />
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
