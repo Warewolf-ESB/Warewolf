@@ -134,13 +134,13 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
 
         public void Click_Output_Step()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.UIFlowchartCustom.UIDsfMultiAssignActiviCustom, new Point(77, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.MultiAssign, new Point(77, 8));
         }
 
         public void Click_Decision_Step()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom.DisplayNameEdit.DrawHighlight();
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom.DisplayNameEdit, new Point(77, 8));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision.DisplayNameEdit.DrawHighlight();
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision.DisplayNameEdit, new Point(77, 8));
         }
 
         [Then(@"I Click Run all tests button")]
@@ -163,7 +163,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         [When(@"I Click AssigName From DesignSurface")]
         public void Click_AssigName_From_DesignSurface()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfMultiAssignActiviCustom);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.MultiAssign);
         }
 
         public void Click_MockRadioButton_On_Decision_TestStep()
@@ -947,8 +947,8 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         public void Click_Decision_On_Workflow_Service_Test_View()
         {
             Point point;
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom.WaitForControlCondition((uitestcontrol) => { return uitestcontrol.TryGetClickablePoint(out point); }, 60000);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom);
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision.WaitForControlCondition((uitestcontrol) => { return uitestcontrol.TryGetClickablePoint(out point); }, 60000);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision);
         }
 
         #region UIMaps
