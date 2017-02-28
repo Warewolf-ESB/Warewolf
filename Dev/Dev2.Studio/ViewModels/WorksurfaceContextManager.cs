@@ -21,7 +21,6 @@ using Dev2.Factory;
 using Dev2.Instrumentation;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;

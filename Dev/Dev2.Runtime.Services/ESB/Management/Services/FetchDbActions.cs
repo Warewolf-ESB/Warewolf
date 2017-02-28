@@ -23,7 +23,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Services.Security;
 using Warewolf.Core;
 
 // ReSharper disable UnusedMember.Global

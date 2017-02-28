@@ -16,7 +16,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Core;
 

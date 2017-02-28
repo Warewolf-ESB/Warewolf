@@ -34,7 +34,6 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Security;
 using Dev2.Security;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
