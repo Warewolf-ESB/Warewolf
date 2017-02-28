@@ -68,21 +68,19 @@ namespace Warewolf.UITests
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DiceRollTreeItem.Exists);
         }
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [TestMethod]        
         [TestCategory("Workflow Testing")]
-        public void WorkflowTesting_AddTestStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
+        public void WorkflowTesting_AddDecisionStep_WhenStepClickedAfterRun_ShouldAddCorrectStep()
         {
-            //------------Setup for test--------------------------           
-            ExplorerUIMap.Filter_Explorer(HelloWorld);
+            //------------Setup for test--------------------------
+            ExplorerUIMap.Filter_Explorer("DecisionWF");
             ExplorerUIMap.Open_ExplorerFirstItemTests_With_ExplorerContextMenu();
-            WorkflowServiceTestingUIMap.Click_Create_New_Tests(true, 4);
-            WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Fail, 4);
+            WorkflowServiceTestingUIMap.Click_Create_New_Tests(true);
             //------------Assert Preconditions-------------------
-            //------------Execute Test---------------------------            
-            WorkflowServiceTestingUIMap.Click_Decision_On_Workflow_Service_Test_View();
+            //------------Execute Test---------------------------                        
+            WorkflowServiceTestingUIMap.PinUnpinOutPutButton();
+            WorkflowServiceTestingUIMap.Click_DecisionOn_Service_TestView();
             //------------Assert Results-------------------------
-            Assert.IsFalse(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.OutputMessageStep.Exists);
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.DecisionTreeItem.Exists);
         }
 
