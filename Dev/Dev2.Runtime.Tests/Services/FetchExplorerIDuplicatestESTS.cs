@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Explorer;

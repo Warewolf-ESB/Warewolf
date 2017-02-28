@@ -14,6 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;

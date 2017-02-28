@@ -8,11 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-
-namespace Dev2.Services.Security
+namespace Dev2.Common.Interfaces.Attribute
 {
-    public class ReasonAttribute : Attribute
+    public class ReasonAttribute : System.Attribute
     {
         public ReasonAttribute(string reason)
         {

@@ -21,6 +21,7 @@ using Dev2.Communication;
 using Dev2.Providers.Events;
 using Dev2.Security;
 using Dev2.Services.Security;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

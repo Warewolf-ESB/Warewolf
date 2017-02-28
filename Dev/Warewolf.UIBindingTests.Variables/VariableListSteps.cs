@@ -2,8 +2,10 @@
 using System.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.Views.DataList;
 using Microsoft.Practices.Prism.Mvvm;

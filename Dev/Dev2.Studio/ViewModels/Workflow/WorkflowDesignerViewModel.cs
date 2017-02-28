@@ -39,6 +39,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Collections;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;

@@ -11,6 +11,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.ViewModels;
 
 // ReSharper disable CheckNamespace

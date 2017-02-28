@@ -18,6 +18,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
 using Dev2.Utilities;

@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

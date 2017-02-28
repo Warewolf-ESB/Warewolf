@@ -24,6 +24,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
 using MySql.Data.MySqlClient;
 using Warewolf.Resource.Errors;

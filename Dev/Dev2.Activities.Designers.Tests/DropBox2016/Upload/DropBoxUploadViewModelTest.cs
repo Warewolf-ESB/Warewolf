@@ -13,6 +13,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

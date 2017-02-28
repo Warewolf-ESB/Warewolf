@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;

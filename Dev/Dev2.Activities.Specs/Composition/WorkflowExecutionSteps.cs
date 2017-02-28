@@ -69,11 +69,14 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Core;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Data.Interfaces.Enums;
 // ReSharper disable NonLocalizedString
 
 // ReSharper disable UnusedMember.Global

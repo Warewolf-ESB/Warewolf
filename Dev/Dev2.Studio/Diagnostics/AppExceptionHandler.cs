@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace

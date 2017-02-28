@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;

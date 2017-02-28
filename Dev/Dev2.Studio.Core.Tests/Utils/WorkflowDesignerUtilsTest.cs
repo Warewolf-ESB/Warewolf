@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Studio.Interfaces;
 using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

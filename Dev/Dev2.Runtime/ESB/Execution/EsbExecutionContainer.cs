@@ -9,6 +9,7 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;

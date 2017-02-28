@@ -11,6 +11,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 
@@ -57,7 +58,7 @@ namespace Dev2.Security
             DependencyProperty.Register("UnauthorizedVisibility", typeof(Visibility), typeof(AuthorizeCommand<T>), new PropertyMetadata(Visibility.Collapsed));
         private IContextualResourceModel _resourceModel;
 
-        public AuthorizationContext AuthorizationContext { get; private set; }
+        public AuthorizationContext AuthorizationContext { get;  set; }
 
         string ResourceId { get; set; }
         bool IsVersionResource { get; set; }

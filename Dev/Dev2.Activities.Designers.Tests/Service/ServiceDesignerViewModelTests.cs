@@ -23,7 +23,9 @@ using Dev2.Collections;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -33,6 +35,8 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -367,7 +371,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
             resourceModel.Setup(r => r.UserPermissions).Returns(Permissions.Administrator);
-            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Results-------------------------
@@ -386,7 +390,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceID = Guid.NewGuid();
 
             var resourceModel = CreateResourceModel(Guid.Empty, false, null);
-            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -431,7 +435,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceID = Guid.NewGuid();
 
             var resourceModel = CreateResourceModel(Guid.Empty, false, null);
-            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -476,7 +480,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var resourceModel = CreateResourceModel(Guid.Empty, false, null);
-            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -530,7 +534,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
 
-            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Results-------------------------
@@ -2109,7 +2113,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceID = Guid.NewGuid();
 
             var resourceModel = CreateResourceModel(Guid.Empty, false, null);
-            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -2265,9 +2269,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         static ServiceDesignerViewModel CreateServiceDesignerViewModelWithEmptyResourceID(Guid instanceID, params IErrorInfo[] resourceErrors)
         {
             var rootModel = CreateResourceModel(Guid.NewGuid(), false, null, resourceErrors);
-            rootModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
+            rootModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
             var resourceModel = CreateResourceModel(Guid.Empty, false, null);
-            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             resourceModel.Setup(model => model.ResourceName).Returns("TestResource");
 
@@ -2301,9 +2305,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         static ServiceDesignerViewModel CreateServiceDesignerViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, IEventAggregator eventPublisher, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
         {
             var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, null, resourceErrors);
-            rootModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
+            rootModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, null);
-            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var dataListViewModel = new DataListViewModel();

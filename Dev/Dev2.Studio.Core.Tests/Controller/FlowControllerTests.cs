@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;

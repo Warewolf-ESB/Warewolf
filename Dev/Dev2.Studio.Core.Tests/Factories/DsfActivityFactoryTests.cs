@@ -14,6 +14,8 @@ using System.Text;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

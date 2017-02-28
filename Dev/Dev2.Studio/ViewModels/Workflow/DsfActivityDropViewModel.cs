@@ -16,6 +16,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 
 // ReSharper disable CheckNamespace

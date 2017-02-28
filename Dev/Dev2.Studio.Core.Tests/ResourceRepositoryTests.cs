@@ -42,6 +42,8 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -381,7 +383,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsTrue(resources.Equals(2));
             var resource = _repo.All().First();
 
-            Assert.IsTrue(resource.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
+            Assert.IsTrue(resource.ResourceType == ResourceType.WorkflowService);
             Assert.IsTrue(resource.ResourceName == "TestWorkflowService");
         }
 
@@ -407,7 +409,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //Arrange
             Setup();
             var model = new Mock<IResourceModel>();
-            model.Setup(c => c.ResourceType).Returns(Dev2.Studio.Core.AppResources.Enums.ResourceType.Source);
+            model.Setup(c => c.ResourceType).Returns(ResourceType.Source);
             //model.SetupGet(p => p.ResourceName).Returns("My WF");
             //model.SetupGet(p => p.Category).Returns("Root");
             var conn = SetupConnection();
@@ -1281,7 +1283,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void FindResourcesByID_With_NullParameters_Expected_ReturnsEmptyList()
         {
             ResourceRepository resourceRepository = GetResourceRepository();
-            var result = resourceRepository.FindResourcesByID(null, null, Dev2.Studio.Core.AppResources.Enums.ResourceType.Source);
+            var result = resourceRepository.FindResourcesByID(null, null, ResourceType.Source);
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count);
         }
@@ -1298,7 +1300,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
 
-            var result = resourceRepository.FindResourcesByID(env.Object, servers, Dev2.Studio.Core.AppResources.Enums.ResourceType.Source);
+            var result = resourceRepository.FindResourcesByID(env.Object, servers, ResourceType.Source);
 
             Assert.AreNotEqual(0, result.Count);
         }

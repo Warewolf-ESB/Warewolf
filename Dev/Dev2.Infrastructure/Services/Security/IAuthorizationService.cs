@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Services.Security

@@ -22,6 +22,7 @@ using Dev2.Dialogs;
 using Dev2.Services.Security;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

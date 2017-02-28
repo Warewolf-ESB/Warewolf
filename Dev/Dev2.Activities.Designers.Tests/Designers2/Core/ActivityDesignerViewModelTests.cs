@@ -27,6 +27,7 @@ using Dev2.Communication;
 using Dev2.Core.Tests;
 using Dev2.Core.Tests.Environments;
 using Dev2.Providers.Errors;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
 using Dev2.Utilities;

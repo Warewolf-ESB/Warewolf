@@ -20,6 +20,8 @@ using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
 using Dev2.Webs.Callbacks;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces.Enums;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 
 // ReSharper disable CheckNamespace

@@ -11,11 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using Dev2.Activities.Specs.Scheduler;
 using Dev2.Network;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;

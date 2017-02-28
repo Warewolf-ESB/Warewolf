@@ -18,16 +18,19 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Studio.Interfaces.Enums;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Environments

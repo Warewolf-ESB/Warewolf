@@ -23,6 +23,7 @@ using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Decision;

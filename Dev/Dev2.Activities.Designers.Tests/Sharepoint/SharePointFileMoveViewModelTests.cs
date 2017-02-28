@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

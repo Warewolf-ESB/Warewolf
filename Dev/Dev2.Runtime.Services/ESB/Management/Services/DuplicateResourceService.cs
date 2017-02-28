@@ -5,6 +5,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;

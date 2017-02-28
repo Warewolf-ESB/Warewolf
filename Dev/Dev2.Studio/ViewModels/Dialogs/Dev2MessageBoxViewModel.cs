@@ -19,6 +19,8 @@ using FontAwesome.WPF;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable PossibleNullReferenceException
 
 // ReSharper disable CheckNamespace

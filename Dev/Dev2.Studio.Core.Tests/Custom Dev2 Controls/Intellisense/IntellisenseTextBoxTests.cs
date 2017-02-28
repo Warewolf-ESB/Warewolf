@@ -23,6 +23,8 @@ using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming

@@ -16,6 +16,7 @@ using System.Text;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
@@ -25,8 +26,10 @@ using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Studio.Interfaces.Enums;
 // ReSharper disable PossibleNullReferenceException
 
 // ReSharper disable InconsistentNaming

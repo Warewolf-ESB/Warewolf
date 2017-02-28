@@ -12,6 +12,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable InconsistentNaming
 

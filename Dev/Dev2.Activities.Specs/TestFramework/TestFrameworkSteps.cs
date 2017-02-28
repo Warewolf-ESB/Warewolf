@@ -19,6 +19,7 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
 using Dev2.Data.Decisions.Operations;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
@@ -27,6 +28,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Dev2.Utilities;
@@ -37,6 +39,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
+using Dev2.Studio.Interfaces.Enums;
 // ReSharper disable UnusedParameter.Global
 // ReSharper disable InconsistentNaming
 
