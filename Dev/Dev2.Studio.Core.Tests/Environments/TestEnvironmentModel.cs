@@ -12,6 +12,7 @@ using System;
 using Caliburn.Micro;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Moq;
 
 namespace Dev2.Core.Tests.Environments

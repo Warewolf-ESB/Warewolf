@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
@@ -31,6 +32,7 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Settings
 {

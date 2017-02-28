@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Threading;

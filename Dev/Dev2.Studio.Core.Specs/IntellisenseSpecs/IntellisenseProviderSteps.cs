@@ -22,10 +22,13 @@ using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Specs.Helper;
 using Dev2.Studio.InterfaceImplementors;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-
+using Dev2.Studio.Interfaces.Enums;
+using Dev2.Data.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 {

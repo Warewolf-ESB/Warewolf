@@ -26,10 +26,12 @@ using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Workspaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Workspaces;
 using Moq;
 using Newtonsoft.Json;
+using Dev2.Studio.Interfaces.Enums;
 
 namespace Dev2.Core.Tests
 {

@@ -20,6 +20,7 @@ using System.Windows.Controls;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -33,12 +34,14 @@ using Dev2.Settings.Scheduler;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
+using Dev2.Studio.Interfaces.Enums;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Settings

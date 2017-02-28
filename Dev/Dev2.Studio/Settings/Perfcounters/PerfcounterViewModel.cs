@@ -15,6 +15,7 @@ using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;

@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Annotations;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 

@@ -11,6 +11,7 @@
 using System;
 using System.Threading.Tasks;
 using Dev2.Studio.Factory;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 
 // ReSharper disable once CheckNamespace

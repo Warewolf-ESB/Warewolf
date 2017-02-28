@@ -16,6 +16,7 @@ using Dev2.PerformanceCounters.Management;
 using Dev2.Services.Security;
 using Dev2.Settings.Perfcounters;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

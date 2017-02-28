@@ -10,6 +10,7 @@
 
 using Dev2.Studio;
 using Dev2.Studio.Diagnostics;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Core.Tests.Diagnostics
 {

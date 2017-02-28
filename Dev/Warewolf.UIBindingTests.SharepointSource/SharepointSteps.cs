@@ -52,7 +52,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey));
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<ISharePointSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add("mockEnvironmentModel", FeatureContext.Current.Get<Mock<Dev2.Studio.Core.Interfaces.IEnvironmentModel>>("mockEnvironmentModel"));
+            ScenarioContext.Current.Add("mockEnvironmentModel", FeatureContext.Current.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel"));
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<SharepointServerSourceViewModel>(Utils.ViewModelNameKey));
         }
 

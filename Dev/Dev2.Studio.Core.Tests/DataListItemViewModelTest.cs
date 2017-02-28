@@ -9,6 +9,7 @@
 */
 
 using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests

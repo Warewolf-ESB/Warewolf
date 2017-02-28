@@ -140,6 +140,7 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Attribute\ReasonAttribute.cs" />
     <Compile Include="AuthenticationType.cs" />
     <Compile Include="Communication\IMemo.cs" />
     <Compile Include="Communication\ISerializer.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="DllListing.cs" />
     <Compile Include="enIntellisensePartType.cs" />
     <Compile Include="Dropbox\IDropBoxFactory.cs" />
+    <Compile Include="Enums\AuthorizationContext.cs" />
     <Compile Include="Enums\enRandomType.cs" />
     <Compile Include="Enums\enScriptType.cs" />
     <Compile Include="Enums\PopulateOptions.cs" />

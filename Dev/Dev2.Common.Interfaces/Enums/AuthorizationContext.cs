@@ -9,8 +9,9 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Attribute;
 
-namespace Dev2.Services.Security
+namespace Dev2.Common.Interfaces.Enums
 {
     [Flags]
     public enum AuthorizationContext

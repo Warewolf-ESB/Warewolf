@@ -15,6 +15,7 @@ using Dev2.Activities.Designers2.FindRecordsMultipleCriteria;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Interfaces;
 using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

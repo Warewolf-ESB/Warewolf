@@ -17,6 +17,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Scheduler;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Settings.Scheduler

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.TO;
 

@@ -13,6 +13,7 @@ using System.Windows;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Studio.Core.AppResources.Converters;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

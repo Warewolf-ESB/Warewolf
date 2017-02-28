@@ -31,7 +31,9 @@ using Microsoft.Win32.TaskScheduler;
 using Moq;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable UnusedMember.Global
 

@@ -8,7 +8,6 @@
 			xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
 			xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
 			xmlns:ig="http://schemas.infragistics.com/xaml"
-			xmlns:interfaces1="clr-namespace:Dev2.Studio.Core.Interfaces;assembly=Dev2.Studio.Core"
 			xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
 			xmlns:converters1="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
 			xmlns:serviceModel="clr-namespace:Dev2.Runtime.ServiceModel.Data;assembly=Dev2.Common.Interfaces"
@@ -17,11 +16,12 @@
 			xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
 			xmlns:views="clr-namespace:Warewolf.Studio.Views"
 			xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+			xmlns:interfaces2="clr-namespace:Dev2.Studio.Interfaces;assembly=Dev2.Studio.Interfaces"
 			d:DesignHeight="300"
 			d:DesignWidth="300"
 			mc:Ignorable="d"
 			x:Name="ServiceTestUserControl"
-			d:DataContext="{d:DesignInstance interfaces1:IServiceTestViewModel}"
+			d:DataContext="{d:DesignInstance interfaces2:IServiceTestViewModel}"
 			AutomationProperties.AutomationId="UI_ServiceTestView_AutoID">
     <UserControl.Resources>
         <ResourceDictionary>

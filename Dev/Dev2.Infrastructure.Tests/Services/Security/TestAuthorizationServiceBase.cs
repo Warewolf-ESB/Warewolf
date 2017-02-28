@@ -9,6 +9,7 @@
 */
 
 using System.Security.Principal;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
 
 namespace Dev2.Infrastructure.Tests.Services.Security

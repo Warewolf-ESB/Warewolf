@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Studio.Interfaces;
 using Moq;
 
 namespace Warewolf.Studio.ViewModels.Tests

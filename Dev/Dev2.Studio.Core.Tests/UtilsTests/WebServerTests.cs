@@ -11,6 +11,7 @@
 using System;
 using System.Text;
 using Dev2.Studio.Core.Network;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

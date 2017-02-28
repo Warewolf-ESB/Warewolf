@@ -9,6 +9,7 @@
 */
 
 using System.Collections.Generic;
+using Dev2.Data.Interfaces;
 using Dev2.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

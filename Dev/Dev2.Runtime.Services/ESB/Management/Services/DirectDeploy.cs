@@ -27,6 +27,7 @@ using Dev2.Workspaces;
 using Microsoft.AspNet.SignalR.Client;
 using Dev2.Runtime.Interfaces;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

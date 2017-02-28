@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Controller;
 using Dev2.Explorer;
 using Dev2.Models;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

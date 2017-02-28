@@ -27,6 +27,7 @@ using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Resources.Languages;

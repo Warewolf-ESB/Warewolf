@@ -12,6 +12,8 @@ using System;
 using System.IO;
 using System.Text;
 using Dev2.Communication;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
 using Unlimited.Framework.Converters.Graph.Ouput;

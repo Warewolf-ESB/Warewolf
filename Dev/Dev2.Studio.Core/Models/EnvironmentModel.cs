@@ -12,6 +12,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Network;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;

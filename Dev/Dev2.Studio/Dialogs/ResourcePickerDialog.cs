@@ -18,6 +18,7 @@ using Dev2.ConnectionHelpers;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Workflow;
 using Dev2.Threading;

@@ -16,6 +16,9 @@ using Dev2.Intellisense.Helper;
 using Dev2.Intellisense.Provider;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

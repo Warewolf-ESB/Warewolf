@@ -3,6 +3,7 @@ using System.IO;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
+using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

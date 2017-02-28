@@ -13,7 +13,10 @@ using System.Text;
 using System.Xml;
 using Dev2.Communication;
 using Dev2.Network;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Studio.Interfaces.Enums;
+using Dev2.Common.Common;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 {

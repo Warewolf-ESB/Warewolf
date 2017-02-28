@@ -9,7 +9,9 @@
 */
 
 using System.Windows;
+using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.ResourceManagement

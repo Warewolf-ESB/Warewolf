@@ -15,6 +15,7 @@ using System.Text;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Activities.Interegators;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;

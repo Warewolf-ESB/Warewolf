@@ -33,6 +33,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;

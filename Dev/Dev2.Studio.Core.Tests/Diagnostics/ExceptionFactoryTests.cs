@@ -14,6 +14,7 @@ using Dev2.Studio.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Core.Tests.Diagnostics
 {

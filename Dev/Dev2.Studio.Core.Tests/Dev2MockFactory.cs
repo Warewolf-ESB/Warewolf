@@ -15,6 +15,7 @@ using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
@@ -23,6 +24,9 @@ using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using Moq;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.Interfaces.Enums;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests

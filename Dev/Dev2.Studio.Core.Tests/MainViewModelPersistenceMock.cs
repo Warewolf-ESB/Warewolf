@@ -11,6 +11,7 @@
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Moq;

@@ -19,6 +19,7 @@ using Dev2.Settings;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Perfcounters;
 using Dev2.Settings.Security;
+using Dev2.Studio.Interfaces;
 using Moq;
 
 namespace Dev2.Core.Tests.Settings

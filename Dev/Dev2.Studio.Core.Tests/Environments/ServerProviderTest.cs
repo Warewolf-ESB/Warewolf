@@ -11,6 +11,7 @@
 using System;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
+using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

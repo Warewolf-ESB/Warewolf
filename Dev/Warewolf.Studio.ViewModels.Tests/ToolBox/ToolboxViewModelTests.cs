@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable PossibleUnintendedReferenceComparison

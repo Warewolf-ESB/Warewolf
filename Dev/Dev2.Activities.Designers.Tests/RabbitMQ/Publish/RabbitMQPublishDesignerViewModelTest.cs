@@ -11,6 +11,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common.Interfaces.Help;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable InconsistentNaming
 

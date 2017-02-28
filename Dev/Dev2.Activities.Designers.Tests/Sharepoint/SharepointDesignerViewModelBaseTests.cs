@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
