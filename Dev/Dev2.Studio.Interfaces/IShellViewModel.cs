@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 
@@ -49,37 +53,74 @@ namespace Dev2.Studio.Interfaces
 
     public interface IShellViewModelOpen
     {
-        void OpenResourceAsync(Guid resourceId, IServer server);
+        void OpenResourceAsync(Guid resourceId, IEnvironmentModel server);
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
     }
 
     public interface IShellViewModel : IShellViewModelEdit, IShellViewModelNew, IShellViewModelOpen
     {
-        IServer LocalhostServer { get; }
-        IServer ActiveServer { get; set; }
         bool ShouldUpdateActiveState { get; set; }
         void ShowPopup(IPopupMessage getDuplicateMessage);
         void SetActiveEnvironment(Guid environmentId);
-        void SetActiveServer(IServer server);
         void Debug();
         void ShowAboutBox();
-        void ShowDependencies(Guid resourceId, IServer server, bool isSource);
+        void ShowDependencies(Guid resourceId, IEnvironmentModel server, bool isSource);
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
-        void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);
+        void OpenResource(Guid resourceId, Guid environmentId, IEnvironmentModel activeServer);
         void CloseResource(Guid resourceId, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
-        void ViewSwagger(Guid resourceId, IServer server);
+        void ViewSwagger(Guid resourceId, IEnvironmentModel server);
         void ViewApisJson(string resourcePath, Uri webServerUri);
         void CreateTest(Guid resourceId);
         void RunAllTests(Guid resourceId);
         void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
-        void BrowserDebug(Guid resourceId, IServer server);
-        void StudioDebug(Guid resourceId, IServer server);
-        void CopyUrlLink(Guid resourceId, IServer server);
+        void BrowserDebug(Guid resourceId, IEnvironmentModel server);
+        void StudioDebug(Guid resourceId, IEnvironmentModel server);
+        void CopyUrlLink(Guid resourceId, IEnvironmentModel server);
         void NewSchedule(Guid resourceId);
         void SetRefreshExplorerState(bool refresh);
         void ResetMainView();
         void OnActiveEnvironmentChanged();
+
+        ICommand DeployCommand { get; }
+        ICommand ExitCommand { get; }
+        IEnvironmentModel ActiveEnvironment { get; set; }
+        IContextualResourceModel DeployResource { get; set; }
+
+        void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
+
+        bool MenuExpanded { get; set; }
+        double MenuPanelWidth { get; set; }
+        IAuthorizeCommand SaveCommand { get; }
+        IAuthorizeCommand DebugCommand { get; }
+        IAuthorizeCommand SettingsCommand { get; }
+        IAuthorizeCommand SchedulerCommand { get; }
+        IToolboxViewModel ToolboxViewModel { get; }
+        IHelpWindowViewModel HelpViewModel { get; }
+        ICommand ShowStartPageCommand { get; }
+        IAuthorizeCommand<string> NewServiceCommand { get; }
+        IAuthorizeCommand<string> NewPluginSourceCommand { get; }
+        IAuthorizeCommand<string> NewSqlServerSourceCommand { get; }
+        IAuthorizeCommand<string> NewMySqlSourceCommand { get; }
+        IAuthorizeCommand<string> NewPostgreSqlSourceCommand { get; }
+        IAuthorizeCommand<string> NewOracleSourceCommand { get; }
+        IAuthorizeCommand<string> NewOdbcSourceCommand { get; }
+        IAuthorizeCommand<string> NewWebSourceCommand { get; }
+        IAuthorizeCommand<string> NewServerSourceCommand { get; }
+        IAuthorizeCommand<string> NewEmailSourceCommand { get; }
+        IAuthorizeCommand<string> NewExchangeSourceCommand { get; }
+        IAuthorizeCommand<string> NewRabbitMQSourceCommand { get; }
+        IAuthorizeCommand<string> NewSharepointSourceCommand { get; }
+        IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
+        IAuthorizeCommand<string> NewWcfSourceCommand { get; }
+        IExplorerViewModel ExplorerViewModel { get; set; }
+
+        void DisplayDialogForNewVersion();
+
+        Task<bool> CheckForNewVersion();
+
+        bool ShowDeleteDialogForFolder(string folderBeingDeleted);
+        IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
     }
 }

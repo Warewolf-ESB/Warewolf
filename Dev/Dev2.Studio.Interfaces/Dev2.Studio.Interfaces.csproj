@@ -102,7 +102,6 @@
     <Compile Include="IFilePersistenceProvider.cs" />
     <Compile Include="IIntellisenseProvider.cs" />
     <Compile Include="ILayoutObjectViewModel.cs" />
-    <Compile Include="IMainViewModel.cs" />
     <Compile Include="IOperatorType.cs" />
     <Compile Include="IPartIsUsed.cs" />
     <Compile Include="IPropertyEditorWizard.cs" />
@@ -112,7 +111,6 @@
     <Compile Include="IResourceModel.cs" />
     <Compile Include="IResourceRepository.cs" />
     <Compile Include="IScalarHandler.cs" />
-    <Compile Include="IServer.cs" />
     <Compile Include="IServerProvider.cs" />
     <Compile Include="IServiceDebugInfoModel.cs" />
     <Compile Include="IServiceTestCommandHandler.cs" />
