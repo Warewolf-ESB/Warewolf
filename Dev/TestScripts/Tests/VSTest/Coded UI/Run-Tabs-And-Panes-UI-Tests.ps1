@@ -42,7 +42,7 @@ $TestSettingsFile = "$PSScriptRoot\TabsAndPanesUITesting.testsettings"
   <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
-    <Timeouts testTimeout=`"300000`" />
+    <Timeouts testTimeout=`"600000`" />
     <AgentRule name=`"LocalMachineDefaultRole`">
       <DataCollectors>
         <DataCollector uri=`"datacollector://microsoft/VideoRecorder/1.0`" assemblyQualifiedName=`"Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`" friendlyName=`"Screen and Voice Recorder`">

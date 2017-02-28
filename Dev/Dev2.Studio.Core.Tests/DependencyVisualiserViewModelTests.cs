@@ -194,7 +194,6 @@ namespace Dev2.Core.Tests
             var dependencyVisualiserViewModel = new DependencyVisualiserViewModel(depGrap.Object, aggreMock.Object, server.Object);
             var wasResourceModelCalled = false;
             var wasDisplayNameCalled = false;
-            var wasAllNodesCalled = false;
             dependencyVisualiserViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ResourceModel")
@@ -205,11 +204,6 @@ namespace Dev2.Core.Tests
                 {
                     wasDisplayNameCalled = true;
                 }
-
-                if (args.PropertyName == "AllNodes")
-                {
-                    wasAllNodesCalled = true;
-                }
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dependencyVisualiserViewModel);
@@ -218,7 +212,6 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             Assert.IsTrue(wasResourceModelCalled);
             Assert.IsTrue(wasDisplayNameCalled);
-            Assert.IsTrue(wasAllNodesCalled);
         }
 
         [TestMethod]
@@ -288,7 +281,7 @@ namespace Dev2.Core.Tests
                 GetDependsOnMe = true,
                 ResourceModel = resourceModel.Object
             };
-           
+
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dependencyVisualiserViewModel);
             //---------------Execute Test ----------------------
@@ -320,9 +313,10 @@ namespace Dev2.Core.Tests
             resourceModel.SetupGet(model => model.Environment).Returns(envMock.Object);
             var dependencyVisualiserViewModel = new DependencyVisualiserViewModel(depGrap.Object, aggreMock.Object, server.Object)
             {
-                GetDependsOnMe = false, ResourceModel = resourceModel.Object
+                GetDependsOnMe = false,
+                ResourceModel = resourceModel.Object
             };
-           
+
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dependencyVisualiserViewModel);
             //---------------Execute Test ----------------------
@@ -353,7 +347,7 @@ namespace Dev2.Core.Tests
                 .Returns(ValueFunction);
             envMock.SetupGet(model => model.ResourceRepository).Returns(resourceRepo.Object);
             resourceModel.SetupGet(model => model.Environment).Returns(envMock.Object);
-            var dependencyVisualiserViewModel = new DependencyVisualiserViewModel(depGrap.Object, aggreMock.Object, server.Object) {};
+            var dependencyVisualiserViewModel = new DependencyVisualiserViewModel(depGrap.Object, aggreMock.Object, server.Object) { };
 
 
             //---------------Assert Precondition----------------

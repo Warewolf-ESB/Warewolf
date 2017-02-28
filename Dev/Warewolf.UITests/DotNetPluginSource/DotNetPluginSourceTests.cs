@@ -10,8 +10,8 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class DotNetPluginSourceTests
     {
-        const string DLLAssemblySourceName = "CodedUITestDLLDotNetPluginSource";
-        const string GACAssemblySourceName = "CodedUITestGACDotNetPluginSource";
+        const string DLLAssemblySourceName = "CodedUITestDLLDLLSource";
+        const string GACAssemblySourceName = "CodedUITestGACDLLSource";
         const string SourceNameToEdit = "DotNetPluginSourceToEdit";
 
         [TestMethod]

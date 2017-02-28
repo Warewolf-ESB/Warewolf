@@ -627,12 +627,30 @@ namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
                 return this.mSequenceSmallView;
             }
         }
+        
+        public WpfButton UIDoneButton
+        {
+            get
+            {
+                if ((this.mUIDoneButton == null))
+                {
+                    this.mUIDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mUIDoneButton.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mUIDoneButton;
+            }
+        }
         #endregion
         
         #region Fields
         private SequenceLargeView mSequenceLargeView;
         
         private SequenceSmallView mSequenceSmallView;
+        
+        private WpfButton mUIDoneButton;
         #endregion
     }
     

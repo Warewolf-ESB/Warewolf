@@ -28,21 +28,21 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\PluginConnectorUISpecs.testsettings"
+$TestSettingsFile = "$PSScriptRoot\DependencyGraphUITesting.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"
 "@ + [guid]::NewGuid() + @"
 `"
-  name=`"PluginConnectorUISpecs`"
+  name=`"DependencyGraphUITests`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run Plugin Connector UI Specs.</Description>
+  <Description>Run Dependency Graph UI Tests.</Description>
   <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
-    <Timeouts testTimeout=`"300000`" />
+    <Timeouts testTimeout=`"600000`" />
     <AgentRule name=`"LocalMachineDefaultRole`">
       <DataCollectors>
         <DataCollector uri=`"datacollector://microsoft/VideoRecorder/1.0`" assemblyQualifiedName=`"Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`" friendlyName=`"Screen and Voice Recorder`">
@@ -58,39 +58,35 @@ $TestSettingsFile = "$PSScriptRoot\PluginConnectorUISpecs.testsettings"
 
 # Find test assembly
 $TestAssemblyPath = ""
-if (Test-Path "$PSScriptRoot\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UISpecs.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UISpecs.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UISpecs.dll"
+if (Test-Path "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UISpecs\bin\Debug\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\Warewolf.UITests.dll"
+} elseif (Test-Path "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll") {
+	$TestAssemblyPath = "$WorkingDir\..\..\..\..\..\Warewolf.UITests.dll"
 }
 if ($TestAssemblyPath -eq "") {
-	Write-Host Cannot find Warewolf.UISpecs.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir
+	Write-Host Cannot find Warewolf.UITests.dll at $WorkingDir\Warewolf.UISpecs\bin\Debug or $WorkingDir
 	exit 1
 }
 
 # Create full VSTest argument string.
 if ($TestList -eq "") {
-	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=PluginConnector`""
+	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"TestCategory=Dependency Graph`""
 } else {
 	$FullArgsList = " `"" + $TestAssemblyPath + "`" /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
 }
