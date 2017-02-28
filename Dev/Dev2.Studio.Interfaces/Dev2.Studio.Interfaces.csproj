@@ -43,6 +43,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -69,12 +70,17 @@
     <Compile Include="DataList\IRecordSetFieldItemModel.cs" />
     <Compile Include="DataList\IRecordSetItemModel.cs" />
     <Compile Include="DataList\IScalarItemModel.cs" />
+    <Compile Include="Deploy\IDeployDestinationExplorerViewModel.cs" />
+    <Compile Include="Deploy\IDeploySourceExplorerViewModel.cs" />
+    <Compile Include="Deploy\IDeployStatsViewer.cs" />
+    <Compile Include="Deploy\IDeployViewModel.cs" />
     <Compile Include="Enums\Modes.cs" />
     <Compile Include="Enums\NavigationViewContextType.cs" />
     <Compile Include="Enums\ResourceType.cs" />
     <Compile Include="Enums\WorkSurfaceContext.cs" />
     <Compile Include="IAuthorizeCommand.cs" />
     <Compile Include="IComplexObjectHandler.cs" />
+    <Compile Include="IConnectControlViewModel.cs" />
     <Compile Include="IContextualResourceModel.cs" />
     <Compile Include="IDataListViewModelHelper.cs" />
     <Compile Include="IDataMappingViewModel.cs" />
@@ -87,6 +93,12 @@
     <Compile Include="IEnvironmentEditedArgs.cs" />
     <Compile Include="IEnvironmentModel.cs" />
     <Compile Include="IEnvironmentRepository.cs" />
+    <Compile Include="IEnvironmentViewModel.cs" />
+    <Compile Include="IExplorerItemNodeViewModel.cs" />
+    <Compile Include="IExplorerItemViewModel.cs" />
+    <Compile Include="IExplorerRepository.cs" />
+    <Compile Include="IExplorerTreeItem.cs" />
+    <Compile Include="IExplorerViewModel.cs" />
     <Compile Include="IFilePersistenceProvider.cs" />
     <Compile Include="IIntellisenseProvider.cs" />
     <Compile Include="ILayoutObjectViewModel.cs" />
@@ -95,19 +107,24 @@
     <Compile Include="IPartIsUsed.cs" />
     <Compile Include="IPropertyEditorWizard.cs" />
     <Compile Include="IRecordsetHandler.cs" />
+    <Compile Include="IRequestServiceNameViewModel.cs" />
     <Compile Include="IResourceDesignerViewModel.cs" />
     <Compile Include="IResourceModel.cs" />
     <Compile Include="IResourceRepository.cs" />
     <Compile Include="IScalarHandler.cs" />
+    <Compile Include="IServer.cs" />
     <Compile Include="IServerProvider.cs" />
     <Compile Include="IServiceDebugInfoModel.cs" />
     <Compile Include="IServiceTestCommandHandler.cs" />
     <Compile Include="IServiceTestViewModel.cs" />
+    <Compile Include="IShellViewModel.cs" />
+    <Compile Include="ISplashViewModel.cs" />
     <Compile Include="IStudioTab.cs" />
     <Compile Include="IUserMessageProvider.cs" />
     <Compile Include="IWebActivity.cs" />
     <Compile Include="IWorkflowDesignerViewModel.cs" />
     <Compile Include="IWorkSurfaceObject.cs" />
+    <Compile Include="NetworkStateChanged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

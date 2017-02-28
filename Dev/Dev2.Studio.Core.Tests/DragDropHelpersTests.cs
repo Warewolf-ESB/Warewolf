@@ -12,7 +12,6 @@ using System;
 using System.Security.Permissions;
 using System.Windows;
 using Castle.DynamicProxy.Generators;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Views.Workflow;

@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Hosting;

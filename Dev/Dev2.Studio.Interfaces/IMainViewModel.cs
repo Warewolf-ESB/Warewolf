@@ -10,7 +10,6 @@
 
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Toolbox;
 

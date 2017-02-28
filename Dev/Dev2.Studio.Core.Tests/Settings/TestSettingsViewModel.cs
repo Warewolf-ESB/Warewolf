@@ -34,7 +34,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow,Mock<IEnvironmentModel> env)
-            : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<Dev2.Common.Interfaces.IServer>().Object, a => env.Object)
+            : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IServer>().Object, a => env.Object)
         {
             
         }

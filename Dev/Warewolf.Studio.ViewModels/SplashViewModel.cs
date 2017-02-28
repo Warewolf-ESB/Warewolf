@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.AntiCorruptionLayer;
