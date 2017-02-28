@@ -798,6 +798,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (!string.IsNullOrEmpty(_workflowLink))
                     {
+                        SaveToWorkspace();
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
                         {
                             PopUp.ShowNoInputsSelectedWhenClickLink();
@@ -809,7 +810,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         catch (Exception e)
                         {
-                            //
                             Dev2Logger.Error("OpenWorkflowLinkCommand", e);
                         }
 
@@ -2037,15 +2037,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave && ResourceModel.Environment.IsConnected)
             {
-                _asyncWorker.Start(() =>
-                {
-                    BindToModel();
-                    ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
-                    _workspaceSave = true;
-
-                });
+                _asyncWorker.Start(SaveToWorkspace);
             }
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+        }
+
+        private void SaveToWorkspace()
+        {
+            BindToModel();
+            ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
+            _workspaceSave = true;
         }
 
         /// <summary>
