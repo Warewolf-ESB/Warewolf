@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Collections;
@@ -164,6 +165,33 @@ namespace Dev2.Tests.Runtime.Hosting
                 var expected = resources.First(r => r.ResourceName == currentResource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
+        }
+
+
+        [TestMethod]
+        public void GetResourceCount_ExpectedReturnsCount()
+        {
+            List<IResource> resources;
+            var workspaceID = Guid.NewGuid();
+            SaveResources(workspaceID, out resources);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspace(workspaceID);
+
+            Assert.AreEqual(SaveResourceCount, rc.GetResourceCount(workspaceID));            
+        }
+
+        [TestMethod]
+        public void Reload_ExpectedReturnsCount()
+        {
+            List<IResource> resources;
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+            SaveResources(workspaceID, out resources);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.Reload();
+
+            Assert.AreEqual(SaveResourceCount, rc.GetResourceCount(workspaceID));            
         }
 
 
@@ -1264,6 +1292,8 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.DuplicateMatch, result.Status);
         }
 
+        
+
         #endregion
 
         #region GetDynamicObjects
@@ -2051,7 +2081,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNull(resourceToFind);
         }
 
-        
+
 
         [TestMethod]
         [Owner("Huggs")]
@@ -2187,7 +2217,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }, saveToWSPath);
         }
 
-        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef=false)
+        static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef = false)
         {
             lock (syncRoot)
             {
@@ -2244,15 +2274,15 @@ namespace Dev2.Tests.Runtime.Hosting
                     }
                     result.Add(res);
                     count++;
-                   
+
                 }
                 return result;
             }
         }
 
-        
 
-        
+
+
 
         #endregion
 
@@ -2529,7 +2559,7 @@ namespace Dev2.Tests.Runtime.Hosting
         #endregion
 
         #region Rename Resource
-        
+
         #endregion
 
         #region GetResourceList
@@ -2857,6 +2887,140 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             //---------------Test Result -----------------------
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void LoadResourceActivityCache_GivenServiceName_ShouldAddActivityToParserCache()
+        {
+            //---------------Set up test pack-------------------
+            var workspaceID =GlobalConstants.ServerWorkspaceID;
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
+
+            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+
+            const string propertyName = "_parsers";
+            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            fieldInfo?.SetValue(rc, _parsers);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            rc.LoadResourceActivityCache(workspaceID);
+            //---------------Test Result -----------------------
+            var resourceActivityCache = _parsers[GlobalConstants.ServerWorkspaceID];
+            var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
+            var actId2 = Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555");
+            Assert.IsTrue(resourceActivityCache.HasActivityInCache(actId));
+            Assert.IsTrue(resourceActivityCache.HasActivityInCache(actId2));
+            var act1 = resourceActivityCache.GetActivity(actId);
+            var act2 = resourceActivityCache.GetActivity(actId2);
+            Assert.IsNotNull(act1);
+            Assert.IsNotNull(act2);            
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void LoadResourceActivityCache_GivenServiceNameWithActivityInCache_ShouldReturnFromCache()
+        {
+            //---------------Set up test pack-------------------
+            var workspaceID =GlobalConstants.ServerWorkspaceID;
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
+
+            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+
+            const string propertyName = "_parsers";
+            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            fieldInfo?.SetValue(rc, _parsers);
+            rc.LoadResourceActivityCache(workspaceID);
+            var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var act1 = rc.Parse(workspaceID, actId);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(act1);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void LoadResourceActivityCache_GivenServiceName_ShouldPopulateServiceActionRepo()
+        {
+            //---------------Set up test pack-------------------
+            var workspaceID =GlobalConstants.ServerWorkspaceID;
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
+
+            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+
+            const string propertyName = "_parsers";
+            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            fieldInfo?.SetValue(rc, _parsers);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            rc.LoadResourceActivityCache(workspaceID);
+            //---------------Test Result -----------------------
+            var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
+            var actId2 = Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555");
+            var ds1 = ServiceActionRepo.Instance.ReadCache(actId);
+            var ds2 = ServiceActionRepo.Instance.ReadCache(actId2);
+            Assert.IsNotNull(ds1);
+            Assert.IsNotNull(ds2);
+        }
+
+        [TestMethod]
+        public void DeleteResourceWithSingleExistingResourceName_ShouldRemoveFromCache()
+        {
+            //---------------Set up test pack-------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { id1, id2 });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
+
+            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+
+            const string propertyName = "_parsers";
+            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            fieldInfo?.SetValue(rc, _parsers);
+            rc.LoadResourceActivityCache(workspaceID);
+            var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ServiceActionRepo.Instance.ReadCache(actId));
+            //---------------Execute Test ----------------------
+            rc.DeleteResource(workspaceID, actId, "WorkflowService");
+            Assert.IsNull(ServiceActionRepo.Instance.ReadCache(actId));
+
+
+        }
         #endregion
 
 
@@ -2980,12 +3144,12 @@ namespace Dev2.Tests.Runtime.Hosting
             const string destinationPath = "SomeName";
             var resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), destinationPath);
             //------------Assert Results-------------------------
-             result = rc.GetResources(workspaceID);
+            result = rc.GetResources(workspaceID);
             IResource dupResource = result.FirstOrDefault(resource => resource.ResourceName == destinationPath);
             Assert.IsNotNull(dupResource);
             var dupXelement = dupResource.ToXml();
-             var newNamecontains = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(destinationPath);
-              containsOrgName = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(resourceName);
+            var newNamecontains = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(destinationPath);
+            containsOrgName = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(resourceName);
             Assert.IsTrue(newNamecontains);
             Assert.IsNotNull(resourceCatalogResult);
             Assert.IsFalse(containsOrgName);
@@ -3046,6 +3210,94 @@ namespace Dev2.Tests.Runtime.Hosting
             {
                 //
             }
+
+            //------------Assert Results-------------------------
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_GetResourceListGivenWorkspace_ExpectResources()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            var resourceList = rc.GetResourceList(workspaceID);
+            //------------Assert Precondition-----------------
+            Assert.IsNotNull(resourceList);
+            //------------Execute Test---------------------------
+            var count = resourceList.Count;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, count);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResourceCatalog_UnitTest_GetResourceCountGivenWorkspace_ExpectCorrectResources()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            var resourceList = rc.GetResourceCount(workspaceID);
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, resourceList);
+
+        }
+     
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(XmlException))]
+        public void ResourceCatalog_UnitTest_GetResourceOfTNotExist_ExpectNull()
+        {
+            //------------Setup for test--------------------------
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            var resourceList = rc.GetResource<PluginSource>(Guid.NewGuid(), Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.IsNull(resourceList);
+
+        }
+        
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ResourceCatalog_UnitTest_GetDependantsInvalidArgs_ExpectExceptions()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            rc.GetDependants(workspaceID, null);
 
             //------------Assert Results-------------------------
 

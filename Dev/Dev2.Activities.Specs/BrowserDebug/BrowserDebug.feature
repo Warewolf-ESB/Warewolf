@@ -73,6 +73,37 @@ Scenario: Executing a Foreach workflow
 		When workflow "ForEachAssigneWF" is saved "1" time
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/ForEachAssigneWF.debug?" in Browser
 		Then The Debug in Browser content contains the variable assigned executed "4" times
-	  
-#Scenario: Executing a Dotnet plugin workflow
-#Scenario: Executing a Recordset sort workflow
+  
+Scenario: Executing a Dotnet plugin workflow
+		Given I have a workflow "DotNetDLLWf"
+		And "DotNetDLLWf" contains an DotNet DLL "DotNetService" as
+	     | Source                   | ClassName                       | ObjectName | Action    | ActionOutputVaribale |
+	     | New DotNet Plugin Source | TestingDotnetDllCascading.Human | [[@human]] | BuildInts | [[rec1().num]]       |
+		And "DotNetService" constructorinputs 0 with inputs as
+		| parameterName | value |type|	  
+		When workflow "DotNetDLLWf" is saved "1" time
+		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?" in Browser
+		Then The Debug in Browser content contains order of "AssignFlow", "CaseConvertFlow" and "ReplaceFlow" in SequenceFlow
+
+Scenario: Executing a Forward Sort Recordset workflow
+		Given I have a workflow "SortRecordsetWF"
+		And "SortRecordsetWF" contains an Assign "ExampleRecordSet" as
+			|			variable			|	value	|
+			|	[[Degree(1).YearCompleted]]	|	2015	|
+			|	[[Degree(2).YearCompleted]]	|	2012	|
+			|	[[Degree(3).YearCompleted]]	|	2014	|
+			|	[[Degree(4).YearCompleted]]	|	2013	|
+		And "SortRecordsetWF" contains an Sort "Degree" as
+			| Sort Field  | Sort Order |
+			| [[Degree().YearCompleted]] | Forward  |
+		And workflow "SortRecordsetWF" is saved "1" time
+		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/SortRecordsetWF.debug?" in Browser
+		Then Debugstate in index 2 has output as 
+			| Values |
+			| 2012   |
+			| 2013   |
+			| 2014   |
+			| 2015   |
+
+
+Scenario: Executing Hello Wolrd in a Foreach Looped Three times

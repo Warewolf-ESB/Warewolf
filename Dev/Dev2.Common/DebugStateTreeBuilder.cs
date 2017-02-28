@@ -12,7 +12,6 @@ namespace Dev2.Common
         public static IEnumerable<IDebugState> BuildTree(IEnumerable<IDebugState> source)
         {
             var groups = source.GroupBy(i => i.ParentID);
-
             var roots = groups.First(g => !g.Key.HasValue).ToList();
 
             if (roots.Any())
