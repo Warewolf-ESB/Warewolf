@@ -25,7 +25,7 @@ if ($ServerService -ne $null -and $ServerService.Status -eq "Running") {
         }
     }
 }
-Get-Process *Warewolf* | %{$_.Kill()}
+Get-Process *Warewolf* | %{if (!($_.HasExited)) {$_.Kill()}}
 
 $ToClean = `
 "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
