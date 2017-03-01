@@ -167,17 +167,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
         }
 
-        [Given(@"I am connected on a remote server")]
-        [When(@"I am connected on a remote server")]
-        [Then(@"I am connected on a remote server")]
-        public void GivenIAmConnectedOnARemoteServer()
-        {
-            Select_RemoteConnectionIntegration_From_Explorer();
-            Click_Explorer_RemoteServer_Connect_Button();
-            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
-        }
-
         [Then(@"Remote Server Refreshes")]
         public void ThenRemoteServerRefreshes()
         {
@@ -429,18 +418,10 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
         }
 
-        [Given(@"I Click Explorer Connect Remote Server Button")]
-        [When(@"I Click Explorer Connect Remote Server Button")]
-        [Then(@"I Click Explorer Connect Remote Server Button")]
-        public void Click_Explorer_RemoteServer_Connect_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.NewServerButton, new Point(11, 10));            
-        }
-
-        [Given(@"I Click Connect Control InExplorer")]
-        [When(@"I Click Connect Control InExplorer")]
-        [Then(@"I Click Connect Control InExplorer")]
-        public void Click_Connect_Control_InExplorer()
+        [Given(@"I Click Explorer ServerCombobox ToggleButton")]
+        [When(@"I Click Explorer ServerCombobox ToggleButton")]
+        [Then(@"I Click Explorer ServerCombobox ToggleButton")]
+        public void Click_Explorer_ServerCombobox_ToggleButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
         }
@@ -451,7 +432,12 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon);
         }
 
-        public void Click_Explorer_RemoteServer_Edit_Button()
+        public void Click_NewServerButton_From_ExplorerConnectControl()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.NewServerButton, new Point(11, 10));
+        }
+
+        public void Click_EditServerButton_From_ExplorerConnectControl()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton, new Point(11, 10));
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab was not open.");
@@ -540,20 +526,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer.NewRemoteServerItemText, new Point(114, 10));
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Exists, "Server source wizard does not exist.");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard protocol dropdown does not exist.");
-        }
-
-        public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(94, 10));
-            Assert.AreEqual("localhost", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost.DisplayText, "Selected remote server is not localhost");
-        }
-
-        public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(174, 8));
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
         }
 
         [When(@"I Move FirstSubItem Into FirstItem Folder")]
@@ -646,10 +618,10 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Then(@"I Connect To Remote Server")]
         public void ConnectToRemoteServer()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));            
-        }      
+            Click_Explorer_ServerCombobox_ToggleButton();
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
+        }
 
         [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
         [When(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
