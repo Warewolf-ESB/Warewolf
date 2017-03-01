@@ -798,6 +798,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (!string.IsNullOrEmpty(_workflowLink))
                     {
+                        SaveToWorkspace();
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
                         {
                             PopUp.ShowNoInputsSelectedWhenClickLink();
@@ -809,7 +810,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         catch (Exception e)
                         {
-                            //
                             Dev2Logger.Error("OpenWorkflowLinkCommand", e);
                         }
 
@@ -1107,7 +1107,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     var switchExpressionValue = SwitchExpressionValue(activityExpression);
                     ModelProperty modelProperty = mi.Properties["Key"];
-                    if (modelProperty != null && ((modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case")))
+                    if (modelProperty?.Value != null && (FlowController.OldSwitchValue == null || string.IsNullOrWhiteSpace(FlowController.OldSwitchValue)))
                     {
                         FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
                     }
@@ -1115,32 +1115,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        [ExcludeFromCodeCoverage]
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;
-
             var switchExpressionValue = string.Empty;
+            var tmpProperty = tmpModelItem?.Properties["ExpressionText"];
+            var tmp = tmpProperty?.Value?.ToString();
 
-            if (tmpModelItem != null)
+            if (!string.IsNullOrEmpty(tmp))
             {
-                var tmpProperty = tmpModelItem.Properties["ExpressionText"];
+                int start = tmp.IndexOf("(", StringComparison.Ordinal);
+                int end = tmp.IndexOf(",", StringComparison.Ordinal);
 
-                if (tmpProperty != null)
+                if (start < end && start >= 0)
                 {
-                    var tmp = tmpProperty.Value?.ToString();
-
-                    if (!string.IsNullOrEmpty(tmp))
-                    {
-                        int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                        int end = tmp.IndexOf(",", StringComparison.Ordinal);
-
-                        if (start < end && start >= 0)
-                        {
-                            start += 2;
-                            end -= 1;
-                            switchExpressionValue = tmp.Substring(start, (end - start));
-                        }
-                    }
+                    start += 2;
+                    end -= 1;
+                    switchExpressionValue = tmp.Substring(start, (end - start));
                 }
             }
             return switchExpressionValue;
@@ -1880,47 +1872,50 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             view?.BringIntoView();
         }
-
         protected void LoadDesignerXaml()
         {
-            _asyncWorker.Start(() =>
+
+            var xaml = _resourceModel.WorkflowXaml;
+
+            // if null, try fetching. It appears there is more than the two routes identified to populating xaml ;(
+            if (xaml == null || xaml.Length == 0)
             {
-                var xaml = _resourceModel.WorkflowXaml;
+                // we always want server at this point ;)
+                var workspace = GlobalConstants.ServerWorkspaceID;
 
-                if (xaml == null || xaml.Length == 0)
+                // log the trace for fetch ;)
+                Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
+
+                // In the case of null of empty try fetching again ;)
+                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
+                if (msg != null)
                 {
-                    var workspace = GlobalConstants.ServerWorkspaceID;
-                    Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
-                    var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
-                    if (msg != null)
-                    {
-                        xaml = msg.Message;
-                    }
+                    xaml = msg.Message;
                 }
+            }
 
-                if (xaml == null || xaml.Length == 0)
+            // if we still cannot find it, create a new one ;)
+            if (xaml == null || xaml.Length == 0)
+            {
+                if (_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
-                    if (_resourceModel.ResourceType == ResourceType.WorkflowService)
-                    {
-                        Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
-                        var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
-                        return new System.Action(() =>
-                        {
-                            _wd.Load(activityBuilder);
-                            BindToModel();
-                        });
-
-                    }
+                    // log the trace for fetch ;)
+                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
+                    var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
+                    _wd.Load(activityBuilder);
+                    BindToModel();
+                }
+                else
+                {
+                    // we have big issues ;(
                     throw new Exception($"Could not find resource definition for {_resourceModel.ResourceName}");
                 }
-
-                return (() =>
-                {
-                    SetDesignerText(xaml);
-                    _wd.Load();
-                });
-            }, action => action.Invoke());
-
+            }
+            else
+            {
+                SetDesignerText(xaml);
+                _wd.Load();
+            }
         }
 
         private void SetDesignerText(StringBuilder xaml)
@@ -2042,15 +2037,16 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave && ResourceModel.Environment.IsConnected)
             {
-                _asyncWorker.Start(() =>
-                {
-                    BindToModel();
-                    ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
-                    _workspaceSave = true;
-
-                });
+                _asyncWorker.Start(SaveToWorkspace);
             }
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
+        }
+
+        private void SaveToWorkspace()
+        {
+            BindToModel();
+            ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
+            _workspaceSave = true;
         }
 
         /// <summary>

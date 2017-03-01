@@ -4474,16 +4474,16 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="Custom" Id="DsfMultiAssignActiviCustom" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="MultiAssign" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">Assign a value to Name if blank (1)(MultiAssignDesigner)</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName" Operator="Contains">MultiAssignDesigner</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId" Operator="Contains">MultiAssignDesigner</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
@@ -4502,7 +4502,7 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
-                                                            <UIObject ControlType="Custom" Id="DsfDecisioActiviCustom" FriendlyName="DsfDecisioActiviCustom" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="Decision" FriendlyName="DsfDecisioActiviCustom" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf</WindowTitle>
@@ -4510,8 +4510,8 @@
                                                               <AndCondition>
                                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">FlowDecisionDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">FlowDecisionDesigner</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId" Operator="Contains">FlowDecisionDesigner</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName" Operator="Contains">FlowDecisionDesigner</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
@@ -4529,35 +4529,6 @@
                                                                   <Descendants />
                                                                 </UIObject>
                                                               </Descendants>
-                                                            </UIObject>
-                                                          </Descendants>
-                                                        </UIObject>
-                                                        <UIObject ControlType="Custom" Id="UIFlowchartCustom" FriendlyName="Flowchart" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                            <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Hello World(FlowchartDesigner)</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants>
-                                                            <UIObject ControlType="Custom" Id="UIDsfMultiAssignActiviCustom" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
-                                                              <TechnologyName>UIA</TechnologyName>
-                                                              <WindowTitles>
-                                                                <WindowTitle>Warewolf</WindowTitle>
-                                                              </WindowTitles>
-                                                              <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">Set the output variable (1)(MultiAssignDesigner)</PropertyCondition>
-                                                              </AndCondition>
-                                                              <SupportLevel>0</SupportLevel>
-                                                              <Descendants />
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
@@ -4683,6 +4654,211 @@
                                           </Descendants>
                                         </UIObject>
                                       </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Custom" Id="SplitPane_AutoIDCustom" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="TabPage" Id="UIDev2ViewModelsStudioTabPage" FriendlyName="Dev2.ViewModels.StudioTestViewModel" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="Name">Dev2.ViewModels.StudioTestViewModel</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Custom" Id="UIDev2StudioViewModelsCustom" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                            <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="Custom" Id="UIContentDockManagerCustom" FriendlyName="ContentDockManager" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">ContentDockManager</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Custom" Id="UIUI_ServiceTestView_ACustom" FriendlyName="UI_ServiceTestView_AutoID" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ServiceTestView</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">UI_ServiceTestView_AutoID</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Custom" Id="UIUserControl_1Custom" FriendlyName="UserControl_1" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.DesignerView</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UserControl_1</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="UIScrollViewerPane" FriendlyName="scrollViewer" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">scrollViewer</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Custom" Id="UIActivityBuilderCustom" FriendlyName="ActivityBuilder" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.ActivityTypeDesigner</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">ActivityTypeDesigner</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Custom" Id="UIWorkflowItemPresenteCustom" FriendlyName="WorkflowItemPresenter" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.WorkflowItemPresenter</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">WorkflowItemPresenter</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Custom" Id="UIFlowchartCustom" FriendlyName="Flowchart" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                        <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">DecisionWF(FlowchartDesigner)</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Custom" Id="UIFlowDecisionCustom" FriendlyName="FlowDecision" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.FlowDecisionDesigner</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">FlowDecisionDesigner</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                                <UIObject ControlType="Custom" Id="UIOUTPUTCustom" FriendlyName="OUTPUT" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">OutputPane</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Button" Id="UIUnpinBtnButton" FriendlyName="unpinBtn" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">unpinBtn</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
                                     </UIObject>
                                   </Descendants>
                                 </UIObject>

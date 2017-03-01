@@ -38,7 +38,7 @@ $TestSettingsFile = "$PSScriptRoot\OtherUITests.testsettings"
   <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
-    <Timeouts testTimeout=`"300000`" />
+    <Timeouts testTimeout=`"600000`" />
     <AgentRule name=`"LocalMachineDefaultRole`">
       <DataCollectors>
         <DataCollector uri=`"datacollector://microsoft/VideoRecorder/1.0`" assemblyQualifiedName=`"Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`" friendlyName=`"Screen and Voice Recorder`">
@@ -89,7 +89,7 @@ if (!(Test-Path $PSScriptRoot\TestResults)) {
 
 if ($TestList -eq "") {
 	# Create full MSTest argument string.
-	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing&!Default Layout&!Resource Tools&!Save Dialog&!Shortcut Keys&!Settings`""
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing&!Default Layout&!Resource Tools&!Save Dialog&!Shortcut Keys&!Settings&!Dependency Graph&!Variables&!Email Tools&!Plugin Sources&!Web Sources&!Database Sources`""
 } else {
 	# Create full MSTest argument string.
 	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList

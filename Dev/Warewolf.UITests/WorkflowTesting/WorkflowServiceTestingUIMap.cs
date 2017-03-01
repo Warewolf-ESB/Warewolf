@@ -1,4 +1,7 @@
-﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Linq;
@@ -21,66 +24,6 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
     [Binding]
     public partial class WorkflowServiceTestingUIMap
     {
-        UIMap UIMap
-        {
-            get
-            {
-                if (_UIMap == null)
-                {
-                    _UIMap = new UIMap();
-                }
-
-                return _UIMap;
-            }
-        }
-
-        private UIMap _UIMap;
-
-        WorkflowTabUIMap WorkflowTabUIMap
-        {
-            get
-            {
-                if (_WorkflowTabUIMap == null)
-                {
-                    _WorkflowTabUIMap = new WorkflowTabUIMap();
-                }
-
-                return _WorkflowTabUIMap;
-            }
-        }
-
-        private WorkflowTabUIMap _WorkflowTabUIMap;
-
-        ExplorerUIMap ExplorerUIMap
-        {
-            get
-            {
-                if (_ExplorerUIMap == null)
-                {
-                    _ExplorerUIMap = new ExplorerUIMap();
-                }
-
-                return _ExplorerUIMap;
-            }
-        }
-
-        private ExplorerUIMap _ExplorerUIMap;
-
-        DialogsUIMap DialogsUIMap
-        {
-            get
-            {
-                if (_DialogsUIMap == null)
-                {
-                    _DialogsUIMap = new DialogsUIMap();
-                }
-
-                return _DialogsUIMap;
-            }
-        }
-
-        private DialogsUIMap _DialogsUIMap;
-
         [Given("I Drag Dice Roll Example Onto DesignSurface")]
         [When("I Drag Dice Roll Example Onto DesignSurface")]
         [Then("I Drag Dice Roll Example Onto DesignSurface")]
@@ -191,13 +134,13 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
 
         public void Click_Output_Step()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.UIFlowchartCustom.UIDsfMultiAssignActiviCustom, new Point(77, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.MultiAssign, new Point(77, 8));
         }
 
         public void Click_Decision_Step()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom.DisplayNameEdit.DrawHighlight();
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfDecisioActiviCustom.DisplayNameEdit, new Point(77, 8));
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision.DisplayNameEdit.DrawHighlight();
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision.DisplayNameEdit, new Point(77, 8));
         }
 
         [Then(@"I Click Run all tests button")]
@@ -220,7 +163,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         [When(@"I Click AssigName From DesignSurface")]
         public void Click_AssigName_From_DesignSurface()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.DsfMultiAssignActiviCustom);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.MultiAssign);
         }
 
         public void Click_MockRadioButton_On_Decision_TestStep()
@@ -998,6 +941,95 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 if (BrokenRule.ToUpper().Equals(DuplicateNameError))
                     Assert.AreEqual("Please save currently edited Test(s) before running the tests.", DialogsUIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Messagebox does not show duplicated name error");
             }
+        }
+
+        [When(@"I Click Decision On Workflow Service Test View")]
+        public void Click_Decision_On_Workflow_Service_Test_View()
+        {
+            Point point;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision.WaitForControlCondition((uitestcontrol) => { return uitestcontrol.TryGetClickablePoint(out point); }, 60000);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision);
+        }
+
+        #region UIMaps
+        UIMap UIMap
+        {
+            get
+            {
+                if (_UIMap == null)
+                {
+                    _UIMap = new UIMap();
+                }
+
+                return _UIMap;
+            }
+        }
+
+        private UIMap _UIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
+
+        #endregion
+
+        /// <summary>
+        /// PinUnpinOutPutButton
+        /// </summary>
+        public void PinUnpinOutPutButton()
+        {
+            #region Variable Declarations
+            WpfButton uIUnpinBtnButton = this.MainStudioWindow.SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIOUTPUTCustom.UIUnpinBtnButton;
+            #endregion
+
+            // Click 'unpinBtn' button
+            Mouse.Click(uIUnpinBtnButton, new Point(12, 14));
+        }
+
+        public void Click_DecisionOn_Service_TestView()
+        {
+            Mouse.Click(MainStudioWindow.SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_ServiceTestView_ACustom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIFlowDecisionCustom);
         }
     }
 }
