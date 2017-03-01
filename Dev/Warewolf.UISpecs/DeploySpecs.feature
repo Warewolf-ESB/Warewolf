@@ -135,7 +135,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Then I Click Deploy version conflicts MessageBox OK
 	And I Click Deploy conflicts MessageBox OK
 	And I Click Deploy Successful MessageBox OK
-	And I Connect To Remote Server
+	And I Try Connect To Remote Server
 	And I Wait For Explorer First Remote Server Spinner
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
@@ -159,7 +159,7 @@ Scenario: Changing Seleced Server On desploy Source While Connected To Remote Se
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
 	And I Click Deploy Tab Source Server Connect Button
-	And I Connect To Remote Server
+	And I Try Connect To Remote Server
 	And I Select localhost From Deploy Tab Source Server Combobox
 	And I validate the Resource tree is loaded
 

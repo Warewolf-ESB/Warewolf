@@ -167,17 +167,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
         }
 
-        [Given(@"I am connected on a remote server")]
-        [When(@"I am connected on a remote server")]
-        [Then(@"I am connected on a remote server")]
-        public void GivenIAmConnectedOnARemoteServer()
-        {
-            Select_RemoteConnectionIntegration_From_Explorer();
-            Click_Explorer_RemoteServer_Connect_Button();
-            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner);
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists);
-        }
-
         [Then(@"Remote Server Refreshes")]
         public void ThenRemoteServerRefreshes()
         {
@@ -420,18 +409,10 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
         }
 
-        [Given(@"I Click Explorer Connect Remote Server Button")]
-        [When(@"I Click Explorer Connect Remote Server Button")]
-        [Then(@"I Click Explorer Connect Remote Server Button")]
-        public void Click_Explorer_RemoteServer_Connect_Button()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.NewServerButton, new Point(11, 10));            
-        }
-
-        [Given(@"I Click Connect Control InExplorer")]
-        [When(@"I Click Connect Control InExplorer")]
-        [Then(@"I Click Connect Control InExplorer")]
-        public void Click_Connect_Control_InExplorer()
+        [Given(@"I Click Explorer ServerCombobox ToggleButton")]
+        [When(@"I Click Explorer ServerCombobox ToggleButton")]
+        [Then(@"I Click Explorer ServerCombobox ToggleButton")]
+        public void Click_Explorer_ServerCombobox_ToggleButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
         }
@@ -442,7 +423,12 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ExecuteIcon);
         }
 
-        public void Click_Explorer_RemoteServer_Edit_Button()
+        public void Click_NewServerButton_From_ExplorerConnectControl()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.NewServerButton, new Point(11, 10));
+        }
+
+        public void Click_EditServerButton_From_ExplorerConnectControl()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.EditServerButton, new Point(11, 10));
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab was not open.");
@@ -468,7 +454,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
             Select_RemoteConnectionIntegration_From_Explorer();
-            Click_Explorer_RemoteServer_Connect_Button();
             Playback.Wait(1000);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
             UIMap.Click_Settings_RibbonButton();
@@ -534,20 +519,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard protocol dropdown does not exist.");
         }
 
-        public void Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "localhost (connected) does not exist in explorer remote server drop down list");
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(94, 10));
-            Assert.AreEqual("localhost", MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsLocalhost.DisplayText, "Selected remote server is not localhost");
-        }
-
-        public void Select_localhost_From_Explorer_Remote_Server_Dropdown_List()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(174, 8));
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-        }
-
         [When(@"I Move FirstSubItem Into FirstItem Folder")]
         public void Move_FirstSubItem_Into_FirstItem_Folder()
         {
@@ -587,32 +558,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
                 Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
             }
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = string.Empty;
-        }
-
-        [Given(@"I Try DisConnect To Remote Server")]
-        [When(@"I Try DisConnect To Remote Server")]
-        [Then(@"I Try DisConnect To Remote Server")]
-        public void TryDisConnectToRemoteServer()
-        {
-            if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
-            {
-                Click_Explorer_RemoteServer_Connect_Button();
-                Click_Connect_Control_InExplorer();
-                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-            }
-            else
-            {
-                Click_Connect_Control_InExplorer();
-                if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
-                {
-                    Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text);
-                    Click_Explorer_RemoteServer_Connect_Button();
-                    Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegration.Exists);
-                    Click_Connect_Control_InExplorer();
-                    Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-                }
-                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Text);
-            }
         }
 
         [When(@"I Wait For Explorer Localhost Spinner")]
@@ -659,30 +604,14 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             }
         }
 
+        [Given(@"I Connect To Remote Server")]
         [When(@"I Connect To Remote Server")]
+        [Then(@"I Connect To Remote Server")]
         public void ConnectToRemoteServer()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
-            Click_Explorer_RemoteServer_Connect_Button();
-        }
-
-        [When(@"I Try Connect To Remote Server")]
-        public void TryConnectToRemoteServer()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
-            if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
-            {
-                Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
-                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(226, 13));
-            }
-            else
-            {
-                Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
-                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-                Click_Explorer_RemoteServer_Connect_Button();
-            }
+            Click_Explorer_ServerCombobox_ToggleButton();
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "RemoteConnectionIntegration item does not exist in remote server combobox list.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
 
         [Given(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
@@ -690,7 +619,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Then(@"I Try Remove ""(.*)"" From Remote Server Explorer")]
         public void I_Try_Remove_From_Remote_Server_Explorer(string ResourceName)
         {
-            TryConnectToRemoteServer();
+            ConnectToRemoteServer();
             Filter_Explorer(ResourceName);
             try
             {
@@ -711,41 +640,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             {
                 if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.ClearFilterButton))
                     TryClearExplorerFilter();
-            }
-        }
-
-        public void TryDisconnectFromRemoteServerAndRemoveSourceFromExplorer(string SourceName)
-        {
-            try
-            {
-                if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.SelectedItemAsRemoteConnectionIntegrationConnected))
-                {
-                    Click_Explorer_RemoteServer_Connect_Button();
-                }
-                else
-                {
-                    Click_Connect_Control_InExplorer();
-                    if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.ComboboxListItemAsTSTCIREMOTEConnected))
-                    {
-                        Select_TSTCIREMOTEConnected_From_Explorer_Remote_Server_Dropdown_List();
-                        Click_Explorer_RemoteServer_Connect_Button();
-                    }
-                }
-                Select_LocalhostConnected_From_Explorer_Remote_Server_Dropdown_List();
-                Filter_Explorer(SourceName);
-                UIMap.WaitForControlNotVisible(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
-                if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem))
-                {
-                    RightClick_Explorer_Localhost_FirstItem();
-                    Select_Delete_From_ExplorerContextMenu();
-                    DialogsUIMap.Click_MessageBox_Yes();
-                }
-                TryClearExplorerFilter();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cleanup failed to remove remote server " + SourceName + ". Test may have crashed before remote server " + SourceName + " was connected.\n" + e.Message);
-                TryClearExplorerFilter();
             }
         }
 
