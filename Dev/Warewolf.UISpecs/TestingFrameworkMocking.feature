@@ -16,6 +16,7 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And I Open Explorer First Item Tests With Context Menu
 	And I Click The Create "4"th test Button
 	Then I Open Explorer First Item Context Menu
+	And I Wait For Debug Butoon Enabled
 	And I Press F6
 	And I Click Create Test From Debug
 	And Message box window appears
