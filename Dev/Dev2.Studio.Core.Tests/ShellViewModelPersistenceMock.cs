@@ -18,15 +18,15 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    public sealed class MainViewModelPersistenceMock : MainViewModel
+    public sealed class ShellViewModelPersistenceMock : ShellViewModel
     {
-        public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository, bool createDesigners = true)
-            : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, environmentRepository, new VersionChecker(), createDesigners)
+        public ShellViewModelPersistenceMock(IServerRepository serverRepository, bool createDesigners = true)
+            : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, serverRepository, new VersionChecker(), createDesigners)
         {
         }  
         
-        public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository,IAsyncWorker asyncWorker, bool createDesigners = true)
-            : base(new Mock<IEventAggregator>().Object, asyncWorker, environmentRepository, new VersionChecker(), createDesigners)
+        public ShellViewModelPersistenceMock(IServerRepository serverRepository,IAsyncWorker asyncWorker, bool createDesigners = true)
+            : base(new Mock<IEventAggregator>().Object, asyncWorker, serverRepository, new VersionChecker(), createDesigners)
         {
           
         }

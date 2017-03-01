@@ -432,7 +432,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         public void GivenWarewolfServerIsRunning()
         {
 
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             if (!environmentModel.IsConnected)
                 environmentModel.Connect();
             var controllerFactory = new CommunicationControllerFactory();
@@ -498,7 +498,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         public void WhenIOpen(string p0)
         {
             var guid = ScenarioContext.Current.Get<Guid>("resourceId");
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environmentModel");
+            var environmentModel = ScenarioContext.Current.Get<IServer>("environmentModel");
             IContextualResourceModel loadContextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(guid);
             if(ScenarioContext.Current.ContainsKey("resourceModel"))
                 ScenarioContext.Current["resourceModel"] = loadContextualResourceModel;

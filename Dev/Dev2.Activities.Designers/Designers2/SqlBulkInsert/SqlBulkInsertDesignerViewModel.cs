@@ -46,7 +46,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
 
         readonly IEventAggregator _eventPublisher;
-        readonly IEnvironmentModel _environmentModel;
+        readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
 
         bool _isInitializing;
@@ -70,19 +70,19 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         //ModelItem Modelitem;
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator)
         {
            // Modelitem = modelItem;
             this.RunViewSetup();
         }
 
-        public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public SqlBulkInsertDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
-            VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            _environmentModel = environmentModel;
+            VerifyArgument.IsNotNull("environmentModel", server);
+            _server = server;
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
 
@@ -474,7 +474,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             if(shellViewModel != null)
             {
-                shellViewModel.OpenResource(SelectedDatabase.ResourceID,_environmentModel.ID,shellViewModel.ActiveServer);
+                shellViewModel.OpenResource(SelectedDatabase.ResourceID,_server.ID,shellViewModel.ActiveServer);
                 RefreshDatabases();
             }            
         }
@@ -487,19 +487,19 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         IEnumerable<DbSource> GetDatabases()
         {
-            var dbSources = _environmentModel.ResourceRepository.FindSourcesByType<DbSource>(_environmentModel, enSourceType.SqlDatabase);
+            var dbSources = _server.ResourceRepository.FindSourcesByType<DbSource>(_server, enSourceType.SqlDatabase);
             return dbSources.Where(source => source.ResourceType== "SqlDatabase" || source.ServerType==enSourceType.SqlDatabase);
         }
 
         DbTableList GetDatabaseTables(DbSource dbSource)
         {
-            var tables = _environmentModel.ResourceRepository.GetDatabaseTables(dbSource);
+            var tables = _server.ResourceRepository.GetDatabaseTables(dbSource);
             return tables ?? EmptyDbTables;
         }
 
         IDbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
         {
-            var columns = _environmentModel.ResourceRepository.GetDatabaseTableColumns(dbSource, dbTable);
+            var columns = _server.ResourceRepository.GetDatabaseTableColumns(dbSource, dbTable);
             return columns ?? EmptyDbColumns;
         }
 
@@ -715,7 +715,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

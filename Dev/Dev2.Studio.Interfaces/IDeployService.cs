@@ -20,8 +20,8 @@ namespace Dev2.Studio.Interfaces
         /// </summary>
         /// <param name="deployDto">The DTO to be deployed.</param>
         /// <param name="sourceEnviroment"></param>
-        /// <param name="environmentModel" />
-        void Deploy(IDeployDto deployDto, IEnvironmentModel sourceEnviroment, IEnvironmentModel environmentModel);
+        /// <param name="servernmentModel" />
+        void Deploy(IDeployDto deployDto, IServer sourceEnviroment, IServer server);
 
     }
 }

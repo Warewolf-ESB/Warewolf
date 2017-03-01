@@ -17,7 +17,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
-using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable RedundantArgumentDefaultValue
 // ReSharper disable RedundantOverload.Global
@@ -31,11 +30,11 @@ namespace Dev2.Settings.Perfcounters
     public class PerfcounterViewModel : SettingsItemViewModel, IUpdatesHelp
     {
         protected IResourcePickerDialog _resourcePicker;
-        readonly IEnvironmentModel _environment;
+        readonly IServer _environment;
         private ObservableCollection<IPerformanceCountersByMachine> _serverCounters;
         private ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
 
-        internal PerfcounterViewModel(IPerformanceCounterTo counters, IEnvironmentModel environment)
+        internal PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment)
             : this(counters, environment,null)
         {
         }
@@ -50,23 +49,22 @@ namespace Dev2.Settings.Perfcounters
 
         static IEnvironmentViewModel GetEnvironment()
         {
-            var environment = EnvironmentRepository.Instance.ActiveEnvironment;
+            var server = ServerRepository.Instance.ActiveServer;
 
-            IServer server = new Server(environment);
 
             if (server.Permissions == null)
             {
                 server.Permissions = new List<IWindowsGroupPermission>();
-                if(environment.AuthorizationService?.SecurityService != null)
+                if(server.AuthorizationService?.SecurityService != null)
                 {
-                    server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
+                    server.Permissions.AddRange(server.AuthorizationService.SecurityService.Permissions);
                 }
             }
             var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             return env;
         }
 
-        public PerfcounterViewModel(IPerformanceCounterTo counters, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
+        public PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment, Func<IResourcePickerDialog> createfunc = null)
         {
             VerifyArgument.IsNotNull("counters", counters);
             VerifyArgument.IsNotNull("environment", environment);
@@ -291,7 +289,7 @@ namespace Dev2.Settings.Perfcounters
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

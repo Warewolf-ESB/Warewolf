@@ -17,7 +17,7 @@ namespace Dev2.ConnectionHelpers
     public class ConnectControlEnvironment : INotifyPropertyChanged, IConnectControlEnvironment
     {
         #region |Fields|
-        IEnvironmentModel _environmentModel;
+        IServer _server;
         bool _isConnected;
         string _connectedText;
         string _displayName;
@@ -25,16 +25,16 @@ namespace Dev2.ConnectionHelpers
         #endregion
 
         #region |Properties|
-        public IEnvironmentModel EnvironmentModel
+        public IServer Server
         {
             get
             {
-                return _environmentModel;
+                return _server;
             }
             set
             {
-                _environmentModel = value;
-                DisplayName = _environmentModel.Name;
+                _server = value;
+                DisplayName = _server.Name;
                 OnPropertyChanged();
             }
         }

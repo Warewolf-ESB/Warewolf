@@ -23,7 +23,6 @@ using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
-using Warewolf.Studio.AntiCorruptionLayer;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 // ReSharper disable InconsistentNaming
 
@@ -160,7 +159,6 @@ namespace Warewolf.Studio.ViewModels
                     {
                         ServerHasDisconnected(this, server1);
                     }
-                    SelectedConnection.DisplayName = SelectedConnection.ResourceName;
                     IsConnected = false;
                     ServerDisconnected?.Invoke(this, SelectedConnection);
                 }
@@ -263,7 +261,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (value != null && _selectedConnection != value)
+                if (value != null && !Equals(_selectedConnection, value))
                 {
                     _selectedConnection = value;
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
@@ -281,14 +279,13 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetActiveEnvironment()
         {
-            if (_selectedConnection?.ResourceName != null)
+            if (_selectedConnection?.DisplayName != null)
             {
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 if (mainViewModel != null && ShouldUpdateActiveEnvironment)
                 {
                     mainViewModel.ShouldUpdateActiveState = _selectedConnection.IsConnected;
-                    mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
-                    mainViewModel.SetActiveServer(_selectedConnection);
+                    mainViewModel.SetActiveServer(_selectedConnection.EnvironmentID);
                 }
             }
         }
@@ -298,7 +295,7 @@ namespace Warewolf.Studio.ViewModels
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel != null && ShouldUpdateActiveEnvironment)
             {
-                mainViewModel.SetActiveEnvironment(_selectedConnection.EnvironmentID);
+                mainViewModel.SetActiveServer(_selectedConnection.EnvironmentID);
             }
             mainViewModel?.NewServerSource(string.Empty);
             IsConnected = false;
@@ -392,23 +389,22 @@ namespace Warewolf.Studio.ViewModels
         private static void SetActiveServer(IServer connection)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.SetActiveEnvironment(connection.EnvironmentID);
-            mainViewModel?.SetActiveServer(connection);
-            mainViewModel?.OnActiveEnvironmentChanged();
+            mainViewModel?.SetActiveServer(connection.EnvironmentID);
+            mainViewModel?.OnActiveServerChanged();
         }
         
         public void Edit()
         {
             if (SelectedConnection != null)
             {
-                var server = SelectedConnection as Server;
+                var server = SelectedConnection;
                 var shellViewModel = CustomContainer.Get<IShellViewModel>();
                 if (server != null)
                 {
                     _selectedId = SelectedConnection?.EnvironmentID;
                     if (_selectedId != null)
                     {
-                        shellViewModel?.OpenResource(SelectedConnection.ResourceID, EnvironmentRepository.Instance.Source.ID, shellViewModel.LocalhostServer);
+                        shellViewModel?.OpenResource(SelectedConnection.ID, ServerRepository.Instance.Source.ID, shellViewModel.LocalhostServer);
                         SelectedConnection = shellViewModel?.LocalhostServer;
                     }
                 }
@@ -427,7 +423,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

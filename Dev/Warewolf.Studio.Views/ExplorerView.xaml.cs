@@ -355,7 +355,7 @@ namespace Warewolf.Studio.Views
         private static void SetActiveServer(IServer server)
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            shellViewModel.SetActiveEnvironment(server.EnvironmentID);
+            shellViewModel.SetActiveServer(server.EnvironmentID);
             shellViewModel.SetActiveServer(server);
         }
 
@@ -441,7 +441,7 @@ namespace Warewolf.Studio.Views
             {
                 if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                 {
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var mainViewModel = CustomContainer.Get<IShellViewModel>();
                     mainViewModel?.NewServiceCommand.Execute(null);
                 }
             }

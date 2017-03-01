@@ -119,14 +119,14 @@ namespace Dev2.Studio.Factory
         /// Creates the exception view model.
         /// </summary>
         /// <param name="e">The exception for this viewmodel.</param>
-        /// <param name="environmentModel">The environment model.</param>
+        /// <param name="server">The environment model.</param>
         /// <param name="isCritical">The severity of the error.</param>
         /// <returns></returns>
         /// <date>2013/01/16</date>
         /// <author>
         /// Jurie.smit
         /// </author>
-        public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IEnvironmentModel environmentModel, ErrorSeverity isCritical = ErrorSeverity.Default)
+        public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server, ErrorSeverity isCritical = ErrorSeverity.Default)
         {
             // PBI 9598 - 2013.06.10 - TWR : added environmentModel parameter
             var vm = new ExceptionViewModel(new AsyncWorker())

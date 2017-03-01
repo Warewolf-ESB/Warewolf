@@ -196,7 +196,7 @@ namespace Warewolf.Studio.ViewModels
 
         private static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
         {            
-            return currentItem.Server == explorerItemViewModel.Server;
+            return Equals(currentItem.Server, explorerItemViewModel.Server);
         }
 
 

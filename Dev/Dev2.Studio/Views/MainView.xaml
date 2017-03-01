@@ -25,7 +25,7 @@
         Style="{DynamicResource MetroWindowStyle}"
         TextOptions.TextFormattingMode="Display"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance viewModels:MainViewModel}" >
+        d:DataContext="{d:DesignInstance viewModels:ShellViewModel}" >
 
     <Window.Resources>
 

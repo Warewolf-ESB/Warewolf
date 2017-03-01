@@ -17,11 +17,11 @@ using Moq;
 
 namespace Dev2.Core.Tests.Environments
 {
-    public class TestEnvironmentModel : EnvironmentModel
+    public class TestServer : Server
     {
         Mock<IAuthorizationService> _authorizationServiceMock;
 
-        public TestEnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
+        public TestServer(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
             : base(id, environmentConnection, resourceRepository)
         {
         }

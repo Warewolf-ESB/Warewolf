@@ -183,7 +183,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         }
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel != null)
             {
                 mainViewModel.HelpViewModel.UpdateHelpText(helpText);

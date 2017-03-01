@@ -41,8 +41,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             CustomContainer.Register(mockShellVm.Object);
             var dropboxFileListActivity = new DsfDropboxFileListActivity();
             var modelItem = ModelItemUtils.CreateModelItem(dropboxFileListActivity);
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -59,8 +59,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
                 .Returns(sources);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourcRepositorySetUp.Object);
 
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
             var mockCatalog = new Mock<IResourceCatalog>();
             mockCatalog.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
             var viewModel = new DropBoxFileListDesignerViewModel(modelItem, dropBoxSourceManager.Object);
@@ -74,9 +74,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             return scenarioContext.Get<DropBoxFileListDesignerViewModel>("viewModel");
         }
 
-        Mock<IEnvironmentModel> GeEnvrionmentModel()
+        Mock<IServer> GeEnvrionmentModel()
         {
-            return scenarioContext.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
+            return scenarioContext.Get<Mock<IServer>>("mockEnvironmentModel");
         }
 
         Mock<IEventAggregator> GetEventAggregator()

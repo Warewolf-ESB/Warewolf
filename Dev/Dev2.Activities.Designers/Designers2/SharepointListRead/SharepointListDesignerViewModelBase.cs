@@ -43,17 +43,17 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         };
        
         bool _isInitializing;
-        readonly IEnvironmentModel _environmentModel;
+        readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
 
-        protected SharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher, bool loadOnlyEditableFields)
+        protected SharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher, bool loadOnlyEditableFields)
             :base(modelItem)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            VerifyArgument.IsNotNull("environmentModel", environmentModel);
+            VerifyArgument.IsNotNull("environmentModel", server);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _asyncWorker = asyncWorker;
-            _environmentModel = environmentModel;
+            _server = server;
             AddTitleBarLargeToggle();
             _eventPublisher = eventPublisher;
             ShowExampleWorkflowLink = Visibility.Collapsed;
@@ -75,14 +75,14 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         }
 
-        protected SharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        protected SharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            VerifyArgument.IsNotNull("environmentModel", environmentModel);
+            VerifyArgument.IsNotNull("environmentModel", server);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _asyncWorker = asyncWorker;
-            _environmentModel = environmentModel;
+            _server = server;
             AddTitleBarLargeToggle();
             _eventPublisher = eventPublisher;
             ShowExampleWorkflowLink = Visibility.Collapsed;
@@ -260,7 +260,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         List<SharepointListTo> GetSharepointLists(SharepointSource sharepointSource)
         {
-            var sharepointLists = _environmentModel.ResourceRepository.GetSharepointLists(sharepointSource);
+            var sharepointLists = _server.ResourceRepository.GetSharepointLists(sharepointSource);
             return sharepointLists ?? new List<SharepointListTo>();
         }
 
@@ -305,7 +305,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         IEnumerable<SharepointSource> GetSharepointServers()
         {
-            var sources = _environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(_environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
+            var sources = _server.ResourceRepository.FindSourcesByType<SharepointSource>(_server, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
             return sources;
         }
 
@@ -461,7 +461,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         List<ISharepointFieldTo> GetListFields(ISharepointSource source, SharepointListTo list)
         {
-            var columns = _environmentModel.ResourceRepository.GetSharepointListFields(source, list, _loadOnlyEditableFields);
+            var columns = _server.ResourceRepository.GetSharepointListFields(source, list, _loadOnlyEditableFields);
             return columns ?? new List<ISharepointFieldTo>();
         }
 

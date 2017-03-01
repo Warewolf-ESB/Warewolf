@@ -148,7 +148,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Methods
 
-        public Func<IEnvironmentRepository> GetEnvironmentRepository = () => EnvironmentRepository.Instance;
+        public Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
 
         /// <summary>
         /// Used for saving the data input by the user to the file system and pushing the data back at the workflow

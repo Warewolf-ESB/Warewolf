@@ -113,10 +113,10 @@ namespace Dev2.Core.Tests
             Verify_CreateResourceModel_ResourceType(environmentModel => ResourceModelFactory.CreateResourceModel(environmentModel, "EmailSource", "resourceName", "displayName"), ResourceType.Source, "displayName", "resourceName", "EmailSource");
         }
 
-        static void Verify_CreateResourceModel_UserPermissions(Func<IEnvironmentModel, IContextualResourceModel> createResourceModel)
+        static void Verify_CreateResourceModel_UserPermissions(Func<IServer, IContextualResourceModel> createResourceModel)
         {
             //------------Setup for test--------------------------
-            var environmentModel = new Mock<IEnvironmentModel>();
+            var environmentModel = new Mock<IServer>();
 
             //------------Execute Test---------------------------
             var resourceModel = createResourceModel(environmentModel.Object);
@@ -125,10 +125,10 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(Permissions.Contribute, resourceModel.UserPermissions);
         }
 
-        static void Verify_CreateResourceModel_ResourceType(Func<IEnvironmentModel, IContextualResourceModel> createResourceModel, ResourceType resourceType, string displayName, string resourceName, string serverResourceName)
+        static void Verify_CreateResourceModel_ResourceType(Func<IServer, IContextualResourceModel> createResourceModel, ResourceType resourceType, string displayName, string resourceName, string serverResourceName)
         {
             //------------Setup for test--------------------------
-            var environmentModel = new Mock<IEnvironmentModel>();
+            var environmentModel = new Mock<IServer>();
 
             //------------Execute Test---------------------------
             var resourceModel = createResourceModel(environmentModel.Object);

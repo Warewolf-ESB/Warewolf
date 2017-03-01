@@ -291,7 +291,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public static async Task<string> GetServerLogFile()
         {
-            var activeEnvironment = CustomContainer.Get<IMainViewModel>().ActiveEnvironment;
+            var activeEnvironment = CustomContainer.Get<IShellViewModel>().ActiveServer;
             WebClient client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile?numLines=10", activeEnvironment.Connection);
             var serverLogFile = await client.DownloadStringTaskAsync(managementServiceUri);

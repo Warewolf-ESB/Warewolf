@@ -112,9 +112,9 @@ namespace Dev2.Utils
         }
 
 
-        protected static IEnvironmentModel ActiveEnvironment { get; set; }
+        protected static IServer ActiveEnvironment { get; set; }
 
-        public static void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
+        public static void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IServer contextEnv)
         {
             
             if(resource != null && resource.ResourceType == ResourceType.WorkflowService && contextEnv != null)

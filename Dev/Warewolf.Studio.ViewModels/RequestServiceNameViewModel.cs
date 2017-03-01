@@ -77,7 +77,7 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        readonly IEnvironmentConnection _lazyCon = EnvironmentRepository.Instance.ActiveEnvironment?.Connection;
+        readonly IEnvironmentConnection _lazyCon = ServerRepository.Instance.ActiveServer?.Connection;
         ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
 
         private void CallDuplicateService()
@@ -101,7 +101,7 @@ namespace Warewolf.Studio.ViewModels
                 _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
                 _lazyComs.AddPayloadArgument("destinationPath", Path);
 
-                var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
+                var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? ServerRepository.Instance.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
                 if (executeCommand == null)
                 {
                     var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();

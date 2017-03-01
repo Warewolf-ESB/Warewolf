@@ -22,24 +22,24 @@ namespace Dev2.Studio.Core.ViewModels
     {
         #region Class Members
 
-        private readonly IEnvironmentModel _environmentModel;
+        private readonly IServer _server;
         private IContextualResourceModel _contexttualResourceModel;
 
         #endregion Class Members
 
         #region Ctor
 
-        public ResourceDesignerViewModel(IContextualResourceModel model, IEnvironmentModel environmentModel)
+        public ResourceDesignerViewModel(IContextualResourceModel model, IServer server)
         {
             _contexttualResourceModel = model;
-            _environmentModel = environmentModel;
+            _server = server;
         }
 
         #endregion
 
         #region Properties
 
-        public IEnvironmentModel EnvironmentModel => _environmentModel;
+        public IServer Server => _server;
 
         public StringBuilder ServiceDefinition
         {

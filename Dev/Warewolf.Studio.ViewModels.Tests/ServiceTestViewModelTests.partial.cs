@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
-            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestEnvironmentRespository());
+            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository());
             var debugState = new DebugState
             {
                 HasError = true,
@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
-            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestEnvironmentRespository());
+            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository());
             var debugState = new DebugState
             {
                 HasError = false,
@@ -129,7 +129,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModeInput = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[0], };
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
@@ -176,7 +176,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
@@ -222,7 +222,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
@@ -277,7 +277,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<DebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[0], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
@@ -323,7 +323,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
@@ -381,7 +381,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
@@ -451,7 +451,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var sequenceSate = serializer.Deserialize<IDebugState>(sequncetext);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
@@ -515,7 +515,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var sequenceSate = serializer.Deserialize<IDebugState>(sequncetext);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
@@ -569,7 +569,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var sequenceSate = serializer.Deserialize<IDebugState>(sequncetext);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[1], };
             var itemViewModel1 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[2], };
             var itemViewModel2 = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates[3], };
@@ -840,7 +840,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
             newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
             var debugTreeMock = new Mock<IDebugTreeViewItemViewModel>();
-            var repo = new Mock<IEnvironmentRepository>();
+            var repo = new Mock<IServerRepository>();
             var itemViewModel = new DebugStateTreeViewItemViewModel(repo.Object) { Content = debugStates.First() };
             newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>()
             {
@@ -892,7 +892,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
             var resourceModel = new Mock<IContextualResourceModel>();
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -923,7 +923,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.SetupAllProperties();
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -951,7 +951,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var handler = new Mock<IServiceTestCommandHandler>();
             handler.Setup(commandHandler => commandHandler.StopTest(resourceModel.Object));
             resourceModel.SetupAllProperties();
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -984,7 +984,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var handler = new Mock<IServiceTestCommandHandler>();
             handler.Setup(commandHandler => commandHandler.StopTest(resourceModel.Object));
             resourceModel.SetupAllProperties();
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);

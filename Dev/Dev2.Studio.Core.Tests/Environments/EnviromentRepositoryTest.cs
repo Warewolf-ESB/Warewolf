@@ -78,22 +78,22 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepositoryConstructorWithNullSourceExpectedThrowsArgumentNullException()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new TestEnvironmentRespository(null);
+            new TestServerRespository(null);
             // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
         public void EnvironmentRepositoryConstructorWithSourceExpectedAddsSource()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object);
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object);
             Assert.AreEqual(1, repo.All().Count);
         }
 
         [TestMethod]
         public void EnvironmentRepositoryConstructorWithNoParametersExpectedCreatesAndAddsDefaultSource()
         {
-            var repo = new TestEnvironmentRespository();
+            var repo = new TestServerRespository();
             var environmentModels = repo.All().ToList();
             Assert.AreEqual(1, environmentModels.Count);
             var localhostEnvironment = environmentModels[0];
@@ -110,13 +110,13 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryClearExpectedDisconnectsAndRemovesAllItems()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
             e1.Setup(e => e.Disconnect()).Verifiable();
-            var e2 = new Mock<IEnvironmentModel>();
+            var e2 = new Mock<IServer>();
             e2.Setup(e => e.Disconnect()).Verifiable();
 
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
             Assert.AreEqual(3, repo.All().Count);
 
             repo.Clear();
@@ -134,11 +134,11 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryAllExpectedReturnsAllItems()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
-            var e2 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
+            var e2 = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
             Assert.AreEqual(3, repo.All().Count);
         }
 
@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests.Environments
             var e1 = CreateMockEnvironment();
             var e2 = CreateMockEnvironment();
 
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
             var actual = repo.Find(null);
 
             Assert.AreEqual(0, actual.Count);
@@ -166,7 +166,7 @@ namespace Dev2.Core.Tests.Environments
             var e1 = CreateMockEnvironment();
             var e2 = CreateMockEnvironment();
 
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
             var actual = repo.Find(e => e.ID == e1.Object.ID).ToList();
 
             Assert.AreEqual(1, actual.Count);
@@ -180,7 +180,7 @@ namespace Dev2.Core.Tests.Environments
             var e1 = CreateMockEnvironment();
             var e2 = CreateMockEnvironment();
 
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
             var actual = repo.Find(e => e.ID == Guid.NewGuid()).ToList();
 
             Assert.AreEqual(0, actual.Count);
@@ -197,7 +197,7 @@ namespace Dev2.Core.Tests.Environments
             var e1 = CreateMockEnvironment();
             var e2 = CreateMockEnvironment();
 
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
             var actual = repo.FindSingle(null);
             Assert.IsNull(actual);
         }
@@ -209,7 +209,7 @@ namespace Dev2.Core.Tests.Environments
             var e1 = CreateMockEnvironment();
             var e2 = CreateMockEnvironment();
 
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
             var actual = repo.FindSingle(e => e.ID == e1.Object.ID);
 
             Assert.IsNotNull(actual);
@@ -223,7 +223,7 @@ namespace Dev2.Core.Tests.Environments
             var e1 = CreateMockEnvironment();
             var e2 = CreateMockEnvironment();
 
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
             var actual = repo.FindSingle(e => e.ID == Guid.NewGuid());
 
             Assert.IsNull(actual);
@@ -236,11 +236,11 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryLoadExpectedSetsIsLoadedToFalseAndInvokesLoadInternal()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
-            var e2 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
+            var e2 = new Mock<IServer>();
 
-            var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object) { IsLoaded = true };
+            var repo = new TestLoadServerRespository(source.Object, e1.Object, e2.Object) { IsLoaded = true };
             Assert.IsTrue(repo.IsLoaded);
             repo.ForceLoad();
             Assert.IsFalse(repo.IsLoaded);
@@ -250,11 +250,11 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryLoadCompleteExpectedEnvironmentsReturned()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
-            var e2 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
+            var e2 = new Mock<IServer>();
 
-            var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object) { IsLoaded = true };
+            var repo = new TestLoadServerRespository(source.Object, e1.Object, e2.Object) { IsLoaded = true };
             var environments = repo.ReloadAllServers();
             Assert.AreEqual(3,environments.Count);
         }
@@ -266,12 +266,12 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositorySaveWithManyNullExpectedDoesNothing()
         {
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
             var startCount = repo.All().Count;
 
-            repo.Save((ICollection<IEnvironmentModel>)null);
+            repo.Save((ICollection<IServer>)null);
             Assert.AreEqual(startCount, repo.All().Count);
             Assert.AreEqual(0, repo.AddInternalHitCount);
             Assert.AreEqual(0, repo.WriteSessionHitCount);
@@ -280,14 +280,14 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositorySaveWithManyItemsExpectedAddsItems()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
-            var e2 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
+            var e2 = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
             var startCount = repo.All().Count;
 
-            repo.Save(new List<IEnvironmentModel> { e1.Object, e2.Object });
+            repo.Save(new List<IServer> { e1.Object, e2.Object });
             Assert.AreEqual(startCount + 2, repo.All().Count);
             Assert.AreEqual(2, repo.AddInternalHitCount);
         }
@@ -295,25 +295,25 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositorySaveWithManyItemsExpectedDoesNotInvokesWriteSession()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
-            var e2 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
+            var e2 = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
 
-            repo.Save(new List<IEnvironmentModel> { e1.Object, e2.Object });
+            repo.Save(new List<IServer> { e1.Object, e2.Object });
             Assert.AreEqual(0, repo.WriteSessionHitCount);
         }
 
         [TestMethod]
         public void EnvironmentRepositorySaveWithSingleNullExpectedDoesNothing()
         {
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
             var startCount = repo.All().Count;
 
-            repo.Save((ICollection<IEnvironmentModel>)null);
+            repo.Save((ICollection<IServer>)null);
             Assert.AreEqual(startCount, repo.All().Count);
             Assert.AreEqual(0, repo.AddInternalHitCount);
             Assert.AreEqual(0, repo.WriteSessionHitCount);
@@ -322,10 +322,10 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositorySaveWithSingleItemExpectedAddsItem()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
             var startCount = repo.All().Count;
 
             repo.Save(e1.Object);
@@ -336,10 +336,10 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepository_Save_ValidEnvironmentModel_ReturnsASaveMessage()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
 
             var result = repo.Save(e1.Object);
 
@@ -350,9 +350,9 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepository_Save_ValidEnvironmentModel_ReturnsNotSaveMessage()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object);
-            IEnvironmentModel e1 = null;
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object);
+            IServer e1 = null;
             // ReSharper disable ExpressionIsAlwaysNull
             var result = repo.Save(e1);
             // ReSharper restore ExpressionIsAlwaysNull
@@ -362,10 +362,10 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositorySaveWithSingleItemExpectedDoesNotInvokesWriteSession()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
 
             repo.Save(e1.Object);
             Assert.AreEqual(0, repo.WriteSessionHitCount);
@@ -377,10 +377,10 @@ namespace Dev2.Core.Tests.Environments
             // DO NOT use mock as test requires IEquatable of IEnvironmentModel
             var c1 = CreateMockConnection();
             //var wizard = new Mock<IWizardEngine>();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object);
 
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object, e1);
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object, e1);
             var startCount = repo.All().Count;
 
             repo.Save(e1);
@@ -395,10 +395,10 @@ namespace Dev2.Core.Tests.Environments
         {
             //------------Setup for test--------------------------
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
-            IEnvironmentModel _editedEnvironment = null;
-            var repo = new TestEnvironmentRespository(source.Object, e1);
+            var e1 = new Server(Guid.NewGuid(), c1.Object);
+            var source = new Mock<IServer>();
+            IServer _editedEnvironment = null;
+            var repo = new TestServerRespository(source.Object, e1);
             repo.ItemEdited += (sender, args) =>
             {
                 _editedEnvironment = args.Environment;
@@ -418,10 +418,10 @@ namespace Dev2.Core.Tests.Environments
         {
             //------------Setup for test--------------------------
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
-            IEnvironmentModel _editedEnvironment = null;
-            var repo = new TestEnvironmentRespository(source.Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object);
+            var source = new Mock<IServer>();
+            IServer _editedEnvironment = null;
+            var repo = new TestServerRespository(source.Object);
             repo.ItemEdited += (sender, args) =>
             {
                 _editedEnvironment = args.Environment;
@@ -440,10 +440,10 @@ namespace Dev2.Core.Tests.Environments
         {
             //------------Setup for test--------------------------
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
+            var e1 = new Server(Guid.NewGuid(), c1.Object);
+            var source = new Mock<IServer>();
             bool _eventFired = false;
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
             repo.ItemAdded += (sender, args) =>
             {
                 _eventFired = true;
@@ -462,9 +462,9 @@ namespace Dev2.Core.Tests.Environments
         {
             //------------Setup for test--------------------------
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object);
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object);
             repo.Save(e1);
             //------------Execute Test---------------------------
             var environmentModel = repo.Fetch(source.Object);
@@ -479,9 +479,9 @@ namespace Dev2.Core.Tests.Environments
         {
             //------------Setup for test--------------------------
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object);
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object);
             repo.Save(e1);
             //------------Execute Test---------------------------
             var environmentModel = repo.Fetch(null);
@@ -496,12 +496,12 @@ namespace Dev2.Core.Tests.Environments
         {
             //------------Setup for test--------------------------
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object);
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object);
             repo.Save(e1);
             //------------Execute Test---------------------------
-            var environmentModel = repo.Fetch(new Mock<IEnvironmentModel>().Object);
+            var environmentModel = repo.Fetch(new Mock<IServer>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(environmentModel);
         }
@@ -515,10 +515,10 @@ namespace Dev2.Core.Tests.Environments
             c1.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
 
             //var wizard = new Mock<IWizardEngine>();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object);
 
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object);
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object);
 
             repo.Save(e1);
 
@@ -532,12 +532,12 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryRemoveWithManyNullExpectedDoesNothing()
         {
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
             var startCount = repo.All().Count;
 
-            repo.Remove((ICollection<IEnvironmentModel>)null);
+            repo.Remove((ICollection<IServer>)null);
             Assert.AreEqual(startCount, repo.All().Count);
             Assert.AreEqual(0, repo.RemoveInternalHitCount);
         }
@@ -547,7 +547,7 @@ namespace Dev2.Core.Tests.Environments
         {
             // DO NOT use mock as test requires IEquatable of IEnvironmentModel
 
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
             var c1 = CreateMockConnection();
             var c2 = CreateMockConnection();
             var c3 = CreateMockConnection();
@@ -556,13 +556,13 @@ namespace Dev2.Core.Tests.Environments
             c2.Setup(c => c.Disconnect()).Verifiable();
             c3.Setup(c => c.Disconnect()).Verifiable();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var e2 = new Server(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            var e3 = new Server(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
 
-            var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
+            var repo = new TestServerRespository(source.Object, e1, e2, e3);
 
-            repo.Remove(new List<IEnvironmentModel> { e1, e3 });
+            repo.Remove(new List<IServer> { e1, e3 });
             var actual = repo.All().ToList();
 
             c1.Verify(c => c.Disconnect(), Times.Once());
@@ -578,25 +578,25 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryRemoveWithManyItemsExpectedDoesNotInvokesWriteSession()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
-            var e2 = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
+            var e1 = new Mock<IServer>();
+            var e2 = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
 
-            repo.Remove(new List<IEnvironmentModel> { e1.Object, e2.Object });
+            repo.Remove(new List<IServer> { e1.Object, e2.Object });
             Assert.AreEqual(0, repo.WriteSessionHitCount);
         }
 
         [TestMethod]
         public void EnvironmentRepositoryRemoveWithSingleNullExpectedDoesNothing()
         {
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
 
-            var repo = new TestEnvironmentRespository(source.Object);
+            var repo = new TestServerRespository(source.Object);
             var startCount = repo.All().Count;
 
-            repo.Remove((ICollection<IEnvironmentModel>)null);
+            repo.Remove((ICollection<IServer>)null);
             Assert.AreEqual(startCount, repo.All().Count);
             Assert.AreEqual(0, repo.RemoveInternalHitCount);
             Assert.AreEqual(0, repo.WriteSessionHitCount);
@@ -605,7 +605,7 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryRemoveWithSingleItemExpectedDisconnectsAndRemovesItem()
         {
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
             var c1 = CreateMockConnection();
             var c2 = CreateMockConnection();
             var c3 = CreateMockConnection();
@@ -614,11 +614,11 @@ namespace Dev2.Core.Tests.Environments
             c2.Setup(c => c.Disconnect()).Verifiable();
             c3.Setup(c => c.Disconnect()).Verifiable();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var e2 = new Server(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            var e3 = new Server(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
 
-            var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
+            var repo = new TestServerRespository(source.Object, e1, e2, e3);
 
             repo.Remove(e2);
             var actual = repo.All().ToList();
@@ -637,16 +637,16 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryRemoveWithSingleItemExpectedDoesNotInvokesWriteSession()
         {
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
             var c1 = CreateMockConnection();
             var c2 = CreateMockConnection();
             var c3 = CreateMockConnection();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var e2 = new Server(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            var e3 = new Server(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
 
-            var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
+            var repo = new TestServerRespository(source.Object, e1, e2, e3);
 
             repo.Remove(e1);
             Assert.AreEqual(0, repo.WriteSessionHitCount);
@@ -655,16 +655,16 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryRemoveWithSingleNonExistingItemExpectedDoesNotRemoveItem()
         {
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
             var c1 = CreateMockConnection();
             var c2 = CreateMockConnection();
             var c3 = CreateMockConnection();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
+            var e1 = new Server(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var e2 = new Server(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            var e3 = new Server(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
 
-            var repo = new TestEnvironmentRespository(source.Object, e1, e2);
+            var repo = new TestServerRespository(source.Object, e1, e2);
             var startCount = repo.All().Count;
 
             repo.Remove(e3);
@@ -688,7 +688,7 @@ namespace Dev2.Core.Tests.Environments
                 StringResources.Environments_Directory
             });
 
-            var actual = EnvironmentRepository.GetEnvironmentsDirectory();
+            var actual = ServerRepository.GetEnvironmentsDirectory();
 
             Assert.AreEqual(expected, actual);
         }
@@ -700,10 +700,10 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryReadSessionWithOneEnvironmentExpectedReturnsOneEnvironment()
         {
-            var path = EnvironmentRepository.GetEnvironmentsFilePath();
+            var path = ServerRepository.GetEnvironmentsFilePath();
 
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object) { IsReadWriteEnabled = true };
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object) { IsReadWriteEnabled = true };
             repo.WriteSession(new List<Guid> { Guid.NewGuid() });
             var result = repo.ReadSession();
 
@@ -718,10 +718,10 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryWriteSessionWithNonExistingFileExpectedCreatesFile()
         {
-            var path = EnvironmentRepository.GetEnvironmentsFilePath();
+            var path = ServerRepository.GetEnvironmentsFilePath();
 
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object) { IsReadWriteEnabled = true };
+            var source = new Mock<IServer>();
+            var repo = new TestServerRespository(source.Object) { IsReadWriteEnabled = true };
             repo.WriteSession(null);
 
             var exists = File.Exists(path);
@@ -732,11 +732,11 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryWriteSessionWithExistingFileExpectedOverwritesFile()
         {
-            var path = EnvironmentRepository.GetEnvironmentsFilePath();
+            var path = ServerRepository.GetEnvironmentsFilePath();
 
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
-            var repo = new TestEnvironmentRespository(e1) { IsReadWriteEnabled = true };
+            var e1 = new Server(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            var repo = new TestServerRespository(e1) { IsReadWriteEnabled = true };
 
             // Create file
             repo.WriteSession(new List<Guid> { Guid.NewGuid() });
@@ -762,13 +762,13 @@ namespace Dev2.Core.Tests.Environments
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentRepositoryLookupEnvironmentsWithNullParametersExpectedThrowsArgumentNullException()
         {
-            EnvironmentRepository.Instance.LookupEnvironments(null);
+            ServerRepository.Instance.LookupEnvironments(null);
         }
 
         [TestMethod]
         public void EnvironmentRepositoryLookupEnvironmentsWithNoEnvironmentIDsExpectedReturnsListOfServers()
         {
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -783,7 +783,7 @@ namespace Dev2.Core.Tests.Environments
             };
 
             List<Connection> cons = new List<Connection> { theCon };
-            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -792,7 +792,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object);
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object);
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
@@ -803,7 +803,7 @@ namespace Dev2.Core.Tests.Environments
         [TestCategory("EnvironmentRepository_Save")]
         public void EnvironmentRepository_All_ReturnsListOfServers()
         {
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -821,7 +821,7 @@ namespace Dev2.Core.Tests.Environments
             };
 
             List<Connection> cons = new List<Connection> { theCon };
-            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -830,9 +830,9 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            EnvironmentRepository.Instance.Save(env.Object);
+            ServerRepository.Instance.Save(env.Object);
             //-----------------Execute Process---------------------
-            var result = EnvironmentRepository.Instance.All().ToList();
+            var result = ServerRepository.Instance.All().ToList();
             //-----------------Assert------------------------------
             Assert.IsTrue(result.Count > 0);
         }
@@ -840,7 +840,7 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryLookupEnvironmentsWithAuthenticationTypeExpectedReturnsListOfServers()
         {
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -858,7 +858,7 @@ namespace Dev2.Core.Tests.Environments
             };
 
             List<Connection> cons = new List<Connection> { theCon };
-            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -867,7 +867,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object);
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object);
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
@@ -880,7 +880,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepositoryLookupEnvironmentsWithInvalidParametersExpectedReturnsEmptyList()
         {
             var env = CreateMockEnvironment();
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { "xxx", "aaa" });
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object, new List<string> { "xxx", "aaa" });
             // Test
             Assert.AreEqual(0, result.Count);
         }
@@ -891,7 +891,7 @@ namespace Dev2.Core.Tests.Environments
             var env = CreateMockEnvironment(
                 "<Source ID=\"{5E8EB586-1D63-4C9F-9A35-CD05ACC2B6}\" ConnectionString=\"AppServerUri=//127.0.0.1:77/dsf;WebServerPort=1234\" Name=\"TheName\" Type=\"Dev2Server\"><DisplayName>The Name</DisplayName></Source>");
 
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
             Assert.AreEqual(0, result.Count);
         }
 
@@ -902,7 +902,7 @@ namespace Dev2.Core.Tests.Environments
             var env = CreateMockEnvironment(
                 "<Source ID=\"{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}\" ConnectionString=\"AppServerUri=//127.0.0.1:77/dsf;WebServerPort=1234\" Name=\"TheName\" Type=\"Dev2Server\"><DisplayName>The Name</DisplayName></Source>");
 
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
             Assert.AreEqual(0, result.Count);
         }
 
@@ -912,7 +912,7 @@ namespace Dev2.Core.Tests.Environments
             var env = CreateMockEnvironment(
                 "<Source ID=\"{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}\" ConnectionString=\"AppServerUri=http://127.0.0.1:77/dsf;WebServerPort=12a34\" Name=\"TheName\" Type=\"Dev2Server\"><DisplayName>The Name</DisplayName></Source>");
 
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
             Assert.AreEqual(0, result.Count);
         }
 
@@ -920,7 +920,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepositoryLookupEnvironmentsWithOneValidEnvironmentIDExpectedReturnsOneEnvironment()
         {
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -941,7 +941,7 @@ namespace Dev2.Core.Tests.Environments
 
             List<IResourceModel> models = new List<IResourceModel> { rm };
 
-            repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
+            repo.Setup(r => r.FindResourcesByID(It.IsAny<IServer>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -950,7 +950,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID });
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID });
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("http://tst-ci-remote:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
         }
@@ -959,7 +959,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepositoryLookupEnvironmentsWithOneValidEnvironmentAuthenticationTypeExpectedReturnsOneEnvironment()
         {
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -980,7 +980,7 @@ namespace Dev2.Core.Tests.Environments
 
             List<IResourceModel> models = new List<IResourceModel> { rm };
 
-            repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
+            repo.Setup(r => r.FindResourcesByID(It.IsAny<IServer>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -989,7 +989,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID });
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID });
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("http://tst-ci-remote:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
             Assert.AreEqual(AuthenticationType.User, result[0].Connection.AuthenticationType);
@@ -1001,7 +1001,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepository_UnitTest_LookupEnvironmentsWithDefaultEnvironmentExpectDoesNotThrowException()
         {
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -1016,7 +1016,7 @@ namespace Dev2.Core.Tests.Environments
             };
 
             List<Connection> cons = new List<Connection> { theCon };
-            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -1025,9 +1025,9 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection("localhost").Object, repo.Object);
+            var defaultEnvironment = new Server(Guid.NewGuid(), CreateMockConnection("localhost").Object, repo.Object);
             //------------Execute Test---------------------------
-            EnvironmentRepository.Instance.LookupEnvironments(defaultEnvironment);
+            ServerRepository.Instance.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
             Assert.IsTrue(true);
         }
@@ -1039,7 +1039,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepository_UnitTest_EnvironmentModelID_ResourceID()
         {
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -1054,7 +1054,7 @@ namespace Dev2.Core.Tests.Environments
             };
 
             List<Connection> cons = new List<Connection> { theCon };
-            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -1063,7 +1063,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object);
+            var result = ServerRepository.Instance.LookupEnvironments(env.Object);
             Assert.AreEqual(1, result.Count, "EnvironmentRepository failed to load environment.");
             Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
         }
@@ -1078,7 +1078,7 @@ namespace Dev2.Core.Tests.Environments
         {
 
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -1093,7 +1093,7 @@ namespace Dev2.Core.Tests.Environments
             };
 
             List<Connection> cons = new List<Connection> { theCon };
-            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -1102,10 +1102,10 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var instance = EnvironmentRepository.Instance;
+            var instance = ServerRepository.Instance;
 
-            var obj = new PrivateObject(instance, new PrivateType(typeof(EnvironmentRepository)));
-            var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IEnvironmentModel;
+            var obj = new PrivateObject(instance, new PrivateType(typeof(ServerRepository)));
+            var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
 
             Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains(Environment.MachineName.ToLowerInvariant()) ?? false);
         }
@@ -1115,7 +1115,7 @@ namespace Dev2.Core.Tests.Environments
         {
 
             AppSettings.LocalHost = "";
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -1130,7 +1130,7 @@ namespace Dev2.Core.Tests.Environments
             };
 
             List<Connection> cons = new List<Connection> { theCon };
-            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder());
@@ -1139,10 +1139,10 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var instance = EnvironmentRepository.Instance;
+            var instance = ServerRepository.Instance;
 
-            var obj = new PrivateObject(instance, new PrivateType(typeof(EnvironmentRepository)));
-            var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IEnvironmentModel;
+            var obj = new PrivateObject(instance, new PrivateType(typeof(ServerRepository)));
+            var environmentModel = obj.Invoke("CreateEnvironmentModel", BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Guid), typeof(Uri), typeof(string) }, new object[] { Guid.NewGuid(), new Uri("http://LOCALHOST"), "" }) as IServer;
 
             Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains(Environment.MachineName.ToLowerInvariant()) ?? false);
             Assert.AreEqual(new Uri($"http://{Environment.MachineName.ToLowerInvariant()}"), environmentModel?.Connection.WebServerUri);
@@ -1196,7 +1196,7 @@ namespace Dev2.Core.Tests.Environments
         public void ParseConnectionStringIntoAppServerUri()
         {
             const string toParse = "AppServerUri=http://rsatest1:77/dsf;WebServerPort=1234";
-            var result = EnvironmentRepository.GetAppServerUriFromConnectionString(toParse);
+            var result = ServerRepository.GetAppServerUriFromConnectionString(toParse);
             Assert.AreEqual("http://rsatest1:77/dsf", result);
         }
 
@@ -1206,10 +1206,10 @@ namespace Dev2.Core.Tests.Environments
         public static readonly string Server1ID = "{70238921-FDC7-4F7A-9651-3104EEDA1211}";
         public static readonly Guid Server2ID = Guid.Parse("{70238921-FDC7-4F7A-9651-3104EEDA1211}");
 
-        public static Mock<IEnvironmentModel> CreateMockEnvironment(bool overrideExecuteCommand, params string[] sources)
+        public static Mock<IServer> CreateMockEnvironment(bool overrideExecuteCommand, params string[] sources)
         {
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
@@ -1223,7 +1223,7 @@ namespace Dev2.Core.Tests.Environments
 
                 repo.Setup(
                     r =>
-                    r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),
+                    r.FindResourcesByID(It.IsAny<IServer>(), It.IsAny<IEnumerable<string>>(),
                                         ResourceType.Source)).Returns(models);
 
                 repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
@@ -1249,10 +1249,10 @@ namespace Dev2.Core.Tests.Environments
 
         }
 
-        public static Mock<IEnvironmentModel> CreateMockEnvironment(params string[] sources)
+        public static Mock<IServer> CreateMockEnvironment(params string[] sources)
         {
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.IsAuthorized).Returns(true);
             var mockAuthorizationService = new Mock<IAuthorizationService>();
             mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
@@ -1271,7 +1271,7 @@ namespace Dev2.Core.Tests.Environments
 
                 repo.Setup(
                     r =>
-                    r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),
+                    r.FindResourcesByID(It.IsAny<IServer>(), It.IsAny<IEnumerable<string>>(),
                                         ResourceType.Source)).Returns(models);
 
                 repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
@@ -1292,10 +1292,10 @@ namespace Dev2.Core.Tests.Environments
 
         }
 
-        public static Mock<IEnvironmentModel> CreateMockEnvironment(IResourceRepository resourceRepository, params string[] sources)
+        public static Mock<IServer> CreateMockEnvironment(IResourceRepository resourceRepository, params string[] sources)
         {
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.IsAuthorized).Returns(true);
             var mockAuthorizationService = new Mock<IAuthorizationService>();
             mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
@@ -1323,13 +1323,13 @@ namespace Dev2.Core.Tests.Environments
 
         }
 
-        public static Mock<IEnvironmentModel> CreateMockEnviromentModel()
+        public static Mock<IServer> CreateMockEnviromentModel()
         {
 
             var rand = new Random();
             var connection = CreateMockConnection(rand, null);
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.IsAuthorized).Returns(true);
             env.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             env.Setup(e => e.Connection).Returns(connection.Object);
@@ -1343,7 +1343,7 @@ namespace Dev2.Core.Tests.Environments
 
             var repo = new Mock<IResourceRepository>();
 
-            repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
+            repo.Setup(r => r.FindResourcesByID(It.IsAny<IServer>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
             repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
             env.Setup(r => r.ResourceRepository).Returns(repo.Object);
 

@@ -15,6 +15,6 @@ namespace Dev2.Studio.Core.Messages
 {
     public interface IEnvironmentMessage : IMessage
     {
-        IEnvironmentModel EnvironmentModel { get; set; }
+        IServer Server { get; set; }
     }
 }

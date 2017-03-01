@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListReadDesignerViewModel_CollectionName_Property_ReturnsFilterCriteria()
         {
             //------------Setup for test--------------------------
-            var sharepointListReadDesignerViewModel = new SharepointListReadDesignerViewModel(CreateModelItem(),new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            var sharepointListReadDesignerViewModel = new SharepointListReadDesignerViewModel(CreateModelItem(),new SynchronousAsyncWorker(), new Mock<IServer>().Object);
             
             //------------Execute Test---------------------------
             var collectionName = sharepointListReadDesignerViewModel.CollectionName;
@@ -55,7 +55,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             
             
             //------------Execute Test---------------------------
-            var sharepointListReadDesignerViewModel = new SharepointListReadDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            var sharepointListReadDesignerViewModel = new SharepointListReadDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IServer>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(sharepointListReadDesignerViewModel);
             Assert.IsNotNull(sharepointListReadDesignerViewModel.WhereOptions);

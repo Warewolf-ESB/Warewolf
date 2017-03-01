@@ -21,7 +21,7 @@ namespace Dev2.Studio.Core.Factories
 {
     public static class ResourceModelFactory
     {
-        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment)
+        public static IContextualResourceModel CreateResourceModel(IServer environment)
         {
             return new ResourceModel(environment)
             {
@@ -29,12 +29,12 @@ namespace Dev2.Studio.Core.Factories
             };
         }
 
-        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, string resourceType, string displayName)
+        public static IContextualResourceModel CreateResourceModel(IServer environment, string resourceType, string displayName)
         {
             return CreateResourceModel(environment, resourceType, "", displayName);
         }
 
-        public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, string resourceType, string resourceName, string displayName)
+        public static IContextualResourceModel CreateResourceModel(IServer environment, string resourceType, string resourceName, string displayName)
         {
             try
             {

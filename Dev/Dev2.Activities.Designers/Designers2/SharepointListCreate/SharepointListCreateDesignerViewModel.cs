@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers2.SharepointListCreate
     public class SharepointListCreateDesignerViewModel : SharepointListDesignerViewModelBase
     {
         public SharepointListCreateDesignerViewModel(ModelItem modelItem)
-            : base(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator,true)
+            : base(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator,true)
         {
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Create_List_Item;
         }
@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers2.SharepointListCreate
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

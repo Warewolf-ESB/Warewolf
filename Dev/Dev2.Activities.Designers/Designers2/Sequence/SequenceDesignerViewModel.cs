@@ -125,12 +125,12 @@ namespace Dev2.Activities.Designers2.Sequence
 
                 try
                 {
-                    IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envId);
-                    var resource = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+                    IServer server = ServerRepository.Instance.FindSingle(c => c.ID == envId);
+                    var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
                     if (resource != null)
                     {
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, true);
+                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                         if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                         {
@@ -192,7 +192,7 @@ namespace Dev2.Activities.Designers2.Sequence
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

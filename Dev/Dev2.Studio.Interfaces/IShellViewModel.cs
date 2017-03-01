@@ -53,7 +53,7 @@ namespace Dev2.Studio.Interfaces
 
     public interface IShellViewModelOpen
     {
-        void OpenResourceAsync(Guid resourceId, IEnvironmentModel server);
+        void OpenResourceAsync(Guid resourceId, IServer server);
         void OpenVersion(Guid resourceId, IVersionInfo versionInfo);
     }
 
@@ -61,35 +61,32 @@ namespace Dev2.Studio.Interfaces
     {
         bool ShouldUpdateActiveState { get; set; }
         void ShowPopup(IPopupMessage getDuplicateMessage);
-        void SetActiveEnvironment(Guid environmentId);
+        void SetActiveServer(Guid environmentId);
         void Debug();
         void ShowAboutBox();
-        void ShowDependencies(Guid resourceId, IEnvironmentModel server, bool isSource);
+        void ShowDependencies(Guid resourceId, IServer server, bool isSource);
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
-        void OpenResource(Guid resourceId, Guid environmentId, IEnvironmentModel activeServer);
+        void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);
         void CloseResource(Guid resourceId, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
-        void ViewSwagger(Guid resourceId, IEnvironmentModel server);
+        void ViewSwagger(Guid resourceId, IServer server);
         void ViewApisJson(string resourcePath, Uri webServerUri);
         void CreateTest(Guid resourceId);
         void RunAllTests(Guid resourceId);
         void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
-        void BrowserDebug(Guid resourceId, IEnvironmentModel server);
-        void StudioDebug(Guid resourceId, IEnvironmentModel server);
-        void CopyUrlLink(Guid resourceId, IEnvironmentModel server);
+        void BrowserDebug(Guid resourceId, IServer server);
+        void StudioDebug(Guid resourceId, IServer server);
+        void CopyUrlLink(Guid resourceId, IServer server);
         void NewSchedule(Guid resourceId);
         void SetRefreshExplorerState(bool refresh);
         void ResetMainView();
-        void OnActiveEnvironmentChanged();
-
+        void OnActiveServerChanged();
         ICommand DeployCommand { get; }
         ICommand ExitCommand { get; }
-        IEnvironmentModel ActiveEnvironment { get; set; }
+        IServer ActiveServer { get; set; }
         IContextualResourceModel DeployResource { get; set; }
-
         void AddWorkSurfaceContext(IContextualResourceModel resourceModel);
-
         bool MenuExpanded { get; set; }
         double MenuPanelWidth { get; set; }
         IAuthorizeCommand SaveCommand { get; }
@@ -115,11 +112,10 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand<string> NewDropboxSourceCommand { get; }
         IAuthorizeCommand<string> NewWcfSourceCommand { get; }
         IExplorerViewModel ExplorerViewModel { get; set; }
+        IServer LocalhostServer { get; }
 
         void DisplayDialogForNewVersion();
-
         Task<bool> CheckForNewVersion();
-
         bool ShowDeleteDialogForFolder(string folderBeingDeleted);
         IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
     }

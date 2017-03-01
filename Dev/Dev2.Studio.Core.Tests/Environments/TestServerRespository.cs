@@ -14,7 +14,7 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.Core.Tests.Environments
 {
-    public class TestEnvironmentRespository : TestLoadEnvironmentRespository
+    public class TestServerRespository : TestLoadServerRespository
     {
         public bool IsReadWriteEnabled { get; set; }
         public int AddInternalHitCount { get; set; }
@@ -22,24 +22,24 @@ namespace Dev2.Core.Tests.Environments
         public int WriteSessionHitCount { get; set; }
         public int ReadSessionHitCount { get; set; }
 
-        public TestEnvironmentRespository()
+        public TestServerRespository()
         {
             IsReadWriteEnabled = false;
         }
 
-        public TestEnvironmentRespository(IEnvironmentModel source, params IEnvironmentModel[] environments)
+        public TestServerRespository(IServer source, params IServer[] environments)
             : base(source, environments)
         {
             IsReadWriteEnabled = false;
         }
 
-        protected override void AddInternal(IEnvironmentModel environment)
+        protected override void AddInternal(IServer environment)
         {
             AddInternalHitCount++;
             base.AddInternal(environment);
         }
 
-        protected override bool RemoveInternal(IEnvironmentModel environment)
+        protected override bool RemoveInternal(IServer environment)
         {
             RemoveInternalHitCount++;
             return base.RemoveInternal(environment);

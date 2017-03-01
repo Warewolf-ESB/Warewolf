@@ -34,7 +34,7 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
-            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IServer> env = new Mock<IServer>();
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg);
 
@@ -57,7 +57,7 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
-            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IServer> env = new Mock<IServer>();
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg)
             {
@@ -84,7 +84,7 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
-            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IServer> env = new Mock<IServer>();
             var resRepo = new Mock<IResourceRepository>();
             var srcRes = new Mock<IContextualResourceModel>();
             srcRes.Setup(a => a.DisplayName).Returns("bob");
@@ -118,7 +118,7 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
-            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IServer> env = new Mock<IServer>();
             var resRepo = new Mock<IResourceRepository>();
             var srcRes = new Mock<IResourceModel>();
             srcRes.Setup(a => a.DisplayName).Returns("bob");
@@ -150,7 +150,7 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
-            Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
+            Mock<IServer> env = new Mock<IServer>();
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action></Action>") };
 

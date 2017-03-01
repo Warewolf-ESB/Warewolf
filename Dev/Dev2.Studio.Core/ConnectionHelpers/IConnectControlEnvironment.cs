@@ -14,7 +14,7 @@ namespace Dev2.ConnectionHelpers
 {
     public interface IConnectControlEnvironment
     {
-        IEnvironmentModel EnvironmentModel { get; set; }
+        IServer Server { get; set; }
         bool IsConnected { get; set; }
         string ConnectedText { get; set; }
         string DisplayName { get; set; }

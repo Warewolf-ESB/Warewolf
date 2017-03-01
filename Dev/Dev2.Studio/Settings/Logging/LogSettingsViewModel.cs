@@ -34,7 +34,7 @@ namespace Dev2.Settings.Logging
     }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
-        public IEnvironmentModel CurrentEnvironment
+        public IServer CurrentEnvironment
         {
             private get
             {
@@ -55,7 +55,7 @@ namespace Dev2.Settings.Logging
         private LogLevel _studioEventLogLevel;
         private ProgressDialogViewModel _progressDialogViewModel;
         private string _serverLogFile;
-        private IEnvironmentModel _currentEnvironment;
+        private IServer _currentEnvironment;
         private LogLevel _serverFileLogLevel;
         private LogLevel _studioFileLogLevel;
         private LogSettingsViewModel _item;
@@ -66,7 +66,7 @@ namespace Dev2.Settings.Logging
 
         }
 
-        public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
+        public LogSettingsViewModel(LoggingSettingsTo logging, IServer currentEnvironment)
         {
             if (logging == null) throw new ArgumentNullException(nameof(logging));
             if (currentEnvironment == null) throw new ArgumentNullException(nameof(currentEnvironment));

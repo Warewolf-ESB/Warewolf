@@ -134,7 +134,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new ExchangeEmailDesignerViewModel(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object, null);
+            new ExchangeEmailDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -150,7 +150,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new ExchangeEmailDesignerViewModel(CreateModelItem(), null, (IEnvironmentModel)null, null);
+            new ExchangeEmailDesignerViewModel(CreateModelItem(), null, (IServer)null, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -166,7 +166,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new ExchangeEmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
+            new ExchangeEmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -212,7 +212,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
             var modelItem = CreateModelItem();
             var eventPublisher = new Mock<IEventAggregator>();
 
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);

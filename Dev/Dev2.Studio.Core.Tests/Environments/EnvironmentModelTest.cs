@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests.Environments
         {
             //var wizard = new Mock<IWizardEngine>();
             // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentModel(Guid.NewGuid(), null);
+            new Server(Guid.NewGuid(), null);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -50,7 +50,7 @@ namespace Dev2.Core.Tests.Environments
 
             var connection = CreateConnection();
             //, wizard.Object
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object);
+            var env = new Server(Guid.NewGuid(), connection.Object);
             Assert.IsNotNull(env.Connection);
             Assert.IsNotNull(env.ResourceRepository);
             Assert.AreSame(connection.Object, env.Connection);
@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests.Environments
         {
             var connection = CreateConnection();
             // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentModel(Guid.NewGuid(), connection.Object, null);
+            new Server(Guid.NewGuid(), connection.Object, null);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -71,7 +71,7 @@ namespace Dev2.Core.Tests.Environments
         {
             var connection = CreateConnection();
             var repo = new Mock<IResourceRepository>();
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object);
+            var env = new Server(Guid.NewGuid(), connection.Object, repo.Object);
 
             Assert.IsNotNull(env.Connection);
             Assert.IsNotNull(env.ResourceRepository);
@@ -87,7 +87,7 @@ namespace Dev2.Core.Tests.Environments
             //------------Setup for test--------------------------
             var connection = CreateConnection();
             var repo = new Mock<IResourceRepository>();
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object);
+            var env = new Server(Guid.NewGuid(), connection.Object, repo.Object);
             const string expectedDisplayName = "localhost (http://localhost:3142/)";
             //------------Execute Test---------------------------
             string displayName = env.DisplayName;
@@ -264,7 +264,7 @@ namespace Dev2.Core.Tests.Environments
             environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
 
             var repo = new Mock<IResourceRepository>();
-            var envModel = new EnvironmentModel(Guid.NewGuid(), environmentConnection.Object, repo.Object);
+            var envModel = new Server(Guid.NewGuid(), environmentConnection.Object, repo.Object);
 
             envModel.IsConnectedChanged += (sender, args) => Assert.AreEqual(toState == NetworkState.Online, args.IsConnected);
 
@@ -281,7 +281,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
+            var env = new Server(Guid.NewGuid(), connection.Object, resourceRepo.Object);
 
             Assert.IsTrue(env.CanStudioExecute);
 
@@ -300,7 +300,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
+            var env = new Server(Guid.NewGuid(), connection.Object, resourceRepo.Object);
 
             Assert.IsTrue(env.CanStudioExecute);
 
@@ -319,7 +319,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = false };
+            var env = new Server(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = false };
 
             env.LoadResources();
 
@@ -338,7 +338,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = true };
+            var env = new Server(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = true };
 
             env.LoadResources();
             Assert.IsTrue(env.HasLoadedResources);
@@ -358,7 +358,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = false };
+            var env = new Server(Guid.NewGuid(), connection.Object, resourceRepo.Object) { CanStudioExecute = false };
 
             env.LoadResources();
             Assert.IsFalse(env.HasLoadedResources);
@@ -377,7 +377,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.IsConnected).Returns(true);
 
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, resourceRepo.Object);
+            var env = new Server(Guid.NewGuid(), connection.Object, resourceRepo.Object);
             env.ResourcesLoaded += (sender, args) => Assert.AreEqual(args.Model, env);
             env.CanStudioExecute = false;
 
@@ -419,7 +419,7 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateConnection();
 
             //------------Execute Test---------------------------
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object);
+            var env = new Server(Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object);
             connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             //------------Assert Results-------------------------
             Assert.IsNotNull(env.AuthorizationService);
@@ -434,7 +434,7 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateConnection();
             connection.Setup(c => c.IsAuthorized).Returns(false);
 
-            var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
+            var envModel = new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
             Assert.IsFalse(envModel.IsAuthorized);
 
             //------------Execute Test---------------------------
@@ -454,7 +454,7 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateConnection();
             connection.Setup(c => c.IsAuthorized).Returns(true);
 
-            var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
+            var envModel = new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
             connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             Assert.IsFalse(envModel.IsAuthorizedDeployFrom);
 
@@ -475,7 +475,7 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateConnection();
             connection.Setup(c => c.IsAuthorized).Returns(true);
 
-            var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
+            var envModel = new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
             connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             Assert.IsFalse(envModel.IsAuthorizedDeployTo);
 
@@ -495,7 +495,7 @@ namespace Dev2.Core.Tests.Environments
             //------------Setup for test--------------------------
             var connection = CreateConnection();
 
-            var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
+            var envModel = new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
             connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(false).Verifiable();
             envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(false).Verifiable();
@@ -689,18 +689,18 @@ namespace Dev2.Core.Tests.Environments
             return conn;
         }
 
-        static EnvironmentModel CreateEnvironmentModel(Guid id, IEnvironmentConnection connection)
+        static Server CreateEnvironmentModel(Guid id, IEnvironmentConnection connection)
         {
             var repo = new Mock<IResourceRepository>();
 
-            return new EnvironmentModel(id, connection, repo.Object);
+            return new Server(id, connection, repo.Object);
         }
 
-        public static IEnvironmentModel CreateEqualityEnvironmentModel(Guid resourceID, string resourceName, Guid serverID, string serverUri)
+        public static IServer CreateEqualityEnvironmentModel(Guid resourceID, string resourceName, Guid serverID, string serverUri)
         {
             // See .. EnvironmentRepository.CreateEnvironmentModel()
             var proxy = new TestEqualityConnection(serverID, serverUri);
-            return new EnvironmentModel(resourceID, proxy) { Name = resourceName };
+            return new Server(resourceID, proxy) { Name = resourceName };
         }
     }
 

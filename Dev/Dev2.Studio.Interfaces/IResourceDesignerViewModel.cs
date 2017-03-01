@@ -16,7 +16,7 @@ namespace Dev2.Studio.Interfaces
     public interface IDesignerViewModel
     {
 
-        IEnvironmentModel EnvironmentModel { get; }
+        IServer Server { get; }
         StringBuilder ServiceDefinition { get; set; }
         IContextualResourceModel ResourceModel { get; set; }
     }

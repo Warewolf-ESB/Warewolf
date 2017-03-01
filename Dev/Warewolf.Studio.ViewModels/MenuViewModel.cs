@@ -26,14 +26,14 @@ namespace Warewolf.Studio.ViewModels
 
         bool _hasNewVersion;
         bool _panelLockedOpen;
-        readonly IMainViewModel _viewModel;
+        readonly IShellViewModel _viewModel;
         bool _isOverLock;
         ICommand _saveCommand;
         ICommand _executeServiceCommand;
         FontAwesomeIcon _debugIcon;
         bool _isProcessing;
 
-        public MenuViewModel(IMainViewModel mainViewModel)
+        public MenuViewModel(IShellViewModel mainViewModel)
         {
             if (mainViewModel == null)
             {
@@ -182,7 +182,7 @@ namespace Warewolf.Studio.ViewModels
             UpdateProperties();
         }
 
-        void SlideOpen(IMainViewModel mainViewModel)
+        void SlideOpen(IShellViewModel mainViewModel)
         {
             if (IsPanelLockedOpen)
             {
@@ -193,7 +193,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void SlideClosed(IMainViewModel mainViewModel)
+        void SlideClosed(IShellViewModel mainViewModel)
         {
             if (IsPanelLockedOpen && !IsPanelOpen)
             {
@@ -211,7 +211,7 @@ namespace Warewolf.Studio.ViewModels
             UpdateProperties();
         }
 
-        async void CheckForNewVersion(IMainViewModel mainViewModel)
+        async void CheckForNewVersion(IShellViewModel mainViewModel)
         {
             if(mainViewModel != null)
             {

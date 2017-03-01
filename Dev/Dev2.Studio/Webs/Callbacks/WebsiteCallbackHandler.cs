@@ -21,13 +21,13 @@ namespace Dev2.Webs.Callbacks
     {
         protected readonly IEventAggregator EventPublisher;
 
-        protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, IShowDependencyProvider showDependencyProvider = null)
+        protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IServerRepository currentServerRepository, IShowDependencyProvider showDependencyProvider = null)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            VerifyArgument.IsNotNull("currentEnvironmentRepository", currentEnvironmentRepository);
+            VerifyArgument.IsNotNull("currentEnvironmentRepository", currentServerRepository);
             EventPublisher = eventPublisher;
 
-            CurrentEnvironmentRepository = currentEnvironmentRepository;
+            CurrentServerRepository = currentServerRepository;
         }
 
 
@@ -35,11 +35,11 @@ namespace Dev2.Webs.Callbacks
 
         public Window Owner { get; set; }
 
-        public IEnvironmentRepository CurrentEnvironmentRepository { get; private set; }
+        public IServerRepository CurrentServerRepository { get; private set; }
 
         #endregion
 
-        protected abstract void Save(IEnvironmentModel environmentModel, dynamic jsonArgs);
+        protected abstract void Save(IServer server, dynamic jsonArgs);
 
         #region Navigate
 
@@ -53,7 +53,7 @@ namespace Dev2.Webs.Callbacks
 
         public ILayoutObjectViewModel SelectedLayoutObject => null;
 
-        public virtual void Save(string value, IEnvironmentModel environmentModel, bool closeBrowserWindow = true)
+        public virtual void Save(string value, IServer server, bool closeBrowserWindow = true)
         {
             if(closeBrowserWindow)
             {
@@ -67,7 +67,7 @@ namespace Dev2.Webs.Callbacks
             value = JSONUtils.ScrubJSON(value);
 
             dynamic jsonObj = JObject.Parse(value);
-            Save(environmentModel, jsonObj);
+            Save(server, jsonObj);
         }
 
         public virtual void Close()

@@ -18,7 +18,7 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IContextualResourceModel : IResourceModel, INotifyPropertyChanged
     {
-        IEnvironmentModel Environment { get; }
+        IServer Environment { get; }
         Guid ServerID { get; set; }
         bool IsNewWorkflow { get; set; }
         event Action<IContextualResourceModel> OnResourceSaved;

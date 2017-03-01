@@ -16,15 +16,15 @@ namespace Dev2.Studio.Core
 {
     public class DebugStateTreeViewItemViewModel : DebugTreeViewItemViewModel<IDebugState>
     {
-        readonly IEnvironmentRepository _environmentRepository;
+        readonly IServerRepository _serverRepository;
         readonly ObservableCollection<object> _inputs;
         readonly ObservableCollection<object> _outputs;
         readonly ObservableCollection<object> _assertResultList;
 
-        public DebugStateTreeViewItemViewModel(IEnvironmentRepository environmentRepository)
+        public DebugStateTreeViewItemViewModel(IServerRepository serverRepository)
         {
-            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-            _environmentRepository = environmentRepository;
+            VerifyArgument.IsNotNull("environmentRepository", serverRepository);
+            _serverRepository = serverRepository;
             _inputs = new ObservableCollection<object>();
             _outputs = new ObservableCollection<object>();
             _assertResultList = new ObservableCollection<object>();
@@ -88,20 +88,20 @@ namespace Dev2.Studio.Core
             {
                 var envId = content.EnvironmentID;
 
-                var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envId);
+                var env = _serverRepository.All().FirstOrDefault(e => e.ID == envId);
                 if (env == null)
                 {
-                    var environmentModels = _environmentRepository.LookupEnvironments(_environmentRepository.ActiveEnvironment);
+                    var environmentModels = _serverRepository.LookupEnvironments(_serverRepository.ActiveServer);
                     if (environmentModels != null)
                     {
-                        env = environmentModels.FirstOrDefault(e => e.ID == envId) ?? _environmentRepository.ActiveEnvironment;
+                        env = environmentModels.FirstOrDefault(e => e.ID == envId) ?? _serverRepository.ActiveServer;
                     }
                     else
                     {
-                        env = _environmentRepository.Source;
+                        env = _serverRepository.Source;
                     }
                 }
-                if (Equals(env, _environmentRepository.Source))
+                if (Equals(env, _serverRepository.Source))
                 {
                     // We have an unknown remote server ;)
                     content.Server = "Unknown Remote Server";

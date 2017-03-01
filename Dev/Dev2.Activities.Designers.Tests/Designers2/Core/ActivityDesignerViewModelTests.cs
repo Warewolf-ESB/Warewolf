@@ -107,8 +107,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Mock<IContextualResourceModel> setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock();
             ErrorInfo errorInfo = new ErrorInfo { InstanceID = new Guid() };
 
-            var envRepo = new Mock<IEnvironmentRepository>();
-            envRepo.Setup(e => e.ActiveEnvironment).Returns(setupResourceModelMock.Object.Environment);
+            var envRepo = new Mock<IServerRepository>();
+            envRepo.Setup(e => e.ActiveServer).Returns(setupResourceModelMock.Object.Environment);
 
             IObservableReadOnlyList<IErrorInfo> testErrors = new ObservableReadOnlyList<IErrorInfo> { errorInfo };
             setupResourceModelMock.Setup(c => c.Errors).Returns(testErrors);
@@ -419,7 +419,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             mockModelItem.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var crm = new Mock<IContextualResourceModel>();

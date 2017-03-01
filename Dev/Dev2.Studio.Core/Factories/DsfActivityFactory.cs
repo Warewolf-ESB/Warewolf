@@ -22,7 +22,7 @@ namespace Dev2.Studio.Core.Factories
     public static class DsfActivityFactory
     {
         public static DsfActivity CreateDsfActivity(IContextualResourceModel resource, DsfActivity activity,
-                    bool ifNullCreateNew, IEnvironmentRepository environmentRepository, bool isDesignerLocalhost)
+                    bool ifNullCreateNew, IServerRepository serverRepository, bool isDesignerLocalhost)
         {
             var activityToUpdate = activity;
             if(activityToUpdate == null)
@@ -54,7 +54,7 @@ namespace Dev2.Studio.Core.Factories
 
             if(resource != null)
             {
-                var activeEnvironment = environmentRepository.ActiveEnvironment;
+                var activeEnvironment = serverRepository.ActiveServer;
                 activityToUpdate.ResourceID = resource.ID;
                 SetCorrectEnvironmentId(resource, activityToUpdate, isDesignerLocalhost, activeEnvironment);
                 activityToUpdate = SetActivityProperties(resource, activityToUpdate);
@@ -64,7 +64,7 @@ namespace Dev2.Studio.Core.Factories
             return activityToUpdate;
         }
 
-        static void SetCorrectEnvironmentId(IContextualResourceModel resource, DsfActivity activity, bool isDesignerLocalhost, IEnvironmentModel activeEnvironment)
+        static void SetCorrectEnvironmentId(IContextualResourceModel resource, DsfActivity activity, bool isDesignerLocalhost, IServer activeEnvironment)
         {
             if(resource.Environment != null)
             {

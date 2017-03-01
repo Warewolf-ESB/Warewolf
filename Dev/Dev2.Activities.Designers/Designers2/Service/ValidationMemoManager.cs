@@ -67,7 +67,7 @@ namespace Dev2.Activities.Designers2.Service
             RemoveErrors(errorInfos.ToList());
         }
 
-        public void InitializeLastValidationMemo(IEnvironmentModel environmentModel)
+        public void InitializeLastValidationMemo(IServer server)
         {
             var uniqueId = _serviceDesignerViewModel.UniqueID;
             var designValidationMemo = new DesignValidationMemo
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers2.Service
             };
             designValidationMemo.Errors.AddRange(_serviceDesignerViewModel.RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
 
-            if (environmentModel == null)
+            if (server == null)
             {
                 designValidationMemo.IsValid = false;
                 designValidationMemo.Errors.Add(new ErrorInfo
@@ -110,11 +110,11 @@ namespace Dev2.Activities.Designers2.Service
             _serviceDesignerViewModel.MappingManager.UpdateLastValidationMemo(memo, false);
         }
 
-        public void InitializeValidationService(IEnvironmentModel environmentModel)
+        public void InitializeValidationService(IServer server)
         {
-            if (environmentModel?.Connection?.ServerEvents != null)
+            if (server?.Connection?.ServerEvents != null)
             {
-                _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
+                _validationService = new DesignValidationService(server.Connection.ServerEvents);
                 _validationService.Subscribe(_serviceDesignerViewModel.UniqueID, a => _serviceDesignerViewModel.MappingManager.UpdateLastValidationMemo(a));
             }
         }

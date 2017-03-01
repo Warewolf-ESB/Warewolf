@@ -44,7 +44,7 @@ namespace Dev2.Core.Tests.Settings
         {
             var shell = new Mock<IShellViewModel>();
             var lcl = new Mock<IServer>();
-            lcl.Setup(a => a.ResourceName).Returns("Localhost");
+            lcl.Setup(a => a.DisplayName).Returns("Localhost");
             shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
             // ReSharper disable once RedundantTypeArgumentsOfMethod
             CustomContainer.Register<IShellViewModel>(shell.Object);
@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, null, null, null, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, null, null, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, null, null, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, null, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -94,7 +94,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, null, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -108,7 +108,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(settingsViewModel.ShowLogging);
@@ -121,7 +121,7 @@ namespace Dev2.Core.Tests.Settings
         public void SettingsViewModel_ShowLogging_True_OtherShowPropertiesAreFalse()
         {
             //------------Setup for test--------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { ShowLogging = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object) { ShowLogging = true };
 
             //------------Execute Test---------------------------
 
@@ -137,7 +137,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { ShowLogging = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object) { ShowLogging = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -155,7 +155,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { ShowLogging = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object) { ShowLogging = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -171,7 +171,7 @@ namespace Dev2.Core.Tests.Settings
         public void SettingsViewModel_ShowSecurity_True_OtherShowPropertiesAreFalse()
         {
             //------------Setup for test--------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { ShowSecurity = false };
+            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object) { ShowSecurity = false };
 
             //------------Execute Test---------------------------
             settingsViewModel.ShowSecurity = true;
@@ -188,7 +188,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { ShowSecurity = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object) { ShowSecurity = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -206,7 +206,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { ShowSecurity = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object) { ShowSecurity = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -225,7 +225,7 @@ namespace Dev2.Core.Tests.Settings
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), "success", securityViewModel);
             viewModel.IsDirty = true;
-            var environment = new Mock<IEnvironmentModel>();
+            var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
             Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
@@ -257,7 +257,7 @@ namespace Dev2.Core.Tests.Settings
             viewModel.IsDirty = true;
 
 
-            var environment = new Mock<IEnvironmentModel>();
+            var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
             Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
@@ -287,7 +287,7 @@ namespace Dev2.Core.Tests.Settings
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
-            var environment = new Mock<IEnvironmentModel>();
+            var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
             Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(false);
@@ -329,7 +329,7 @@ You need Administrator permission.", viewModel.Errors);
             });
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
-            var environment = new Mock<IEnvironmentModel>();
+            var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
             Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
@@ -388,7 +388,7 @@ You need Administrator permission.", viewModel.Errors);
             });
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
-            var environment = new Mock<IEnvironmentModel>();
+            var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
             Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
@@ -430,7 +430,7 @@ You need Administrator permission.", viewModel.Errors);
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
-            var environment = new Mock<IEnvironmentModel>();
+            var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(false);
             Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
@@ -458,7 +458,7 @@ You need Administrator permission.", viewModel.Errors);
 
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), ErrorMessage, securityViewModel);
-            var environment = new Mock<IEnvironmentModel>();
+            var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
             Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
@@ -466,7 +466,7 @@ You need Administrator permission.", viewModel.Errors);
             var repo = new Mock<IResourceRepository>();
             environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
             viewModel.CurrentEnvironment = environment.Object;
-            repo.Setup(a => a.WriteSettings(It.IsAny<IEnvironmentModel>(), It.IsAny<Data.Settings.Settings>())).Returns(new ExecuteMessage() { HasError = true, Message = new StringBuilder(ErrorMessage) });
+            repo.Setup(a => a.WriteSettings(It.IsAny<IServer>(), It.IsAny<Data.Settings.Settings>())).Returns(new ExecuteMessage() { HasError = true, Message = new StringBuilder(ErrorMessage) });
             viewModel.IsDirty = true;
 
 
@@ -738,10 +738,10 @@ You need Administrator permission.", viewModel.Errors);
                 writeMsg = new ExecuteMessage { HasError = executeCommandWriteResult != "Success" };
                 writeMsg.SetMessage(executeCommandWriteResult);
             }
-            mockResourceRepo.Setup(c => c.ReadSettings(It.IsAny<IEnvironmentModel>())).Returns(executeCommandReadResult == null ? null : new Dev2JsonSerializer().Deserialize<Data.Settings.Settings>(executeCommandReadResult));
-            mockResourceRepo.Setup(c => c.WriteSettings(It.IsAny<IEnvironmentModel>(), It.IsAny<Data.Settings.Settings>())).Returns(writeMsg);
+            mockResourceRepo.Setup(c => c.ReadSettings(It.IsAny<IServer>())).Returns(executeCommandReadResult == null ? null : new Dev2JsonSerializer().Deserialize<Data.Settings.Settings>(executeCommandReadResult));
+            mockResourceRepo.Setup(c => c.WriteSettings(It.IsAny<IServer>(), It.IsAny<Data.Settings.Settings>())).Returns(writeMsg);
 
-            var environment = new Mock<IEnvironmentModel>();
+            var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(c => c.ResourceRepository).Returns(mockResourceRepo.Object);
   
@@ -1029,7 +1029,7 @@ You need Administrator permission.", viewModel.Errors);
         {
             //------------Setup for test--------------------------
             var propertyChanged = false;
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(a => a.IsConnected).Returns(true);
             var viewModel = new TestSettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IWin32Window>().Object, env);
             viewModel.PropertyChanged += (sender, args) =>

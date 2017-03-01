@@ -27,7 +27,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     public interface IWorkSurfaceContextViewModel
     {
         WorkSurfaceKey WorkSurfaceKey { get; }
-        IEnvironmentModel Environment { get; }
+        IServer Environment { get; }
         DebugOutputViewModel DebugOutputViewModel { get; set; }
         bool DeleteRequested { get; set; }
         IDataListViewModel DataListViewModel { get; set; }

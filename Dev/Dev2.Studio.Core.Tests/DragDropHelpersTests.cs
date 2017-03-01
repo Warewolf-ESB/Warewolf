@@ -83,9 +83,9 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var data = new Object();
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
-            var differentEnvironment = new Mock<IEnvironmentModel>();
+            var differentEnvironment = new Mock<IServer>();
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
-            dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            dataContext.Setup(model => model.Server).Returns(differentEnvironment.Object);
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
             //------------Execute Test---------------------------
             bool canDoDrop = dragDropHelpers.PreventDrop(GetMockDataObjectWithFormatData(new[] { "ExplorerItemViewModel" }, data));
@@ -101,11 +101,11 @@ namespace Dev2.Core.Tests
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object);
             data.IsService = true;
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
-            var differentEnvironment = new Mock<IEnvironmentModel>();
+            var differentEnvironment = new Mock<IServer>();
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(model => model.ID).Returns(Guid.NewGuid);
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
-            dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            dataContext.Setup(model => model.Server).Returns(differentEnvironment.Object);
             dataContext.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
 
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
@@ -125,11 +125,11 @@ namespace Dev2.Core.Tests
             data.ResourceType = "WorkflowService";
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
 
-            var differentEnvironment = new Mock<IEnvironmentModel>();
+            var differentEnvironment = new Mock<IServer>();
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(model => model.ID).Returns(Guid.NewGuid);
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
-            dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            dataContext.Setup(model => model.Server).Returns(differentEnvironment.Object);
             dataContext.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
             differentEnvironment.Setup(a => a.IsLocalHost).Returns(false);
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
@@ -150,9 +150,9 @@ namespace Dev2.Core.Tests
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourceType = "WorkflowService" };
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
 
-            var differentEnvironment = new Mock<IEnvironmentModel>();
+            var differentEnvironment = new Mock<IServer>();
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
-            dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            dataContext.Setup(model => model.Server).Returns(differentEnvironment.Object);
             differentEnvironment.Setup(a => a.IsLocalHost).Returns(false);
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));
             CustomContainer.Register(new Mock<IPopupController>().Object);
@@ -199,9 +199,9 @@ namespace Dev2.Core.Tests
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(model => model.ID).Returns(resourceId);
-            var differentEnvironment = new Mock<IEnvironmentModel>();
+            var differentEnvironment = new Mock<IServer>();
             differentEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
-            dataContext.Setup(model => model.EnvironmentModel).Returns(differentEnvironment.Object);
+            dataContext.Setup(model => model.Server).Returns(differentEnvironment.Object);
             dataContext.Setup(model => model.ResourceModel).Returns(resourceModel.Object);
             differentEnvironment.Setup(a => a.IsLocalHost).Returns(false);
             var dragDropHelpers = new DragDropHelpers(GetMockWorkflowDesignerView(dataContext.Object));

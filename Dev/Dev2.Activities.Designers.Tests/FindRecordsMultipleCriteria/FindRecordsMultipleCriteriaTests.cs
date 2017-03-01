@@ -184,7 +184,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
                 new FindRecordsTO("yyyy", "Contains", 2)
             };
 
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);

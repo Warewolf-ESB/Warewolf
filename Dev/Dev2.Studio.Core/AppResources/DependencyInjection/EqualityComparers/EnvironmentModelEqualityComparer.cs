@@ -15,7 +15,7 @@ using Dev2.Studio.Interfaces;
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 {
-    public class EnvironmentModelEqualityComparer : IEqualityComparer<IEnvironmentModel>
+    public class EnvironmentModelEqualityComparer : IEqualityComparer<IServer>
     {
         #region Class Members
 
@@ -30,7 +30,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 
         #region Methods
 
-        public bool Equals(IEnvironmentModel x, IEnvironmentModel y)
+        public bool Equals(IServer x, IServer y)
         {
             if(x == null || y == null)
             {
@@ -39,7 +39,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
             return x.Equals(y);
         }
 
-        public int GetHashCode(IEnvironmentModel obj)
+        public int GetHashCode(IServer obj)
         {
             return obj.GetHashCode();
         }

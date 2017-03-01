@@ -165,7 +165,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.AreSame(value, newSelectedConnection.Object);
-            mainViewModelMock.Verify(it => it.SetActiveEnvironment(newSelectedConnectionEnvironmentId));
+            mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnectionEnvironmentId));
             mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnection.Object));            
             Assert.IsTrue(_target.SelectedConnection.IsConnected);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
@@ -201,7 +201,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SelectedConnection = newSelectedConnection.Object;
 
             //assert
-            mainViewModelMock.Verify(it => it.SetActiveEnvironment(newSelectedConnectionEnvironmentId));
+            mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnectionEnvironmentId));
             mainViewModelMock.Verify(it => it.SetActiveServer(newSelectedConnection.Object));
             Assert.IsTrue(_target.SelectedConnection.IsConnected);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
@@ -481,13 +481,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register<IServer>(server);
             CustomContainer.Register(mockShellViewModel.Object);
 
-            var environmentModel = new Mock<IEnvironmentModel>();
+            var environmentModel = new Mock<IServer>();
             environmentModel.SetupGet(a => a.Connection).Returns(mockEnvironmentConnection.Object);
             environmentModel.SetupGet(a => a.IsConnected).Returns(true);
 
-            var e1 = new EnvironmentModel(serverGuid, mockEnvironmentConnection.Object);
-            var repo = new TestEnvironmentRespository(environmentModel.Object, e1) { ActiveEnvironment = e1 };
-            var environmentRepository = new EnvironmentRepository(repo);
+            var e1 = new Server(serverGuid, mockEnvironmentConnection.Object);
+            var repo = new TestServerRespository(environmentModel.Object, e1) { ActiveServer = e1 };
+            var environmentRepository = new ServerRepository(repo);
             Assert.IsNotNull(environmentRepository);
 
             bool passed = false;

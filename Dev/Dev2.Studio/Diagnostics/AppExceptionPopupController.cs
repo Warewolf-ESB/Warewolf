@@ -19,9 +19,9 @@ namespace Dev2.Studio.Diagnostics
 {
     public class AppExceptionPopupController : AppExceptionPopupControllerAbstract
     {
-        readonly IEnvironmentModel _environment;
+        readonly IServer _environment;
 
-        public AppExceptionPopupController(IEnvironmentModel environment)
+        public AppExceptionPopupController(IServer environment)
         {
             _environment = environment;
         }

@@ -20,7 +20,7 @@ namespace Warewolf.Studio.ViewModels
     public class ManageWcfSourceViewModel : SourceBaseImpl<IWcfServerSource>, IManageWcfSourceViewModel
     {
         private readonly IWcfSourceModel _updateManager;
-        private readonly IEnvironmentModel _environment;
+        private readonly IServer _environment;
         private CancellationTokenSource _token;
         public ICommand TestCommand { get; set; }
         public ICommand CancelTestCommand { get; set; }
@@ -29,14 +29,14 @@ namespace Warewolf.Studio.ViewModels
 
         private string _endPointUrl;
 
-        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IEnvironmentModel environment)
+        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
             : this(updateManager, aggregator, asyncWorker, environment)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
             _requestServiceNameViewModel = requestServiceNameViewModel;
         }
 
-        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IWcfServerSource wcfSource, IAsyncWorker asyncWorker, IEnvironmentModel environment)
+        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IWcfServerSource wcfSource, IAsyncWorker asyncWorker, IServer environment)
             : this(updateManager, aggregator, asyncWorker, environment)
         {
             VerifyArgument.IsNotNull("source", wcfSource);
@@ -49,7 +49,7 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
-        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IEnvironmentModel environment)
+        public ManageWcfSourceViewModel(IWcfSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
             : base("WcfSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);

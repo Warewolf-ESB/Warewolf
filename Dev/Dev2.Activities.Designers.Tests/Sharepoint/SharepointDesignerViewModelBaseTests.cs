@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             
             
             //------------Execute Test---------------------------
-            var sharepointListDesignerViewModelBase = new TestSharepointListDesignerViewModelBase(null, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object, false);
+            var sharepointListDesignerViewModelBase = new TestSharepointListDesignerViewModelBase(null, new SynchronousAsyncWorker(), new Mock<IServer>().Object, new Mock<IEventAggregator>().Object, false);
             //------------Assert Results-------------------------
             Assert.IsNull(sharepointListDesignerViewModelBase);
         }
@@ -50,7 +50,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            new TestSharepointListDesignerViewModelBase(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object, false);
+            new TestSharepointListDesignerViewModelBase(CreateModelItem(), null, new Mock<IServer>().Object, new Mock<IEventAggregator>().Object, false);
             //------------Assert Results-------------------------
         }        
         
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            new TestSharepointListDesignerViewModelBase(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object, null, false);
+            new TestSharepointListDesignerViewModelBase(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IServer>().Object, null, false);
             //------------Assert Results-------------------------
         }
 
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            var sharepointListDesignerViewModelBase = new TestSharepointListDesignerViewModelBase(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object, false);
+            var sharepointListDesignerViewModelBase = new TestSharepointListDesignerViewModelBase(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IServer>().Object, new Mock<IEventAggregator>().Object, false);
             //------------Assert Results-------------------------
             Assert.IsNotNull(sharepointListDesignerViewModelBase);
             Assert.AreEqual(Visibility.Collapsed,sharepointListDesignerViewModelBase.ShowExampleWorkflowLink);
@@ -120,15 +120,15 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
         private static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel()
         {
-            return CreateSharepointListDesignerViewModel(new Mock<IEnvironmentModel>());
+            return CreateSharepointListDesignerViewModel(new Mock<IServer>());
         }
         
-        private static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel(Mock<IEnvironmentModel> mockEnvironmentModel)
+        private static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel(Mock<IServer> mockEnvironmentModel)
         {
             return CreateSharepointListDesignerViewModel(mockEnvironmentModel, new Mock<IEventAggregator>());
         }
 
-        private static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel(Mock<IEnvironmentModel> mockEnvironmentModel, Mock<IEventAggregator> mockEventAggregator)
+        private static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel(Mock<IServer> mockEnvironmentModel, Mock<IEventAggregator> mockEventAggregator)
         {
             return new TestSharepointListDesignerViewModelBase(CreateModelItem(), new SynchronousAsyncWorker(), mockEnvironmentModel.Object, mockEventAggregator.Object, false);
         }
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListDesignerViewModelBase_SharepointListDesignerViewModelBase_LoadSharepointServers_HasServers_ShouldPopulateList()
         {
             //------------Setup for test--------------------------
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var sharepointSource = new SharepointSource
             {
@@ -147,7 +147,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
                 ResourceID = Guid.NewGuid()
             };
             var sharepointSources = new List<SharepointSource>{sharepointSource};
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IServer>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var sharepointListDesignerViewModelBase = CreateSharepointListDesignerViewModel(mockEnvironmentModel);
             
@@ -166,7 +166,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListDesignerViewModelBase_SetSelectedSharepointServer_SetToServer_ShouldLoadLists()
         {
             //------------Setup for test--------------------------
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var sharepointSource = new SharepointSource
             {
@@ -174,7 +174,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
                 ResourceID = Guid.NewGuid()
             };
             var sharepointSources = new List<SharepointSource> { sharepointSource };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IServer>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
             var sharepointListTo = new SharepointListTo
             {
                 FullName = "Share List",
@@ -219,7 +219,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             var serverMock = new Mock<IServer>();
             mockShellViewModel.Setup(viewModel => viewModel.ActiveServer).Returns(() => serverMock.Object);
             CustomContainer.Register(mockShellViewModel.Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var sharepointSource = new SharepointSource
             {
@@ -227,7 +227,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
                 ResourceID = Guid.NewGuid()
             };
             var sharepointSources = new List<SharepointSource> { sharepointSource };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IServer>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var sharepointListDesignerViewModelBase = CreateSharepointListDesignerViewModel(mockEnvironmentModel);
             sharepointListDesignerViewModelBase.SelectedSharepointServer = sharepointSource;
@@ -245,7 +245,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListDesignerViewModelBase_SetSelectedSharepointServer_SetToNewSharepointServer_ShouldPublishEvent()
         {
             //------------Setup for test--------------------------
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var sharepointSource = new SharepointSource
             {
@@ -253,7 +253,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
                 ResourceID = Guid.NewGuid()
             };
             var sharepointSources = new List<SharepointSource> { sharepointSource };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);            
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IServer>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);            
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
             var mockEventAggregator = new Mock<IEventAggregator>();
             var mockShellViewModel = new Mock<IShellViewModel>();
@@ -275,7 +275,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListDesignerViewModelBase_SetSelectedList_SetToList_ShouldLoadFields()
         {
             //------------Setup for test--------------------------
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var sharepointSource = new SharepointSource
             {
@@ -283,7 +283,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
                 ResourceID = Guid.NewGuid()
             };
             var sharepointSources = new List<SharepointSource> { sharepointSource };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IServer>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
             var sharepointFieldTos = new List<ISharepointFieldTo>
             {
                 new SharepointFieldTo
@@ -369,7 +369,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListDesignerViewModelBase_RefreshListsCommand_ShouldReloadLists()
         {
             //------------Setup for test--------------------------
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var sharepointSource = new SharepointSource
             {
@@ -377,7 +377,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
                 ResourceID = Guid.NewGuid()
             };
             var sharepointSources = new List<SharepointSource> { sharepointSource };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IServer>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
             var sharepointListTo = new SharepointListTo
             {
                 FullName = "Share List",
@@ -440,7 +440,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListDesignerViewModelBase_Constructor_Activity_ShouldLoadFromActivity()
         {
             //------------Setup for test--------------------------
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var sharepointSource = new SharepointSource
             {
@@ -448,7 +448,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
                 ResourceID = Guid.NewGuid()
             };
             var sharepointSources = new List<SharepointSource> { sharepointSource };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IServer>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
             var sharepointFieldTos = new List<ISharepointFieldTo>
             {
                 new SharepointFieldTo
@@ -500,7 +500,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public void SharepointListDesignerViewModelBase_RemoveFilterItem_ShouldRemoveFromCollection()
         {
             //------------Setup for test--------------------------
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var sharepointSource = new SharepointSource
             {
@@ -508,7 +508,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
                 ResourceID = Guid.NewGuid()
             };
             var sharepointSources = new List<SharepointSource> { sharepointSource };
-            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
+            mockResourceRepo.Setup(repository => repository.FindSourcesByType<SharepointSource>(It.IsAny<IServer>(), enSourceType.SharepointServerSource)).Returns(sharepointSources);
             var sharepointFieldTos = new List<ISharepointFieldTo>
             {
                 new SharepointFieldTo
@@ -583,8 +583,8 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
     public class TestSharepointListDesignerViewModelBase : SharepointListDesignerViewModelBase
     {
-        public TestSharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher, bool loadOnlyEditableFields)
-            : base(modelItem, asyncWorker, environmentModel, eventPublisher, loadOnlyEditableFields)
+        public TestSharepointListDesignerViewModelBase(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher, bool loadOnlyEditableFields)
+            : base(modelItem, asyncWorker, server, eventPublisher, loadOnlyEditableFields)
         {
             dynamic mi = ModelItem;
             InitializeItems(mi.FilterCriteria);

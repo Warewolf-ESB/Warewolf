@@ -55,8 +55,8 @@ namespace Dev2.Settings
         SecurityViewModel _securityViewModel;
         LogSettingsViewModel _logSettingsViewModel;
         private bool _showLog;
-        private IEnvironmentModel _currentEnvironment;
-        private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
+        private IServer _currentEnvironment;
+        private Func<IServer, IServer> _toEnvironmentModel;
         private PerfcounterViewModel _perfmonViewModel;
         private string _displayName;
         private Data.Settings.Settings _backedUpSettings;
@@ -66,7 +66,7 @@ namespace Dev2.Settings
         {
         }
 
-        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow, IServer server, Func<IServer, IEnvironmentModel> toEnvironmentModel)
+        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow, IServer server, Func<IServer, IServer> toEnvironmentModel)
             : base(eventPublisher)
         {
             Server = server;
@@ -87,7 +87,7 @@ namespace Dev2.Settings
             ToEnvironmentModel = toEnvironmentModel??( a=>a.ToEnvironmentModel());
             CurrentEnvironment= ToEnvironmentModel(server);
             LoadSettings();
-            DisplayName = "Settings - " + Server.ResourceName;
+            DisplayName = "Settings - " + Server.DisplayName;
         }
 
         protected override void OnDispose()
@@ -150,7 +150,7 @@ namespace Dev2.Settings
         public RelayCommand SaveCommand { get; private set; }
 
 
-        public IEnvironmentModel CurrentEnvironment
+        public IServer CurrentEnvironment
         {
             get
             {
@@ -387,7 +387,7 @@ namespace Dev2.Settings
 
 
 
-        public Func<IServer, IEnvironmentModel> ToEnvironmentModel
+        public Func<IServer, IServer> ToEnvironmentModel
         {
             get
             {

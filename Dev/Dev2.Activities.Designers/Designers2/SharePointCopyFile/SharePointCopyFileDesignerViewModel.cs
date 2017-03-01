@@ -18,11 +18,11 @@ namespace Dev2.Activities.Designers2.SharePointCopyFile
     public class SharePointCopyFileDesignerViewModel : SharepointListDesignerViewModelBase
     {
         public SharePointCopyFileDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment)
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer)
         {
         }
 
-        public SharePointCopyFileDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel envModel)
+        public SharePointCopyFileDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer envModel)
             : base(modelItem, asyncWorker, envModel, EventPublishers.Aggregator, false)
         {
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Copy_File;
@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers2.SharePointCopyFile
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
