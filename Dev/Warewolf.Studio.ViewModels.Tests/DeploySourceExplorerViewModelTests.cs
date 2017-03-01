@@ -215,6 +215,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serverMock = new Mock<IServer>();
             var serverId = Guid.NewGuid();
             serverMock.SetupGet(it => it.EnvironmentID).Returns(serverId);
+            serverMock.SetupGet(it => it.ResourceName).Returns("newServerName");
             environmentViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             var env = _target.Environments.First();
@@ -225,10 +226,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.Environments = new ObservableCollection<IEnvironmentViewModel>(environmentViewModels );
 
             //act
+            _target.ConnectControlViewModel.SelectedConnection = serverMock.Object;
             _target.ConnectControlViewModel.SelectedConnection = _serverMock.Object;
 
             //assert
-            environmentViewModelMock.VerifySet(it => it.IsVisible = false);
 
             explorerItemViewModelMock.VerifySet(it => it.CanExecute = false);
             explorerItemViewModelMock.VerifySet(it => it.CanEdit = false);
