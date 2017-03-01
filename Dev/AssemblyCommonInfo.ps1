@@ -89,6 +89,8 @@ $Line3 = "[assembly: AssemblyProduct(""Warewolf"")]"
 $Line4 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
 $Line5 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
 $Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)]"
+$Line7 = "[assembly: InternalsVisibleTo(""Dev2.Activities.Designers.Tests"")]"
+$Line8 = "[assembly: InternalsVisibleTo(""Warewolf.Studio.ViewModels.Tests"")]"
 Write-Host $Line1
 $Line1 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Force
 Write-Host $Line2
