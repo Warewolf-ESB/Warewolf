@@ -78,13 +78,15 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         {
             Click_Create_New_Tests(true, testIntance);
         }
-
-        [Given(@"I Wait For Debug Butoon Enabled")]
-        [When(@"I Wait For Debug Butoon Enabled")]
-        [Then(@"I Wait For Debug Butoon Enabled")]
-        public void WaitForDebugButoonEnabled()
+        
+        [Given(@"I Execute Workflow Using DebugRun Button")]
+        [When(@"I Execute Workflow Using DebugRun Button")]
+        [Then(@"I Execute Workflow Using DebugRun Button")]
+        public void ThenIExecuteWorkflowUsingDebugRunButton()
         {
             UIMap.MainStudioWindow.SideMenuBar.RunAndDebugButton.DrawHighlight();
+            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.RunAndDebugButton);
+            Mouse.Click(UIMap.MainStudioWindow.DebugInputDialog.DebugF6Button);
         }
 
         [Then(@"I click Run ""(.*)""th test expecting ""(.*)""")]
