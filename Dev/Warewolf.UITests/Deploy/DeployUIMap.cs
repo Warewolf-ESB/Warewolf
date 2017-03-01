@@ -170,7 +170,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         public void Select_LocalhostConnected_From_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalhostConnected, new Point(226, 13));
         }
@@ -197,7 +196,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         public void Click_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... option does not exist in Destination server combobox.");
         }
 
         [When(@"I Click Deploy Tab Destination Server Connect Button")]
