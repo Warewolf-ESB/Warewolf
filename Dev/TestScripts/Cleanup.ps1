@@ -1,5 +1,4 @@
 ﻿#Requires -RunAsAdministrator
-$Output = ""
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" 1>$null
 taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq RUNNING" 1>$null
 
@@ -13,18 +12,10 @@ sleep 5
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" 1>$null
 taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq NOT RESPONDING" 1>$null
 
-$ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
-if ($ServerService -ne $null -and $ServerService.Status -eq "Running") {
-    [int32]$Result = 1
-    $RetryCount = 0
-    while ($Result -ne 0 -and $RetryCount++ -lt 5) {
-        [int32]$Result = $ServerService.Stop()
-        sleep 10
-        if ($Result -ne 0) {
-            Stop-Process -Name "Warewolf Server"
-        }
-    }
-}
+sc.exe stop "Warewolf Server"
+
+sleep 5
+
 Get-Process *Warewolf* | %{if (!($_.HasExited)) {$_.Kill()}}
 
 $ToClean = `
