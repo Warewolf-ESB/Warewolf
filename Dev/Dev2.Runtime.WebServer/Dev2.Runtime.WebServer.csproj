@@ -137,7 +137,6 @@
     </None>
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
-    <Compile Include="Handlers\DebugListener.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
     <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
