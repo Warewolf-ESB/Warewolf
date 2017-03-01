@@ -299,7 +299,7 @@
     <Compile Include="Factories\ServiceDebugInfoModelFactory.cs" />
     <Compile Include="Factories\WebActivityFactory.cs" />
     <Compile Include="InterfaceImplementors\WebActivity.cs" />
-    <Compile Include="AppResources\Repositories\EnvironmentRepository.cs" />
+    <Compile Include="AppResources\Repositories\ServerRepository.cs" />
     <Compile Include="AppResources\Repositories\ResourceRepository.cs" />
     <Compile Include="Factories\ResourceModelFactory.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
@@ -330,7 +330,7 @@
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
-    <Compile Include="Models\EnvironmentModel.cs" />
+    <Compile Include="Models\Server.cs" />
     <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />

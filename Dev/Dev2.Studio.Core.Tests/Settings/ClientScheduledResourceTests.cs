@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests.Settings
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests.Settings
             var serializeObject = serializer.SerializeToBuilder(scheduledResourceForTest);
             var esbPayLoad = new EsbExecuteRequest { ServiceName = "DeleteScheduledResourceService" };
             esbPayLoad.AddArgument("Resource", serializeObject);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
@@ -87,7 +87,7 @@ namespace Dev2.Core.Tests.Settings
             var serializeObject = serializer.SerializeToBuilder(scheduledResourceForTest);
             var esbPayLoad = new EsbExecuteRequest { ServiceName = "AddScheduledResourceService" };
             esbPayLoad.AddArgument("Resource", serializeObject);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
@@ -115,7 +115,7 @@ namespace Dev2.Core.Tests.Settings
             esbPayLoad.AddArgument("Resource", serializeObject);
             var returnMessage = new ExecuteMessage { HasError = true, Message = new StringBuilder("Error occurred") };
             var serializedReturnMessage = serializer.SerializeToBuilder(returnMessage);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
@@ -143,7 +143,7 @@ namespace Dev2.Core.Tests.Settings
             var listOfHistoryResources = new List<IResourceHistory> { resourceHistory };
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(listOfHistoryResources);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);

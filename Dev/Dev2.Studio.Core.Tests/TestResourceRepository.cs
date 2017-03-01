@@ -17,12 +17,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
     class TestResourceRepository : ResourceRepository
     {
         public TestResourceRepository()
-            : this(new Mock<IEnvironmentModel>().Object)
+            : this(new Mock<IServer>().Object)
         {
         }
 
-        public TestResourceRepository(IEnvironmentModel environmentModel)
-            : base(environmentModel)
+        public TestResourceRepository(IServer server)
+            : base(server)
         {
         }
 

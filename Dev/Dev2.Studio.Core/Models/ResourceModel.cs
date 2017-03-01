@@ -48,7 +48,7 @@ namespace Dev2.Studio.Core.Models
         private string _dataList;
         private string _dataTags;
         private string _displayName = string.Empty;
-        private IEnvironmentModel _environment;
+        private IServer _environment;
         private string _helpLink;
         private bool _isDatabaseService;
         private bool _isDebugMode;
@@ -74,12 +74,12 @@ namespace Dev2.Studio.Core.Models
 
         #region Constructors
 
-        public ResourceModel(IEnvironmentModel environment)
+        public ResourceModel(IServer environment)
             : this(environment, EventPublishers.Aggregator)
         {
         }
 
-        public ResourceModel(IEnvironmentModel environment, IEventAggregator eventPublisher)
+        public ResourceModel(IServer environment, IEventAggregator eventPublisher)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 
@@ -130,7 +130,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public IEnvironmentModel Environment
+        public IServer Environment
         {
             get { return _environment; }
             private set

@@ -19,11 +19,11 @@ namespace Dev2.Studio.Diagnostics
     public class AppExceptionHandler : AppExceptionHandlerAbstract
     {
         readonly IApp _current;
-        readonly IMainViewModel _mainViewModel;
+        readonly IShellViewModel _mainViewModel;
 
         #region CTOR
 
-        public AppExceptionHandler(IApp current, IMainViewModel mainViewModel)
+        public AppExceptionHandler(IApp current, IShellViewModel mainViewModel)
         {
             if(current == null)
             {
@@ -43,7 +43,7 @@ namespace Dev2.Studio.Diagnostics
 
         protected override IAppExceptionPopupController CreatePopupController()
         {
-            return new AppExceptionPopupController(_mainViewModel.ActiveEnvironment);
+            return new AppExceptionPopupController(_mainViewModel.ActiveServer);
         }
 
         #endregion

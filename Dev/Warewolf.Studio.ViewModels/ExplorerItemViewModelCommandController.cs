@@ -161,7 +161,7 @@ namespace Warewolf.Studio.ViewModels
 
         private static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {
-            shellViewModel.SetActiveEnvironment(server.EnvironmentID);
+            shellViewModel.SetActiveServer(server.EnvironmentID);
             shellViewModel.SetActiveServer(server);
         }
 
@@ -183,7 +183,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.DuplicateResource(explorerItemViewModel);
         }
 
-        public void DeleteCommand(IEnvironmentModel environmentModel, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController, IServer server)
+        public void DeleteCommand(IServer server, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController, IServer server)
         {
             try
             {

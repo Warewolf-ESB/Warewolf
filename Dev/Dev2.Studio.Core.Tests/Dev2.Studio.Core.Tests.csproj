@@ -253,7 +253,7 @@
     <Compile Include="IntellisenseProvider\DateTimeIntellisenseProviderTests.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
-    <Compile Include="Environments\TestEnvironmentModel.cs" />
+    <Compile Include="Environments\TestServer.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
     <Compile Include="FileSystemQueryTest.cs" />
     <Compile Include="Helpers\TypeSwitchTest.cs" />
@@ -261,7 +261,7 @@
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
     <Compile Include="MainViewModelBase.cs" />
-    <Compile Include="MainViewModelMock.cs" />
+    <Compile Include="ShellViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
     <Compile Include="ModelTests\ScalarItemModelTests.cs" />
@@ -312,15 +312,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Environments\EnvironmentModelTest.cs" />
-    <Compile Include="Environments\TestEnvironmentRespository.cs" />
-    <Compile Include="Environments\TestLoadEnvironmentRespository.cs" />
+    <Compile Include="Environments\TestServerRespository.cs" />
+    <Compile Include="Environments\TestLoadServerRespository.cs" />
     <Compile Include="Environments\TestServerProvider.cs" />
     <Compile Include="Factories\DsfActivityFactoryTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
     <Compile Include="Helpers\VersionCheckerTests.cs" />
     <Compile Include="IDataListVerifyPart.cs" />
     <Compile Include="InputOutputViewModelTest.cs" />
-    <Compile Include="MainViewModelPersistenceMock.cs" />
+    <Compile Include="ShellViewModelPersistenceMock.cs" />
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="Dev2MockFactory.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />

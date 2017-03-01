@@ -91,7 +91,7 @@ namespace Dev2.Core.Tests.Utils
         {
 
             var x = new Mock<IContextualResourceModel>();
-            var mockEnv = new Mock<IEnvironmentModel>();
+            var mockEnv = new Mock<IServer>();
             var mockCon = new Mock<IEnvironmentConnection>();
             mockEnv.Setup(a => a.Connection).Returns(mockCon.Object);
             mockCon.Setup(a => a.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
@@ -118,8 +118,8 @@ namespace Dev2.Core.Tests.Utils
         {
 
             var x = new Mock<IContextualResourceModel>();
-            var mockEnv = new Mock<IEnvironmentModel>();
-            var mockEnvRes = new Mock<IEnvironmentModel>();
+            var mockEnv = new Mock<IServer>();
+            var mockEnvRes = new Mock<IServer>();
             var mockCon = new Mock<IEnvironmentConnection>();
             var mockConRes = new Mock<IEnvironmentConnection>();
             mockEnv.Setup(a => a.Connection).Returns(mockCon.Object);

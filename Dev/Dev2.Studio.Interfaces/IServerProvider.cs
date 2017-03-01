@@ -13,13 +13,13 @@ using System.Collections.Generic;
 namespace Dev2.Studio.Interfaces
 {
     /// <summary>
-    /// Defines the requirements for an <see cref="IEnvironmentModel"/> provider.
+    /// Defines the requirements for an <see cref="IServer"/> provider.
     /// </summary>
     public interface IEnvironmentModelProvider
     {
-        List<IEnvironmentModel> Load();
-        List<IEnvironmentModel> ReloadServers();
-        List<IEnvironmentModel> Load(IEnvironmentRepository environmentRepository);
-        List<IEnvironmentModel> ReloadServers(IEnvironmentRepository environmentRepository);
+        List<IServer> Load();
+        List<IServer> ReloadServers();
+        List<IServer> Load(IServerRepository serverRepository);
+        List<IServer> ReloadServers(IServerRepository serverRepository);
     }
 }

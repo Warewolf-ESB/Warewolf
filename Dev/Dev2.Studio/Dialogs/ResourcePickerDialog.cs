@@ -32,7 +32,7 @@ namespace Dev2.Dialogs
         readonly enDsfActivityType _activityType;
 
         public IExplorerViewModel SingleEnvironmentExplorerViewModel{get; private set;}
-        IEnvironmentModel _environmentModel;
+        IServer _server;
         IExplorerTreeItem _selectedResource;
 
         /// <summary>
@@ -104,10 +104,10 @@ namespace Dev2.Dialogs
             }
         }
 
-        public bool ShowDialog(IEnvironmentModel environmentModel = null)
+        public bool ShowDialog(IServer server = null)
         {
             DsfActivityDropViewModel dropViewModel;
-            _environmentModel = environmentModel;
+            _server = server;
             return ShowDialog(out dropViewModel);
         }
 
@@ -128,7 +128,7 @@ namespace Dev2.Dialogs
             {
               
                // environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
-                dropViewModel.SelectedResourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ID == selected.ResourceId, true) as IContextualResourceModel;
+                dropViewModel.SelectedResourceModel = _server.ResourceRepository.FindSingle(c => c.ID == selected.ResourceId, true) as IContextualResourceModel;
     
             }
             var dropWindow = CreateDialog(dropViewModel);

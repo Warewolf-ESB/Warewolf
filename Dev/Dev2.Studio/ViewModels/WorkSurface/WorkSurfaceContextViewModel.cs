@@ -71,7 +71,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         private AuthorizeCommand _quickDebugCommand;
         private AuthorizeCommand _quickViewInBrowserCommand;
 
-        private readonly IEnvironmentModel _environmentModel;
+        private readonly IServer _server;
         private readonly IPopupController _popupController;
         private readonly Action<IContextualResourceModel, bool, System.Action> _saveDialogAction;
         private IStudioCompileMessageRepoFactory _studioCompileMessageRepoFactory;
@@ -83,7 +83,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public WorkSurfaceKey WorkSurfaceKey { get; }
 
-        public IEnvironmentModel Environment
+        public IServer Environment
         {
             get
             {
@@ -188,11 +188,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (model != null)
             {
                 model.WorkflowChanged += UpdateForWorkflowChange;
-                _environmentModel = model.EnvironmentModel;
-                if (_environmentModel != null)
+                _server = model.Server;
+                if (_server != null)
                 {
-                    _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
-                    _environmentModel.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
+                    _server.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
+                    _server.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
                 }
             }
             
@@ -692,14 +692,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         /// </summary>
         protected override void OnDispose()
         {
-            if (_environmentModel != null)
+            if (_server != null)
             {
-                _environmentModel.IsConnectedChanged -= EnvironmentModelOnIsConnectedChanged();
+                _server.IsConnectedChanged -= EnvironmentModelOnIsConnectedChanged();
 
-                if (_environmentModel.Connection != null)
+                if (_server.Connection != null)
                 {
                     // ReSharper disable DelegateSubtraction
-                    _environmentModel.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
+                    _server.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
                 }
             }
 

@@ -18,7 +18,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
-using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Webs
@@ -30,7 +29,7 @@ namespace Dev2.Webs
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId = null, bool addToTabManager = true)
         {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager));
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, resourceModel, addToTabManager));
         }
 
         static async void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, Action loaded = null)
@@ -41,21 +40,20 @@ namespace Dev2.Webs
                 {
                     throw new ArgumentNullException(nameof(resourceModel));
                 }
-                IEnvironmentModel environment = resourceModel.Environment;
+                IServer server = resourceModel.Environment;
 
-                if (environment == null)
+                if (server == null)
                 {
                     // ReSharper disable NotResolvedInText
                     throw new ArgumentNullException("environment");
                 }
 
-                EnvironmentRepository.Instance.ActiveEnvironment = environment;
+                ServerRepository.Instance.ActiveServer = server;
 
-                IServer server = new Server(environment);
                 if (server.Permissions == null)
                 {
                     server.Permissions = new List<IWindowsGroupPermission>();
-                    server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
+                    server.Permissions.AddRange(server.AuthorizationService.SecurityService.Permissions);
                 }
                 if (resourceModel.Category == null)
                 {
@@ -70,7 +68,7 @@ namespace Dev2.Webs
                 }
                 selectedPath = selectedPath.Replace("\\", "\\\\");
 
-                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
 
                 var header = string.IsNullOrEmpty(resourceModel.Category) ? "Unsaved Item" : resourceModel.Category;
@@ -89,7 +87,7 @@ namespace Dev2.Webs
                 {
                     var value = new { resourceName = requestViewModel.ResourceName.Name, resourcePath = requestViewModel.ResourceName.Path };
                     var serializeObject = JsonConvert.SerializeObject(value);
-                    callbackHandler.Save(serializeObject, environment);
+                    callbackHandler.Save(serializeObject, server);
                 }
             }
             catch (Exception)
@@ -104,7 +102,7 @@ namespace Dev2.Webs
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId, bool addToTabManager, Action action)
         {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), action);
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, resourceModel, addToTabManager), action);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Dev2.Core.Tests.Settings
         {
 
             AppSettings.LocalHost = "http://localhost:3142";
-            EnvironmentRepository.Instance.ActiveEnvironment = new Mock<IEnvironmentModel>().Object;
+            ServerRepository.Instance.ActiveServer = new Mock<IServer>().Object;
         }
 
 
@@ -53,7 +53,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SecurityViewModel(new SecuritySettingsTO(), null, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            new SecurityViewModel(new SecuritySettingsTO(), null, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -69,7 +69,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, null, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, null, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -127,7 +127,7 @@ namespace Dev2.Core.Tests.Settings
         static void Verify_Constructor_InitializesProperties(SecuritySettingsTO securitySettingsTO)
         {
             //------------Execute Test---------------------------
-            var viewModel = new SecurityViewModel(securitySettingsTO, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(securitySettingsTO, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.CloseHelpCommand.CanExecute(null));
@@ -163,7 +163,7 @@ namespace Dev2.Core.Tests.Settings
                 DeployFrom = true,
                 Administrator = false
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -188,7 +188,7 @@ namespace Dev2.Core.Tests.Settings
                 Execute = false,
                 Contribute = false,
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -215,7 +215,7 @@ namespace Dev2.Core.Tests.Settings
                 Execute = true,
                 Contribute = true,
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -242,7 +242,7 @@ namespace Dev2.Core.Tests.Settings
                 Execute = true,
                 Contribute = true,
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -272,7 +272,7 @@ namespace Dev2.Core.Tests.Settings
                 View = false,
                 Execute = false
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -305,7 +305,7 @@ namespace Dev2.Core.Tests.Settings
                 View = true,
                 Execute = true
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -338,7 +338,7 @@ namespace Dev2.Core.Tests.Settings
                 View = true,
                 Execute = true
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -371,7 +371,7 @@ namespace Dev2.Core.Tests.Settings
                 View = true,
                 Execute = true
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -404,7 +404,7 @@ namespace Dev2.Core.Tests.Settings
                 View = true,
                 Execute = true
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -437,7 +437,7 @@ namespace Dev2.Core.Tests.Settings
                 View = true,
                 Execute = true
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.IsFalse(viewModel.IsDirty);
 
@@ -459,7 +459,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_OnPermissionPropertyChanged_ServerPermissionWindowsGroupChangedToNonEmptyAndIsNew_NewServerPermissionIsAdded()
         {
             //------------Setup for test--------------------------
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.AreEqual(1, viewModel.ServerPermissions.Count);
             Assert.IsTrue(viewModel.ServerPermissions[0].IsNew);
@@ -491,7 +491,7 @@ namespace Dev2.Core.Tests.Settings
                 DeployFrom = true,
                 Administrator = false
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.AreEqual(2, viewModel.ServerPermissions.Count);
             Assert.IsFalse(viewModel.ServerPermissions[0].IsNew);
@@ -514,7 +514,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_OnPermissionPropertyChanged_ResourcePermissionWindowsGroupAndResourceNameChangedToNonEmptyAndIsNew_NewResourcePermissionIsAdded()
         {
             //------------Setup for test--------------------------
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.AreEqual(1, viewModel.ResourcePermissions.Count);
             Assert.IsTrue(viewModel.ResourcePermissions[0].IsNew);
@@ -547,7 +547,7 @@ namespace Dev2.Core.Tests.Settings
                 DeployFrom = true,
                 Administrator = false
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             Assert.AreEqual(2, viewModel.ResourcePermissions.Count);
             Assert.IsFalse(viewModel.ResourcePermissions[0].IsNew);
@@ -586,7 +586,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceName = ResourceName
             };
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.Cancel, SelectedObjects = new[] { (DirectoryObject)null } };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object) { Result = DialogResult.Cancel, SelectedObjects = new[] { (DirectoryObject)null } };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(permission);
 
@@ -616,7 +616,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceName = ResourceName
             };
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { (DirectoryObject)null } };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { (DirectoryObject)null } };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(permission);
 
@@ -645,7 +645,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceID = resourceID,
                 ResourceName = ResourceName
             };
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(null);
@@ -677,7 +677,7 @@ namespace Dev2.Core.Tests.Settings
             };
             var picker = new Mock<DirectoryObjectPickerDialog>();
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new DirectoryObjectPickerDialog(), new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { (DirectoryObject)null } };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new DirectoryObjectPickerDialog(), new Mock<IWin32Window>().Object, new Mock<IServer>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { (DirectoryObject)null } };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(viewModel.ResourcePermissions[0]);
 
@@ -711,7 +711,7 @@ namespace Dev2.Core.Tests.Settings
 
             var picker = new Mock<DirectoryObjectPickerDialog>();
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new DirectoryObjectPickerDialog(), new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { directoryObj } };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new DirectoryObjectPickerDialog(), new Mock<IWin32Window>().Object, new Mock<IServer>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { directoryObj } };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(viewModel.ResourcePermissions[0]);
 
@@ -741,7 +741,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceName = ResourceName
             };
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.Cancel, SelectedObjects = new DirectoryObject[0] };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object) { Result = DialogResult.Cancel, SelectedObjects = new DirectoryObject[0] };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(permission);
 
@@ -775,7 +775,7 @@ namespace Dev2.Core.Tests.Settings
 
             var picker = new Mock<IResourcePickerDialog>();
 
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             //------------Execute Test---------------------------
             viewModel.PickResourceCommand.Execute(null);
@@ -793,7 +793,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_HelpText_IsResourceHelpVisibleIsTrue_ContainsResourceHelpText()
         {
             //------------Setup for test--------------------------          
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsResourceHelpVisible = true };
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsResourceHelpVisible = true };
 
             //------------Execute Test---------------------------
 
@@ -807,7 +807,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_IsServerHelpVisible_ChangedToTrueAndIsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------          
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsResourceHelpVisible = true, IsServerHelpVisible = true };
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsResourceHelpVisible = true, IsServerHelpVisible = true };
 
             //------------Execute Test---------------------------
 
@@ -822,7 +822,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_IsResourceHelpVisible_ChangedToTrueAndIsServerHelpVisibleIsTrue_IsServerHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------          
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsServerHelpVisible = true, IsResourceHelpVisible = true };
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsServerHelpVisible = true, IsResourceHelpVisible = true };
 
             //------------Execute Test---------------------------
 
@@ -837,7 +837,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_CloseHelpCommand_IsServerHelpVisibleIsTrue_IsServerHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------          
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsResourceHelpVisible = true };
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsResourceHelpVisible = true };
 
             //------------Execute Test---------------------------
             viewModel.CloseHelpCommand.Execute(null);
@@ -853,7 +853,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_CloseHelpCommand_IsResourceHelpVisibleIsTrue_IsResourceHelpVisibleIsFalse()
         {
             //------------Setup for test--------------------------          
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsResourceHelpVisible = true };
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object) { IsResourceHelpVisible = true };
 
             //------------Execute Test---------------------------
             viewModel.CloseHelpCommand.Execute(null);
@@ -870,7 +870,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_Save_NullPermissions_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------          
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(new WindowsGroupPermission[0]), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             //------------Execute Test---------------------------
             viewModel.Save(null);
@@ -889,7 +889,7 @@ namespace Dev2.Core.Tests.Settings
             var invalidPermission = permissions[permissions.Count - 1];
             invalidPermission.WindowsGroup = "";
 
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(permissions), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(permissions), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             var target = new SecuritySettingsTO();
 
@@ -922,7 +922,7 @@ namespace Dev2.Core.Tests.Settings
             var deletedPermission = permissions[permissions.Count - 1];
             deletedPermission.IsDeleted = true;
 
-            var viewModel = new SecurityViewModel(new SecuritySettingsTO(permissions), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var viewModel = new SecurityViewModel(new SecuritySettingsTO(permissions), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
 
             var target = new SecuritySettingsTO();
 
@@ -950,7 +950,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_ServerDuplicates_NoDuplicates_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
             {
                 WindowsGroup = "Some Group",
@@ -976,7 +976,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_ServerDuplicates_HasDuplicatesDeleted_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
             {
                 WindowsGroup = "Some Group",
@@ -1004,7 +1004,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_ServerDuplicates_Duplicates_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
             {
                 WindowsGroup = "Some Group",
@@ -1030,7 +1030,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesResourceID_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
             {
                 WindowsGroup = "Some Group",
@@ -1056,7 +1056,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesWindowsGroup_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var resourceId = Guid.NewGuid();
             securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
             {
@@ -1083,7 +1083,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateDeleted_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var resourceId = Guid.NewGuid();
             securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
             {
@@ -1111,7 +1111,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_ResourcePermissionsCompare_IsDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var resourceId = Guid.NewGuid();
 
             var groupPermission = new WindowsGroupPermission
@@ -1150,7 +1150,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_ServerPermissionsCompare_IsDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var resourceId = Guid.NewGuid();
 
             var groupPermission = new WindowsGroupPermission
@@ -1188,7 +1188,7 @@ namespace Dev2.Core.Tests.Settings
         public void IsInDomain_GivenNotInDomaint_ShouldReturnCollapsed()
         {
             //---------------Set up test pack-------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var mock = new Mock<IDomain>();
             mock.Setup(domain => domain.GetComputerDomain()).Throws(new Exception());
             var type = typeof(SecurityViewModel);
@@ -1208,7 +1208,7 @@ namespace Dev2.Core.Tests.Settings
         public void IsInDomain_GivenInDomaint_ShouldReturnVisible()
         {
             //---------------Set up test pack-------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var mock = new Mock<IDomain>();
             mock.Setup(domain => domain.GetComputerDomain()).Verifiable();
             var type = typeof(SecurityViewModel);
@@ -1229,7 +1229,7 @@ namespace Dev2.Core.Tests.Settings
         public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateNotDeleted_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var resourceId = Guid.NewGuid();
             securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
             {

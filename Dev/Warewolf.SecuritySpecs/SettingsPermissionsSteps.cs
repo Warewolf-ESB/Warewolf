@@ -44,7 +44,7 @@ namespace Dev2.Activities.Specs.Permissions
             var securitySpecsPassword = GetSecuritySpecsPassword();
             var userGroup = GetUserGroup();
             AppSettings.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             while (!environmentModel.IsConnected)
             {
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.Disconnect();
             FeatureContext.Current.Add("environment", environmentModel);
 
-            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
+            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
             try
             {
                 reconnectModel.Connect();
@@ -113,7 +113,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
             
-            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
+            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -141,7 +141,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
+            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -170,7 +170,7 @@ namespace Dev2.Activities.Specs.Permissions
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
 
-            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
+            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
@@ -178,11 +178,11 @@ namespace Dev2.Activities.Specs.Permissions
 
 
 
-        static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel)
+        static void EnsureEnvironmentConnected(IServer server)
         {
-            if (!environmentModel.IsConnected)
+            if (!server.IsConnected)
             {
-                environmentModel.Connect();
+                server.Connect();
             }
         }
 
@@ -208,7 +208,7 @@ namespace Dev2.Activities.Specs.Permissions
         {
             var securitySpecsUser = GetSecuritySpecsUser();
 
-            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
+            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
             try
             {
                 
@@ -221,9 +221,9 @@ namespace Dev2.Activities.Specs.Permissions
             FeatureContext.Current["currentEnvironment"] = reconnectModel;
         }
 
-        IEnvironmentModel LoadResources()
+        IServer LoadResources()
         {
-            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = FeatureContext.Current.Get<IServer>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
             if (environmentModel.IsConnected)
             {
@@ -280,7 +280,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"Resource ""(.*)"" has rights ""(.*)"" for ""(.*)""")]
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
-            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("environment");
+            var environmentModel = FeatureContext.Current.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
@@ -308,7 +308,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Then(@"""(.*)"" should have ""(.*)""")]
         public void ThenShouldHave(string resourceName, string resourcePerms)
         {
-            var environmentModel = FeatureContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = FeatureContext.Current.Get<IServer>("currentEnvironment");
             EnsureEnvironmentConnected(environmentModel);
             var resourceRepository = environmentModel.ResourceRepository;
             environmentModel.ForceLoadResources();
@@ -332,22 +332,22 @@ namespace Dev2.Activities.Specs.Permissions
         [AfterScenario("Security")]
         public void DoCleanUp()
         {
-            IEnvironmentModel currentEnvironment;
+            IServer currentEnvironment;
             FeatureContext.Current.TryGetValue("currentEnvironment", out currentEnvironment);
-            IEnvironmentModel environmentModel;
-            FeatureContext.Current.TryGetValue("environment", out environmentModel);
+            IServer server;
+            FeatureContext.Current.TryGetValue("environment", out server);
             Data.Settings.Settings currentSettings;
             FeatureContext.Current.TryGetValue("initialSettings", out currentSettings);
 
-            if (environmentModel != null)
+            if (server != null)
             {
                 try
                 {
                     if (currentSettings != null)
-                        environmentModel.ResourceRepository.WriteSettings(environmentModel, currentSettings);
+                        server.ResourceRepository.WriteSettings(server, currentSettings);
 
                 }
-                finally { environmentModel.Disconnect(); }
+                finally { server.Disconnect(); }
 
 
             }
@@ -358,7 +358,7 @@ namespace Dev2.Activities.Specs.Permissions
         public void GivenIHaveAServer(string serverName)
         {
             AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             scenarioContext.Add("environment", environmentModel);
         }
     }

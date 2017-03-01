@@ -18,22 +18,22 @@ namespace Dev2.ViewModels
         where T : IEquatable<T>
     {
         readonly IPopupController _popupController;
-        private readonly IEnvironmentModel _environmentModel;
+        private readonly IServer _server;
 
-        public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController,IView view,IEnvironmentModel environmentModel)
+        public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController,IView view,IServer server)
             : base(eventPublisher)
         {
             ViewModel = vm;
             View = view;
             _popupController = popupController;
-            _environmentModel = environmentModel;
+            _server = server;
             ViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "Header")
                 {
                     OnPropertyChanged("DisplayName");
                 }
-                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 if (mainViewModel != null)
                 {
                     ViewModelUtils.RaiseCanExecuteChanged(mainViewModel.SaveCommand);
@@ -66,9 +66,9 @@ namespace Dev2.ViewModels
             get
             {
                 var header = ViewModel.Header;
-                if (!_environmentModel.IsLocalHost)
+                if (!_server.IsLocalHost)
                 {
-                    var name = _environmentModel.Name;
+                    var name = _server.Name;
                     if (header.EndsWith(" *"))
                     {
                         return header.Replace(" *", "") + " - " + name + " *";

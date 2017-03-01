@@ -148,7 +148,7 @@ namespace Warewolf.Studio.ViewModels
         bool? _isResource;
         readonly IPopupController _popupController;
         IVersionInfo _versionInfo;
-        private IEnvironmentModel _environmentModel;
+        private IServer _server;
         private readonly ExplorerItemViewModelCommandController _explorerItemViewModelCommandController;
         private bool _forcedRefresh;
         private string _deployResourceCheckboxTooltip;
@@ -1065,7 +1065,7 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => IsSelected);
                     if (_shellViewModel != null)
                     {
-                        _shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
+                        _shellViewModel.SetActiveServer(Server.EnvironmentID);
                         _shellViewModel.SetActiveServer(Server);
                     }
                 }
@@ -1454,11 +1454,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public IServer Server
-        {
-            get;
-            set;
-        }
         public ICommand LostFocus { get; set; }
         public bool CanExecute
         {
@@ -1835,15 +1830,15 @@ namespace Warewolf.Studio.ViewModels
         public string ExecuteToolTip => Resources.Languages.Tooltips.ExplorerItemExecuteToolTip;
         public string EditToolTip => Resources.Languages.Tooltips.ExplorerItemEditToolTip;
         public string ResourcePath { get; set; }
-        public IEnvironmentModel EnvironmentModel
+        public IServer Server
         {
-            private get
+            get
             {
-                return _environmentModel ?? EnvironmentRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
+                return _server ?? ServerRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
             }
             set
             {
-                _environmentModel = value;
+                _server = value;
             }
         }
 

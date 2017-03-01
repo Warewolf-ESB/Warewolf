@@ -19,7 +19,7 @@ namespace Dev2.Studio.Core.AppResources
 
     public delegate void CancelOperationEventHandler(object cancelledobject, object[] arguments);
     public delegate void ClosedOperationEventHandler(object closedobject, object[] arguments);
-    public delegate void EnvironmentCreatedEventHandler(IEnvironmentModel environment);
+    public delegate void EnvironmentCreatedEventHandler(IServer environment);
 
 
     public delegate void RoleEventHandler(string roles);

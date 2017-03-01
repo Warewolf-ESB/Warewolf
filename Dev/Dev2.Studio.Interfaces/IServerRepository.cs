@@ -12,20 +12,21 @@ using Dev2.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Studio.Core;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IEnvironmentRepository : IFrameworkRepository<IEnvironmentModel>
+    public interface IServerRepository : IFrameworkRepository<IServer>
     {
-        IEnvironmentModel Source { get; }
-        IEnvironmentModel ActiveEnvironment { get; set; }
+        IServer Source { get; }
+        IServer ActiveServer { get; set; }
         event EventHandler<IEnvironmentEditedArgs> ItemEdited;
         bool IsLoaded { get; set; }
 
-        ICollection<IEnvironmentModel> ReloadServers();
+        ICollection<IServer> ReloadServers();
 
-        IEnvironmentModel Get(Guid id);
+        IServer Get(Guid id);
 
         /// <summary>
         /// Lookups the environments.
@@ -37,11 +38,11 @@ namespace Dev2.Studio.Interfaces
         /// <param name="environmentGuids">The environment guids to be queried; may be null.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">defaultEnvironment</exception>
-        IList<IEnvironmentModel> LookupEnvironments(IEnvironmentModel defaultEnvironment, IList<string> environmentGuids = null);
+        IList<IServer> LookupEnvironments(IServer defaultEnvironment, IList<string> environmentGuids = null);
 
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Clear();
 
-        ICollection<IEnvironmentModel> ReloadAllServers();
+        ICollection<IServer> ReloadAllServers();
     }
 }

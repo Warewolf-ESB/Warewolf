@@ -17,10 +17,10 @@ using Dev2.Studio.ViewModels;
 
 namespace Dev2.Core.Tests
 {
-    public class MainViewModelMock : MainViewModel
+    public class ShellViewModelMock : ShellViewModel
     {
-        public MainViewModelMock(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
-            : base(eventPublisher, asyncWorker, environmentRepository, versionChecker, createDesigners, browserPopupController)
+        public ShellViewModelMock(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository, IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
+            : base(eventPublisher, asyncWorker, serverRepository, versionChecker, createDesigners, browserPopupController)
         {
         }
 

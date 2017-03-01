@@ -24,7 +24,7 @@ namespace Dev2.Core.Tests.Settings
             
             
             //------------Execute Test---------------------------
-            new LogSettingsViewModel(null, new Mock<IEnvironmentModel>().Object);
+            new LogSettingsViewModel(null, new Mock<IServer>().Object);
             //------------Assert Results-------------------------
         } 
         
@@ -72,7 +72,7 @@ namespace Dev2.Core.Tests.Settings
         public void LogSettingsViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
@@ -263,7 +263,7 @@ namespace Dev2.Core.Tests.Settings
             var logSettingsViewModel = CreateLogSettingViewModel();
 
             //------------Execute Test---------------------------
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(a => a.IsLocalHost).Returns(true);
             env.Setup(a => a.IsConnected).Returns(true);
             logSettingsViewModel.CurrentEnvironment = env.Object;
@@ -302,7 +302,7 @@ namespace Dev2.Core.Tests.Settings
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo("Settings.config"));
             var loggingSettingsTo = new LoggingSettingsTo { FileLoggerLogSize = 50, FileLoggerLogLevel = "TRACE" };
-            var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, new Mock<IEnvironmentModel>().Object);
+            var logSettingsViewModel = new LogSettingsViewModel(loggingSettingsTo, new Mock<IServer>().Object);
             return logSettingsViewModel;
         }
     }

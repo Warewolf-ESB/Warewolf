@@ -82,12 +82,12 @@ namespace Dev2.Studio.Views.Workflow
                 var explorerItemViewModel = objectData as ExplorerItemViewModel;
                 if (explorerItemViewModel != null)
                 {
-                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
+                    if (workflowDesignerViewModel.Server.ID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
                     {
                         return true;
                     }
-                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID &&
-                        !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemViewModel.IsService)
+                    if (workflowDesignerViewModel.Server.ID != explorerItemViewModel.Server.EnvironmentID &&
+                        !workflowDesignerViewModel.Server.IsLocalHostCheck() && explorerItemViewModel.IsService)
                     {
                         return true;
                     }

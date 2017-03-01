@@ -19,7 +19,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ServerTests
     {
-        private Mock<IEnvironmentModel> _env;
+        private Mock<IServer> _env;
         private Mock<IEnvironmentConnection> _envConnection;
         private Mock<IExplorerRepository> _proxyLayer;
         private Guid _serverId;
@@ -29,7 +29,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             var envId = new Guid();
             _serverId = new Guid();
-            _env = new Mock<IEnvironmentModel>();
+            _env = new Mock<IServer>();
             _envConnection = new Mock<IEnvironmentConnection>();
             _proxyLayer = new Mock<IExplorerRepository>();
             _envConnection.Setup(connection => connection.ServerID).Returns(_serverId);

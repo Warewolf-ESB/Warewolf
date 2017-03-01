@@ -108,8 +108,8 @@ namespace Dev2.Factory
             var origin = debugState.WorkspaceID;
             if (origin != Guid.Empty)
             {
-                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
-                Guid environmentID = environmentModel.ID;
+                IServer server = ServerRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
+                Guid environmentID = server.ID;
                 return new WorkSurfaceKey
                 {
                     WorkSurfaceContext = WorkSurfaceContext.Workflow,

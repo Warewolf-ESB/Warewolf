@@ -28,7 +28,7 @@ namespace Dev2.ViewModels
             _popupController = popupController;
             ViewModel.PropertyChanged += (sender, args) =>
             {
-                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 if (mainViewModel != null)
                 {
                     ViewModelUtils.RaiseCanExecuteChanged(mainViewModel.SaveCommand);
@@ -39,7 +39,7 @@ namespace Dev2.ViewModels
                     NotifyOfPropertyChange(() => DisplayName);
                 }
             };
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), ServerRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
         }
 
         public override bool HasVariables => false;

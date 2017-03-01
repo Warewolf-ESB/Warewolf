@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 namespace Dev2.Studio.Interfaces
 // ReSharper restore CheckNamespace
 {
-    public interface IEnvironmentModel : IEquatable<IEnvironmentModel>
+    public interface IServer : IEquatable<IServer>
     {
         event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
@@ -67,12 +67,14 @@ namespace Dev2.Studio.Interfaces
         bool CanDeployTo { get; }
         bool CanDeployFrom { get; }
         IExplorerRepository ProxyLayer { get; }
+        Permissions UserPermissions { get; set; }
+
         string GetMinSupportedVersion();
         Task<List<string>> LoadExplorerDuplicates();
         Permissions GetPermissions(Guid resourceID);
-        IList<IEnvironmentModel> GetAllServerConnections();
+        IList<IServer> GetAllServerConnections();
         Dictionary<string, string> GetServerInformation();
-        IEnvironmentModel FetchServer(Guid savedServerID);
+        IServer FetchServer(Guid savedServerID);
 
     }
 
@@ -82,7 +84,7 @@ namespace Dev2.Studio.Interfaces
     }
     public class ResourcesLoadedEventArgs : EventArgs
     {
-        public IEnvironmentModel Model { get; set; }
+        public IServer Model { get; set; }
 
     }
 }

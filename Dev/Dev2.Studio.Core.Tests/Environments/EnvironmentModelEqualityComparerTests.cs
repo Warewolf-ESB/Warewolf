@@ -80,8 +80,8 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModelEqualityComparer_Equals_YIsEnvironmentModel_InvokesEqualsOfX()
         {
             //------------Setup for test--------------------------
-            var environment1 = new Mock<IEnvironmentModel>();
-            var environment2 = new Mock<IEnvironmentModel>();
+            var environment1 = new Mock<IServer>();
+            var environment2 = new Mock<IServer>();
 
             environment1.Setup(e => e.Equals(environment2.Object)).Verifiable();
 

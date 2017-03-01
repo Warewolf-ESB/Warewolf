@@ -32,7 +32,7 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2
 {
-    public class Bootstrapper : Bootstrapper<IMainViewModel>
+    public class Bootstrapper : Bootstrapper<IShellViewModel>
     {
         protected override void PrepareApplication()
         {
@@ -78,8 +78,8 @@ namespace Dev2
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IPopupController>(new PopupController());
-            var mainViewModel = new MainViewModel();
-            CustomContainer.Register<IMainViewModel>(mainViewModel);
+            var mainViewModel = new ShellViewModel();
+            CustomContainer.Register<IShellViewModel>(mainViewModel);
             CustomContainer.Register<IShellViewModel>(mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
             var conn = new ServerProxy("http://localHost:3142",CredentialCache.DefaultNetworkCredentials, new AsyncWorker());

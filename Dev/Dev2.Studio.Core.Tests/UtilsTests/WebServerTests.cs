@@ -29,7 +29,7 @@ namespace Dev2.Core.Tests.UtilsTests
         {
             //------------Setup for test--------------------------
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
@@ -50,7 +50,7 @@ namespace Dev2.Core.Tests.UtilsTests
         {
             //------------Setup for test--------------------------
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
@@ -70,7 +70,7 @@ namespace Dev2.Core.Tests.UtilsTests
         public void Webserver_Send_NullEnvironment_ShouldNotMakeCallToExecuteCommand()
         {
             //------------Setup for test--------------------------
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
@@ -90,7 +90,7 @@ namespace Dev2.Core.Tests.UtilsTests
         {
             //------------Setup for test--------------------------
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();
@@ -111,7 +111,7 @@ namespace Dev2.Core.Tests.UtilsTests
         {
             //------------Setup for test--------------------------
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Verifiable();

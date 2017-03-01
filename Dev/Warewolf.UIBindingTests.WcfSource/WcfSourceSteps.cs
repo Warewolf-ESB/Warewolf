@@ -29,7 +29,7 @@ namespace Warewolf.UIBindingTests.WcfSource
             var mockExecutor = new Mock<IExternalProcessExecutor>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var manageWcfSourceViewModel = new ManageWcfSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            var manageWcfSourceViewModel = new ManageWcfSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object);
             manageWcfSourceControl.DataContext = manageWcfSourceViewModel;
             Utils.ShowTheViewForTesting(manageWcfSourceControl);
             FeatureContext.Current.Add(Utils.ViewNameKey, manageWcfSourceControl);

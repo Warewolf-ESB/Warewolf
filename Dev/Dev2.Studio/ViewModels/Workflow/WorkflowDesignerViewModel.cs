@@ -85,7 +85,6 @@ using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ConvertToAutoProperty
@@ -210,7 +209,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
             GetWorkflowLink();
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
-            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ResourceModel);
+            DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, ServerRepository.Instance, new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
         }
 
@@ -825,7 +824,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             mvm.NewService("");
@@ -843,7 +842,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             mvm.DebugCommand.Execute(mvm.ActiveItem);
@@ -861,7 +860,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             mvm.QuickDebugCommand.Execute(mvm.ActiveItem);
@@ -879,7 +878,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             mvm.QuickViewInBrowserCommand.Execute(mvm.ActiveItem);
@@ -897,7 +896,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             mvm.CreateNewSchedule(mvm.ActiveItem.ContextualResourceModel.ID);
@@ -917,7 +916,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             mvm.CreateTest(mvm.ActiveItem.ContextualResourceModel.ID);
@@ -935,7 +934,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             mvm.RunAllTests(mvm.ActiveItem.ContextualResourceModel.ID);
@@ -953,11 +952,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             IExplorerItemViewModel explorerItem = null;
-                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
+                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.ID);
                             foreach (var environmentViewModel in environmentViewModels)
                             {
                                 explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
@@ -979,7 +978,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             var explorerItem = GetSelected(mvm);
@@ -991,10 +990,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private static IExplorerItemViewModel GetSelected(MainViewModel mvm)
+        private static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
         {
             IExplorerItemViewModel explorerItem = null;
-            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveEnvironment.ID);
+            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.ID);
             foreach (var environmentViewModel in environmentViewModels)
             {
                 explorerItem =
@@ -1012,7 +1011,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             var explorerItem = GetSelected(mvm);
@@ -1031,7 +1030,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
-                        var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
                             mvm.ViewSwagger(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
@@ -1108,7 +1107,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ModelProperty modelProperty = mi.Properties["Key"];
                     if (modelProperty?.Value != null && (FlowController.OldSwitchValue == null || string.IsNullOrWhiteSpace(FlowController.OldSwitchValue)))
                     {
-                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
+                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, Server = _resourceModel.Environment });
                     }
                 }
             }
@@ -1167,12 +1166,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if (viewModel != null)
                 {
-                    IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == viewModel.Server.EnvironmentID);
-                    var theResource = environmentModel?.ResourceRepository.LoadContextualResourceModel(viewModel.ResourceId);
+                    IServer server = ServerRepository.Instance.FindSingle(c => c.ID == viewModel.Server.EnvironmentID);
+                    var theResource = server?.ResourceRepository.LoadContextualResourceModel(viewModel.ResourceId);
 
                     if (theResource != null)
                     {
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, ServerRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
 
                         d.DisplayName = theResource.DisplayName;
                         d.ServiceName = theResource.Category;
@@ -1201,9 +1200,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             DsfActivity activity = droppedActivity;
             IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                 c => c.Category == activity.ServiceName) as IContextualResourceModel;
-            IEnvironmentRepository environmentRepository = EnvironmentRepository.Instance;
-            droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, environmentRepository, _resourceModel.Environment.IsLocalHostCheck());
-            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, environmentRepository.ActiveEnvironment);
+            IServerRepository serverRepository = ServerRepository.Instance;
+            droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, serverRepository, _resourceModel.Environment.IsLocalHostCheck());
+            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(droppedActivity, resource, serverRepository.ActiveServer);
             modelProperty1.SetValue(droppedActivity);
         }
 
@@ -1211,7 +1210,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
-            _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true });
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
@@ -1221,7 +1220,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             ModelProperty modelProperty = mi.Properties["Action"];
 
             InitialiseWithAction(modelProperty);
-            _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
+            _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true });
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
@@ -1886,7 +1885,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
 
                 // In the case of null of empty try fetching again ;)
-                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
+                var msg = Server.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
                 if (msg != null)
                 {
                     xaml = msg.Message;
@@ -2161,10 +2160,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
-                var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+                var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                 if (mvm?.ActiveItem != null)
                 {
-                    mvm.RefreshActiveEnvironment();
+                    mvm.RefreshActiveServer();
                 }
             }
 
@@ -2238,7 +2237,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         FlowController.EditSwitchCaseExpression(new EditCaseExpressionMessage
                         {
                             ModelItem = item,
-                            EnvironmentModel = _resourceModel.Environment
+                            Server = _resourceModel.Environment
                         });
                     }
                 }
@@ -2251,7 +2250,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage
                         {
                             ModelItem = item,
-                            EnvironmentModel = _resourceModel.Environment
+                            Server = _resourceModel.Environment
                         });
                     AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                 }
@@ -2264,7 +2263,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage
                         {
                             ModelItem = item,
-                            EnvironmentModel = _resourceModel.Environment
+                            Server = _resourceModel.Environment
                         });
                     AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
                 }
@@ -2274,13 +2273,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage]
         private IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
         {
-            var environment = EnvironmentRepository.Instance.ActiveEnvironment;
-            IServer server = new Server(environment);
+            var server = ServerRepository.Instance.ActiveServer;
 
             if (server.Permissions == null)
             {
                 server.Permissions = new List<IWindowsGroupPermission>();
-                server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
+                server.Permissions.AddRange(server.AuthorizationService.SecurityService.Permissions);
             }
             var env = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
             var res = new ResourcePickerDialog(activityType, env);
@@ -2495,11 +2493,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (envID != null && modelProperty != null)
             {
-                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == envID);
-                var resource = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
+                IServer server = ServerRepository.Instance.FindSingle(c => c.ID == envID);
+                var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
                 if (resource != null)
                 {
-                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
+                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                     UpdateForRemote(d, resource);
                     modelProperty.SetValue(d);
@@ -2528,7 +2526,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        protected IEnvironmentModel ActiveEnvironment { get; set; }
+        protected IServer ActiveEnvironment { get; set; }
 
         /// <summary>
         ///     Handler attached to intercept checks for executing the delete command
@@ -2676,7 +2674,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// The environment model.
         /// </value>
         /// <exception cref="System.NotImplementedException"></exception>
-        public IEnvironmentModel EnvironmentModel => ResourceModel.Environment;
+        public IServer Server => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
         public ModelItem SelectedItem
@@ -2793,7 +2791,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.WorkflowXaml = ServiceDefinition?.Replace(unsavedName, message.ResourceName);
             resourceModel.IsNewWorkflow = false;
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
             if (environmentViewModel != null)
             {

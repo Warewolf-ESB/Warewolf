@@ -71,7 +71,7 @@ using Dev2.Studio.Interfaces.Enums;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels
 {
-    public class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
+    public class ShellViewModel : BaseConductor<WorkSurfaceContextViewModel>,
                                         IHandle<DeleteResourcesMessage>,
                                         IHandle<DeleteFolderMessage>,
                                         IHandle<ShowDependenciesMessage>,
@@ -84,7 +84,6 @@ namespace Dev2.Studio.ViewModels
                                         IShellViewModel
     {
 
-        private IEnvironmentModel _activeEnvironment;
         private WorkSurfaceContextViewModel _previousActive;
         private bool _disposed;
 
@@ -115,7 +114,7 @@ namespace Dev2.Studio.ViewModels
 
         public IPopupController PopupProvider { get; set; }
 
-        private IEnvironmentRepository EnvironmentRepository { get; }
+        private IServerRepository ServerRepository { get; }
 
 
         public bool CloseCurrent { get; private set; }
@@ -130,38 +129,24 @@ namespace Dev2.Studio.ViewModels
                 NotifyOfPropertyChange(() => ExplorerViewModel);
             }
         }
+        
+        public bool ShouldUpdateActiveState { get; set; }
 
         public IServer ActiveServer
         {
             get { return _activeServer; }
             set
             {
-                if (value.EnvironmentID != _activeServer.EnvironmentID)
+                if (!Equals(value, _activeServer))
                 {
                     _activeServer = value;
-                    ExplorerViewModel.ConnectControlViewModel.SelectedConnection = value;
-                    NotifyOfPropertyChange(() => ActiveServer);
-                }
-            }
-        }
-
-        public bool ShouldUpdateActiveState { get; set; }
-
-        public IEnvironmentModel ActiveEnvironment
-        {
-            get { return _activeEnvironment; }
-            set
-            {
-                if (!Equals(value, _activeEnvironment))
-                {
-                    _activeEnvironment = value;
-                    if (EnvironmentRepository != null)
+                    if (ServerRepository != null)
                     {
-                        EnvironmentRepository.ActiveEnvironment = value;
+                        ServerRepository.ActiveServer = value;
                     }
                     SetEnvironmentIsSelected();
-                    OnActiveEnvironmentChanged();
-                    NotifyOfPropertyChange(() => ActiveEnvironment);
+                    OnActiveServerChanged();
+                    NotifyOfPropertyChange(() => ActiveServer);
                 }
             }
         }
@@ -176,7 +161,7 @@ namespace Dev2.Studio.ViewModels
                     environment.IsSelected = false;
                 }
                 var environmentViewModel =
-                    environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeEnvironment.ID);
+                    environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.ID);
                 if (environmentViewModel != null)
                 {
                     environmentViewModel.IsSelected = true;
@@ -186,27 +171,27 @@ namespace Dev2.Studio.ViewModels
 
         public IBrowserPopupController BrowserPopupController { get; }
 
-        public void OnActiveEnvironmentChanged()
+        public void OnActiveServerChanged()
         {
-            NewSqlServerSourceCommand.UpdateContext(ActiveEnvironment);
-            NewMySqlSourceCommand.UpdateContext(ActiveEnvironment);
-            NewPostgreSqlSourceCommand.UpdateContext(ActiveEnvironment);
-            NewOracleSourceCommand.UpdateContext(ActiveEnvironment);
-            NewOdbcSourceCommand.UpdateContext(ActiveEnvironment);
-            NewServiceCommand.UpdateContext(ActiveEnvironment);
-            NewPluginSourceCommand.UpdateContext(ActiveEnvironment);
-            NewWebSourceCommand.UpdateContext(ActiveEnvironment);
-            NewWcfSourceCommand.UpdateContext(ActiveEnvironment);
-            NewServerSourceCommand.UpdateContext(ActiveEnvironment);
-            NewSharepointSourceCommand.UpdateContext(ActiveEnvironment);
-            NewRabbitMQSourceCommand.UpdateContext(ActiveEnvironment);
-            NewDropboxSourceCommand.UpdateContext(ActiveEnvironment);
-            NewEmailSourceCommand.UpdateContext(ActiveEnvironment);
-            NewExchangeSourceCommand.UpdateContext(ActiveEnvironment);
-            SettingsCommand.UpdateContext(ActiveEnvironment);
-            SchedulerCommand.UpdateContext(ActiveEnvironment);
-            DebugCommand.UpdateContext(ActiveEnvironment);
-            SaveCommand.UpdateContext(ActiveEnvironment);
+            NewSqlServerSourceCommand.UpdateContext(ActiveServer);
+            NewMySqlSourceCommand.UpdateContext(ActiveServer);
+            NewPostgreSqlSourceCommand.UpdateContext(ActiveServer);
+            NewOracleSourceCommand.UpdateContext(ActiveServer);
+            NewOdbcSourceCommand.UpdateContext(ActiveServer);
+            NewServiceCommand.UpdateContext(ActiveServer);
+            NewPluginSourceCommand.UpdateContext(ActiveServer);
+            NewWebSourceCommand.UpdateContext(ActiveServer);
+            NewWcfSourceCommand.UpdateContext(ActiveServer);
+            NewServerSourceCommand.UpdateContext(ActiveServer);
+            NewSharepointSourceCommand.UpdateContext(ActiveServer);
+            NewRabbitMQSourceCommand.UpdateContext(ActiveServer);
+            NewDropboxSourceCommand.UpdateContext(ActiveServer);
+            NewEmailSourceCommand.UpdateContext(ActiveServer);
+            NewExchangeSourceCommand.UpdateContext(ActiveServer);
+            SettingsCommand.UpdateContext(ActiveServer);
+            SchedulerCommand.UpdateContext(ActiveServer);
+            DebugCommand.UpdateContext(ActiveServer);
+            SaveCommand.UpdateContext(ActiveServer);
         }
 
         public IAuthorizeCommand SaveCommand
@@ -294,7 +279,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _settingsCommand ?? (_settingsCommand =
-                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
             }
         }
 
@@ -303,7 +288,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _schedulerCommand ?? (_schedulerCommand =
-                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
             }
         }
 
@@ -315,7 +300,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newServiceCommand ?? (_newServiceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -324,7 +309,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newPluginSourceCommand ?? (_newPluginSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -333,7 +318,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -342,7 +327,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newMySqlSourceCommand ?? (_newMySqlSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -351,7 +336,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -360,7 +345,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newOracleSourceCommand ?? (_newOracleSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -369,7 +354,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newOdbcSourceCommand ?? (_newOdbcSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -378,7 +363,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newWebSourceCommand ?? (_newWebSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -387,7 +372,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newServerSourceCommand ?? (_newServerSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewServerSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewServerSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -396,7 +381,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newEmailSourceCommand ?? (_newEmailSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -406,7 +391,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newExchangeSourceCommand ?? (_newExchangeSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -415,7 +400,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -424,7 +409,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newSharepointSourceCommand ?? (_newSharepointSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -433,7 +418,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newDropboxSourceCommand ?? (_newDropboxSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -442,7 +427,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newWcfSourceCommand ?? (_newWcfSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveEnvironmentConnected()));
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveServerConnected()));
             }
         }
 
@@ -472,19 +457,19 @@ namespace Dev2.Studio.ViewModels
         public IVersionChecker Version { get; }
 
         [ExcludeFromCodeCoverage]
-        public MainViewModel()
-            : this(EventPublishers.Aggregator, new AsyncWorker(), Core.EnvironmentRepository.Instance, new VersionChecker())
+        public ShellViewModel()
+            : this(EventPublishers.Aggregator, new AsyncWorker(), Core.ServerRepository.Instance, new VersionChecker())
         {
         }
 
-        public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
+        public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
             IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
-            if (environmentRepository == null)
+            if (serverRepository == null)
             {
-                throw new ArgumentNullException(nameof(environmentRepository));
+                throw new ArgumentNullException(nameof(serverRepository));
             }
 
             if (versionChecker == null)
@@ -499,8 +484,8 @@ namespace Dev2.Studio.ViewModels
             PopupProvider = popupController ?? new PopupController();
             _activeServer = LocalhostServer;
             ShouldUpdateActiveState = true;
-            EnvironmentRepository = environmentRepository;
-            SetActiveEnvironment(_activeServer.EnvironmentID);
+            ServerRepository = serverRepository;
+            SetActiveServer(_activeServer.EnvironmentID);
 
             MenuPanelWidth = 60;
             _menuExpanded = false;
@@ -563,14 +548,7 @@ namespace Dev2.Studio.ViewModels
         }
 
 
-        public void SetActiveEnvironment(IEnvironmentModel activeEnvironment)
-        {
-            ActiveEnvironment = activeEnvironment;
-            EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
-            SetActiveEnvironment(activeEnvironment.ID);
-            ActiveEnvironment.AuthorizationServiceSet += (sender, args) => OnActiveEnvironmentChanged();
-        }
-
+       
         public void Handle(ShowDependenciesMessage message)
         {
             Dev2Logger.Info(message.GetType().Name);
@@ -581,7 +559,7 @@ namespace Dev2.Studio.ViewModels
 
         public void ShowDependencies(Guid resourceId, IServer server, bool isSource)
         {
-            var environmentModel = EnvironmentRepository.Get(server.EnvironmentID);
+            var environmentModel = ServerRepository.Get(server.EnvironmentID);
             if (environmentModel != null)
             {
                 if (!isSource)
@@ -620,11 +598,11 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IContextualResourceModel DeployResource { get; set; }
-        public void RefreshActiveEnvironment()
+        public void RefreshActiveServer()
         {
             if (ActiveItem?.Environment != null)
             {
-                SetActiveEnvironment(ActiveItem.Environment);
+                SetActiveServer(ActiveItem.Environment);
             }
         }
 
@@ -639,12 +617,12 @@ namespace Dev2.Studio.ViewModels
             splashView.Show(true);
         }
 
-        public IServer LocalhostServer => CustomContainer.Get<IServer>();
+        public IServer LocalhostServer => ServerRepository.Source;
 
-        public void SetActiveEnvironment(Guid environmentId)
+        public void SetActiveServer(Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
-            ActiveEnvironment = environmentModel;
+            var environmentModel = ServerRepository.Get(environmentId);
+            ActiveServer = environmentModel;
             var server = ExplorerViewModel?.ConnectControlViewModel?.Servers?.FirstOrDefault(a => a.EnvironmentID == environmentId);
             if (server != null)
             {
@@ -655,9 +633,9 @@ namespace Dev2.Studio.ViewModels
         public void SetActiveServer(IServer server)
         {
             ActiveServer = server;
-            if (ActiveServer.IsConnected && !ActiveEnvironment.IsConnected)
+            if (ActiveServer.IsConnected && !ActiveServer.IsConnected)
             {
-                ActiveEnvironment.Connect();
+                ActiveServer.Connect();
             }
         }
 
@@ -672,7 +650,7 @@ namespace Dev2.Studio.ViewModels
         }
         public void DebugStudio(Guid resourceId, Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
             if (contextualResourceModel != null)
             {
@@ -692,7 +670,7 @@ namespace Dev2.Studio.ViewModels
         }
         public void OpenBrowser(Guid resourceId, Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
             if (contextualResourceModel != null)
             {
@@ -708,7 +686,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
             if (contextualResourceModel != null)
@@ -797,11 +775,11 @@ namespace Dev2.Studio.ViewModels
             };
 
             var pluginSourceViewModel = new ManagePluginSourceViewModel(
-                new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name),
+                new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 def,
                 AsyncWorker);
-            var vm = new SourceViewModel<IPluginSource>(EventPublisher, pluginSourceViewModel, PopupProvider, new ManagePluginSourceControl(),ActiveEnvironment);
+            var vm = new SourceViewModel<IPluginSource>(EventPublisher, pluginSourceViewModel, PopupProvider, new ManagePluginSourceControl(), ActiveServer);
 
             var key = workSurfaceKey;
 
@@ -823,8 +801,8 @@ namespace Dev2.Studio.ViewModels
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 def,
                 AsyncWorker,
-                ActiveEnvironment);
-            var vm = new SourceViewModel<IWcfServerSource>(EventPublisher, wcfSourceViewModel, PopupProvider, new ManageWcfSourceControl(), ActiveEnvironment);
+                ActiveServer);
+            var vm = new SourceViewModel<IWcfServerSource>(EventPublisher, wcfSourceViewModel, PopupProvider, new ManageWcfSourceControl(), ActiveServer);
 
             var key = workSurfaceKey;
 
@@ -844,7 +822,7 @@ namespace Dev2.Studio.ViewModels
                 new ManageRabbitMQSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this),
                 def,
                 AsyncWorker);
-            var vm = new SourceViewModel<IRabbitMQServiceSourceDefinition>(EventPublisher, viewModel, PopupProvider, new ManageRabbitMQSourceControl(), ActiveEnvironment);
+            var vm = new SourceViewModel<IRabbitMQServiceSourceDefinition>(EventPublisher, viewModel, PopupProvider, new ManageRabbitMQSourceControl(), ActiveServer);
 
             var key = workSurfaceKey;
 
@@ -861,12 +839,12 @@ namespace Dev2.Studio.ViewModels
             };
 
             var viewModel = new SharepointServerSourceViewModel(
-                new SharepointServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName),
+                new SharepointServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 def,
                 AsyncWorker,
                 null);
-            var vm = new SourceViewModel<ISharepointServerSource>(EventPublisher, viewModel, PopupProvider, new SharepointServerSource(), ActiveEnvironment);
+            var vm = new SourceViewModel<ISharepointServerSource>(EventPublisher, viewModel, PopupProvider, new SharepointServerSource(), ActiveServer);
 
             var key = workSurfaceKey;
 
@@ -874,7 +852,7 @@ namespace Dev2.Studio.ViewModels
             return workSurfaceContextViewModel;
         }
 
-        private WorkSurfaceContextViewModel ProcessServerSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey, IEnvironmentModel environmentModel, IServer activeServer)
+        private WorkSurfaceContextViewModel ProcessServerSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey, IServer server, IServer activeServer)
         {
 
             var selectedServer = new ServerSource
@@ -884,12 +862,12 @@ namespace Dev2.Studio.ViewModels
             };
 
             var viewModel = new ManageNewServerViewModel(
-                new ManageNewServerSourceModel(activeServer.UpdateRepository, activeServer.QueryProxy, environmentModel.DisplayName),
+                new ManageNewServerSourceModel(activeServer.UpdateRepository, activeServer.QueryProxy, server.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 selectedServer,
                 AsyncWorker,
                 new ExternalProcessExecutor());
-            var vm = new SourceViewModel<IServerSource>(EventPublisher, viewModel, PopupProvider, new ManageServerControl(), environmentModel);
+            var vm = new SourceViewModel<IServerSource>(EventPublisher, viewModel, PopupProvider, new ManageServerControl(), server);
 
             var key = workSurfaceKey;
 
@@ -910,7 +888,7 @@ namespace Dev2.Studio.ViewModels
                 ActiveServer.QueryProxy, ""),
                 db,
                 AsyncWorker);
-            var vm = new SourceViewModel<IOAuthSource>(EventPublisher, oauthSourceViewModel, PopupProvider, new ManageOAuthSourceControl(), ActiveEnvironment);
+            var vm = new SourceViewModel<IOAuthSource>(EventPublisher, oauthSourceViewModel, PopupProvider, new ManageOAuthSourceControl(), ActiveServer);
 
             var key = workSurfaceKey;
 
@@ -927,11 +905,11 @@ namespace Dev2.Studio.ViewModels
             };
 
             var emailSourceViewModel = new ManageExchangeSourceViewModel(
-                new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName),
+                new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 def,
                 AsyncWorker);
-            var vm = new SourceViewModel<IExchangeSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageExchangeSourceControl(), ActiveEnvironment);
+            var vm = new SourceViewModel<IExchangeSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageExchangeSourceControl(), ActiveServer);
 
             var key = workSurfaceKey;
 
@@ -948,11 +926,11 @@ namespace Dev2.Studio.ViewModels
             };
 
             var wcfSourceViewModel = new ManageComPluginSourceViewModel(
-                new ManageComPluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName),
+                new ManageComPluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 def,
                 AsyncWorker);
-            var vm = new SourceViewModel<IComPluginSource>(EventPublisher, wcfSourceViewModel, PopupProvider, new ManageComPluginSourceControl(), ActiveEnvironment);
+            var vm = new SourceViewModel<IComPluginSource>(EventPublisher, wcfSourceViewModel, PopupProvider, new ManageComPluginSourceControl(), ActiveServer);
 
             var key = workSurfaceKey;
 
@@ -968,12 +946,12 @@ namespace Dev2.Studio.ViewModels
                 Path = contextualResourceModel.GetSavePath()
             };
             var viewModel = new ManageWebserviceSourceViewModel(
-                new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName),
+                new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 def,
                 AsyncWorker,
                 new ExternalProcessExecutor());
-            var vm = new SourceViewModel<IWebServiceSource>(EventPublisher, viewModel, PopupProvider, new ManageWebserviceSourceControl(), ActiveEnvironment);
+            var vm = new SourceViewModel<IWebServiceSource>(EventPublisher, viewModel, PopupProvider, new ManageWebserviceSourceControl(), ActiveServer);
 
             var key = workSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
@@ -989,10 +967,10 @@ namespace Dev2.Studio.ViewModels
             };
 
             var emailSourceViewModel = new ManageEmailSourceViewModel(
-                new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName),
+                new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
                 def, AsyncWorker);
-            var vm = new SourceViewModel<IEmailServiceSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageEmailSourceControl(), ActiveEnvironment);
+            var vm = new SourceViewModel<IEmailServiceSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageEmailSourceControl(), ActiveServer);
             var key = workSurfaceKey;
             var workSurfaceContextViewModel = _worksurfaceContextManager.EditResource(key, vm);
             return workSurfaceContextViewModel;
@@ -1001,7 +979,7 @@ namespace Dev2.Studio.ViewModels
         private ManageMySqlSourceViewModel ProcessMySQLDBSource(IDbSource def)
         {
             return new ManageMySqlSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName)
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName)
                 , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
                 , def
                 , AsyncWorker);
@@ -1010,7 +988,7 @@ namespace Dev2.Studio.ViewModels
         private ManagePostgreSqlSourceViewModel ProcessPostgreSQLDBSource(IDbSource def)
         {
             return new ManagePostgreSqlSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName)
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName)
                 , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
                 , def
                 , AsyncWorker);
@@ -1019,7 +997,7 @@ namespace Dev2.Studio.ViewModels
         private ManageOracleSourceViewModel ProcessOracleDBSource(IDbSource def)
         {
             return new ManageOracleSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName)
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName)
                 , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
                 , def
                 , AsyncWorker);
@@ -1029,7 +1007,7 @@ namespace Dev2.Studio.ViewModels
         {
             return new ManageOdbcSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository
-                , ActiveServer.QueryProxy, ActiveEnvironment.DisplayName)
+                , ActiveServer.QueryProxy, ActiveServer.DisplayName)
                 , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
                 , def
                 , AsyncWorker);
@@ -1038,7 +1016,7 @@ namespace Dev2.Studio.ViewModels
         private ManageSqlServerSourceViewModel ProcessSQLDBSource(IDbSource def)
         {
             return new ManageSqlServerSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.DisplayName)
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName)
                 , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
                 , def
                 , AsyncWorker);
@@ -1053,11 +1031,11 @@ namespace Dev2.Studio.ViewModels
         private void ProcessDBSource(DatabaseSourceViewModelBase dbSourceViewModel, WorkSurfaceKey workSurfaceKey)
         {
 
-            var vm = new SourceViewModel<IDbSource>(EventPublisher, dbSourceViewModel, PopupProvider, new ManageDatabaseSourceControl(), ActiveEnvironment);
+            var vm = new SourceViewModel<IDbSource>(EventPublisher, dbSourceViewModel, PopupProvider, new ManageDatabaseSourceControl(), ActiveServer);
             var key = workSurfaceKey;
             if (key != null)
             {
-                key.EnvironmentID = ActiveEnvironment.ID;
+                key.EnvironmentID = ActiveServer.ID;
             }
             var workSurfaceContextViewModel = _worksurfaceContextManager.EditResource(key, vm);
             _worksurfaceContextManager.DisplayResourceWizard(workSurfaceContextViewModel);
@@ -1090,7 +1068,7 @@ namespace Dev2.Studio.ViewModels
 
         private void GetCopyUrlLink(Guid resourceId, Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var environmentModel = ServerRepository.Get(environmentId);
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
@@ -1110,7 +1088,7 @@ namespace Dev2.Studio.ViewModels
 
         private void ViewSwagger(Guid resourceId, Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var environmentModel = ServerRepository.Get(environmentId);
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
@@ -1144,7 +1122,7 @@ namespace Dev2.Studio.ViewModels
 
         public void CreateNewSchedule(Guid resourceId)
         {
-            var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
+            var environmentModel = ServerRepository.Get(ActiveServer.ID);
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
@@ -1154,7 +1132,7 @@ namespace Dev2.Studio.ViewModels
 
         public void CreateTest(Guid resourceId)
         {
-            var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
+            var environmentModel = ServerRepository.Get(ActiveServer.ID);
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
@@ -1173,7 +1151,7 @@ namespace Dev2.Studio.ViewModels
 
         public void RunAllTests(Guid resourceId)
         {
-            var environmentModel = EnvironmentRepository.Get(ActiveEnvironment.ID);
+            var environmentModel = ServerRepository.Get(ActiveServer.ID);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
             if (contextualResourceModel != null)
@@ -1200,7 +1178,7 @@ namespace Dev2.Studio.ViewModels
 
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
             if (contextualResourceModel != null)
             {
@@ -1211,7 +1189,7 @@ namespace Dev2.Studio.ViewModels
 
         public async void OpenResourceAsync(Guid resourceId, IServer server)
         {
-            var environmentModel = EnvironmentRepository.Get(server.EnvironmentID);
+            var environmentModel = ServerRepository.Get(server.EnvironmentID);
             if (environmentModel != null)
             {
                 var contextualResourceModel = await environmentModel.ResourceRepository.LoadContextualResourceModelAsync(resourceId);
@@ -1221,8 +1199,8 @@ namespace Dev2.Studio.ViewModels
 
         public void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests)
         {
-            var environmentModel = EnvironmentRepository.Get(destinationEnvironmentId);
-            var sourceEnvironmentModel = EnvironmentRepository.Get(sourceEnvironmentId);
+            var environmentModel = ServerRepository.Get(destinationEnvironmentId);
+            var sourceEnvironmentModel = ServerRepository.Get(sourceEnvironmentId);
             var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList(), DeployTests = deployTests };
             environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
             ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
@@ -1311,9 +1289,9 @@ namespace Dev2.Studio.ViewModels
             var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
             key.ServerID = ActiveServer.ServerID;
             // ReSharper disable once PossibleInvalidOperationException
-            var manageNewServerSourceModel = new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name);
+            var manageNewServerSourceModel = new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name);
             var manageNewServerViewModel = new ManageNewServerViewModel(manageNewServerSourceModel, saveViewModel, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), _asyncWorker, new ExternalProcessExecutor()) { SelectedGuid = key.ResourceID.Value };
-            var workSurfaceViewModel = new SourceViewModel<IServerSource>(EventPublisher, manageNewServerViewModel, PopupProvider, new ManageServerControl(), ActiveEnvironment);
+            var workSurfaceViewModel = new SourceViewModel<IServerSource>(EventPublisher, manageNewServerViewModel, PopupProvider, new ManageServerControl(), ActiveServer);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, workSurfaceViewModel);
             _worksurfaceContextManager.AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
@@ -1430,16 +1408,16 @@ namespace Dev2.Studio.ViewModels
             BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
         }
 
-        public bool IsActiveEnvironmentConnected()
+        public bool IsActiveServerConnected()
         {
-            if (ActiveEnvironment == null)
+            if (ActiveServer == null)
 
             {
                 return false;
             }
 
-            var isActiveEnvironmentConnected = ActiveEnvironment != null && ActiveEnvironment.IsConnected && ActiveEnvironment.CanStudioExecute && ShouldUpdateActiveState;
-            if (ActiveEnvironment.IsConnected && ShouldUpdateActiveState)
+            var isActiveServerConnected = ActiveServer != null && ActiveServer.IsConnected && ActiveServer.CanStudioExecute && ShouldUpdateActiveState;
+            if (ActiveServer.IsConnected && ShouldUpdateActiveState)
             {
                 if (ToolboxViewModel?.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
                 {
@@ -1447,8 +1425,8 @@ namespace Dev2.Studio.ViewModels
                 }
             }
             if (ToolboxViewModel != null)
-                ToolboxViewModel.IsVisible = isActiveEnvironmentConnected;
-            return isActiveEnvironmentConnected;
+                ToolboxViewModel.IsVisible = isActiveServerConnected;
+            return isActiveServerConnected;
         }
 
         public void NewEmailSource(string resourcePath)
@@ -1478,7 +1456,7 @@ namespace Dev2.Studio.ViewModels
         protected override void ChangeActiveItem(WorkSurfaceContextViewModel newItem, bool closePrevious)
         {
             base.ChangeActiveItem(newItem, closePrevious);
-            RefreshActiveEnvironment();
+            RefreshActiveServer();
         }
 
         public void BaseDeactivateItem(WorkSurfaceContextViewModel item, bool close)
@@ -1604,7 +1582,7 @@ namespace Dev2.Studio.ViewModels
             base.ActivateItem(item);
             ActiveItemChanged?.Invoke(item);
             if (item?.ContextualResourceModel == null) return;
-            SetActiveEnvironment(item.Environment);
+            SetActiveServer(item.Environment);
 
         }
 
@@ -1724,7 +1702,7 @@ namespace Dev2.Studio.ViewModels
 
         protected virtual void AddWorkspaceItems()
         {
-            if (EnvironmentRepository == null) return;
+            if (ServerRepository == null) return;
 
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
             // ReSharper disable ForCanBeConvertedToForeach
@@ -1736,7 +1714,7 @@ namespace Dev2.Studio.ViewModels
                 //
                 IWorkspaceItem item = _getWorkspaceItemRepository().WorkspaceItems[i];
                 Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}");
-                IEnvironmentModel environment = EnvironmentRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.ID == item.EnvironmentID);
+                IServer environment = ServerRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.ID == item.EnvironmentID);
 
                 if (environment?.ResourceRepository == null)
                 {

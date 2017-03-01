@@ -156,7 +156,7 @@ namespace Dev2.Core.Tests.Diagnostics
             mockApp.Setup(c => c.Shutdown()).Verifiable();
             mockApp.SetupProperty(c => c.ShouldRestart);
 
-            var mainViewModel = new Mock<IMainViewModel>();
+            var mainViewModel = new Mock<IShellViewModel>();
 
             //Execute
             var handler = new MockExceptionHandler(mockApp.Object, mainViewModel.Object);
@@ -178,7 +178,7 @@ namespace Dev2.Core.Tests.Diagnostics
             mockApp.Setup(c => c.Shutdown()).Verifiable();
             mockApp.SetupProperty(c => c.ShouldRestart);
 
-            var mainViewModel = new Mock<IMainViewModel>();
+            var mainViewModel = new Mock<IShellViewModel>();
 
             //Execute
             var handler = new MockExceptionHandler(mockApp.Object, mainViewModel.Object);

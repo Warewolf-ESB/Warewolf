@@ -4,7 +4,7 @@ namespace Dev2.Studio.Core
 {
     public interface IEnvironmentEditedArgs
     {
-        IEnvironmentModel Environment { get; set; }
+        IServer Environment { get; set; }
         bool IsConnected { get; set; }
     }
 }

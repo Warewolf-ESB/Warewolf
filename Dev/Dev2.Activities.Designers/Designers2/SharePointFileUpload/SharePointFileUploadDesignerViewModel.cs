@@ -18,11 +18,11 @@ namespace Dev2.Activities.Designers2.SharePointFileUpload
     public class SharePointFileUploadDesignerViewModel : SharepointListDesignerViewModelBase
     {
         public SharePointFileUploadDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment)
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer)
         {
         }
 
-        public SharePointFileUploadDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel envModel)
+        public SharePointFileUploadDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer envModel)
             : base(modelItem, asyncWorker, envModel, EventPublishers.Aggregator, false)
         {
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Upload_File;
@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers2.SharePointFileUpload
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
         public string LocalInputPath => GetProperty<string>();

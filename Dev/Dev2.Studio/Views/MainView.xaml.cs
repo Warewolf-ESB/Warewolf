@@ -236,7 +236,7 @@ namespace Dev2.Studio.Views
         public void ResetToStartupView()
         {
             var windowCollection = System.Windows.Application.Current.Windows;
-            var mainViewModel = DataContext as MainViewModel;
+            var mainViewModel = DataContext as ShellViewModel;
 
             foreach (var window in windowCollection)
             {
@@ -278,8 +278,8 @@ namespace Dev2.Studio.Views
 
                 if(mainViewModel.LocalhostServer.IsConnected)
                 {
-                    if (mainViewModel.ActiveServer != mainViewModel.LocalhostServer) {
-                        mainViewModel.SetActiveEnvironment(mainViewModel.LocalhostServer.EnvironmentID);
+                    if (!Equals(mainViewModel.ActiveServer, mainViewModel.LocalhostServer)) {
+                        mainViewModel.SetActiveServer(mainViewModel.LocalhostServer.EnvironmentID);
                         mainViewModel.SetActiveServer(mainViewModel.LocalhostServer);
                     }
 
@@ -300,7 +300,7 @@ namespace Dev2.Studio.Views
             }
         }
 
-        private static void RemoveWorkspaceItems(ContentPane pane, MainViewModel mainViewModel)
+        private static void RemoveWorkspaceItems(ContentPane pane, ShellViewModel shellViewModel)
         {
             var item1 = pane?.Content as WorkflowDesignerViewModel;
             if (item1?.ResourceModel != null)
@@ -308,7 +308,7 @@ namespace Dev2.Studio.Views
             item1?.RemoveAllWorkflowName(item1.DisplayName);
 
             var workSurfaceContextViewModel = pane?.DataContext as WorkSurfaceContextViewModel;
-            mainViewModel?.Items.Remove(workSurfaceContextViewModel);
+            shellViewModel?.Items.Remove(workSurfaceContextViewModel);
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)
@@ -318,17 +318,17 @@ namespace Dev2.Studio.Views
             {
                 xmlDocument.LoadXml(_savedLayout);
             }
-            MainViewModel mainViewModel = DataContext as MainViewModel;
-            if (mainViewModel != null)
+            ShellViewModel shellViewModel = DataContext as ShellViewModel;
+            if (shellViewModel != null)
             {
-                SetMenuExpanded(xmlDocument, mainViewModel);
-                SetMenuPanelOpen(xmlDocument, mainViewModel);
-                SetMenuPanelLockedOpen(xmlDocument, mainViewModel);
+                SetMenuExpanded(xmlDocument, shellViewModel);
+                SetMenuPanelOpen(xmlDocument, shellViewModel);
+                SetMenuPanelLockedOpen(xmlDocument, shellViewModel);
             }
             Toolbox.Activate();
         }
 
-        private static void SetMenuExpanded(XmlDocument xmlDocument, MainViewModel mainViewModel)
+        private static void SetMenuExpanded(XmlDocument xmlDocument, ShellViewModel shellViewModel)
         {
             var elementsByTagNameMenuExpanded = xmlDocument.GetElementsByTagName("MenuExpanded");
             if(elementsByTagNameMenuExpanded.Count > 0)
@@ -338,14 +338,14 @@ namespace Dev2.Studio.Views
                 bool menuExpanded;
                 if(bool.TryParse(menuExpandedString, out menuExpanded))
                 {
-                    mainViewModel.MenuExpanded = menuExpanded;
+                    shellViewModel.MenuExpanded = menuExpanded;
                 }
             }
             else
-                mainViewModel.MenuExpanded = true;
+                shellViewModel.MenuExpanded = true;
         }
 
-        private static void SetMenuPanelOpen(XmlDocument xmlDocument, MainViewModel mainViewModel)
+        private static void SetMenuPanelOpen(XmlDocument xmlDocument, ShellViewModel shellViewModel)
         {
             var elementsByTagNameMenuPanelOpen = xmlDocument.GetElementsByTagName("MenuPanelOpen");
             if (elementsByTagNameMenuPanelOpen.Count > 0)
@@ -355,12 +355,12 @@ namespace Dev2.Studio.Views
                 bool panelOpen;
                 if (bool.TryParse(menuPanelOpenString, out panelOpen))
                 {
-                    mainViewModel.MenuViewModel.IsPanelOpen = panelOpen;
+                    shellViewModel.MenuViewModel.IsPanelOpen = panelOpen;
                 }
             }
         }
 
-        private static void SetMenuPanelLockedOpen(XmlDocument xmlDocument, MainViewModel mainViewModel)
+        private static void SetMenuPanelLockedOpen(XmlDocument xmlDocument, ShellViewModel shellViewModel)
         {
             var elementsByTagNameMenuPanelLockedOpen = xmlDocument.GetElementsByTagName("MenuPanelLockedOpen");
             if (elementsByTagNameMenuPanelLockedOpen.Count > 0)
@@ -370,11 +370,11 @@ namespace Dev2.Studio.Views
                 bool panelLockedOpen;
                 if (bool.TryParse(menuPanelLockedOpenString, out panelLockedOpen))
                 {
-                    mainViewModel.MenuViewModel.IsPanelLockedOpen = panelLockedOpen;
+                    shellViewModel.MenuViewModel.IsPanelLockedOpen = panelLockedOpen;
                 }
             }
             else
-                mainViewModel.MenuViewModel.IsPanelLockedOpen = false;
+                shellViewModel.MenuViewModel.IsPanelLockedOpen = false;
         }
 
         #region Implementation of IWin32Window
@@ -392,38 +392,38 @@ namespace Dev2.Studio.Views
 
         void MainView_OnClosing(object sender, CancelEventArgs e)
         {
-            MainViewModel mainViewModel = DataContext as MainViewModel;
-            if (mainViewModel != null)
+            ShellViewModel shellViewModel = DataContext as ShellViewModel;
+            if (shellViewModel != null)
             {
-                if (!mainViewModel.OnStudioClosing())
+                if (!shellViewModel.OnStudioClosing())
                 {
                     e.Cancel = true;
                 }
 
-                if (mainViewModel.IsDownloading())
+                if (shellViewModel.IsDownloading())
                 {
                     e.Cancel = true;
                 }
             }
 
             GetFilePath();
-            SaveLayout(mainViewModel);
+            SaveLayout(shellViewModel);
         }
 
-        private void SaveLayout(MainViewModel mainViewModel)
+        private void SaveLayout(ShellViewModel shellViewModel)
         {
             var dockManagerLayout = DockManager.SaveLayout();
             XmlDocument document = new XmlDocument();
             document.LoadXml(dockManagerLayout);
             var menuExpandedNode = document.CreateNode(XmlNodeType.Element, "MenuExpanded", document.NamespaceURI);
-            menuExpandedNode.InnerXml = (mainViewModel != null && mainViewModel.MenuExpanded).ToString();
+            menuExpandedNode.InnerXml = (shellViewModel != null && shellViewModel.MenuExpanded).ToString();
 
             var menuPanelOpenNode = document.CreateNode(XmlNodeType.Element, "MenuPanelOpen", document.NamespaceURI);
-            menuPanelOpenNode.InnerXml = (mainViewModel != null && mainViewModel.MenuViewModel.IsPanelOpen).ToString();
+            menuPanelOpenNode.InnerXml = (shellViewModel != null && shellViewModel.MenuViewModel.IsPanelOpen).ToString();
 
             var menuPanelLockedOpenNode = document.CreateNode(XmlNodeType.Element, "MenuPanelLockedOpen", document.NamespaceURI);
             menuPanelLockedOpenNode.InnerXml =
-                (mainViewModel != null && mainViewModel.MenuViewModel.IsPanelLockedOpen).ToString();
+                (shellViewModel != null && shellViewModel.MenuViewModel.IsPanelLockedOpen).ToString();
 
             if (document.DocumentElement != null)
             {
@@ -439,7 +439,7 @@ namespace Dev2.Studio.Views
 
         private void SlidingMenuPane_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var vm = DataContext as MainViewModel;
+            var vm = DataContext as ShellViewModel;
             if (vm != null)
             {
                 vm.MenuPanelWidth = e.NewSize.Width;
@@ -467,13 +467,13 @@ namespace Dev2.Studio.Views
                     var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
                     e.Window.SetBinding(DataContextProperty, binding);
 
-                    MainViewModel mainViewModel = DataContext as MainViewModel;
+                    ShellViewModel shellViewModel = DataContext as ShellViewModel;
                     PaneToolWindow = window;
 
                     if (PaneToolWindow.Pane.Panes != null && PaneToolWindow.Pane.Panes.Count > 0)
                     {
                         var workSurfaceContextViewModel = PaneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
-                        mainViewModel?.ActivateItem(workSurfaceContextViewModel);
+                        shellViewModel?.ActivateItem(workSurfaceContextViewModel);
                         PaneToolWindow.Name = "FloatingWindow";
                         if (string.IsNullOrWhiteSpace(e.Window.Title))
                         {
@@ -541,8 +541,8 @@ namespace Dev2.Studio.Views
         {
             try
             {
-                MainViewModel mainViewModel = DataContext as MainViewModel;
-                if (mainViewModel != null)
+                ShellViewModel shellViewModel = DataContext as ShellViewModel;
+                if (shellViewModel != null)
                 {
                     var paneToolWindow = sender as PaneToolWindow;
                     if (paneToolWindow?.Pane?.Panes.Count > 0)
@@ -551,7 +551,7 @@ namespace Dev2.Studio.Views
                         if (contentPane != null)
                         {
                             var workSurfaceContextViewModel = contentPane.DataContext as WorkSurfaceContextViewModel;
-                            mainViewModel.ActivateItem(workSurfaceContextViewModel);
+                            shellViewModel.ActivateItem(workSurfaceContextViewModel);
                         }
                         else
                         {
@@ -560,7 +560,7 @@ namespace Dev2.Studio.Views
                             {
                                 var selectedContent = tabGroupPane.SelectedContent as ContentPane;
                                 var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
-                                mainViewModel.ActivateItem(workSurfaceContextViewModel);
+                                shellViewModel.ActivateItem(workSurfaceContextViewModel);
                             }
                         }
                     }

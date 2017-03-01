@@ -229,7 +229,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             {
                 if (!seenResource.Contains(Guid.Parse(node.ID)))
                 {
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var mainViewModel = CustomContainer.Get<IShellViewModel>();
                     var env = mainViewModel?
                         .ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId == ResourceModel.Environment.ID);
                     var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == Guid.Parse(node.ID));

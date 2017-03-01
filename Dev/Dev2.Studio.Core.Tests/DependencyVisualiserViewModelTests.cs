@@ -185,7 +185,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -230,7 +230,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -270,7 +270,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -305,7 +305,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -341,7 +341,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -376,7 +376,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -406,7 +406,7 @@ namespace Dev2.Core.Tests
             var resourceId = Guid.NewGuid();
             var resourceId1 = Guid.NewGuid();
             var server = new Mock<IServer>();
-            var mVm = new Mock<IMainViewModel>();
+            var mVm = new Mock<IShellViewModel>();
             var shell = new Mock<IShellViewModel>();
             var env = new Mock<IEnvironmentViewModel>();
             var exploreItm = new Mock<IExplorerItemViewModel>();
@@ -437,7 +437,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);

@@ -184,7 +184,7 @@ namespace Warewolf.Studio.ViewModels
 
             ViewApisJsonCommand = new DelegateCommand(() =>
             {
-                var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
+                var environmentModel = ServerRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
                 shellViewModel.ViewApisJson(ResourcePath, environmentModel.Connection.WebServerUri);
             });
 
@@ -193,7 +193,7 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.AddDeploySurface(AsList().Union<IExplorerTreeItem>(new [] { this }));
             });
 
-            DisplayName = server.ResourceName;
+            DisplayName = server.DisplayName;
             RefreshCommand = new DelegateCommand(async () =>
             {
                 await Refresh();
@@ -259,8 +259,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void UpdateActiveEnvironment(IShellViewModel shellViewModel)
         {
-            shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-            shellViewModel.SetActiveServer(Server);
+            shellViewModel.SetActiveServer(Server.EnvironmentID);
         }
 
         public IShellViewModel ShellViewModel => _shellViewModel;

@@ -147,23 +147,23 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var enviroId = Guid.NewGuid();
             var enviroId2 = Guid.NewGuid();
 
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
             var sourceConnection = new Mock<IEnvironmentConnection>();
             sourceConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid);
             source.Setup(model => model.Connection).Returns(sourceConnection.Object);
-            var e1 = new Mock<IEnvironmentModel>();
+            var e1 = new Mock<IServer>();
             e1.Setup(model => model.ID).Returns(Guid.NewGuid);
             var connection1 = new Mock<IEnvironmentConnection>();
             connection1.Setup(connection => connection.WorkspaceID).Returns(enviroId);
             e1.Setup(model => model.Connection).Returns(connection1.Object);
-            var e2 = new Mock<IEnvironmentModel>();
+            var e2 = new Mock<IServer>();
             e2.Setup(model => model.ID).Returns(Guid.NewGuid);
             var connection2 = new Mock<IEnvironmentConnection>();
             connection2.Setup(connection => connection.WorkspaceID).Returns(enviroId2);
             e2.Setup(model => model.Connection).Returns(connection2.Object);
-            var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestLoadServerRespository(source.Object, e1.Object, e2.Object);
             // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentRepository(repo);
+            new ServerRepository(repo);
             // ReSharper restore ObjectCreationAsStatement
             var debugState = new Mock<IDebugState>();
             debugState.Setup(c => c.OriginatingResourceID).Returns(resId);

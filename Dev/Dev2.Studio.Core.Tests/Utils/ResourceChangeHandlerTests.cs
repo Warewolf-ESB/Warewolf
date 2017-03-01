@@ -72,11 +72,11 @@ namespace Dev2.Core.Tests.Utils
             var mockAggregator = new Mock<IEventAggregator>();
             var showResourceChangedUtil = CreateShowResourceChangedUtil(mockAggregator.Object);
             var mockResource = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             var mockResourceModelDependant = new Mock<IResourceModel>();
             var server = new Mock<IServer>();
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            server.Setup(a => a.DisplayName).Returns("LocalHost");
             var shell = new Mock<IShellViewModel>();
             CustomContainer.Register<IShellViewModel>(shell.Object);
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
@@ -103,7 +103,7 @@ namespace Dev2.Core.Tests.Utils
             var mockAggregator = new Mock<IEventAggregator>();
             var showResourceChangedUtil = CreateShowResourceChangedUtil(mockAggregator.Object);
             var mockResource = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourceRepository = new Mock<IResourceRepository>();
             var mockResourceModelDependant = new Mock<IResourceModel>();
             mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");

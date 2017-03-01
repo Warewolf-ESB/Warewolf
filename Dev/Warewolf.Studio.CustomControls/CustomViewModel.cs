@@ -19,11 +19,11 @@ namespace Warewolf.Studio.CustomControls
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class CustomViewModel : INotifyPropertyChanged
     {
-        readonly IEnvironmentModel _environmentModel;
+        readonly IServer _server;
 
-        public CustomViewModel(IEnvironmentModel environmentModel)
+        public CustomViewModel(IServer server)
         {
-            _environmentModel = environmentModel;
+            _server = server;
 
             Sources = new List<string>(new[] { "Item One", "Item Two", "Item Three" });
             SelectedSource = Sources.FirstOrDefault();

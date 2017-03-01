@@ -64,14 +64,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
             var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
             mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
             _greenPointSource = new DbSourceDefinition
             {
@@ -131,14 +131,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
             var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
             mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
             var mockInputArea = new Mock<IGenerateInputArea>();
             var mockOutputArea = new Mock<IGenerateOutputArea>();

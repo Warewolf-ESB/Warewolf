@@ -16,7 +16,7 @@ namespace Dev2.Core.Tests.Diagnostics
 {
     public class MockExceptionHandler : AppExceptionHandler
     {
-        public MockExceptionHandler(IApp current, IMainViewModel mainViewModel)
+        public MockExceptionHandler(IApp current, IShellViewModel mainViewModel)
             : base(current, mainViewModel)
         {
         }

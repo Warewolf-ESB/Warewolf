@@ -31,7 +31,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private Mock<ISharePointSourceModel> _updateManagerMock;
         private Mock<IEventAggregator> _aggregatorMock;
         private Mock<IAsyncWorker> _asyncWorkerMock;
-        private Mock<IEnvironmentModel> _environmentMock;
+        private Mock<IServer> _environmentMock;
         private Mock<ISharepointServerSource> _sharepointServerSourceMock;
         private Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
         private Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
@@ -55,7 +55,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateManagerMock = new Mock<ISharePointSourceModel>();
             _aggregatorMock = new Mock<IEventAggregator>();
             _asyncWorkerMock = new Mock<IAsyncWorker>();
-            _environmentMock = new Mock<IEnvironmentModel>();
+            _environmentMock = new Mock<IServer>();
             
             _asyncWorkerMock.Setup(
                 it =>

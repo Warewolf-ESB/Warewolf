@@ -41,13 +41,13 @@ namespace Dev2.Studio.Interfaces
         bool IsLoaded { get; }
         bool DoesResourceExistInRepo(IResourceModel resource);
         ExecuteMessage SaveToServer(IResourceModel instanceObj);
-        void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDto dto);
-        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
-        List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
-        List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
-        IList<T> GetResourceList<T>(IEnvironmentModel targetEnvironment) where T : new();
-        Settings ReadSettings(IEnvironmentModel currentEnv);
-        ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Settings settings);
+        void DeployResources(IServer targetEnviroment, IServer sourceEnviroment, IDeployDto dto);
+        ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
+        List<T> FindSourcesByType<T>(IServer targetEnvironment, enSourceType sourceType);
+        List<IResourceModel> FindResourcesByID(IServer targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
+        IList<T> GetResourceList<T>(IServer targetEnvironment) where T : new();
+        Settings ReadSettings(IServer currentEnv);
+        ExecuteMessage WriteSettings(IServer currentEnv, Settings settings);
         DbTableList GetDatabaseTables(DbSource dbSource);
         List<SharepointListTo> GetSharepointLists(SharepointSource source);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);

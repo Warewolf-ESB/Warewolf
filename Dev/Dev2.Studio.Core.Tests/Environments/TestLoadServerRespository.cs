@@ -14,15 +14,15 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.Core.Tests.Environments
 {
-    public class TestLoadEnvironmentRespository : EnvironmentRepository
+    public class TestLoadServerRespository : ServerRepository
     {
         public int LoadInternalHitCount { get; set; }
 
-        public TestLoadEnvironmentRespository()
+        public TestLoadServerRespository()
         {
         }
 
-        public TestLoadEnvironmentRespository(IEnvironmentModel source, params IEnvironmentModel[] environments)
+        public TestLoadServerRespository(IServer source, params IServer[] environments)
             : base(source)
         {
             if(environments != null)
@@ -40,12 +40,12 @@ namespace Dev2.Core.Tests.Environments
             LoadInternalHitCount++;
         }
 
-        public override ICollection<IEnvironmentModel> ReloadAllServers()
+        public override ICollection<IServer> ReloadAllServers()
         {
             return Environments;
         }
 
-        public override ICollection<IEnvironmentModel> All()
+        public override ICollection<IServer> All()
         {
             return Environments;
         }
