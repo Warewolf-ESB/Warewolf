@@ -105,26 +105,6 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	And I Click MessageBox Cancel
 	And Deploy Window Is Still Open
 
-Scenario: Deploy Disconnect Clears Destination
-	Given The Warewolf Studio is running
-	When I Filter the Explorer with "Unit Tests"
-	And I RightClick Explorer Localhost First Item
-	And I Select Deploy From Explorer Context Menu
-    And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
-	Then Deploy Button Is Enabled
-	When I Click Deploy Tab Deploy Button
-	Then Deploy Version Conflict Window Shows
-	And I Click MessageBox Cancel
-	And Deploy Window Is Still Open
-
-Scenario: Disconnect Remote Integration On Deploy Destination Does Not Disconnect On The Explorer
-	Given The Warewolf Studio is running
-	When I Try Connect To Remote Server
-	And I Click Deploy Ribbon Button
-	And I Click Deploy Tab Destination Server Combobox
-	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
-	Then Destination Remote Server Is Connected
-
 Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
@@ -158,7 +138,7 @@ Scenario: Changing Seleced Server On desploy Source While Connected To Remote Se
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-	And I Connect To Remote Server
+	And I Select Connected RemoteConnectionIntegration From Explorer
 	And I Select localhost From Deploy Tab Source Server Combobox
 	And I validate the Resource tree is loaded
 
