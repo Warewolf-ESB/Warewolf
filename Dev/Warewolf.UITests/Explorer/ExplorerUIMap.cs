@@ -226,6 +226,10 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Playback.Wait(1000);
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
+
+        [Given(@"I Select RemoteConnectionIntegration")]
+        [When(@"I Select RemoteConnectionIntegration")]
+        [Then(@"I Select RemoteConnectionIntegration")]
         public void Select_RemoteConnectionIntegration()
         {
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
