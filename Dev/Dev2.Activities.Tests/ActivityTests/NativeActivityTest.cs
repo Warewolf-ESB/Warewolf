@@ -325,7 +325,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.TestDispatchDebugState(dataObj,StateType);
             Assert.IsNotNull(passedDebugState);
             Assert.IsNotNull(passedDebugState.EndTime);
-            Assert.AreEqual(DateTime.MinValue, passedDebugState.StartTime);
+            Assert.AreNotEqual(DateTime.MinValue, passedDebugState.StartTime);
             Assert.AreNotEqual(DateTime.MinValue, passedDebugState.EndTime);
         }
 

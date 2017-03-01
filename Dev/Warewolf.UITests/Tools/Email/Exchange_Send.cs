@@ -13,7 +13,7 @@ namespace Warewolf.UITests.Tools
         const string SourceName = "ExchangeSourceFromTool";
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Email Tools")]
         public void ExchangeSendTool_Small_And_LargeView_Then_NewSource_UITest()
         {
 
@@ -68,7 +68,7 @@ namespace Warewolf.UITests.Tools
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Email Tools")]
         public void ExchangeMultipleAttachments_LargeViewUITest()
         {
             string folderName = @"c:\$$AttachmentsForEmail";

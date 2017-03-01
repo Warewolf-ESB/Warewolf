@@ -1,4 +1,8 @@
-﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Linq;
@@ -148,6 +152,12 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         {
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
             Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
+        }
+
+        [When(@"I Click Switch Dialog Cancel Button")]
+        public void Click_Switch_Dialog_Cancel_Button()
+        {
+            Mouse.Click(DecisionOrSwitchDialog.CancelButton, new Point(23, 10));
         }
 
         [Given(@"Filtered Item Exists")]
@@ -574,6 +584,16 @@ namespace Warewolf.UITests.DialogsUIMapClasses
             Assert.IsTrue(MessageBoxWindow.SaveBeforeAddingNewTestText.Exists, "Messagebox does not warn about unsaved tests after clicking create new test.");
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
+
+        [Given(@"I Wait For Debug Butoon Enabled")]
+        [When(@"I Wait For Debug Butoon Enabled")]
+        [Then(@"I Wait For Debug Butoon Enabled")]
+        public void ThenIWaitForDebugButoonEnabled()
+        {
+            Point point;
+            UIMap.MainStudioWindow.SideMenuBar.RunAndDebugButton.WaitForControlCondition((uitestcontrol) => { return uitestcontrol.TryGetClickablePoint(out point); }, 60000);
+        }
+
 
         public void Click_DropNotAllowed_MessageBox_OK()
         {

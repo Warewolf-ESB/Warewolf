@@ -75,24 +75,13 @@ namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceLargeView.AddModeNewActivity.UISacdVerticalConnectoCustom);
         }
 
-        [Given(@"I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
-        [When(@"I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
-        [Then(@"I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
-        public void Then_Drag_Toolbox_Comment_Onto_Switch_Right_Arm_On_DesignSurface()
-        {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(360, 200));
-            Mouse.StartDragging(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment, new Point(16, 25));
-            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(360, 200));
-            Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Switch case dialog done button does not exist after dragging onto switch case arm.");
-        }
-
         [When(@"I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface")]
         public void WhenIFirstDragToolboxCommentOntoSwitchLeftArmOnDesignSurface()
         {
             First_Drag_Toolbox_Comment_Onto_Switch_Left_Arm_On_DesignSurface();
         }
 
-        [When(@"I Then Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
+        [When(@"I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface")]
         public void WhenIThenDragToolboxCommentOntoSwitchRightArmOnDesignSurface()
         {
             var switchRightAutoConnector = new Point(360, 200);
@@ -100,7 +89,11 @@ namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
             Mouse.StartDragging(UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.UtilityTools.Comment, new Point(16, 25));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, switchRightAutoConnector);
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.Exists, "DecisionSwitch Dialog did not open");
-            Mouse.Click(DialogsUIMap.DecisionOrSwitchDialog.DoneButton, new Point(34, 10));
+        }
+
+        [Then(@"two autoconnectors exist on the design surface")]
+        public void Two_Autoconnectors_Exist_On_The_Design_Surface()
+        {
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3.Exists, "Third connector does not exist on design surface after drop onto autoconnector.");
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.Exists, "Comment tool does not exist on the design surface after drag and drop from the toolbox.");
         }
