@@ -313,8 +313,8 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
                 {
                     this.mNewServerButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mNewServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_NewServerButton_AutoID";
-                    this.mNewServerButton.WindowTitles.Add("Warewolf");
+                    this.mNewServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_ConnectServerBtn_AutoID";
+                    this.mNewServerButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
                 return this.mNewServerButton;
