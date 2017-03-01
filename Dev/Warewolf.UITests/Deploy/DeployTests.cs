@@ -51,10 +51,7 @@ namespace Warewolf.UITests
         public void Deploy_Connect_And_Disconnect_Source()
         {
             DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-            DeployUIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
             Assert.AreEqual("Remote Connection Integration (Connected)", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Source Combobox text  is: " + DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText);
-            DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
-            DeployUIMap.Click_Deploy_Tab_Source_Server_Connect_Button();
             DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.LocalhostText.Exists, "Deploy tab Source server did not change to localhost(Connected) after clicking disconnect button.");
         }

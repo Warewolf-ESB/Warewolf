@@ -226,7 +226,16 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Playback.Wait(1000);
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
         }
-
+        public void Select_RemoteConnectionIntegration()
+        {
+            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
+            Mouse.Click(toggleButton, new Point(136, 7));
+            Playback.Wait(1000);
+            if(UIMap.ControlExistsNow(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration))
+                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
+            else if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
+                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
+        }
         [Given(@"I Select Connected RemoteConnectionIntegration From Explorer")]
         [When(@"I Select Connected RemoteConnectionIntegration From Explorer")]
         [Then(@"I Select Connected RemoteConnectionIntegration From Explorer")]
@@ -453,7 +462,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void SetupPublicPermissionsForForRemoteServer(string resource)
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
-            Select_RemoteConnectionIntegration_From_Explorer();
+            Select_RemoteConnectionIntegration();
             Playback.Wait(1000);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
             UIMap.Click_Settings_RibbonButton();
@@ -643,7 +652,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             }
         }
 
-        public void TryClearExplorerFilter()
+       public void TryClearExplorerFilter()
         {
             if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
             {
