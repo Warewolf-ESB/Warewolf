@@ -170,20 +170,6 @@ namespace Warewolf.Studio.ViewModels
                 environmentViewModel?.Filter(SearchText);
             }
 
-            //var windowsGroupPermission = environmentViewModel?.Server?.Permissions?[0];
-            //if (windowsGroupPermission != null)
-            //environmentViewModel.SetPropertiesForDialogFromPermissions(windowsGroupPermission);
-
-            //var permissions = environmentViewModel?.Server?.GetPermissions(environmentViewModel.ResourceId);
-            //if (permissions != null)
-            //{
-            //    if (environmentViewModel.Children != null)
-            //        foreach (var explorerItemViewModel in environmentViewModel.Children.Flatten(model => model.Children))
-            //        {
-            //            explorerItemViewModel.SetPermissions((Permissions)permissions, true);
-            //        }
-            //}
-
             OnPropertyChanged(() => Environments);
         }
 
