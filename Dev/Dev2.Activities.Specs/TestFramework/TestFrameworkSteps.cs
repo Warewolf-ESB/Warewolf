@@ -961,27 +961,27 @@ namespace Dev2.Activities.Specs.TestFramework
                 var webResult = specExternalProcessExecutor.WebResult;
                 foreach (var result in webResult)
                 {
-                    var cleanresult = result.Replace("[", "").Replace("]", "");
-                    var jObject = JObject.Parse(cleanresult);
-
+                    var jObject = JArray.Parse(result);
                     foreach (var tableRow in table.Rows)
                     {
                         foreach (var resultPairs in jObject)
                         {
-                            // Assert.AreEqual(tableRow["Test Name"], resultPairs);
-                            if (resultPairs.Key == "Test Name")
+                            var testObj = resultPairs as JObject;
+                            var testName = testObj.Property("Test Name").Value.ToString();
+                            if(testName!= tableRow["Test Name"])
                             {
-                                Assert.AreEqual(tableRow["Test Name"], resultPairs.Value, "value message dont match");
+                                continue;
                             }
-                            if (resultPairs.Key == "Result")
+                            var testResult = testObj.Property("Result").Value.ToString();
+                            Assert.AreEqual(tableRow["Result"], testResult, "Result message dont match");
+                            JToken testMessageToken;
+                            var hasMessage = testObj.TryGetValue("Message",out testMessageToken);
+                            if (hasMessage)
                             {
-                                Assert.AreEqual(tableRow["Result"], resultPairs.Value, "Result message dont match");
+                                var testMessage = testMessageToken.ToString();
+                                Assert.AreEqual(tableRow["Message"], testMessage.Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
                             }
-
-                            if (resultPairs.Key == "Message")
-                            {
-                                Assert.AreEqual(tableRow["Message"], resultPairs.Value.ToString().Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
-                            }
+                            
                         }
                     }
                 }

@@ -1051,6 +1051,41 @@ Scenario: Run All Tests in Web
 	| Test Name | Result | Message |
 	| Test 1    | Passed |         |
 
+Scenario: Run All Tests in Web with failing test
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"	
+	And I update outputs as
+	| Variable Name | Value       |
+	| Message       | Hello World. |
+	And save is enabled
+	When I save
+	And I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 2"
+	And inputs are
+	| Variable Name | Value |
+	| Name          |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message       |       |
+	And save is enabled
+	When I save	
+	Then Tab Header is "Hello World - Tests"
+	And I close the test builder
+	When the test builder is open with "Hello World"
+	Then there are 2 tests
+	When I run all tests in Web
+	Then The WebResponse as
+	| Test Name | Result | Message                                                                                                                     |
+	| Test 1    | Passed |                                                                                                                             |
+	| Test 2    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected Equal To '' for '[[Message]]' but got 'Hello World.' |
+
 Scenario: Run Selected Test passed with all teststeps fails
 	Given the test builder is open with "Hello World"
 	And Tab Header is "Hello World - Tests"
