@@ -313,7 +313,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void DisplayName_GivenNoEnvirnmentConnection_ShouldHaveValueOfNewRemoteServer()
         {
-            const string serverName = "New Remote Server...";
+            const string serverName = "Default Name";
             //------------Setup for test--------------------------
             var server = new Server(_env.Object);
             //------------Assert Precondition--------------------
