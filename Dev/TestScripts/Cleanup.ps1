@@ -19,8 +19,8 @@ if ($ServerService -ne $null -and $ServerService.Status -eq "Running") {
     $RetryCount = 0
     while ($Result -ne 0 -and $RetryCount++ -lt 5) {
         [int32]$Result = $ServerService.Stop()
+        sleep 10
         if ($Result -ne 0) {
-            sleep 10
             Stop-Process -Name "Warewolf Server"
         }
     }
