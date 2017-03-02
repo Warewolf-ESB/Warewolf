@@ -128,10 +128,6 @@ Write-Host $Line5
 $Line5 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
 Write-Host $Line6
 $Line6 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-Write-Host $Line7
-$Line7 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
-Write-Host $Line8
-$Line8 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
 Write-Host F Sharp version file written to `"$FSharpVersionFile`".
 
 Write-Host Version written successfully! For more info about this script see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
