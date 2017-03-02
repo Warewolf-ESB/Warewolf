@@ -496,7 +496,7 @@
 		                                  Margin="{StaticResource ElementBorderTop}"
 		                                  Focusable="False" 
 		                                  HorizontalContentAlignment="Stretch"
-		                                  Style="{StaticResource VariablesTreeViewStyle}"
+		                                  Style="{StaticResource TestViewStepTreeViewStyle}"
 		                                  Grid.IsSharedSizeScope="True"
 		                                  AutomationProperties.AutomationId="UI_VariableTreeView_AutoID"
 		                                  ScrollViewer.CanContentScroll="True"
