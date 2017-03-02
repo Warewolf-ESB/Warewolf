@@ -619,7 +619,7 @@ namespace Dev2.Diagnostics.Debug
 
             writer.WriteAttributeString("OriginalInstanceID", OriginalInstanceID.ToString());
 
-            writer.WriteAttributeString("ParentID", ParentID.ToString());
+            writer.WriteAttributeString("ParentID", ParentID.GetValueOrDefault().ToString());
 
             writer.WriteAttributeString("ServerID", ServerID.ToString());
 
@@ -738,7 +738,7 @@ namespace Dev2.Diagnostics.Debug
 
         public bool IsFinalStep()
         {
-            return StateType == StateType.End && OriginalInstanceID == ID && !ParentID.HasValue;
+            return StateType == StateType.End && OriginalInstanceID == ID && (!ParentID.HasValue || ParentID == Guid.Empty);
         }
 
         public bool IsFirstStep()

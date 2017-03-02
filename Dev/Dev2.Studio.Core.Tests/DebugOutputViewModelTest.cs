@@ -241,7 +241,8 @@ namespace Dev2.Core.Tests
             mock2.Setup(s => s.DisconnectedID).Returns(Guid.NewGuid());
             mock1.SetupSet(s => s.ErrorMessage = It.IsAny<string>())
                 .Callback<string>(s => Assert.IsTrue(s.Equals("Error Test")));
-            mock1.SetupSet(s => s.HasError = It.IsAny<bool>()).Callback<bool>(s => Assert.IsTrue(s.Equals(true)));
+            mock1.SetupSet(s => s.HasError = It.IsAny<bool>())
+                .Callback<bool>(s => Assert.IsTrue(s.Equals(true)));
 
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository(),
                 new Mock<IDebugOutputFilterStrategy>().Object);
