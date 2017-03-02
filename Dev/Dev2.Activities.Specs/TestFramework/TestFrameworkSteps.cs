@@ -3,6 +3,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -94,6 +95,7 @@ namespace Dev2.Activities.Specs.TestFramework
     }
 
     [Binding]
+    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public class StudioTestFrameworkSteps
     {
 
@@ -113,7 +115,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
-            commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);            
+            commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
         [When(@"I reload tests")]
@@ -214,7 +216,6 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         readonly object _syncRoot = new object();
-        const string Json = "{\"$id\": \"1\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestModel, Warewolf.Studio.ViewModels\",\"NeverRunString\": \"Never run\",\"LastRunDateVisibility\": true,\"NeverRunStringVisibility\": false,\"DebugForTest\": null,\"DuplicateTestTooltip\": null,\"ParentId\": \"acb75027-ddeb-47d7-814e-a54c37247ec1\",\"OldTestName\": \"Test 1\",\"TestName\": \"Test 1\",\"NameForDisplay\": \"Test 1\",\"UserName\": null,\"Password\": null,\"LastRunDate\": \"2016-12-07T12:55:01.8993752+02:00\",\"Inputs\": [{\"$id\": \"2\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestInput, Warewolf.Studio.ViewModels\",\"Variable\": \"Name\",\"Value\": \"\",\"EmptyIsNull\": false}],\"Outputs\": [{\"$id\": \"3\",\"$type\": \"Warewolf.Studio.ViewModels.ServiceTestOutput, Warewolf.Studio.ViewModels\",\"Variable\": \"Message\",\"Value\": \"\",\"From\": \"\",\"To\": \"\",\"AssertOp\": \"=\",\"HasOptionsForValue\": false,\"IsSinglematchCriteriaVisible\": true,\"IsBetweenCriteriaVisible\": false,\"IsSearchCriteriaEnabled\": true,\"IsSearchCriteriaVisible\": true,\"OptionsForValue\": null,\"Result\": {\"$id\": \"4\",\"$type\": \"Dev2.Common.Interfaces.TestRunResult, Dev2.Common.Interfaces\",\"TestName\": null,\"RunTestResult\": 1,\"Message\": \"Failed: Assert Equal. Expected 'Hello World.' for '[[Message]]' but got ''\r\n\",\"DebugForTest\": null},\"TestPassed\": false,\"TestFailing\": true,\"TestInvalid\": false,\"TestPending\": false,\"AssertOps\": [\"=\",\">\",\"<\",\"<> (Not Equal)\",\">=\",\"<=\",\"Starts With\",\"Ends With\",\"Contains\",\"Doesn't Start With\",\"Doesn't End With\",\"Doesn't Contain\",\"Is NULL\",\"Is Not NULL\",\"Is Alphanumeric\",\"Is Base64\",\"Is Between\",\"Is Binary\",\"Is Date\",\"Is Email\",\"Is Hex\",\"Is Numeric\",\"Is Regex\",\"Is Text\",\"Is XML\",\"Not Alphanumeric\",\"Not Base64\",\"Not Between\",\"Not Binary\",\"Not Date\",\"Not Email\",\"Not Hex\",\"Not Numeric\",\"Not Regex\",\"Not Text\",\"Not XML\",\"There is No Error\",\"There is An Error\"],\"CanEditVariable\": true}],\"NoErrorExpected\": true,\"ErrorExpected\": false,\"ErrorContainsText\": \"\",\"IsNewTest\": false,\"IsTestSelected\": false,\"IsTestLoading\": false,\"TestPassed\": false,\"TestFailing\": true,\"TestInvalid\": false,\"TestPending\": false,\"Enabled\": true,\"RunSelectedTestUrl\": null,\"AuthenticationType\": 0,\"IsDirty\": false,\"UserAuthenticationSelected\": false,\"NewTest\": false,\"IsTestRunning\": false,\"TestSteps\": [],\"SelectedTestStep\": null}\";";
         const string SimpleJson = "{\"$type\":\"Dev2.Data.ServiceTestModelTO,Dev2.Data\",\"OldTestName\":null,\"TestName\":\"Test 1\",\"UserName\":null,\"Password\":null,\"LastRunDate\":\"0001-01-01T00:00:00\",\"Inputs\":null,\"Outputs\":null,\"NoErrorExpected\":false,\"ErrorExpected\":false,\"TestPassed\":false,\"TestFailing\":false,\"TestInvalid\":false,\"TestPending\":false,\"Enabled\":true,\"IsDirty\":false,\"AuthenticationType\":0,\"ResourceId\":\"00000000-0000-0000-0000-000000000000\"}";
         [Given(@"I have a resouce ""(.*)""")]
         public void GivenIHaveAResouce(string resourceName)
@@ -521,9 +522,10 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType==StateType.End).AssertResultList.First().ResultsList;
+            // ReSharper disable once PossibleNullReferenceException
+            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.End).AssertResultList.First().ResultsList;
             var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
-            StringAssert.Contains(actualAssetMessage.ToLower(),assertString.ToLower());
+            StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
         }
 
 
@@ -674,7 +676,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsFalse(test.TestPassed);
             Assert.IsTrue(test.TestFailing);
         }
-        
+
         [When(@"I remove input ""(.*)"" from workflow ""(.*)""")]
         public void WhenIRemoveInputFromWorkflow(string input, string workflow)
         {
@@ -738,36 +740,6 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             serviceTest.CreateTestCommand.Execute(null);
 
-        }
-
-        private void BuildDecision()
-        {
-            var decisionActivity = new DsfFlowDecisionActivity();
-            Dev2DecisionMode mode;
-            MyContext.TryGetValue("mode", out mode);
-
-            var decisionModels =
-                MyContext.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
-            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
-
-            foreach (var dm in decisionModels)
-            {
-                var dev2Decision = new Dev2Decision
-                {
-                    Col1 = dm.Item1 ?? string.Empty,
-                    EvaluationFn = dm.Item2,
-                    Col2 = dm.Item3 ?? string.Empty,
-                    Col3 = dm.Item4 ?? string.Empty
-                };
-
-                dds.AddModelItem(dev2Decision);
-            }
-
-            string modelData = dds.ToVBPersistableModel();
-            MyContext.Add("modelData", modelData);
-
-            decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
-                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
         }
 
         [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
@@ -951,6 +923,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
 
         [Then(@"The WebResponse as")]
+        // ReSharper disable once CyclomaticComplexity
         public void ThenTheWebResponseAs(Table table)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -961,29 +934,59 @@ namespace Dev2.Activities.Specs.TestFramework
                 var webResult = specExternalProcessExecutor.WebResult;
                 foreach (var result in webResult)
                 {
-                    var jObject = JArray.Parse(result);
-                    foreach (var tableRow in table.Rows)
+                    var jToken = JToken.Parse(result);
+                    if (jToken.IsEnumerable())
                     {
-                        foreach (var resultPairs in jObject)
+                        var jObject = JArray.Parse(result);
+                        foreach (var tableRow in table.Rows)
                         {
-                            var testObj = resultPairs as JObject;
-                            var testName = testObj.Property("Test Name").Value.ToString();
-                            if(testName!= tableRow["Test Name"])
+                            foreach (var resultPairs in jObject)
                             {
-                                continue;
+                                var testObj = resultPairs as JObject;
+                                // ReSharper disable once PossibleNullReferenceException
+                                var testName = testObj.Property("Test Name").Value.ToString();
+                                if (testName != tableRow["Test Name"])
+                                {
+                                    continue;
+                                }
+                                var testResult = testObj.Property("Result").Value.ToString();
+                                Assert.AreEqual(tableRow["Result"], testResult, "Result message dont match");
+                                JToken testMessageToken;
+                                var hasMessage = testObj.TryGetValue("Message", out testMessageToken);
+                                if (hasMessage)
+                                {
+                                    var testMessage = testMessageToken.ToString();
+                                    Assert.AreEqual(tableRow["Message"], testMessage.Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
+                                }
+
                             }
-                            var testResult = testObj.Property("Result").Value.ToString();
-                            Assert.AreEqual(tableRow["Result"], testResult, "Result message dont match");
-                            JToken testMessageToken;
-                            var hasMessage = testObj.TryGetValue("Message",out testMessageToken);
-                            if (hasMessage)
-                            {
-                                var testMessage = testMessageToken.ToString();
-                                Assert.AreEqual(tableRow["Message"], testMessage.Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
-                            }
-                            
                         }
                     }
+                    else if (jToken.IsObject())
+                    {
+                        var jObject = JObject.Parse(result);
+                        foreach (var tableRow in table.Rows)
+                        {
+                            foreach (var resultPairs in jObject)
+                            {
+                                // Assert.AreEqual(tableRow["Test Name"], resultPairs);
+                                if (resultPairs.Key == "Test Name")
+                                {
+                                    Assert.AreEqual(tableRow["Test Name"], resultPairs.Value, "value message dont match");
+                                }
+                                if (resultPairs.Key == "Result")
+                                {
+                                    Assert.AreEqual(tableRow["Result"], resultPairs.Value, "Result message dont match");
+                                }
+
+                                if (resultPairs.Key == "Message")
+                                {
+                                    Assert.AreEqual(tableRow["Message"], resultPairs.Value.ToString().Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
+                                }
+                            }
+                        }
+                    }
+
                 }
             }
         }
@@ -1611,7 +1614,6 @@ namespace Dev2.Activities.Specs.TestFramework
 
         }
 
-        private static Guid helloGuid;
         [Given(@"the test builder is open with existing service ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWithExistingService(string workflowName)
         {
@@ -1622,7 +1624,6 @@ namespace Dev2.Activities.Specs.TestFramework
             var contextualResource = sourceResourceRepository.LoadContextualResourceModel(res.ID);
             var msg = sourceResourceRepository.FetchResourceDefinition(contextualResource.Environment, GlobalConstants.ServerWorkspaceID, res.ID, false);
             contextualResource.WorkflowXaml = msg.Message;
-            helloGuid = res.ID;
             var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
             serviceTestVm.WebClient = new Mock<IWarewolfWebClient>().Object;
             Assert.IsNotNull(serviceTestVm);
@@ -1821,6 +1822,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"I Add Decision ""(.*)"" as TestStep")]
         [Given(@"I Add Decision ""(.*)"" as TestStep")]
         [When(@"I Add Decision ""(.*)"" as TestStep")]
+        // ReSharper disable once CyclomaticComplexity
         public void ThenIAddDecisionAsTestStep(string actNameToFind)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -2072,7 +2074,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             var decisionNode = foundNode as FlowDecision;
                             // ReSharper disable once PossibleNullReferenceException
                             var condition = decisionNode.Condition;
-                            var activity = (Unlimited.Applications.BusinessDesignStudio.Activities.DsfFlowNodeActivity<bool>)condition;
+                            var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
                             if (expression != null)
                             {
@@ -2081,7 +2083,7 @@ namespace Dev2.Activities.Specs.TestFramework
                                 if (!string.IsNullOrEmpty(eval))
                                 {
                                     var ser = new Dev2JsonSerializer();
-                                    var dds = ser.Deserialize<Dev2DecisionStack>(eval);
+                                    ser.Deserialize<Dev2DecisionStack>(eval);
                                     var armToUse = tableRow["Output Value"];
                                     test.AddTestStep(activity.UniqueID, activity.DisplayName, typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>() { new ServiceTestOutput(GlobalConstants.ArmResultText, armToUse, "", "") });
 

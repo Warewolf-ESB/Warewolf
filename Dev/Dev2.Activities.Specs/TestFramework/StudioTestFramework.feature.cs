@@ -2856,7 +2856,7 @@ this.FeatureBackground();
                         "Test 1",
                         "Failed",
                         "Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected Equal " +
-                            "To \'\' for \'Message\' but got \'Hello World.\'"});
+                            "To \'\' for \'[[Message]]\' but got \'Hello World.\'"});
 #line 1003
  testRunner.Then("The WebResponse as", ((string)(null)), table107, "Then ");
 #line 1006
