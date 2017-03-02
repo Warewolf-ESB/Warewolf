@@ -18,7 +18,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyCompany("Warewolf")]
 [assembly: AssemblyProduct("Warewolf")]
-[assembly: AssemblyCopyright("Copyright Warewolf 2016")]
+[assembly: AssemblyCopyright("Copyright Warewolf 2017")]
 
 // Version information for an assembly consists of the following four values:
 //
