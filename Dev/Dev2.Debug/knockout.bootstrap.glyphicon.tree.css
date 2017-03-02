@@ -1,0 +1,21 @@
+#nav-bar ul {
+	list-style-type: none;
+}
+
+#nav-bar {
+	padding-left: 0;
+}
+
+#nav-bar > ul {
+	padding-left: 20px;
+}
+
+.tree-item {
+	font-family: 'Glyphicons Halflings';
+	-webkit-font-smoothing: antialiased;
+	font-size: 75%;
+}
+
+.pointer-icon {
+	cursor: pointer;
+}
