@@ -476,7 +476,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
@@ -501,7 +501,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowId = Guid.Empty;
             }
 
-            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId).ToList();
             Assert.IsTrue(sequenceDebug.Count >= stepNumber);
 
             var sequenceId = sequenceDebug[stepNumber - 1].ID;
@@ -509,7 +509,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(sequenceIsInForEach);
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(item => item.Inputs)
@@ -533,7 +533,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowId = Guid.Empty;
             }
 
-            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId).ToList();
             Assert.IsTrue(sequenceDebug.Count >= stepNumber);
 
             var sequenceId = sequenceDebug[stepNumber - 1].ID;
@@ -541,7 +541,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(sequenceIsInForEach);
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsNotNull(toolSpecificDebug);
             IDebugState debugState = toolSpecificDebug.FirstOrDefault();
             if (debugState != null)
@@ -582,7 +582,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowId = Guid.Empty;
             }
 
-            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId).ToList();
             Assert.IsTrue(sequenceDebug.Count >= stepNumber);
 
             var sequenceId = sequenceDebug[stepNumber - 1].ID;
@@ -590,7 +590,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(sequenceIsInForEach);
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsNotNull(toolSpecificDebug);
             IDebugState debugState = toolSpecificDebug.FirstOrDefault();
             if (debugState != null)
@@ -630,7 +630,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowId = Guid.Empty;
             }
 
-            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId).ToList();
             Assert.IsTrue(sequenceDebug.Count >= stepNumber);
 
             var sequenceId = sequenceDebug[stepNumber - 1].ID;
@@ -638,7 +638,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(sequenceIsInForEach);
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(item => item.Outputs)
@@ -669,7 +669,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
 
@@ -1165,7 +1165,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
                                                     .SelectMany(s => s.Inputs)
@@ -1213,7 +1213,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var id =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
-            var children = debugStates.Count(a => a.ParentID == id);
+            var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
             Assert.AreEqual(count, children);
         }
 
@@ -1227,7 +1227,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
-            id.ForEach(x => Assert.AreEqual(childCount, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == toolName)));
+            id.ForEach(x => Assert.AreEqual(childCount, debugStates.Count(a => a.ParentID.GetValueOrDefault() == x.ID && a.DisplayName == toolName)));
 
         }
 
@@ -1241,7 +1241,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
-            id.ForEach(x => Assert.AreEqual(1, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == nestedToolName)));
+            id.ForEach(x => Assert.AreEqual(1, debugStates.Count(a => a.ParentID.GetValueOrDefault() == x.ID && a.DisplayName == nestedToolName)));
         }
 
         T Get<T>(string keyName)
@@ -1327,10 +1327,10 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             Assert.IsTrue(toolSpecificDebug.All(a => a.Server == remoteName));
-            Assert.IsTrue(debugStates.Where(ds => ds.ParentID == workflowId && !ds.DisplayName.Equals(toolName)).All(a => a.Server == "localhost"));
+            Assert.IsTrue(debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && !ds.DisplayName.Equals(toolName)).All(a => a.Server == "localhost"));
         }
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs is")]
         public void ThenTheInWorkflowDebugOutputsIs(string p0, string p1, Table table)
@@ -1364,7 +1364,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
@@ -2794,7 +2794,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(workflowName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(workflowName)).ToList();
             Assert.AreEqual(0, toolSpecificDebug.Count);
         }
 

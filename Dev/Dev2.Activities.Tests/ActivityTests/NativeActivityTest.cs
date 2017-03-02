@@ -306,7 +306,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             IDebugState passedDebugState = null;
             var mockDebugDispatcher = new Mock<IDebugDispatcher>();
-            mockDebugDispatcher.Setup(dispatcher => dispatcher.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(),It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>())).Callback((IDebugState ds,bool isTestExecution,string testName,bool isRemoteInvoke,string remoteID,string parentId,IList<IDebugState> remoteItems) =>
+            mockDebugDispatcher.Setup(dispatcher => dispatcher.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(),It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()))
+                .Callback((IDebugState ds,bool isTestExecution, bool isDebugFromWeb, string testName,bool isRemoteInvoke,string remoteID,string parentId,IList<IDebugState> remoteItems) =>
                   {
                       passedDebugState = ds;
                   });
@@ -498,6 +499,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.Execute(dataObject, 0);
 
             var warewolfEvalResult = dataObject.Environment.Eval("[[Error]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.IsNotNull(warewolfEvalResult);
             var errorMessage = warewolfEvalResult.Item.ToString();
             Assert.IsTrue(dataObject.StopExecution);
             Assert.AreEqual("There is an error", errorMessage);
