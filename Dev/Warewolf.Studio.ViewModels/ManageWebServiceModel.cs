@@ -22,17 +22,7 @@ namespace Warewolf.Studio.ViewModels
     {
         public IStudioUpdateManager UpdateRepository { get; private set; }
         public IQueryManager QueryProxy { get; private set; }
-        public ObservableCollection<IWebServiceSource> Sources
-        {
-            get
-            {
-                if (_sources == null)
-                {
-                    _sources = new ObservableCollection<IWebServiceSource>(QueryProxy.FetchWebServiceSources());
-                }
-                return _sources;
-            }
-        }
+        public ObservableCollection<IWebServiceSource> Sources => _sources ?? (_sources = new ObservableCollection<IWebServiceSource>(QueryProxy.FetchWebServiceSources()));
 
         readonly IShellViewModel _shell;
         ObservableCollection<IWebServiceSource> _sources;
@@ -43,16 +33,10 @@ namespace Warewolf.Studio.ViewModels
             QueryProxy = queryProxy;
             _shell = shell;
             shell.SetActiveServer(server);
-            
-        }
-
-        public ManageWebServiceModel()
-        {
         }
 
         #region Implementation of IWebServiceModel
 
-        
         public ICollection<IWebServiceSource> RetrieveSources()
         {
             return new List<IWebServiceSource>(QueryProxy.FetchWebServiceSources());
@@ -70,16 +54,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string TestService(IWebService inputValues)
         {
-            if (UpdateRepository != null)
-            {
-                return UpdateRepository.TestWebService(inputValues);
-            }
-            return "Error";
-        }
-
-        public void SaveService(IWebService toModel)
-        {
-            UpdateRepository.Save(toModel);
+            return UpdateRepository != null ? UpdateRepository.TestWebService(inputValues) : "Error";
         }
 
         #endregion
