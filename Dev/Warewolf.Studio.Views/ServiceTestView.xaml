@@ -507,7 +507,7 @@
 		                                  VirtualizingStackPanel.CacheLength="20,20"
 		                                  VirtualizingStackPanel.CacheLengthUnit="Item">
                                     <TreeView.ItemTemplate>
-                                        <HierarchicalDataTemplate DataType="{x:Type interfaces:IServiceTestStep}">
+                                        <HierarchicalDataTemplate DataType="{x:Type interfaces:IServiceTestStep}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                                             <Grid>
                                                 <Grid.Width>
 					                                <MultiBinding Converter="{StaticResource ServiceTestWidthConverter}">
@@ -544,7 +544,7 @@
 							                                Style="{StaticResource ButtonBlackTransparentStyle}" 
 							                                Margin="0,-3,0,0" 
 							                                Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
-							                                CommandParameter="{Binding Path=Data}"
+							                                CommandParameter="{Binding .}"
 							                                ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
 							                                AutomationProperties.AutomationId="{Binding StringFormat=UI_TestStepDelete_{0}_AutoID, Path=StepDescription}">
                                                         <fa:FontAwesome Icon="Trash"/>
