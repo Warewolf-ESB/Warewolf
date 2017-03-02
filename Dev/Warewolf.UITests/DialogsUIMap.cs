@@ -585,16 +585,6 @@ namespace Warewolf.UITests.DialogsUIMapClasses
             Mouse.Click(MessageBoxWindow.OKButton, new Point(35, 11));
         }
 
-        [Given(@"I Wait For Debug Butoon Enabled")]
-        [When(@"I Wait For Debug Butoon Enabled")]
-        [Then(@"I Wait For Debug Butoon Enabled")]
-        public void ThenIWaitForDebugButoonEnabled()
-        {
-            Point point;
-            UIMap.MainStudioWindow.SideMenuBar.RunAndDebugButton.WaitForControlCondition((uitestcontrol) => { return uitestcontrol.TryGetClickablePoint(out point); }, 60000);
-        }
-
-
         public void Click_DropNotAllowed_MessageBox_OK()
         {
             Assert.IsTrue(MessageBoxWindow.DropnotallowedText.Exists, "The Shown dialog is not Drop Not 'Allowed MessageBox'");
