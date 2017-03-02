@@ -24,6 +24,8 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 #endregion
 
@@ -131,6 +133,7 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the type of the state.
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public StateType StateType { get; set; }
 
         /// <summary>
