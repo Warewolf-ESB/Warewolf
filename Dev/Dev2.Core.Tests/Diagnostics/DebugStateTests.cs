@@ -9,12 +9,14 @@
 */
 
 using System;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Tests.Weave;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Tests.Diagnostics
 {
@@ -164,6 +166,19 @@ namespace Dev2.Tests.Diagnostics
             Assert.IsFalse(string.IsNullOrEmpty(itemToAdd.ResultsList[10].MoreLink));
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void JsonConverter_GivenStatetype_ShouldConvertToString()
+        {
+            //---------------Set up test pack-------------------
+            DebugState debugState  = new DebugState() {StateType = StateType.End};
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var serializeToJsonString = debugState.SerializeToJsonString(new DefaultSerializationBinder());
+            var contains = serializeToJsonString.Contains("\"StateType\": \"End\"");
+            //---------------Test Result -----------------------
+            Assert.IsTrue(contains);
+        }
         #endregion
 
         #region CreateDebugItemWithLongValue
