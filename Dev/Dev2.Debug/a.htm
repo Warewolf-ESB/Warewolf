@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link href="dev2-debug.css" rel="stylesheet" />
+    <title></title>
+</head>
+
+<body>
+    <div>
+        <input style="width: 90%" data-bind="value: URL" />
+        <input style="width: 5%" type="button" name="Update" data-bind="click:GetData" value="Update" />
+    </div>
+    <div id="nav-bar" data-bind="template: { name: 'tree-template', data: treeData }"></div>
+
+    <script type="text/html" id="tree-template">
+        <ul class="list-group" data-bind="foreach: Children">
+            <li class="list-group-item" data-bind="template: { name: 'node-name-template' , data: $data }">
+            </li>
+        </ul>
+    </script>
+
+    <script type="text/html" id="folder-template">
+        <ul data-bind="foreach: Children">
+            <li>
+                <div data-bind="template: { name: 'node-template', data: $data }"></div>
+            </li>
+        </ul>
+    </script>
+
+    <script type="text/html" id="node-template">
+        <div data-bind="template: { name: 'node-name-template' , data: $data}">
+        </div>
+        <div data-bind="template: { name: 'folder-template', data: $data }"></div>
+    </script>
+
+    <script type="text/html" id="node-name-template">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 data-bind="text: Name,attr: { 'title': DisplayName },tooltip: { delay: { show: 500, hide: 10 } }"></h4>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <div>
+                        DisplayName: <span class="dev2-values" data-bind="text: DisplayName"></span>
+                    </div>
+                    <div>
+                        Server: <span data-bind="text: Server"></span>
+                    </div>
+                    <div>
+                        Type: <span data-bind="text: StateType"></span>
+                    </div>
+                    <div>
+                        StartTime: <span data-bind="text: StartTime"></span>
+                    </div>
+                    <div>
+                        EndTime: <span data-bind="text: EndTime"></span>
+                    </div>
+                    <div>
+                        Inputs= <ul class="list-group" data-bind="foreach: { data: Inputs, as: 'input' }">
+                            <li class="list-group-item">
+                                <ul data-bind="foreach: { data: ResultsList, as: 'result' }">
+                                    <li>
+                                        <span class="dev2-input-variable" data-bind="text: result.Variable"></span>
+                                        <span class="dev2-input-operator" data-bind="text: result.Operator"></span>
+                                        <span class="dev2-input-value" data-bind="text: result.Value"></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        Outputs= <ul class="list-group" data-bind="foreach: { data: Outputs, as: 'input' }">
+                            <li class="list-group-item">
+                                <ul data-bind="foreach: { data: ResultsList, as: 'result' }">
+                                    <li>
+                                        <span data-bind="text: result.Variable"></span>
+                                        <span data-bind="text: result.Operator"></span>
+                                        <span data-bind="text: result.Value"></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div data-bind="if: Children().length > 0">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h4>Children</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div data-bind="foreach: Children">
+                                    <div data-bind="template: { name: 'node-template', data: $data }"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        Duration: <span data-bind="text: Duration"></span><br />
+                    </div>
+                    <div>
+                        Origin: <span data-bind="text: Origin"></span><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.js"></script>
+    <script type='text/javascript' src="dev2-model-vm.js">
+    </script>
+</body>
+
+</html>
