@@ -1,31 +1,49 @@
 ﻿#Requires -RunAsAdministrator
 
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
-if ($Output.StartsWith("SUCCESS: ")) {
+if (!($Output.StartsWith("INFO: "))) {
     sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+    taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" /f
 }
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" | %{$Output = $_}
-if ($Output.StartsWith("SUCCESS: ")) {
+if (!($Output.StartsWith("INFO: "))) {
     sleep 5
 }
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" /f
+}
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" | %{$Output = $_}
-if ($Output.StartsWith("SUCCESS: ")) {
+if (!($Output.StartsWith("INFO: "))) {
     sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" /f
 }
 
 sc.exe stop "Warewolf Server"
 
 taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
-if ($Output.StartsWith("SUCCESS: ")) {
+if (!($Output.StartsWith("INFO: "))) {
     sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" /f
 }
 taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" | %{$Output = $_}
-if ($Output.StartsWith("SUCCESS: ")) {
+if (!($Output.StartsWith("INFO: "))) {
     sleep 5
 }
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" /f
+}
 taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" | %{$Output = $_}
-if ($Output.StartsWith("SUCCESS: ")) {
+if (!($Output.StartsWith("INFO: "))) {
     sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" /f
 }
 
 $ToClean = `
