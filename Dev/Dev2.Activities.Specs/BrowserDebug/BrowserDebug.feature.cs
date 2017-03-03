@@ -350,8 +350,15 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?\" in B" +
                     "rowser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 86
-  testRunner.Then("The Debug in Browser content contains order of \"AssignFlow\", \"CaseConvertFlow\" an" +
-                    "d \"ReplaceFlow\" in SequenceFlow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("The Debug in Browser content contains for Dotnet has 4 states", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 87
+  testRunner.And("The 1 debug state has 1 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
+  testRunner.And("The 0 debug state has 0 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 89
+  testRunner.And("The 2 debug state has 0 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 90
+  testRunner.And("The 3 debug state has 0 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -362,9 +369,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingAForwardSortRecordsetWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Forward Sort Recordset workflow", ((string[])(null)));
-#line 88
+#line 93
 this.ScenarioSetup(scenarioInfo);
-#line 89
+#line 94
   testRunner.Given("I have a workflow \"SortRecordsetWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -382,7 +389,7 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "[[Degree(4).YearCompleted]]",
                         "2013"});
-#line 90
+#line 95
   testRunner.And("\"SortRecordsetWF\" contains an Assign \"ExampleRecordSet\" as", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -391,11 +398,11 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "[[Degree().YearCompleted]]",
                         "Forward"});
-#line 96
+#line 101
   testRunner.And("\"SortRecordsetWF\" contains an Sort \"Degree\" as", ((string)(null)), table10, "And ");
-#line 99
+#line 104
   testRunner.And("workflow \"SortRecordsetWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 105
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/SortRecordsetWF.debug?\" " +
                     "in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -409,7 +416,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014"});
             table11.AddRow(new string[] {
                         "2015"});
-#line 101
+#line 106
   testRunner.Then("Debugstate in index 2 has output as", ((string)(null)), table11, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -421,7 +428,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingHelloWolrdInAForeachLoopedThreeTimes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Hello Wolrd in a Foreach Looped Three times", ((string[])(null)));
-#line 109
+#line 114
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();

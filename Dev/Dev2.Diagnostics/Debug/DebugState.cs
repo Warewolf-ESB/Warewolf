@@ -101,7 +101,11 @@ namespace Dev2.Diagnostics.Debug
         public Guid? ParentID
         {
             get { return _parentID; }
-            set { _parentID = value; }
+            set
+            {
+                _parentID = value;
+                OnPropertyChanged();
+            }
         }
 
         public bool IsAdded { get; set; }
@@ -314,8 +318,7 @@ namespace Dev2.Diagnostics.Debug
                     case ExecutionOrigin.External:
                         return ExecutionOrigin.GetDescription();
                     case ExecutionOrigin.Workflow:
-                        return string.Format("{0} - {1}",
-                                             ExecutionOrigin.GetDescription(), ExecutionOriginDescription);
+                        return $"{ExecutionOrigin.GetDescription()} - {ExecutionOriginDescription}";
                 }
 
                 return string.Empty;
@@ -848,7 +851,11 @@ namespace Dev2.Diagnostics.Debug
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
+            if (propertyName?.Equals("ParentID") ?? false)
+            {
+                if (ParentID == Guid.Empty)
+                    ParentID = null;
+            }
         }
     }
 }

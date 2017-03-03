@@ -60,7 +60,6 @@
     <None Include="Web.Release.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="a - Copy.htm" />
     <Content Include="a.htm" />
     <Content Include="analytics.js" />
     <Content Include="a_data\knockout.js" />
