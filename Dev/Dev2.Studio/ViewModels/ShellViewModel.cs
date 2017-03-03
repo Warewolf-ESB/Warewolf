@@ -161,7 +161,7 @@ namespace Dev2.Studio.ViewModels
                     environment.IsSelected = false;
                 }
                 var environmentViewModel =
-                    environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.ID);
+                    environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
                 if (environmentViewModel != null)
                 {
                     environmentViewModel.IsSelected = true;
@@ -1035,7 +1035,7 @@ namespace Dev2.Studio.ViewModels
             var key = workSurfaceKey;
             if (key != null)
             {
-                key.EnvironmentID = ActiveServer.ID;
+                key.EnvironmentID = ActiveServer.EnvironmentID;
             }
             var workSurfaceContextViewModel = _worksurfaceContextManager.EditResource(key, vm);
             _worksurfaceContextManager.DisplayResourceWizard(workSurfaceContextViewModel);
@@ -1122,7 +1122,7 @@ namespace Dev2.Studio.ViewModels
 
         public void CreateNewSchedule(Guid resourceId)
         {
-            var environmentModel = ServerRepository.Get(ActiveServer.ID);
+            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
@@ -1132,7 +1132,7 @@ namespace Dev2.Studio.ViewModels
 
         public void CreateTest(Guid resourceId)
         {
-            var environmentModel = ServerRepository.Get(ActiveServer.ID);
+            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
@@ -1140,7 +1140,7 @@ namespace Dev2.Studio.ViewModels
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
                 if (contextualResourceModel != null)
                 {
-                    workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.ID;
+                    workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.EnvironmentID;
                     workSurfaceKey.ResourceID = contextualResourceModel.ID;
                     workSurfaceKey.ServerID = contextualResourceModel.ServerID;
 
@@ -1151,7 +1151,7 @@ namespace Dev2.Studio.ViewModels
 
         public void RunAllTests(Guid resourceId)
         {
-            var environmentModel = ServerRepository.Get(ActiveServer.ID);
+            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
             if (contextualResourceModel != null)
@@ -1714,12 +1714,12 @@ namespace Dev2.Studio.ViewModels
                 //
                 IWorkspaceItem item = _getWorkspaceItemRepository().WorkspaceItems[i];
                 Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}");
-                IServer environment = ServerRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.ID == item.EnvironmentID);
+                IServer environment = ServerRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.EnvironmentID == item.EnvironmentID);
 
                 if (environment?.ResourceRepository == null)
                 {
                     Dev2Logger.Info(@"Environment Not Found");
-                    if (environment != null && item.EnvironmentID == environment.ID)
+                    if (environment != null && item.EnvironmentID == environment.EnvironmentID)
                     {
                         workspaceItemsToRemove.Add(item);
                     }
@@ -1735,7 +1735,7 @@ namespace Dev2.Studio.ViewModels
                             var sameEnv = true;
                             if (item.EnvironmentID != Guid.Empty)
                             {
-                                sameEnv = item.EnvironmentID == environment.ID;
+                                sameEnv = item.EnvironmentID == environment.EnvironmentID;
                             }
                             return rm.ID == item.ID && sameEnv;
                         }) as IContextualResourceModel;

@@ -71,7 +71,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var resource1 = Dev2MockFactory.SetupResourceModelMock();
             resource1.Setup(c => c.ID).Returns(resId);
             resource1.Setup(c => c.ServerID).Returns(serverId);
-            resource1.Setup(c => c.Environment.ID).Returns(enviroId);
+            resource1.Setup(c => c.Environment.EnvironmentID).Returns(enviroId);
 
             var key1 = WorkSurfaceKeyFactory.CreateKey(resource1.Object);
 
@@ -80,7 +80,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var resource2 = Dev2MockFactory.SetupResourceModelMock();
             resource2.Setup(c => c.ID).Returns(resId);
             resource2.Setup(c => c.ServerID).Returns(serverId);
-            resource2.Setup(c => c.Environment.ID).Returns(enviroId2);
+            resource2.Setup(c => c.Environment.EnvironmentID).Returns(enviroId2);
 
             var key2 = WorkSurfaceKeyFactory.CreateKey(resource2.Object);
             if(WorkSurfaceKeyEqualityComparer.Current.Equals(key1, key2))
@@ -105,7 +105,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var resource2 = Dev2MockFactory.SetupResourceModelMock();
             resource2.Setup(c => c.ID).Returns(resId);
             resource2.Setup(c => c.ServerID).Returns(serverId);
-            resource2.Setup(c => c.Environment.ID).Returns(enviroId);
+            resource2.Setup(c => c.Environment.EnvironmentID).Returns(enviroId);
 
             var key2 = WorkSurfaceKeyFactory.CreateKey(resource2.Object);
             if (WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key1, key2))
@@ -152,12 +152,12 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             sourceConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid);
             source.Setup(model => model.Connection).Returns(sourceConnection.Object);
             var e1 = new Mock<IServer>();
-            e1.Setup(model => model.ID).Returns(Guid.NewGuid);
+            e1.Setup(model => model.EnvironmentID).Returns(Guid.NewGuid);
             var connection1 = new Mock<IEnvironmentConnection>();
             connection1.Setup(connection => connection.WorkspaceID).Returns(enviroId);
             e1.Setup(model => model.Connection).Returns(connection1.Object);
             var e2 = new Mock<IServer>();
-            e2.Setup(model => model.ID).Returns(Guid.NewGuid);
+            e2.Setup(model => model.EnvironmentID).Returns(Guid.NewGuid);
             var connection2 = new Mock<IEnvironmentConnection>();
             connection2.Setup(connection => connection.WorkspaceID).Returns(enviroId2);
             e2.Setup(model => model.Connection).Returns(connection2.Object);

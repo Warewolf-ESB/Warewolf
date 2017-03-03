@@ -311,7 +311,6 @@
     <Compile Include="Environments\EnviromentRepositoryTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Environments\EnvironmentModelTest.cs" />
     <Compile Include="Environments\TestServerRespository.cs" />
     <Compile Include="Environments\TestLoadServerRespository.cs" />
     <Compile Include="Environments\TestServerProvider.cs" />

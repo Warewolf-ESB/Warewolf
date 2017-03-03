@@ -47,7 +47,7 @@ namespace Dev2.ConnectionHelpers
 
         public void Remove(Guid environmentId)
         {
-            var index = Servers.IndexOf(Servers.FirstOrDefault(s => s.Server.ID == environmentId));
+            var index = Servers.IndexOf(Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId));
 
             if(index != -1)
             {
@@ -61,7 +61,7 @@ namespace Dev2.ConnectionHelpers
                 if(ConnectedServerChanged != null)
                 {
                     var localhost = Servers.FirstOrDefault(s => s.Server.IsLocalHost);
-                    Guid localhostId = localhost?.Server.ID ?? Guid.Empty;
+                    Guid localhostId = localhost?.Server.EnvironmentID ?? Guid.Empty;
                     ConnectedServerChanged(this, new ConnectedServerChangedEvent(localhostId));
                 }
             }
@@ -79,10 +79,10 @@ namespace Dev2.ConnectionHelpers
                     var serverUri = environmentModel.Connection.AppServerUri;
                     var auth = environmentModel.Connection.AuthenticationType;
                     openWizard(selectedIndex);
-                    var updatedServer = _serverRepository.All().FirstOrDefault(e => e.ID == environmentModel.ID);
+                    var updatedServer = _serverRepository.All().FirstOrDefault(e => e.EnvironmentID == environmentModel.EnvironmentID);
                     if (updatedServer != null && (!serverUri.Equals(updatedServer.Connection.AppServerUri) || auth != updatedServer.Connection.AuthenticationType))
                     {
-                        ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentModel.ID, false));
+                        ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentModel.EnvironmentID, false));
 
                         selectedServer.Server = updatedServer;
                     }
@@ -92,7 +92,7 @@ namespace Dev2.ConnectionHelpers
 
         public void Refresh(Guid environmentId)
         {
-            var selectedEnvironment = Servers.FirstOrDefault(s => s.Server.ID == environmentId);
+            var selectedEnvironment = Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId);
             if(selectedEnvironment != null)
             {
                 var index = Servers.IndexOf(selectedEnvironment);
@@ -125,7 +125,7 @@ namespace Dev2.ConnectionHelpers
 
         public void ToggleConnection(Guid environmentId)
         {
-            var connectControlEnvironment = Servers.FirstOrDefault(s => s.Server.ID == environmentId);
+            var connectControlEnvironment = Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId);
             var index = Servers.IndexOf(connectControlEnvironment);
 
             if(index != -1)
@@ -141,13 +141,13 @@ namespace Dev2.ConnectionHelpers
 
         private void Disconnect(IServer environment)
         {
-            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environment.ID, false));
-            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environment.ID, true));
+            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environment.EnvironmentID, false));
+            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environment.EnvironmentID, true));
         }
 
         private void Connect(IConnectControlEnvironment selectedServer)
         {
-            var environmentId = selectedServer.Server.ID;
+            var environmentId = selectedServer.Server.EnvironmentID;
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentId, false));
         }
 

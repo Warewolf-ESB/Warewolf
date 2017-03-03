@@ -119,10 +119,10 @@ namespace Dev2.Utils
             
             if(resource != null && resource.ResourceType == ResourceType.WorkflowService && contextEnv != null)
             {
-                if(contextEnv.ID != resource.Environment.ID)
+                if(contextEnv.EnvironmentID != resource.Environment.EnvironmentID)
                 {
                     dsfActivity.ServiceUri = resource.Environment.Connection.WebServerUri.AbsoluteUri;
-                    dsfActivity.ServiceServer = resource.Environment.ID;
+                    dsfActivity.ServiceServer = resource.Environment.EnvironmentID;
                   
                 }
                 dsfActivity.FriendlySourceName = new InArgument<string>(resource.Environment.Connection.WebServerUri.Host);

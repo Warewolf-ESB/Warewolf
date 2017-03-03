@@ -956,7 +956,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (mvm?.ActiveItem != null)
                         {
                             IExplorerItemViewModel explorerItem = null;
-                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.ID);
+                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
                             foreach (var environmentViewModel in environmentViewModels)
                             {
                                 explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
@@ -993,7 +993,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
         {
             IExplorerItemViewModel explorerItem = null;
-            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.ID);
+            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
             foreach (var environmentViewModel in environmentViewModels)
             {
                 explorerItem =
@@ -1166,7 +1166,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if (viewModel != null)
                 {
-                    IServer server = ServerRepository.Instance.FindSingle(c => c.ID == viewModel.Server.EnvironmentID);
+                    IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == viewModel.Server.EnvironmentID);
                     var theResource = server?.ResourceRepository.LoadContextualResourceModel(viewModel.ResourceId);
 
                     if (theResource != null)
@@ -2493,7 +2493,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (envID != null && modelProperty != null)
             {
-                IServer server = ServerRepository.Instance.FindSingle(c => c.ID == envID);
+                IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envID);
                 var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceID.Value);
                 if (resource != null)
                 {
@@ -2792,7 +2792,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsNewWorkflow = false;
             resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
+            var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.EnvironmentID);
             if (environmentViewModel != null)
             {
                 var item = environmentViewModel.FindByPath(resourceModel.GetSavePath());

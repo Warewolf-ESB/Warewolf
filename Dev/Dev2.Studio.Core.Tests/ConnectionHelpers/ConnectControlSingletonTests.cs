@@ -119,7 +119,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             Assert.IsNotNull(connectControlSingleton);
             Assert.AreEqual(ConnectionEnumerations.ConnectedState.Busy, actualConnectedState);
             Assert.IsFalse(actualDoCallback);
-            Assert.AreEqual(selectedServer.Server.ID, environmentId);
+            Assert.AreEqual(selectedServer.Server.EnvironmentID, environmentId);
         }
 
         [TestMethod]
@@ -182,7 +182,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             Assert.IsNotNull(connectControlSingleton);
             Assert.AreEqual(ConnectionEnumerations.ConnectedState.Disconnected, actualConnectedState);
             Assert.AreEqual(true, actualDoCallback);
-            Assert.AreEqual(selectedServer.Server.ID, environmentId);
+            Assert.AreEqual(selectedServer.Server.EnvironmentID, environmentId);
         }
 
         [TestMethod]
@@ -204,7 +204,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
             bool actualDoCallback = false;
             Guid environmentId = Guid.Empty;
-            var selectedId = selectedServer.Server.ID;
+            var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
                 actualConnectedState = arg.ConnectedStatus;
@@ -239,7 +239,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
             bool actualDoCallback = false;
             Guid environmentId = Guid.Empty;
-            var selectedId = selectedServer.Server.ID;
+            var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
                 actualConnectedState = arg.ConnectedStatus;
@@ -484,7 +484,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
             bool actualDoCallback = false;
             Guid environmentId = Guid.Empty;
-            var selectedId = selectedServer.Server.ID;
+            var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
                 actualConnectedState = arg.ConnectedStatus;
@@ -519,7 +519,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
             bool actualDoCallback = false;
             Guid environmentId = Guid.Empty;
-            var selectedId = selectedServer.Server.ID;
+            var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
                 actualConnectedState = arg.ConnectedStatus;
@@ -552,7 +552,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = false;
 
             Guid environmentId = Guid.Empty;
-            var selectedId = selectedServer.Server.ID;
+            var selectedId = selectedServer.Server.EnvironmentID;
             var eventRaised = false;
             connectControlSingleton.ConnectedServerChanged += (sender, arg) =>
             {
@@ -585,7 +585,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
 
             Guid environmentId = Guid.NewGuid();
             var eventRaised = false;
-            var selectedId = selectedServer.Server.ID;
+            var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedServerChanged += (sender, arg) =>
             {
                 environmentId = arg.EnvironmentId;

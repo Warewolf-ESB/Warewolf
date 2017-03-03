@@ -115,11 +115,11 @@ namespace Dev2.Activities.Designers2.Service
 			}
 			else
 			{
-				var environment = serverRepository.FindSingle(c => c.ID == EnvironmentID);
+				var environment = serverRepository.FindSingle(c => c.EnvironmentID == EnvironmentID);
 				if (environment == null)
 				{
 					IList<IServer> environments = ServerRepository.Instance.LookupEnvironments(activeEnvironment);
-					environment = environments.FirstOrDefault(model => model.ID == EnvironmentID);
+					environment = environments.FirstOrDefault(model => model.EnvironmentID == EnvironmentID);
 				}
 				_environment = environment;
 			}

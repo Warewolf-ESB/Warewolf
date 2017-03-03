@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Explorer;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ServerProxyLayer

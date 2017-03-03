@@ -290,7 +290,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var dataList = XElement.Parse(DebugTo.XmlData);
             dataList.Add(new XElement(@"BDSDebugMode", DebugTo.IsDebugMode));
             dataList.Add(new XElement(@"DebugSessionID", DebugTo.SessionID));
-            dataList.Add(new XElement(@"EnvironmentID", _resourceModel.Environment.ID));
+            dataList.Add(new XElement(@"EnvironmentID", _resourceModel.Environment.EnvironmentID));
             OnDebugExecutionStart();
             SendExecuteRequest(dataList);
         }

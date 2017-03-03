@@ -231,7 +231,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 {
                     var mainViewModel = CustomContainer.Get<IShellViewModel>();
                     var env = mainViewModel?
-                        .ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId == ResourceModel.Environment.ID);
+                        .ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId == ResourceModel.Environment.EnvironmentID);
                     var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == Guid.Parse(node.ID));
                     if (exploreritem != null)
                     {

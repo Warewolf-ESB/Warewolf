@@ -164,7 +164,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
 
-            var environment = GetEnvironmentRepository().FindSingle(ev => ev.ID == selectedItem.Server.EnvironmentID);
+            var environment = GetEnvironmentRepository().FindSingle(ev => ev.EnvironmentID == selectedItem.Server.EnvironmentID);
 
             if(environment == null)
             {

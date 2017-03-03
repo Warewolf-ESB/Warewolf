@@ -126,7 +126,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewServerSource(_target.ResourcePath));
         }
 
@@ -144,7 +143,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewSqlServerSource(_target.ResourcePath));
         }
 
@@ -162,7 +160,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewMySqlSource(_target.ResourcePath));
         }
 
@@ -180,7 +177,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewPostgreSqlSource(_target.ResourcePath));
         }
 
@@ -198,7 +194,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewOracleSource(_target.ResourcePath));
         }
 
@@ -216,7 +211,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewOdbcSource(_target.ResourcePath));
         }
 
@@ -234,7 +228,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewPluginSource(_target.ResourcePath));
         }
 
@@ -252,7 +245,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewWebSource(_target.ResourcePath));
         }
 
@@ -270,7 +262,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewEmailSource(_target.ResourcePath));
         }
 
@@ -288,7 +279,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewExchangeSource(_target.ResourcePath));
         }
 
@@ -306,7 +296,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewRabbitMQSource(_target.ResourcePath));
         }
 
@@ -342,7 +331,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewSharepointSource(_target.ResourcePath));
         }
 
@@ -360,7 +348,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewDropboxSource(_target.ResourcePath));
         }
 
@@ -378,7 +365,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.NewService(_target.ResourcePath));
         }
 
@@ -491,7 +477,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mock = new Mock<IServer>();
             mock.SetupGet(it => it.Connection).Returns(connection.Object);
             mock.SetupGet(it => it.Connection.WebServerUri).Returns(new Uri("http://localhost:3142"));
-            _target.EnvironmentModel = mock.Object;
+            _target.Server = mock.Object;
             _target.ViewApisJsonCommand.Execute(null);
             Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
 
@@ -514,7 +500,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
             _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId,_target.Server.EnvironmentID, _target.Server));
         }
 
@@ -586,7 +571,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ResourceType = "Version";
             _target.IsResourceVersion = true;
             _target.ResourceName = Guid.NewGuid().ToString();
-            _target.EnvironmentModel = new Mock<IServer>().Object;
+            _target.Server = new Mock<IServer>().Object;
             _explorerTreeItemMock.SetupGet(it => it.Children)
                 .Returns(new ObservableCollection<IExplorerItemViewModel> { _target });
 
@@ -629,9 +614,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var environmentModelMock = new Mock<IServer>();
-            environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
+            environmentModelMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
             _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
-            _target.EnvironmentModel = environmentModelMock.Object;
+            _target.Server = environmentModelMock.Object;
             _target.ResourceType = "ServerSource";
             _target.ResourceId = Guid.NewGuid();
             //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
@@ -644,7 +629,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.ID));
+            _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.EnvironmentID));
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
             studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>()));
@@ -655,9 +640,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var environmentModelMock = new Mock<IServer>();
-            environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
+            environmentModelMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
             _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
-            _target.EnvironmentModel = environmentModelMock.Object;
+            _target.Server = environmentModelMock.Object;
             _target.ResourceType = "Server";
             _target.IsServer = true;
             _target.ResourceId = Guid.NewGuid();
@@ -670,7 +655,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.ID));
+            _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.EnvironmentID));
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
             studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>()));
@@ -682,9 +667,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             _shellViewModelMock.Setup(model => model.ShowDependencies(It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<bool>()));
             var environmentModelMock = new Mock<IServer>();
-            environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
+            environmentModelMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
             _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = false,ShowDependencies = true});
-            _target.EnvironmentModel = environmentModelMock.Object;
+            _target.Server = environmentModelMock.Object;
             _target.ResourceType = "Server";
             _target.IsServer = true;
             _target.ResourceId = Guid.NewGuid();
@@ -925,7 +910,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             childMock.SetupGet(it => it.ResourceType).Returns("WorkflowService");
             childMock.SetupGet(it => it.ResourceName).Returns("Message");
             childMock.SetupGet(it => it.IsVisible).Returns(true);
-            _target.EnvironmentModel = new Mock<IServer>().Object;
+            _target.Server = new Mock<IServer>().Object;
             _target.ResourceName = "someResource";
             _target.ResourceType = "Folder";
             _target.IsFolder = true;
@@ -1499,7 +1484,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mock = new Mock<IExplorerRepository>();
             mock.Setup(metadata => metadata.Delete(It.IsAny<IExplorerItemViewModel>())).Returns(new DeletedFileMetadata() {IsDeleted = false});
             _popupControllerMock.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
-            _target.EnvironmentModel = new Mock<IServer>().Object;
+            _target.Server = new Mock<IServer>().Object;
             var child = new Mock<IExplorerItemViewModel>();
             _target.Children.Add(child.Object);
             

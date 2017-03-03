@@ -69,7 +69,7 @@ namespace Dev2.Webs
                 selectedPath = selectedPath.Replace("\\", "\\\\");
 
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.ID);
+                var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.EnvironmentID);
 
                 var header = string.IsNullOrEmpty(resourceModel.Category) ? "Unsaved Item" : resourceModel.Category;
                 var lastHeaderIndexOf = header.LastIndexOf("\\", StringComparison.Ordinal);

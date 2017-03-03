@@ -110,8 +110,6 @@ namespace Warewolf.UIBindingTests.Deploy
                 var server = ScenarioContext.Current.Get<Mock<IServer>>("localhost");
                 var mock = new Mock<IServer>();
                 mock.SetupGet(p => p.DisplayName).Returns(name);
-                mock.SetupGet(p => p.ResourceName).Returns(name);
-                mock.SetupGet(p => p.ResourceID).Returns(Guid.NewGuid);
                 mock.SetupGet(p => p.EnvironmentID).Returns(Guid.NewGuid);
                 mock.SetupGet(p => p.IsConnected).Returns(true);
                 mock.SetupGet(p => p.Permissions).Returns(new List<IWindowsGroupPermission>());
@@ -141,7 +139,7 @@ namespace Warewolf.UIBindingTests.Deploy
             var qp = new Mock<IQueryManager>();
             qp.Setup(a => a.FetchDependenciesOnList(It.IsAny<IEnumerable<Guid>>())).Returns(new List<Guid> { Guid.Parse("5C8B5660-CE6E-4D22-84D8-5B77DC749F70") });
             server.Setup(a => a.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(CreateExplorerSourceItems()));
-            server.Setup(a => a.GetServerConnections()).Returns(GetServers());
+            //server.Setup(a => a.GetServerConnections()).Returns(GetServers());
             server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission
@@ -154,9 +152,7 @@ namespace Warewolf.UIBindingTests.Deploy
 
             server.Setup(a => a.ConnectAsync()).Returns(Task.FromResult(true));
             server.Setup(a => a.DisplayName).Returns("LocalHost");
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
             server.Setup(a => a.IsConnected).Returns(true);
-            server.Setup(a => a.ResourceID).Returns(Guid.NewGuid());
             server.Setup(a => a.EnvironmentID).Returns(Guid.Empty);
             server.Setup(a => a.QueryProxy).Returns(qp.Object);
             server.Setup(a => a.CanDeployFrom).Returns(true);
@@ -165,7 +161,6 @@ namespace Warewolf.UIBindingTests.Deploy
             if (!name.Equals("LocalHost", StringComparison.InvariantCultureIgnoreCase))
             {
                 server.Setup(a => a.DisplayName).Returns(name);
-                server.Setup(a => a.ResourceName).Returns(name);
                 Func<Guid> valueFunction = Guid.NewGuid;
                 server.Setup(a => a.EnvironmentID).Returns(valueFunction);
             }
@@ -184,7 +179,6 @@ namespace Warewolf.UIBindingTests.Deploy
             var server = new Mock<IServer>();
             server.Setup(a => a.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(CreateExplorerSourceItems()));
             server.Setup(a => a.DisplayName).Returns("Remote");
-            server.Setup(a => a.ResourceName).Returns("Remote");
             server.Setup(a => a.CanDeployTo).Returns(true);
             server.Setup(a => a.CanDeployFrom).Returns(true);
             server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission>
@@ -302,7 +296,6 @@ namespace Warewolf.UIBindingTests.Deploy
             {
                 var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(p0);
                 mockServer.SetupGet(server => server.DisplayName).Returns(p0);
-                mockServer.SetupGet(server => server.ResourceName).Returns(p0);
                 var envMock = new Mock<IEnvironmentViewModel>();
                 envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
                 envMock.Setup(model => model.AsList()).Returns(new List<IExplorerItemViewModel>());
@@ -310,7 +303,7 @@ namespace Warewolf.UIBindingTests.Deploy
                 envMock.SetupGet(model => model.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
                 var deployDestinationExplorerViewModel = GetViewModel().Destination;
                 deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
-                deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection.EnvironmentID = Guid.NewGuid();
+               // deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection.EnvironmentID = Guid.NewGuid();
                 Assert.IsNotNull(deployDestinationExplorerViewModel.SelectedEnvironment);
             }
 
@@ -333,7 +326,6 @@ namespace Warewolf.UIBindingTests.Deploy
             {
                 var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedDestinationServer);
                 mockServer.SetupGet(server => server.DisplayName).Returns(selectedDestinationServer);
-                mockServer.SetupGet(server => server.ResourceName).Returns(selectedDestinationServer);
                 var deployDestinationExplorerViewModel = GetViewModel().Destination;
                 var envMock = new Mock<IEnvironmentViewModel>();
                 envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
@@ -342,7 +334,7 @@ namespace Warewolf.UIBindingTests.Deploy
                 envMock.Setup(model => model.UnfilteredChildren).Returns(deployDestinationExplorerViewModel.Environments[0].AsList().ToObservableCollection());
                 envMock.SetupGet(model => model.Children).Returns(deployDestinationExplorerViewModel.Environments[0].Children);
                 deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
-                deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection.EnvironmentID = Guid.NewGuid();
+               // deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection.EnvironmentID = Guid.NewGuid();
                 Assert.IsNotNull(deployDestinationExplorerViewModel.SelectedEnvironment);
             }
 
@@ -356,7 +348,6 @@ namespace Warewolf.UIBindingTests.Deploy
             var explorerItemViewModel = deployViewModel.Source.SelectedEnvironment.AsList();
             var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedDestinationServer);
             mockServer.SetupGet(server => server.DisplayName).Returns(selectedDestinationServer);
-            mockServer.SetupGet(server => server.ResourceName).Returns(selectedDestinationServer);
             var itemViewModel = explorerItemViewModel.First(model => model.ResourceName.Equals("Control Flow - Sequence", StringComparison.InvariantCultureIgnoreCase));
             var envMock = new Mock<IEnvironmentViewModel>();
             var item = new Mock<IExplorerItemViewModel>();
@@ -384,7 +375,6 @@ namespace Warewolf.UIBindingTests.Deploy
             var explorerItemViewModel = deployViewModel.Source.SelectedEnvironment.AsList();
             var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedDestinationServer);
             mockServer.SetupGet(server => server.DisplayName).Returns(selectedDestinationServer);
-            mockServer.SetupGet(server => server.ResourceName).Returns(selectedDestinationServer);
             var itemViewModel = explorerItemViewModel.First(model => model.ResourceName.Equals("Control Flow - Sequence", StringComparison.InvariantCultureIgnoreCase));
             var envMock = new Mock<IEnvironmentViewModel>();
             var item = new Mock<IExplorerItemViewModel>();

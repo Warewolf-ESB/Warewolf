@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +13,6 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
-using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.UIBindingTests.ExchangeSource
 {

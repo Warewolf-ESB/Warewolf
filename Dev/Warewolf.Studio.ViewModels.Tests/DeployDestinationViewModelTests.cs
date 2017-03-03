@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerItemMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItem>());
             _serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("someResName");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("someResName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _target = new DeployDestinationViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serverMock = new Mock<IServer>();
             var serverId = Guid.NewGuid();
             serverMock.SetupGet(it => it.EnvironmentID).Returns(serverId);
-            serverMock.SetupGet(it => it.ResourceName).Returns("someName");
+            serverMock.SetupGet(it => it.DisplayName).Returns("someName");
             environmentViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             var env = _target.Environments.First();

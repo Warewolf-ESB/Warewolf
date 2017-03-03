@@ -648,7 +648,7 @@ namespace Dev2.Studio.ViewModels
             };
 
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DependencyVisualiser);
-            workSurfaceKey.EnvironmentID = model.Environment.ID;
+            workSurfaceKey.EnvironmentID = model.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = model.ID;
             workSurfaceKey.ServerID = model.ServerID;
 
@@ -798,7 +798,7 @@ namespace Dev2.Studio.ViewModels
                 Name = resourceModel.ResourceName,
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SqlServerSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditSqlServerResource(def, workSurfaceKey);
@@ -820,7 +820,7 @@ namespace Dev2.Studio.ViewModels
                 UserName = db.UserID
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MySqlSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditMySqlResource(def, workSurfaceKey);
@@ -842,7 +842,7 @@ namespace Dev2.Studio.ViewModels
                 UserName = db.UserID
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PostgreSqlSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditPostgreSqlResource(def, workSurfaceKey);
@@ -864,7 +864,7 @@ namespace Dev2.Studio.ViewModels
                 UserName = db.UserID
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OracleSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditOracleResource(def, workSurfaceKey);
@@ -886,7 +886,7 @@ namespace Dev2.Studio.ViewModels
                 UserName = db.UserID
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OdbcSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditOdbcResource(def, workSurfaceKey);
@@ -914,7 +914,7 @@ namespace Dev2.Studio.ViewModels
                 def.FileSystemAssemblyName = string.Empty;
             }
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.PluginSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);
@@ -933,7 +933,7 @@ namespace Dev2.Studio.ViewModels
                 ResourceName = db.ResourceName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ComPluginSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);
@@ -954,7 +954,7 @@ namespace Dev2.Studio.ViewModels
                 UserName = db.UserName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WebSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);
@@ -974,7 +974,7 @@ namespace Dev2.Studio.ViewModels
                 UserName = db.UserName
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SharepointServerSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);
@@ -997,7 +997,7 @@ namespace Dev2.Studio.ViewModels
                 EnableSsl = db.EnableSsl
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.EmailSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);
@@ -1018,7 +1018,7 @@ namespace Dev2.Studio.ViewModels
                 ResourceName = db.ResourceName,
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Exchange);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);
@@ -1037,7 +1037,7 @@ namespace Dev2.Studio.ViewModels
                 ResourceName = db.ResourceName,
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.OAuthSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);
@@ -1058,7 +1058,7 @@ namespace Dev2.Studio.ViewModels
                 VirtualHost = source.VirtualHost
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.RabbitMQSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);
@@ -1077,7 +1077,7 @@ namespace Dev2.Studio.ViewModels
                 EndpointUrl = wcfsource.EndpointUrl
             };
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.WcfSource);
-            workSurfaceKey.EnvironmentID = resourceModel.Environment.ID;
+            workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
             workSurfaceKey.ResourceID = resourceModel.ID;
             workSurfaceKey.ServerID = resourceModel.ServerID;
             EditResource(def, workSurfaceKey);

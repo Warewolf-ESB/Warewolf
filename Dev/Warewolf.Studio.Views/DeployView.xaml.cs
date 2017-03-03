@@ -142,7 +142,7 @@ namespace Warewolf.Studio.Views
 
         public void SelectDestinationServer(string servername)
         {
-            var firstOrDefault = ((IDeployViewModel)DataContext).Destination.ConnectControlViewModel.Servers.FirstOrDefault(a => a.ResourceName == servername);
+            var firstOrDefault = ((IDeployViewModel)DataContext).Destination.ConnectControlViewModel.Servers.FirstOrDefault(a => a.DisplayName == servername);
             ((IDeployViewModel)DataContext).Destination.ConnectControlViewModel.SelectedConnection = firstOrDefault;
         }
 

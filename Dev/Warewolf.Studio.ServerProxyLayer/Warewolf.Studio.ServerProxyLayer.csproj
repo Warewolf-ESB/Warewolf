@@ -76,7 +76,6 @@
     <Compile Include="QueryManagerProxy.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UpdateProxy.cs" />
     <Compile Include="VersionManagerProxy.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -140,7 +140,7 @@ namespace Dev2.Studio.Core.Models
                 {
                     _validationService = new DesignValidationService(_environment.Connection.ServerEvents);
 
-                    _validationService.Subscribe(_environment.ID, ReceiveEnvironmentValidation);
+                    _validationService.Subscribe(_environment.EnvironmentID, ReceiveEnvironmentValidation);
                 }
                 NotifyOfPropertyChange(nameof(Environment));
                 // ReSharper disable NotResolvedInText

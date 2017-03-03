@@ -184,7 +184,7 @@ namespace Warewolf.Studio.ViewModels
 
             ViewApisJsonCommand = new DelegateCommand(() =>
             {
-                var environmentModel = ServerRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
+                var environmentModel = ServerRepository.Instance.FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
                 shellViewModel.ViewApisJson(ResourcePath, environmentModel.Connection.WebServerUri);
             });
 

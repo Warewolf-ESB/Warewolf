@@ -42,7 +42,6 @@ using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Views;
-using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Infragistics.Windows.DockManager;
@@ -235,7 +234,7 @@ namespace Dev2.Studio
 
         private async void CheckForDuplicateResources()
         {
-            var server = new Warewolf.Studio.AntiCorruptionLayer.Server(ServerRepository.Instance.Source);
+            var server = ServerRepository.Instance.Source;
             var loadExplorerDuplicates = await server.LoadExplorerDuplicates();
             if (loadExplorerDuplicates?.Count > 0)
             {
@@ -248,9 +247,9 @@ namespace Dev2.Studio
         private void ShowSplash()
         {            
             // Create the window 
-            var server = new Warewolf.Studio.AntiCorruptionLayer.Server(ServerRepository.Instance.Source);
+            var server = ServerRepository.Instance.Source;
             server.Connect();
-            CustomContainer.Register<IServer>(server);
+            CustomContainer.Register(server);
             var toolBoxViewModel = new ToolboxViewModel(new ToolboxModel(server, server, null), new ToolboxModel(server, server, null));
             CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
 

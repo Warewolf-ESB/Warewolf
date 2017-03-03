@@ -636,7 +636,7 @@ namespace Dev2.Core.Tests.Workflows
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
             var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
@@ -685,7 +685,7 @@ namespace Dev2.Core.Tests.Workflows
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(datalist);
             var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
@@ -727,7 +727,7 @@ namespace Dev2.Core.Tests.Workflows
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(datalist);
             var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);

@@ -1401,7 +1401,7 @@ namespace Dev2.Core.Tests.Workflows
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
             var testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository, true);
             var mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv.Object);
@@ -1409,7 +1409,7 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsTrue(testAct.ServiceServer == Guid.Empty);
 
             var contextEnvironment = new Mock<IServer>();
-            contextEnvironment.Setup(e => e.ID).Returns(resourceEnvironmentID);
+            contextEnvironment.Setup(e => e.EnvironmentID).Returns(resourceEnvironmentID);
 
             var activity = new DsfActivity();
             var workflow = new ActivityBuilder { Implementation = activity };
@@ -1427,7 +1427,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
-            resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
+            resourceModel.Setup(m => m.Environment.EnvironmentID).Returns(resourceEnvironmentID);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 1");
             #endregion
 
@@ -1456,13 +1456,13 @@ namespace Dev2.Core.Tests.Workflows
             const string ServiceUri = "http://localhost:1234/";
             var resourceEnvironmentID = Guid.NewGuid();
             var contextEnvironment = new Mock<IServer>();
-            contextEnvironment.Setup(e => e.ID).Returns(Guid.NewGuid());
+            contextEnvironment.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
             Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             Guid envId2 = Guid.NewGuid();
             Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
             DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository, true);
@@ -1490,7 +1490,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name");
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
-            resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
+            resourceModel.Setup(m => m.Environment.EnvironmentID).Returns(resourceEnvironmentID);
 
             #endregion
 
@@ -1516,13 +1516,13 @@ namespace Dev2.Core.Tests.Workflows
         public void CheckIfRemoteWorkflowAndSetPropertiesExpectedResourceTypeToBeUnknown()
         {
             var contextEnvironment = new Mock<IServer>();
-            contextEnvironment.Setup(e => e.ID).Returns(Guid.NewGuid());
+            contextEnvironment.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
             Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             Guid envId2 = Guid.NewGuid();
             Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
             DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository, true);
@@ -1638,14 +1638,14 @@ namespace Dev2.Core.Tests.Workflows
             mockResourceModel.Setup(model => model.ID).Returns(Guid.NewGuid());
             var mockRemoteEnvironment = new Mock<IServer>();
             var remoteServerID = Guid.NewGuid();
-            mockRemoteEnvironment.Setup(model => model.ID).Returns(remoteServerID);
+            mockRemoteEnvironment.Setup(model => model.EnvironmentID).Returns(remoteServerID);
             var mockRemoteConnection = new Mock<IEnvironmentConnection>();
             mockRemoteConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://remoteserver:3142/"));
             mockRemoteEnvironment.Setup(model => model.Connection).Returns(mockRemoteConnection.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockRemoteEnvironment.Object);
             repo.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(mockResourceModel.Object);
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            env.Setup(model => model.ID).Returns(Guid.Empty);
+            env.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -3194,7 +3194,7 @@ namespace Dev2.Core.Tests.Workflows
             Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             Guid envId2 = Guid.NewGuid();
             Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
 
             #region Setup viewModel
@@ -3280,7 +3280,7 @@ namespace Dev2.Core.Tests.Workflows
             Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             Guid envId2 = Guid.NewGuid();
             Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
 
             #region Setup viewModel
@@ -3930,7 +3930,7 @@ namespace Dev2.Core.Tests.Workflows
         {
             var mockResourceRepository = new Mock<IResourceRepository>();
             Mock<IServer> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-            mockEnvironment.Setup(model => model.ID).Returns(environmentId);
+            mockEnvironment.Setup(model => model.EnvironmentID).Returns(environmentId);
             return GetEnvironmentRepository(mockEnvironment);
         }
 

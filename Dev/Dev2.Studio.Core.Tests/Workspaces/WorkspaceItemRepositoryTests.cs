@@ -524,7 +524,7 @@ namespace Dev2.Core.Tests.Workspaces
             mockConnection.Setup(c => c.ServerID).Returns(serverID);
 
             var env = new Mock<IServer>();
-            env.Setup(e => e.ID).Returns(envID);
+            env.Setup(e => e.EnvironmentID).Returns(envID);
             env.Setup(environmentModel => environmentModel.Connection).Returns(mockConnection.Object);
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.Environment).Returns(env.Object);

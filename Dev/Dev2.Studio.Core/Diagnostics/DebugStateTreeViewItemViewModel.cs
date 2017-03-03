@@ -88,13 +88,13 @@ namespace Dev2.Studio.Core
             {
                 var envId = content.EnvironmentID;
 
-                var env = _serverRepository.All().FirstOrDefault(e => e.ID == envId);
+                var env = _serverRepository.All().FirstOrDefault(e => e.EnvironmentID == envId);
                 if (env == null)
                 {
                     var environmentModels = _serverRepository.LookupEnvironments(_serverRepository.ActiveServer);
                     if (environmentModels != null)
                     {
-                        env = environmentModels.FirstOrDefault(e => e.ID == envId) ?? _serverRepository.ActiveServer;
+                        env = environmentModels.FirstOrDefault(e => e.EnvironmentID == envId) ?? _serverRepository.ActiveServer;
                     }
                     else
                     {

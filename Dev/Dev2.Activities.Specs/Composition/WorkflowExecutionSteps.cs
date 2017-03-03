@@ -72,8 +72,6 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Core;
-using Warewolf.Studio.AntiCorruptionLayer;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
@@ -697,7 +695,7 @@ namespace Dev2.Activities.Specs.Composition
 
                     remoteResourceModel.Outputs = outputMapping;
                     remoteResourceModel.Inputs = inputMapping;
-                    var remoteServerId = remoteEnvironment.ID;
+                    var remoteServerId = remoteEnvironment.EnvironmentID;
                     activity.ServiceServer = remoteServerId;
                     activity.EnvironmentID = remoteServerId;
 
@@ -2258,7 +2256,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 ServiceName = resource.Category,
                 ResourceID = resource.ID,
-                EnvironmentID = environmentModel.ID,
+                EnvironmentID = environmentModel.EnvironmentID,
                 UniqueID = resource.ID.ToString(),
                 InputMapping = inputMapping,
                 OutputMapping = outputMapping
@@ -2350,7 +2348,7 @@ namespace Dev2.Activities.Specs.Composition
                         var dataList = XElement.Parse(debugTo.XmlData);
                         dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
                         dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
-                        dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
+                        dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.EnvironmentID));
                         WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
                         _resetEvt.WaitOne(1000);
                     }
@@ -2373,7 +2371,7 @@ namespace Dev2.Activities.Specs.Composition
                 var dataList = XElement.Parse(debugTo.XmlData);
                 dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
-                dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
+                dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.EnvironmentID));
                 WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
                 _resetEvt.WaitOne(1000);
             }
@@ -2509,7 +2507,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue(workflowName, out resourceModel);
             TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
-            var rep = new VersionManagerProxy(new CommunicationControllerFactory(), server.Connection);
+            var rep = new Studio.Core.VersionManagerProxy(new CommunicationControllerFactory(), server.Connection);
             var versions = rep.GetVersions(id);
             _scenarioContext["Versions"] = versions;
             Assert.AreEqual(numberOfVersions, versions.Count);

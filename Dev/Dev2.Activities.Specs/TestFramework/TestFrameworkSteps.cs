@@ -37,7 +37,6 @@ using Moq;
 using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Dev2.Studio.Interfaces.Enums;
 // ReSharper disable UnusedParameter.Global

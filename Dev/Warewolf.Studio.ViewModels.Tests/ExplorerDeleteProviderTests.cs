@@ -9,10 +9,10 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Communication;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
