@@ -9,6 +9,9 @@
 */
 
 using System;
+using System.IO;
+using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
@@ -16,6 +19,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Tests.Weave;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Tests.Diagnostics
@@ -24,7 +28,6 @@ namespace Dev2.Tests.Diagnostics
     public class DebugStateTests
     {
 
-        #region Constructor
 
         [TestMethod]
         // ReSharper disable InconsistentNaming - Unit Test
@@ -39,6 +42,118 @@ namespace Dev2.Tests.Diagnostics
             Assert.AreEqual(0, debugState.Inputs.Count);
             Assert.AreEqual(0, debugState.Outputs.Count);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Constructor_GivenIsNew_ShouldSetNullParentId()
+        {
+            //---------------Set up test pack-------------------
+            var debugState = new DebugState();
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+
+            //---------------Test Result -----------------------
+            Assert.IsNull(debugState.ParentID);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsFinalStep_GivenValidEndStateArgs_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var debugState = new DebugState()
+            {
+                StateType = StateType.End,
+                OriginalInstanceID = Guid.Empty,
+                ID = Guid.Empty,
+                ParentID = Guid.Empty,
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNull(debugState.ParentID);
+            //---------------Execute Test ----------------------
+            var isFinalStep = debugState.IsFinalStep();
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isFinalStep);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetSchema_GivenState_ShouldReturnNull()
+        {
+            //---------------Set up test pack-------------------
+            var debugState = new DebugState();
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var xmlSchema = debugState.GetSchema();
+            //---------------Test Result -----------------------
+            Assert.IsNull(xmlSchema);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ReadXml_GivenReader_ShouldBuildCurrentStateCorrectly()
+        {
+            //---------------Set up test pack-------------------
+            var emptyState = new DebugState();
+            var debugStateIn = DebugStateIn();
+            var serializeToJsonString = debugStateIn.SerializeToJsonString(new DefaultSerializationBinder());
+            XNode node = JsonConvert.DeserializeXNode(serializeToJsonString, "DebugState");
+            var xmlState = node.ToString(SaveOptions.DisableFormatting);
+            XmlReader xmlReader = XmlReader.Create(new StringReader(xmlState));
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(xmlReader);
+            //---------------Execute Test ----------------------
+            emptyState.ReadXml(xmlReader);
+            //---------------Test Result -----------------------
+            var @equals = emptyState.Equals(debugStateIn);
+            Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void IsFirstStep_GivenValidEndStateArgs_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var debugState = new DebugState()
+            {
+                StateType = StateType.Start,
+                OriginalInstanceID = Guid.Empty,
+                ID = Guid.Empty,
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNull(debugState.ParentID);
+            //---------------Execute Test ----------------------
+            var isFirstStep = debugState.IsFirstStep();
+            //---------------Test Result -----------------------
+            Assert.IsTrue(isFirstStep);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PropertyChange_GivenEmptyGuidParent_ShouldSetNullParentId()
+        {
+            //---------------Set up test pack-------------------
+            var debugState = new DebugState();
+            var wasCalled = false;
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            debugState.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "ParentID")
+                {
+                    wasCalled = true;
+                }
+            };
+            debugState.ParentID = Guid.Empty;
+            Assert.IsTrue(wasCalled);
+            //---------------Test Result -----------------------
+            Assert.IsNull(debugState.ParentID);
+        }
+
+
 
         [TestMethod]
         // ReSharper disable InconsistentNaming - Unit Test
@@ -62,7 +177,8 @@ namespace Dev2.Tests.Diagnostics
             reader.Verify(w => w.ReadGuid());
             reader.Verify(w => w.ReadDateTime());
         }
-        #endregion
+
+       
 
         #region Write
 
@@ -171,9 +287,9 @@ namespace Dev2.Tests.Diagnostics
         public void JsonConverter_GivenStatetype_ShouldConvertToString()
         {
             //---------------Set up test pack-------------------
-            DebugState debugState  = new DebugState() {StateType = StateType.End};
+            DebugState debugState = new DebugState() { StateType = StateType.End };
             //---------------Assert Precondition----------------
-            Assert.IsTrue(debugState.IsAdded);
+            Assert.IsFalse(debugState.IsAdded);
             //---------------Execute Test ----------------------
             var serializeToJsonString = debugState.SerializeToJsonString(new DefaultSerializationBinder());
             var contains = serializeToJsonString.Contains("\"StateType\": \"End\"");

@@ -58,7 +58,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
                 Assert.AreEqual(0, debugState.Outputs.Count);
             }
         }
-        
+
         [Then(@"The Debug in Browser content contains has ""(.*)"" inputs and ""(.*)"" outputs for ""(.*)""")]
         public void TheDebugInBrowserContentContainsHasInputsAndOutputsFor(int inputCount, int outputCount, string stepName)
         {
@@ -85,6 +85,26 @@ namespace Dev2.Activities.Specs.BrowserDebug
             }
         }
 
+        [When(@"The Debug in Browser content contains for Dotnet has (.*) states")]
+        [Then(@"The Debug in Browser content contains for Dotnet has (.*) states")]
+        [Given(@"The Debug in Browser content contains for Dotnet has (.*) states")]
+        public void WhenTheDebugInBrowserContentContainsForDotnetHasStates(int numberOfStates)
+        {
+            var allDebugStates = GetDebugStates();
+            Assert.AreEqual(numberOfStates, allDebugStates.Count);
+        }
+
+        [When(@"The (.*) debug state has (.*) children")]
+        [Then(@"The (.*) debug state has (.*) children")]
+        [Given(@"The (.*) debug state has (.*) children")]
+        public void WhenTheDebugStateHasChildren(int stateIndex, int numberOfChildren)
+        {
+            var allDebugStates = GetDebugStates();
+            var debugState = allDebugStates[stateIndex];
+            Assert.AreEqual(numberOfChildren, debugState.Children.Count);
+        }
+
+
         [Given(@"The Debug in Browser content contains order of ""(.*)"", ""(.*)"" and ""(.*)"" in SequenceFlow")]
         [When(@"The Debug in Browser content contains order of ""(.*)"", ""(.*)"" and ""(.*)"" in SequenceFlow")]
         [Then(@"The Debug in Browser content contains order of ""(.*)"", ""(.*)"" and ""(.*)"" in SequenceFlow")]
@@ -101,7 +121,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
                     continue;
                 if (debugState.StateType != StateType.End)
                 {
-                    
+
                     // ReSharper disable once LoopCanBeConvertedToQuery
                     foreach (var debugStateChild in debugState.Children)
                     {
@@ -125,7 +145,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
             {
                 if (debugState.IsFirstStep())
                     continue;
-                if (debugState.StateType != StateType.End)                             
+                if (debugState.StateType != StateType.End)
                     Assert.IsTrue(debugState.Children.Count == numExecutions);
             }
         }

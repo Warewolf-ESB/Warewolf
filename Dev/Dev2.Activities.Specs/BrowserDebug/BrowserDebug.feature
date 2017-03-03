@@ -83,7 +83,12 @@ Scenario: Executing a Dotnet plugin workflow
 		| parameterName | value |type|	  
 		When workflow "DotNetDLLWf" is saved "1" time
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?" in Browser
-		Then The Debug in Browser content contains order of "AssignFlow", "CaseConvertFlow" and "ReplaceFlow" in SequenceFlow
+		And The Debug in Browser content contains for Dotnet has 4 states
+		And The 1 debug state has 1 children
+		And The 0 debug state has 0 children
+		And The 2 debug state has 0 children
+		And The 3 debug state has 0 children
+		 
 
 Scenario: Executing a Forward Sort Recordset workflow
 		Given I have a workflow "SortRecordsetWF"

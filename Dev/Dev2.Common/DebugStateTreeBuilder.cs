@@ -30,6 +30,7 @@ namespace Dev2.Common
             if (source.ContainsKey(node.ID) && !node.IsAdded)//Services have the same Id so, they dont work inside the foreach
             {
                 node.Children = source[node.ID];
+
                 node.IsAdded = true;
                 for (var i = 0; i < node.Children.Count; i++)
                     AddChildren(node.Children[i], source);
