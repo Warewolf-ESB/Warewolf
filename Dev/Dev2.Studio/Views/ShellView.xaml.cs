@@ -37,21 +37,21 @@ using Infragistics.Windows.DockManager;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views
 {
-    public partial class MainView : IWin32Window
+    public partial class ShellView : IWin32Window
     {
         private static bool _isSuperMaximising;
         private bool _isLocked;
         readonly string _savedLayout;
-        private static MainView _this;
+        private static ShellView _this;
 
         #region Constructor
 
-        public static MainView GetInstance()
+        public static ShellView GetInstance()
         {
             return _this;
         }
 
-        public MainView()
+        public ShellView()
         {
             InitializeComponent();
             _isSuperMaximising = false;

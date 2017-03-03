@@ -482,9 +482,9 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager = new WorksurfaceContextManager(createDesigners, this);
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
             PopupProvider = popupController ?? new PopupController();
+            ServerRepository = serverRepository;
             _activeServer = LocalhostServer;
             ShouldUpdateActiveState = true;
-            ServerRepository = serverRepository;
             SetActiveServer(_activeServer.EnvironmentID);
 
             MenuPanelWidth = 60;
@@ -1567,8 +1567,8 @@ namespace Dev2.Studio.ViewModels
 
         public void ResetMainView()
         {
-            MainView mainView = MainView.GetInstance();
-            mainView.ResetToStartupView();
+            ShellView shellView = ShellView.GetInstance();
+            shellView.ResetToStartupView();
         }
 
         public void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json)
