@@ -173,6 +173,7 @@ namespace Dev2.Tests.Diagnostics
             //---------------Set up test pack-------------------
             DebugState debugState  = new DebugState() {StateType = StateType.End};
             //---------------Assert Precondition----------------
+            Assert.IsTrue(debugState.IsAdded);
             //---------------Execute Test ----------------------
             var serializeToJsonString = debugState.SerializeToJsonString(new DefaultSerializationBinder());
             var contains = serializeToJsonString.Contains("\"StateType\": \"End\"");

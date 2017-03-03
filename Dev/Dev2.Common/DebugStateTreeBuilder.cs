@@ -25,13 +25,12 @@ namespace Dev2.Common
 
         }
 
-
-
         private static void AddChildren(IDebugState node, IDictionary<Guid, List<IDebugState>> source)
         {
-            if (source.ContainsKey(node.ID))
+            if (source.ContainsKey(node.ID) && !node.IsAdded)//Services have the same Id so, they dont work inside the foreach
             {
                 node.Children = source[node.ID];
+                node.IsAdded = true;
                 for (var i = 0; i < node.Children.Count; i++)
                     AddChildren(node.Children[i], source);
             }

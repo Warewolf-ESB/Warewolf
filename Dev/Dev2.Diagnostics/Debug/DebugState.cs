@@ -103,6 +103,8 @@ namespace Dev2.Diagnostics.Debug
             get { return _parentID; }
             set { _parentID = value; }
         }
+
+        public bool IsAdded { get; set; }
         public Guid SourceResourceID { get; set; }
 
         /// <summary>

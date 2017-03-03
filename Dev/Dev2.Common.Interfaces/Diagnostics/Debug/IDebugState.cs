@@ -78,6 +78,8 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// </summary>
         bool IsSimulation { get; set; }
 
+        bool IsAdded { get; set; }
+
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has an error.
         /// </summary>
