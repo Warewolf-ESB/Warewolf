@@ -162,7 +162,6 @@ namespace Warewolf.Studio.ViewModels
         private static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {
             shellViewModel.SetActiveServer(server.EnvironmentID);
-            shellViewModel.SetActiveServer(server);
         }
 
         public void ShowDependenciesCommand(Guid resourceId, IServer server,bool isSource)
@@ -183,7 +182,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.DuplicateResource(explorerItemViewModel);
         }
 
-        public void DeleteCommand(IServer server, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController, IServer server)
+        public void DeleteCommand(IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController, IServer server)
         {
             try
             {
@@ -194,9 +193,9 @@ namespace Warewolf.Studio.ViewModels
                 else
                 {
                     var messageBoxResult = popupController.Show(popupController.GetDeleteConfirmation(explorerItemViewModel.ResourceName));
-                    if (environmentModel != null && messageBoxResult == MessageBoxResult.Yes)
+                    if (server != null && messageBoxResult == MessageBoxResult.Yes)
                     {
-                        _shellViewModel.CloseResource(explorerItemViewModel.ResourceId, environmentModel.ID);
+                        _shellViewModel.CloseResource(explorerItemViewModel.ResourceId, server.EnvironmentID);
                         var deletedFileMetadata = explorerRepository.Delete(explorerItemViewModel);
                         if (deletedFileMetadata.IsDeleted)
                         {

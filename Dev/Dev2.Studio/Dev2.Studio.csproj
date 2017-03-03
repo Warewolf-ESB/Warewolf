@@ -915,10 +915,6 @@
       <Project>{CB565C94-8833-4911-B20F-0921EE3C286C}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
-      <Project>{C35C7C88-1EAE-4421-AC03-CEFA26461D6C}</Project>
-      <Name>Warewolf.Studio.ServerProxyLayer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
       <Project>{1bd5cc42-66c7-4a1b-af1f-e6f2d4372b44}</Project>
       <Name>Warewolf.Studio.CustomControls</Name>

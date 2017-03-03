@@ -48,7 +48,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             };
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
             mockResourcRepositorySetUp.Setup(repository => repository.FindSourcesByType<OauthSource>(mockEnvironmentModel.Object, It.IsAny<enSourceType>()))
                 .Returns(sources);

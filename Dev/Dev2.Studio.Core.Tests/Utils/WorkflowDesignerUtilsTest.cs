@@ -98,7 +98,7 @@ namespace Dev2.Core.Tests.Utils
             var envGuid = Guid.NewGuid();
 
             x.Setup(a => a.Environment).Returns(mockEnv.Object);
-            mockEnv.Setup(a => a.ID).Returns(envGuid);
+            mockEnv.Setup(a => a.EnvironmentID).Returns(envGuid);
             x.Setup(a => a.Environment).Returns(mockEnv.Object);
             var act = new DsfActivity("a", "b", "c", "d", "e", "f");
             //------------Execute Test---------------------------
@@ -128,8 +128,8 @@ namespace Dev2.Core.Tests.Utils
             var envGuid = Guid.NewGuid();
             var envGuidRes = Guid.NewGuid();
             x.Setup(a => a.Environment).Returns(mockEnvRes.Object);
-            mockEnv.Setup(a => a.ID).Returns(envGuid);
-            mockEnv.Setup(a => a.ID).Returns(envGuidRes);
+            mockEnv.Setup(a => a.EnvironmentID).Returns(envGuid);
+            mockEnv.Setup(a => a.EnvironmentID).Returns(envGuidRes);
             x.Setup(a => a.Environment).Returns(mockEnv.Object);
             var act = new DsfActivity("a", "b", "c", "d", "e", "f");
             //------------Execute Test---------------------------

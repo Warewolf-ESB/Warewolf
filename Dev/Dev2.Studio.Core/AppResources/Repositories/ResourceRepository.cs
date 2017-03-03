@@ -119,7 +119,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (!_server.Connection.IsConnected)
             {
-                _server.Connection.Connect(_server.ID);
+                _server.Connection.Connect(_server.EnvironmentID);
                 if (!_server.Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();
@@ -136,7 +136,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 if (!_server.Connection.IsConnected)
                 {
-                    _server.Connection.Connect(_server.ID);
+                    _server.Connection.Connect(_server.EnvironmentID);
                     if (!_server.Connection.IsConnected)
                     {
                         ShowServerDisconnectedPopup();
@@ -190,7 +190,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (!_server.Connection.IsConnected)
             {
-                _server.Connection.Connect(_server.ID);
+                _server.Connection.Connect(_server.EnvironmentID);
                 if (!_server.Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();
@@ -508,7 +508,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             if (!_server.Connection.IsConnected)
             {
-                _server.Connection.Connect(_server.ID);
+                _server.Connection.Connect(_server.EnvironmentID);
                 if (!_server.Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();

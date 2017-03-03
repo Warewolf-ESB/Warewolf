@@ -6,6 +6,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -14,7 +15,6 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 // ReSharper disable RedundantAssignment

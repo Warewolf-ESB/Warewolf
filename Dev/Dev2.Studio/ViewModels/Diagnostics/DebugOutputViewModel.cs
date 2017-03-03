@@ -706,7 +706,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var isRemote = environmentId != Guid.Empty;
                 if (isRemote)
                 {
-                    var remoteEnvironmentModel = _serverRepository.FindSingle(model => model.ID == environmentId);
+                    var remoteEnvironmentModel = _serverRepository.FindSingle(model => model.EnvironmentID == environmentId);
                     if (remoteEnvironmentModel != null)
                     {
                         if (content.Server == "localhost")

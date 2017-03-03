@@ -125,7 +125,7 @@ namespace Dev2.Activities.Designers2.Sequence
 
                 try
                 {
-                    IServer server = ServerRepository.Instance.FindSingle(c => c.ID == envId);
+                    IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envId);
                     var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
                     if (resource != null)

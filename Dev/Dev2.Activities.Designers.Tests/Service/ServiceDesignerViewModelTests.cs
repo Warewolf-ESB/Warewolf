@@ -1057,7 +1057,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var environmentID = Guid.NewGuid();
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1133,7 +1133,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var environmentID = Guid.NewGuid();
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1205,7 +1205,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var environmentID = Guid.NewGuid();
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1288,7 +1288,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var environmentID = Guid.NewGuid();
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1365,7 +1365,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1450,7 +1450,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1550,7 +1550,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1651,7 +1651,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1750,7 +1750,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(model => model.IsLocalHostCheck()).Returns(false);
@@ -1840,7 +1840,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
@@ -1998,7 +1998,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             ISetup<IServerRepository, IServer> setupActiveEnvironment = envRepository.Setup(r => r.ActiveServer);
             setupActiveEnvironment.Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(rootModel.Object.Environment.ID), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(rootModel.Object.Environment.EnvironmentID), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
 
             var modelItem = CreateModelItem(activity);
 
@@ -2224,7 +2224,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var environmentID = Guid.NewGuid();
             var environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(e => e.HasLoadedResources).Returns(true);
             environment.Setup(e => e.IsLocalHost).Returns(true);
@@ -2279,7 +2279,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
-            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, null);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.EnvironmentID, null);
 
             var envRepository = new Mock<IServerRepository>();
             envRepository.Setup(e => e.ActiveServer).Returns(resourceModel.Object.Environment);
@@ -2314,7 +2314,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
-            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, modelProperties);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.EnvironmentID, modelProperties);
 
             var envRepository = new Mock<IServerRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
@@ -2330,7 +2330,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
             dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
-            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, modelProperties);
+            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.EnvironmentID, modelProperties);
 
             var envRepository = new Mock<IServerRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
@@ -2349,7 +2349,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var environmentID = Guid.NewGuid();
             environment = new Mock<IServer>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
 
             const string src = @"1afe38e9-a6f5-403d-9e52-06dd7ae11198";

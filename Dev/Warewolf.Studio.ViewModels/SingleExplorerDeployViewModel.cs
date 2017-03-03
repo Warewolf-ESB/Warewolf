@@ -16,7 +16,6 @@ using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
-using Warewolf.Studio.AntiCorruptionLayer;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBeProtected.Global
@@ -287,7 +286,7 @@ namespace Warewolf.Studio.ViewModels
                     var sourceEnv = Source.Environments.First();
                     var sourceEnvServer = sourceEnv.Server;
                     var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
-                    var destEnv = Destination.ConnectControlViewModel.SelectedConnection as Server;
+                    var destEnv = Destination.ConnectControlViewModel.SelectedConnection;
                     if (ConflictItems != null)
                     {
                         foreach (var conflictItem in ConflictItems)
@@ -309,10 +308,10 @@ namespace Warewolf.Studio.ViewModels
                         {
                             var destConnection = new Connection
                             {
-                                Address = destEnv.EnvironmentConnection.AppServerUri.ToString(),
-                                AuthenticationType = destEnv.EnvironmentConnection.AuthenticationType,
-                                UserName = destEnv.EnvironmentConnection.UserName,
-                                Password = destEnv.EnvironmentConnection.Password,
+                                Address = destEnv.Connection.AppServerUri.ToString(),
+                                AuthenticationType = destEnv.Connection.AuthenticationType,
+                                UserName = destEnv.Connection.UserName,
+                                Password = destEnv.Connection.Password,
 
                             };
                             sourceEnvServer.UpdateRepository.Deploy(notfolders, Destination.DeployTests, destConnection);
@@ -715,7 +714,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

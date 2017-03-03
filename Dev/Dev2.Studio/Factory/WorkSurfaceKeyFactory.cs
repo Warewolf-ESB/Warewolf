@@ -98,7 +98,7 @@ namespace Dev2.Factory
                 WorkSurfaceContext = context,
                 ResourceID = resourceModel.ID,
                 ServerID = resourceModel.ServerID,
-                EnvironmentID = resourceModel.Environment.ID
+                EnvironmentID = resourceModel.Environment.EnvironmentID
             };
         }
 
@@ -109,7 +109,7 @@ namespace Dev2.Factory
             if (origin != Guid.Empty)
             {
                 IServer server = ServerRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
-                Guid environmentID = server.ID;
+                Guid environmentID = server.EnvironmentID;
                 return new WorkSurfaceKey
                 {
                     WorkSurfaceContext = WorkSurfaceContext.Workflow,

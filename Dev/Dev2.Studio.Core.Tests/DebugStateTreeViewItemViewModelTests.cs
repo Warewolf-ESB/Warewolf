@@ -41,11 +41,11 @@ namespace Dev2.Core.Tests
             const string ServerName = "Myserver";
 
             var env = new Mock<IServer>();
-            env.Setup(e => e.ID).Returns(serverID);
+            env.Setup(e => e.EnvironmentID).Returns(serverID);
             env.Setup(e => e.Name).Returns(ServerName);
 
             var env2 = new Mock<IServer>();
-            env2.Setup(e => e.ID).Returns(Guid.NewGuid());
+            env2.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
 
             var envRep = new Mock<IServerRepository>();
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
@@ -69,11 +69,11 @@ namespace Dev2.Core.Tests
             const string ServerName = "Myserver";
 
             var env = new Mock<IServer>();
-            env.Setup(e => e.ID).Returns(environmentID);
+            env.Setup(e => e.EnvironmentID).Returns(environmentID);
             env.Setup(e => e.Name).Returns(ServerName);
 
             var env2 = new Mock<IServer>();
-            env2.Setup(e => e.ID).Returns(Guid.NewGuid());
+            env2.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
 
             var envRep = new Mock<IServerRepository>();
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
@@ -93,11 +93,11 @@ namespace Dev2.Core.Tests
             const string ServerName = "Myserver";
 
             var env = new Mock<IServer>();
-            env.Setup(e => e.ID).Returns(environmentID);
+            env.Setup(e => e.EnvironmentID).Returns(environmentID);
             env.Setup(e => e.Name).Returns(ServerName);
 
             var env2 = new Mock<IServer>();
-            env2.Setup(e => e.ID).Returns(Guid.NewGuid());
+            env2.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
 
             var envRep = new Mock<IServerRepository>();
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
@@ -118,14 +118,14 @@ namespace Dev2.Core.Tests
             const string ServerName = "Myserver";
 
             var env = new Mock<IServer>();
-            env.Setup(e => e.ID).Returns(serverID);
+            env.Setup(e => e.EnvironmentID).Returns(serverID);
             env.Setup(e => e.Name).Returns(ServerName);
 
 
             var env2ID = Guid.NewGuid();
 
             var env2 = new Mock<IServer>();
-            env2.Setup(e => e.ID).Returns(env2ID);
+            env2.Setup(e => e.EnvironmentID).Returns(env2ID);
             env2.Setup(e => e.Name).Returns("Unknown Remote Server");
 
             var envRep = new Mock<IServerRepository>();
@@ -330,7 +330,7 @@ namespace Dev2.Core.Tests
             const string serverName = "TestEnvironment";
 
             var env = new Mock<IServer>();
-            env.Setup(e => e.ID).Returns(environmentID);
+            env.Setup(e => e.EnvironmentID).Returns(environmentID);
             env.Setup(e => e.Name).Returns(serverName);
 
             var envRep = CreateEnvironmentRepository(env.Object);
@@ -386,7 +386,7 @@ namespace Dev2.Core.Tests
         static Mock<IServerRepository> CreateEnvironmentRepository(params IServer[] environments)
         {
             var source = new Mock<IServer>();
-            source.Setup(e => e.ID).Returns(Guid.Empty);
+            source.Setup(e => e.EnvironmentID).Returns(Guid.Empty);
             source.Setup(e => e.Name).Returns("localhost");
 
             var envRep = new Mock<IServerRepository>();

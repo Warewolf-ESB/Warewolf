@@ -520,7 +520,7 @@ namespace Dev2.Core.Tests
             envRepository.Setup(e => e.All()).Returns(envList);
 
             var env = new Mock<IServer>();
-            env.Setup(e => e.ID).Returns(environmentID);
+            env.Setup(e => e.EnvironmentID).Returns(environmentID);
             env.Setup(e => e.IsConnected).Returns(true);
 
             // If we get here then we've found the environment based on the environment ID!
@@ -747,7 +747,7 @@ namespace Dev2.Core.Tests
             var env = new Mock<IServer>();
             env.Setup(e => e.Connection).Returns(connection.Object);
             env.Setup(e => e.IsConnected).Returns(true);
-            env.Setup(e => e.ID).Returns(Guid.NewGuid());
+            env.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
 
             env.Setup(e => e.Name).Returns($"Server_{rand.Next(1, 100)}");
 

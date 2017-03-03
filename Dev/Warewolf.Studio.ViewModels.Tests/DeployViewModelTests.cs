@@ -99,12 +99,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            server.Setup(a => a.DisplayName).Returns("LocalHost");
             var shell = new Mock<IShellViewModel>();
             CustomContainer.Register<IShellViewModel>(shell.Object);
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
-            server.Setup(a => a.GetServerConnections()).Returns(new List<IServer>());
+            //server.Setup(a => a.GetServerConnections()).Returns(new List<IServer>());
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(shell.Object, new Mock<IEventAggregator>().Object, new Mock<IDeployStatsViewerViewModel>().Object);
 
@@ -121,12 +121,12 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            server.Setup(a => a.DisplayName).Returns("LocalHost");
             var shell = new Mock<IShellViewModel>();
             CustomContainer.Register<IShellViewModel>(shell.Object);
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
-            server.Setup(a => a.GetServerConnections()).Returns(new List<IServer>());
+            //server.Setup(a => a.GetServerConnections()).Returns(new List<IServer>());
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(shell.Object, new Mock<IEventAggregator>().Object, new Mock<IDeployStatsViewerViewModel>().Object);
             //------------Execute Test---------------------------
@@ -161,7 +161,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Administrator = true
             });
             var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.ResourceName).Returns("Localhost");
+            localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.Permissions).Returns(destPermissions);
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
@@ -202,13 +202,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             var eventAggregator = new Mock<IEventAggregator>();
                         
             var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.ResourceName).Returns("Localhost");
+            localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             localhost.SetupGet(server => server.IsConnected).Returns(true);
 
             var otherServer = new Mock<IServer>();
             otherServer.Setup(server => server.IsConnected).Returns(true);
-            otherServer.Setup(a => a.ResourceName).Returns("OtherServer");
+            otherServer.Setup(a => a.DisplayName).Returns("OtherServer");
             otherServer.SetupGet(server => server.CanDeployFrom).Returns(true);
 
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
@@ -253,7 +253,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var eventAggregator = new Mock<IEventAggregator>();
 
             var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.ResourceName).Returns("Localhost");
+            localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
           

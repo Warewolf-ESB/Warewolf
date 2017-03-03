@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
 
             mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
@@ -210,7 +210,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
             mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
@@ -386,7 +386,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
             mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);

@@ -981,7 +981,7 @@ namespace Dev2.Core.Tests
 
             var environmentID = Guid.NewGuid();
             var environment = new Mock<IServer>();
-            environment.Setup(e => e.ID).Returns(environmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(environmentID);
             environment.Setup(e => e.Connection.ServerEvents).Returns(eventPublisher);
 
             var instanceID = Guid.NewGuid();

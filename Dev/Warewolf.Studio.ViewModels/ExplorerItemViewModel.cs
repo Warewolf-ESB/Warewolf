@@ -276,7 +276,7 @@ namespace Warewolf.Studio.ViewModels
             });
             ViewApisJsonCommand = new DelegateCommand(o =>
             {
-                _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, EnvironmentModel.Connection.WebServerUri);
+                _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, Server.Connection.WebServerUri);
             });
 
             NewServerCommand = new DelegateCommand(o =>
@@ -661,7 +661,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Delete()
         {
-            _explorerItemViewModelCommandController.DeleteCommand(EnvironmentModel, Parent, _explorerRepository, this, _popupController, Server);
+            _explorerItemViewModelCommandController.DeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
         }
 
 
@@ -1066,7 +1066,6 @@ namespace Warewolf.Studio.ViewModels
                     if (_shellViewModel != null)
                     {
                         _shellViewModel.SetActiveServer(Server.EnvironmentID);
-                        _shellViewModel.SetActiveServer(Server);
                     }
                 }
             }
@@ -1834,7 +1833,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _server ?? ServerRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
+                return _server ?? ServerRepository.Instance.FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
             }
             set
             {

@@ -96,7 +96,7 @@ namespace Warewolf.Studio.ViewModels
                 currentServer.NetworkStateChanged -= OnServerOnNetworkStateChanged;
                 Servers.Remove(currentServer);
             }
-            var updatedServer = Server.FetchServer(savedServerID);
+            var updatedServer = ServerRepository.Instance.Get(savedServerID);
             if (updatedServer == null)
             {
                 return;
@@ -113,7 +113,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void LoadServers()
         {
-            var serverConnections = Server.GetAllServerConnections();
+            var serverConnections = ServerRepository.Instance.All();
             var servers = new ObservableCollection<IServer>();
             if(serverConnections != null)
             {
@@ -404,7 +404,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedId = SelectedConnection?.EnvironmentID;
                     if (_selectedId != null)
                     {
-                        shellViewModel?.OpenResource(SelectedConnection.ID, ServerRepository.Instance.Source.ID, shellViewModel.LocalhostServer);
+                        shellViewModel?.OpenResource(SelectedConnection.EnvironmentID, ServerRepository.Instance.Source.EnvironmentID, shellViewModel.LocalhostServer);
                         SelectedConnection = shellViewModel?.LocalhostServer;
                     }
                 }

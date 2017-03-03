@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void AfterSave(Guid environmentId, Guid resourceId)
         {
-            var explorerViewModel = CustomContainer.Get<IMainViewModel>().ExplorerViewModel;
+            var explorerViewModel = CustomContainer.Get<IShellViewModel>().ExplorerViewModel;
             var environmentViewModel = explorerViewModel.Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {

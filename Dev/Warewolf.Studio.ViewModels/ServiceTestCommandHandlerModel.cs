@@ -125,7 +125,7 @@ namespace Warewolf.Studio.ViewModels
                             var popupController = CustomContainer.Get<IPopupController>();
                             popupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
                             var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                            shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.ID);
+                            shellViewModel.CloseResourceTestView(resourceModel.ID, resourceModel.ServerID, resourceModel.Environment.EnvironmentID);
                             return;
                         }
 

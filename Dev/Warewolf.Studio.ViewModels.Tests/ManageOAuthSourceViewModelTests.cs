@@ -341,7 +341,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestUpdateHelpDescriptor()
         {
             //arrange
-            Mock<IMainViewModel> mainViewModelMock = new Mock<IMainViewModel>();
+            Mock<IShellViewModel> mainViewModelMock = new Mock<IShellViewModel>();
             Mock<IHelpWindowViewModel> helpViewModelMock = new Mock<IHelpWindowViewModel>();
             mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpViewModelMock.Object);
             CustomContainer.Register(mainViewModelMock.Object);

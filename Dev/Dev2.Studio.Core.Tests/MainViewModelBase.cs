@@ -198,7 +198,7 @@ namespace Dev2.Core.Tests
             var env = new Mock<IServer>();
             env.Setup(e => e.Connection).Returns(connection.Object);
             env.Setup(e => e.IsConnected).Returns(true);
-            env.Setup(e => e.ID).Returns(ServerId);
+            env.Setup(e => e.EnvironmentID).Returns(ServerId);
             env.Setup(e => e.Name).Returns($"Server_{rand.Next(1, 100)}");
             
             return env;

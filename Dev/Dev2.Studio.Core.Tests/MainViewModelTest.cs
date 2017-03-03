@@ -279,7 +279,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.Connection).Returns(envConn.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
-            env.Setup(e => e.ID).Returns(environmentID);
+            env.Setup(e => e.EnvironmentID).Returns(environmentID);
 
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
 
@@ -423,7 +423,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             var resource = new Mock<IContextualResourceModel>();
             var environmentModel = new Mock<IServer>();
-            environmentModel.Setup(e => e.ID).Returns(Guid.NewGuid);
+            environmentModel.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid);
             resource.Setup(r => r.Environment).Returns(environmentModel.Object);
             resource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             var isWorkflowOpened = ShellViewModel.IsWorkFlowOpened(resource.Object);
@@ -648,7 +648,7 @@ namespace Dev2.Core.Tests
             var res = new Mock<IResourceRepository>();
             mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
             res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(FirstResource.Object);
-            ShellViewModel.CloseResourceTestView(resourceId, ServerId, mockEnv.Object.ID);
+            ShellViewModel.CloseResourceTestView(resourceId, ServerId, mockEnv.Object.EnvironmentID);
         }
 
         [TestMethod]
@@ -3102,7 +3102,7 @@ namespace Dev2.Core.Tests
             resourceModel.SetupGet(r => r.ResourceName).Returns("My_Resource_Name");
 
             var environmentModel = new Mock<IServer>();
-            environmentModel.SetupGet(e => e.ID).Returns(environmentId);
+            environmentModel.SetupGet(e => e.EnvironmentID).Returns(environmentId);
 
             var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.SetupGet(env => env.WorkspaceID).Returns(workspaceId);
@@ -3138,7 +3138,7 @@ namespace Dev2.Core.Tests
             resourceModel.SetupGet(r => r.ResourceName).Returns("My_Resource_Name");
 
             var environmentModel = new Mock<IServer>();
-            environmentModel.SetupGet(e => e.ID).Returns(environmentId);
+            environmentModel.SetupGet(e => e.EnvironmentID).Returns(environmentId);
 
             var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.SetupGet(env => env.WorkspaceID).Returns(workspaceId);
@@ -3164,7 +3164,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var localhost = new Mock<IServer>();
-            localhost.Setup(e => e.ID).Returns(Guid.Empty);
+            localhost.Setup(e => e.EnvironmentID).Returns(Guid.Empty);
             localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
             var environmentRepository = new Mock<IServerRepository>();
             //environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
@@ -3190,7 +3190,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var localhost = new Mock<IServer>();
-            localhost.Setup(e => e.ID).Returns(Guid.Empty);
+            localhost.Setup(e => e.EnvironmentID).Returns(Guid.Empty);
             localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
             var environmentRepository = new Mock<IServerRepository>();
             environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });

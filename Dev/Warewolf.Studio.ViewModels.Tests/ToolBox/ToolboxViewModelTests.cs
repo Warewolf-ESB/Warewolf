@@ -456,10 +456,10 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
         public void TestUpdateHelpDescriptor()
         {
             //arrange
-            var mainViewModelMock = new Mock<IMainViewModel>();
+            var mainViewModelMock = new Mock<IShellViewModel>();
             var helpWindowViewModelMock = new Mock<IHelpWindowViewModel>();
             mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpWindowViewModelMock.Object);
-            CustomContainer.Register<IMainViewModel>(mainViewModelMock.Object);
+            CustomContainer.Register(mainViewModelMock.Object);
 
             //act
             _target.UpdateHelpDescriptor("someText");

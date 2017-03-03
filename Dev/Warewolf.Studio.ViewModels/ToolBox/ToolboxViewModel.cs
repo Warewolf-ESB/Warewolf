@@ -187,7 +187,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

@@ -194,10 +194,6 @@
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
-      <Project>{c35c7c88-1eae-4421-ac03-cefa26461d6c}</Project>
-      <Name>Warewolf.Studio.ServerProxyLayer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>

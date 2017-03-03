@@ -17,7 +17,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IMainViewModel> _mainViewModelMock;
+        private Mock<IShellViewModel> _mainViewModelMock;
         private AuthorizeCommand<string> _newCommand;
         private Mock<ICommand> _deployCommandMock;
         private AuthorizeCommand _saveCommand;
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            _mainViewModelMock = new Mock<IMainViewModel>();
+            _mainViewModelMock = new Mock<IShellViewModel>();
             _deployCommandMock = new Mock<ICommand>();
             _newCommand = new AuthorizeCommand<string>(new AuthorizationContext(), str => { }, str => true);
             _saveCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);

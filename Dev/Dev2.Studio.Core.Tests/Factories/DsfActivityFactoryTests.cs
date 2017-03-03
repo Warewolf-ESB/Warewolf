@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests.Factories
             var activity = new DsfActivity();
 
             var environment = new Mock<IServer>();
-            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(expectedEnvironmentID);
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
@@ -69,7 +69,7 @@ namespace Dev2.Core.Tests.Factories
             var activity = new DsfActivity();
 
             var environment = new Mock<IServer>();
-            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(expectedEnvironmentID);
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
@@ -97,7 +97,7 @@ namespace Dev2.Core.Tests.Factories
             var activity = new DsfActivity();
 
             var environment = new Mock<IServer>();
-            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(expectedEnvironmentID);
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
@@ -125,7 +125,7 @@ namespace Dev2.Core.Tests.Factories
             var activity = new DsfActivity();
 
             var environment = new Mock<IServer>();
-            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(expectedEnvironmentID);
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests.Factories
             var activity = new DsfActivity();
 
             var environment = new Mock<IServer>();
-            environment.Setup(e => e.ID).Returns(expectedEnvironmentID); // Set the active environment
+            environment.Setup(e => e.EnvironmentID).Returns(expectedEnvironmentID); // Set the active environment
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
@@ -182,7 +182,7 @@ namespace Dev2.Core.Tests.Factories
             var activity = new DsfActivity();
 
             var environment = new Mock<IServer>();
-            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+            environment.Setup(e => e.EnvironmentID).Returns(expectedEnvironmentID);
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
@@ -203,7 +203,7 @@ namespace Dev2.Core.Tests.Factories
         {
             var mockResourceRepository = new Mock<IResourceRepository>();
             Mock<IServer> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-            mockEnvironment.Setup(model => model.ID).Returns(environmentId);
+            mockEnvironment.Setup(model => model.EnvironmentID).Returns(environmentId);
             return GetEnvironmentRepository(mockEnvironment);
         }
 

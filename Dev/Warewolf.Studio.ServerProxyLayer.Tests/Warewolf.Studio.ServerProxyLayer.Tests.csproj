@@ -112,10 +112,6 @@
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
-      <Project>{C35C7C88-1EAE-4421-AC03-CEFA26461D6C}</Project>
-      <Name>Warewolf.Studio.ServerProxyLayer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>

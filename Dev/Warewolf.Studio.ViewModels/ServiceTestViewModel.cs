@@ -1583,7 +1583,7 @@ namespace Warewolf.Studio.ViewModels
                     SelectedServiceTest = dummyTest;
                     Tests = models;
                     SelectedServiceTest = _tests.FirstOrDefault(model => model.TestName == testName);
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var mainViewModel = CustomContainer.Get<IShellViewModel>();
                     WorkflowDesignerViewModel = mainViewModel?.CreateNewDesigner(ResourceModel);
                     if (WorkflowDesignerViewModel != null)
                     {
@@ -1866,7 +1866,7 @@ namespace Warewolf.Studio.ViewModels
                     break;
                 case SaveResult.ResourceDeleted:
                     PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
-                    _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                    _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.EnvironmentID);
                     break;
                 case SaveResult.ResourceUpdated:
                     UpdateTestsFromResourceUpdate();
@@ -2454,7 +2454,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

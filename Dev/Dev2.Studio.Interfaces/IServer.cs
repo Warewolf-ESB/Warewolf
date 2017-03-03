@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
 
@@ -27,7 +28,6 @@ namespace Dev2.Studio.Interfaces
         event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
         IAuthorizationService AuthorizationService { get; }
-        Guid ID { get; }
         string Name { get; set; }
         bool IsConnected { get; }
         bool CanStudioExecute { get; set; }
@@ -46,7 +46,6 @@ namespace Dev2.Studio.Interfaces
         string DisplayName { get;  }
         event EventHandler AuthorizationServiceSet;
         Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
-        IList<IServer> GetServerConnections();
         IList<IToolDescriptor> LoadTools();
         [JsonIgnore]
         IExplorerRepository ExplorerRepository { get; }
@@ -56,7 +55,7 @@ namespace Dev2.Studio.Interfaces
         IQueryManager QueryProxy { get; }
         bool AllowEdit { get; }
         List<IWindowsGroupPermission> Permissions { get; set; }
-        Guid EnvironmentID { get; set; }
+        Guid EnvironmentID { get; }
         Guid? ServerID { get; }
         event PermissionsChanged PermissionsChanged;
         event NetworkStateChanged NetworkStateChanged;
@@ -68,13 +67,12 @@ namespace Dev2.Studio.Interfaces
         bool CanDeployFrom { get; }
         IExplorerRepository ProxyLayer { get; }
         Permissions UserPermissions { get; set; }
+        IVersionInfo VersionInfo { get; set; }
 
         string GetMinSupportedVersion();
         Task<List<string>> LoadExplorerDuplicates();
         Permissions GetPermissions(Guid resourceID);
-        IList<IServer> GetAllServerConnections();
         Dictionary<string, string> GetServerInformation();
-        IServer FetchServer(Guid savedServerID);
 
     }
 

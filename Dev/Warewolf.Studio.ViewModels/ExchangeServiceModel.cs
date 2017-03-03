@@ -16,7 +16,7 @@ namespace Warewolf.Studio.ViewModels
             _updateRepository = updateRepository;
             _queryProxy = queryProxy;
             _shell = shell;
-            shell.SetActiveServer(server);
+            shell.SetActiveServer(server.EnvironmentID);
         }
         public ObservableCollection<IExchangeSource> RetrieveSources()
         {

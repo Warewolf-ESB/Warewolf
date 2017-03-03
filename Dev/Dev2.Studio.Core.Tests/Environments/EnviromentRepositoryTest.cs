@@ -167,7 +167,7 @@ namespace Dev2.Core.Tests.Environments
             var e2 = CreateMockEnvironment();
 
             var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
-            var actual = repo.Find(e => e.ID == e1.Object.ID).ToList();
+            var actual = repo.Find(e => e.EnvironmentID == e1.Object.EnvironmentID).ToList();
 
             Assert.AreEqual(1, actual.Count);
             Assert.AreSame(e1.Object, actual[0]);
@@ -181,7 +181,7 @@ namespace Dev2.Core.Tests.Environments
             var e2 = CreateMockEnvironment();
 
             var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
-            var actual = repo.Find(e => e.ID == Guid.NewGuid()).ToList();
+            var actual = repo.Find(e => e.EnvironmentID == Guid.NewGuid()).ToList();
 
             Assert.AreEqual(0, actual.Count);
         }
@@ -210,7 +210,7 @@ namespace Dev2.Core.Tests.Environments
             var e2 = CreateMockEnvironment();
 
             var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
-            var actual = repo.FindSingle(e => e.ID == e1.Object.ID);
+            var actual = repo.FindSingle(e => e.EnvironmentID == e1.Object.EnvironmentID);
 
             Assert.IsNotNull(actual);
             Assert.AreSame(e1.Object, actual);
@@ -224,7 +224,7 @@ namespace Dev2.Core.Tests.Environments
             var e2 = CreateMockEnvironment();
 
             var repo = new TestServerRespository(source.Object, e1.Object, e2.Object);
-            var actual = repo.FindSingle(e => e.ID == Guid.NewGuid());
+            var actual = repo.FindSingle(e => e.EnvironmentID == Guid.NewGuid());
 
             Assert.IsNull(actual);
         }
@@ -795,7 +795,7 @@ namespace Dev2.Core.Tests.Environments
             var result = ServerRepository.Instance.LookupEnvironments(env.Object);
 
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
+            Assert.AreEqual(id, result[0].EnvironmentID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
         }
 
         [TestMethod]
@@ -870,7 +870,7 @@ namespace Dev2.Core.Tests.Environments
             var result = ServerRepository.Instance.LookupEnvironments(env.Object);
 
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
+            Assert.AreEqual(id, result[0].EnvironmentID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
             Assert.AreEqual(AuthenticationType.User, result[0].Connection.AuthenticationType);
             Assert.AreEqual("Hagashen", result[0].Connection.UserName);
             Assert.AreEqual("password", result[0].Connection.Password);
@@ -1065,7 +1065,7 @@ namespace Dev2.Core.Tests.Environments
 
             var result = ServerRepository.Instance.LookupEnvironments(env.Object);
             Assert.AreEqual(1, result.Count, "EnvironmentRepository failed to load environment.");
-            Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
+            Assert.AreEqual(id, result[0].EnvironmentID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
         }
 
         #endregion
@@ -1335,7 +1335,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(connection.Object);
 
             env.Setup(e => e.IsConnected).Returns(true);
-            env.Setup(e => e.ID).Returns(Guid.NewGuid());
+            env.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
 
             env.Setup(e => e.Name).Returns(string.Format("Server_{0}", rand.Next(1, 100)));
 

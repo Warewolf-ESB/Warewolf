@@ -333,7 +333,7 @@ namespace Warewolf.Studio.ViewModels
                     }
             }
 
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel?.ExplorerViewModel != null)
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
             return ViewResult;

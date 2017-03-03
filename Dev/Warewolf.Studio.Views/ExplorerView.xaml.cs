@@ -189,7 +189,7 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                if (itemToMove.Server != dropOntoItem.Server)
+                if (!Equals(itemToMove.Server, dropOntoItem.Server))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
@@ -356,7 +356,6 @@ namespace Warewolf.Studio.Views
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             shellViewModel.SetActiveServer(server.EnvironmentID);
-            shellViewModel.SetActiveServer(server);
         }
 
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)

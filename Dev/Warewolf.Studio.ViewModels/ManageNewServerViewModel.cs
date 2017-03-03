@@ -660,7 +660,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

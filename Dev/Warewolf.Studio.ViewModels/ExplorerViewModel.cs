@@ -180,8 +180,8 @@ namespace Warewolf.Studio.ViewModels
         {
             IsRefreshing = true;
             var environmentId = ConnectControlViewModel?.SelectedConnection.EnvironmentID;
-            var resourceName = ConnectControlViewModel?.SelectedConnection.ResourceName.Replace("(Connected)", "").Trim();
-            var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.ResourceName.Replace("(Connected)", "").Trim() == resourceName);
+            var resourceName = ConnectControlViewModel?.SelectedConnection.DisplayName.Replace("(Connected)", "").Trim();
+            var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.DisplayName.Replace("(Connected)", "").Trim() == resourceName);
             foreach (var environmentViewModel in environmentViewModels)
             {
                 await RefreshEnvironment(environmentViewModel, refresh);
@@ -225,7 +225,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Environments != null)
             {
-                var env = Environments.FirstOrDefault(a => a.Server == item.Server);
+                var env = Environments.FirstOrDefault(a => Equals(a.Server, item.Server));
 
                 if (env != null)
                 {
@@ -244,7 +244,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
