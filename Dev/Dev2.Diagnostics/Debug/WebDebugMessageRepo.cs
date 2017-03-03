@@ -6,7 +6,6 @@ namespace Dev2.Diagnostics.Debug
 {
     public class WebDebugMessageRepo : DebugMessegaBase<WebDebugMessageRepo>
     {
-       
         public override void AddDebugItem(Guid clientId, Guid sessionId, IDebugState ds)
         {
             lock (Lock)
