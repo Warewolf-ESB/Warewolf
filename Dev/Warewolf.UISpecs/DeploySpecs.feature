@@ -26,7 +26,6 @@ Scenario: Deploy From RemoteConnection
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
     And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-	And I Click Deploy Tab Source Server Connect Button
     And Resources is visible on the tree
 	And I Select "Hello World" from the source tab 
 	And I Click Deploy button	
@@ -39,9 +38,10 @@ Scenario: Deploy button is enabling when selecting resource in source side
 	 Given The Warewolf Studio is running
 	 When I Click Deploy Ribbon Button
 	 And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	 Then Deploy Button is enabled  "false"
 	 And I Select "Hello world" from the source tab 
 	 Then Deploy Button is enabled  "true"	
-	 Then Deploy Button is enabled  "false"
+	 
 
 Scenario: Filtering and clearing filter on source side
 	Given The Warewolf Studio is running
@@ -105,26 +105,6 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 	And I Click MessageBox Cancel
 	And Deploy Window Is Still Open
 
-Scenario: Deploy Disconnect Clears Destination
-	Given The Warewolf Studio is running
-	When I Filter the Explorer with "Unit Tests"
-	And I RightClick Explorer Localhost First Item
-	And I Select Deploy From Explorer Context Menu
-    And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
-	Then Deploy Button Is Enabled
-	When I Click Deploy Tab Deploy Button
-	Then Deploy Version Conflict Window Shows
-	And I Click MessageBox Cancel
-	And Deploy Window Is Still Open
-
-Scenario: Disconnect Remote Integration On Deploy Destination Does Not Disconnect On The Explorer
-	Given The Warewolf Studio is running
-	When I Try Connect To Remote Server
-	And I Click Deploy Ribbon Button
-	And I Click Deploy Tab Destination Server Combobox
-	And I Click Deploy Tab Destination Server Remote Connection Intergration Item
-	Then Destination Remote Server Is Connected
-
 Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
@@ -135,8 +115,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Then I Click Deploy version conflicts MessageBox OK
 	And I Click Deploy conflicts MessageBox OK
 	And I Click Deploy Successful MessageBox OK
-	And I Connect To Remote Server
-	And I Wait For Explorer First Remote Server Spinner
+	And I Select RemoteConnectionIntegration From Explorer
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
 
@@ -158,8 +137,7 @@ Scenario: Changing Seleced Server On desploy Source While Connected To Remote Se
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-	And I Click Deploy Tab Source Server Connect Button
-	And I Connect To Remote Server
+	And I Select RemoteConnectionIntegration From Explorer
 	And I Select localhost From Deploy Tab Source Server Combobox
 	And I validate the Resource tree is loaded
 

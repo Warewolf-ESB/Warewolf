@@ -13,7 +13,7 @@ using System.Drawing;
 using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
@@ -68,7 +68,7 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-                ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
+                ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
                 UIMap.Click_Deploy_Ribbon_Button();
@@ -84,7 +84,7 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-                ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
+                ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
                 UIMap.Click_Deploy_Ribbon_Button();
@@ -99,7 +99,7 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
         [Then(@"I set AuthenticationType to Public")]
         public void ChangeServerAuthenticationTypeToPublic()
         {
-            ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
+            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
             var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
             if (!publicRadioButton.Selected)
             {

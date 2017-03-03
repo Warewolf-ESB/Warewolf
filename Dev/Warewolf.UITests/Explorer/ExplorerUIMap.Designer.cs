@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.ExplorerUIMapClasses
+namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
@@ -305,19 +305,19 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
             }
         }
         
-        public WpfButton ConnectServerButton
+        public WpfButton NewServerButton
         {
             get
             {
-                if ((this.mConnectServerButton == null))
+                if ((this.mNewServerButton == null))
                 {
-                    this.mConnectServerButton = new WpfButton(this);
+                    this.mNewServerButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mConnectServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_ConnectServerBtn_AutoID";
-                    this.mConnectServerButton.WindowTitles.Add("Warewolf");
+                    this.mNewServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_ConnectServerBtn_AutoID";
+                    this.mNewServerButton.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }
-                return this.mConnectServerButton;
+                return this.mNewServerButton;
             }
         }
         #endregion
@@ -327,7 +327,7 @@ namespace Warewolf.UITests.ExplorerUIMapClasses
         
         private WpfButton mEditServerButton;
         
-        private WpfButton mConnectServerButton;
+        private WpfButton mNewServerButton;
         #endregion
     }
     
