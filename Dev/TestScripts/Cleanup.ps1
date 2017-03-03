@@ -16,7 +16,7 @@ sc.exe stop "Warewolf Server"
 
 sleep 5
 
-Get-Process "*Warewolf* " | %{if (!($_.HasExited)) {$_.Kill()}}
+Get-Process "*Warewolf *" | %{if (!($_.HasExited)) {$_.Kill()}}
 
 $ToClean = `
 "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
