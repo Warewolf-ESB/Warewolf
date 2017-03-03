@@ -9,13 +9,12 @@
 */
 
 using System.Collections.Generic;
-using System.Xml.Serialization;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
     // If you add/remove columns here then 
     // change DebugState.Serialize/Deserialize
-    public interface IDebugItem : IXmlSerializable
+    public interface IDebugItem 
     {
         List<IDebugItemResult> ResultsList { get; set; }
         bool Contains(string filterText);

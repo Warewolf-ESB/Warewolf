@@ -10,8 +10,7 @@
 
 using System;
 using System.IO;
-using System.Xml;
-using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
@@ -19,7 +18,6 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Tests.Weave;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Tests.Diagnostics
@@ -59,6 +57,92 @@ namespace Dev2.Tests.Diagnostics
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void Equals_GivenSameIdAndSessionId_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var sessionID = Guid.NewGuid();
+            var debugState = new DebugState()
+            {
+                ID = sessionID,
+                SessionID = sessionID
+
+            };
+            var debugState1 = new DebugState()
+            {
+                ID = sessionID,
+                SessionID = sessionID
+
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(ReferenceEquals(debugState, debugState1));
+            //---------------Execute Test ----------------------
+            var @equals = debugState.Equals(debugState1);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(equals);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void op_Equals_GivenSameIdAndSessionId_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var sessionID = Guid.NewGuid();
+            var debugState = new DebugState()
+            {
+                ID = sessionID,
+                SessionID = sessionID
+
+            };
+            var debugState1 = new DebugState()
+            {
+                ID = sessionID,
+                SessionID = sessionID
+
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(ReferenceEquals(debugState, debugState1));
+            //---------------Execute Test ----------------------
+            var @equals = debugState == debugState1;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(equals);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetHashCode_GivenSameIdAndSessionId_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var sessionID = Guid.NewGuid();
+            var debugState = new DebugState()
+            {
+                ID = sessionID,
+                SessionID = sessionID
+
+            };
+            var debugState1 = new DebugState()
+            {
+                ID = sessionID,
+                SessionID = sessionID
+
+            };
+            //---------------Assert Precondition----------------
+            Assert.AreNotEqual(0, debugState.GetHashCode());
+            Assert.AreNotEqual(0, debugState1.GetHashCode());
+            //---------------Execute Test ----------------------
+            var @equals = debugState.GetHashCode() == debugState1.GetHashCode();
+            //---------------Test Result -----------------------
+            Assert.IsTrue(equals);
+
+        }
+
+        
+
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void IsFinalStep_GivenValidEndStateArgs_ShouldReturnTrue()
         {
             //---------------Set up test pack-------------------
@@ -77,39 +161,6 @@ namespace Dev2.Tests.Diagnostics
             Assert.IsTrue(isFinalStep);
         }
 
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetSchema_GivenState_ShouldReturnNull()
-        {
-            //---------------Set up test pack-------------------
-            var debugState = new DebugState();
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var xmlSchema = debugState.GetSchema();
-            //---------------Test Result -----------------------
-            Assert.IsNull(xmlSchema);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ReadXml_GivenReader_ShouldBuildCurrentStateCorrectly()
-        {
-            //---------------Set up test pack-------------------
-            var emptyState = new DebugState();
-            var debugStateIn = DebugStateIn();
-            var serializeToJsonString = debugStateIn.SerializeToJsonString(new DefaultSerializationBinder());
-            XNode node = JsonConvert.DeserializeXNode(serializeToJsonString, "DebugState");
-            var xmlState = node.ToString(SaveOptions.DisableFormatting);
-            XmlReader xmlReader = XmlReader.Create(new StringReader(xmlState));
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(xmlReader);
-            //---------------Execute Test ----------------------
-            emptyState.ReadXml(xmlReader);
-            //---------------Test Result -----------------------
-            var @equals = emptyState.Equals(debugStateIn);
-            Assert.IsTrue(equals);
-        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -178,7 +229,7 @@ namespace Dev2.Tests.Diagnostics
             reader.Verify(w => w.ReadDateTime());
         }
 
-       
+
 
         #region Write
 
@@ -322,7 +373,12 @@ namespace Dev2.Tests.Diagnostics
                 ServerID = Guid.NewGuid(),
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddMinutes(3),
-                SessionID = Guid.NewGuid()
+                SessionID = Guid.NewGuid(),
+                IsAdded = false,
+                ActualType = "type",
+                WorkSurfaceMappingId = Guid.Empty,
+                Message = String.Empty,
+               
             };
             return debugStateIn;
         }

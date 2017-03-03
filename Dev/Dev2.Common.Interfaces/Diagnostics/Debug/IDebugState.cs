@@ -10,8 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Xml.Serialization;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
@@ -20,7 +18,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
     /// </summary>
 
     // ReSharper disable InconsistentNaming
-    public interface IDebugState : IEquatable<IDebugState>, IXmlSerializable
+    public interface IDebugState : IEquatable<IDebugState>
     {
         /// <summary>
         ///     Gets or sets the workspace ID.
@@ -164,14 +162,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
 
         Guid SessionID { get; set; }
         Guid WorkSurfaceMappingId { get; set; }
-
-        /// <summary>
-        ///     Writes this instance to the specified writer.
-        /// </summary>
-        /// <param name="writer">The writer to which this instance is written.</param>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        void Write(IByteWriterBase writer);
-
+        
         bool IsFinalStep();
 
         bool IsFirstStep();
