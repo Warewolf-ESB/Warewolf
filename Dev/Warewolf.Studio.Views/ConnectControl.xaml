@@ -57,9 +57,9 @@
                 <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewEditHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
-        <Button AutomationProperties.AutomationId="{Binding ConnectButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
+        <Button AutomationProperties.AutomationId="{Binding NewServerButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
                 Grid.Column="2"
-                x:Name="NewConnectionButton"
+                x:Name="NewServerButton"
                 Content="{x:Static languages:Core.New}" 
                 Width="Auto"
                 Style="{StaticResource ButtonOrangeStyle}" 

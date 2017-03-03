@@ -143,10 +143,13 @@
     <Compile Include="Help\HelpDescriptorViewModelTests.cs" />
     <Compile Include="Help\HelpModelTests.cs" />
     <Compile Include="Help\HelpWindowViewModelTests.cs" />
+    <Compile Include="ManageComPluginServiceModelTests.cs" />
     <Compile Include="ManageComPluginSourceModelTests.cs" />
     <Compile Include="ManageComPluginSourceViewModelTests.cs" />
     <Compile Include="DatabaseSourceViewModelBaseTests.cs" />
+    <Compile Include="ManageDbServiceModelTests.cs" />
     <Compile Include="ManageOdbcSourceViewModelTests.cs" />
+    <Compile Include="ManagePluginServiceModelTests.cs" />
     <Compile Include="ManagePostgreSqlSourceViewModelTests.cs" />
     <Compile Include="ManageMySqlSourceViewModelTests.cs" />
     <Compile Include="ManageOracleSourceViewModelTests.cs" />
@@ -161,7 +164,9 @@
     <Compile Include="ManagePluginSourceModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModelTests.cs" />
     <Compile Include="ManageRabbitMqSourceModelTests.cs" />
+    <Compile Include="ManageWcfServiceModelTests.cs" />
     <Compile Include="ManageWcfSourceViewModelTests.cs" />
+    <Compile Include="ManageWebServiceModelTests.cs" />
     <Compile Include="ManageWebServiceSourceModelTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
     <Compile Include="MessageBoxViewModelTests.cs" />

@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
 
 namespace Warewolf.UITests.ServerSource
@@ -8,7 +8,8 @@ namespace Warewolf.UITests.ServerSource
     [CodedUITest]
     public class ServerSourceTests
     {
-        private const string SourceName = "CodedUITestServerSource";
+        private const string SourceNameContextMenu = "CodedUITestServerSourceContextMenu";
+        private const string SourceNameConnectControl = "CodedUITestServerSourceConnectControl";
 
         [TestMethod]
         [TestCategory("Server Source")]
@@ -34,29 +35,28 @@ namespace Warewolf.UITests.ServerSource
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
             //Save Source
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
-            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            ExplorerUIMap.Filter_Explorer(SourceName);
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceNameContextMenu);
+            ExplorerUIMap.Filter_Explorer(SourceNameContextMenu);
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             //Edit Source
-            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceNameContextMenu);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist");
             ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab();
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
+            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceNameContextMenu);
             Assert.AreEqual("IntegrationTester", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text);
         }
 
         [TestMethod]
         [TestCategory("Server Source")]
         // ReSharper disable once InconsistentNaming
-        public void Create_ServerSource_From_ConnectControl_UITests()
+        public void Create_ServerSource_From_Explorer_ConnectControl()
         {
-            //Create Source            
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist");
+            ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.Enabled, "Protocol Combobox not enabled");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.AddressComboBox.Enabled, "Address Combobox not enabled");
@@ -64,6 +64,21 @@ namespace Warewolf.UITests.ServerSource
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton.Enabled, "User Radio button not enabled");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Enabled, "Windows Radio button not enabled");
             Assert.IsFalse(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button is enabled");
+            ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UserRadioButton.Selected, "User Radio Button not selected");
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Enabled, "Username Textbox not enabled");
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab();
+            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
+            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            //Save Source
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceNameConnectControl);
+            ExplorerUIMap.Filter_Explorer(SourceNameConnectControl);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+
         }
 
         #region Additional test attributes
