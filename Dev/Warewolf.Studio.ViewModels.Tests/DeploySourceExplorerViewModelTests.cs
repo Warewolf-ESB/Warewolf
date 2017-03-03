@@ -215,7 +215,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serverMock = new Mock<IServer>();
             var serverId = Guid.NewGuid();
             serverMock.SetupGet(it => it.EnvironmentID).Returns(serverId);
-            serverMock.SetupGet(it => it.ResourceName).Returns("newServerName");
+            serverMock.SetupGet(it => it.DisplayName).Returns("newServerName");
             environmentViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
             var env = _target.Environments.First();

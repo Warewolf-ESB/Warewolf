@@ -42,8 +42,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 _windowsGroupPermissionMock.Object
             });
-            _localhostServerMock.Setup(it => it.GetServerConnections()).Returns(new List<IServer>());
-            _localhostServerMock.SetupGet(it => it.ResourceName).Returns("localhostServerResourceName");
+            //_localhostServerMock.Setup(it => it.GetServerConnections()).Returns(new List<IServer>());
+            _localhostServerMock.SetupGet(it => it.DisplayName).Returns("localhostServerResourceName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_localhostServerMock.Object);
 
             _mockStudioUpdateManager = new Mock<IStudioUpdateManager>();
