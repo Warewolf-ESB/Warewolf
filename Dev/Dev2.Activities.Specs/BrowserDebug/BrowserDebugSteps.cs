@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Communication;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.ToolsSpecs.Toolbox.Recordset.Sort;
 
 namespace Dev2.Activities.Specs.BrowserDebug
 {
     [Binding]
     public sealed class BrowserDebugSteps
     {
-        private SpecExternalProcessExecutor _externalProcessExecutor = new SpecExternalProcessExecutor();
+        private readonly SpecExternalProcessExecutor _externalProcessExecutor = new SpecExternalProcessExecutor();
 
         [Then(@"I Debug ""(.*)"" in Browser")]
         [When(@"I Debug ""(.*)"" in Browser")]
@@ -99,12 +94,15 @@ namespace Dev2.Activities.Specs.BrowserDebug
             List<string> expectedflow = new List<string> { sequenceflow1, sequenceflow2, sequenceflow3 };
             List<string> actualflow = new List<string>();
 
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var debugState in allDebugStates)
             {
                 if (debugState.IsFirstStep())
                     continue;
                 if (debugState.StateType != StateType.End)
                 {
+                    
+                    // ReSharper disable once LoopCanBeConvertedToQuery
                     foreach (var debugStateChild in debugState.Children)
                     {
                         actualflow.Add(debugStateChild.DisplayName);
