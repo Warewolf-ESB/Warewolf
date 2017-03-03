@@ -156,7 +156,7 @@ namespace Warewolf.Studio.Views
 
         public void VerifyServerExistsintComboBox(string serverName)
         {
-
+           
         }
 
         public IEnumerable<string> GetServerOptions()
@@ -197,8 +197,7 @@ namespace Warewolf.Studio.Views
         {
             WindowsRadioButton.Focus();
         }
-
-      
+       
     }
 
     public class NullToVisibilityConverter : IValueConverter

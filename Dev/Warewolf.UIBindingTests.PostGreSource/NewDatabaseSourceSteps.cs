@@ -434,12 +434,21 @@ namespace Warewolf.UIBindingTests.PostGreSource
         [AfterScenario("PostgresDbSource")]
         public void Cleanup()
         {
+            CleanupResource();
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
+        }
+
+        private static void CleanupResource()
+        {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel =
+                ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ManagePostgreSqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var viewModel = new ManagePostgreSqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
+                new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManagePostgreSqlSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
@@ -448,6 +457,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
         }
+
 
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string ConectTo)
