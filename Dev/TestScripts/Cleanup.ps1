@@ -23,6 +23,7 @@ if ($Output.StartsWith("ERROR: ")) {
 }
 
 sc.exe stop "Warewolf Server"
+sleep 5
 
 taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
