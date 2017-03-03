@@ -47,7 +47,7 @@ namespace Warewolf.UITests.ServerSource
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
-            Assert.AreEqual("IntegrationTester", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text);
+            Assert.AreEqual("IntegrationTester", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
         }
 
         #region Additional test attributes
