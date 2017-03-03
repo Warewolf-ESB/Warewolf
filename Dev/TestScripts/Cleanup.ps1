@@ -1,4 +1,5 @@
 ﻿#Requires -RunAsAdministrator
+$ServiceOutput = ""
 
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
@@ -22,8 +23,11 @@ if ($Output.StartsWith("ERROR: ")) {
 	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" /f
 }
 
-sc.exe stop "Warewolf Server"
-sleep 5
+sc.exe stop "Warewolf Server" | %{$ServiceOutput += $_}
+if ($ServiceOutput -ne "[SC] ControlService FAILED 1062:The service has not been started.") {
+    Write-Host $ServiceOutput
+    sleep 5
+}
 
 taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
