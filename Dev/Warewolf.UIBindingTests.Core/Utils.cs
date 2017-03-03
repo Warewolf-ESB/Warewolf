@@ -34,6 +34,20 @@ namespace Warewolf.UIBindingTests.Core
             Application.Current.Run(Application.Current.MainWindow);
         }
 
+        public static void CloseViewAfterTesting(IView view)
+        {
+            var window = new Window {Content = view};
+            var app = Application.Current;
+            
+            app.MainWindow = window;
+            app.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                app.MainWindow.Close();
+            }));
+
+            
+        }
+
         public static void SetupResourceDictionary()
         {
             new LunaTheme();

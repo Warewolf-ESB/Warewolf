@@ -384,6 +384,8 @@ namespace Warewolf.UIBindingTests.OracleSource
         public static void FeaureCleanup()
         {
             CleanupResources();
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
 
         private static void CleanupResources()
@@ -403,6 +405,7 @@ namespace Warewolf.UIBindingTests.OracleSource
                 Utils.ResetViewModel<ManageOracleSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
+            
         }
 
         [AfterScenario("OracleDbSource")]

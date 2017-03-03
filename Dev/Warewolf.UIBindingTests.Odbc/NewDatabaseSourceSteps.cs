@@ -280,6 +280,8 @@ namespace Warewolf.UIBindingTests.Odbc
         public static void FeaureCleanup()
         {
             DisposeResources();
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
 
         [Then(@"database dropdown is ""(.*)""")]
