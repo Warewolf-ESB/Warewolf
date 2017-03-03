@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data;
@@ -161,7 +162,7 @@ namespace Dev2.Runtime.ESB
                             #region Execute ESB container
 
                             var theStart = theService.Actions.FirstOrDefault();
-                            if (theStart != null && theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService && theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.Workflow && dataObject.IsFromWebServer)
+                            if (theStart != null && theStart.ActionType != enActionType.InvokeManagementDynamicService && theStart.ActionType != enActionType.Workflow && dataObject.IsFromWebServer)
                             {
                                 throw new Exception(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser);
                             }
@@ -171,17 +172,12 @@ namespace Dev2.Runtime.ESB
                             if (theStart != null)
                             {
                                 theStart.Service = theService;
-                                var oldActionType = theStart.ActionType;
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container");
-                                if (dataObject.IsServiceTestExecution)
-                                {
-                                    theStart.ActionType = Common.Interfaces.Core.DynamicServices.enActionType.TestExecution;
-                                }
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
                                 result = container.Execute(out invokeErrors, Update);
-                                theStart.ActionType = oldActionType;
+                                
                                 errors.MergeErrors(invokeErrors);
                             }
                             #endregion
@@ -301,7 +297,7 @@ namespace Dev2.Runtime.ESB
                 }
 
             }
-            return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
+            return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
         }
 
         private DynamicService GetService(string serviceName, Guid resourceId)
@@ -328,27 +324,29 @@ namespace Dev2.Runtime.ESB
             dataObj.WorkspaceID = _workspace.ID;
 
             IEsbExecutionContainer result = null;
-
-            switch (serviceAction.ActionType)
+            if (dataObj.IsServiceTestExecution)
             {
-                case Common.Interfaces.Core.DynamicServices.enActionType.TestExecution:
-                    result = new ServiceTestExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
-                    break;
-                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
-                    result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
-                    break;
-                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
-                    result = new WebServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                    break;
-
-                case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
-                    result = new PerfmonExecutionContainer(new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel));
-                    break;
-                case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
-                    result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
-                    break;
+                result = new ServiceTestExecutionContainer(serviceAction, dataObj, _workspace, _esbChannel, _request);
             }
+            else
+            {
+                switch (serviceAction.ActionType)
+                {
+                    case enActionType.InvokeManagementDynamicService:
+                        result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
+                        break;
+                    case enActionType.InvokeWebService:
+                        result = new WebServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
+                        break;
 
+                    case enActionType.Workflow:
+                        result = new PerfmonExecutionContainer(new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel));
+                        break;
+                    case enActionType.RemoteService:
+                        result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
+                        break;
+                }
+            }
             return result;
         }
 

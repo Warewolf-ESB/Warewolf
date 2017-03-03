@@ -364,14 +364,17 @@ namespace ActivityUnitTests
                 result = env.FetchErrors();
                 return;
             }
+            var brackettedField = DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve);
+            CommonFunctions.WarewolfEvalResult evalResult = null;
             try
             {
-                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve), 0, true));
+                evalResult = env.Eval(brackettedField, 0, true);
             }
             catch( Exception err)
             {
                 error = err.Message;
             }
+            result = ExecutionEnvironment.WarewolfEvalResultToString(evalResult);
         }
 
         protected void GetRecordSetFieldValueFromDataList(IExecutionEnvironment environment, string recordSet, string fieldNameToRetrieve, out IList<string> result, out string error)
