@@ -57,6 +57,11 @@ namespace Dev2.Runtime.WebServer.Handlers
         public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
+        protected static IDSFDataObject TestDataObject { get; set; }
+        protected static IAuthorizationService TestServerAuthorizationService
+        {
+            get; set;
+        }
 
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
         {
@@ -76,7 +81,16 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             var allErrors = new ErrorResultTO();
-            IDSFDataObject dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName, WorkspaceID = workspaceGuid };
+            IDSFDataObject dataObject = TestDataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+            {
+                IsFromWebServer = true
+                ,
+                ExecutingUser = user
+                ,
+                ServiceName = serviceName
+                ,
+                WorkspaceID = workspaceGuid
+            };
             var contains = webRequest?.Variables?.AllKeys.Contains("IsDebug");
             if (contains != null && contains.Value)
             {
@@ -262,9 +276,10 @@ namespace Dev2.Runtime.WebServer.Handlers
             var esbEndpoint = new EsbServicesEndpoint();
             dataObject.EsbChannel = esbEndpoint;
             var canExecute = true;
-            if (ServerAuthorizationService.Instance != null && dataObject.ReturnType != EmitionTypes.TEST)
+            IAuthorizationService instance = TestServerAuthorizationService ?? ServerAuthorizationService.Instance;
+            if (instance != null && dataObject.ReturnType != EmitionTypes.TEST)
             {
-                var authorizationService = ServerAuthorizationService.Instance;
+                var authorizationService = instance;
                 var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
                 var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
                 canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == "ReservedService");
@@ -384,14 +399,15 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
-                var remoteDebugItems = fetchDebugItems?.Where(state => state.StateType != StateType.Duration).ToArray();
+                var remoteDebugItems = fetchDebugItems?.Where(state => state.StateType != StateType.Duration).ToArray() ?? new IDebugState[] { };
                 var debugStates = DebugStateTreeBuilder.BuildTree(remoteDebugItems);
                 var serialize = serializer.Serialize(debugStates);
                 return new StringResponseWriter(serialize, formatter.ContentType);
             }
 
 
-            foreach (var error in dataObject.Environment.Errors.Union(dataObject.Environment.AllErrors))
+            var unionedErrors = dataObject.Environment?.Errors?.Union(dataObject.Environment?.AllErrors) ?? new List<string>();
+            foreach (var error in unionedErrors)
             {
                 if (error.Length > 0)
                 {
