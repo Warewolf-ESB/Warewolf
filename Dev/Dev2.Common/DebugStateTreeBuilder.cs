@@ -13,27 +13,38 @@ namespace Dev2.Common
         {
             var groups = source.GroupBy(i => i.ParentID);
             var roots = groups.First(g => !g.Key.HasValue).ToList();
-
+            roots = roots.Where(state => state.StateType != StateType.Duration).ToList();
             if (roots.Any())
             {
                 var dict = groups.Where(g => g.Key.HasValue).ToDictionary(g => g.Key.Value, g => g.ToList());
                 for (var i = 0; i < roots.Count(); i++)
                     AddChildren(roots[i], dict);
             }
-            var debugStates = roots.GroupBy(state => state.Children).Select(states => states.First());
+            var debugStates = roots.DistinctBy(state => new
+            {
+                state.ID
+                                       ,
+                state.StateType
+                                       ,
+                state.Children
+
+            }).ToList();
+
             return debugStates;
 
         }
 
         private static void AddChildren(IDebugState node, IDictionary<Guid, List<IDebugState>> source)
         {
-            if (source.ContainsKey(node.ID) && !node.IsAdded)//Services have the same Id so, they dont work inside the foreach
+            if (source.ContainsKey(node.ID)
+                && (!node.IsAdded || (node.ActualType?.Contains("DsfForEachActivity") ?? false))
+                && node.StateType != StateType.Duration)//Services have the same Id so, they dont work inside the foreach
             {
-                node.Children = source[node.ID];
-
+                var debugStates = source[node.ID]?.DistinctBy(state => new { state.ID, state.ParentID })?.ToList();
+                node.Children = debugStates ?? new List<IDebugState>();
                 node.IsAdded = true;
-                for (var i = 0; i < node.Children.Count; i++)
-                    AddChildren(node.Children[i], source);
+                foreach (var state in node.Children)
+                    AddChildren(state, source);
             }
             else
             {

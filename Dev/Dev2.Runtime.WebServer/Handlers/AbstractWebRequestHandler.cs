@@ -23,6 +23,7 @@ using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Decision;
@@ -383,7 +384,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
-                var remoteDebugItems = fetchDebugItems?.ToArray();
+                var remoteDebugItems = fetchDebugItems?.Where(state => state.StateType != StateType.Duration).ToArray();
                 var debugStates = DebugStateTreeBuilder.BuildTree(remoteDebugItems);
                 var serialize = serializer.Serialize(debugStates);
                 return new StringResponseWriter(serialize, formatter.ContentType);
@@ -529,7 +530,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     if (interTestRequest.ExecuteResult != null)
                     {
-                        var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString()) ?? new TestRunResult {TestName = dataObjectToUse.TestName};
+                        var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString()) ?? new TestRunResult { TestName = dataObjectToUse.TestName };
                         result = new ServiceTestModelTO { Result = r, TestName = r.TestName };
                     }
                 }

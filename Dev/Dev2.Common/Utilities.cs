@@ -18,9 +18,15 @@ namespace Dev2.Common
     public static class Utilities
     {
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
-        {            
+        {
             var second = e as IList<T> ?? e.ToList();
             return second.SelectMany(c => f(c).Flatten(f)).Concat(second);
+        }
+
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        {
+            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            return source.Where(element => seenKeys.Add(keySelector(element)));
         }
 
         public static void PerformActionInsideImpersonatedContext(IPrincipal userPrinciple, Action actionToBePerformed)

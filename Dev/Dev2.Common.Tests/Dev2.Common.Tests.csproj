@@ -82,6 +82,7 @@
     </None>
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MapperTests.cs" />
+    <Compile Include="DistinctByTests.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
     <EmbeddedResource Include="Json\FlatStates.json" />
   </ItemGroup>
@@ -104,6 +105,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Json\ForEachWorkFlow.json" />
+    <EmbeddedResource Include="Json\NestedForEachWorkFlow.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
