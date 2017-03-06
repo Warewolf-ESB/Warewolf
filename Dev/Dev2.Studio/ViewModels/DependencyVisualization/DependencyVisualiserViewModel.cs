@@ -14,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Common.DependencyVisualization;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;

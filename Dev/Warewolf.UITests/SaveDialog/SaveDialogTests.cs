@@ -18,8 +18,8 @@ namespace Warewolf.UITests.SaveDialog
         public void Save_Dialog_Filter_Given_HelloWorld_Filters_Explorer_Tree()
         {
             DialogsUIMap.Filter_Save_Dialog_Explorer(HelloWorld);
-            Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
-            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
+            Assert.IsTrue(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists, "No items in the explorer tree after filtering when there should be at exactly 1.");
+            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem), "Too many items in the explorer tree after filtering when there should be at exactly 1.");
             DialogsUIMap.Click_SaveDialog_CancelButton();
         }
         
@@ -84,6 +84,7 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Filter_Save_Dialog_Explorer("Hello World");
             Assert.IsTrue(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
             DialogsUIMap.Click_SaveDialog_CancelButton();
+            Playback.Wait(2000);
             ExplorerUIMap.ExplorerItemsAppearOnTheExplorerTree();
         }
 

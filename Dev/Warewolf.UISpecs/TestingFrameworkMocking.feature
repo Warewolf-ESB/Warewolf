@@ -15,8 +15,8 @@ Scenario: Creating A Test From Debug While Theres An Unsaved Test In The Tests T
 	And I have Hello World workflow on the Explorer
 	And I Open Explorer First Item Tests With Context Menu
 	And I Click The Create "4"th test Button
-	Then I Open Explorer First Item Context Menu
-	And I Press F6
+	Then I Open Explorer First Item Context Menu	
+	And I Execute Workflow Using DebugRun Button
 	And I Click Create Test From Debug
 	And Message box window appears
 	And I Click Save Before Continuing MessageBox OK 
