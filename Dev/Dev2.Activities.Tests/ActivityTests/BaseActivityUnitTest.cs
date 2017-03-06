@@ -369,12 +369,12 @@ namespace ActivityUnitTests
             try
             {
                 evalResult = env.Eval(brackettedField, 0, true);
+                result = ExecutionEnvironment.WarewolfEvalResultToString(evalResult);
             }
             catch( Exception err)
             {
                 error = err.Message;
             }
-            result = ExecutionEnvironment.WarewolfEvalResultToString(evalResult);
         }
 
         protected void GetRecordSetFieldValueFromDataList(IExecutionEnvironment environment, string recordSet, string fieldNameToRetrieve, out IList<string> result, out string error)
