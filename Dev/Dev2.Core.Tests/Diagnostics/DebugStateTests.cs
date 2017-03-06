@@ -341,9 +341,8 @@ namespace Dev2.Tests.Diagnostics
             Assert.IsFalse(debugState.IsAdded);
             //---------------Execute Test ----------------------
             var serializeToJsonString = debugState.SerializeToJsonString(new DefaultSerializationBinder());
-            var contains = serializeToJsonString.Contains("\"StateType\": \"End\"");
             //---------------Test Result -----------------------
-            Assert.IsTrue(contains);
+            StringAssert.Contains(serializeToJsonString, "\"StateType\": \"End\"");
         }
         #endregion
 
