@@ -73,26 +73,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             unzip.PerformValidation();
         }
 
-        [When(@"validating the tool")]
-        public void WhenValidatingTheTool()
-        {
-            DsfUnZip dsfUnZip = new DsfUnZip()
-            {
-                DestinationPassword = CommonSteps.DestinationPasswordHolder,
-                DestinationUsername = CommonSteps.DestinationUsernameHolder,
-                DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
-                Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
-                OutputPath = CommonSteps.DestinationHolder,
-
-            };
-            if (!scenarioContext.ContainsKey("activity"))
-                scenarioContext.Add("activity", dsfUnZip);
-            dsfUnZip.PerformValidation();
-
-            var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
-            scenarioContext.Add("viewModel", viewModel);
-        }
-
         [Then(@"unzip execution error message will be """"""(.*)""")]
         public void ThenUnzipExecutionErrorMessageWillBe(string p0)
         {
