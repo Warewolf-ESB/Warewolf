@@ -8,6 +8,26 @@ namespace Dev2.Common.Tests
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Id { get; set; }
+#pragma warning disable 169
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        // ReSharper disable once ConvertToConstant.Local
+        private string _name = "name";
+#pragma warning restore 169
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return _name;
+        }
+
+        #endregion
     }
 
     public class Child
@@ -16,6 +36,9 @@ namespace Dev2.Common.Tests
         public string Surname { get; set; }
         public int Id { get; set; }
         public int ParentId { get; set; }
+#pragma warning disable 169
+        private string _name;
+#pragma warning restore 169
     }
 
     [TestClass]
