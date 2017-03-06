@@ -66,7 +66,6 @@ Scenario Outline: Write file validation
 	And Method is "<method>"
 	And input contents as "<content>"   
 	And result as "<resultVar>"
-	When validating the tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
     When the write file tool is executed	

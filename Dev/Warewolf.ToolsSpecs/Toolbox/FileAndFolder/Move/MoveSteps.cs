@@ -62,7 +62,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Move
             {
                 Action = move
             };
-            scenarioContext.Add("activity", move);
+            if (!scenarioContext.ContainsKey("activity")) {
+                scenarioContext.Add("activity", move);
+            }
         }
     }
 }

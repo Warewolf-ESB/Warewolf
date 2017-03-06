@@ -96,9 +96,7 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         /// <summary>
         ///     The remote service
         /// </summary>
-        RemoteService,
-
-        TestExecution
+        RemoteService
     }
 
     /// <summary>

@@ -1,28 +1,55 @@
 ﻿#Requires -RunAsAdministrator
-$Output = ""
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" 1>$Output
-taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq RUNNING" 1>$Output
+$ServiceOutput = ""
 
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" 1>$Output
-taskkill /im "Warewolf Studio.vshost.exe" /fi "STATUS eq UNKNOWN" 1>$Output
-
-if ($Output.Contains("SUCCESS")) {
-    Write-Host $Output
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
+if (!($Output.StartsWith("INFO: "))) {
+    sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+    taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" /f
+}
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" | %{$Output = $_}
+if (!($Output.StartsWith("INFO: "))) {
+    sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" /f
+}
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" | %{$Output = $_}
+if (!($Output.StartsWith("INFO: "))) {
+    sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" /f
 }
 
-$ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinu
-if ($ServerService -ne $null -and $ServerService.Status -eq "Running") {
-    [int32]$Result = 1
-    $RetryCount = 0
-    while ($Result -ne 0 -and $RetryCount++ -lt 5) {
-        [int32]$Result = $ServerService.Stop()
-        if ($Result -ne 0) {
-            Stop-Process -Name "Warewolf Server"
-        }
-        sleep 10
-    }
+sc.exe stop "Warewolf Server" | %{$ServiceOutput += $_}
+if ($ServiceOutput -ne "[SC] ControlService FAILED 1062:The service has not been started.") {
+    Write-Host $ServiceOutput
+    sleep 5
 }
-Get-Process *Warewolf* | %{$_.Kill()}
+
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
+if (!($Output.StartsWith("INFO: "))) {
+    sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" /f
+}
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" | %{$Output = $_}
+if (!($Output.StartsWith("INFO: "))) {
+    sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" /f
+}
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" | %{$Output = $_}
+if (!($Output.StartsWith("INFO: "))) {
+    sleep 5
+}
+if ($Output.StartsWith("ERROR: ")) {
+	taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" /f
+}
 
 $ToClean = `
 "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
@@ -41,6 +68,5 @@ foreach ($FileOrFolder in $ToClean) {
 	}	
 }
 if ($ExitCode -eq 1) {
-    Sleep 30
     exit 1
 }
