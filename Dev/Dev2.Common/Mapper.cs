@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Dev2.Common
 {
@@ -59,8 +60,8 @@ namespace Dev2.Common
 
             var mapToProperties = tTo.GetProperties().Where(info => !ignoreList.Contains(info.Name));
             var mapFromProperties = tFrom.GetProperties().Where(info => !ignoreList.Contains(info.Name));
-            var mapToFields = tTo.GetFields();
-            var mapFromFields = tFrom.GetFields();
+            var mapToFields = tTo.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Where(info => !info.Name.Contains("k__BackingField"));
+            var mapFromFields = tFrom.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).Where(info => !info.Name.Contains("k__BackingField"));
 
             var equalProps = from tP in mapToProperties
                              join fP in mapFromProperties on tP.Name equals fP.Name
@@ -95,5 +96,7 @@ namespace Dev2.Common
                 }
             map?.Invoke(mapFrom, mapTo);
         }
+
+      
     }
 }
