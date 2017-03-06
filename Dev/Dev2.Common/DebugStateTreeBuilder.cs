@@ -11,7 +11,11 @@ namespace Dev2.Common
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public static IEnumerable<IDebugState> BuildTree(IEnumerable<IDebugState> source)
         {
-            var groups = source.GroupBy(i => i.ParentID);
+            var groups = source?.GroupBy(i => i.ParentID)?? new List<IGrouping<Guid?, IDebugState>>();
+            if (!groups.Any())
+            {
+                return new List<IDebugState>();
+            }
             var roots = groups.First(g => !g.Key.HasValue).ToList();
             roots = roots.Where(state => state.StateType != StateType.Duration).ToList();
             if (roots.Any())
@@ -20,7 +24,7 @@ namespace Dev2.Common
                 for (var i = 0; i < roots.Count(); i++)
                     AddChildren(roots[i], dict);
             }
-            var debugStates = roots.DistinctBy(state => new
+            var debugStates = roots?.DistinctBy(state => new
             {
                 state.ID
                                        ,

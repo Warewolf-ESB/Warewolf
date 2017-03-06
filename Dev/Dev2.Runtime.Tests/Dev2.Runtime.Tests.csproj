@@ -346,6 +346,7 @@
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
     <Compile Include="Util\RemoteDebugItemParserTest.cs" />
+    <Compile Include="WebServer\AbstractWebRequestHandlerTests.cs" />
     <Compile Include="WebServer\Controllers\TestWebServerController.cs" />
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
     <Compile Include="WebServer\Controllers\WebServerControllerTests.cs" />
