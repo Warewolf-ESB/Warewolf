@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
+using Dev2.ConnectionHelpers;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
 
@@ -34,12 +35,12 @@ namespace Dev2.Studio.Core
             UpdateManagerProxy = new UpdateProxy(controllerFactory, environmentConnection);
         }
 
-        public void FireServerSaved(Guid savedServerID)
+        public void FireServerSaved(Guid savedServerID, bool isDeleted = false)
         {
             if (ServerSaved != null)
             {
                 var handler = ServerSaved;
-                handler.Invoke(savedServerID);
+                handler.Invoke(savedServerID, isDeleted);
             }
         }
 
@@ -48,6 +49,7 @@ namespace Dev2.Studio.Core
         public void Save(IServerSource serverSource)
         {
             UpdateManagerProxy.SaveServerSource(serverSource, GlobalConstants.ServerWorkspaceID);
+            ConnectControlSingleton.Instance.ReloadServer();
             FireServerSaved(serverSource.ID);
         }
 
@@ -190,7 +192,7 @@ namespace Dev2.Studio.Core
             return UpdateManagerProxy.TestWcfServiceSource(wcfServerSource);
         }
 
-        public Action<Guid> ServerSaved { get; set; }
+        public Action<Guid, bool> ServerSaved { get; set; }
 
         #region Implementation of IStudioUpdateManager
 
