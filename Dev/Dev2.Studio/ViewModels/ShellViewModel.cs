@@ -622,7 +622,10 @@ namespace Dev2.Studio.ViewModels
         public void SetActiveServer(Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
-            ActiveServer = environmentModel;
+            if (environmentModel != null)
+            {
+                ActiveServer = environmentModel;
+            }
             var server = ExplorerViewModel?.ConnectControlViewModel?.Servers?.FirstOrDefault(a => a.EnvironmentID == environmentId);
             if (server != null)
             {

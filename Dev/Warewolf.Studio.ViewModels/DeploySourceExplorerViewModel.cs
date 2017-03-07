@@ -62,7 +62,9 @@ namespace Warewolf.Studio.ViewModels
 
         void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            UpdateItemForDeploy(environmentId);
+            var connectControlViewModel = sender as ConnectControlViewModel;
+            var selectedConnection = connectControlViewModel?.SelectedConnection;
+            ServerConnected(this, selectedConnection);
         }
 
         #region Overrides of ExplorerViewModel
@@ -279,15 +281,20 @@ namespace Warewolf.Studio.ViewModels
 
         async void ServerConnected(object _, IServer server)
         {
-            if (server != null)
+            if (server == null)
+            {
+                return;
+            }
+            var createNew = _environments.All(environmentViewModel => environmentViewModel.ResourceId != server.EnvironmentID);
+            if (createNew)
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
                 await environmentModel.Load(IsDeploy);
                 OnPropertyChanged(() => Environments);
-                AfterLoad(server.EnvironmentID);
                 _statsArea.Calculate(environmentModel.AsList().Select(model => model as IExplorerTreeItem).ToList());
             }
+            AfterLoad(server.EnvironmentID);
         }
 
         private bool IsDeploy { get; set; }
