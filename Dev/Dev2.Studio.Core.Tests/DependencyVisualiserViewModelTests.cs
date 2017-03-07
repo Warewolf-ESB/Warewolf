@@ -407,7 +407,6 @@ namespace Dev2.Core.Tests
             var resourceId1 = Guid.NewGuid();
             var server = new Mock<IServer>();
             var mVm = new Mock<IShellViewModel>();
-            var shell = new Mock<IShellViewModel>();
             var env = new Mock<IEnvironmentViewModel>();
             var exploreItm = new Mock<IExplorerItemViewModel>();
             exploreItm.SetupGet(model => model.ResourceName).Returns("a");
@@ -424,12 +423,12 @@ namespace Dev2.Core.Tests
             {
                 exploreItm.Object,exploreItm1.Object
             });
+            mVm.SetupGet(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             mVm.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new BindableCollection<IEnvironmentViewModel>()
             {
                 env.Object
             });
             CustomContainer.Register(mVm.Object);
-            CustomContainer.Register(shell.Object);
             var value = new Graph("a");
 
             value.Nodes.Add(new DependencyVisualizationNode(resourceId.ToString(), 2, 2, true, false));

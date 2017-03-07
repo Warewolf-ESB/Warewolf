@@ -232,6 +232,7 @@ namespace Dev2.Core.Tests
             var envRepo = new Mock<IServerRepository>();
             envRepo.Setup(r => r.All()).Returns(new List<IServer>(new[] { env.Object }));
             envRepo.Setup(r => r.Source).Returns(env.Object);
+            envRepo.Setup(r => r.ActiveServer).Returns(env.Object);
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
 

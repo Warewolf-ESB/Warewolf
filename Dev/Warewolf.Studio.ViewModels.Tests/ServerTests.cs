@@ -57,7 +57,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void Server_GivenNewInstance_IsNotNull()
         {
             //------------Setup for test--------------------------
-            var server = new Server(Guid.Empty,new Mock<IEnvironmentConnection>().Object);
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.DisplayName).Returns("TestConnection");
+            var server = new Server(Guid.Empty,mockConnection.Object);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(server);
@@ -163,9 +165,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             _proxyLayer.Setup(repository => repository.QueryManagerProxy).Returns(query.Object);
             var server = new Server(Guid.Empty, _envConnection.Object);
             server.ProxyLayer = _proxyLayer.Object;
-            Assert.AreEqual(1, server.Permissions.Count);
+            server.Permissions = windowsGroupPermissions;
             //------------Assert Precondition-------------------------
             Assert.IsNotNull(server.Permissions);
+            Assert.AreEqual(1, server.Permissions.Count);
             //------------Execute Test---------------------------
             server.Permissions = new List<IWindowsGroupPermission>();
             //------------Assert Results-------------------------
@@ -397,7 +400,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             _envConnection.Setup(model => model.IsLocalHost).Returns(false);
-            _envConnection.Setup(model => model.IsConnected).Returns(false);
+            _envConnection.Setup(model => model.IsConnected).Returns(true);
             _envConnection.Setup(model => model.Disconnect());
             var server = new Server(Guid.Empty, _envConnection.Object);
             //------------Assert Precondition--------------------
@@ -524,7 +527,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var connection = CreateConnection();
             var repo = new Mock<IResourceRepository>();
             var env = new Server(Guid.NewGuid(), connection.Object, repo.Object);
-            const string expectedDisplayName = "localhost (http://localhost:3142/)";
+            const string expectedDisplayName = "localhost";
             //------------Execute Test---------------------------
             string displayName = env.DisplayName;
             //------------Assert Results-------------------------

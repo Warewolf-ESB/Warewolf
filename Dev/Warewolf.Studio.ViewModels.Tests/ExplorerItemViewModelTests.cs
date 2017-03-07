@@ -616,17 +616,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentModelMock = new Mock<IServer>();
             environmentModelMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
             _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
+            var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
+            environmentModelMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
             _target.Server = environmentModelMock.Object;
             _target.ResourceType = "ServerSource";
             _target.ResourceId = Guid.NewGuid();
-            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
-            var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
 
             //act
-            _target.DeleteCommand.Execute(null);
             Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
+            _target.DeleteCommand.Execute(null);
 
             //assert
             _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.EnvironmentID));
@@ -642,13 +641,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentModelMock = new Mock<IServer>();
             environmentModelMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
             _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
+            var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
+            environmentModelMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
             _target.Server = environmentModelMock.Object;
             _target.ResourceType = "Server";
             _target.IsServer = true;
             _target.ResourceId = Guid.NewGuid();
             _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
-            var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
 
             //act
             _target.DeleteCommand.Execute(null);
