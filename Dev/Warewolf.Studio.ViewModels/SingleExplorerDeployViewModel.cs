@@ -291,7 +291,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         foreach (var conflictItem in ConflictItems)
                         {
-                            if (destEnv != null)
+                            if (destEnv?.ProxyLayer?.UpdateManagerProxy != null)
                             {
                                 var task = Task.Run(async () => await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
                                     conflictItem.DestinationId, conflictItem.DestinationName,
