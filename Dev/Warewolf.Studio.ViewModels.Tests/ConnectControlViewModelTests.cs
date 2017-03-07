@@ -629,6 +629,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             PrivateObject privateObject = new PrivateObject(connectControlViewModel);
             privateObject.SetField("_selectedId", intergrationId);
             connectControlViewModel.LoadServers();
+            connectControlViewModel.SelectedConnection = intergration.Object;
             //------------Assert Results-------------------------
             Assert.AreEqual(intergrationId, connectControlViewModel.SelectedConnection.EnvironmentID);
         }
