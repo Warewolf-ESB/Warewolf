@@ -18,7 +18,6 @@ using Dev2.Data.TO;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
@@ -113,7 +112,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
 
-            var resource = request.ResourceID != Guid.Empty ? ResourceCatalog.Instance.GetResource(workspaceID, request.ResourceID) : ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
+            var resource = request.ResourceID != Guid.Empty ? Hosting.ResourceCatalog.Instance.GetResource(workspaceID, request.ResourceID) : Hosting.ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
             var isManagementResource = false;
             if (!string.IsNullOrEmpty(request.TestName))
             {
@@ -124,7 +123,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 dataObject.ResourceID = resource.ResourceID;
                 dataObject.SourceResourceID = resource.ResourceID;
-                isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
+                isManagementResource = Hosting.ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
             }
             else
             {
