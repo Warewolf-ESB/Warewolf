@@ -81,7 +81,7 @@ namespace Warewolf.Studio.ViewModels
             return SelectedConnection.EnvironmentID != Guid.Empty;
         }
 
-        void UpdateRepositoryOnServerSaved(Guid savedServerID)
+        void UpdateRepositoryOnServerSaved(Guid savedServerID, bool isDeleted = false)
         {
             var currentServer = Servers.FirstOrDefault(server => server.EnvironmentID == savedServerID);
             var idx = -1;
@@ -95,6 +95,10 @@ namespace Warewolf.Studio.ViewModels
                 idx = Servers.IndexOf(currentServer);
                 currentServer.NetworkStateChanged -= OnServerOnNetworkStateChanged;
                 Servers.Remove(currentServer);
+            }
+            if (isDeleted)
+            {
+                return;
             }
             var updatedServer = ServerRepository.Instance.Get(savedServerID);
             if (updatedServer == null)

@@ -89,11 +89,10 @@ namespace Warewolf.Studio.ViewModels
             : this(updateManager, aggregator, asyncWorker, executor)
         {
             VerifyArgument.IsNotNull("serverSource", serverSource);
-            
+
             _warewolfserverName = updateManager.ServerName;
             AsyncWorker.Start(() => updateManager.FetchSource(serverSource.ID), source =>
             {
-
                 _serverSource = source;
                 _serverSource.ResourcePath = serverSource.ResourcePath;
                 GetLoadComputerNamesTask(() =>
@@ -103,7 +102,6 @@ namespace Warewolf.Studio.ViewModels
                         SetupHeaderTextFromExisting();
                     }
                 );
-               
             });
         }
 
@@ -113,7 +111,6 @@ namespace Warewolf.Studio.ViewModels
             {
             }
             HeaderText = (_serverSource == null ? ResourceName : _serverSource.Name).Trim();
-
             Header = _serverSource == null ? ResourceName : _serverSource.Name;
         }
 
@@ -281,13 +278,10 @@ namespace Warewolf.Studio.ViewModels
         void Save(IServerSource source)
         {
             _updateManager.Save(source);
-            
         }
         public override void Save()
         {
             SaveConnection();
-            //ConnectControlSingleton.Instance.ReloadServer();
-            
         }
 
         public override IServerSource ToModel()
@@ -311,7 +305,6 @@ namespace Warewolf.Studio.ViewModels
 
         IServerSource ToNewSource()
         {
-
             return new ServerSource
             {
                 AuthenticationType = AuthenticationType,
