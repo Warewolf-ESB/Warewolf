@@ -142,7 +142,7 @@
     <Compile Include="Core\WcfInputRegionTests.cs" />
     <Compile Include="Core\WebDeleteInputRegionTest.cs" />
     <Compile Include="Core\WebInputRegionTest.cs" />
-    <Compile Include="Core\WebOutputsRegion.cs" />
+    <Compile Include="Core\WebOutputsRegionTests.cs" />
     <Compile Include="Core\WebPutInputRegionTest.cs" />
     <Compile Include="Core\WebPostInputRegionTest.cs" />
     <Compile Include="Core\WebSourceRegionTest.cs" />
