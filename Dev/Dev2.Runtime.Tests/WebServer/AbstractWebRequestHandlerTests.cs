@@ -20,7 +20,7 @@ namespace Dev2.Tests.Runtime.WebServer
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgs_ShouldreturnWriter()
+        public void CreateFormGivenValidArgsShouldreturnWriter()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateForm_GivenValidArgsContainsIsDebug_ShouldSetDataObjectAsDebug()
+        public void CreateFormGivenValidArgsContainsIsDebugShouldSetDataObjectAsDebug()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BindRequestVariablesToDataObject_GivenHasBookMark_ShouldSetDataObjectBookmark()
+        public void BindRequestVariablesToDataObjectGivenHasBookMarkShouldSetDataObjectBookmark()
         {
             //---------------Set up test pack-------------------
             var authorizationService = new Mock<IAuthorizationService>();
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostData_GivenUrlWithPostData_ShouldReturnPostData()
+        public void GetPostDataGivenUrlWithPostDataShouldReturnPostData()
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<ICommunicationContext>();
@@ -124,7 +124,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Location_GivenReturnsCorrectly()
+        public void LocationGivenReturnsCorrectly()
         {
             //---------------Set up test pack-------------------
             var authorizationService = new Mock<IAuthorizationService>();
@@ -171,7 +171,7 @@ namespace Dev2.Tests.Runtime.WebServer
         }
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #endregion
