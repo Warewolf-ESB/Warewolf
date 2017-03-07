@@ -2455,7 +2455,7 @@ namespace Warewolf.Studio.ViewModels
         public void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
     }
 }
