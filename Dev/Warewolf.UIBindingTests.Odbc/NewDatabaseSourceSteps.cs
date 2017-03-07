@@ -257,6 +257,11 @@ namespace Warewolf.UIBindingTests.Odbc
         [AfterScenario("ODBCSource")]
         public void Cleanup()
         {
+            DisposeResources();
+        }
+        
+        private static void DisposeResources()
+        {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -272,6 +277,11 @@ namespace Warewolf.UIBindingTests.Odbc
             }
         }
 
+        [AfterFeature("DbSource")]
+        public static void FeaureCleanup()
+        {
+            DisposeResources();
+        }
 
         [Then(@"database dropdown is ""(.*)""")]
         public void ThenDatabaseDropdownIs(string p0)

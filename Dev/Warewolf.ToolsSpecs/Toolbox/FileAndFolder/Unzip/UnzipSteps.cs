@@ -25,6 +25,8 @@ using Dev2.Interfaces;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Activities.Designers2.Unzip;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 {
@@ -70,27 +72,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             BuildDataList();
             var unzip = scenarioContext.Get<DsfUnZip>("activity");
             unzip.PerformValidation();
-        }
-
-        [When(@"validating the tool")]
-        public void WhenValidatingTheTool()
-        {
-            ////var dsfUnZip = scenarioContext.Get<DsfUnZip>("activity");
-            //DsfUnZip dsfUnZip = new DsfUnZip()
-            //{
-            //    DestinationPassword = CommonSteps.DestinationPasswordHolder,
-            //    DestinationUsername = CommonSteps.DestinationUsernameHolder,
-            //    DestinationPrivateKeyFile = CommonSteps.DestinationPrivateKeyFile,
-            //    Overwrite = CommonSteps.OverwriteHolder.ToUpper() == "overwrite",
-            //    OutputPath = CommonSteps.DestinationHolder,
-
-            //};
-            //if (!scenarioContext.ContainsKey("activity"))
-            //    scenarioContext.Add("activity", dsfUnZip);
-            //dsfUnZip.PerformValidation();
-
-            //var viewModel = new UnzipDesignerViewModel(ModelItemUtils.CreateModelItem(dsfUnZip));
-            //scenarioContext.Add("viewModel", viewModel);
         }
 
         [Then(@"unzip execution error message will be """"""(.*)""")]
