@@ -30,7 +30,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         static IResponseWriter GetApisJson(string basePath,bool isPublic)
         {
-            var apiBuilder = new ApisJsonBuilder(ServerAuthorizationService.Instance, ResourceCatalog.Instance);
+            var apiBuilder = new ApisJsonBuilder(ServerAuthorizationService.Instance, Hosting.ResourceCatalog.Instance);
             var apis = apiBuilder.BuildForPath(basePath, isPublic);
             var converter = new JsonSerializer();
             StringBuilder result = new StringBuilder();

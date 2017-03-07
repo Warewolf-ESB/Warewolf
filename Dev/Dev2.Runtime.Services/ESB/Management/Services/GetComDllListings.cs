@@ -56,7 +56,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (COMException ex)
             {
-                Dev2Logger.Error(ex);
                 msg.HasError = true;
                 msg.SetMessage(ex.Message);
             }
