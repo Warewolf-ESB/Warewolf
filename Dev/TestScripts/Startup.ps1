@@ -89,13 +89,6 @@ if ($ServerPath -eq "") {
     }
 }
 
-Remove-Item ((Get-Item "$ServerPath").Directory.FullName + "\ServerStarted") -Recurse -ErrorAction SilentlyContinue
-if (Test-Path ((Get-Item "$ServerPath").Directory.FullName + "\ServerStarted")) {
-    Write-Host Cannot delete "ServerStarted" file.
-    sleep 30
-    exit 1
-}
-
 if ((Get-Service "Warewolf Server" -ErrorAction SilentlyContinue) -eq $null) {
     if ($DotCoverPath -eq "") {
         New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
@@ -103,6 +96,15 @@ if ((Get-Service "Warewolf Server" -ErrorAction SilentlyContinue) -eq $null) {
         $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover /TargetExecutable=\`"" + $ServerPath + "\`" /LogFile=\`"%ProgramData%\Warewolf\Server Log\dotCover.log\`" /Output=\`"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\`""
         New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
     }
+} else {
+	if ($DotCoverPath -eq "") {
+		Write-Host Configuring service to $ServerPath
+		sc.exe config "Warewolf Server" binPath= "$ServerPath"
+	} else {
+		$BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover /TargetExecutable=\`"" + $ServerPath + "\`" /LogFile=\`"%ProgramData%\Warewolf\Server Log\dotCover.log\`" /Output=\`"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\`""
+		Write-Host Configuring service to $BinPathWithDotCover
+		sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
+	}
 }
 
 $CurrentDirectory = $PSScriptRoot
@@ -122,14 +124,6 @@ if ($ResourcesPath -ne "" -and $CurrentDirectory -ne (Get-Item $ServerPath).Dire
 Write-Host Copying resources from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") into Warewolf ProgramData.
 Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 
-if ($DotCoverPath -eq "") {
-    Write-Host Configuring service to $ServerPath
-    sc.exe config "Warewolf Server" binPath= "$ServerPath"
-} else {
-    $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover /TargetExecutable=\`"" + $ServerPath + "\`" /LogFile=\`"%ProgramData%\Warewolf\Server Log\dotCover.log\`" /Output=\`"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\`""
-    Write-Host Configuring service to $BinPathWithDotCover
-    sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
-}
 
 # ****************************** Server Start ******************************
 Start-Service "Warewolf Server"

@@ -270,7 +270,7 @@ namespace Warewolf.UIBindingTests.OracleSource
             manageDatabaseSourceControl.PerformSave();
         }
 
-        
+
 
         [Then(@"Username is ""(.*)""")]
         public void ThenUsernameIs(string userName)
@@ -288,7 +288,7 @@ namespace Warewolf.UIBindingTests.OracleSource
             Assert.AreEqual(password, manageDatabaseSourceControl.GetPassword());
         }
 
-        
+
 
         [Given(@"I type Username as ""(.*)""")]
         [When(@"I type Username as ""(.*)""")]
@@ -381,15 +381,22 @@ namespace Warewolf.UIBindingTests.OracleSource
             mockRequestServiceNameViewModel.Verify();
         }
 
-        [AfterScenario("OracleDbSource")]
-        public void Cleanup()
+        [AfterFeature("OracleDbSource")]
+        public static void FeaureCleanup()
+        {
+            CleanupResources();
+        }
+
+        private static void CleanupResources()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
-            var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
+            var mockRequestServiceNameViewModel =
+                ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var viewModel = new ManageOracleSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker());
+            var viewModel = new ManageOracleSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
+                new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
             if (manageDatabaseSourceViewModel != null)
@@ -399,6 +406,12 @@ namespace Warewolf.UIBindingTests.OracleSource
             }
         }
 
+        [AfterScenario("OracleDbSource")]
+        public void Cleanup()
+        {
+            CleanupResources();
+        }
+
         [When(@"I click ""(.*)""")]
         public void WhenIClick(string ConectTo)
         {
@@ -406,7 +419,7 @@ namespace Warewolf.UIBindingTests.OracleSource
             manageDatabaseSourceControl.Test();
         }
 
-       
+
 
         [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
         public void ThenAuthenticationTypeIs(string p0, string p1)

@@ -162,11 +162,56 @@ namespace Dev2.Tests.Runtime.ESB.Control
                         ServiceName = "serviceName",
                         ServiceID = serviceId,
                         SourceName = "sourceName",
-                        ActionType = enActionType.TestExecution
+                        ActionType = enActionType.Workflow
                     }
                 }
             };
             obj.SetupGet(o => o.ResourceID).Returns(serviceId);
+            locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dynamicService);
+            locater.Setup(l => l.FindSourceByName(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new Source());
+            // ReSharper disable once ExpressionIsAlwaysNull
+
+            var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
+            PrivateObject privateObject = new PrivateObject(invoker);
+            privateObject.SetField("_serviceLocator", locater.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(invoker);
+            //---------------Execute Test ----------------------
+            var executionContainer = invoker.GenerateInvokeContainer(obj.Object, serviceId, true);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(executionContainer);
+            Assert.IsInstanceOfType(executionContainer, typeof(PerfmonExecutionContainer));
+            locater.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueEmptyCacheNewService_IsTestExecution_ShouldAddToCache()
+        {
+            //---------------Set up test pack-------------------
+            //GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
+            var channel = new Mock<IEsbChannel>();
+            var workSpace = new Mock<IWorkspace>();
+            var obj = new Mock<IDSFDataObject>();
+            var locater = new Mock<IServiceLocator>();
+            var executeRequest = new EsbExecuteRequest();
+            var serviceId = Guid.NewGuid();
+            var dynamicService = new DynamicService()
+            {
+                ID = serviceId,
+                Actions = new List<ServiceAction>
+                {
+                    new ServiceAction()
+                    {
+                        ServiceName = "serviceName",
+                        ServiceID = serviceId,
+                        SourceName = "sourceName",
+                        ActionType = enActionType.Workflow
+                    }
+                }
+            };
+            obj.SetupGet(o => o.ResourceID).Returns(serviceId);
+            obj.SetupGet(o => o.IsServiceTestExecution).Returns(true);
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dynamicService);
             locater.Setup(l => l.FindSourceByName(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new Source());
             // ReSharper disable once ExpressionIsAlwaysNull

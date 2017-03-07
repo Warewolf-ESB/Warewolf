@@ -115,7 +115,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 18
  testRunner.Then("I Open Explorer First Item Context Menu", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 19
- testRunner.And("I Press F6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Execute Workflow Using DebugRun Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
  testRunner.And("I Click Create Test From Debug", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21

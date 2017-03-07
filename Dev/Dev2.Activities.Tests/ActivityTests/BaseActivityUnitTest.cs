@@ -365,9 +365,12 @@ namespace ActivityUnitTests
                 result = env.FetchErrors();
                 return;
             }
+            var brackettedField = DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve);
+            CommonFunctions.WarewolfEvalResult evalResult = null;
             try
             {
-                result = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve), 0, true));
+                evalResult = env.Eval(brackettedField, 0, true);
+                result = ExecutionEnvironment.WarewolfEvalResultToString(evalResult);
             }
             catch( Exception err)
             {
