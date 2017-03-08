@@ -255,6 +255,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             CustomContainer.Register(shellVm.Object);
             //---------------Assert Precondition----------------
             Assert.IsTrue(outputsRegion.IsObject);
+            Assert.IsTrue(!string.IsNullOrEmpty(outputsRegion.ObjectResult));
             //---------------Execute Test ----------------------
             outputsRegion.ObjectName = "[[@objName]]";
             //---------------Test Result -----------------------
