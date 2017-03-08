@@ -115,7 +115,7 @@
                             <DataTemplate>
                                 <ui:IntellisenseTextBox AllowUserInsertLine="False"
                                                         VerticalAlignment="Center"
-                                                        WrapInBrackets="True"
+                                                        WrapInBrackets="False"
                                                         attachedProperties:FocusSetter.IsFocused="{Binding IsMapsToFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                         Text="{Binding MapsTo, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
                                     <i:Interaction.Behaviors>
