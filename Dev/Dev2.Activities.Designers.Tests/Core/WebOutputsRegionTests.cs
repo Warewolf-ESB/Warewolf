@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Serialization;
 using Warewolf.Core;
+using Warewolf.Storage;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Activities.Designers.Tests.Core
@@ -256,6 +258,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //---------------Assert Precondition----------------
             Assert.IsTrue(outputsRegion.IsObject);
             Assert.IsTrue(!string.IsNullOrEmpty(outputsRegion.ObjectResult));
+            Assert.IsTrue(FsInteropFunctions.ParseLanguageExpressionWithoutUpdate("[[@objName]]").IsJsonIdentifierExpression);
             //---------------Execute Test ----------------------
             outputsRegion.ObjectName = "[[@objName]]";
             //---------------Test Result -----------------------
