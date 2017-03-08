@@ -71,35 +71,7 @@ namespace Warewolf.UITests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             Assert.AreEqual("IntegrationTester", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
         }
-
-       /* [TestMethod]
-        [TestCategory("Server Source")]
-        // ReSharper disable once InconsistentNaming
-        public void Create_Save_And_Edit_ServerSQLSource_From_ExplorerContextMenu_UITests()
-        {
-            //Create Source
-            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
-            ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("RSAKLFSVRGENDEV");
-            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("IntegrationTester", "I73573r0");
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            //Save Source
-            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            ExplorerUIMap.Filter_Explorer(SourceName);
-            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
-            ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-            //Edit Source
-            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist");
-            ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
-            ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("IntegrationTester", "I73573r0");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
-            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
-            Assert.AreEqual("IntegrationTester", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
-        }*/
+        
 
         #region Additional test attributes
 
