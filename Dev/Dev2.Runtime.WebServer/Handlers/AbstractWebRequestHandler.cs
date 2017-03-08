@@ -56,18 +56,21 @@ namespace Dev2.Runtime.WebServer.Handlers
         string _location;
         private static IResourceCatalog _resourceCatalog;
         private static ITestCatalog _testCatalog;
+        private static IDSFDataObject _dataObject;
+        private static IAuthorizationService _authorizationService;
         public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
-        protected static IDSFDataObject TestDataObject { get; set; }
-        protected static IAuthorizationService TestServerAuthorizationService
-        {
-            get; set;
-        }
-
         protected AbstractWebRequestHandler()
             : this(ResourceCatalog.Instance, TestCatalog.Instance)
         {
+        }
+
+        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog,IDSFDataObject dataObject, IAuthorizationService authorizationService)
+            :this(catalog,testCatalog)
+        {
+            _dataObject = dataObject;
+            _authorizationService = authorizationService;
         }
 
         protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
@@ -94,7 +97,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
             var allErrors = new ErrorResultTO();
-            IDSFDataObject dataObject = TestDataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+            IDSFDataObject dataObject = _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
             {
                 IsFromWebServer = true
                 ,
@@ -171,7 +174,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var esbEndpoint = new EsbServicesEndpoint();
             dataObject.EsbChannel = esbEndpoint;
             var canExecute = true;
-            IAuthorizationService instance = TestServerAuthorizationService ?? ServerAuthorizationService.Instance;
+            IAuthorizationService instance = _authorizationService ?? ServerAuthorizationService.Instance;
             if (instance != null && dataObject.ReturnType != EmitionTypes.TEST)
             {
                 var authorizationService = instance;
@@ -728,7 +731,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
         }
 
-        static string CleanupXml(string baseStr)
+        private static string CleanupXml(string baseStr)
         {
             if (baseStr.Contains("?"))
             {
