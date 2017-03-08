@@ -45,7 +45,6 @@ using Dev2.Workspaces;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
 // ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable CyclomaticComplexity
 // ReSharper disable FunctionComplexityOverflow
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable MemberCanBePrivate.Global
@@ -56,6 +55,7 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         string _location;
         private static IResourceCatalog _resourceCatalog;
+        private static ITestCatalog _testCatalog;
         public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
@@ -66,13 +66,14 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         protected AbstractWebRequestHandler()
-            :this(ResourceCatalog.Instance)
-        {            
+            : this(ResourceCatalog.Instance, TestCatalog.Instance)
+        {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog catalog)
+        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
         {
             _resourceCatalog = catalog;
+            _testCatalog = testCatalog;
         }
 
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
@@ -132,29 +133,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             else
             {
-                if (headers != null)
-                {
-                    var contentType = headers.Get("Content-Type");
-                    if (string.IsNullOrEmpty(contentType))
-                    {
-                        contentType = headers.Get("ContentType");
-                    }
-                    if (!string.IsNullOrEmpty(contentType) && !dataObject.IsServiceTestExecution)
-                    {
-                        if (contentType.ToLowerInvariant().Contains("json"))
-                        {
-                            dataObject.ReturnType = EmitionTypes.JSON;
-                        }
-                        if (contentType.ToLowerInvariant().Contains("xml"))
-                        {
-                            dataObject.ReturnType = EmitionTypes.XML;
-                        }
-                    }
-                }
-                else
-                {
-                    dataObject.ReturnType = EmitionTypes.XML;
-                }
+                SetContentType(headers, dataObject);
             }
             if (dataObject.ServiceName == null)
             {
@@ -186,19 +165,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             if (IsRunAllTestsRequest(webRequest, serviceName))
             {
-                var pathOfAllResources = GetForAllResources(webRequest);
-                dataObject.ResourceID = Guid.Empty;
-                if (string.IsNullOrEmpty(pathOfAllResources))
-                {
-                    var resources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
-                    dataObject.TestsResourceIds = resources.Select(p => p.ResourceID).ToList();
-                }
-                else
-                {
-                    var resources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
-                    var resourcesToRunTestsFor = resources.Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID).StartsWith(pathOfAllResources, StringComparison.InvariantCultureIgnoreCase));
-                    dataObject.TestsResourceIds = resourcesToRunTestsFor.Select(p => p.ResourceID).ToList();
-                }
+                SetTestResourceIds(webRequest, dataObject);
             }
             var serializer = new Dev2JsonSerializer();
             var esbEndpoint = new EsbServicesEndpoint();
@@ -227,12 +194,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Thread.CurrentPrincipal = user;
                 var userPrinciple = user;
                 if (dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
-                {
+                {                    
                     if (dataObject.TestsResourceIds?.Any() ?? false)
                     {
                         foreach (var testsResourceId in dataObject.TestsResourceIds)
                         {
-                            var allTests = TestCatalog.Instance.Fetch(testsResourceId);
+                            var allTests = _testCatalog.Fetch(testsResourceId);
                             var taskList = new List<Task>();
                             var testResults = new List<IServiceTestModelTO>();
                             foreach (var test in allTests)
@@ -266,7 +233,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     else
                     {
-                        var allTests = TestCatalog.Instance.Fetch(dataObject.ResourceID);
+                        var allTests = _testCatalog.Fetch(dataObject.ResourceID);
                         var taskList = new List<Task>();
                         var testResults = new List<IServiceTestModelTO>();
                         foreach (var test in allTests.Where(to => to.Enabled))
@@ -431,28 +398,72 @@ namespace Dev2.Runtime.WebServer.Handlers
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
+        private static void SetContentType(NameValueCollection headers, IDSFDataObject dataObject)
+        {
+            if (headers != null)
+            {
+                var contentType = headers.Get("Content-Type");
+                if (string.IsNullOrEmpty(contentType))
+                {
+                    contentType = headers.Get("ContentType");
+                }
+                if (!string.IsNullOrEmpty(contentType) && !dataObject.IsServiceTestExecution)
+                {
+                    if (contentType.ToLowerInvariant().Contains("json"))
+                    {
+                        dataObject.ReturnType = EmitionTypes.JSON;
+                    }
+                    if (contentType.ToLowerInvariant().Contains("xml"))
+                    {
+                        dataObject.ReturnType = EmitionTypes.XML;
+                    }
+                }
+            }
+            else
+            {
+                dataObject.ReturnType = EmitionTypes.XML;
+            }
+        }
+
+        private static void SetTestResourceIds(WebRequestTO webRequest, IDSFDataObject dataObject)
+        {
+            var pathOfAllResources = GetForAllResources(webRequest);
+            dataObject.ResourceID = Guid.Empty;
+            if (string.IsNullOrEmpty(pathOfAllResources))
+            {
+                var resources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
+                dataObject.TestsResourceIds = resources.Select(p => p.ResourceID).ToList();
+            }
+            else
+            {
+                var resources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
+                var resourcesToRunTestsFor = resources.Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID).StartsWith(pathOfAllResources, StringComparison.InvariantCultureIgnoreCase));
+                dataObject.TestsResourceIds = resourcesToRunTestsFor.Select(p => p.ResourceID).ToList();
+            }
+        }
+
         private static string SetEmitionType(string serviceName, NameValueCollection headers, IDSFDataObject dataObject)
         {
             int loc;
-            if(!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+            if (!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
             {
                 // default it to xml
                 dataObject.ReturnType = EmitionTypes.XML;
 
-                if(loc > 0)
+                if (loc > 0)
                 {
                     var typeOf = serviceName.Substring(loc + 1).ToUpper();
                     EmitionTypes myType;
-                    if(Enum.TryParse(typeOf, out myType))
+                    if (Enum.TryParse(typeOf, out myType))
                     {
                         dataObject.ReturnType = myType;
                     }
 
-                    if(typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
+                    if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
                     {
                         dataObject.IsServiceTestExecution = true;
                         var idx = serviceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
-                        if(idx > loc)
+                        if (idx > loc)
                         {
                             var testName = serviceName.Substring(idx + 1).ToUpper();
                             dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
@@ -464,7 +475,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         dataObject.ReturnType = EmitionTypes.TEST;
                     }
 
-                    if(typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+                    if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
                     {
                         dataObject.ReturnType = EmitionTypes.SWAGGER;
                     }
@@ -474,29 +485,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             else
             {
-                if(headers != null)
-                {
-                    var contentType = headers.Get("Content-Type");
-                    if(string.IsNullOrEmpty(contentType))
-                    {
-                        contentType = headers.Get("ContentType");
-                    }
-                    if(!string.IsNullOrEmpty(contentType))
-                    {
-                        if(contentType.ToLowerInvariant().Contains("json"))
-                        {
-                            dataObject.ReturnType = EmitionTypes.JSON;
-                        }
-                        if(contentType.ToLowerInvariant().Contains("xml"))
-                        {
-                            dataObject.ReturnType = EmitionTypes.XML;
-                        }
-                    }
-                }
-                else
-                {
-                    dataObject.ReturnType = EmitionTypes.XML;
-                }
+                SetContentType(headers, dataObject);
             }
             return serviceName;
         }
@@ -508,14 +497,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
             var remoteId = headers.Get(HttpRequestHeader.From.ToString());
 
-            if(isRemote != null && remoteId != null)
+            if (isRemote != null && remoteId != null)
             {
-                if(isRemote.Equals(GlobalConstants.RemoteServerInvoke))
+                if (isRemote.Equals(GlobalConstants.RemoteServerInvoke))
                 {
                     // we have a remote invoke ;)
                     dataObject.RemoteInvoke = true;
                 }
-                if(isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
+                if (isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
                 {
                     // we have a remote invoke ;)
                     dataObject.RemoteNonDebugInvoke = true;
@@ -687,30 +676,30 @@ namespace Dev2.Runtime.WebServer.Handlers
         private static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
         {
             var data = reader.ReadToEnd();
-            if(DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
+            if (DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
             {
                 return data;
             }
 
             var pairs = new NameValueCollection(5);
             var keyValuePairs = data.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-            foreach(var keyValuePair in keyValuePairs)
+            foreach (var keyValuePair in keyValuePairs)
             {
                 var keyValue = keyValuePair.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-                if(keyValue.Length > 1)
+                if (keyValue.Length > 1)
                 {
                     pairs.Add(keyValue[0], keyValue[1]);
                 }
-                else if(keyValue.Length == 1)
+                else if (keyValue.Length == 1)
                 {
-                    if(keyValue[0].IsXml() || keyValue[0].IsJSON())
+                    if (keyValue[0].IsXml() || keyValue[0].IsJSON())
                     {
                         pairs.Add(keyValue[0], keyValue[0]);
                     }
                 }
             }
 
-            if(pairs.Count == 0)
+            if (pairs.Count == 0)
             {
                 pairs = ctx.Request.QueryString;
             }
@@ -720,16 +709,16 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         private static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
         {
-            if(payload != null)
+            if (payload != null)
             {
                 var keyValuePairs = payload.Split(new[] { "&" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-                foreach(var keyValuePair in keyValuePairs)
+                foreach (var keyValuePair in keyValuePairs)
                 {
-                    if(keyValuePair.StartsWith("wid="))
+                    if (keyValuePair.StartsWith("wid="))
                     {
                         continue;
                     }
-                    if(keyValuePair.IsXml() || keyValuePair.IsJSON() || (keyValuePair.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && keyValuePair.ToLowerInvariant().Contains("</DataList>".ToLowerInvariant())))
+                    if (keyValuePair.IsXml() || keyValuePair.IsJSON() || (keyValuePair.ToLowerInvariant().Contains("<DataList>".ToLowerInvariant()) && keyValuePair.ToLowerInvariant().Contains("</DataList>".ToLowerInvariant())))
                     {
                         return keyValuePair;
                     }
