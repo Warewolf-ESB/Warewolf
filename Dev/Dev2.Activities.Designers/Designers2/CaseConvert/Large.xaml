@@ -87,7 +87,7 @@
                                                     Padding="3"
                                                     Margin="0,0,1,1"
                                                     DefaultText="{Binding WatermarkTextVariable}"
-                                                    WrapInBrackets="False"
+                                                    WrapInBrackets="True"
                                                     Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.CaseConversionToolTipTextInput}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
