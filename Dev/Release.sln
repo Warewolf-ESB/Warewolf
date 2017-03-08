@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\
 		{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510} = {F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppToTestExecuteCommandLineActivity", "ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj", "{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities", "Dev2.Activities\Dev2.Activities.csproj", "{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Designers", "Dev2.Activities.Designers\Dev2.Activities.Designers.csproj", "{B95B724A-B052-4E18-98A4-88072C8DF2C2}"
@@ -60,11 +58,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers", "Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj", "{1B229665-1631-4275-AFBD-CB5B7775E4CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2.Util.csproj", "{1990550D-EA6F-4DAC-9B5E-8571E86923ED}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{C6750CCC-03BB-42BF-8EB7-0D9ACB927923}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Sql", "Dev2.Sql\Dev2.Sql.csproj", "{2B734597-C85D-4295-9782-C722F4645ED9}"
 EndProject
@@ -117,39 +110,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Dev2.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionScripts", "{BD257381-0CA0-49B8-9FC6-BCEAD24022CA}"
-	ProjectSection(SolutionItems) = preProject
-		BakeInVersion.ps1 = BakeInVersion.ps1
-		ReadOutVersion.ps1 = ReadOutVersion.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{97031FE6-CCA7-4372-9370-01432C4D6439}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Server\Cleanup.bat = TestScripts\Server\Cleanup.bat
-		TestScripts\Server\Startup.bat = TestScripts\Server\Startup.bat
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplicationToTestNetwork", "ConsoleApplicationToTestNetwork\ConsoleApplicationToTestNetwork.csproj", "{FEF0E429-201C-4530-9E14-698910D49FB4}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{378E1780-68B0-4DCF-882F-235BA0423D3C}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Studio\Cleanup.bat = TestScripts\Studio\Cleanup.bat
-		TestScripts\Studio\Startup.bat = TestScripts\Studio\Startup.bat
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055-C1EF-4E32-9854-96684CAFB617}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
-		TestScripts\Tests\Compile All.bat = TestScripts\Tests\Compile All.bat
-		TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1 = TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1
-		TestScripts\Tests\Run-All-Acceptance-Tests.ps1 = TestScripts\Tests\Run-All-Acceptance-Tests.ps1
-		TestScripts\Tests\Run-All-UI-Tests.ps1 = TestScripts\Tests\Run-All-UI-Tests.ps1
-		TestScripts\Tests\Run-All-Unit-Tests.ps1 = TestScripts\Tests\Run-All-Unit-Tests.ps1
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gma.DataStructures.StringSearch", "Trie\Gma.DataStructures.StringSearch\Gma.DataStructures.StringSearch.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControls.CS", "AutoComplete\WpfControls.CS\WpfControls.CS.csproj", "{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Resource", "Warewolf.Resource\Warewolf.Resource.csproj", "{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}"
 EndProject
@@ -158,6 +119,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC", "WarewolfCOMIPC\WarewolfCOMIPC.csproj", "{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC.Client", "WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{2909743E-72FF-48BF-A081-E61A73D2E6EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,14 +146,6 @@ Global
 		{62247A80-2266-4295-A8F6-A05507E2796E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62247A80-2266-4295-A8F6-A05507E2796E}.Release|x86.ActiveCfg = Release|Any CPU
 		{62247A80-2266-4295-A8F6-A05507E2796E}.Release|x86.Build.0 = Release|Any CPU
-		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Debug|x86.Build.0 = Debug|Any CPU
-		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|x86.ActiveCfg = Release|Any CPU
-		{DF3CA7CD-16B7-465E-A7DB-91951DFC330F}.Release|x86.Build.0 = Release|Any CPU
 		{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -519,14 +474,6 @@ Global
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Release|x86.ActiveCfg = Release|Any CPU
 		{6858EA8E-1F83-423C-8F03-260D836C6EDE}.Release|x86.Build.0 = Release|Any CPU
-		{FEF0E429-201C-4530-9E14-698910D49FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FEF0E429-201C-4530-9E14-698910D49FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FEF0E429-201C-4530-9E14-698910D49FB4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FEF0E429-201C-4530-9E14-698910D49FB4}.Debug|x86.Build.0 = Debug|Any CPU
-		{FEF0E429-201C-4530-9E14-698910D49FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FEF0E429-201C-4530-9E14-698910D49FB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FEF0E429-201C-4530-9E14-698910D49FB4}.Release|x86.ActiveCfg = Release|Any CPU
-		{FEF0E429-201C-4530-9E14-698910D49FB4}.Release|x86.Build.0 = Release|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -535,12 +482,6 @@ Global
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|x86.ActiveCfg = Release|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|x86.Build.0 = Release|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB2ABB74-BA58-4812-83AA-EC8171F42DF4}.Release|x86.ActiveCfg = Release|Any CPU
 		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -573,14 +514,17 @@ Global
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|x86.ActiveCfg = Release|Any CPU
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|x86.Build.0 = Release|Any CPU
+		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{97031FE6-CCA7-4372-9370-01432C4D6439} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
-		{378E1780-68B0-4DCF-882F-235BA0423D3C} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
-		{821BF055-C1EF-4E32-9854-96684CAFB617} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c
