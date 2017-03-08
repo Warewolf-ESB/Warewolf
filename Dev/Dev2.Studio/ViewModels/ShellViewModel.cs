@@ -636,7 +636,7 @@ namespace Dev2.Studio.ViewModels
         public void SetActiveServer(IServer server)
         {
             ActiveServer = server;
-            if (ActiveServer.IsConnected && !ActiveServer.IsConnected)
+            if (!ActiveServer.IsConnected)
             {
                 ActiveServer.Connect();
             }

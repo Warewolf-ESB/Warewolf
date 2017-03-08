@@ -1167,6 +1167,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (viewModel != null)
                 {
                     IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == viewModel.Server.EnvironmentID);
+                    ServerRepository.Instance.ActiveServer = server;
                     var theResource = server?.ResourceRepository.LoadContextualResourceModel(viewModel.ResourceId);
 
                     if (theResource != null)
