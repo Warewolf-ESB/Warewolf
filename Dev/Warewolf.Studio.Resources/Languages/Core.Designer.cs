@@ -1136,7 +1136,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Sql Server Source.
+        ///   Looks up a localized string similar to New SQL Server Source.
         /// </summary>
         public static string SqlServerSourceServerNewHeaderLabel {
             get {
