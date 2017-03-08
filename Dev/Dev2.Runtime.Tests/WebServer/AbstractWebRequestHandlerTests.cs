@@ -4,9 +4,13 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Serialization.Json;
 using System.Security.Principal;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
 using Dev2.Interfaces;
@@ -19,6 +23,8 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Warewolf.Storage;
 
 namespace Dev2.Tests.Runtime.WebServer
@@ -65,7 +71,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateFormGivenValidArgsContainsIsDebugShouldSetDataObjectAsDebug()
@@ -116,8 +122,8 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.Environment).Returns(env.Object);
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.SetupGet(o => o.ReturnType).Returns(EmitionTypes.TEST);
-            dataObject.SetupGet(o => o.TestName).Returns("*");            
-            dataObject.Setup(o => o.Clone()).Returns(dataObject.Object);            
+            dataObject.SetupGet(o => o.TestName).Returns("*");
+            dataObject.Setup(o => o.Clone()).Returns(dataObject.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
             var serviceTestModelTO = new Mock<IServiceTestModelTO>();
@@ -159,7 +165,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.Environment).Returns(env.Object);
             dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
             dataObject.SetupGet(o => o.ReturnType).Returns(EmitionTypes.TEST);
-            dataObject.SetupGet(o => o.TestName).Returns("*");            
+            dataObject.SetupGet(o => o.TestName).Returns("*");
             dataObject.Setup(o => o.Clone()).Returns(dataObject.Object);
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
@@ -221,13 +227,14 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostDataGivenUrlWithGetDataShouldReturnPostData()
+        public void GetPostDataGivenUrlWithGetJsonDataShouldReturnPostData()
         {
             //---------------Set up test pack-------------------
-            var communicationContext = new Mock<ICommunicationContext>();            
-            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa?rapidView=6&view=planning&selectedIssue=WOLF-2416";
+            var communicationContext = new Mock<ICommunicationContext>();
+            string payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
+            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
             communicationContext.SetupGet(context => context.Request.Uri)
-                .Returns(new Uri(UriString));
+                .Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
             var inputStream = new Mock<Stream>();
@@ -236,7 +243,6 @@ namespace Dev2.Tests.Runtime.WebServer
             communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
             communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
             var dataObject = new Mock<IDSFDataObject>();
-            var dsfDataObject = dataObject.Object;
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
@@ -246,17 +252,19 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            Assert.AreEqual("rapidView=6&view=planning&selectedIssue=WOLF-2416", postDataMock);
+            Assert.AreEqual(payLoad, postDataMock);
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GetPostDataGivenUrlWithPostDataShouldReturnPostData()
+        public void GetPostDataGivenUrlWithJsonPostDataShouldReturnPostData()
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
+            string payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
+            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
             communicationContext.SetupGet(context => context.Request.Uri)
-                .Returns(new Uri("https://warewolf.atlassian.net/secure/RapidBoard.jspa?rapidView=6&view=planning&selectedIssue=WOLF-2416"));
+                .Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("POST");
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
             var inputStream = new Mock<Stream>();
@@ -265,7 +273,6 @@ namespace Dev2.Tests.Runtime.WebServer
             communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
             communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
             var dataObject = new Mock<IDSFDataObject>();
-            var dsfDataObject = dataObject.Object;
             var authorizationService = new Mock<IAuthorizationService>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
@@ -275,8 +282,223 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Execute Test ----------------------
             var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
             //---------------Test Result -----------------------
-            Assert.AreEqual("rapidView=6&view=planning&selectedIssue=WOLF-2416", postDataMock);
-        }        
+            Assert.AreEqual(payLoad, postDataMock);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetPostData_GivenPostDataInContext_ShouldReturnEmpty()
+        {
+            //---------------Set up test pack-------------------
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+            var stringInMemoryStream = new MemoryStream(Encoding.Default.GetBytes("PostData"));
+            communicationContext.Setup(context => context.Request.InputStream).Returns(stringInMemoryStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("", postDataMock);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetPostData_GivenPostJsonDataInContext_ShouldReturnJsonData()
+        {
+            //---------------Set up test pack-------------------
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+            var data = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var stringInMemoryStream = new MemoryStream(Encoding.Default.GetBytes(data));
+            communicationContext.Setup(context => context.Request.InputStream).Returns(stringInMemoryStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
+            //---------------Test Result -----------------------
+            var json = postDataMock.IsJSON();
+            Assert.IsTrue(json);
+            Assert.AreEqual(data, postDataMock);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetPostData_GivenJsonDataInContextAndUnknownWebMethod_ShouldReturnEmpty()
+        {
+            //---------------Set up test pack-------------------
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("unknown");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+            var data = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var stringInMemoryStream = new MemoryStream(Encoding.Default.GetBytes(data));
+            communicationContext.Setup(context => context.Request.InputStream).Returns(stringInMemoryStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(string.Empty, postDataMock);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetPostData_GivenPostXmlDataInContext_ShouldReturnXmlData()
+        {
+            //---------------Set up test pack-------------------
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+            var data = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var xmlData = ConvertJsonToXml(data);
+            var stringInMemoryStream = new MemoryStream(Encoding.Default.GetBytes(xmlData));
+            communicationContext.Setup(context => context.Request.InputStream).Returns(stringInMemoryStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
+            //---------------Test Result -----------------------
+            var isXml = postDataMock.IsXml();
+            Assert.IsTrue(isXml);
+            Assert.AreEqual(xmlData, postDataMock);
+        }
+
+        private static string ConvertJsonToXml(string data)
+        {
+            var xml =
+                XDocument.Load(JsonReaderWriterFactory.CreateJsonReader(Encoding.ASCII.GetBytes(data),
+                    new XmlDictionaryReaderQuotas()));
+            var xmlData = xml.ToString();
+            return xmlData;
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetPostData_GivenGetJsonDataInContext_ShouldReturnJsonData()
+        {
+            //---------------Set up test pack-------------------
+            var communicationContext = new Mock<ICommunicationContext>();
+            var data = this.SerializeToJsonString(new DefaultSerializationBinder());
+            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{data}";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("GET");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
+            //---------------Test Result -----------------------
+            var isJson = postDataMock.IsJSON();
+            Assert.IsTrue(isJson);
+            Assert.AreEqual(data, postDataMock);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetPostData_GivenGetXmlDataInContext_ShouldReturnXmlData()
+        {
+            //---------------Set up test pack-------------------
+            var communicationContext = new Mock<ICommunicationContext>();
+            var data = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var xmlData = ConvertJsonToXml(data);
+            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("GET");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
+            //---------------Test Result -----------------------
+            var isXml = postDataMock.IsXml();
+            Assert.IsTrue(isXml);
+            Assert.AreEqual(xmlData, postDataMock);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetPostData_GivenGetDataListXmlDataInContext_ShouldReturnXmlData()
+        {
+            //---------------Set up test pack-------------------
+            var communicationContext = new Mock<ICommunicationContext>();
+            var data = this.SerializeToJsonString(new DefaultSerializationBinder());
+            XmlDocument myXmlNode = JsonConvert.DeserializeXmlNode(data,"DataList");
+            var xmlData = myXmlNode.InnerXml;
+            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("GET");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+            var postDataMock = handlerMock.GetPostDataMock(communicationContext.Object);
+            //---------------Test Result -----------------------
+            var isXml = postDataMock.IsXml();
+            Assert.IsTrue(isXml);
+            Assert.AreEqual(xmlData, postDataMock);
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -372,7 +594,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(bookmark);
             Assert.AreEqual(ExpectedResult, bookmark);
         }
-        
+
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -389,7 +611,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(className);
             Assert.AreEqual(ExpectedResult, className);
         }
-        
+
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -406,7 +628,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(methodName);
             Assert.AreEqual(ExpectedResult, methodName);
         }
-        
+
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -423,7 +645,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(path);
             Assert.AreEqual(ExpectedResult, path);
         }
-        
+
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -440,7 +662,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(website);
             Assert.AreEqual(ExpectedResult, website);
         }
-        
+
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -457,7 +679,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(instanceId);
             Assert.AreEqual(ExpectedResult, instanceId);
         }
-        
+
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -474,14 +696,14 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(serviceName);
             Assert.AreEqual(ExpectedResult, serviceName);
         }
-        
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetWorkspaceID_GivenQueryString_ShouldReturnId()
         {
             const string ExpectedResult = "the_wid";
             var communicationContext = new Mock<ICommunicationContext>();
-            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection { {"wid", "the_wid"} });
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection { { "wid", "the_wid" } });
             var handlerMock = new AbstractWebRequestHandlerMock();
             //------------Execute Test---------------------------
             var workspaceID = handlerMock.GetWorkspaceIDMock(communicationContext.Object);
@@ -489,14 +711,14 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(workspaceID);
             Assert.AreEqual(ExpectedResult, workspaceID);
         }
-        
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetDataListID_GivenQueryString_ShouldReturnDatalsi()
         {
             const string ExpectedResult = "the_datalist";
             var communicationContext = new Mock<ICommunicationContext>();
-            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection { { "dlid", "the_datalist"} });
+            communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection { { "dlid", "the_datalist" } });
             //------------Setup for test-------------------------
             var handlerMock = new AbstractWebRequestHandlerMock();
             //------------Execute Test---------------------------
@@ -505,7 +727,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsNotNull(dataListID);
             Assert.AreEqual(ExpectedResult, dataListID);
         }
-        
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultForWebRequest_GivenTestResultPassed_ShouldSetMessage()
@@ -521,7 +743,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Passed\""));
-        }       
+        }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -539,7 +761,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Failed\""));
-        }       
+        }
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
@@ -556,12 +778,12 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Invalid\""));
-        }       
+        }
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
         {
-           //------------Setup for test-------------------------
+            //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.Result = new TestRunResult
             {
@@ -573,7 +795,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"ResourceDelete\""));
-        }       
+        }
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
@@ -590,7 +812,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"ResourcpathUpdated\""));
-        }       
+        }
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void BuildTestResultForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
@@ -607,7 +829,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Pending\""));
-        }        
+        }
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ExtractKeyValuePairs_GivenKeyvaluePairs_ShouldCloneKeyValuePair()
@@ -619,8 +841,8 @@ namespace Dev2.Tests.Runtime.WebServer
             privateObject.InvokeStatic("ExtractKeyValuePairs", LocalBoundVariables, boundVariables);
             //------------Assert Results-------------------------
             //The WID is skipped
-            Assert.AreEqual(LocalBoundVariables.Count-1, boundVariables.Count);
-        }    
+            Assert.AreEqual(LocalBoundVariables.Count - 1, boundVariables.Count);
+        }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -630,7 +852,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Setup for test-------------------------
             var webRequestTO = new WebRequestTO();
             webRequestTO.Variables.Add("isPublic", "false");
-            webRequestTO.WebServerUrl =  UriString;
+            webRequestTO.WebServerUrl = UriString;
             var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("GetForAllResources", webRequestTO);
@@ -698,10 +920,9 @@ namespace Dev2.Tests.Runtime.WebServer
     internal class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
         public AbstractWebRequestHandlerMock(IDSFDataObject dataObject, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog)
-            : base(catalog, testCatalog)
+            : base(catalog, testCatalog, dataObject, service)
         {
-            TestDataObject = dataObject;
-            TestServerAuthorizationService = service;
+
         }
 
         public AbstractWebRequestHandlerMock()
