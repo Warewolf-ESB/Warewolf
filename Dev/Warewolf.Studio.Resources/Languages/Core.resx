@@ -539,6 +539,6 @@ Please contact your Warewolf System Administrator.</value>
     <value>No data returned.   </value>
   </data>
   <data name="SqlServerSourceServerNewHeaderLabel" xml:space="preserve">
-    <value>New Sql Server Source</value>
+    <value>New SQL Server Source</value>
   </data>
 </root>
