@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Newtonsoft.Json.Serialization;
 using Warewolf.Core;
 // ReSharper disable InconsistentNaming
 
@@ -156,6 +160,126 @@ namespace Dev2.Activities.Designers.Tests.Core
             outputsRegion.Outputs.First().MappedFrom = "b";
             //---------------Test Result -----------------------
             Assert.IsTrue(outPutsChanged);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Outputs_GivenNull_ShouldRemovedEventHandlers()
+        {
+            //---------------Set up test pack-------------------
+            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
+            var serviceOutputMapping = new ServiceOutputMapping()
+            {
+                MappedFrom = "j",
+                MappedTo = "H"
+            };
+            var outPutsChanged = false;
+            serviceOutputMapping.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == "MappedFrom")
+                    outPutsChanged = true;
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(outputsRegion.Outputs);
+            //---------------Execute Test ----------------------
+            outputsRegion.Outputs.Add(serviceOutputMapping);
+            outputsRegion.Outputs.Add(new ServiceOutputMapping());
+            outputsRegion.Outputs.First(mapping => mapping.MappedFrom == "j").MappedFrom = "b";
+            Assert.IsTrue(outPutsChanged);
+            outPutsChanged = false;
+            //---------------Test Result -----------------------
+            outputsRegion.Outputs.Remove(serviceOutputMapping);
+            outputsRegion.Outputs.First().MappedFrom = "b";
+            Assert.IsFalse(outPutsChanged);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ObjectName_GivenIsObjectAndNullObjectResult_ShouldNotFireChanges()
+        {
+            //---------------Set up test pack-------------------
+            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
+            var wasCalled = false;
+            outputsRegion.PropertyChanged += (sender, args) =>
+            {
+                wasCalled = true;
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(outputsRegion.IsObject);
+            //---------------Execute Test ----------------------
+            outputsRegion.ObjectName = "a";
+            //---------------Test Result -----------------------
+            Assert.IsFalse(wasCalled);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ObjectName_GivenIsObjectAndObjectResult_ShouldFireChanges()
+        {
+            //---------------Set up test pack-------------------
+            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true)
+            {
+                ObjectResult = this.SerializeToJsonString(new DefaultSerializationBinder())
+            };
+            var wasCalled = false;
+            outputsRegion.PropertyChanged += (sender, args) =>
+            {
+                wasCalled = true;
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(outputsRegion.IsObject);
+            //---------------Execute Test ----------------------
+            outputsRegion.ObjectName = "a";
+            //---------------Test Result -----------------------
+            Assert.IsTrue(wasCalled);
+            Assert.AreEqual(outputsRegion.ObjectName, act.ObjectName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ObjectName_GivenIsObjectAndObjectResult_ShouldUpdateDatalist()
+        {
+            //---------------Set up test pack-------------------
+            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true)
+            {
+                ObjectResult = this.SerializeToJsonString(new DefaultSerializationBinder())
+            };
+
+            var shellVm = new Mock<IShellViewModel>();
+            shellVm.Setup(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(shellVm.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(outputsRegion.IsObject);
+            //---------------Execute Test ----------------------
+            outputsRegion.ObjectName = "[[@objName]]";
+            //---------------Test Result -----------------------
+            shellVm.Verify(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>()));
+            Assert.AreEqual(outputsRegion.ObjectName, act.ObjectName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ObjectName_GivenIsObjectAndNullValues_ShouldUpdateDatalist()
+        {
+            //---------------Set up test pack-------------------
+            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true)
+            {
+                ObjectResult = this.SerializeToJsonString(new DefaultSerializationBinder())
+            };
+
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(outputsRegion.IsObject);
+            //---------------Execute Test ----------------------
+            outputsRegion.ObjectName = null;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(string.Empty, act.ObjectName);
+            Assert.AreEqual(outputsRegion.ObjectName, string.Empty);
         }
     }
 }
