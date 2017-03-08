@@ -75,6 +75,7 @@
                                     AllowUserInsertLine="True"
                                     MaxHeight="80"
                                     TextWrapping="Wrap"
+                                    WrapInBrackets="True"
                                     VerticalAlignment="Top"
                                     VerticalContentAlignment="Top"
                                     VerticalScrollBarVisibility="Auto"
