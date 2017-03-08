@@ -16,6 +16,7 @@ using Dev2.PerformanceCounters.Management;
 using Dev2.Services.Security;
 using Dev2.Settings.Perfcounters;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -57,8 +58,11 @@ namespace Dev2.Core.Tests.Settings
             var permissions = new List<WindowsGroupPermission> { new WindowsGroupPermission() };
             securityService.Setup(service => service.Permissions).Returns(permissions);
             authorizationService.Setup(service => service.SecurityService).Returns(securityService.Object);
+            _mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            _mockConnection.Setup(connection => connection.DisplayName).Returns("TestServer");
             _mockEnvironment.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
-            ServerRepository.Instance.ActiveServer = _mockEnvironment.Object;
+            var activeServer = new Server(Guid.NewGuid(), _mockConnection.Object);
+            ServerRepository.Instance.ActiveServer = activeServer;
             var counters = new PrivateType(typeof(PerfcounterViewModel));
             //------------Setup for test------------------------
             //------------Execute Test--------------------------

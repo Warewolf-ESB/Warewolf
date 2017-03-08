@@ -45,7 +45,7 @@ namespace Dev2.Settings
         private static void OnHelpTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(e.NewValue as string?? "");
+            mainViewModel?.HelpViewModel?.UpdateHelpText(e.NewValue as string?? "");
         }
         
         public bool IsDirty
