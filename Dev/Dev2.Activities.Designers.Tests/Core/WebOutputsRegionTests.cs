@@ -254,6 +254,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var shellVm = new Mock<IShellViewModel>();
             shellVm.Setup(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            CustomContainer.DeRegister<IShellViewModel>();
             CustomContainer.Register(shellVm.Object);
             //---------------Assert Precondition----------------
             Assert.IsTrue(outputsRegion.IsObject);
