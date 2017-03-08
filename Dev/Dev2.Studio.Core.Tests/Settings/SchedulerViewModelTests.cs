@@ -31,8 +31,10 @@ using Dev2.Scheduler;
 using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.Controller;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
@@ -639,13 +641,17 @@ namespace Dev2.Core.Tests.Settings
 
             var mockEnvConnection = new Mock<IEnvironmentConnection>();
             mockEnvConnection.Setup(connection => connection.ServerID).Returns(Guid.NewGuid());
+            mockEnvConnection.Setup(connection => connection.IsConnected).Returns(true);
             env.Setup(a => a.Connection).Returns(mockEnvConnection.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
 
-            var server = new Mock<IServer>();
-            server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission> {WindowsGroupPermission.CreateAdministrators()});
-            
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), server.Object, a => env.Object, System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
+            var activeServer = new Server(Guid.NewGuid(), mockEnvConnection.Object)
+            {
+                Permissions = new List<IWindowsGroupPermission> {WindowsGroupPermission.CreateAdministrators()}
+            };
+            ServerRepository.Instance.ActiveServer = activeServer;
+
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), activeServer, a => activeServer, System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
             //------------Assert Results-------------------------
             Assert.IsNotNull(schedulerViewModel.CurrentEnvironment);
             Assert.IsNotNull(schedulerViewModel.CurrentEnvironment.AuthorizationService);
