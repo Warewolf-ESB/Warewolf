@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.HTTPWebMethods.HTTPToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

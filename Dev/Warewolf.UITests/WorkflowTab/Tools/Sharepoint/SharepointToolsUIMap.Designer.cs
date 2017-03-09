@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.Sharepoint.SharepointToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

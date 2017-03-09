@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.Recordset.RecordsetToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.Recordset.RecordsetToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

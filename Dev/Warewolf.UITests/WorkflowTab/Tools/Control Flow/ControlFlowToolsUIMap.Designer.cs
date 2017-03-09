@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

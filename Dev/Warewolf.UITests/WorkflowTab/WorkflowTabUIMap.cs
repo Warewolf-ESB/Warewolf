@@ -11,21 +11,21 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
-using Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
-using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
-using Warewolf.UITests.Tools.Scripting.ScriptingToolsUIMapClasses;
-using Warewolf.UITests.Tools.Resources.ResourcesToolsUIMapClasses;
-using Warewolf.UITests.Tools.Recordset.RecordsetToolsUIMapClasses;
-using Warewolf.UITests.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
-using Warewolf.UITests.Tools.HTTPWebMethods.HTTPToolsUIMapClasses;
-using Warewolf.UITests.Tools.FileFTPFTPSSFTP.FileToolsUIMapClasses;
-using Warewolf.UITests.Tools.Email.EmailToolsUIMapClasses;
-using Warewolf.UITests.Tools.Database.DatabaseToolsUIMapClasses;
-using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.UITests.Tools.StorageDropbox.DropboxToolsUIMapClasses;
-using Warewolf.UITests.Tools.Sharepoint.SharepointToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Recordset.RecordsetToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses;
 
-namespace Warewolf.UITests.Tools.ToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
 {
     [Binding]
     public partial class WorkflowTabUIMap

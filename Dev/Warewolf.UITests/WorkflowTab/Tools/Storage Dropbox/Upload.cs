@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DropboxSource.DropboxSourceUIMapClasses;
-using Warewolf.UITests.Tools.StorageDropbox.DropboxToolsUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Tools.Storage_Dropbox
+namespace Warewolf.UITests.WorkflowTab.Tools.Storage_Dropbox
 {
     [CodedUITest]
     public class Upload

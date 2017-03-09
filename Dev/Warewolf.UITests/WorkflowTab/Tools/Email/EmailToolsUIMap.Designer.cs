@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.Email.EmailToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

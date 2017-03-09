@@ -62,7 +62,7 @@
   <CleanupActions />
   <OnErrorActions />
   <Maps>
-    <UIMap Id="ToolsUIMap">
+    <UIMap Id="WorkflowTabUIMap">
       <TopLevelWindows>
         <TopLevelWindow ControlType="Window" Id="MainStudioWindow" FriendlyName="Warewolf" SpecialControlType="None" SessionId="2230694">
           <TechnologyName>UIA</TechnologyName>

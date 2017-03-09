@@ -10,11 +10,11 @@ using System.Windows.Input;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
-using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
-using Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 
-namespace Warewolf.UITests.Tools.LoopConstructs.LoopConstructToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses
 {
     [Binding]
     public partial class LoopConstructToolsUIMap

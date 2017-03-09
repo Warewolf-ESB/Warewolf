@@ -11,11 +11,11 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
-using Warewolf.UITests.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
-using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 
-namespace Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses
 {
     [Binding]
     public partial class ControlFlowToolsUIMap

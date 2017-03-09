@@ -2,12 +2,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
-using Warewolf.UITests.Tools.Resources.ResourcesToolsUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
 
 
-namespace Warewolf.UITests.Tools.Resources
+namespace Warewolf.UITests.WorkflowTab.Tools.Resources
 {
     [CodedUITest]
     public class DotNet_DLL_UITests

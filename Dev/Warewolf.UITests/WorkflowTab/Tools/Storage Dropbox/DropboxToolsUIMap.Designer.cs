@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.StorageDropbox.DropboxToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
