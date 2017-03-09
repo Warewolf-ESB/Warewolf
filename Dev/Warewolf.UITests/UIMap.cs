@@ -46,6 +46,8 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.MatchExactHierarchy = true;
             Playback.PlaybackSettings.SkipSetPropertyVerification = true;
             Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+            Mouse.MouseMoveSpeed = 2500;
+            Mouse.MouseDragSpeed = 2500;
 
             Playback.PlaybackError -= OnPlaybackError;
             Playback.PlaybackError += OnPlaybackError;
@@ -498,7 +500,6 @@ namespace Warewolf.UITests
         public void Click_ConfigureSetting_From_Menu()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.ConfigureSettingsButton, new Point(7, 13));
-            MainStudioWindow.DockManager.SplitPaneMiddle.DrawHighlight();
         }
 
         [Given(@"I Click Debug Output Assign Cell For Unpinned Workflow Tab")]
@@ -593,6 +594,7 @@ namespace Warewolf.UITests
         public void Click_Debug_RibbonButton()
         {
             Mouse.Click(MainStudioWindow.SideMenuBar.RunAndDebugButton, new Point(13, 14));
+            MainStudioWindow.DebugInputDialog.WaitForControlExist(60000);
             Assert.IsTrue(MainStudioWindow.DebugInputDialog.Exists, "Debug Input Dialog does not exist after clicking debug ribbon button.");
         }
 
@@ -974,6 +976,8 @@ namespace Warewolf.UITests
                 Assert.IsFalse(Directory.Exists(folderName));
             }
         }
+
+        #region UIMaps
         WorkflowTabUIMap WorkflowTabUIMap
         {
             get
@@ -1093,5 +1097,7 @@ namespace Warewolf.UITests
         }
 
         private UtilityToolsUIMap _UtilityToolsUIMap;
+
+        #endregion
     }
 }
