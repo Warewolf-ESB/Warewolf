@@ -62,7 +62,8 @@ namespace Warewolf.UITests.ServerSource
         public void EditServerSource_LoadCorrectly()
         {
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist");
+            ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WaitForControlReady(60000);
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist after clicking edit on an explorer server source context menu and waiting 1 minute (60000ms).");
             ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("IntegrationTester", "I73573r0");
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
