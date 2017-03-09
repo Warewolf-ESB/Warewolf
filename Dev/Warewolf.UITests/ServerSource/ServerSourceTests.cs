@@ -8,7 +8,7 @@ namespace Warewolf.UITests.ServerSource
     [CodedUITest]
     public class ServerSourceTests
     {
-        private const string SourceName = "CodedUITestServerSource";
+        private const string SourceNameContextMenu = "CodedUITestServerSource";
         private const string ExistingSourceName = "ExistingCodedUITestServerSource";
 
         [TestMethod]
