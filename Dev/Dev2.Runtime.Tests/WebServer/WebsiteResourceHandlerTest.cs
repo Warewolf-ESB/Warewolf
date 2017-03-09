@@ -77,6 +77,64 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("WebsiteResourceHandler_ProcessRequest")]
+        public void WebsiteResourceHandler_ProcessRequest_WhenWWWrootInURI()
+        {
+            //------------Setup for test--------------------------
+            Mock<IPrincipal> principle = new Mock<IPrincipal>();
+            Mock<IIdentity> mockIdentity = new Mock<IIdentity>();
+            mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
+            principle.Setup(p => p.Identity.Name).Returns("FakeUser");
+            principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
+            principle.Setup(p => p.Identity.Name).Verifiable();
+            ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
+            ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
+            Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
+            NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
+            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
+            ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
+            ctx.Setup(c => c.Request.QueryString).Returns(queryString);
+            ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost:3142/wwwroot/sources/Service/EmailSources/Test"));
+            ctx.Setup(c => c.Request.User).Returns(principle.Object);
+
+            var websiteResourceHandler = new WebsiteResourceHandler();
+
+            //------------Execute Test---------------------------
+            websiteResourceHandler.ProcessRequest(ctx.Object);
+
+            //------------Assert Results-------------------------
+        }
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WebsiteResourceHandler_ProcessRequest")]
+        public void WebsiteResourceHandler_ProcessRequest_WhenWWWrootInURIWithExtension()
+        {
+            //------------Setup for test--------------------------
+            Mock<IPrincipal> principle = new Mock<IPrincipal>();
+            Mock<IIdentity> mockIdentity = new Mock<IIdentity>();
+            mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
+            principle.Setup(p => p.Identity.Name).Returns("FakeUser");
+            principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
+            principle.Setup(p => p.Identity.Name).Verifiable();
+            ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
+            ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
+            Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
+            NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
+            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
+            ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
+            ctx.Setup(c => c.Request.QueryString).Returns(queryString);
+            ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost:1234/wwwroot/sources/Views/Dialogs/SaveDialog.htm"));
+            ctx.Setup(c => c.Request.User).Returns(principle.Object);
+
+            var websiteResourceHandler = new WebsiteResourceHandler();
+
+            //------------Execute Test---------------------------
+            websiteResourceHandler.ProcessRequest(ctx.Object);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WebsiteResourceHandler_ProcessRequest")]
         public void WebsiteResourceHandler_ProcessRequest_WhenNotWWWInURI_ExpectExecution()
         {
             //------------Setup for test--------------------------
