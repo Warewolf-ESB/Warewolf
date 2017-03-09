@@ -28,6 +28,10 @@ namespace Dev2.Workspaces
         {
             get;
         }
+        /// <summary>
+        /// Gets the server workspace.
+        /// </summary>
+        IWorkspace ServerWorkspace { get; }
 
         Guid GetWorkspaceID(WindowsIdentity identity);
 
