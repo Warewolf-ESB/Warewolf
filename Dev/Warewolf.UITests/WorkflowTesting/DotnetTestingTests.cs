@@ -15,7 +15,7 @@ namespace Warewolf.UITests.WorkflowTesting
     {
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void ClickGenerateTestFromDebugCreatesDotnetTestStepsExpandedFalse()
         {
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.RunAllButton.Exists, "Run All Button does not exist on service test tab after openning it by clicking the button in DotnetWorkflowForTesting debug output.");
@@ -26,7 +26,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void ExpandingDotnetDllShowsChildStepsExpandedTrue()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -44,7 +44,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void DeletingConstructorRemovesTheStep()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -55,7 +55,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void DeletingFavouriteRemovesTheStep()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -66,7 +66,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void ConstructorValuesAreLoadedCorreclty()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -79,7 +79,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void ChangeVariableOnTheStepoutPutSetsTheDisplayNameWithAStar()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -91,7 +91,7 @@ namespace Warewolf.UITests.WorkflowTesting
 
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void FavouriteFoodsValuesAreLoadedCorreclty()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -106,7 +106,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void RunTestsHasTheTestPassing()
         {
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
@@ -117,7 +117,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void RunTestsWithAssertHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -131,7 +131,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void RunTestsWithAssertHasTheTestPassing()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -144,7 +144,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void RunTestsWithMockHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
@@ -158,7 +158,7 @@ namespace Warewolf.UITests.WorkflowTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void RunTestsWithMockHasTheTestPassing()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
