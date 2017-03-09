@@ -104,6 +104,8 @@ namespace Warewolf.UIBindingTests.Deploy
         static IShellViewModel GetMockShellVm(bool setContext = false, string name = "")
         {
             var shell = new Mock<IShellViewModel>();
+            shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var containsKey = ScenarioContext.Current.ContainsKey(localhostString);
             if (!containsKey)
             {
