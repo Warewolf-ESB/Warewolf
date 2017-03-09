@@ -270,7 +270,7 @@
       <DependentUpon>WebSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="WebSource\WebSourceTests.cs" />
-    <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
+    <Compile Include="WorkflowTab\ContextMenus\DesignSurfaceContextMenuTests.cs" />
     <Compile Include="Explorer\ResourceVersion.cs" />
     <Compile Include="Explorer\SearchExplorerResource.cs" />
     <Compile Include="Explorer\DeleteExplorerResource.cs" />
