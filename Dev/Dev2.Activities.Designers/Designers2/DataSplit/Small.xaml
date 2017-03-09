@@ -49,6 +49,7 @@
                                     AllowMultilinePaste="True"
                                     AcceptsReturn="True"
                                     AllowUserInsertLine="True"
+                                    WrapInBrackets="True"
                                     MaxHeight="52"
                                     TextWrapping="Wrap"
                                     VerticalAlignment="Stretch"

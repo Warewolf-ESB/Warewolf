@@ -92,7 +92,6 @@ Scenario Outline: Move file Validation
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
 	And result as "<resultVar>"
-	When validating the tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
     When the Move file tool is executed

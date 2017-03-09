@@ -83,9 +83,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
    testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
-   testRunner.Then("\"New Sql Server Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("\"New SQL Server Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 29
-   testRunner.And("title is \"New Sql Server Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("title is \"New SQL Server Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
    testRunner.When("I type Server as \"RSAKLFSVR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -556,9 +556,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 223
    testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 224
-   testRunner.Then("\"New Sql Server Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("\"New SQL Server Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 225
-   testRunner.And("title is \"New Sql Server Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("title is \"New SQL Server Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 226
    testRunner.When("I type Server as \"RSAKLFSVR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
