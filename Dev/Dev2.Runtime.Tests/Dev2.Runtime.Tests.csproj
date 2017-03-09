@@ -67,6 +67,10 @@
       <HintPath>..\packages\TaskSchedulerEditor.2.5.20\lib\net40\CubicOrange.Windows.Forms.ActiveDirectory.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Dropbox.Api, Version=0.1.5906.37642, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.3.0.2\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FluentAssertions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentAssertions.3.4.0\lib\net45\FluentAssertions.dll</HintPath>
@@ -350,6 +354,7 @@
     <Compile Include="WebServer\Controllers\TestWebServerController.cs" />
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
     <Compile Include="WebServer\Controllers\WebServerControllerTests.cs" />
+    <Compile Include="WebServer\GetApisJsonServiceHandlerTest.cs" />
     <Compile Include="WebServer\Hubs\EsbHubTests.cs" />
     <Compile Include="WebServer\Hubs\ResultsCacheTest.cs" />
     <Compile Include="WebServer\InternalServiceRequestHandlerTest.cs" />
@@ -373,6 +378,7 @@
     <Compile Include="WebServer\WebServerResponseTests.cs" />
     <Compile Include="WebServer\WebServerRequestTests.cs" />
     <Compile Include="WebServer\WebServerContextTests.cs" />
+    <Compile Include="WebServer\GetLogFileServiceHandlerTest.cs" />
     <Compile Include="WebServer\WebsiteResourceHandlerTest.cs" />
     <Compile Include="WF\WfApplicationUtilsTests.cs" />
     <Compile Include="WorkspaceItemTests.cs" />
