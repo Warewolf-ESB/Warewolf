@@ -1,0 +1,9 @@
+
+<Source ID="a0478679-7a95-4248-8c6b-d05ecc5ee246" Name="ExistingCodedUITestServerSource" ResourceType="Dev2Server" IsValid="false" ConnectionString="AppServerUri=https://RSAKLFSVRGENDEV:3143;WebServerPort=3143;AuthenticationType=User;UserName=dev2\integrationTester;Password=I73573r0" Type="Connection" ServerVersion="0.0.6276.18207" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>ExistingCodedUITestServerSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>Dev2Server</TypeOf>
+  <VersionInfo DateTimeStamp="2017-03-08T11:33:45.733954+02:00" Reason="" User="DEV2\nkosinathi.sangweni" VersionNumber="3" ResourceId="a0478679-7a95-4248-8c6b-d05ecc5ee246" VersionId="cf25b0d6-64bb-4422-83ef-605c6364d819" />
+</Source>
