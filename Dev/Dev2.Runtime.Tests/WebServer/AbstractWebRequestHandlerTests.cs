@@ -476,7 +476,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
-            XmlDocument myXmlNode = JsonConvert.DeserializeXmlNode(data,"DataList");
+            XmlDocument myXmlNode = JsonConvert.DeserializeXmlNode(data, "DataList");
             var xmlData = myXmlNode.InnerXml;
             string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
@@ -912,6 +912,211 @@ namespace Dev2.Tests.Runtime.WebServer
             privateType.InvokeStatic("SetContentType", headers.Object, dataObject.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(EmitionTypes.XML, dataObject.Object.ReturnType);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenHeaderContentTypeJson_ShouldSetDataObjectContentTypeJson()
+        {
+            //---------------Set up test pack-------------------
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetEmitionType", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World";
+            NameValueCollection collection = new NameValueCollection
+            {
+                {"Content-Type", "Json"}
+            };
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setEmitionTypeMethod);
+            //---------------Execute Test ----------------------
+            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
+            Assert.AreEqual(ServiceName, invoke.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenHeaderContentTypeXml_ShouldSetDataObjectContentTypeXml()
+        {
+            //---------------Set up test pack-------------------
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetEmitionType", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World";
+            NameValueCollection collection = new NameValueCollection
+            {
+                {"Content-Type", "xml"}
+            };
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setEmitionTypeMethod);
+            //---------------Execute Test ----------------------
+            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            Assert.AreEqual(ServiceName, invoke.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenNoHeaders_ShouldSetDataObjectContentTypeXml()
+        {
+            //---------------Set up test pack-------------------
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetEmitionType", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World";
+            NameValueCollection collection = default(NameValueCollection);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setEmitionTypeMethod);
+            //---------------Execute Test ----------------------
+            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            Assert.AreEqual(ServiceName, invoke.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenServiceNameEndsWithapi_ShouldSetDataObjectContentTypeSwagger()
+        {
+            //---------------Set up test pack-------------------
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetEmitionType", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World.api";
+            NameValueCollection collection = new NameValueCollection();
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            dataObject.SetupProperty(o => o.ServiceName);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setEmitionTypeMethod);
+            //---------------Execute Test ----------------------
+            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            Assert.AreEqual("hello World", invoke.ToString());
+            Assert.AreEqual("hello World", dataObject.Object.ServiceName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenServiceNameEndsWithtests_ShouldSetDataObjectContentTypeTests()
+        {
+            //---------------Set up test pack-------------------
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetEmitionType", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World.tests";
+            NameValueCollection collection = new NameValueCollection();
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            dataObject.SetupProperty(o => o.ServiceName);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setEmitionTypeMethod);
+            //---------------Execute Test ----------------------
+            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            Assert.AreEqual("hello World", invoke.ToString());
+            Assert.AreEqual("hello World", dataObject.Object.ServiceName);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenServiceNameEndsWithJson_ShouldSetDataObjectContentTypeJson()
+        {
+            //---------------Set up test pack-------------------
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetEmitionType", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World.JSON";
+            NameValueCollection collection = new NameValueCollection();
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            dataObject.SetupProperty(o => o.ServiceName);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setEmitionTypeMethod);
+            //---------------Execute Test ----------------------
+            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            Assert.AreEqual("hello World", invoke.ToString());
+            Assert.AreEqual("hello World", dataObject.Object.ServiceName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenTestsInFolder_ShouldSetDataObjectContentTypeTests()
+        {
+            //---------------Set up test pack-------------------
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetEmitionType", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World.tests/";
+            NameValueCollection collection = new NameValueCollection();
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            dataObject.SetupProperty(o => o.ServiceName);
+            dataObject.SetupProperty(o => o.TestName);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setEmitionTypeMethod);
+            //---------------Execute Test ----------------------
+            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            Assert.AreEqual("hello World", invoke.ToString());
+            Assert.AreEqual("hello World", dataObject.Object.ServiceName);
+            Assert.AreEqual("*", dataObject.Object.TestName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenServiceNameEndsWithtests_ShouldSetDataObjectIsTestExecution()
+        {
+            //---------------Set up test pack-------------------
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetEmitionType", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World.tests";
+            NameValueCollection collection = new NameValueCollection();
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            dataObject.SetupProperty(o => o.IsServiceTestExecution);
+            dataObject.SetupProperty(o => o.ServiceName);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setEmitionTypeMethod);
+            //---------------Execute Test ----------------------
+            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
+            dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Exactly(1));
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
+            Assert.AreEqual("hello World", invoke.ToString());
+            Assert.AreEqual("hello World", dataObject.Object.ServiceName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetTestResourceIds_GivenRequestForAllTests_ShouldSetDataObjectTestResourceIds()
+        {
+            /*//---------------Set up test pack-------------------
+            //http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=540beccb-b4f5-4b34-bc37-aa24b26370e2
+            //SetTestResourceIds(WebRequestTO webRequest, IDSFDataObject dataObject)
+            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetTestResourceIds", BindingFlags.NonPublic | BindingFlags.Static);
+            const string ServiceName = "hello World./tests";
+            var webRequestTO = new WebRequestTO()
+            {
+
+                Variables = new NameValueCollection() { { "isPublic", "true" } },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=540beccb-b4f5-4b34-bc37-aa24b26370e2"
+
+            };
+
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------*/
         }
     }
 
