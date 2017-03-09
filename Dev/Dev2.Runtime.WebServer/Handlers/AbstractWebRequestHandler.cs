@@ -66,8 +66,8 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog,IDSFDataObject dataObject, IAuthorizationService authorizationService)
-            :this(catalog,testCatalog)
+        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog, IDSFDataObject dataObject, IAuthorizationService authorizationService)
+            : this(catalog, testCatalog)
         {
             _dataObject = dataObject;
             _authorizationService = authorizationService;
@@ -197,7 +197,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Thread.CurrentPrincipal = user;
                 var userPrinciple = user;
                 if (dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
-                {                    
+                {
                     if (dataObject.TestsResourceIds?.Any() ?? false)
                     {
                         foreach (var testsResourceId in dataObject.TestsResourceIds)
@@ -236,7 +236,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     else
                     {
-                        var allTests = _testCatalog.Fetch(dataObject.ResourceID);
+                        var allTests = _testCatalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
                         var taskList = new List<Task>();
                         var testResults = new List<IServiceTestModelTO>();
                         foreach (var test in allTests.Where(to => to.Enabled))
@@ -440,9 +440,9 @@ namespace Dev2.Runtime.WebServer.Handlers
             else
             {
                 var resources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
-                var resourcesToRunTestsFor = resources.Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID)
+                var resourcesToRunTestsFor = resources?.Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID)
                                                .StartsWith(pathOfAllResources, StringComparison.InvariantCultureIgnoreCase));
-                dataObject.TestsResourceIds = resourcesToRunTestsFor.Select(p => p.ResourceID).ToList();
+                dataObject.TestsResourceIds = resourcesToRunTestsFor?.Select(p => p.ResourceID).ToList();
             }
         }
 
@@ -537,14 +537,20 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (!isPublic)
             {
                 var pathStartIndex = webServerUrl.IndexOf("secure/", StringComparison.InvariantCultureIgnoreCase);
-                path = webServerUrl.Substring(pathStartIndex).Replace("/.tests", "").Replace("secure", "").Replace("Secure", "").TrimStart('/').TrimEnd('/');
+                path = webServerUrl.Substring(pathStartIndex)
+                                    .Replace("/.tests", "")
+                                    .Replace("secure", "")
+                                    .Replace("Secure", "")
+                                    .TrimStart('/')
+                                    .TrimEnd('/');
             }
             return path.Replace("/", "\\");
         }
 
         private static bool IsRunAllTestsRequest(WebRequestTO webRequest, string serviceName)
         {
-            return !string.IsNullOrEmpty(serviceName) && serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase);
+            var isRunAllTestsRequest = !string.IsNullOrEmpty(serviceName) && serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase);
+            return isRunAllTestsRequest;
         }
 
         private static async Task GetTaskForTestExecution(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, List<IServiceTestModelTO> testResults, IDSFDataObject dataObjectClone)
