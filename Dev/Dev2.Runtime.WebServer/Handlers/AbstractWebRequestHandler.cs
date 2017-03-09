@@ -87,23 +87,12 @@ namespace Dev2.Runtime.WebServer.Handlers
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
         {
             var executePayload = "";
-            Guid workspaceGuid;
 
             var workspaceRepository = _repository ?? WorkspaceRepository.Instance;
-            if (workspaceId != null)
-            {
-                if (!Guid.TryParse(workspaceId, out workspaceGuid))
-                {
-                    workspaceGuid = workspaceRepository.ServerWorkspace.ID;
-                }
-            }
-            else
-            {
-                workspaceGuid = workspaceRepository.ServerWorkspace.ID;
-            }
+            var workspaceGuid = SetWorkspaceId(workspaceId, workspaceRepository);
 
             var allErrors = new ErrorResultTO();
-            IDSFDataObject dataObject = _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+            var dataObject = _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
             {
                 IsFromWebServer = true
                 ,
@@ -113,81 +102,23 @@ namespace Dev2.Runtime.WebServer.Handlers
                 ,
                 WorkspaceID = workspaceGuid
             };
-            var contains = webRequest?.Variables?.AllKeys.Contains("IsDebug");
-            if (contains != null && contains.Value)
-            {
-                dataObject.IsDebug = true;
-                dataObject.IsDebugFromWeb = true;
-                dataObject.ClientID = Guid.NewGuid();
-                dataObject.DebugSessionID = Guid.NewGuid();
-            }
-            // now bind any variables that are part of the path arguments ;)
-            BindRequestVariablesToDataObject(webRequest, ref dataObject);
-
-            // now process headers ;)
-            if (headers != null)
-            {
-                RemoteInvoke(headers, dataObject);
-            }
-
-            // now set the emition type ;)
-            serviceName = SetEmitionType(serviceName, headers, dataObject);
-
-            if (IsRunAllTestsRequest(webRequest, serviceName))
-            {
-                // default it to xml
-                dataObject.ReturnType = EmitionTypes.TEST;
-                dataObject.IsServiceTestExecution = true;
-                dataObject.TestName = "*";
-            }
-            else
-            {
-                dataObject.SetContentType(headers);
-            }
+            dataObject.SetupForWebDebug(webRequest);
+            webRequest.BindRequestVariablesToDataObject(ref dataObject);
+            dataObject.SetupForRemoteInvoke(headers);
+            dataObject.SetEmitionType(serviceName, headers);
+            dataObject.SetupForTestExecution(webRequest, serviceName, headers);
             if (dataObject.ServiceName == null)
-            {
                 dataObject.ServiceName = serviceName;
-            }
-            IResource resource = null;
-            Guid resourceID;
-            if (Guid.TryParse(serviceName, out resourceID))
-            {
-                resource = _resourceCatalog.GetResource(dataObject.WorkspaceID, resourceID);
-                if (resource != null)
-                {
-                    dataObject.ServiceName = resource.ResourceName;
-                    dataObject.ResourceID = resource.ResourceID;
-                    dataObject.SourceResourceID = resource.ResourceID;
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(dataObject.ServiceName))
-                {
-                    resource = _resourceCatalog.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
-                    if (resource != null)
-                    {
-                        dataObject.ResourceID = resource.ResourceID;
-                        dataObject.SourceResourceID = resource.ResourceID;
-                    }
-                }
-            }
-            if (IsRunAllTestsRequest(webRequest, serviceName))
-            {
-                SetTestResourceIds(webRequest, dataObject);
-            }
+            IResource resource;
+            dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
+            dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
             var serializer = new Dev2JsonSerializer();
             var esbEndpoint = new EsbServicesEndpoint();
             dataObject.EsbChannel = esbEndpoint;
-            var canExecute = true;
-            IAuthorizationService instance = _authorizationService ?? ServerAuthorizationService.Instance;
-            if (instance != null && dataObject.ReturnType != EmitionTypes.TEST)
-            {
-                var authorizationService = instance;
-                var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
-                var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-                canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == "ReservedService");
-            }
+
+            var instance = _authorizationService ?? ServerAuthorizationService.Instance;
+            var canExecute = dataObject.CanExecuteCurrentResource(resource, instance);
+
             // Build EsbExecutionRequest - Internal Services Require This ;)
             var esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
             foreach (string key in webRequest.Variables)
@@ -273,6 +204,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                     dataObject.Environment = null;
                     return new StringResponseWriter(executePayload, formatter.ContentType);
                 }
+
+
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
                 allErrors.MergeErrors(errors);
             }
@@ -407,19 +340,23 @@ namespace Dev2.Runtime.WebServer.Handlers
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
-        private static void SetTestResourceIds(WebRequestTO webRequest, IDSFDataObject dataObject) => dataObject.SetTestResourceIds(_resourceCatalog,webRequest);
-
-        private static string SetEmitionType(string serviceName, NameValueCollection headers, IDSFDataObject dataObject) => dataObject.SetEmitionType(serviceName, headers);
-
-        protected static void RemoteInvoke(NameValueCollection headers, IDSFDataObject dataObject) => dataObject.RemoteInvoke(headers);
-
-        private static bool IsRunAllTestsRequest(WebRequestTO webRequest, string serviceName)
+        private static Guid SetWorkspaceId(string workspaceId, IWorkspaceRepository workspaceRepository)
         {
-            var isRunAllTestsRequest = !string.IsNullOrEmpty(serviceName) && serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase);
-            return isRunAllTestsRequest;
+            Guid workspaceGuid;
+            if (workspaceId != null)
+            {
+                if (!Guid.TryParse(workspaceId, out workspaceGuid))
+                {
+                    workspaceGuid = workspaceRepository.ServerWorkspace.ID;
+                }
+            }
+            else
+            {
+                workspaceGuid = workspaceRepository.ServerWorkspace.ID;
+            }
+            return workspaceGuid;
         }
-
-       
+        protected static void RemoteInvoke(NameValueCollection headers, IDSFDataObject dataObject) => dataObject.SetupForRemoteInvoke(headers);
 
         private static JObject BuildTestResultForWebRequest(IServiceTestModelTO result) => result.BuildTestResultForWebRequest();
 
