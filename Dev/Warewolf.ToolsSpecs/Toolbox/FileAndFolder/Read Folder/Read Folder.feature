@@ -59,7 +59,6 @@ Scenario Outline: Read Folder file validation
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And Read is "<read>"  
 	And result as "<resultVar>"
-	When validating the tool
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"
     When the read folder file tool is executed
