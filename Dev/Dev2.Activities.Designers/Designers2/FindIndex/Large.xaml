@@ -60,8 +60,8 @@
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="InField"
                                 AllowUserInsertLine="False"
-                                FilterType="All" 
-                                WrapInBrackets="False"
+                                FilterType="All"
+                                WrapInBrackets="True"
                                 ToolTip="{x:Static languages:Tooltips.FindIndexToolTipInField}"
                                 Text="{Binding Path=ModelItem.InField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_InFieldtxt_AutoID}">
