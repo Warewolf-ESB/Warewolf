@@ -1020,6 +1020,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             connectControl.SetupAllProperties();

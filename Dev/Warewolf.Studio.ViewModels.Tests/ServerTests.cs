@@ -306,7 +306,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var server = new Server(Guid.Empty,_envConnection.Object);
             //------------Assert Precondition--------------------
             //------------Execute Test---------------------------
-            var toString = server.ToString();
+            var toString = server.DisplayName;
             //------------Assert Results-------------------------
             Assert.AreEqual(serverName, toString);
         }
