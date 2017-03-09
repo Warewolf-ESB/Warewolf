@@ -1307,23 +1307,8 @@ namespace Dev2.Tests.Runtime.WebServer
             //The WID is skipped
             Assert.AreEqual(LocalBoundVariables.Count - 1, boundVariables.Count);
         }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void GetForAllResources_GivenRequestIsPublic()
-        {
-            const string UriString = "http://localhost:3142/secure/Hello%20World.tests/Blank%20Input";
-            //------------Setup for test-------------------------
-            var webRequestTO = new WebRequestTO();
-            webRequestTO.Variables.Add("isPublic", "false");
-            webRequestTO.WebServerUrl = UriString;
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
-            //------------Execute Test---------------------------            
-            var result = privateObject.InvokeStatic("GetForAllResources", webRequestTO);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.ToString().Contains(".tests"));
-        }
+        
+       
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void SetContentType_GivenJsonType_ShouldSetDataObjectReturnType()
@@ -1344,9 +1329,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/json");
             handlerMock.CreateFromMock(new WebRequestTO(), "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
-            var privateType = new PrivateType(typeof(AbstractWebRequestHandler));
             //---------------Execute Test ----------------------
-            privateType.InvokeStatic("SetContentType", headers.Object, dataObject.Object);
+            dataObject.Object.SetContentType(headers.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(EmitionTypes.JSON, dataObject.Object.ReturnType);
         }
@@ -1371,9 +1355,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var headers = new Mock<NameValueCollection>();
             headers.Setup(collection => collection.Get("Content-Type")).Returns("application/xml");
             handlerMock.CreateFromMock(new WebRequestTO(), "Hello World", Guid.Empty.ToString(), headers.Object, principal.Object);
-            var privateType = new PrivateType(typeof(AbstractWebRequestHandler));
             //---------------Execute Test ----------------------            
-            privateType.InvokeStatic("SetContentType", headers.Object, dataObject.Object);
+            dataObject.Object.SetContentType(headers.Object);
             //------------Assert Results-------------------------
             Assert.AreEqual(EmitionTypes.XML, dataObject.Object.ReturnType);
         }
@@ -1394,10 +1377,10 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Assert Precondition----------------
             Assert.IsNotNull(setEmitionTypeMethod);
             //---------------Execute Test ----------------------
-            var invoke = setEmitionTypeMethod.Invoke(null, new object[] { ServiceName, collection, dataObject.Object });
+            var invoke = dataObject.Object.SetEmitionType(ServiceName,collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
-            Assert.AreEqual(ServiceName, invoke.ToString());
+            Assert.AreEqual(ServiceName, invoke);
         }
 
         [TestMethod]

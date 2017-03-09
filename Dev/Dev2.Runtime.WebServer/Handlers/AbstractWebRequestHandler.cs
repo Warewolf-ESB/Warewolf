@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
@@ -73,11 +72,11 @@ namespace Dev2.Runtime.WebServer.Handlers
                                             , IAuthorizationService authorizationService
                                             , IWorkspaceRepository repository)
                                             : this(catalog, testCatalog)
-                                        {
-                                            _dataObject = dataObject;
-                                            _authorizationService = authorizationService;
-                                            _repository = repository;
-                                        }
+        {
+            _dataObject = dataObject;
+            _authorizationService = authorizationService;
+            _repository = repository;
+        }
 
         protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
         {
@@ -143,7 +142,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             else
             {
-                SetContentType(headers, dataObject);
+                dataObject.SetContentType(headers);
             }
             if (dataObject.ServiceName == null)
             {
@@ -221,7 +220,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                                 var res = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
                                 var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
 
-                                var lastTask = GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid, serializer, testResults, dataObjectClone);
+                                var lastTask = ServiceTestExecutor.GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid, serializer, testResults, dataObjectClone);
                                 taskList.Add(lastTask);
                             }
                             Task.WaitAll(taskList.ToArray());
@@ -251,7 +250,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             var dataObjectClone = dataObject.Clone();
                             dataObjectClone.Environment = new ExecutionEnvironment();
                             dataObjectClone.TestName = test.TestName;
-                            var lastTask = GetTaskForTestExecution(serviceName, userPrinciple, workspaceGuid, serializer, testResults, dataObjectClone);
+                            var lastTask = ServiceTestExecutor.GetTaskForTestExecution(serviceName, userPrinciple, workspaceGuid, serializer, testResults, dataObjectClone);
                             taskList.Add(lastTask);
                         }
                         Task.WaitAll(taskList.ToArray());
@@ -408,151 +407,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
-        private static void SetContentType(NameValueCollection headers, IDSFDataObject dataObject)
-        {
-            if (headers != null)
-            {
-                var contentType = headers.Get("Content-Type");
-                if (string.IsNullOrEmpty(contentType))
-                {
-                    contentType = headers.Get("ContentType");
-                }
-                if (!string.IsNullOrEmpty(contentType) && !dataObject.IsServiceTestExecution)
-                {
-                    if (contentType.ToLowerInvariant().Contains("json"))
-                    {
-                        dataObject.ReturnType = EmitionTypes.JSON;
-                    }
-                    if (contentType.ToLowerInvariant().Contains("xml"))
-                    {
-                        dataObject.ReturnType = EmitionTypes.XML;
-                    }
-                }
-            }
-            else
-            {
-                dataObject.ReturnType = EmitionTypes.XML;
-            }
-        }
+        private static void SetTestResourceIds(WebRequestTO webRequest, IDSFDataObject dataObject) => dataObject.SetTestResourceIds(_resourceCatalog,webRequest);
 
-        private static void SetTestResourceIds(WebRequestTO webRequest, IDSFDataObject dataObject)
-        {
-            var pathOfAllResources = GetForAllResources(webRequest);
-            dataObject.ResourceID = Guid.Empty;
-            if (string.IsNullOrEmpty(pathOfAllResources))
-            {
-                var resources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
-                dataObject.TestsResourceIds = resources.Select(p => p.ResourceID).ToList();
-            }
-            else
-            {
-                var resources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
-                var resourcesToRunTestsFor = resources?.Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID)
-                                               .StartsWith(pathOfAllResources, StringComparison.InvariantCultureIgnoreCase));
-                dataObject.TestsResourceIds = resourcesToRunTestsFor?.Select(p => p.ResourceID).ToList();
-            }
-        }
+        private static string SetEmitionType(string serviceName, NameValueCollection headers, IDSFDataObject dataObject) => dataObject.SetEmitionType(serviceName, headers);
 
-        private static string SetEmitionType(string serviceName, NameValueCollection headers, IDSFDataObject dataObject)
-        {
-            int loc;
-            if (!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
-            {
-                // default it to xml
-                dataObject.ReturnType = EmitionTypes.XML;
-
-                if (loc > 0)
-                {
-                    var typeOf = serviceName.Substring(loc + 1).ToUpper();
-                    EmitionTypes myType;
-                    if (Enum.TryParse(typeOf, out myType))
-                    {
-                        dataObject.ReturnType = myType;
-                    }
-
-                    if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        dataObject.IsServiceTestExecution = true;
-                        var idx = serviceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
-                        if (idx > loc)
-                        {
-                            var testName = serviceName.Substring(idx + 1).ToUpper();
-                            dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
-                        }
-                        else
-                        {
-                            dataObject.TestName = "*";
-                        }
-                        dataObject.ReturnType = EmitionTypes.TEST;
-                    }
-
-                    if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
-                    {
-                        dataObject.ReturnType = EmitionTypes.SWAGGER;
-                    }
-                    serviceName = serviceName.Substring(0, loc);
-                    dataObject.ServiceName = serviceName;
-                }
-            }
-            else
-            {
-                SetContentType(headers, dataObject);
-            }
-            return serviceName;
-        }
-
-        protected static void RemoteInvoke(NameValueCollection headers, IDSFDataObject dataObject)
-        {
-            Dev2Logger.Debug("Remote Invoke");
-
-            var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
-            var remoteId = headers.Get(HttpRequestHeader.From.ToString());
-
-            if (isRemote != null && remoteId != null)
-            {
-                if (isRemote.Equals(GlobalConstants.RemoteServerInvoke))
-                {
-                    // we have a remote invoke ;)
-                    dataObject.RemoteInvoke = true;
-                }
-                if (isRemote.Equals(GlobalConstants.RemoteDebugServerInvoke))
-                {
-                    // we have a remote invoke ;)
-                    dataObject.RemoteNonDebugInvoke = true;
-                }
-
-                dataObject.RemoteInvokerID = remoteId;
-            }
-        }
-
-        private static string GetForAllResources(WebRequestTO webRequest)
-        {
-            var publicvalue = webRequest.Variables["isPublic"];
-            var isPublic = bool.Parse(publicvalue ?? "False");
-            var path = "";
-            var webServerUrl = webRequest.WebServerUrl;
-            if (isPublic)
-            {
-                var pathStartIndex = webServerUrl.IndexOf("public/", StringComparison.InvariantCultureIgnoreCase);
-                path = webServerUrl.Substring(pathStartIndex)
-                                   .Replace("/.tests", "")
-                                   .Replace("public", "")
-                                   .Replace("Public", "")
-                                   .TrimStart('/')
-                                   .TrimEnd('/');
-            }
-            if (!isPublic)
-            {
-                var pathStartIndex = webServerUrl.IndexOf("secure/", StringComparison.InvariantCultureIgnoreCase);
-                path = webServerUrl.Substring(pathStartIndex)
-                                    .Replace("/.tests", "")
-                                    .Replace("secure", "")
-                                    .Replace("Secure", "")
-                                    .TrimStart('/')
-                                    .TrimEnd('/');
-            }
-            return path.Replace("/", "\\");
-        }
+        protected static void RemoteInvoke(NameValueCollection headers, IDSFDataObject dataObject) => dataObject.RemoteInvoke(headers);
 
         private static bool IsRunAllTestsRequest(WebRequestTO webRequest, string serviceName)
         {
@@ -560,98 +419,13 @@ namespace Dev2.Runtime.WebServer.Handlers
             return isRunAllTestsRequest;
         }
 
-        private static async Task GetTaskForTestExecution(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, List<IServiceTestModelTO> testResults, IDSFDataObject dataObjectClone)
-        {
-            var lastTask = Task.Run(() =>
-            {
-                var interTestRequest = new EsbExecuteRequest { ServiceName = serviceName };
-                var dataObjectToUse = dataObjectClone;
-                Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
-                {
-                    var esbEndpointClone = new EsbServicesEndpoint();
-                    ErrorResultTO errs;
-                    esbEndpointClone.ExecuteRequest(dataObjectToUse, interTestRequest, workspaceGuid, out errs);
-                });
-                var result = serializer.Deserialize<ServiceTestModelTO>(interTestRequest.ExecuteResult);
-                if (result == null)
-                {
-                    if (interTestRequest.ExecuteResult != null)
-                    {
-                        var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString()) ?? new TestRunResult { TestName = dataObjectToUse.TestName };
-                        result = new ServiceTestModelTO { Result = r, TestName = r.TestName };
-                    }
-                }
-                Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObjectToUse.DataListID);
-                dataObjectToUse.Environment = null;
-                testResults.Add(result);
-            });
-            await lastTask;
-        }
+       
 
-        private static JObject BuildTestResultForWebRequest(IServiceTestModelTO result)
-        {
-            var resObj = new JObject { { "Test Name", result.TestName } };
-            if (result.Result.RunTestResult == RunResult.TestPassed)
-            {
-                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PassedResult);
-            }
-            else if (result.Result.RunTestResult == RunResult.TestFailed)
-            {
-                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_FailureResult);
-                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
-            }
-            else if (result.Result.RunTestResult == RunResult.TestInvalid)
-            {
-                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_InvalidResult);
-                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
-            }
-            else if (result.Result.RunTestResult == RunResult.TestResourceDeleted)
-            {
-                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_ResourceDeleteResult);
-                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
-            }
-            else if (result.Result.RunTestResult == RunResult.TestResourcePathUpdated)
-            {
-                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_ResourcpathUpdatedResult);
-                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
-            }
-
-            else if (result.Result.RunTestResult == RunResult.TestPending)
-            {
-                resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_PendingResult);
-                resObj.Add("Message", result.Result.Message);
-            }
-            return resObj;
-        }
+        private static JObject BuildTestResultForWebRequest(IServiceTestModelTO result) => result.BuildTestResultForWebRequest();
 
         protected static void BindRequestVariablesToDataObject(WebRequestTO request, ref IDSFDataObject dataObject)
         {
-            if (dataObject != null && request != null)
-            {
-                if (!string.IsNullOrEmpty(request.Bookmark))
-                {
-                    dataObject.CurrentBookmarkName = request.Bookmark;
-                }
-
-                if (!string.IsNullOrEmpty(request.InstanceID))
-                {
-                    Guid tmpId;
-                    if (Guid.TryParse(request.InstanceID, out tmpId))
-                    {
-                        dataObject.WorkflowInstanceId = tmpId;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(request.ServiceName) && string.IsNullOrEmpty(dataObject.ServiceName))
-                {
-                    dataObject.ServiceName = request.ServiceName;
-                }
-                foreach (string key in request.Variables)
-                {
-                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(key), request.Variables[key], 0);
-                }
-
-            }
+            request.BindRequestVariablesToDataObject(ref dataObject);
         }
 
         protected static string GetPostData(ICommunicationContext ctx)
