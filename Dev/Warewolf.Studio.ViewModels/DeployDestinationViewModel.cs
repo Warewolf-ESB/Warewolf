@@ -12,14 +12,14 @@ namespace Warewolf.Studio.ViewModels
         private bool _deployTests;
         private Version _serverVersion;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
+        readonly IShellViewModel _shellViewModel;
 
         #region Implementation of IDeployDestinationExplorerViewModel
 
         public DeployDestinationViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator,false)
         {
-            //ConnectControlViewModel = shellViewModel.ExplorerViewModel.ConnectControlViewModel;
-            //_environments = shellViewModel.ExplorerViewModel.Environments;
+            _shellViewModel = shellViewModel;
             ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
             ConnectControlViewModel.ServerConnected += ServerConnected;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
@@ -39,6 +39,7 @@ namespace Warewolf.Studio.ViewModels
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;
             StatsArea?.ReCalculate();
+            _shellViewModel.ExplorerViewModel.Environments.Add(environmentViewModel);
         }
 
         void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)

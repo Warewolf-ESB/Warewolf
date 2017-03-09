@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -60,9 +61,19 @@ namespace Warewolf.Studio.ViewModels
             IsDeploy = true;
         }
 
-        void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
+        async void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            UpdateItemForDeploy(environmentId);
+            if (_environments.Count != _shellViewModel.ExplorerViewModel.Environments.Count)
+            {
+                var environmentViewModel = _shellViewModel.ExplorerViewModel.Environments.FirstOrDefault(
+                        model => model.ResourceId == environmentId);
+
+                await CreateNewEnvironment(environmentViewModel?.Server);
+            }
+            else
+            {
+                UpdateItemForDeploy(environmentId);
+            }
         }
 
         #region Overrides of ExplorerViewModel
@@ -156,7 +167,10 @@ namespace Warewolf.Studio.ViewModels
                     a.CanDrag = false;
                 });
             }
-            SelectedEnvironment.AllowResourceCheck = true;
+            if (SelectedEnvironment != null)
+            {
+                SelectedEnvironment.AllowResourceCheck = true;
+            }
             foreach (var env in _environments.Where(a => a.Server.EnvironmentID != environmentId))
             {
                 env.IsVisible = false;
@@ -274,6 +288,11 @@ namespace Warewolf.Studio.ViewModels
         #endregion
 
         async void ServerConnected(object _, IServer server)
+        {
+            await CreateNewEnvironment(server);
+        }
+
+        private async Task CreateNewEnvironment(IServer server)
         {
             if (server == null)
             {
