@@ -4,7 +4,9 @@ Param(
   [string]$DotCoverPath,
   [string]$ServerPath,
   [string]$StudioPath,
-  [string]$ResourcesType
+  [string]$ResourcesType,
+  [string]$ServerUsername,
+  [string]$ServerPassword
 )
 
 if ($ServerPath -ne "" -and !(Test-Path $ServerPath)) {
@@ -105,6 +107,9 @@ if ((Get-Service "Warewolf Server" -ErrorAction SilentlyContinue) -eq $null) {
 		Write-Host Configuring service to $BinPathWithDotCover
 		sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
 	}
+}
+if ($ServerUsername -ne "" -and $ServerPassword -ne "") {
+    sc.exe config "Warewolf Server" obj= "$ServerUsername" password= "$ServerPassword"
 }
 
 $CurrentDirectory = $PSScriptRoot
