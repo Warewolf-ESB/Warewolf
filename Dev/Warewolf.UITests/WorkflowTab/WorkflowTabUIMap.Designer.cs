@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.ToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
@@ -243,7 +243,7 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
         {
             get
             {
-                if ((this.mWorkflowTab == null) || !(this.mWorkflowTab.Exists))
+                if ((this.mWorkflowTab == null))
                 {
                     this.mWorkflowTab = new WorkflowTab(this);
                 }
@@ -898,7 +898,7 @@ namespace Warewolf.UITests.Tools.ToolsUIMapClasses
         {
             get
             {
-                if ((this.mAdornert_numbernText == null) || !(this.mAdornert_numbernText.Exists))
+                if ((this.mAdornert_numbernText == null))
                 {
                     this.mAdornert_numbernText = new Adornert_numbernText(this);
                 }

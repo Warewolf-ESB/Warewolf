@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Tools.Control_Flow
+namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
 {
     [CodedUITest]
     public class Switch

@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.Data.DataToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

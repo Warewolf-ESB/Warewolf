@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Tools.Control_Flow
+namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
 {
     [CodedUITest]
     public class Start_Node

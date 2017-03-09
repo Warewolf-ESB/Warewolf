@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.Scripting.ScriptingToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

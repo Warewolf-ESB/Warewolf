@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Tools.Data
+namespace Warewolf.UITests.WorkflowTab.Tools.Data
 {
     [CodedUITest]
     public class Base_Convert

@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.FileFTPFTPSSFTP.FileToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

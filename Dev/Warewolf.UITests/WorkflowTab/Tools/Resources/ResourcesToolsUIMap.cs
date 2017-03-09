@@ -10,9 +10,9 @@ using System.Windows.Input;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Tools.Resources.ResourcesToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses
 {
     [Binding]
     public partial class ResourcesToolsUIMap

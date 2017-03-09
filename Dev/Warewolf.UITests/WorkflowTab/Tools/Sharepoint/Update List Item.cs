@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.SharepointSource.SharepointSourceUIMapClasses;
-using Warewolf.UITests.Tools.Sharepoint.SharepointToolsUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Tools.Sharepoint
+namespace Warewolf.UITests.WorkflowTab.Tools.Sharepoint
 {
     [CodedUITest]
     public class Update_List_Item

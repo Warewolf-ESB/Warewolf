@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
-using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 
-namespace Warewolf.UITests.Tools.Utility
+namespace Warewolf.UITests.WorkflowTab.Tools.Utility
 {
     [CodedUITest]
     public class Calculate

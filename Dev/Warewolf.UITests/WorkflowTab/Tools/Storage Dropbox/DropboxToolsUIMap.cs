@@ -10,9 +10,9 @@ using System.Windows.Input;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
-namespace Warewolf.UITests.Tools.StorageDropbox.DropboxToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses
 {
     [Binding]
     public partial class DropboxToolsUIMap

@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.Tools.LoopConstructs.LoopConstructToolsUIMapClasses
+namespace Warewolf.UITests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
