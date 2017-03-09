@@ -244,22 +244,23 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ObjectName_GivenIsObjectAndObjectResult_ShouldUpdateDatalist()
         {
             //---------------Set up test pack-------------------
+            CustomContainer.DeRegister<IShellViewModel>();
+            var shellVm = new Mock<IShellViewModel>();
+            shellVm.Setup(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            CustomContainer.Register(shellVm.Object);
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true)
             {
                 ObjectResult = this.SerializeToJsonString(new DefaultSerializationBinder())
             };
-
-            var shellVm = new Mock<IShellViewModel>();
-            shellVm.Setup(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
-            CustomContainer.DeRegister<IShellViewModel>();
-            CustomContainer.Register(shellVm.Object);
+            
+         
             //---------------Assert Precondition----------------
             Assert.IsTrue(outputsRegion.IsObject);
             //---------------Execute Test ----------------------
             outputsRegion.ObjectName = "[[@objName]]";
             //---------------Test Result -----------------------
-            shellVm.Verify(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>()));
+            shellVm.Verify(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             Assert.AreEqual(outputsRegion.ObjectName, act.ObjectName);
         }
 
