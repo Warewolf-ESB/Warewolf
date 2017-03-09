@@ -66,6 +66,7 @@
                                 AllowMultilinePaste="True"
                                 AcceptsReturn="True"
                                 AllowUserInsertLine="True"
+                                WrapInBrackets="True"
                                 MaxHeight="80"
                                 TextWrapping="Wrap"
                                 VerticalAlignment="Top"
