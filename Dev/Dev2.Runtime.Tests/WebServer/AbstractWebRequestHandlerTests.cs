@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateFormGivenValidArgsContainsIsDebugShouldSetDataObjectAsDebug()
+        public void CreateForm_GivenValidArgsContainsIsDebug_ShouldSetDataObjectAsDebug()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -110,7 +110,420 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateFormGivenEmitionTypeTESTShould()
+        public void CreateForm_GivenValidArgsContainsIsServiceTes_ShouldSetDataObjectAsTest()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.IsServiceTestExecution).Returns(true);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                    {"IsDebug","false"},
+
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenValidArgsContainsIsServiceSwagger_ShouldSetDataObjectAsSwagger()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.IsServiceTestExecution).Returns(false);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList></DataList>"));
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(resource.Object);
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld.api"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.api", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenValidArgsContainsIsServiceJson_ShouldSetDataObjectAsJson()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.IsServiceTestExecution).Returns(false);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList></DataList>"));
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(resource.Object);
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld.Json"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.Json", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenValidArgsContainsIsServiceXMl_ShouldSetDataObjectAsXml()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.IsServiceTestExecution).Returns(false);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(resource.Object);
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld.XML"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.XML", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(2));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenValidArgsContainsIsServiceXMlWithErrors_ShouldCheckReturnTypeOfError()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            env.Setup(environment => environment.HasErrors()).Returns(true);
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.IsServiceTestExecution).Returns(false);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(resource.Object);
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld.XML"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.XML", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifyGet(o => o.ReturnType, Times.Exactly(4));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenValidArgsContainsIsServiceJsonWithErrors_ShouldCheckReturnTypeOfError()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            env.Setup(environment => environment.HasErrors()).Returns(true);
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.IsServiceTestExecution).Returns(false);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var resource = new Mock<IResource>();
+            resource.SetupGet(a => a.DataList).Returns(new StringBuilder("<DataList><Message>Hello World.</Message></DataList>"));
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(resource.Object);
+            var testCatalog = new Mock<ITestCatalog>();
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld.JSON"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.JSON", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifyGet(o => o.ReturnType, Times.Exactly(4));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTests_ShouldSetDataobjectsTestsOptions()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "*", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Once);
+            dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Once);
+            dataObject.VerifySet(o => o.TestName = "*", Times.Once);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenServiceNameIsGuid_ShouldLoadresourceAndSetDataobjectPropertiesFromResource()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+
+            resource.Setup(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.Setup(resource1 => resource1.ResourceName).Returns("a");
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, resourceId.ToString(), string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifySet(o => o.ServiceName = "a", Times.Once);
+            dataObject.VerifySet(o => o.ResourceID = resourceId, Times.Once);
+            dataObject.VerifySet(o => o.SourceResourceID = resourceId, Times.Once);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenServiceNameIsText_ShouldLoadresourceAndSetDataobjectPropertiesFromResource()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+
+            resource.Setup(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.Setup(resource1 => resource1.ResourceName).Returns("a");
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), "a", It.IsAny<string>(), It.IsAny<string>())).Returns(resource.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "a", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifySet(o => o.ResourceID = resourceId, Times.Once);
+            dataObject.VerifySet(o => o.SourceResourceID = resourceId, Times.Once);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenHasTestResourcesIds_ShouldRunAllTests()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            var r1 = Guid.NewGuid();
+            var r2 = Guid.NewGuid();
+            var r3 = Guid.NewGuid();
+            dataObject.SetupGet(o => o.TestsResourceIds).Returns(new List<Guid>()
+            {
+                r1,r2,r3
+            });
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var clodeDsf = new Mock<IDSFDataObject>();
+            clodeDsf.SetupAllProperties();
+            dataObject.Setup(o => o.Clone()).Returns(clodeDsf.Object).Verifiable();
+            dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
+            dataObject.Setup(o => o.TestName).Returns("*");
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var serviceTestModelTos = new List<IServiceTestModelTO>()
+            {
+                new ServiceTestModelTO()
+                {
+                    TestName = "test 1"
+                }
+            };
+            testCatalog.Setup(catalog => catalog.Fetch(r1)).Returns(serviceTestModelTos);
+            testCatalog.Setup(catalog => catalog.Fetch(r2)).Returns(serviceTestModelTos);
+            testCatalog.Setup(catalog => catalog.Fetch(r3)).Returns(serviceTestModelTos);
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.Setup(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.Setup(resource1 => resource1.ResourceName).Returns("a");
+            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"JHome\home");
+            resourceCatalog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object);
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests"
+            };
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "a", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            dataObject.Verify(o => o.Clone(), Times.Exactly(3));
+            testCatalog.Verify(catalog => catalog.Fetch(It.IsAny<Guid>()), Times.Exactly(3));
+            resourceCatalog.Verify(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(3));
+            Assert.IsInstanceOfType(responseWriter, typeof(StringResponseWriter));
+
+        }
+
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenEmitionTypeTEST_ShouldFetchTest()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -153,7 +566,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void CreateFormGivenEmitionTypeTESTAndIsRunAllTestsRequestTrue_Should()
+        public void CreateForm_GivenEmitionTypeTESTAndIsRunAllTestsRequestTrue_ShouldFetchTests()
         {
             //---------------Set up test pack-------------------
             var principal = new Mock<IPrincipal>();
@@ -1113,7 +1526,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 WebServerUrl = "http://rsaklfnkosinath:3142/public/Home/HelloWorld/.tests"
             };
             var resource = new Mock<IResource>();
-            var resourceId = Guid.NewGuid();    
+            var resourceId = Guid.NewGuid();
             resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
             resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
             var resourceCatalog = new Mock<IResourceCatalog>();
