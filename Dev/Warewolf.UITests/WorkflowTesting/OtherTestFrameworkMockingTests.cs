@@ -14,7 +14,7 @@ namespace Warewolf.UITests
         private const string Resource = "Resource For MockRadioButton";
         
         [TestMethod]
-        [TestCategory("Workflow Testing")]
+        [TestCategory("Workflow Mocking Tests")]
         public void SettingTestStepToMockDoesNotAffectTestOutput()
         {
             ExplorerUIMap.Filter_Explorer(Resource);
