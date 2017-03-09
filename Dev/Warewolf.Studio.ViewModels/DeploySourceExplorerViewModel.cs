@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once VirtualMemberCallInContructor
             LoadEnvironment(localhostEnvironment);
 
-            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator) { ShouldUpdateActiveEnvironment = false };
+            ConnectControlViewModel = _shellViewModel.ExplorerViewModel.ConnectControlViewModel;
             ShowConnectControl = true;
             ConnectControlViewModel.ServerConnected += ServerConnected;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
@@ -62,9 +62,7 @@ namespace Warewolf.Studio.ViewModels
 
         void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            var connectControlViewModel = sender as ConnectControlViewModel;
-            var selectedConnection = connectControlViewModel?.SelectedConnection;
-            ServerConnected(this, selectedConnection);
+            UpdateItemForDeploy(environmentId);
         }
 
         #region Overrides of ExplorerViewModel
@@ -133,10 +131,6 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                if (value?.Count == 0)
-                {
-
-                }
                 _environments = value;
                 OnPropertyChanged(() => Environments);
             }

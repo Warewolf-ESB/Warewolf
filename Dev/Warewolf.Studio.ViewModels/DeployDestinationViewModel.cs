@@ -18,9 +18,11 @@ namespace Warewolf.Studio.ViewModels
         public DeployDestinationViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator,false)
         {
+            //ConnectControlViewModel = shellViewModel.ExplorerViewModel.ConnectControlViewModel;
+            //_environments = shellViewModel.ExplorerViewModel.Environments;
             ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
-            ConnectControlViewModel.ServerConnected+=ServerConnected;
-            ConnectControlViewModel.ServerDisconnected+=ServerDisconnected;
+            ConnectControlViewModel.ServerConnected += ServerConnected;
+            ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
         }
