@@ -67,7 +67,7 @@
                                                     AllowUserInsertLine="True"
                                                     TextWrapping="Wrap"
                                                     DefaultText="{Binding WatermarkTextVariable}"
-                                                    WrapInBrackets="False"
+                                                    WrapInBrackets="True"
                                                     Padding="3"
                                                     Margin="0,0,1,1"
                                                     Text="{Binding FromExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
