@@ -35,6 +35,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         {
             _shellViewModelMock = new Mock<IShellViewModel>();
+            _shellViewModelMock.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellViewModelMock.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             _serverMock = new Mock<IServer>();
             _serverMock.Setup(server => server.GetServerVersion()).Returns("1.1.2");
             _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
@@ -61,6 +63,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var env = _target.Environments;
 
             //assert
+            Assert.IsNotNull(env);
         }
 
         [TestMethod]
@@ -227,7 +230,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //act
             _target.ConnectControlViewModel.SelectedConnection = serverMock.Object;
-            _target.ConnectControlViewModel.SelectedConnection = _serverMock.Object;
 
             //assert
 

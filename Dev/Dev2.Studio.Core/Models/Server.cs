@@ -176,6 +176,10 @@ namespace Dev2.Studio.Core.Models
                             displayName += Warewolf.Studio.Resources.Languages.Core.ConnectedLabel;
                         }
                     }
+                    else if (IsConnected)
+                    {
+                        displayName += Warewolf.Studio.Resources.Languages.Core.ConnectedLabel;
+                    }
                     else if (!IsConnected && (HasLoaded || Connection.IsLocalHost))
                     {
                         displayName = Connection.DisplayName.Replace("(Connected)", "");
@@ -353,17 +357,6 @@ namespace Dev2.Studio.Core.Models
             OnPropertyChanged("IsAuthorizedDeployTo");
             OnPropertyChanged("IsAuthorizedDeployFrom");
 
-        }
-
-        /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
-        public override string ToString()
-        {
-            return DisplayName;
         }
 
         public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
