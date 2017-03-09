@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -1098,25 +1099,75 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void SetTestResourceIds_GivenRequestForAllTests_ShouldSetDataObjectTestResourceIds()
+        public void SetTestResourceIds_GivenRequestForAllTestsInAFolder_ShouldSetDataObjectTestResourceIds()
         {
-            /*//---------------Set up test pack-------------------
+            //---------------Set up test pack-------------------
             //http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=540beccb-b4f5-4b34-bc37-aa24b26370e2
             //SetTestResourceIds(WebRequestTO webRequest, IDSFDataObject dataObject)
-            var setEmitionTypeMethod = typeof(AbstractWebRequestHandler).GetMethod("SetTestResourceIds", BindingFlags.NonPublic | BindingFlags.Static);
-            const string ServiceName = "hello World./tests";
+            var setTestResourceIds = typeof(AbstractWebRequestHandler).GetMethod("SetTestResourceIds", BindingFlags.NonPublic | BindingFlags.Static);
+            var rc = typeof(AbstractWebRequestHandler).GetField("_resourceCatalog", BindingFlags.NonPublic | BindingFlags.Static);
+            //const string serviceName = "hello World./tests";
             var webRequestTO = new WebRequestTO()
             {
-
                 Variables = new NameValueCollection() { { "isPublic", "true" } },
-                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=540beccb-b4f5-4b34-bc37-aa24b26370e2"
-
+                WebServerUrl = "http://rsaklfnkosinath:3142/public/Home/HelloWorld/.tests"
             };
-
-
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();    
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
+                .Returns(new List<IResource>()
+                {
+                   resource.Object
+                });
+            Assert.IsNotNull(rc);
+            rc.SetValue(null, resourceCatalog.Object);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ResourceID);
+            dataObject.SetupProperty(o => o.TestsResourceIds);
             //---------------Assert Precondition----------------
+            Assert.IsNotNull(setTestResourceIds);
             //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------*/
+            setTestResourceIds.Invoke(null, new object[] { webRequestTO, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ResourceID = Guid.Empty, Times.Exactly(1));
+            dataObject.VerifySet(o => o.TestsResourceIds = It.IsAny<List<Guid>>(), Times.Exactly(1));
+            var contains = dataObject.Object.TestsResourceIds.Contains(resourceId);
+            Assert.IsTrue(contains);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetTestResourceIds_GivenRequestForAllTests_ShouldSetDataObjectTestResourceIds()
+        {
+            //---------------Set up test pack-------------------
+            //http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=540beccb-b4f5-4b34-bc37-aa24b26370e2
+            //SetTestResourceIds(WebRequestTO webRequest, IDSFDataObject dataObject)
+            var setTestResourceIds = typeof(AbstractWebRequestHandler).GetMethod("SetTestResourceIds", BindingFlags.NonPublic | BindingFlags.Static);
+            var rc = typeof(AbstractWebRequestHandler).GetField("_resourceCatalog", BindingFlags.NonPublic | BindingFlags.Static);
+            //const string serviceName = "hello World./tests";
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection() { { "isPublic", "true" } },
+                WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"
+            };
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
+                .Returns(new List<IResource>());
+            Assert.IsNotNull(rc);
+            rc.SetValue(null, resourceCatalog.Object);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ResourceID);
+            dataObject.SetupProperty(o => o.TestsResourceIds);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(setTestResourceIds);
+            //---------------Execute Test ----------------------
+            setTestResourceIds.Invoke(null, new object[] { webRequestTO, dataObject.Object });
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ResourceID = Guid.Empty, Times.Exactly(1));
+            dataObject.VerifySet(o => o.TestsResourceIds = It.IsAny<List<Guid>>(), Times.Exactly(1));
         }
     }
 

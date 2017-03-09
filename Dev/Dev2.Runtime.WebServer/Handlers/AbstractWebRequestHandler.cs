@@ -440,7 +440,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             else
             {
                 var resources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
-                var resourcesToRunTestsFor = resources.Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID).StartsWith(pathOfAllResources, StringComparison.InvariantCultureIgnoreCase));
+                var resourcesToRunTestsFor = resources.Where(a => a.GetResourcePath(GlobalConstants.ServerWorkspaceID)
+                                               .StartsWith(pathOfAllResources, StringComparison.InvariantCultureIgnoreCase));
                 dataObject.TestsResourceIds = resourcesToRunTestsFor.Select(p => p.ResourceID).ToList();
             }
         }
@@ -526,7 +527,12 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (isPublic)
             {
                 var pathStartIndex = webServerUrl.IndexOf("public/", StringComparison.InvariantCultureIgnoreCase);
-                path = webServerUrl.Substring(pathStartIndex).Replace("/.tests", "").Replace("public", "").Replace("Public", "").TrimStart('/').TrimEnd('/');
+                path = webServerUrl.Substring(pathStartIndex)
+                                   .Replace("/.tests", "")
+                                   .Replace("public", "")
+                                   .Replace("Public", "")
+                                   .TrimStart('/')
+                                   .TrimEnd('/');
             }
             if (!isPublic)
             {
