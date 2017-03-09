@@ -58,6 +58,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         private static ITestCatalog _testCatalog;
         private static IDSFDataObject _dataObject;
         private static IAuthorizationService _authorizationService;
+        private static IWorkspaceRepository _repository;
         public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
@@ -66,12 +67,17 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog, IDSFDataObject dataObject, IAuthorizationService authorizationService)
-            : this(catalog, testCatalog)
-        {
-            _dataObject = dataObject;
-            _authorizationService = authorizationService;
-        }
+        protected AbstractWebRequestHandler(IResourceCatalog catalog
+                                            , ITestCatalog testCatalog
+                                            , IDSFDataObject dataObject
+                                            , IAuthorizationService authorizationService
+                                            , IWorkspaceRepository repository)
+                                            : this(catalog, testCatalog)
+                                        {
+                                            _dataObject = dataObject;
+                                            _authorizationService = authorizationService;
+                                            _repository = repository;
+                                        }
 
         protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
         {
@@ -84,16 +90,17 @@ namespace Dev2.Runtime.WebServer.Handlers
             var executePayload = "";
             Guid workspaceGuid;
 
+            var workspaceRepository = _repository ?? WorkspaceRepository.Instance;
             if (workspaceId != null)
             {
                 if (!Guid.TryParse(workspaceId, out workspaceGuid))
                 {
-                    workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
+                    workspaceGuid = workspaceRepository.ServerWorkspace.ID;
                 }
             }
             else
             {
-                workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
+                workspaceGuid = workspaceRepository.ServerWorkspace.ID;
             }
 
             var allErrors = new ErrorResultTO();
@@ -774,7 +781,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return baseStr;
         }
 
-        static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
+        private static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
         {
             // Extract request keys ;)
             foreach (var key in pairs.AllKeys)
@@ -802,48 +809,48 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected static string GetServiceName(ICommunicationContext ctx)
         {
-            return ctx.Request.BoundVariables["servicename"];
+            return ctx.GetServiceName();
         }
 
         // ReSharper disable InconsistentNaming
         protected static string GetWorkspaceID(ICommunicationContext ctx)
         {
-            return ctx.Request.QueryString["wid"];
+            return ctx.GetWorkspaceID();
         }
 
         protected static string GetDataListID(ICommunicationContext ctx)
         {
-            return ctx.Request.QueryString[GlobalConstants.DLID];
+            return ctx.GetDataListID();
         }
 
         protected static string GetBookmark(ICommunicationContext ctx)
         {
-            return ctx.Request.BoundVariables["bookmark"];
+            return ctx.GetBookmark();
         }
 
         protected static string GetInstanceID(ICommunicationContext ctx)
         {
-            return ctx.Request.BoundVariables["instanceid"];
+            return ctx.GetInstanceID();
         }
 
         protected static string GetWebsite(ICommunicationContext ctx)
         {
-            return ctx.Request.BoundVariables["website"];
+            return ctx.GetWebsite();
         }
 
         protected static string GetPath(ICommunicationContext ctx)
         {
-            return ctx.Request.BoundVariables["path"];
+            return ctx.GetPath();
         }
 
         protected static string GetClassName(ICommunicationContext ctx)
         {
-            return ctx.Request.BoundVariables["name"];
+            return ctx.GetClassName();
         }
 
         protected static string GetMethodName(ICommunicationContext ctx)
         {
-            return ctx.Request.BoundVariables["action"];
+            return ctx.GetMethodName();
         }
     }
 }

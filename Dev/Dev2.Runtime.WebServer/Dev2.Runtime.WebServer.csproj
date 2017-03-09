@@ -136,6 +136,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ApisJsonBuilder.cs" />
+    <Compile Include="CommunicationContextExtenstions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
