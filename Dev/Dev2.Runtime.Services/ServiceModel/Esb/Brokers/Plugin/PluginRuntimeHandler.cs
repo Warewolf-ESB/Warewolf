@@ -246,7 +246,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                 }
 
-                var methodToRun = typeList.Count == 0 ? type.GetMethod(dev2MethodInfo.Method) : type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
+                MethodInfo methodToRun;
+                if (typeList.Count == 0)
+                {
+                    try
+                    {
+                        methodToRun = type.GetMethod(dev2MethodInfo.Method);
+                    }
+                    catch (Exception)
+                    {
+                        methodToRun = type.GetMethods().SingleOrDefault(info => info.Name.Equals(dev2MethodInfo.Method) && !info.GetParameters().Any());
+                    }
+                }
+                else
+                {
+                    methodToRun = type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
+                }
 
                 var methodsActionResult = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
                 var knownBinder = new KnownTypesBinder();
