@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UITests.SaveDialog
 {
