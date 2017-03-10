@@ -112,7 +112,8 @@
                              ItemsSource="{Binding Tests}" SelectionMode="Single" 
                              x:Name="TestsListbox"
                              SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                             ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             IsSynchronizedWithCurrentItem="True">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -502,10 +503,11 @@
 		                                  ScrollViewer.CanContentScroll="True"
 		                                  VirtualizingStackPanel.IsVirtualizing="True"
 		                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-		                                  VirtualizingPanel.IsVirtualizingWhenGrouping="True" 
 		                                  VirtualizingStackPanel.ScrollUnit="Pixel"  
-		                                  VirtualizingStackPanel.CacheLength="20,20"
-		                                  VirtualizingStackPanel.CacheLengthUnit="Item">
+		                                  VirtualizingStackPanel.CacheLength="2,1"
+		                                  VirtualizingStackPanel.CacheLengthUnit="Item"
+                                          VirtualizingStackPanel.IsVirtualizingWhenGrouping="True" 
+                                          VirtualizingStackPanel.IsContainerVirtualizable="True">
                                     <TreeView.ItemTemplate>
                                         <HierarchicalDataTemplate DataType="{x:Type interfaces:IServiceTestStep}" ItemsSource="{Binding Path=Children, IsAsync=True}">
                                             <Grid>
