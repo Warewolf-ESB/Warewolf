@@ -89,7 +89,7 @@ if (!(Test-Path $PSScriptRoot\TestResults)) {
 
 if ($TestList -eq "") {
 	# Create full MSTest argument string.
-	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing&!Default Layout&!Resource Tools&!Save Dialog&!Shortcut Keys&!Settings&!Dependency Graph&!Variables&!Email Tools&!Plugin Sources&!Web Sources&!Database Sources`""
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing&!Default Layout&!Resource Tools&!Save Dialog&!Shortcut Keys&!Settings&!Dependency Graph&!Variables&!Email Tools&!Plugin Sources&!Web Sources&!Database Sources&!Workflow Mocking Tests`""
 } else {
 	# Create full MSTest argument string.
 	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
