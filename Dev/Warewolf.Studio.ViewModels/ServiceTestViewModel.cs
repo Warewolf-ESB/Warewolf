@@ -2127,39 +2127,18 @@ namespace Warewolf.Studio.ViewModels
                     _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                 }
 
-                if (_selectedServiceTest?.TestSteps != null)
-                {
-                    var serviceTestSteps = _selectedServiceTest?.TestSteps.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
-                    foreach (var serviceTestStep in serviceTestSteps)
-                    {
-                        if (serviceTestStep?.StepOutputs != null)
-                        {
-                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
-                            {
-                                ((ServiceTestOutput)serviceTestOutput).PropertyChanged -= OnStepOutputPropertyChanges;
-                            }
-                        }
-                    }
-                }
                 _selectedServiceTest = value;
                 _selectedServiceTest.IsTestLoading = true;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
 
-                if (_selectedServiceTest?.TestSteps != null)
+                var serviceTestSteps = _selectedServiceTest?.TestSteps?.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                if (serviceTestSteps != null)
                 {
-                    var serviceTestSteps = _selectedServiceTest?.TestSteps.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
-                    foreach (var serviceTestStep in serviceTestSteps)
+                    foreach (var serviceTestOutput in serviceTestSteps.Where(serviceTestStep => serviceTestStep?.StepOutputs != null).SelectMany(serviceTestStep => serviceTestStep.StepOutputs))
                     {
-                        if (serviceTestStep?.StepOutputs != null)
-                        {
-                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
-                            {
-                                ((ServiceTestOutput)serviceTestOutput).PropertyChanged += OnStepOutputPropertyChanges;
-                            }
-                        }
+                        ((ServiceTestOutput) serviceTestOutput).PropertyChanged += OnStepOutputPropertyChanges;
                     }
                 }
-
                 SetSelectedTestUrl();
                 SetDuplicateTestTooltip();
                 OnPropertyChanged(() => SelectedServiceTest);
