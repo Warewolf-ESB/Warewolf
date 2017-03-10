@@ -214,6 +214,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 allErrors.AddError("Executing a service externally requires View and Execute permissions");
             }
 
+
             if (dataObject.IsServiceTestExecution)
             {
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
@@ -252,92 +253,22 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
 
-            if (!dataObject.Environment.HasErrors())
+            var executionDto = new ExecutionDto
             {
-                if (!esbExecuteRequest.WasInternalService)
-                {
-                    dataObject.DataListID = executionDlid;
-                    dataObject.WorkspaceID = workspaceGuid;
-                    dataObject.ServiceName = serviceName;
+                WebRequestTO = webRequest,
+                ServiceName = serviceName,
+                DataObject = dataObject,
+                Request = esbExecuteRequest,
+                DataListIdGuid = executionDlid,
+                WorkspaceID = workspaceGuid,
+                Resource = resource,
+                DataListFormat = formatter,
+                PayLoad = executePayload,
+                Serializer = serializer,
+                ErrorResultTO = allErrors
+            };
+            return executionDto.CreateResponseWriter();
 
-                    if (!dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke)
-                    {
-                        if (resource?.DataList != null)
-                        {
-                            if (dataObject.ReturnType == EmitionTypes.JSON)
-                            {
-                                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                            }
-                            else if (dataObject.ReturnType == EmitionTypes.XML)
-                            {
-                                executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                            }
-                            else if (dataObject.ReturnType == EmitionTypes.SWAGGER)
-                            {
-                                formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        executePayload = string.Empty;
-                    }
-                }
-                else
-                {
-                    // internal service request we need to return data for it from the request object ;)
-
-                    executePayload = string.Empty;
-                    var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
-
-                    if (msg != null)
-                    {
-                        executePayload = msg.Message.ToString();
-                    }
-
-                    // out fail safe to return different types of data from services ;)
-                    if (string.IsNullOrEmpty(executePayload))
-                    {
-                        executePayload = esbExecuteRequest.ExecuteResult.ToString();
-                    }
-                }
-            }
-            else
-            {
-                if (dataObject.ReturnType == EmitionTypes.XML)
-                {
-                    executePayload =
-                        "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
-                    executePayload += allErrors.MakeDataListReady();
-                    executePayload += "</FatalError>";
-                }
-                else
-                {
-                    executePayload =
-                        "{ \"FatalError\": \"An internal error occurred while executing the service request\",";
-                    executePayload += allErrors.MakeDataListReady(false);
-                    executePayload += "}";
-                }
-            }
-
-            Dev2Logger.Debug("Execution Result [ " + executePayload + " ]");
-            if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
-            {
-
-                if (executePayload.IsJSON())
-                {
-                    formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                }
-                else if (executePayload.IsXml())
-                {
-                    formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                }
-            }
-            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-            dataObject.Environment = null;
-            return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
         private static Guid SetWorkspaceId(string workspaceId, IWorkspaceRepository workspaceRepository)
