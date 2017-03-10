@@ -139,6 +139,7 @@
     <Compile Include="CommunicationContextExtenstions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="DataObjectExtentions.cs" />
+    <Compile Include="ExecutionDto.cs" />
     <Compile Include="Handlers\GetApisJsonServiceHandler.cs" />
     <Compile Include="Handlers\GetLogFileServiceHandler.cs" />
     <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
