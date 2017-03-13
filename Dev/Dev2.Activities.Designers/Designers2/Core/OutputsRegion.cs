@@ -7,12 +7,12 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Utils;
-using Dev2.Communication;
 using Dev2.Data.Util;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
@@ -165,8 +165,10 @@ namespace Dev2.Activities.Designers2.Core
 
         public IToolRegion CloneRegion()
         {
-            var ser = new Dev2JsonSerializer();
-            return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
+            Mapper.AddMap<OutputsRegion, OutputsRegion>();
+            var outputsRegion = new OutputsRegion();
+            Mapper.Map(this,outputsRegion);
+            return outputsRegion;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
@@ -441,5 +443,7 @@ namespace Dev2.Activities.Designers2.Core
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+      
     }
 }

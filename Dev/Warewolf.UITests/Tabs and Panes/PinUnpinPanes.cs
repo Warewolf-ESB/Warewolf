@@ -11,8 +11,8 @@ using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.Scheduler.SchedulerUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
-using Warewolf.UITests.Tools.Data.DataToolsUIMapClasses;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
