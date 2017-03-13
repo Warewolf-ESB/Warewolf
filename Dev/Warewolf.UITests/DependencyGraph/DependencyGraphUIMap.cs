@@ -7,7 +7,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
@@ -19,7 +19,7 @@ using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
-using Warewolf.UITests.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 
 namespace Warewolf.UITests.DependencyGraph.DependencyGraphUIMapClasses
 {

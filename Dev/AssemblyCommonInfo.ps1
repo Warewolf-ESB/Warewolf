@@ -22,6 +22,7 @@ if ([string]::IsNullOrEmpty($GitCommitTimeString)) {
     $origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
     $GitCommitTime = $origin.AddSeconds($GitCommitTimeDouble)
 }
+$GitBranchName = git rev-parse --abbrev-ref HEAD
 if (-not "$CustomVersionString" -eq "") {
 	$FullVersionString = "$CustomVersionString"
 } else {
@@ -88,7 +89,7 @@ $Line2 = "[assembly: AssemblyCompany(""Warewolf"")]"
 $Line3 = "[assembly: AssemblyProduct(""Warewolf"")]"
 $Line4 = "[assembly: AssemblyCopyright(""Copyright Warewolf " + (Get-Date).year + """)]"
 $Line5 = "[assembly: AssemblyVersion(""" + $FullVersionString + """)]"
-$Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + """)]"
+$Line6 = "[assembly: AssemblyInformationalVersion(""" + $GitCommitTime + " " + $GitCommitID + " " + $GitBranchName + """)]"
 $Line7 = "[assembly: InternalsVisibleTo(""Dev2.Activities.Designers.Tests"")]"
 $Line8 = "[assembly: InternalsVisibleTo(""Warewolf.Studio.ViewModels.Tests"")]"
 Write-Host $Line1
