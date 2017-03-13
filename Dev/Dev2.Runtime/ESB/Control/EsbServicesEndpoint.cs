@@ -187,8 +187,10 @@ namespace Dev2.Runtime.ESB.Control
                         return null;
                     }
                 }
-
+                var wasTestExecution = dataObject.IsServiceTestExecution;
+                dataObject.IsServiceTestExecution = false;
                 var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
+                dataObject.IsServiceTestExecution = wasTestExecution;
                 if (executionContainer != null)
                 {
                     CreateNewEnvironmentFromInputMappings(dataObject, inputDefs, update);
