@@ -38,21 +38,22 @@ namespace Dev2.Tests.Runtime
             //---------------Test Result -----------------------
             Assert.IsNotNull(assemblyLoader);
         }
-        const string DirtyGacName = "GAC:Microsoft.SqlServer.GridControl, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=x86";
-        const string CleanGacName = "Microsoft.SqlServer.GridControl, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91";
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void TryLoadAssemblyGac_GivenReturnsNull_ShouldNotLoadAssembly()
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IAssemblyWrapper>();
+            var load = Assembly.GetExecutingAssembly();
+            var cleanName = load.FullName;
+            var dirtyname = MakeDirty(cleanName);
             mock.Setup(wrapper => wrapper.Load(It.IsAny<string>()));
             var assemblyLoader = new AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
             Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(DirtyGacName, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
             //---------------Test Result -----------------------
             Assert.IsFalse(tryLoadAssembly);
             Assert.IsNull(assembly);
@@ -65,11 +66,14 @@ namespace Dev2.Tests.Runtime
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IAssemblyWrapper>();
-            mock.Setup(wrapper => wrapper.Load(CleanGacName))
+            var load = Assembly.GetExecutingAssembly();
+            var cleanName = load.FullName;
+            var dirtyname = MakeDirty(cleanName);
+            mock.Setup(wrapper => wrapper.Load(cleanName))
                 .Callback<string>((a) =>
                     {
-                        var load = Assembly.Load(a);
-                        Assert.IsNotNull(load);
+                        var load1 = Assembly.Load(a);
+                        Assert.IsNotNull(load1);
                     });
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
             var assemblyLoader = new AssemblyLoader(mock.Object);
@@ -77,11 +81,16 @@ namespace Dev2.Tests.Runtime
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
             Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(DirtyGacName, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
             //---------------Test Result -----------------------
             Assert.IsFalse(tryLoadAssembly);
             Assert.IsNull(assembly);
-            mock.Verify(wrapper => wrapper.Load(CleanGacName));
+            mock.Verify(wrapper => wrapper.Load(cleanName));
+        }
+
+        static string MakeDirty(string name)
+        {
+            return "GAC:" + name + ", processorArchitecture=x86";
         }
 
         [TestMethod]
@@ -90,10 +99,12 @@ namespace Dev2.Tests.Runtime
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IAssemblyWrapper>();
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var location = Path.Combine(currentDirectory, "Assembly", "Microsoft.SqlServer.GridControl.dll");
-            var load = Assembly.LoadFrom(location);
-            mock.Setup(wrapper => wrapper.Load(CleanGacName))
+            
+            var load = Assembly.GetExecutingAssembly();
+            var cleanName = load.FullName;
+            var dirtyname = MakeDirty(cleanName);
+
+            mock.Setup(wrapper => wrapper.Load(cleanName))
                .Returns(load);
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
             var assemblyLoader = new AssemblyLoader(mock.Object);
@@ -101,11 +112,11 @@ namespace Dev2.Tests.Runtime
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
             Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(DirtyGacName, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
             //---------------Test Result -----------------------
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
-            mock.Verify(wrapper => wrapper.Load(CleanGacName));
+            mock.Verify(wrapper => wrapper.Load(cleanName));
         }
 
         [TestMethod]
@@ -114,17 +125,13 @@ namespace Dev2.Tests.Runtime
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IAssemblyWrapper>();
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var location = Path.Combine(currentDirectory, "Assembly", "Microsoft.SqlServer.GridControl.dll");
-            var load = Assembly.LoadFrom(location);
-            var a1 = load.GetReferencedAssemblies().Single(name => name.FullName == "System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-            var a2 = load.GetReferencedAssemblies().Single(name => name.FullName == "System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-            var a3 = load.GetReferencedAssemblies().Single(name => name.FullName == "System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
-            var a4 = load.GetReferencedAssemblies().Single(name => name.FullName == "Accessibility, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
-            var a5 = load.GetReferencedAssemblies().Single(name => name.FullName == "mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-            AssemblyName[] assemblyNames = { a1, a2, a3, a4, a5 };
+            var load = Assembly.GetExecutingAssembly();
+            var cleanName = load.FullName;
+            var dirtyname = MakeDirty(cleanName);
+            var assemblyNames = load.GetReferencedAssemblies();
+            
             mock.Setup(wrapper => wrapper.GetReferencedAssemblies(load)).Returns(assemblyNames);
-            mock.Setup(wrapper => wrapper.Load(CleanGacName))
+            mock.Setup(wrapper => wrapper.Load(cleanName))
                .Returns(load);
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
             var assemblyLoader = new AssemblyLoader(mock.Object);
@@ -132,12 +139,12 @@ namespace Dev2.Tests.Runtime
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
             Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(DirtyGacName, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
             //---------------Test Result -----------------------
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
-            mock.Verify(wrapper => wrapper.Load("Microsoft.SqlServer.GridControl, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"), Times.Exactly(1));
-            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(5));
+            mock.Verify(wrapper => wrapper.Load(cleanName), Times.Exactly(1));
+            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(43));
         }
 
         [TestMethod]
@@ -145,25 +152,19 @@ namespace Dev2.Tests.Runtime
         public void TryLoadAssemblyGac_GivenLoadsCorreclty_ShouldAddAssembliesTo_loadedAssemblies()
         {
             //---------------Set up test pack-------------------
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var location = Path.Combine(currentDirectory, "Assembly", "Microsoft.SqlServer.GridControl.dll");
-            var load = Assembly.LoadFrom(location);
-            var a1 = load.GetReferencedAssemblies().Single(name => name.FullName == "System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-            var a2 = load.GetReferencedAssemblies().Single(name => name.FullName == "System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-            var a3 = load.GetReferencedAssemblies().Single(name => name.FullName == "System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
-            var a4 = load.GetReferencedAssemblies().Single(name => name.FullName == "Accessibility, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
-            var a5 = load.GetReferencedAssemblies().Single(name => name.FullName == "mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
-            AssemblyName[] assemblyNames = { a1, a2, a3, a4, a5 };
+            var load = Assembly.GetExecutingAssembly();
+            var cleanName = load.FullName;
+            var dirtyname = MakeDirty(cleanName);
             var mock = new Mock<IAssemblyWrapper>();
-
-            mock.Setup(wrapper => wrapper.Load(CleanGacName)).Returns(load);
+            var assemblyNames = load.GetReferencedAssemblies();
+            mock.Setup(wrapper => wrapper.Load(cleanName)).Returns(load);
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
-            mock.Setup(wrapper => wrapper.Load(a1)).Returns(Assembly.Load(a1));
-            mock.Setup(wrapper => wrapper.Load(a2)).Returns(Assembly.Load(a2));
-            mock.Setup(wrapper => wrapper.Load(a3)).Returns(Assembly.Load(a3));
-            mock.Setup(wrapper => wrapper.Load(a4)).Returns(Assembly.Load(a4));
-            mock.Setup(wrapper => wrapper.Load(a5)).Returns(Assembly.Load(a5));
+         
             mock.Setup(wrapper => wrapper.GetReferencedAssemblies(load)).Returns(assemblyNames);
+            foreach (var assemblyName in assemblyNames)
+            {
+                mock.Setup(wrapper => wrapper.Load(assemblyName)).Returns(Assembly.Load(assemblyName));
+            }
             var assemblyLoader = new AssemblyLoader(mock.Object);
             var fieldInfo = typeof(AssemblyLoader).GetField("_loadedAssemblies", BindingFlags.Instance | BindingFlags.NonPublic);
             //---------------Assert Precondition----------------
@@ -173,17 +174,13 @@ namespace Dev2.Tests.Runtime
             var value = (List<string>)fieldInfo.GetValue(assemblyLoader);
             Assert.AreEqual(0, value.Count);
             Assembly assembly;
-            assemblyLoader.TryLoadAssembly(DirtyGacName, "", out assembly);
+            assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
             value = (List<string>)fieldInfo.GetValue(assemblyLoader);
             //---------------Test Result -----------------------
-            Assert.AreEqual(5, value.Count);
-            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(5));
+            Assert.AreEqual(43, value.Count);
+            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(43));
             mock.Verify(wrapper => wrapper.GetReferencedAssemblies(load), Times.Once);
-            mock.Verify(wrapper => wrapper.Load(a1));
-            mock.Verify(wrapper => wrapper.Load(a2));
-            mock.Verify(wrapper => wrapper.Load(a3));
-            mock.Verify(wrapper => wrapper.Load(a4));
-            mock.Verify(wrapper => wrapper.Load(a5));
+       
         }
 
         [TestMethod]
@@ -240,14 +237,17 @@ namespace Dev2.Tests.Runtime
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IAssemblyWrapper>();
-            mock.Setup(wrapper => wrapper.Load(CleanGacName)).Throws(new BadImageFormatException());
+            var load = Assembly.GetExecutingAssembly();
+            var cleanName = load.FullName;
+            var dirtyname = MakeDirty(cleanName);
+            mock.Setup(wrapper => wrapper.Load(cleanName)).Throws(new BadImageFormatException());
             mock.Setup(wrapper => wrapper.Load("")).Throws(new BadImageFormatException());
             var assemblyLoader = new AssemblyLoader(mock.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
             Assembly assembly;
-            assemblyLoader.TryLoadAssembly(DirtyGacName, "", out assembly);
+            assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
             //---------------Test Result -----------------------
 
         }
