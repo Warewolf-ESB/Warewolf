@@ -90,7 +90,9 @@ namespace Dev2.Tests.Runtime
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IAssemblyWrapper>();
-            var load = Assembly.Load(CleanGacName);
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var location = Path.Combine(currentDirectory, "Assembly", "Microsoft.SqlServer.GridControl.dll");
+            var load = Assembly.LoadFrom(location);
             mock.Setup(wrapper => wrapper.Load(CleanGacName))
                .Returns(load);
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
@@ -112,7 +114,9 @@ namespace Dev2.Tests.Runtime
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IAssemblyWrapper>();
-            var load = Assembly.Load(CleanGacName);
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var location = Path.Combine(currentDirectory, "Assembly", "Microsoft.SqlServer.GridControl.dll");
+            var load = Assembly.LoadFrom(location);
             var a1 = load.GetReferencedAssemblies().Single(name => name.FullName == "System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
             var a2 = load.GetReferencedAssemblies().Single(name => name.FullName == "System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
             var a3 = load.GetReferencedAssemblies().Single(name => name.FullName == "System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");
@@ -141,8 +145,9 @@ namespace Dev2.Tests.Runtime
         public void TryLoadAssemblyGac_GivenLoadsCorreclty_ShouldAddAssembliesTo_loadedAssemblies()
         {
             //---------------Set up test pack-------------------
-
-            var load = Assembly.Load(CleanGacName);
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var location = Path.Combine(currentDirectory, "Assembly", "Microsoft.SqlServer.GridControl.dll");
+            var load = Assembly.LoadFrom(location);
             var a1 = load.GetReferencedAssemblies().Single(name => name.FullName == "System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
             var a2 = load.GetReferencedAssemblies().Single(name => name.FullName == "System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
             var a3 = load.GetReferencedAssemblies().Single(name => name.FullName == "System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a");

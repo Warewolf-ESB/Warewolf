@@ -663,6 +663,9 @@
     <EmbeddedResource Include="XML\put.xml" />
     <EmbeddedResource Include="XML\WebPutServiceSource.xml" />
     <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
+    <EmbeddedResource Include="Assembly\Microsoft.SqlServer.GridControl.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
