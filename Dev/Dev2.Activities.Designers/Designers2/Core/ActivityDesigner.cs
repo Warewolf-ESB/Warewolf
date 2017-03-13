@@ -22,6 +22,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
 using Dev2.Activities.Designers2.Sequence;
@@ -338,7 +339,7 @@ namespace Dev2.Activities.Designers2.Core
 
         void OnRoutedEventHandler(object sender, RoutedEventArgs args)
         {
-            OnLoaded();
+            Application.Current?.Dispatcher?.InvokeAsync(OnLoaded, DispatcherPriority.Background);
         }
 
         void ActivityDesignerUnloaded(object sender, RoutedEventArgs e)
