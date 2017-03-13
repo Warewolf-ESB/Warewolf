@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ESB.Control
     /// </summary>
     public class ServiceLocator : IServiceLocator
     {
-        readonly IPerformanceCounter _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
+        readonly IPerformanceCounter _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
         private readonly IResourceCatalog _resourceCatalog = ResourceCatalog.Instance;
         #region New Mgt Methods
 
