@@ -25,8 +25,8 @@ Feature: New SqlDatabase Source
 @SQLDbSource
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
-   Then "New Sql Server Source" tab is opened
-   And title is "New Sql Server Source"
+   Then "New SQL Server Source" tab is opened
+   And title is "New SQL Server Source"
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
@@ -221,8 +221,8 @@ Scenario: Cancel DB Source Test
 @SQLDbSource
 Scenario: Changing database type after testing connection
    Given I open New Database Source
-   Then "New Sql Server Source" tab is opened
-   And title is "New Sql Server Source"
+   Then "New SQL Server Source" tab is opened
+   And title is "New SQL Server Source"
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |

@@ -39,12 +39,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="File or Folder" />
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="0"
                                 Grid.Row="0" 
                                 Grid.ColumnSpan="2"
-                                DefaultText="CMD"
+                                DefaultText="Batch Script"
                                 VerticalContentAlignment="Top"
                                 VerticalAlignment="Stretch"
                                 AllowMultilinePaste="True"
