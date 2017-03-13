@@ -49,6 +49,7 @@
                                 AllowUserInsertLine="True"
                                 MaxHeight="52"
                                 TextWrapping="Wrap"
+                                WrapInBrackets="True"
                                 VerticalAlignment="Top"
                                 VerticalScrollBarVisibility="Auto"
                                 DefaultText="[[Rec().F1]],[[Rec().F2]]" 

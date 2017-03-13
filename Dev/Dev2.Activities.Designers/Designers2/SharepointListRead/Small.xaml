@@ -156,6 +156,7 @@
                                                     AllowMultilinePaste="False"
                                                     AcceptsReturn="False"
                                                     AllowUserInsertLine="False"
+                                                    WrapInBrackets="True"
                                                     MaxHeight="52"
                                                     Margin="0,0,1,1"
                                                     TextWrapping="NoWrap"

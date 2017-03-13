@@ -79,7 +79,7 @@
     <Compile Include="DBSource\DBSourceUIMap.Designer.cs">
       <DependentUpon>DBSourceUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="DebugOutputTests\DebugOutputWindowTests.cs" />
+    <Compile Include="WorkflowTab\DebugOutput\DebugOutputWindowTests.cs" />
     <Compile Include="DependencyGraph\DependencyGraphUIMap.cs">
       <DependentUpon>DependencyGraphUIMap.uitest</DependentUpon>
     </Compile>
@@ -164,84 +164,84 @@
     <Compile Include="SharepointSource\SharepointSourceTests.cs" />
     <Compile Include="Shortcut Keys\Shortcut Keys.cs" />
     <Compile Include="Tabs and Panes\WorkflowTabs.cs" />
-    <Compile Include="Tools\Control Flow\ControlFlowToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Control Flow\ControlFlowToolsUIMap.cs">
       <DependentUpon>ControlFlowToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Control Flow\ControlFlowToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Control Flow\ControlFlowToolsUIMap.Designer.cs">
       <DependentUpon>ControlFlowToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Database\DatabaseToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Database\DatabaseToolsUIMap.cs">
       <DependentUpon>DatabaseToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Database\DatabaseToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Database\DatabaseToolsUIMap.Designer.cs">
       <DependentUpon>DatabaseToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Data\DataToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Data\DataToolsUIMap.cs">
       <DependentUpon>DataToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Data\DataToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Data\DataToolsUIMap.Designer.cs">
       <DependentUpon>DataToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Email\Exchange_Send.cs" />
-    <Compile Include="Tools\Email\EmailToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Email\Exchange_Send.cs" />
+    <Compile Include="WorkflowTab\Tools\Email\EmailToolsUIMap.cs">
       <DependentUpon>EmailToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Email\EmailToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Email\EmailToolsUIMap.Designer.cs">
       <DependentUpon>EmailToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.cs">
       <DependentUpon>FileToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.Designer.cs">
       <DependentUpon>FileToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\HTTP Web Methods\HTTPToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\HTTP Web Methods\HTTPToolsUIMap.cs">
       <DependentUpon>HTTPToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\HTTP Web Methods\HTTPToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\HTTP Web Methods\HTTPToolsUIMap.Designer.cs">
       <DependentUpon>HTTPToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Loop Constructs\LoopConstructToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Loop Constructs\LoopConstructToolsUIMap.cs">
       <DependentUpon>LoopConstructToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Loop Constructs\LoopConstructToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Loop Constructs\LoopConstructToolsUIMap.Designer.cs">
       <DependentUpon>LoopConstructToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Recordset\RecordsetToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Recordset\RecordsetToolsUIMap.cs">
       <DependentUpon>RecordsetToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Recordset\RecordsetToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Recordset\RecordsetToolsUIMap.Designer.cs">
       <DependentUpon>RecordsetToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Resources\ResourcesToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Resources\ResourcesToolsUIMap.cs">
       <DependentUpon>ResourcesToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Resources\ResourcesToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Resources\ResourcesToolsUIMap.Designer.cs">
       <DependentUpon>ResourcesToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Scripting\ScriptingToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Scripting\ScriptingToolsUIMap.cs">
       <DependentUpon>ScriptingToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Scripting\ScriptingToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Scripting\ScriptingToolsUIMap.Designer.cs">
       <DependentUpon>ScriptingToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Sharepoint\Delete List Item.cs" />
-    <Compile Include="Tools\Sharepoint\SharepointToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Delete List Item.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\SharepointToolsUIMap.cs">
       <DependentUpon>SharepointToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Sharepoint\SharepointToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Sharepoint\SharepointToolsUIMap.Designer.cs">
       <DependentUpon>SharepointToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Storage Dropbox\DropboxToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Storage Dropbox\DropboxToolsUIMap.cs">
       <DependentUpon>DropboxToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Storage Dropbox\DropboxToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Storage Dropbox\DropboxToolsUIMap.Designer.cs">
       <DependentUpon>DropboxToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\WorkflowTabUIMap.cs">
+    <Compile Include="WorkflowTab\WorkflowTabUIMap.cs">
       <DependentUpon>WorkflowTabUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\WorkflowTabUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\WorkflowTabUIMap.Designer.cs">
       <DependentUpon>WorkflowTabUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="DialogsUIMap.cs">
@@ -250,10 +250,10 @@
     <Compile Include="DialogsUIMap.Designer.cs">
       <DependentUpon>DialogsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Utility\UtilityToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.cs">
       <DependentUpon>UtilityToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Utility\UtilityToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.Designer.cs">
       <DependentUpon>UtilityToolsUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="WcfSource\WcfSourceUIMap.cs">
@@ -270,14 +270,14 @@
       <DependentUpon>WebSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="WebSource\WebSourceTests.cs" />
-    <Compile Include="WindowsDesignSurfaceContextMenu\DesignSurfaceContextMenuTests.cs" />
+    <Compile Include="WorkflowTab\ContextMenus\DesignSurfaceContextMenuTests.cs" />
     <Compile Include="Explorer\ResourceVersion.cs" />
     <Compile Include="Explorer\SearchExplorerResource.cs" />
     <Compile Include="Explorer\DeleteExplorerResource.cs" />
     <Compile Include="SaveDialog\SaveDialogTests.cs" />
     <Compile Include="Default Layout\Default LayoutTests.cs" />
-    <Compile Include="WorkflowTesting\DotnetTestingTests.cs" />
-    <Compile Include="WorkflowTesting\OtherTestFrameworkMockingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\DotnetTestingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\OtherTestFrameworkMockingTests.cs" />
     <Compile Include="ContextMenu\StartNodeContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
@@ -292,102 +292,102 @@
     <Compile Include="Settings\Security\ConfigureSettingsPermissionsTests.cs" />
     <Compile Include="Settings\Logging\ConfigureSettingsLoggingTests.cs" />
     <Compile Include="Deploy\DeployTests.cs" />
-    <Compile Include="Toolbox\ToolboxTests.cs" />
-    <Compile Include="Tools\Resources\WCF Service.cs" />
-    <Compile Include="Tools\Resources\Com DLL.cs" />
-    <Compile Include="Tools\Storage Dropbox\Delete.cs" />
-    <Compile Include="Tools\Storage Dropbox\List Contents.cs" />
-    <Compile Include="Tools\Storage Dropbox\Upload.cs" />
-    <Compile Include="Tools\Start Node.cs" />
-    <Compile Include="Tools\Recordset\Count.cs" />
-    <Compile Include="Tools\Recordset\Delete.cs" />
-    <Compile Include="Tools\Recordset\Sort.cs" />
-    <Compile Include="Tools\Recordset\UniqueRecords.cs" />
-    <Compile Include="Tools\Sharepoint\Copy File.cs" />
-    <Compile Include="Tools\Sharepoint\Delete File.cs" />
-    <Compile Include="Tools\Sharepoint\Read List Item.cs" />
-    <Compile Include="Tools\Sharepoint\Read Folder.cs" />
-    <Compile Include="Tools\Sharepoint\Download File.cs" />
-    <Compile Include="Tools\Sharepoint\Move File.cs" />
-    <Compile Include="Tools\Sharepoint\Update List Item.cs" />
-    <Compile Include="Tools\Sharepoint\Upload File.cs" />
+    <Compile Include="WorkflowTab\Toolbox\ToolboxTests.cs" />
+    <Compile Include="WorkflowTab\Tools\Resources\WCF Service.cs" />
+    <Compile Include="WorkflowTab\Tools\Resources\Com DLL.cs" />
+    <Compile Include="WorkflowTab\Tools\Storage Dropbox\Delete.cs" />
+    <Compile Include="WorkflowTab\Tools\Storage Dropbox\List Contents.cs" />
+    <Compile Include="WorkflowTab\Tools\Storage Dropbox\Upload.cs" />
+    <Compile Include="WorkflowTab\Tools\Start Node.cs" />
+    <Compile Include="WorkflowTab\Tools\Recordset\Count.cs" />
+    <Compile Include="WorkflowTab\Tools\Recordset\Delete.cs" />
+    <Compile Include="WorkflowTab\Tools\Recordset\Sort.cs" />
+    <Compile Include="WorkflowTab\Tools\Recordset\UniqueRecords.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Copy File.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Delete File.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Read List Item.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Read Folder.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Download File.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Move File.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Update List Item.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Upload File.cs" />
     <Compile Include="Explorer\DragAndDrop.cs" />
-    <Compile Include="Tools\Database\ODBCTests.cs" />
-    <Compile Include="Tools\Database\OracleDatabaseTests.cs" />
-    <Compile Include="Tools\Database\PostgreSqlTests.cs" />
-    <Compile Include="Tools\Database\MySqlTests.cs" />
-    <Compile Include="Tools\Database\SqlServerTests.cs" />
-    <Compile Include="Tools\Sharepoint\Create List Item.cs" />
-    <Compile Include="Tools\Data\AssignObject.cs" />
-    <Compile Include="Tools\Data\FindIndex.cs" />
-    <Compile Include="Tools\HTTP Web Methods\HttpWebGet.cs" />
-    <Compile Include="Tools\HTTP Web Methods\HttpWebPut.cs" />
-    <Compile Include="Tools\HTTP Web Methods\HttpWebDelete.cs" />
+    <Compile Include="WorkflowTab\Tools\Database\ODBCTests.cs" />
+    <Compile Include="WorkflowTab\Tools\Database\OracleDatabaseTests.cs" />
+    <Compile Include="WorkflowTab\Tools\Database\PostgreSqlTests.cs" />
+    <Compile Include="WorkflowTab\Tools\Database\MySqlTests.cs" />
+    <Compile Include="WorkflowTab\Tools\Database\SqlServerTests.cs" />
+    <Compile Include="WorkflowTab\Tools\Sharepoint\Create List Item.cs" />
+    <Compile Include="WorkflowTab\Tools\Data\AssignObject.cs" />
+    <Compile Include="WorkflowTab\Tools\Data\FindIndex.cs" />
+    <Compile Include="WorkflowTab\Tools\HTTP Web Methods\HttpWebGet.cs" />
+    <Compile Include="WorkflowTab\Tools\HTTP Web Methods\HttpWebPut.cs" />
+    <Compile Include="WorkflowTab\Tools\HTTP Web Methods\HttpWebDelete.cs" />
     <Compile Include="Tabs and Panes\PinUnpinPanes.cs" />
-    <Compile Include="Tools\Loop Constructs\SelectAndApply.cs" />
-    <Compile Include="Tools\Loop Constructs\ForEach.cs" />
-    <Compile Include="Tools\Scripting\Ruby.cs" />
-    <Compile Include="Tools\Scripting\Python.cs" />
-    <Compile Include="Tools\Storage Dropbox\Download.cs" />
-    <Compile Include="Tools\Utility\RabbitMQPublish.cs" />
-    <Compile Include="Tools\Utility\RabbitMQConsume.cs" />
-    <Compile Include="Tools\Utility\AggregateCalculate.cs" />
-    <Compile Include="Variables\Variables.cs" />
-    <Compile Include="WorkflowTesting\TestFrameworkMockingTests.cs" />
-    <Compile Include="WorkflowTesting\TestsResults.cs" />
-    <Compile Include="WorkflowTesting\HelloWorldTestFrameworkMockingTests.cs" />
-    <Compile Include="WorkflowTesting\WorkflowServiceTestingUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\Loop Constructs\SelectAndApply.cs" />
+    <Compile Include="WorkflowTab\Tools\Loop Constructs\ForEach.cs" />
+    <Compile Include="WorkflowTab\Tools\Scripting\Ruby.cs" />
+    <Compile Include="WorkflowTab\Tools\Scripting\Python.cs" />
+    <Compile Include="WorkflowTab\Tools\Storage Dropbox\Download.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\RabbitMQPublish.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\RabbitMQConsume.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\AggregateCalculate.cs" />
+    <Compile Include="WorkflowTab\Variables\Variables.cs" />
+    <Compile Include="WorkflowServiceTesting\TestFrameworkMockingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\TestsResults.cs" />
+    <Compile Include="WorkflowServiceTesting\HelloWorldTestFrameworkMockingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\WorkflowServiceTestingUIMap.cs">
       <DependentUpon>WorkflowServiceTestingUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowTesting\WorkflowServiceTestingUIMap.Designer.cs">
+    <Compile Include="WorkflowServiceTesting\WorkflowServiceTestingUIMap.Designer.cs">
       <DependentUpon>WorkflowServiceTestingUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowTesting\WorkflowTestingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\WorkflowTestingTests.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\Refresh.cs" />
-    <Compile Include="Tools\Control Flow\Sequence.cs" />
-    <Compile Include="Tools\Control Flow\Switch.cs" />
-    <Compile Include="Tools\Control Flow\Decision.cs" />
-    <Compile Include="Tools\Database\SQL_Bulk_Insert.cs" />
-    <Compile Include="Tools\Data\Base Convert.cs" />
-    <Compile Include="Tools\Data\Case Convert.cs" />
-    <Compile Include="Tools\Data\Replace.cs" />
-    <Compile Include="Tools\Data\Data Split.cs" />
-    <Compile Include="Tools\Data\Data Merge.cs" />
-    <Compile Include="Tools\Email\SMTP_Send.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Zip.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Write File.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Unzip.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Rename.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Read File.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Read Folder.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Move.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Delete.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Create.cs" />
-    <Compile Include="Tools\File, FTP, FTPS + SFTP\Copy.cs" />
-    <Compile Include="Tools\HTTP Web Methods\HttpWebPost.cs" />
-    <Compile Include="Tools\Recordset\Length.cs" />
-    <Compile Include="Tools\Recordset\Find Records.cs" />
-    <Compile Include="Tools\Resources\Service.cs" />
-    <Compile Include="Tools\Resources\DotNet DLL.cs" />
-    <Compile Include="Tools\Scripting\CMD Script.cs" />
-    <Compile Include="Tools\Scripting\JavaScript.cs" />
-    <Compile Include="Tools\Utility\Calculate.cs" />
-    <Compile Include="Tools\Utility\Web Request.cs" />
-    <Compile Include="Tools\Utility\Xpath.cs" />
-    <Compile Include="Tools\Utility\Sys Info.cs" />
-    <Compile Include="Tools\Utility\Random.cs" />
-    <Compile Include="Tools\Utility\Format Number.cs" />
-    <Compile Include="Tools\Utility\Date Time.cs" />
-    <Compile Include="Tools\Utility\Date Time Diff.cs" />
-    <Compile Include="Tools\Utility\Comment.cs" />
+    <Compile Include="WorkflowTab\Tools\Control Flow\Sequence.cs" />
+    <Compile Include="WorkflowTab\Tools\Control Flow\Switch.cs" />
+    <Compile Include="WorkflowTab\Tools\Control Flow\Decision.cs" />
+    <Compile Include="WorkflowTab\Tools\Database\SQL_Bulk_Insert.cs" />
+    <Compile Include="WorkflowTab\Tools\Data\Base Convert.cs" />
+    <Compile Include="WorkflowTab\Tools\Data\Case Convert.cs" />
+    <Compile Include="WorkflowTab\Tools\Data\Replace.cs" />
+    <Compile Include="WorkflowTab\Tools\Data\Data Split.cs" />
+    <Compile Include="WorkflowTab\Tools\Data\Data Merge.cs" />
+    <Compile Include="WorkflowTab\Tools\Email\SMTP_Send.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Zip.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Write File.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Unzip.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Rename.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Read File.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Read Folder.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Move.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Delete.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Create.cs" />
+    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Copy.cs" />
+    <Compile Include="WorkflowTab\Tools\HTTP Web Methods\HttpWebPost.cs" />
+    <Compile Include="WorkflowTab\Tools\Recordset\Length.cs" />
+    <Compile Include="WorkflowTab\Tools\Recordset\Find Records.cs" />
+    <Compile Include="WorkflowTab\Tools\Resources\Service.cs" />
+    <Compile Include="WorkflowTab\Tools\Resources\DotNet DLL.cs" />
+    <Compile Include="WorkflowTab\Tools\Scripting\CMD Script.cs" />
+    <Compile Include="WorkflowTab\Tools\Scripting\JavaScript.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Calculate.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Web Request.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Xpath.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Sys Info.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Random.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Format Number.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Date Time.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Date Time Diff.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\Comment.cs" />
     <Compile Include="UIMap.cs">
       <DependentUpon>UIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="UIMap.Designer.cs">
       <DependentUpon>UIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Tools\Data\Assign.cs" />
+    <Compile Include="WorkflowTab\Tools\Data\Assign.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\TestScripts\**\*.*">
@@ -438,23 +438,23 @@
     <None Include="SharepointSource\SharepointSourceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Tools\Control Flow\ControlFlowToolsUIMap.uitest" />
-    <None Include="Tools\Database\DatabaseToolsUIMap.uitest" />
-    <None Include="Tools\Data\DataToolsUIMap.uitest" />
-    <None Include="Tools\Email\EmailToolsUIMap.uitest" />
-    <None Include="Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.uitest" />
-    <None Include="Tools\HTTP Web Methods\HTTPToolsUIMap.uitest" />
-    <None Include="Tools\Loop Constructs\LoopConstructToolsUIMap.uitest" />
-    <None Include="Tools\Recordset\RecordsetToolsUIMap.uitest" />
-    <None Include="Tools\Resources\ResourcesToolsUIMap.uitest" />
-    <None Include="Tools\Scripting\ScriptingToolsUIMap.uitest" />
-    <None Include="Tools\Sharepoint\SharepointToolsUIMap.uitest" />
-    <None Include="Tools\Storage Dropbox\DropboxToolsUIMap.uitest" />
-    <None Include="Tools\WorkflowTabUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Control Flow\ControlFlowToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Database\DatabaseToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Data\DataToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Email\EmailToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\HTTP Web Methods\HTTPToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Loop Constructs\LoopConstructToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Recordset\RecordsetToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Resources\ResourcesToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Scripting\ScriptingToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Sharepoint\SharepointToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Storage Dropbox\DropboxToolsUIMap.uitest" />
+    <None Include="WorkflowTab\WorkflowTabUIMap.uitest" />
     <None Include="DialogsUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Tools\Utility\UtilityToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.uitest" />
     <None Include="UIMap.uitest">
       <SubType>Designer</SubType>
     </None>
@@ -464,7 +464,7 @@
     <None Include="WebSource\WebSourceUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="WorkflowTesting\WorkflowServiceTestingUIMap.uitest">
+    <None Include="WorkflowServiceTesting\WorkflowServiceTestingUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
