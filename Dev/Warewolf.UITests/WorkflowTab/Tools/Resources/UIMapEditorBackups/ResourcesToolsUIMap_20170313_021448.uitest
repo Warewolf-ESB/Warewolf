@@ -769,19 +769,6 @@
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
                                                                         </UIObject>
-                                                                        <UIObject ControlType="ListItem" Id="RandomClassName" FriendlyName="{&quot;MethodName&quot;:null,&quot;AssemblyLocation&quot;:&quot;GAC:mscorli..." SpecialControlType="None">
-                                                                          <TechnologyName>UIA</TechnologyName>
-                                                                          <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
-                                                                          </WindowTitles>
-                                                                          <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                            <PropertyCondition Name="Name">{"MethodName":null,"AssemblyLocation":"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=AMD64","AssemblyName":"","FullName":"System.Random","JsonObject":"{}"}</PropertyCondition>
-                                                                          </AndCondition>
-                                                                          <SupportLevel>0</SupportLevel>
-                                                                          <Descendants />
-                                                                        </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
                                                                     <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
@@ -2512,7 +2499,21 @@
                                                                     <PropertyCondition Name="AutomationId">NamespaceComboBox</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="ListItem" Id="RandomClassName" FriendlyName="{&quot;MethodName&quot;:null,&quot;AssemblyLocation&quot;:&quot;GAC:mscorli..." SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                        <PropertyCondition Name="Name">{"MethodName":null,"AssemblyLocation":"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=AMD64","AssemblyName":"","FullName":"System.Random","JsonObject":"{}"}</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
