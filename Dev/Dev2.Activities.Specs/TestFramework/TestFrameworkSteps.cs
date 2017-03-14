@@ -1665,7 +1665,7 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsNotNull(test);
             Assert.IsNotNull(test.DebugForTest);
             var debugStates = test.DebugForTest;
-            var serviceEndDebug = debugStates.First(state => state.StateType == StateType.End);
+            var serviceEndDebug = debugStates.Last(state => state.StateType == StateType.End);
             foreach (var tableRow in table.Rows)
             {
                 var variableName = tableRow["Variable"];

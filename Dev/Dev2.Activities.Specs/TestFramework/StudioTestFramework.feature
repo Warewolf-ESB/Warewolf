@@ -168,6 +168,26 @@ Scenario: Save multiple New Tests Enabled Save after Edit
 	When I select "Test 1"
 	When I change the test name to "testing2"
 	Then "Save" test is visible
+	
+@TestFramework
+Scenario: Test with ForEach containing a Service
+	Given the test builder is open with "ForEachWithHelloWorldTest"
+	And Tab Header is "ForEachWithHelloWorldTest - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And I update outputs as
+	| Variable Name    | Value    |
+	| messages(1).name | Hello 1. |
+	| messages(2).name | Hello 2. |
+	| messages(3).name | Hello 3. |	
+	When I run the test
+	Then the service debug outputs as
+	  | Variable             | Value    |
+	  | [[messages(1).name]] | Hello 1. |
+	  | [[messages(2).name]] | Hello 2. |
+	  | [[messages(3).name]] | Hello 3. |
+	
 
 @TestFramework
 Scenario: Save a New Test fails when workflow deleted
