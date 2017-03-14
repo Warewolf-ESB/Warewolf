@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
