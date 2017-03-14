@@ -2919,6 +2919,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new wcf source.
+        /// </summary>
+        public static string NewWcfSourceTooltip {
+            get {
+                return ResourceManager.GetString("NewWcfSourceTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create a new web source.
         /// </summary>
         public static string NewWebSourceTooltip {
