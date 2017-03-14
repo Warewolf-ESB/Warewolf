@@ -184,9 +184,7 @@ Scenario: Test with ForEach containing a Service
 	When I run the test
 	Then the service debug outputs as
 	  | Variable             | Value    |
-	  | [[messages(1).name]] | Hello 1. |
-	  | [[messages(2).name]] | Hello 2. |
-	  | [[messages(3).name]] | Hello 3. |
+	  | [[Message]] | Hello 1. |
 	
 
 @TestFramework
