@@ -79,6 +79,31 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestTooltips()
+        {
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewServiceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewServerSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewSqlServerSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewMySqlSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewPostgreSqlSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewOracleSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewOdbcSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewWebSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewPluginSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewComPluginSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewEmailSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewExchangeSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewRabbitMqSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewDropboxSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewSharepointSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewWcfSourceTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewFolderTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.ViewApisJsonTooltip, _target.ViewApisJsonTooltip);
+            Assert.AreEqual(Resources.Languages.Tooltips.ServerVersionTooltip, _target.ServerVersionTooltip);
+            Assert.AreEqual(Resources.Languages.Core.DeployResourceCheckbox, _target.DeployResourceCheckboxTooltip);
+        }
+
+        [TestMethod]
         public void TestCommands()
         {
             //arrange
@@ -98,6 +123,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewComPluginSourceCommand = _target.NewComPluginSourceCommand.CanExecute(null);
             var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMQSourceSourceCommand.CanExecute(null);
             var canCreateFolderCommand = _target.CreateFolderCommand.CanExecute(null);
+            var canDeployCommand = _target.DeployCommand.CanExecute(null);
+            var canCreateNewWcfSourceCommand = _target.NewWcfSourceCommand.CanExecute(null);
+            var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
 
             //act
 
@@ -118,6 +146,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(canCreateNewComPluginSourceCommand);
             Assert.IsTrue(canCreateNewRabbitMQSourceSourceCommand);
             Assert.IsTrue(canCreateFolderCommand);
+            Assert.IsTrue(canDeployCommand);
+            Assert.IsTrue(canCreateNewWcfSourceCommand);
+            Assert.IsTrue(canViewApisJsonCommand);
         }
 
         [TestMethod]
@@ -220,6 +251,96 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("DbSourcePath", _target.Children[3].ResourcePath);
             Assert.AreEqual(false, _target.Children[3].IsExpanderVisible);
             Assert.AreEqual(true, _target.Children[3].IsSource);
+        }
+
+        [TestMethod]
+        public void TestFindPath()
+        {
+            //arrange
+            var childVersion = new Mock<IExplorerItemViewModel>();
+            childVersion.SetupGet(it => it.IsVisible).Returns(true);
+            childVersion.SetupGet(it => it.ResourceType).Returns("Version");
+            var childMessage = new Mock<IExplorerItemViewModel>();
+            childMessage.SetupGet(it => it.IsVisible).Returns(true);
+            childMessage.SetupGet(it => it.ResourceType).Returns("Message");
+            var childFolder = new Mock<IExplorerItemViewModel>();
+            childFolder.SetupGet(it => it.IsVisible).Returns(true);
+            childFolder.SetupGet(it => it.ResourceType).Returns("Folder");
+            childFolder.SetupGet(it => it.IsFolder).Returns(true);
+            childFolder.SetupGet(it => it.ChildrenCount).Returns(2);
+            var childDbService = new Mock<IExplorerItemViewModel>();
+            childDbService.SetupGet(it => it.IsVisible).Returns(true);
+            childDbService.SetupGet(it => it.ResourceName).Returns("DbSource");
+            childDbService.SetupGet(it => it.ResourcePath).Returns("DbSourcePath");
+            childDbService.SetupGet(it => it.IsSource).Returns(true);
+            _target.Children = new ObservableCollection<IExplorerItemViewModel>()
+            {
+                childVersion.Object,
+                childMessage.Object,
+                childFolder.Object,
+                childDbService.Object
+            };
+
+            //act
+            _target.IsSource = true;
+            _target.IsService = false;
+            _target.IsFolder = false;
+            _target.IsReservedService = false;
+            _target.IsResourceVersion = false;
+            _target.IsServer = false;
+            _target.ResourcePath = "";
+            _target.ResourceName = "localhost";
+
+            _target.UpdateChildrenCount();
+            var value = _target.FindByPath("DbSource");
+
+            //assert    
+            Assert.AreEqual(_target, value);
+        }
+
+        [TestMethod]
+        public void TestFindPathStartAndEnd()
+        {
+            //arrange
+            var childVersion = new Mock<IExplorerItemViewModel>();
+            childVersion.SetupGet(it => it.IsVisible).Returns(true);
+            childVersion.SetupGet(it => it.ResourceType).Returns("Version");
+            var childMessage = new Mock<IExplorerItemViewModel>();
+            childMessage.SetupGet(it => it.IsVisible).Returns(true);
+            childMessage.SetupGet(it => it.ResourceType).Returns("Message");
+            var childFolder = new Mock<IExplorerItemViewModel>();
+            childFolder.SetupGet(it => it.IsVisible).Returns(true);
+            childFolder.SetupGet(it => it.ResourceType).Returns("Folder");
+            childFolder.SetupGet(it => it.IsFolder).Returns(true);
+            childFolder.SetupGet(it => it.ChildrenCount).Returns(2);
+            var childDbService = new Mock<IExplorerItemViewModel>();
+            childDbService.SetupGet(it => it.IsVisible).Returns(true);
+            childDbService.SetupGet(it => it.ResourceName).Returns("DbSource");
+            childDbService.SetupGet(it => it.ResourcePath).Returns("DbSourcePath");
+            childDbService.SetupGet(it => it.IsSource).Returns(true);
+            _target.Children = new ObservableCollection<IExplorerItemViewModel>()
+            {
+                childVersion.Object,
+                childMessage.Object,
+                childFolder.Object,
+                childDbService.Object
+            };
+
+            //act
+            _target.IsSource = true;
+            _target.IsService = false;
+            _target.IsFolder = false;
+            _target.IsReservedService = false;
+            _target.IsResourceVersion = false;
+            _target.IsServer = false;
+            _target.ResourcePath = "";
+            _target.ResourceName = "localhost";
+
+            _target.UpdateChildrenCount();
+            var value = _target.FindByPath("\\Message\\DbSource");
+
+            //assert    
+            Assert.AreEqual(_target, value);
         }
 
         [TestMethod]
