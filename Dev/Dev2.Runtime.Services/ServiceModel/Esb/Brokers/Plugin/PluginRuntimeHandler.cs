@@ -100,25 +100,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return instance;
         }
 
-        public PluginExecutionDto Run(PluginExecutionDto dto)
-        {
-            try
-            {
-                dto = ExecuteConstructor(dto);
-                var args = dto.Args;
-                Assembly loadedAssembly;
-                var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
-                if (!tryLoadAssembly)
-                    throw new Exception(args.AssemblyName + "Not found");
-                ExecutePlugin(dto, args, loadedAssembly);
-                return dto;
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e);
-                throw;
-            }
-        }
+
 
         public IDev2MethodInfo Run(IDev2MethodInfo dev2MethodInfo, PluginExecutionDto dto, out string objectString)
         {
@@ -159,24 +141,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return dto;
         }
 
-        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly)
-        {
 
-            VerifyArgument.IsNotNull("objectToRun", objectToRun);
-            VerifyArgument.IsNotNull("loadedAssembly", loadedAssembly);
-            VerifyArgument.IsNotNull("setupInfo", setupInfo);
-            var type = loadedAssembly.GetType(setupInfo.Fullname);
-            var knownBinder = new KnownTypesBinder();
-            loadedAssembly.ExportedTypes.ForEach(t => knownBinder.KnownTypes.Add(t));
-            if (objectToRun.IsStatic)
-            {
-                RunMethods(setupInfo, type, null, InvokeMethodsAction, loadedAssembly);
-                return;
-            }
-            var instance = objectToRun.ObjectString.DeserializeToObject(type, knownBinder);
-            RunMethods(setupInfo, type, instance, InvokeMethodsAction, loadedAssembly);
-            objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
-        }
 
         private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
         {
@@ -215,17 +180,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 var result = methodToRun.Invoke(null, BindingFlags.Static | BindingFlags.InvokeMethod, null, valuedTypeList.ToArray(), CultureInfo.CurrentCulture);
                 return result;
 
-            }
-        }
-
-        private void RunMethods(PluginInvokeArgs setupInfo, Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction, Assembly loadedAssembly)
-        {
-            if (setupInfo.MethodsToRun != null)
-            {
-                foreach (var dev2MethodInfo in setupInfo.MethodsToRun)
-                {
-                    ExecuteSingleMethod(type, instance, invokeMethodsAction, loadedAssembly, dev2MethodInfo);
-                }
             }
         }
 
@@ -311,7 +265,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         private static Type GetTypeFromLoadedAssembly(string typeName, Assembly loadedAssembly)
         {
-            var typeFromLoadedAssembly = Type.GetType(typeName) ?? loadedAssembly.ExportedTypes.FirstOrDefault(p => p.AssemblyQualifiedName != null && p.AssemblyQualifiedName.Equals(typeName, StringComparison.InvariantCultureIgnoreCase));
+            var typeFromLoadedAssembly = loadedAssembly.ExportedTypes.FirstOrDefault(p => p.AssemblyQualifiedName != null && p.AssemblyQualifiedName.Equals(typeName, StringComparison.InvariantCultureIgnoreCase)) ?? Type.GetType(typeName);
             if (typeFromLoadedAssembly == null)//Cater for assembly version change
             {
                 var fullTypename = typeName.Split(',').FirstOrDefault();
