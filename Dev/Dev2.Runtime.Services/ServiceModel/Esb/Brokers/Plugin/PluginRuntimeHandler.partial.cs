@@ -46,7 +46,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         }
 
         string _assemblyLocation = "";
-        private readonly List<string> _loadedAssemblies = new List<string>();
 
         /// <summary>
         /// Runs the specified setup information.
@@ -123,21 +122,22 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             var typeList = BuildTypeList(setupInfo.Parameters, loadedAssembly);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var valuedTypeList = new List<object>();
-            foreach (var methodParameter in setupInfo.Parameters)
-            {
-                try
+            if (setupInfo.Parameters != null)
+                foreach (var methodParameter in setupInfo.Parameters)
                 {
-                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                    if (anonymousType != null)
+                    try
                     {
-                        valuedTypeList.Add(anonymousType);
+                        var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+                        if (anonymousType != null)
+                        {
+                            valuedTypeList.Add(anonymousType);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        valuedTypeList.Add(methodParameter.Value);
                     }
                 }
-                catch (Exception)
-                {
-                    valuedTypeList.Add(methodParameter.Value);
-                }
-            }
             var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
             if (methodToRun == null && typeList.Count == 0)
             {
@@ -396,12 +396,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private Type DeriveType(string typename)
-        {
-            var type = Type.GetType(typename, true);
-            return type;
-        }
-
         /// <summary>
         /// Builds the type list.
         /// </summary>
@@ -412,72 +406,23 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             var typeList = new List<Type>();
             // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var methodParameter in parameters)
-            {
-                Type type;
-                try
+            if (parameters != null)
+                foreach (var methodParameter in parameters)
                 {
-                    type = GetTypeFromLoadedAssembly(methodParameter.TypeName, assembly);
-
-                }
-                catch (Exception)
-                {
-                    type = Type.GetType(methodParameter.TypeName, true);
-                }
-
-                typeList.Add(type);
-            }
-            return typeList;
-        }
-
-        /// <summary>
-        /// Loads the dependencies.
-        /// </summary>
-        /// <param name="asm">The asm.</param>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <exception cref="System.Exception">Could not locate Assembly [  + assemblyLocation +  ]</exception>
-        private void LoadDepencencies(Assembly asm, string assemblyLocation)
-        {
-            // load dependencies ;)
-            if (asm != null)
-            {
-                var toLoadAsm = asm.GetReferencedAssemblies();
-
-                foreach (var toLoad in toLoadAsm)
-                {
-                    var fullName = toLoad.FullName;
-                    if (_loadedAssemblies.Contains(fullName))
-                    {
-                        continue;
-                    }
-                    Assembly depAsm = null;
+                    Type type;
                     try
                     {
-                        depAsm = Assembly.Load(toLoad);
+                        type = GetTypeFromLoadedAssembly(methodParameter.TypeName, assembly);
+
                     }
-                    catch
+                    catch (Exception)
                     {
-                        var path = Path.GetDirectoryName(assemblyLocation);
-                        if (path != null)
-                        {
-                            var myLoad = Path.Combine(path, toLoad.Name + ".dll");
-                            depAsm = Assembly.LoadFrom(myLoad);
-                        }
+                        type = Type.GetType(methodParameter.TypeName, true);
                     }
-                    if (depAsm != null)
-                    {
-                        if (!_loadedAssemblies.Contains(fullName))
-                        {
-                            _loadedAssemblies.Add(fullName);
-                        }
-                        LoadDepencencies(depAsm, assemblyLocation);
-                    }
+
+                    typeList.Add(type);
                 }
-            }
-            else
-            {
-                throw new Exception("Could not locate Assembly [ " + assemblyLocation + " ]");
-            }
+            return typeList;
         }
     }
 }
