@@ -612,6 +612,36 @@ Scenario: Run a passing test and change step type
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 
+@TestFramework 
+Scenario: Run a passing switch test and change step type
+	Given the test builder is open with existing service "Control Flow - Switch"	
+	And Tab Header is "Control Flow - Switch - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Control Flow - Switch - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank	
+	And I Add Switch "[[DiceRollValue]]" as TestStep
+	And I change Switch "[[DiceRollValue]]" arm to "4"
+	And I Add "Assign (1)" as TestStep
+	And I add "Assign (1)" StepOutputs as 
+	| Variable Name | Condition | Value |
+	| [[DiceRollValue]]      | =         | 4 |
+	And save is enabled
+	And test status is pending	
+	And test is enabled	
+	And I save
+	When I run the test
+	Then test result is Passed
+	When I change step "[[DiceRollValue]]" to Mock
+	Then I change Switch "[[DiceRollValue]]" arm to "1"
+	When I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
 @TestFramework
 Scenario: Run a test expecting error 
 	Given the test builder is open with existing service "Hello World"	

@@ -275,6 +275,7 @@
     </None>
     <None Include="TestFramework\StudioTestFramework.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFramework.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
