@@ -663,20 +663,6 @@
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
                                                                         </UIObject>
-                                                                        <UIObject ControlType="ListItem" Id="ListItem2" FriendlyName="Dev2.Common.Interfaces.Core.PluginSourceDefinition" SpecialControlType="None">
-                                                                          <TechnologyName>UIA</TechnologyName>
-                                                                          <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
-                                                                          </WindowTitles>
-                                                                          <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                            <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.PluginSourceDefinition</PropertyCondition>
-                                                                            <PropertyCondition Name="Instance">2</PropertyCondition>
-                                                                          </AndCondition>
-                                                                          <SupportLevel>0</SupportLevel>
-                                                                          <Descendants />
-                                                                        </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
                                                                     <UIObject ControlType="Button" Id="GenerateOutputsButton" FriendlyName="Generate Outputs" SpecialControlType="None">
@@ -765,19 +751,6 @@
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="Instance">5</PropertyCondition>
-                                                                          </AndCondition>
-                                                                          <SupportLevel>0</SupportLevel>
-                                                                          <Descendants />
-                                                                        </UIObject>
-                                                                        <UIObject ControlType="ListItem" Id="AssemblyRefNamespace" FriendlyName="{&quot;AssemblyLocation&quot;:&quot;GAC:mscorlib, Version=2.0.0.0..." SpecialControlType="None">
-                                                                          <TechnologyName>UIA</TechnologyName>
-                                                                          <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
-                                                                          </WindowTitles>
-                                                                          <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                            <PropertyCondition Name="Name">{"AssemblyLocation":"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=AMD64","AssemblyName":"","FullName":"AssemblyRef","MethodName":null,"JsonObject":"{}"}</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
@@ -1981,19 +1954,6 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="Text" Id="NoconstructoronastatText" FriendlyName="No constructor on a static class" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                                        <PropertyCondition Name="Name">No constructor on a static class</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
                                                                 <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
@@ -2331,6 +2291,35 @@
                   </Descendants>
                 </UIObject>
               </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2NKOSINATWindow" FriendlyName="Warewolf (DEV2\NKOSINATHI.SANGWENI)" SpecialControlType="None" SessionId="3411382">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\NKOSINATHI.SANGWENI)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="ListItem" Id="ListItem2" FriendlyName="Dev2.Common.Interfaces.Core.PluginSourceDefinition" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.PluginSourceDefinition</PropertyCondition>
+                <PropertyCondition Name="Instance">2</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
             </UIObject>
           </Descendants>
         </TopLevelWindow>
