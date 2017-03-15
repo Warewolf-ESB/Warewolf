@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ServiceModel
                 // get something more relevant ;)
                 if(ex.Message == "One or more errors occurred." && ex.InnerException != null)
                 {
-                    result.ErrorMessage = "Connection Error : " + ex.InnerException.Message;
+                    result.ErrorMessage = "Connection Error : " + GetLastExeptionMessage(ex);
                 }
                 else
                 {
@@ -132,6 +132,18 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
         
+        private string GetLastExeptionMessage(Exception ex)
+        {
+            if(ex.InnerException == null)
+            {
+                return ex.Message;
+            }
+            else
+            {
+                return GetLastExeptionMessage(ex.InnerException);
+            }
+        }
+
         public IHubProxy CreateHubProxy(Dev2.Data.ServiceModel.Connection connection)
         {
             var principle = Thread.CurrentPrincipal;
