@@ -14,7 +14,7 @@ using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.ExplorerUIMapClasses;
-using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UITests.WorkflowServiceTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;

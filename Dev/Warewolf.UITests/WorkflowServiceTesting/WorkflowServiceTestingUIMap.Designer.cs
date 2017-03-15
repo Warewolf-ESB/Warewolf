@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
+namespace Warewolf.UITests.WorkflowServiceTesting
 {
     using System;
     using System.CodeDom.Compiler;
@@ -2312,15 +2312,27 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
             }
         }
         
-        public AssignToNameTreeItem AssignToNameTreeItem
+        public AssignAssert AssignAssert
         {
             get
             {
-                if ((this.mAssignToNameTreeItem == null))
+                if ((this.mAssignAssert == null))
                 {
-                    this.mAssignToNameTreeItem = new AssignToNameTreeItem(this);
+                    this.mAssignAssert = new AssignAssert(this);
                 }
-                return this.mAssignToNameTreeItem;
+                return this.mAssignAssert;
+            }
+        }
+        
+        public DataSplitItem DataSplitItem
+        {
+            get
+            {
+                if ((this.mDataSplitItem == null))
+                {
+                    this.mDataSplitItem = new DataSplitItem(this);
+                }
+                return this.mDataSplitItem;
             }
         }
         
@@ -2348,15 +2360,15 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
             }
         }
         
-        public DecisionTreeItem DecisionTreeItem
+        public DecisionAssert DecisionAssert
         {
             get
             {
-                if ((this.mDecisionTreeItem == null))
+                if ((this.mDecisionAssert == null))
                 {
-                    this.mDecisionTreeItem = new DecisionTreeItem(this);
+                    this.mDecisionAssert = new DecisionAssert(this);
                 }
-                return this.mDecisionTreeItem;
+                return this.mDecisionAssert;
             }
         }
         
@@ -2384,15 +2396,15 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
             }
         }
         
-        public DiceRollTreeItem DiceRollTreeItem
+        public DiceRollExpander DiceRollExpander
         {
             get
             {
-                if ((this.mDiceRollTreeItem == null))
+                if ((this.mDiceRollExpander == null))
                 {
-                    this.mDiceRollTreeItem = new DiceRollTreeItem(this);
+                    this.mDiceRollExpander = new DiceRollExpander(this);
                 }
-                return this.mDiceRollTreeItem;
+                return this.mDiceRollExpander;
             }
         }
         
@@ -2412,19 +2424,21 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         #region Fields
         private SetOutputTreeItem mSetOutputTreeItem;
         
-        private AssignToNameTreeItem mAssignToNameTreeItem;
+        private AssignAssert mAssignAssert;
+        
+        private DataSplitItem mDataSplitItem;
         
         private SequenceTreeItem mSequenceTreeItem;
         
         private ForeachTreeItem mForeachTreeItem;
         
-        private DecisionTreeItem mDecisionTreeItem;
+        private DecisionAssert mDecisionAssert;
         
         private RandomTreeItem mRandomTreeItem;
         
         private DotnetDllTreeItem mDotnetDllTreeItem;
         
-        private DiceRollTreeItem mDiceRollTreeItem;
+        private DiceRollExpander mDiceRollExpander;
         
         private OutputMessageStep mOutputMessageStep;
         #endregion
@@ -3104,53 +3118,6 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         private WpfText mFailed;
         
         private WpfText mPassed;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssignToNameTreeItem : WpfTreeItem
-    {
-        
-        public AssignToNameTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public AssignAssert AssignAssert
-        {
-            get
-            {
-                if ((this.mAssignAssert == null))
-                {
-                    this.mAssignAssert = new AssignAssert(this);
-                }
-                return this.mAssignAssert;
-            }
-        }
-        
-        public DataSplitItem DataSplitItem
-        {
-            get
-            {
-                if ((this.mDataSplitItem == null))
-                {
-                    this.mDataSplitItem = new DataSplitItem(this);
-                }
-                return this.mDataSplitItem;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private AssignAssert mAssignAssert;
-        
-        private DataSplitItem mDataSplitItem;
         #endregion
     }
     
@@ -5653,39 +5620,6 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DecisionTreeItem : WpfTreeItem
-    {
-        
-        public DecisionTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public DecisionAssert DecisionAssert
-        {
-            get
-            {
-                if ((this.mDecisionAssert == null))
-                {
-                    this.mDecisionAssert = new DecisionAssert(this);
-                }
-                return this.mDecisionAssert;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private DecisionAssert mDecisionAssert;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DecisionAssert : WpfExpander
     {
         
@@ -5693,7 +5627,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_If [[Name]] <> (Not Equal) _AutoID";
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_Decision_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -6357,7 +6291,6 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -7618,39 +7551,6 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DiceRollTreeItem : WpfTreeItem
-    {
-        
-        public DiceRollTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Infragistics.Controls.Menus.XamDataTreeNodeDataContext";
-            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public DiceRollExpander DiceRollExpander
-        {
-            get
-            {
-                if ((this.mDiceRollExpander == null))
-                {
-                    this.mDiceRollExpander = new DiceRollExpander(this);
-                }
-                return this.mDiceRollExpander;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private DiceRollExpander mDiceRollExpander;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class DiceRollExpander : WpfExpander
     {
         
@@ -7658,7 +7558,7 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_AutoID";
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_Dice Roll_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion

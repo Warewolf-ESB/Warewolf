@@ -3,9 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ExplorerUIMapClasses;
-using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTesting
+namespace Warewolf.UITests.WorkflowServiceTesting
 {
     /// <summary>
     /// Summary description for DotnetTestingTests
