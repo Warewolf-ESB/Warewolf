@@ -67,8 +67,8 @@ namespace Warewolf.UITests
         [TestCategory("Workflow Mocking Tests")]
         public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
-            WorkflowServiceTestingUIMap.Click_MockRadioButton_On_AssignValue_TestStep(); ;
-            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DecisionAssert.SmallDataGridTable.Row1.Exists, "Pending status icon is still visible on assign test step after checking the mock radio button.");
+            WorkflowServiceTestingUIMap.Click_MockRadioButton_On_AssignValue_TestStep();
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.AsssignNameTreeItem.AssignAssert.SmallDataGridTable.Row1.Exists, "Row1 is not visible after selecting Mock.");
         }
         
         [TestMethod]
@@ -76,8 +76,9 @@ namespace Warewolf.UITests
         public void ClickAssignNameToolOnDesignSurfaceAddsTestSteps()
         {
             WorkflowServiceTestingUIMap.Click_Delete_On_AssignValue_TestStep();
+            WorkflowServiceTestingUIMap.PinUnpinOutPutButton();
             WorkflowServiceTestingUIMap.Click_Output_Step();
-            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.OutputMessageStep.Exists);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.Exists);
         }
 
         [TestMethod]
