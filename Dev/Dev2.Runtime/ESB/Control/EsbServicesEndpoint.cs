@@ -157,67 +157,75 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors)
         {
-            var theWorkspace = wRepository.Get(workspaceId);
-            var invoker = CreateEsbServicesInvoker(theWorkspace);
-            ErrorResultTO invokeErrors;
-            var oldID = dataObject.DataListID;
-            errors = new ErrorResultTO();
-
-            // local non-scoped execution ;)
-            var isLocal = !dataObject.IsRemoteWorkflow();
-
-            var principle = Thread.CurrentPrincipal;
-            Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
-            var oldStartTime = dataObject.StartTime;
-            dataObject.StartTime = DateTime.Now;
-            if (dataObject.RunWorkflowAsync)
+            var wasTestExecution = dataObject.IsServiceTestExecution;
+            try
             {
-
-                ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors, update);
-                dataObject.StartTime = oldStartTime;
-                errors.MergeErrors(invokeErrors);
-            }
-            else
-            {
-                if (isLocal)
-                {
-                    if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
-                    {
-                        errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
-                        dataObject.StartTime = oldStartTime;
-                        return null;
-                    }
-                }
-                var wasTestExecution = dataObject.IsServiceTestExecution;
                 dataObject.IsServiceTestExecution = false;
-                var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
-                dataObject.IsServiceTestExecution = wasTestExecution;
-                if (executionContainer != null)
-                {
-                    CreateNewEnvironmentFromInputMappings(dataObject, inputDefs, update);
-                    if (!isLocal)
-                    {
-                        SetRemoteExecutionDataList(dataObject, executionContainer, errors);
-                    }
-                    if (!errors.HasErrors())
-                    {
-                        executionContainer.InstanceInputDefinition = inputDefs;
-                        executionContainer.InstanceOutputDefinition = outputDefs;
-                        executionContainer.Execute(out invokeErrors, update);
-                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
+                var theWorkspace = wRepository.Get(workspaceId);
+                var invoker = CreateEsbServicesInvoker(theWorkspace);
+                ErrorResultTO invokeErrors;
+                var oldID = dataObject.DataListID;
+                errors = new ErrorResultTO();
 
-                        errors.MergeErrors(invokeErrors);
-                        string errorString = dataObject.Environment.FetchErrors();
-                        invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                        errors.MergeErrors(invokeErrors);
-                        dataObject.StartTime = oldStartTime;
-                        return env;
-                    }
-                    errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
+                // local non-scoped execution ;)
+                var isLocal = !dataObject.IsRemoteWorkflow();
+
+                var principle = Thread.CurrentPrincipal;
+                Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
+                var oldStartTime = dataObject.StartTime;
+                dataObject.StartTime = DateTime.Now;
+                if (dataObject.RunWorkflowAsync)
+                {
+
+                    ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors, update);
+                    dataObject.StartTime = oldStartTime;
+                    errors.MergeErrors(invokeErrors);
                 }
+                else
+                {
+                    if (isLocal)
+                    {
+                        if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
+                        {
+                            errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
+                            dataObject.StartTime = oldStartTime;
+                            return null;
+                        }
+                    }
+                    
+                    var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
+                    dataObject.IsServiceTestExecution = wasTestExecution;
+                    if (executionContainer != null)
+                    {
+                        CreateNewEnvironmentFromInputMappings(dataObject, inputDefs, update);
+                        if (!isLocal)
+                        {
+                            SetRemoteExecutionDataList(dataObject, executionContainer, errors);
+                        }
+                        if (!errors.HasErrors())
+                        {
+                            executionContainer.InstanceInputDefinition = inputDefs;
+                            executionContainer.InstanceOutputDefinition = outputDefs;
+                            executionContainer.Execute(out invokeErrors, update);
+                            var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
+
+                            errors.MergeErrors(invokeErrors);
+                            string errorString = dataObject.Environment.FetchErrors();
+                            invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                            errors.MergeErrors(invokeErrors);
+                            dataObject.StartTime = oldStartTime;
+                            return env;
+                        }
+                        errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
+                    }
+                }
+                dataObject.StartTime = oldStartTime;
+                return new ExecutionEnvironment();
             }
-            dataObject.StartTime = oldStartTime;
-            return new ExecutionEnvironment();
+            finally
+            {
+                dataObject.IsServiceTestExecution = wasTestExecution;
+            }
         }
 
        
