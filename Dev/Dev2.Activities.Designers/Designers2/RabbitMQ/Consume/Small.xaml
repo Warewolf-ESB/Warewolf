@@ -109,6 +109,7 @@
         <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
                                 DefaultText="Response "
                                 AllowUserInsertLine="False"
+                                WrapInBrackets="True"
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipResponse}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"

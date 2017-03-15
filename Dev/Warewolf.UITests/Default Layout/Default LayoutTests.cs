@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.Tools.ToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UITests.Workflow
 {
