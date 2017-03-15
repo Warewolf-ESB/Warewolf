@@ -757,21 +757,6 @@ namespace Dev2.Activities.Specs.TestFramework
             variableList.Add(new Tuple<string, string>(variable, value));
         }
 
-        [Given(@"a switch variable ""(.*)"" value ""(.*)""")]
-        public void GivenASwitchVariableValue(string variable, string value)
-        {
-            List<Tuple<string, string>> variableList;
-            MyContext.TryGetValue("variableList", out variableList);
-
-            if (variableList == null)
-            {
-                variableList = new List<Tuple<string, string>>();
-                MyContext.Add("variableList", variableList);
-            }
-
-            variableList.Add(new Tuple<string, string>(variable, value));
-        }
-
         [Given(@"decide if ""(.*)"" ""(.*)""")]
         public void GivenDecideIf(string variable1, string decision)
         {
