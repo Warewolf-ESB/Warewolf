@@ -2489,15 +2489,15 @@ Scenario: Test WF with Web Put
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "WebPutTestWF" is deleted as cleanup
 
-Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace)
-	Given I have a workflow "workflowithAssignandsequenceTestWF"		
-	 And "workflowithAssignandsequenceTestWF" contains an Assign "Assign for sequence" as
+Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) mock 
+	Given I have a workflow "sequenceMockTestWF"		
+	 And "sequenceMockTestWF" contains an Assign "Assign for sequence" as
       | variable    | value    |
       | [[rec().a]] | test     |
       | [[rec().b]] | nothing  |
       | [[rec().a]] | warewolf |
       | [[rec().b]] | nothing  |
-	 And "workflowithAssignandsequenceTestWF" contains a Sequence "Sequence1" as
+	 And "sequenceMockTestWF" contains a Sequence "Sequence1" as
 	 And "Sequence1" contains Data Merge "Data Merge" into "[[result]]" as	
 	  | Variable     | Type  | Using | Padding | Alignment |
 	  | [[rec(1).a]] | Index | 4     |         | Left      |
@@ -2512,11 +2512,42 @@ Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Spli
 	 And "Sequence1" contains Replace "Replacing" into "[[replaceResult]]" as	
 	  | In Fields  | Find | Replace With |
 	  | [[rec(*)]] | e    | REPLACED     |
-	 And I save workflow "workflowithAssignandsequenceTestWF"
-	 Then the test builder is open with "workflowithAssignandsequenceTestWF"
+	 And I save workflow "sequenceMockTestWF"
+	 Then the test builder is open with "sequenceMockTestWF"
 	 And I click New Test
-	 #And I Add "Assign for sequence" as TestStep
-	 And I Add "Sequence1" as TestStep
+	 And I Add "Sequence1" as TestStep	
+	 When I save
+	 And I run the test
+	 Then test result is Passed
+	 When I delete "Test 1"
+	 
+Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Index and Replace) Assign
+	Given I have a workflow "sequenceAssertTestWF"		
+	 And "sequenceAssertTestWF" contains an Assign "Assign for sequence" as
+      | variable    | value    |
+      | [[rec().a]] | test     |
+      | [[rec().b]] | nothing  |
+      | [[rec().a]] | warewolf |
+      | [[rec().b]] | nothing  |
+	 And "sequenceAssertTestWF" contains a Sequence "Sequence1" as
+	 And "Sequence1" contains Data Merge "Data Merge" into "[[result]]" as	
+	  | Variable     | Type  | Using | Padding | Alignment |
+	  | [[rec(1).a]] | Index | 4     |         | Left      |
+	  | [[rec(2).a]] | Index | 8     |         | Left      |
+	 And "Sequence1" contains Data Split "Data Split" as
+	  | String       | Variable     | Type  | At | Include    | Escape |
+	  | testwarewolf | [[rec(1).b]] | Index | 4  | Unselected |        |
+	  |              | [[rec(2).b]] | Index | 8  | Unselected |        |
+	 And "Sequence1" contains Find Index "Index" into "[[indexResult]]" as
+	  | In Fields    | Index           | Character | Direction     |
+	  | [[rec().a]] | First Occurence | e         | Left to Right |
+	 And "Sequence1" contains Replace "Replacing" into "[[replaceResult]]" as	
+	  | In Fields  | Find | Replace With |
+	  | [[rec(*)]] | e    | REPLACED     |
+	 And I save workflow "sequenceAssertTestWF"
+	 Then the test builder is open with "sequenceAssertTestWF"
+	 And I click New Test
+	 And I Add "Sequence1" as TestStep All Assert
 	 When I save
 	 And I run the test
 	 Then test result is Passed
