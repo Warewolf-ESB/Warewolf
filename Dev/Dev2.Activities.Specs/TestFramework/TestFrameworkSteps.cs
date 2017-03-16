@@ -1325,6 +1325,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [When(@"I delete ""(.*)""")]
+        [Then(@"I delete ""(.*)""")]
+        [Given(@"I delete ""(.*)""")]
         public void WhenIDelete(string testName)
         {
             var serviceTest = GetTestFrameworkFromContext();
