@@ -3923,6 +3923,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.Name] = "Item: Warewolf.Studio.ViewModels.ServiceTestOutput, Column Display Index: 1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -3960,8 +3961,8 @@ namespace Warewolf.UITests.WorkflowServiceTesting
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-            this.SearchProperties[WpfCell.PropertyNames.Instance] = "3";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -3999,9 +4000,9 @@ namespace Warewolf.UITests.WorkflowServiceTesting
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -4040,7 +4041,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Value";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -8301,9 +8302,6 @@ namespace Warewolf.UITests.WorkflowServiceTesting
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties["ColumnHeader"] = "Result";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Item: Warewolf.Studio.ViewModels.ServiceTestOutput, Column Display Index: 1";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
             #endregion
@@ -8382,7 +8380,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             #region Search Criteria
             this.SearchProperties["ColumnHeader"] = "Value";
             this.SearchProperties[WpfControl.PropertyNames.Name] = "Item: Warewolf.Studio.ViewModels.ServiceTestOutput, Column Display Index: 3";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
             #endregion
