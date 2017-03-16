@@ -614,7 +614,7 @@
 											                               AutomationProperties.AutomationId="{Binding StringFormat=UI_StepOutputs_{0}_AutoID, Path=StepDescription}"
 											                               HeadersVisibility="All" HorizontalScrollBarVisibility="Auto">
                                                         <DataGrid.Columns>
-                                                            <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
+                                                            <DataGridTemplateColumn AutomationProperties.AutomationId="UI_StepOutputColumnOne_AutoID" Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
                                                                 <DataGridTemplateColumn.CellTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
@@ -626,7 +626,7 @@
                                                                     </DataTemplate>
                                                                 </DataGridTemplateColumn.CellTemplate>
                                                             </DataGridTemplateColumn>
-                                                            <DataGridTemplateColumn Width="*" MinWidth="125" Header="Result" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
+                                                            <DataGridTemplateColumn AutomationProperties.AutomationId="UI_StepOutputResultColumn_AutoID" Width="*" MinWidth="125" Header="Result" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
                                                                 <DataGridTemplateColumn.CellTemplate>
                                                                     <DataTemplate>
                                                                         <TextBox Margin="1,0,1,1"
@@ -644,8 +644,7 @@
                                                                     </DataTemplate>
                                                                 </DataGridTemplateColumn.CellTemplate>
                                                             </DataGridTemplateColumn>
-
-                                                            <DataGridTemplateColumn Width="*" MinWidth="125" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
+                                                            <DataGridTemplateColumn AutomationProperties.AutomationId="UI_StepOutputAssertMockColumn_AutoID" Width="*" MinWidth="125" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
                                                                 <DataGridTemplateColumn.HeaderTemplate>
                                                                     <DataTemplate>
                                                                         <Grid>
@@ -697,8 +696,8 @@
                                                                     </DataTemplate>
                                                                 </DataGridTemplateColumn.CellTemplate>
                                                             </DataGridTemplateColumn>
-
-                                                            <DataGridTemplateColumn Width="*" 
+                                                            <DataGridTemplateColumn AutomationProperties.AutomationId="UI_StepOutputValueColumn_AutoID" 
+                                                                                    Width="*" 
 													                                MinWidth="125" 
 													                                Header="Value" 
 													                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
