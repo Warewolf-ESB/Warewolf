@@ -7391,19 +7391,19 @@ this.FeatureBackground();
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-            "ex and Replace)")]
+            "ex and Replace) mock")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
-        public virtual void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplace()
+        public virtual void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceMock()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
-                    "ex and Replace)", ((string[])(null)));
+                    "ex and Replace) mock", ((string[])(null)));
 #line 2492
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line 2493
- testRunner.Given("I have a workflow \"workflowithAssignandsequenceTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a workflow \"sequenceMockTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table248 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
@@ -7421,9 +7421,9 @@ this.FeatureBackground();
                         "[[rec().b]]",
                         "nothing"});
 #line 2494
-  testRunner.And("\"workflowithAssignandsequenceTestWF\" contains an Assign \"Assign for sequence\" as", ((string)(null)), table248, "And ");
+  testRunner.And("\"sequenceMockTestWF\" contains an Assign \"Assign for sequence\" as", ((string)(null)), table248, "And ");
 #line 2500
-  testRunner.And("\"workflowithAssignandsequenceTestWF\" contains a Sequence \"Sequence1\" as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("\"sequenceMockTestWF\" contains a Sequence \"Sequence1\" as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table249 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable",
@@ -7494,20 +7494,144 @@ this.FeatureBackground();
 #line 2512
   testRunner.And("\"Sequence1\" contains Replace \"Replacing\" into \"[[replaceResult]]\" as", ((string)(null)), table252, "And ");
 #line 2515
-  testRunner.And("I save workflow \"workflowithAssignandsequenceTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I save workflow \"sequenceMockTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2516
-  testRunner.Then("the test builder is open with \"workflowithAssignandsequenceTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("the test builder is open with \"sequenceMockTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 2517
   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2519
+#line 2518
   testRunner.And("I Add \"Sequence1\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2520
+#line 2519
   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2521
+#line 2520
   testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2522
+#line 2521
   testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 2523
+#line 2522
+  testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
+            "ex and Replace) Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWFWorkflowWithAssignAndSequenceAssignDatamergeDataSplitFindIndexAndReplaceAssign()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Split, Find Ind" +
+                    "ex and Replace) Assign", ((string[])(null)));
+#line 2524
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 2525
+ testRunner.Given("I have a workflow \"sequenceAssertTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table253 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table253.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "test"});
+            table253.AddRow(new string[] {
+                        "[[rec().b]]",
+                        "nothing"});
+            table253.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "warewolf"});
+            table253.AddRow(new string[] {
+                        "[[rec().b]]",
+                        "nothing"});
+#line 2526
+  testRunner.And("\"sequenceAssertTestWF\" contains an Assign \"Assign for sequence\" as", ((string)(null)), table253, "And ");
+#line 2532
+  testRunner.And("\"sequenceAssertTestWF\" contains a Sequence \"Sequence1\" as", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table254 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Type",
+                        "Using",
+                        "Padding",
+                        "Alignment"});
+            table254.AddRow(new string[] {
+                        "[[rec(1).a]]",
+                        "Index",
+                        "4",
+                        "",
+                        "Left"});
+            table254.AddRow(new string[] {
+                        "[[rec(2).a]]",
+                        "Index",
+                        "8",
+                        "",
+                        "Left"});
+#line 2533
+  testRunner.And("\"Sequence1\" contains Data Merge \"Data Merge\" into \"[[result]]\" as", ((string)(null)), table254, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table255 = new TechTalk.SpecFlow.Table(new string[] {
+                        "String",
+                        "Variable",
+                        "Type",
+                        "At",
+                        "Include",
+                        "Escape"});
+            table255.AddRow(new string[] {
+                        "testwarewolf",
+                        "[[rec(1).b]]",
+                        "Index",
+                        "4",
+                        "Unselected",
+                        ""});
+            table255.AddRow(new string[] {
+                        "",
+                        "[[rec(2).b]]",
+                        "Index",
+                        "8",
+                        "Unselected",
+                        ""});
+#line 2537
+  testRunner.And("\"Sequence1\" contains Data Split \"Data Split\" as", ((string)(null)), table255, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table256 = new TechTalk.SpecFlow.Table(new string[] {
+                        "In Fields",
+                        "Index",
+                        "Character",
+                        "Direction"});
+            table256.AddRow(new string[] {
+                        "[[rec().a]]",
+                        "First Occurence",
+                        "e",
+                        "Left to Right"});
+#line 2541
+  testRunner.And("\"Sequence1\" contains Find Index \"Index\" into \"[[indexResult]]\" as", ((string)(null)), table256, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table257 = new TechTalk.SpecFlow.Table(new string[] {
+                        "In Fields",
+                        "Find",
+                        "Replace With"});
+            table257.AddRow(new string[] {
+                        "[[rec(*)]]",
+                        "e",
+                        "REPLACED"});
+#line 2544
+  testRunner.And("\"Sequence1\" contains Replace \"Replacing\" into \"[[replaceResult]]\" as", ((string)(null)), table257, "And ");
+#line 2547
+  testRunner.And("I save workflow \"sequenceAssertTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2548
+  testRunner.Then("the test builder is open with \"sequenceAssertTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2549
+  testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2550
+  testRunner.And("I Add \"Sequence1\" as TestStep All Assert", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2551
+  testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2552
+  testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2553
+  testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2554
   testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();

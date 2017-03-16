@@ -1891,6 +1891,22 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"I Add ""(.*)"" as TestStep All Assert")]
+        public void ThenIAddAsTestStepAllAssert(string actNameToFind)
+        {
+            ThenIAddAsTestStep(actNameToFind);
+            var serviceTest = GetTestFrameworkFromContext();
+
+            foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
+            {
+                var testSteps = serviceTestStep.Children.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                foreach (var s in testSteps)
+                {
+                    s.Type = StepType.Assert;
+                }
+            }
+        }
+
         [Then(@"I Add ""(.*)"" as TestStep")]
         public void ThenIAddAsTestStep(string actNameToFind)
         {
