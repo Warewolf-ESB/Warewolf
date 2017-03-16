@@ -282,8 +282,15 @@
                               DisplayMemberPath="FullName" 
                               IsEnabled="{Binding NamespaceRegion.IsNamespaceEnabled}"
                               ToolTip="{x:Static languages:Tooltips.DotNetPluginServiceSelectNamespaceToolTip}"
-                              IsEditable="False"
+                              IsEditable="False" Style="{StaticResource ComboBoxFixedDropDownWidthStyle}"
+                              VirtualizingStackPanel.IsVirtualizing="True" 
+                              VirtualizingStackPanel.VirtualizationMode="Recycling"
                               SelectedItem="{Binding NamespaceRegion.SelectedNamespace}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.DotNetPluginServiceSelectNamespaceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
