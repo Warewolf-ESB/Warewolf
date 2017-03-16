@@ -39,7 +39,7 @@ namespace Warewolf.Studio.ViewModels
         public IPopupController PopupController { get; set; }
         private bool _shouldUpdateActiveEnvironment;
 
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
         {
             if (server == null)
             {
@@ -50,7 +50,7 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(aggregator));
             }
             Server = server;
-            LoadServers();
+            LoadServers(servers);
             SelectedConnection = server;
             EditConnectionCommand = new DelegateCommand(AllowConnectionEdit,CanExecuteMethod);
             NewConnectionCommand = new DelegateCommand(NewServer);
@@ -61,8 +61,8 @@ namespace Warewolf.Studio.ViewModels
             ShouldUpdateActiveEnvironment = false;
         }
 
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController)
-            :this(server, aggregator)
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator, IPopupController popupController, ObservableCollection<IServer> servers =null)
+            :this(server, aggregator,servers)
         {
             PopupController = popupController;
         }
@@ -113,6 +113,31 @@ namespace Warewolf.Studio.ViewModels
             Servers.Insert(idx, updatedServer);
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             SelectedConnection = shellViewModel?.LocalhostServer;
+        }
+
+        public void LoadServers(ObservableCollection<IServer> servers)
+        {
+            if (servers != null)
+            {
+                if (Servers == null)
+                {
+                    Servers = new ObservableCollection<IServer>();
+                }
+                RemoveServerDisconnect();
+                Servers.Clear();
+                Servers.AddRange(servers);
+                SetupServerDisconnect();
+                if (_selectedId != null && _selectedId != Guid.Empty)
+                {
+                    var selectConnection = Servers.FirstOrDefault(server => server.EnvironmentID == _selectedId);
+                    SelectedConnection = null;
+                    SelectedConnection = selectConnection;
+                }
+            }
+            else
+            {
+                LoadServers();
+            }
         }
 
         public void LoadServers()
