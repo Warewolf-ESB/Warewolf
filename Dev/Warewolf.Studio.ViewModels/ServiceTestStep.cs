@@ -358,11 +358,19 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
+                    var testOutput = StepOutputs.Last();
+                    if (string.IsNullOrWhiteSpace(testOutput.Variable) && string.IsNullOrWhiteSpace(testOutput.Value))
                     {
-                        AddNewAction = () => AddNewOutput(varName)
-                    };
-                    StepOutputs.Add(serviceTestOutput);
+                        testOutput.Variable = varName;
+                    }
+                    else
+                    {
+                        var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
+                        {
+                            AddNewAction = () => AddNewOutput(varName)
+                        };
+                        StepOutputs.Add(serviceTestOutput);
+                    }
                 }
             }
         }
