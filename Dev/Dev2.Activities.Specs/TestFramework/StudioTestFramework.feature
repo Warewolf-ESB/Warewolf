@@ -2553,3 +2553,38 @@ Scenario: Test WF Workflow with Assign and Sequence(Assign, Datamerge, Data Spli
 	 Then test result is Passed
 	 When I delete "Test 1"
 	 
+Scenario: Test Workflow with ForEach which contains assign Mock
+      Given I have a workflow "TestWFForEachMock"
+	  And "TestWFForEachMock" contains an Assign "Rec To Convert" as
+	    | variable    | value |
+	    | [[Warewolf]] | bob   |
+	  And "TestWFForEachMock" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
+	  And "ForEachTest" contains an Assign "MyAssign" as
+	    | variable    | value |
+	    | [[rec().a]] | Test  |
+      And I save workflow "TestWFForEachMock"
+	  Then the test builder is open with "TestWFForEachMock"
+	  And I click New Test
+	  And I Add "ForEachTest" as TestStep	
+	  When I save
+	  And I run the test
+	  Then test result is Passed
+	  When I delete "Test 1"
+	  
+Scenario: Test Workflow with ForEach which contains assign Assert
+      Given I have a workflow "TestWFForEachAssert"
+	  And "TestWFForEachAssert" contains an Assign "Rec To Convert" as
+	    | variable    | value |
+	    | [[Warewolf]] | bob   |
+	  And "TestWFForEachAssert" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
+	  And "ForEachTest" contains an Assign "MyAssign" as
+	    | variable    | value |
+	    | [[rec().a]] | Test  |
+      And I save workflow "TestWFForEachAssert"
+	  Then the test builder is open with "TestWFForEachAssert"
+	  And I click New Test
+	  And I Add "ForEachTest" as TestStep All Assert
+	  When I save
+	  And I run the test
+	  Then test result is Passed
+	  When I delete "Test 1"
