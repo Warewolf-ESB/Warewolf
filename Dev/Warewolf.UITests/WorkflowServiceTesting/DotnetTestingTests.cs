@@ -62,11 +62,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestMethod]
         [TestCategory("Workflow Mocking Tests")]
         public void ConstructorValuesAreLoadedCorreclty()
-        {
+        {           
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
-            var variableFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.DefaultCtor.ConstructorExpander.StepOutputs_ctor_Table.ItemRow.Cell.AssertValue_humanEdit.Text;
-            Assert.AreEqual("[[@human]]", variableFromDebug);            ;
-            var variableValueFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIInfragisticsControlsTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.UIItemWarewolfStudioViCell.UIUI_AssertValue_id1tyComboBox.TextEdit.Text;
+            var variableFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.ResultsCell.ResultEdit.Text;
+            Assert.AreEqual("[[@human]]", variableFromDebug);
+            var variableValueFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.AssertValueCell.AssertValueComboBox.AssertionValue.Text;
             StringAssert.Contains(variableValueFromDebug, "Name");
             StringAssert.Contains(variableValueFromDebug, "PersonFood");
             StringAssert.Contains(variableValueFromDebug, "SurName");
@@ -89,10 +89,10 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         public void FavouriteFoodsValuesAreLoadedCorreclty()
         {
             WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
-            var variableFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.CtorFavouriteFood.FavouriteFoodsExpander.StepOutputs_FavouTable.ItemRow.Cell.AssertValue_foodsEdit.Text;
+            var variableFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.FavFoodItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_FavouTable.UIItemRow.ResultCell.ResultEdit.Text;
             Assert.AreEqual("[[@foods]]", variableFromDebug);
-            var operand = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.CtorFavouriteFood.FavouriteFoodsExpander.StepOutputs_FavouTable.ItemRow.Cell1.AssertOp_foods_AuComboBox.SelectedItem;
-            var variableValueFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.CtorFavouriteFood.FavouriteFoodsExpander.StepOutputs_FavouTable.ItemRow.Cell2.AssertValue_id1tyComboBox.TextEdit.Text;
+            var operand = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.FavFoodItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_FavouTable.UIItemRow.AssertCell.AssertComboBox.SelectedItem;
+            var variableValueFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.FavFoodItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_FavouTable.UIItemRow.AssertValueCell.AssertValueComboBox.ValueEdit.Text;
             Assert.AreEqual("=", operand);
             StringAssert.Contains(variableValueFromDebug, "$id\": \"1");
             StringAssert.Contains(variableValueFromDebug, "$type\": \"TestingDotnetDllCascading.Food");
