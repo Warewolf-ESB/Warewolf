@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
+namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
@@ -8669,13 +8669,13 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         }
         
         #region Properties
-        public UIFlowchartCustom1 UIFlowchartCustom
+        public UIFlowchartCustom UIFlowchartCustom
         {
             get
             {
                 if ((this.mUIFlowchartCustom == null))
                 {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom1(this);
+                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
                 }
                 return this.mUIFlowchartCustom;
             }
@@ -8683,15 +8683,15 @@ namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
         #endregion
         
         #region Fields
-        private UIFlowchartCustom1 mUIFlowchartCustom;
+        private UIFlowchartCustom mUIFlowchartCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIFlowchartCustom1 : WpfCustom
+    public class UIFlowchartCustom : WpfCustom
     {
         
-        public UIFlowchartCustom1(UITestControl searchLimitContainer) : 
+        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
