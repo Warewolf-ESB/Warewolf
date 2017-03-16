@@ -379,8 +379,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void ForEachParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
         {
-            var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-            var forEach = model.GetCurrentValue() as DsfForEachActivity;
+            var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
+            var forEach = model?.GetCurrentValue() as DsfForEachActivity;
             if (forEach != null)
             {
                 var act = forEach.DataFunc.Handler as IDev2Activity;
