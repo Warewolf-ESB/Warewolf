@@ -1325,6 +1325,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [When(@"I delete ""(.*)""")]
+        [Then(@"I delete ""(.*)""")]
+        [Given(@"I delete ""(.*)""")]
         public void WhenIDelete(string testName)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -1885,6 +1887,22 @@ namespace Dev2.Activities.Specs.TestFramework
                         methodInfo.Invoke(serviceTest, new object[] { modelItem });
                         break;
                     }
+                }
+            }
+        }
+
+        [Then(@"I Add ""(.*)"" as TestStep All Assert")]
+        public void ThenIAddAsTestStepAllAssert(string actNameToFind)
+        {
+            ThenIAddAsTestStep(actNameToFind);
+            var serviceTest = GetTestFrameworkFromContext();
+
+            foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
+            {
+                var testSteps = serviceTestStep.Children.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                foreach (var s in testSteps)
+                {
+                    s.Type = StepType.Assert;
                 }
             }
         }
