@@ -545,7 +545,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestStep in failingTestOutputs)
                 {
-                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable);
+                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable+ " ");
                     failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
                 }
             }
@@ -604,6 +604,13 @@ namespace Dev2.Runtime.ESB.Execution
             var failingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestFailed);
             pendingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestPending);
             invalidOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestInvalid);
+            if (failingOutputs.Any())
+            {
+                foreach (var serviceTestOutput in failingOutputs)
+                {
+                    serviceTestOutput.Result.Message = DataListUtil.StripBracketsFromValue(serviceTestOutput.Result.Message);
+                }
+            }
             return failingOutputs;
         }
 
@@ -736,7 +743,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg, val2, output.Variable, val1,val3);
+                    var actMsg = string.Format(msg, val2, variable, val1,val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();                   
                 }
                 output.Result = testResult;
