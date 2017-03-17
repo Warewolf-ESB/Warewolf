@@ -7744,6 +7744,38 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test Workflow with Loop Constructs - Select and Apply example workflow")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWorkflowWithLoopConstructs_SelectAndApplyExampleWorkflow()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow with Loop Constructs - Select and Apply example workflow", ((string[])(null)));
+#line 2592
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 2593
+ testRunner.Given("the test builder is open with \"Loop Constructs - Select and Apply\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 2594
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2595
+ testRunner.And("I Add all TestSteps", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2596
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2597
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2598
+ testRunner.Then("test result is Failed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2599
+ testRunner.And("the service debug assert Json message contains \"Message: Failed: Assert Equal. Ex" +
+                    "pected Equal To \'\' for \'[[@Pet]]\' but got\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2600
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
