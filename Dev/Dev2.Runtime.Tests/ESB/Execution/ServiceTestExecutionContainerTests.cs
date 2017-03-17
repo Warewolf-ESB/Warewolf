@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using Dev2.Common.ExtMethods;
@@ -18,6 +19,7 @@ using Dev2.Tests.Runtime.JSON;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
@@ -51,50 +53,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenArgsNoTests_ShouldPassThrough_returnInvalid()
-        {
-            //---------------Set up test pack-------------------
-            const string Datalist = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
-            var serviceAction = new ServiceAction() { DataListSpecification = new StringBuilder(Datalist) };
-            var dsfObj = new Mock<IDSFDataObject>();
-            dsfObj.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
-            dsfObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
-            dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
-                  .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
-            var workSpace = new Mock<IWorkspace>();
-            var channel = new Mock<IEsbChannel>();
-            var esbExecuteRequest = new EsbExecuteRequest();
-            var cataLog = new Mock<ITestCatalog>();
-            cataLog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
-            var testModelTO = new ServiceTestModelTO()
-            {
-                UserName = @"dev2\IntegrationTester",
-                Password = DpapiWrapper.Encrypt("password"),
-                AuthenticationType = AuthenticationType.User
-            };
-            cataLog.Setup(cat => cat.FetchTest(It.IsAny<Guid>(), It.IsAny<string>())).Returns(testModelTO);
-            var resourceCat = new Mock<IResourceCatalog>();
-            var activity = new Mock<IDev2Activity>();
-            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(activity.Object);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object,resourceCat.Object);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(serviceTestExecutionContainer);
-            Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
-            Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
-            //---------------Execute Test ----------------------
-            ErrorResultTO errors;
-            var execute = serviceTestExecutionContainer.Execute(out errors, 1);
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(execute);
-            Assert.AreNotEqual(execute, Guid.Empty);
-            var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>();
-            Assert.IsNotNull(serviceTestModelTO);
-            var testInvalid = serviceTestModelTO.Result.RunTestResult == RunResult.TestInvalid;
-            Assert.IsTrue(testInvalid);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void Execute_GivenArgs_ShouldPassThrough_ReturnsExecutedResults()
         {
             //---------------Set up test pack-------------------
@@ -117,6 +75,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var fetch = JsonResource.Fetch("Sequence");
             Dev2JsonSerializer s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
+           
             var cataLog = new Mock<ITestCatalog>();
             cataLog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
             cataLog.Setup(cat => cat.FetchTest(resourceId, TestName)).Returns(testModelTO);
