@@ -7,7 +7,7 @@ using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
 using Warewolf.UITests.DependencyGraph.DependencyGraphUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.Scheduler.SchedulerUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;

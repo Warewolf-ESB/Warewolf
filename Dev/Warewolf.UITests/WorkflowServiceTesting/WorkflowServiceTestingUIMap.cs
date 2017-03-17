@@ -8,7 +8,7 @@ using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowServiceTesting
