@@ -13,7 +13,7 @@ using System.Drawing;
 using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowServiceTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
