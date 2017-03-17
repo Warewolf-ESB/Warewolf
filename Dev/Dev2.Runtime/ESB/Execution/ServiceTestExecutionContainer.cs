@@ -521,7 +521,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestStep in failingTestSteps)
                 {
-                    failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription);
+                    failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription + " ");
                     failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
                 }
             }
@@ -529,7 +529,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestStep in invalidTestSteps)
                 {
-                    failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription);
+                    failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription + " ");
                     failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
                 }
             }
