@@ -518,14 +518,40 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"the service debug assert message contains ""(.*)""")]
+        [Given(@"the service debug assert message contains ""(.*)""")]
+        [When(@"the service debug assert message contains ""(.*)""")]
         public void ThenTheServiceDebugAssertMessageContains(string assertString)
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
             // ReSharper disable once PossibleNullReferenceException
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.End).AssertResultList.First().ResultsList;
-            var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
+            
+            var actualAssetMessage = debugItemResults.Select(result =>  result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
+        }
+
+       
+
+        [Then(@"the service debug assert Json message contains ""(.*)""")]
+        [When(@"the service debug assert Json message contains ""(.*)""")]
+        [Given(@"the service debug assert Json message contains ""(.*)""")]
+        public void ThenTheServiceDebugAssertJsonMessageContains(string assertString)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
+            // ReSharper disable once PossibleNullReferenceException
+            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
+
+            var first = debugItemResults.Select(result =>
+            {
+                var webClient = new WebClient();
+                var externalProcessExecutor = new SpecExternalProcessExecutor();
+                externalProcessExecutor.OpenInBrowser( new Uri(result.MoreLink));
+                var downloadStrings = externalProcessExecutor.WebResult[0];
+                return downloadStrings;
+            }).First();
+            StringAssert.Contains(first.ToLower(), assertString.ToLower());
         }
 
 
@@ -1788,6 +1814,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"I Add all TestSteps")]
+        [When(@"I Add all TestSteps")]
+        [Given(@"I Add all TestSteps")]
         public void ThenIAddAllTestSteps()
         {
 
