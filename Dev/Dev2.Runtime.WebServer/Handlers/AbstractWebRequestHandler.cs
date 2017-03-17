@@ -23,8 +23,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
-using Dev2.Data;
-using Dev2.Data.Decision;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -40,7 +38,6 @@ using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
-using Newtonsoft.Json.Linq;
 
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable FunctionComplexityOverflow
@@ -134,23 +131,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var userPrinciple = user;
                 if (dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
                 {
-                    if (dataObject.TestsResourceIds?.Any() ?? false)
-                    {
-                        formatter = dataObject.RunMultipleTestBatches(userPrinciple, workspaceGuid, serializer, formatter, _resourceCatalog, _testCatalog ,ref executePayload);
-                        dataObject.ResourceID = Guid.Empty;
-                    }
-                    else
-                    {
-                        var objArray = dataObject.RunSingleTestBatch(serviceName, userPrinciple, workspaceGuid, serializer, _testCatalog, ref formatter);
-
-                        executePayload = serializer.Serialize(objArray);
-                    }
-
-                    Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-                    dataObject.Environment = null;
+                    formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, formatter, userPrinciple, workspaceGuid, serializer,_testCatalog, _resourceCatalog, ref executePayload);
                     return new StringResponseWriter(executePayload, formatter.ContentType);
                 }
-
 
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
                 allErrors.MergeErrors(errors);
@@ -160,35 +143,17 @@ namespace Dev2.Runtime.WebServer.Handlers
                 allErrors.AddError("Executing a service externally requires View and Execute permissions");
             }
 
-
+            formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             if (dataObject.IsServiceTestExecution)
             {
-                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                var result = serializer.Deserialize<ServiceTestModelTO>(esbExecuteRequest.ExecuteResult);
-                if (result != null)
-                {
-                    var resObj = BuildTestResultForWebRequest(result);
-                    executePayload = serializer.Serialize(resObj);
-                    Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-                    dataObject.Environment = null;
-                }
-                else
-                {
-                    executePayload = serializer.Serialize(new JObject());
-                }
+                executePayload= ServiceTestExecutor.SetpForTestExecution(serializer, esbExecuteRequest, dataObject);
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
-
             if (dataObject.IsDebugFromWeb)
             {
-                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
-                var remoteDebugItems = fetchDebugItems?.Where(state => state.StateType != StateType.Duration).ToArray() ?? new IDebugState[] { };
-                var debugStates = DebugStateTreeBuilder.BuildTree(remoteDebugItems);
-                var serialize = serializer.Serialize(debugStates);
+                var serialize = SetupForWebExecution(dataObject, serializer);
                 return new StringResponseWriter(serialize, formatter.ContentType);
             }
-
 
             var unionedErrors = dataObject.Environment?.Errors?.Union(dataObject.Environment?.AllErrors) ?? new List<string>();
             foreach (var error in unionedErrors)
@@ -217,6 +182,16 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         }
 
+        private static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
+        {
+            var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
+            var remoteDebugItems = fetchDebugItems?.Where(state => state.StateType != StateType.Duration).ToArray() ??
+                                   new IDebugState[] {};
+            var debugStates = DebugStateTreeBuilder.BuildTree(remoteDebugItems);
+            var serialize = serializer.Serialize(debugStates);
+            return serialize;
+        }
+
         private static Guid SetWorkspaceId(string workspaceId, IWorkspaceRepository workspaceRepository)
         {
             Guid workspaceGuid;
@@ -234,8 +209,6 @@ namespace Dev2.Runtime.WebServer.Handlers
             return workspaceGuid;
         }
         protected static void RemoteInvoke(NameValueCollection headers, IDSFDataObject dataObject) => dataObject.SetupForRemoteInvoke(headers);
-
-        private static JObject BuildTestResultForWebRequest(IServiceTestModelTO result) => result.BuildTestResultForWebRequest();
 
         protected static void BindRequestVariablesToDataObject(WebRequestTO request, ref IDSFDataObject dataObject)
         {
@@ -385,13 +358,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 boundVariables.Add(key, pairs[key]);
 
             }
-
-            var errors = new ErrorResultTO();
-
-            if (errors.HasErrors())
-            {
-                Dev2Logger.Error(errors.MakeDisplayReady());
-            }
+          
             return string.Empty;
         }
 

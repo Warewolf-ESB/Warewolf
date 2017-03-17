@@ -760,6 +760,36 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void GetPostData_GivenPostJsonDataInContextThrowsException_ShouldSwallowException()
+        {
+            //---------------Set up test pack-------------------
+            var communicationContext = new Mock<ICommunicationContext>();
+            const string UriString = "https://warewolf.atlassian.net/secure/RapidBoard.jspa";
+            communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(UriString));
+            communicationContext.Setup(context => context.Request.Method).Returns("POST");
+            communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
+            var data = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var stringInMemoryStream = new MemoryStream(Encoding.Default.GetBytes(data));
+            communicationContext.Setup(context => context.Request.InputStream).Returns(stringInMemoryStream);
+            communicationContext.Setup(context => context.Request.BoundVariables).Returns(new NameValueCollection());
+            communicationContext.Setup(context => context.Request.QueryString).Throws(new Exception());
+            var dataObject = new Mock<IDSFDataObject>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(handlerMock);
+            //---------------Execute Test ----------------------
+
+            //---------------Test Result -----------------------
+            handlerMock.GetPostDataMock(communicationContext.Object);
+
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void GetPostData_GivenPostJsonDataInContext_ShouldReturnJsonData()
         {
             //---------------Set up test pack-------------------
@@ -1202,7 +1232,7 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 RunTestResult = RunResult.TestPassed
             };
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1220,7 +1250,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestFailed,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1237,7 +1267,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestInvalid,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1254,7 +1284,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestResourceDeleted,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1271,7 +1301,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestResourcePathUpdated,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1288,12 +1318,13 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestPending,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Pending\""));
         }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ExtractKeyValuePairs_GivenKeyvaluePairs_ShouldCloneKeyValuePair()
@@ -1306,6 +1337,41 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
             //The WID is skipped
             Assert.AreEqual(LocalBoundVariables.Count - 1, boundVariables.Count);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void CleanupXml_GivenXml_ShouldAppendXmlCorrectly()
+        {
+            //------------Setup for test-------------------------
+            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            const string BaseStr = "www.examlple.com?home=<Datalist>DatalistPayload</Datalist>";
+            //------------Execute Test---------------------------            
+            var invokeStatic = privateObject.InvokeStatic("CleanupXml", BaseStr);
+            //------------Assert Results-------------------------\
+            var value = invokeStatic.ToString();
+            var isNullOrEmpty = string.IsNullOrEmpty(value);
+            Assert.IsFalse(isNullOrEmpty);
+            var startsWith = value.StartsWith("www.examlple.com?home=~XML~");
+            Assert.IsTrue(startsWith);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ExtractKeyValuePairForGetMethod_GivenEmptyPayload_ShouldUseContextQueryString()
+        {
+            //------------Setup for test-------------------------
+            var privateObject = new PrivateType(typeof(AbstractWebRequestHandler));
+            var mock = new Mock<ICommunicationContext>();
+            mock.Setup(communicationContext => communicationContext.Request.QueryString)
+                .Returns(new NameValueCollection());
+            ICommunicationContext context = mock.Object;
+            //------------Execute Test---------------------------            
+            privateObject.InvokeStatic("ExtractKeyValuePairForGetMethod", context,"");
+            //------------Assert Results-------------------------
+            mock.VerifyGet(communicationContext => communicationContext.Request.QueryString, Times.Once);
+
+
         }
 
 
