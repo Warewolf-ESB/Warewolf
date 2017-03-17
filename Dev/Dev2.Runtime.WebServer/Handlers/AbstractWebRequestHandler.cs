@@ -17,7 +17,6 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -42,7 +41,7 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 using Newtonsoft.Json.Linq;
-using Warewolf.Storage;
+
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable FunctionComplexityOverflow
 // ReSharper disable LoopCanBeConvertedToQuery
@@ -137,65 +136,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     if (dataObject.TestsResourceIds?.Any() ?? false)
                     {
-                        foreach (var testsResourceId in dataObject.TestsResourceIds)
-                        {
-                            var allTests = _testCatalog.Fetch(testsResourceId);
-                            var taskList = new List<Task>();
-                            var testResults = new List<IServiceTestModelTO>();
-                            foreach (var test in allTests)
-                            {
-                                dataObject.ResourceID = testsResourceId;
-                                var dataObjectClone = dataObject.Clone();
-                                dataObjectClone.Environment = new ExecutionEnvironment();
-                                dataObjectClone.TestName = test.TestName;
-                                var res = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
-                                var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
-
-                                var lastTask = ServiceTestExecutor.GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid, serializer, testResults, dataObjectClone);
-                                taskList.Add(lastTask);
-                            }
-                            Task.WaitAll(taskList.ToArray());
-
-                            formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                            var objArray = new List<JObject>();
-                            foreach (var testRunResult in testResults)
-                            {
-                                if (testRunResult != null)
-                                {
-                                    var resObj = BuildTestResultForWebRequest(testRunResult);
-                                    objArray.Add(resObj);
-                                }
-                            }
-
-                            executePayload = executePayload + Environment.NewLine + serializer.Serialize(objArray);
-                        }
+                        formatter = dataObject.RunMultipleTestBatches(userPrinciple, workspaceGuid, serializer, formatter, _resourceCatalog, _testCatalog ,ref executePayload);
                         dataObject.ResourceID = Guid.Empty;
                     }
                     else
                     {
-                        var allTests = _testCatalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
-                        var taskList = new List<Task>();
-                        var testResults = new List<IServiceTestModelTO>();
-                        foreach (var test in allTests.Where(to => to.Enabled))
-                        {
-                            var dataObjectClone = dataObject.Clone();
-                            dataObjectClone.Environment = new ExecutionEnvironment();
-                            dataObjectClone.TestName = test.TestName;
-                            var lastTask = ServiceTestExecutor.GetTaskForTestExecution(serviceName, userPrinciple, workspaceGuid, serializer, testResults, dataObjectClone);
-                            taskList.Add(lastTask);
-                        }
-                        Task.WaitAll(taskList.ToArray());
-
-                        formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                        var objArray = new List<JObject>();
-                        foreach (var testRunResult in testResults)
-                        {
-                            if (testRunResult != null)
-                            {
-                                var resObj = BuildTestResultForWebRequest(testRunResult);
-                                objArray.Add(resObj);
-                            }
-                        }
+                        var objArray = dataObject.RunSingleTestBatch(serviceName, userPrinciple, workspaceGuid, serializer, _testCatalog, ref formatter);
 
                         executePayload = serializer.Serialize(objArray);
                     }
