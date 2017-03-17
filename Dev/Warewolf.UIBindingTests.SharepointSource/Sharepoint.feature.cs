@@ -87,7 +87,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 11
    testRunner.And("title is \"New SharePoint Service Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
-   testRunner.And("I type Address as \"http://rsaklfsvrsharep\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Address as \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
    testRunner.Then("\"New SharePoint Service Source *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 14
@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
    testRunner.Given("I open New Sharepoint Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
-   testRunner.And("I type Address as \"http://rsaklfsvrsharep\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Address as \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
@@ -273,7 +273,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 81
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
-   testRunner.And("I type Address as \"http://rsaklfsvrsharep\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Address as \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 83
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
@@ -334,7 +334,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 107
    testRunner.And("title is \"Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 108
-   testRunner.And("Address is \"http://rsaklfsvrsharep\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("Address is \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 109
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 110
@@ -348,7 +348,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 114
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
-   testRunner.When("I type Address as \"http://rsaklfsvrshareps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("I type Address as \"http://rsaklfsvrdevs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 116
    testRunner.Then("\"Test *\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 117
@@ -383,7 +383,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 127
    testRunner.Then("\"Test\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 128
-   testRunner.And("Address is \"http://rsaklfsvrsharep\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("Address is \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
@@ -432,7 +432,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 147
    testRunner.And("title is \"New SharePoint Service Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
-   testRunner.And("I type Address as \"http://rsaklfsvrsharep\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Address as \"http://rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 149
    testRunner.When("Test Connecton is \"Long Running\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 150

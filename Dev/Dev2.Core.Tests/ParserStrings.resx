@@ -124,7 +124,7 @@
     <value>ftps://dev2ftps.dev2.local</value>
   </data>
   <data name="PathOperations_FTP_Path" xml:space="preserve">
-    <value>ftp://rsaklfsvrsbspdc:1001/GET_DATA/file1.txt</value>
+    <value>ftp://rsaklfsvrpdc:1001/GET_DATA/file1.txt</value>
   </data>
   <data name="XamlLoaderBadNamespace" xml:space="preserve">
     <value>&lt;Service ID="3fd60bce-f56c-46cf-95ca-346ccc668570" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug9304" ResourceType="WorkflowService"&gt;

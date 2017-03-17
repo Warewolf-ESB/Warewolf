@@ -124,6 +124,6 @@
     <value>ftps://dev2ftps.dev2.local</value>
   </data>
   <data name="PathOperations_FTP_Path" xml:space="preserve">
-    <value>ftp://rsaklfsvrsbspdc:1001/GET_DATA/file1.txt</value>
+    <value>ftp://rsaklfsvrpdc:1001/GET_DATA/file1.txt</value>
   </data>
 </root>
