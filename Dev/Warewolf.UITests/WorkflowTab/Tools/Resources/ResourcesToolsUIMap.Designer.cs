@@ -1400,6 +1400,22 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
                 return this.mActionMethodListBoxList;
             }
         }
+        
+        public WpfText NoconstructoronastatText
+        {
+            get
+            {
+                if ((this.mNoconstructoronastatText == null))
+                {
+                    this.mNoconstructoronastatText = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoconstructoronastatText.SearchProperties[WpfText.PropertyNames.Name] = "No constructor on a static class";
+                    this.mNoconstructoronastatText.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mNoconstructoronastatText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1436,6 +1452,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
         private OneParamCtorExpander mOneParamCtorExpander;
         
         private ActionMethodListBoxList mActionMethodListBoxList;
+        
+        private WpfText mNoconstructoronastatText;
         #endregion
     }
     
@@ -1531,6 +1549,23 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
                 return this.mDotNetPluginSourceToEditListItem;
             }
         }
+        
+        public WpfListItem ListItem2
+        {
+            get
+            {
+                if ((this.mListItem2 == null))
+                {
+                    this.mListItem2 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mListItem2.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.PluginSourceDefinition";
+                    this.mListItem2.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mListItem2.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mListItem2;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1543,6 +1578,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
         private WpfListItem mNewDotNetPluginSource;
         
         private WpfListItem mDotNetPluginSourceToEditListItem;
+        
+        private WpfListItem mListItem2;
         #endregion
     }
     
@@ -1623,6 +1660,24 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
                 return this.mHumalClassListItem;
             }
         }
+        
+        public WpfListItem AssemblyRefNamespace
+        {
+            get
+            {
+                if ((this.mAssemblyRefNamespace == null))
+                {
+                    this.mAssemblyRefNamespace = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mAssemblyRefNamespace.SearchProperties[WpfListItem.PropertyNames.Name] = "{\"AssemblyLocation\":\"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyTok" +
+                        "en=b77a5c561934e089, processorArchitecture=AMD64\",\"AssemblyName\":\"\",\"FullName\":\"" +
+                        "AssemblyRef\",\"MethodName\":null,\"JsonObject\":\"{}\"}";
+                    this.mAssemblyRefNamespace.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mAssemblyRefNamespace;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1633,6 +1688,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
         private WpfListItem mAssemblyLocationGACCListItem;
         
         private WpfListItem mHumalClassListItem;
+        
+        private WpfListItem mAssemblyRefNamespace;
         #endregion
     }
     
