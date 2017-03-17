@@ -1,5 +1,7 @@
 ﻿using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using System.Drawing;
+using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.ExplorerUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;

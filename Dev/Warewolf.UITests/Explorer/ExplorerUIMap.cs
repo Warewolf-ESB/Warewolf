@@ -23,7 +23,7 @@ using Warewolf.UITests.ExchangeSource.ExchangeSourceUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DependencyGraph.DependencyGraphUIMapClasses;
 
-namespace Warewolf.UITests.ExplorerUIMapClasses
+namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
 {
     [Binding]
     public partial class ExplorerUIMap

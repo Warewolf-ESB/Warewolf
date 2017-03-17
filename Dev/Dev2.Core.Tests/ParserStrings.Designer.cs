@@ -70,7 +70,7 @@ namespace Dev2.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ftp://rsaklfsvrsbspdc:1001/GET_DATA/file1.txt.
+        ///   Looks up a localized string similar to ftp://rsaklfsvrpdc:1001/GET_DATA/file1.txt.
         /// </summary>
         internal static string PathOperations_FTP_Path {
             get {
