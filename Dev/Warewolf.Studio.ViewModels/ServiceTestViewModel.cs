@@ -512,7 +512,7 @@ namespace Warewolf.Studio.ViewModels
                             }
                         }
                         SetStepIcon(childStep.ActivityType, childStep);
-                        if (childStep.StepOutputs != null && childStep.StepOutputs.Count > 0 && parent.ActivityType==typeof(DsfEnhancedDotNetDllActivity).Name)
+                        if (childStep.StepOutputs != null && childStep.StepOutputs.Count > 0)
                         {
                             parent.Children.Add(childStep);
                             if (childItem.Children != null && childItem.Children.Count > 0)
