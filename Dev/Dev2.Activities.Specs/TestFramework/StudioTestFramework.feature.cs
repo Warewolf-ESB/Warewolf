@@ -2931,8 +2931,8 @@ this.FeatureBackground();
             table108.AddRow(new string[] {
                         "Test 1",
                         "Failed",
-                        "Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected Equal " +
-                            "To \'\' for \'Message\' but got \'Hello World.\'"});
+                        "Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal" +
+                            " To \'\' for \'Message\' but got \'Hello World.\'"});
 #line 1033
  testRunner.Then("The WebResponse as", ((string)(null)), table108, "Then ");
 #line 1036
@@ -3164,8 +3164,8 @@ this.FeatureBackground();
             table117.AddRow(new string[] {
                         "Test 2",
                         "Failed",
-                        "Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected Equal " +
-                            "To \'\' for \'Message\' but got \'Hello World.\'"});
+                        "Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal" +
+                            " To \'\' for \'Message\' but got \'Hello World.\'"});
 #line 1114
  testRunner.Then("The WebResponse as", ((string)(null)), table117, "Then ");
 #line hidden
