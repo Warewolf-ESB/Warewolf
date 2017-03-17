@@ -16,10 +16,10 @@ using System.Drawing;
 using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses
+namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses
 {
     [Binding]
     public partial class WorkflowServiceTestingUIMap
