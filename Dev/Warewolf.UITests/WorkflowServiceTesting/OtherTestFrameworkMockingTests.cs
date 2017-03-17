@@ -3,8 +3,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Common;
-using Warewolf.UITests.ExplorerUIMapClasses;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowServiceTesting
 {

@@ -8,7 +8,7 @@ using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.Windows.Input;
 using Warewolf.UITests.ComPluginSource;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 

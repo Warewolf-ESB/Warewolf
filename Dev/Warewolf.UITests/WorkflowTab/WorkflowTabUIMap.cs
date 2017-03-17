@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Warewolf.UITests.ComPluginSource;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;

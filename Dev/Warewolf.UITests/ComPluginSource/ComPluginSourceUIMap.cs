@@ -1,7 +1,7 @@
 ﻿using TechTalk.SpecFlow;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
