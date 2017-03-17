@@ -200,13 +200,14 @@ namespace Dev2.Runtime.WebServer
 
         public static bool CanExecuteCurrentResource(this IDSFDataObject dataObject, IResource resource, IAuthorizationService service)
         {
+            var canExecute = true;
             if (service != null && dataObject.ReturnType != EmitionTypes.TEST)
             {
                 var hasView = service.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
                 var hasExecute = service.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-                return (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == "ReservedService");
+                canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == "ReservedService");
             }
-            return false;
+            return canExecute;
         }
 
         public static DataListFormat RunMultipleTestBatches(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
@@ -246,7 +247,7 @@ namespace Dev2.Runtime.WebServer
         }
 
         // ReSharper disable once RedundantAssignment
-        public static IEnumerable<JObject> RunSingleTestBatch(this IDSFDataObject dataObject, string serviceName,  IPrincipal userPrinciple, Guid workspaceGuid,Dev2JsonSerializer serializer, ITestCatalog catalog, ref DataListFormat formatter)
+        public static IEnumerable<JObject> RunSingleTestBatch(this IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog catalog, ref DataListFormat formatter)
         {
             var allTests = catalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
             var taskList = new List<Task>();
