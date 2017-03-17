@@ -1032,7 +1032,7 @@ Scenario: Run Selected Test in Web
 	When I run selected test in Web
 	Then The WebResponse as
 	| Test Name | Result | Message                                                                                                                     |
-	| Test 1    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
+	| Test 1    | Failed | Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
@@ -1114,7 +1114,7 @@ Scenario: Run All Tests in Web with failing test
 	Then The WebResponse as
 	| Test Name | Result | Message                                                                                                                     |
 	| Test 1    | Passed |                                                                                                                             |
-	| Test 2    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
+	| Test 2    | Failed | Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
 
 Scenario: Run Selected Test passed with all teststeps fails
 	Given the test builder is open with "Hello World"
