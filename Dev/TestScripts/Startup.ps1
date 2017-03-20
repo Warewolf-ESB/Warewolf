@@ -38,7 +38,7 @@ if ($ResourcesType -eq "") {
 	$UITest = New-Object System.Management.Automation.Host.ChoiceDescription "&UITest", `
 		"Uses these resources for running UI Tests."
 
-	$ServerTest = New-Object System.Management.Automation.Host.ChoiceDescription "&ServerTest", `
+	$ServerTest = New-Object System.Management.Automation.Host.ChoiceDescription "&ServerTests", `
 		"Uses these resources for running everything except unit tests and Coded UI tests."
 
 	$Release = New-Object System.Management.Automation.Host.ChoiceDescription "&Release", `
