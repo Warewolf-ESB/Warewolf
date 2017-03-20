@@ -34,6 +34,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         {
             _shellViewModelMock = new Mock<IShellViewModel>();
+            _shellViewModelMock.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellViewModelMock.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             _serverMock = new Mock<IServer>();
             _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
             _explorerItemMock = new Mock<IExplorerItem>();
@@ -41,6 +43,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(_explorerItemMock.Object);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_studioUpdateManagerMock.Object);
             _serverMock.SetupGet(it => it.DisplayName).Returns("someResName");
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            _serverMock.Setup(server => server.Connection).Returns(mockEnvironmentConnection.Object);
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _target = new DeployDestinationViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object);

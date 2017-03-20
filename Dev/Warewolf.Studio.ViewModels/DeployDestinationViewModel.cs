@@ -20,6 +20,7 @@ namespace Warewolf.Studio.ViewModels
             : base(shellViewModel, aggregator,false)
         {
             _shellViewModel = shellViewModel;
+            ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
             ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
             ConnectControlViewModel.ServerConnected += ServerConnected;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
@@ -29,22 +30,24 @@ namespace Warewolf.Studio.ViewModels
 
         private void ServerDisconnected(object sender, IServer server)
         {
-            if (SelectedEnvironment != null) ServerStateChanged?.Invoke(this, SelectedEnvironment.Server);
+            if (SelectedEnvironment != null)
+            {
+                ServerStateChanged?.Invoke(this, SelectedEnvironment.Server);
+            }
         }
 
         private void ServerConnected(object sender, IServer server)
         {
-            var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == server.EnvironmentID);
+            var environmentViewModel = CreateEnvironmentViewModel(sender, server.EnvironmentID);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;
             StatsArea?.ReCalculate();
-            _shellViewModel.ExplorerViewModel.Environments.Add(environmentViewModel);
         }
 
         void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)
         {
-            var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentid);
+            var environmentViewModel = CreateEnvironmentViewModel(sender, environmentid);
             SelectedEnvironment = environmentViewModel;
             StatsArea?.ReCalculate();
         }
