@@ -1364,21 +1364,19 @@ Scenario: Test WF with MySql
 
 Scenario: Test WF with Sql Server
 		Given I have a workflow "SqlTestWF"
-		 And "SqlTestWF" contains a sqlserver database service "dbo.FetchPlayers" with mappings for testing as
+		 And "SqlTestWF" contains a sqlserver database service "dbo.Pr_CitiesGetCountries" with mappings for testing as
 		   | ParameterName | ParameterValue |
-		   | GameNumber    | 1              |
+		   | Prefix        | D              |
 		And I save workflow "SqlTestWF"
 		Then the test builder is open with "SqlTestWF"
 		And I click New Test
 		And a new test is added	
 		And test name starts with "Test 1"
-		And I Add "dbo.FetchPlayers" as TestStep
+		And I Add "dbo.Pr_CitiesGetCountries" as TestStep
 		And I add StepOutputs as 
-		| Variable Name                    | Condition | Value    |
-		| [[dbo_FetchPlayers(1).ID]]       | =         | 285      |
-		| [[dbo_FetchPlayers(1).Name]]     | =         | Syed     |
-		| [[dbo_FetchPlayers(1).Surname]]  | =         | Abbas    |
-		| [[dbo_FetchPlayers(1).Username]] | =         | Abbas285 |
+		| Variable Name                                | Condition | Value    |
+		| [[dbo_Pr_CitiesGetCountries(2).CountryID]]   | =         | 40  |
+		| [[dbo_Pr_CitiesGetCountries(2).Description]] | =         | Djibouti |
 		When I save
 		And I run the test
 		Then test result is Passed
