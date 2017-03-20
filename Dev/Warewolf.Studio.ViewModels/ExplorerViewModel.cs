@@ -332,6 +332,35 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             ConnectControlViewModel.ServerHasDisconnected += ServerDisconnectDetected;
             ConnectControlViewModel.ServerReConnected += ServerReConnected;
+            ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
+        }
+
+        private void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
+        {
+            var environmentViewModel = CreateEnvironmentViewModel(sender, environmentId, true);
+            SelectedEnvironment = environmentViewModel;
+        }
+
+        public IEnvironmentViewModel CreateEnvironmentViewModel(object sender, Guid environmentId, bool shouldLoad = false)
+        {
+            var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
+            if (environmentViewModel == null)
+            {
+                var connectControlViewModel = sender as ConnectControlViewModel;
+                var selectedConnection = connectControlViewModel?.SelectedConnection;
+                var environmentConnection = selectedConnection?.Connection;
+                if (environmentConnection != null && environmentConnection.IsConnected)
+                {
+                    var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
+                    _environments.Add(environmentModel);
+                    if (shouldLoad)
+                    {
+                        environmentModel.Load();
+                    }
+                    environmentViewModel = environmentModel;
+                }
+            }
+            return environmentViewModel;
         }
 
         async void ServerConnected(object _, IServer server)

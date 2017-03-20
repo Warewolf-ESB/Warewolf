@@ -153,6 +153,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
@@ -530,6 +532,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             connectControl.SetupAllProperties();
@@ -563,6 +567,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             var differentConnectControl = new Mock<IConnectControlViewModel>();

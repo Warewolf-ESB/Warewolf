@@ -64,9 +64,9 @@ namespace Warewolf.Studio.ViewModels
 
         async void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            if (_environments.Count != _shellViewModel.ExplorerViewModel.Environments.Count)
+            if (_environments.Count != _shellViewModel?.ExplorerViewModel?.Environments?.Count)
             {
-                var environmentViewModel = _shellViewModel.ExplorerViewModel.Environments.FirstOrDefault(
+                var environmentViewModel = _shellViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(
                         model => model.ResourceId == environmentId);
 
                 await CreateNewEnvironment(environmentViewModel?.Server);

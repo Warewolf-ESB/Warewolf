@@ -35,7 +35,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestInitialize()
         {
             _shellViewModelMock = new Mock<IShellViewModel>();
-            _shellViewModelMock.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            var mockExplorerViewModel = new Mock<IExplorerViewModel>();
+            _shellViewModelMock.Setup(model => model.ExplorerViewModel).Returns(mockExplorerViewModel.Object);
             _shellViewModelMock.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             _serverMock = new Mock<IServer>();
             _serverMock.Setup(server => server.GetServerVersion()).Returns("1.1.2");
@@ -227,6 +228,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             env.AddChild(explorerItemViewModelMock.Object);
             var environmentViewModels = _target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList();
             _target.Environments = new ObservableCollection<IEnvironmentViewModel>(environmentViewModels );
+
+            _shellViewModelMock.Setup(model => model.ExplorerViewModel.Environments).Returns(_target.Environments);
 
             //act
             _target.ConnectControlViewModel.SelectedConnection = serverMock.Object;
