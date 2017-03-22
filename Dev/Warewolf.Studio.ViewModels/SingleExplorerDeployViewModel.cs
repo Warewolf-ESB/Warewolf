@@ -302,6 +302,7 @@ namespace Warewolf.Studio.ViewModels
 
                         }
                     }
+                    var deployResponse = new List<IDeployResult>();
                     if (supportsDirectServerDeploy)
                     {
                         
@@ -315,13 +316,15 @@ namespace Warewolf.Studio.ViewModels
                                 Password = destEnv.EnvironmentConnection.Password,
 
                             };
-                            sourceEnvServer.UpdateRepository.Deploy(notfolders, Destination.DeployTests, destConnection);
+                            deployResponse = sourceEnvServer.UpdateRepository.Deploy(notfolders, Destination.DeployTests, destConnection);
                         }
                     }
-                    else
+                    
+                    if(!supportsDirectServerDeploy || deployResponse.Where(r => r.HasError).Any())
                     {
                         _shell.DeployResources(sourceEnvServer.EnvironmentID, destinationEnvironmentId, notfolders, Destination.DeployTests);
                     }
+
                     DeploySuccessfull = true;
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);
