@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data;
@@ -87,14 +88,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
             ErrorResultTO errors;
-            var currentPrincipal = Thread.CurrentPrincipal;
-            Thread.CurrentPrincipal = null;
+            Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
             var execute = serviceTestExecutionContainer.Execute(out errors, 1);
-            Thread.CurrentPrincipal = currentPrincipal;
             //---------------Test Result -----------------------
             Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var serviceTestModelTO = serializer.Deserialize<Dev2.Common.Interfaces.TestRunResult>(esbExecuteRequest.ExecuteResult);
+            var serviceTestModelTO = serializer.Deserialize<Dev2.Data.ServiceTestModelTO>(esbExecuteRequest.ExecuteResult);
             Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
         }
 
