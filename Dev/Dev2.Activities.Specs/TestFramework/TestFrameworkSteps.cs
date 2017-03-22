@@ -456,7 +456,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"the test builder is open with ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWith(string workflowName)
         {
-
             ResourceModel resourceModel;
             if (MyContext.TryGetValue(workflowName, out resourceModel))
             {

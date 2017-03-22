@@ -2588,7 +2588,7 @@ Scenario: Test Workflow with ForEach which contains assign Assert
 	  When I delete "Test 1"
 
 Scenario: Test Workflow with Loop Constructs - Select and Apply example workflow
-	Given the test builder is open with "Loop Constructs - Select and Apply"
+	Given the test builder is open with "Select and Apply"
 	And I click New Test
 	And I Add all TestSteps
 	When I save
