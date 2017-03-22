@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using System.Threading;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data;
@@ -13,14 +11,11 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Tests.Runtime.JSON;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 
 namespace Dev2.Tests.Runtime.ESB.Execution
