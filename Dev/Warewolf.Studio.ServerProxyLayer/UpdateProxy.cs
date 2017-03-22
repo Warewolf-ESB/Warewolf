@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Dev2.Common.Interfaces.Deploy;
 using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ServerProxyLayer
@@ -422,7 +423,7 @@ namespace Warewolf.Studio.ServerProxyLayer
 
         #region Implementation of IUpdateManager
 
-        public void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
+        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("DirectDeploy");
@@ -430,7 +431,8 @@ namespace Warewolf.Studio.ServerProxyLayer
             comsController.AddPayloadArgument("resourceIDsToDeploy", serialiser.SerializeToBuilder(resourceIDsToDeploy));
             comsController.AddPayloadArgument("deployTests", new StringBuilder(deployTests.ToString()));
             comsController.AddPayloadArgument("destinationEnvironmentId", serialiser.SerializeToBuilder(destinationEnvironment));
-            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            var output = comsController.ExecuteCommand<List<IDeployResult>>(con, GlobalConstants.ServerWorkspaceID);
+            return output;
         }
 
         #endregion
