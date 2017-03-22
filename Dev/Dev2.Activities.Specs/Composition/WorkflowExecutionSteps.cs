@@ -3808,6 +3808,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsASqlServerDatabaseServiceWithMappingsForTesting(string parentName, string serviceName, Table table)
         {
             var inputs = GetServiceInputs(table);
+            var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
             //Load Source based on the name
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
@@ -3820,7 +3821,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , mock.Object
                                                                                     , new Server(environmentModel));
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
-            var dbSource = dbSources.Single(source => source.Id == "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid());
+            var dbSource = dbSources.Single(source => source.Id == resourceId);
 
             var databaseService = new DatabaseService
             {
@@ -3863,10 +3864,8 @@ namespace Dev2.Activities.Specs.Composition
             mySqlDatabaseActivity.Outputs = mappings;
             mySqlDatabaseActivity.ProcedureName = serviceName;
 
-            _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).ID]]");
-            _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).Name]]");
-            _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).Surname]]");
-            _commonSteps.AddVariableToVariableList("[[dbo_FetchPlayers(1).Username]]");
+            _commonSteps.AddVariableToVariableList("[[dbo_Pr_CitiesGetCountries(2).CountryID]]");
+            _commonSteps.AddVariableToVariableList("[[dbo_Pr_CitiesGetCountries(2).Description]]");
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
