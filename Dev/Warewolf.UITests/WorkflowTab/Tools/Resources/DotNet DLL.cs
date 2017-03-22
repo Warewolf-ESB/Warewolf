@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.ExplorerUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
@@ -46,6 +46,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
             Assert.AreEqual(newDll, DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
         }
+
+       
 
         [TestMethod]
         [TestCategory("Resource Tools")]
@@ -95,6 +97,17 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander.ActivitiesDesignButton.ConstructorsComboBox.CtorListItem.Exists);
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander.ActivitiesDesignButton.ConstructorsComboBox.CtorSystemStringListItem.Exists);
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander.ActivitiesDesignButton.ConstructorsComboBox.CtorSystemStringSystListItem.Exists);
+        }
+        //WOLF-2541
+        [TestMethod]
+        [TestCategory("Resource Tools")]
+        public void GAC_Selecting_Classname_Loads_Class_Constructors_UITests()
+        {
+            ResourcesToolsUIMap.Select_Second_Item_From_DotNet_DLL_Large_View_Source_Combobox();
+            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled);
+            ResourcesToolsUIMap.Select_DotNet_Dll_AssemblyRef();
+            var exists = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NoconstructoronastatText.Exists;
+            Assert.IsTrue(exists);
         }
 
         [TestMethod]
