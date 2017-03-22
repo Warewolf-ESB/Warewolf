@@ -118,7 +118,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                             StringBuilder resourceIDsToDeploy;
 
                             values.TryGetValue("resourceIDsToDeploy", out resourceIDsToDeploy);
-                            var idsToDeploy = serializer.Deserialize<List<Guid>>(resourceIDsToDeploy);
+                            var idsToDeploy = new List<Guid>();
+                            idsToDeploy.AddRange(serializer.Deserialize<List<Guid>>(resourceIDsToDeploy));
                             if (idsToDeploy.Any())
                             {
                                 Parallel.ForEach(idsToDeploy, resourceId => toReturn.AddRange(DeployResource(resourceId, roles, serializer, proxy, doTestDeploy)));
