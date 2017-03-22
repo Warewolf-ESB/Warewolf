@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Common.Interfaces.Deploy;
 
 namespace Dev2.Common.Interfaces.ServerProxyLayer
 {
@@ -50,6 +51,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
     /// </summary>
     public interface IUpdateManager : IUpdateManagerSave, IUpdateManagerTest
     {
-        void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironmentId);
+        List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironmentId);
     }
 }

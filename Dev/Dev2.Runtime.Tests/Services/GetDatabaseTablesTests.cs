@@ -180,7 +180,7 @@ namespace Dev2.Tests.Runtime.Services
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = emptyDBName?"": "Dev2TestingDB",
-                Server = "RSAKLFSVRGENDEV",
+                Server = "RSAKLFSVRDEV",
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
