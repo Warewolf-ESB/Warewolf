@@ -273,7 +273,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 else
                                 {
                                     _messages.Add(string.Empty);
-                                    _result = string.Format("Empty, timeout: {0} second(s)", _timeOut);
+                                    _result = "Empty";
                                 }
                             }
 
