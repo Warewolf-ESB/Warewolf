@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.ExplorerUIMapClasses
+namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;

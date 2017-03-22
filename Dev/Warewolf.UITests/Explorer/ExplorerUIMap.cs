@@ -13,7 +13,7 @@ using System.Drawing;
 using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
-using Warewolf.UITests.WorkflowTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
@@ -23,7 +23,7 @@ using Warewolf.UITests.ExchangeSource.ExchangeSourceUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DependencyGraph.DependencyGraphUIMapClasses;
 
-namespace Warewolf.UITests.ExplorerUIMapClasses
+namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
 {
     [Binding]
     public partial class ExplorerUIMap
