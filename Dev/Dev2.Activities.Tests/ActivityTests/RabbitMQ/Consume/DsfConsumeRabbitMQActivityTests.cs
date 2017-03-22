@@ -229,7 +229,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         public void DsfConsumeRabbitMQActivity_Execute_Empty_Queue_Exception()
         {
             //------------Setup for test--------------------------
-            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity() {TimeOut = "0"};
 
             const string queueName = "Q1";
             var resourceCatalog = new Mock<IResourceCatalog>();
@@ -258,6 +258,44 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
             //------------Assert Results-------------------------            
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
+        public void DsfConsumeRabbitMQActivity_Execute_Empty_Queue_Exception_NoTimeout()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity() {TimeOut = "0"};
+
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var rabbitMQSource = new Mock<RabbitMQSource>();
+            var connectionFactory = new Mock<ConnectionFactory>();
+            var connection = new Mock<IConnection>();
+            var channel = new Mock<IModel>();
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
+            connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
+            connection.Setup(c => c.CreateModel()).Returns(channel.Object);
+            channel.Setup(c => c.BasicQos(0, 1, false));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+
+            //------------Execute Test---------------------------
+            try
+            {
+           privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
+            }
+            //------------Assert Results-------------------------            
+            
         }
 
         [TestMethod]
