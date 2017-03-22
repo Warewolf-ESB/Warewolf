@@ -418,7 +418,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 var result = isolated.Value.ListMethodsWithReturns(fullName, dllName, typeof(Main).FullName);
                 Assert.IsTrue(result.Any());
                 var serviceMethods = result.Where(method => !method.IsVoid);
-                var condition = serviceMethods.Any(method =>  method.Dev2ReturnType.Contains("["));
+                var condition = serviceMethods.Any(method => method.Dev2ReturnType.Contains("["));
                 Assert.IsTrue(condition);
             }
         }
@@ -522,7 +522,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [TestCategory("PluginRuntimeHandler_CreateInstance")]
+        [TestCategory("PluginRuntimeHandler_Run")]
         public void PluginRuntimeHandler_Run_WhenObjectStringIsNotNull_ExpectRunsCorrectly()
         {
             //------------Setup for test--------------------------
@@ -556,10 +556,159 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 var deserializeToObject = instance.ObjectString.DeserializeToObject(type, new KnownTypesBinder() { KnownTypes = new List<Type>(type.Assembly.ExportedTypes) });
                 Assert.IsNotNull(deserializeToObject);
                 instance.Args = pluginInvokeArgs;
-                var run = isolated.Value.Run(instance);
+                var dev2MethodInfo = instance.Args.MethodsToRun.First();
+                string stringOBj;
+                var run = isolated.Value.Run(dev2MethodInfo, instance, out stringOBj);
                 Assert.IsNotNull(run);
-                StringAssert.Contains(run.ObjectString, "Default");
+                StringAssert.Contains(stringOBj, "Default");
             }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_Run")]
+        public void PluginRuntimeHandler_Run_WhenHasInnerError_ExpectInerErrors()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "set_Name" , Parameters = new List<IMethodParameter>()
+            {
+                new ConstructorParameter()
+                {
+                    Name = "value", Value = "Micky", TypeName = typeof(string).FullName, IsRequired = true
+                }
+            } } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            var mock = new Mock<IAssemblyLoader>();
+            Assembly loadedAssembly;
+
+            var handler = new PluginRuntimeHandler(mock.Object);
+
+            var pluginInvokeArgs = new PluginInvokeArgs
+            {
+                MethodsToRun = svc.MethodsToRun,
+                PluginConstructor = new PluginConstructor
+                {
+                    ConstructorName = svc.Constructor.Name,
+                    Inputs = new List<IConstructorParameter>(),
+                },
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                Fullname = type.FullName,
+
+            };
+            var pluginExecutionDto = new PluginExecutionDto(String.Empty)
+            {
+                Args = pluginInvokeArgs
+            };
+            var exception = new Exception("err", new Exception());
+            mock.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out loadedAssembly))
+                .Throws(exception);
+
+            var dev2MethodInfo = pluginInvokeArgs.MethodsToRun.First();
+            string stringOBj;
+            var run = handler.Run(dev2MethodInfo, pluginExecutionDto, out stringOBj);
+            Assert.IsNotNull(run);
+            Assert.IsTrue(run.HasError);
+            Assert.IsFalse(string.IsNullOrEmpty(run.ErrorMessage));
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_Test")]
+        public void PluginRuntimeHandler_Test_WhenHasInnerError_ExpectInerErrors()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "set_Name" , Parameters = new List<IMethodParameter>()
+            {
+                new ConstructorParameter()
+                {
+                    Name = "value", Value = "Micky", TypeName = typeof(string).FullName, IsRequired = true
+                }
+            } } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            var mock = new Mock<IAssemblyLoader>();
+            Assembly loadedAssembly;
+
+            var handler = new PluginRuntimeHandler(mock.Object);
+
+            var pluginInvokeArgs = new PluginInvokeArgs
+            {
+                MethodsToRun = svc.MethodsToRun,
+                PluginConstructor = new PluginConstructor
+                {
+                    ConstructorName = svc.Constructor.Name,
+                    Inputs = new List<IConstructorParameter>(),
+                },
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                Fullname = type.FullName,
+
+            };
+
+            var exception = new Exception("err", new Exception());
+            mock.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out loadedAssembly))
+                .Throws(exception);
+            string stringOBj;
+            var run = handler.Test(pluginInvokeArgs, out stringOBj);
+            Assert.IsNull(run);
+            Assert.IsTrue(string.IsNullOrEmpty(stringOBj));
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_Run")]
+        [ExpectedException(typeof(AccessViolationException))]
+        public void PluginRuntimeHandler_Run_WhenHasError_ExpectErrors()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "set_Name" , Parameters = new List<IMethodParameter>()
+            {
+                new ConstructorParameter()
+                {
+                    Name = "value", Value = "Micky", TypeName = typeof(string).FullName, IsRequired = true
+                }
+            } } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            var mock = new Mock<IAssemblyLoader>();
+            Assembly loadedAssembly;
+
+            var handler = new PluginRuntimeHandler(mock.Object);
+
+            var pluginInvokeArgs = new PluginInvokeArgs
+            {
+                MethodsToRun = svc.MethodsToRun,
+                PluginConstructor = new PluginConstructor
+                {
+                    ConstructorName = svc.Constructor.Name,
+                    Inputs = new List<IConstructorParameter>(),
+                },
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                Fullname = type.FullName,
+
+            };
+            var pluginExecutionDto = new PluginExecutionDto(string.Empty)
+            {
+                Args = pluginInvokeArgs
+            };
+            //var instance = handler.CreateInstance(pluginInvokeArgs);
+            var exception = new AccessViolationException("err");
+            mock.Setup(loader => loader.TryLoadAssembly(It.IsAny<string>(), It.IsAny<string>(), out loadedAssembly))
+                .Throws(exception);
+
+            var dev2MethodInfo = pluginInvokeArgs.MethodsToRun.First();
+            string stringOBj;
+            var run = handler.Run(dev2MethodInfo, pluginExecutionDto, out stringOBj);
+
+
         }
 
         [TestMethod]
@@ -620,8 +769,9 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 };
                 var instance = isolated.Value.CreateInstance(pluginInvokeArgs);
                 instance.Args = pluginInvokeArgs;
-                var run = isolated.Value.Run(instance);
-                Assert.IsTrue(string.IsNullOrEmpty(instance.ObjectString));
+                string str;
+                isolated.Value.Run(svc.MethodsToRun.First(), instance, out str);
+                Assert.IsTrue(string.IsNullOrEmpty(str));
                 Assert.IsTrue(instance.IsStatic);
             }
         }
@@ -657,6 +807,104 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 Assert.IsFalse(instance.IsStatic);
             }
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_ExecuteConstructor")]
+        public void PluginRuntimeHandler_ExecuteConstructor_WhenClassIsSealed_ExpectRunsCorrectly()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "ToString", Parameters = new List<IMethodParameter>() } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<PluginRuntimeHandler>())
+            {
+                var pluginInvokeArgs = new PluginInvokeArgs
+                {
+                    MethodsToRun = svc.MethodsToRun,
+                    PluginConstructor = new PluginConstructor
+                    {
+                        ConstructorName = svc.Constructor.Name,
+                        Inputs = new List<IConstructorParameter>(),
+                    },
+                    AssemblyLocation = type.Assembly.Location,
+                    AssemblyName = type.Assembly.FullName,
+                    Fullname = type.FullName,
+
+                };
+                var instance = isolated.Value.ExecuteConstructor(new PluginExecutionDto(string.Empty)
+                {
+                    Args = pluginInvokeArgs
+                });
+                Assert.IsTrue(!string.IsNullOrEmpty(instance.ObjectString));
+                Assert.IsFalse(instance.IsStatic);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_Test")]
+        public void PluginRuntimeHandler_Test_WhenValid_ExpectRunsCorrectly()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(Human);
+            var svc = CreatePluginService(new List<IDev2MethodInfo> { new Dev2MethodInfo { Method = "EmptyIsNullTest", Parameters = new List<IMethodParameter>() } }, type, new ServiceConstructor());
+            //------------Execute Test---------------------------
+            var isolated = new PluginRuntimeHandler();
+
+            var pluginInvokeArgs = new PluginInvokeArgs
+            {
+                MethodsToRun = svc.MethodsToRun,
+                PluginConstructor = new PluginConstructor
+                {
+                    ConstructorName = svc.Constructor.Name,
+                    Inputs = new List<IConstructorParameter>(),
+                },
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                Fullname = type.FullName,
+                Parameters = new List<MethodParameter>()
+                {
+                    new MethodParameter()
+                    {
+                        Name = "value",
+                        TypeName = typeof(string).FullName,
+                        Value = "a"
+                    }
+                },
+
+                Method = "EmptyIsNullTest"
+
+            };
+            string jresult;
+            var instance = isolated.Test(pluginInvokeArgs, out jresult);
+            Assert.IsTrue(!string.IsNullOrEmpty(jresult));
+            var count = instance.DataSourceShapes.Count;
+            Assert.AreEqual(1, count);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("PluginRuntimeHandler_AdjustPluginResult")]
+        public void PluginRuntimeHandler_AdjustPluginResult_WhenClassIsSealed_ExpectRunsCorrectly()
+        {
+            //------------Setup for test--------------------------
+
+            var type = typeof(PluginRuntimeHandler);
+
+            var methodInfo = type.GetMethod("AdjustPluginResult", BindingFlags.NonPublic | BindingFlags.Instance);
+            var human = new Human();
+            var memberInfo = human.GetType().GetMethod("ToString", BindingFlags.Instance | BindingFlags.Public);
+            object result = "string";
+            //------------Execute Test---------------------------
+            var runtimeHandler = new PluginRuntimeHandler();
+            var resultAdgusted = methodInfo.Invoke(runtimeHandler, new[] { result, memberInfo });
+            Assert.AreEqual("<PrimitiveReturnValue>string</PrimitiveReturnValue>", resultAdgusted);
+        }
+        
 
         #region Helper Methods
 
