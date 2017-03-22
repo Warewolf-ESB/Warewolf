@@ -435,6 +435,12 @@ namespace Warewolf.UIBindingTests.PostGreSource
         public void Cleanup()
         {
             CleanupResource();
+            
+        }
+        [AfterFeature("DbSource")]
+        public static void FeaureCleanup()
+        {
+            CleanupResource();
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
