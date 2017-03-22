@@ -81,11 +81,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
             var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest,cataLog.Object,resourceCat.Object);
-            
-            
-
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(serviceTestExecutionContainer);
+            Assert.IsNotNull(serviceTestExecutionContainer, "ServiceTestExecutionContainer is Null.");
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
@@ -95,10 +92,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var execute = serviceTestExecutionContainer.Execute(out errors, 1);
             Thread.CurrentPrincipal = currentPrincipal;
             //---------------Test Result -----------------------
-            Assert.IsNotNull(execute);
+            Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serviceTestModelTO = serializer.Deserialize<Dev2.Common.Interfaces.TestRunResult>(esbExecuteRequest.ExecuteResult);
-            Assert.IsNotNull(serviceTestModelTO);
+            Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
         }
 
         [TestMethod]
