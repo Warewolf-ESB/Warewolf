@@ -278,7 +278,7 @@
     <Compile Include="Default Layout\Default LayoutTests.cs" />
     <Compile Include="WorkflowServiceTesting\DotnetTestingTests.cs" />
     <Compile Include="WorkflowServiceTesting\OtherTestFrameworkMockingTests.cs" />
-    <Compile Include="ContextMenu\StartNodeContextMenuTests.cs" />
+    <Compile Include="WorkflowTab\ContextMenus\StartNodeContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
     <Compile Include="EmailSource\EmailSourceTests.cs" />

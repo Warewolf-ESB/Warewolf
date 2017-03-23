@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 using System.Collections.Generic;
 using System.Data;
+using Dev2.Common.Interfaces.Deploy;
 
 namespace Dev2.Common.Interfaces
 {
@@ -12,9 +13,7 @@ namespace Dev2.Common.Interfaces
     {
         void Save(IServerSource serverSource);
         void Save(IDbSource toDbSource);
-        void Save(IWebService model);
         void Save(IWebServiceSource model);
-        void Save(IDatabaseService toDbSource);
         void Save(IPluginSource source);
         void Save(IComPluginSource source);
         void Save(IEmailServiceSource emailServiceSource);
@@ -23,7 +22,6 @@ namespace Dev2.Common.Interfaces
         void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
         void Save(IWcfServerSource wcfSource);
         void Save(IPluginService toDbSource);
-        void Save(IComPluginService toDbSource);
         void Save(IWcfService toSource);
         
         void Save(IOAuthSource sharePointServiceSource);
@@ -51,7 +49,7 @@ namespace Dev2.Common.Interfaces
         Action<Guid> ServerSaved { get; set; }
         void FireServerSaved(Guid savedServerID);
 
-        void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment);
+        List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment);
     }
 
     public delegate void ItemSaved(bool refresh);
