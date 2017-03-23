@@ -40,7 +40,7 @@ namespace Warewolf.UITests.SharepointSource.SharepointSourceUIMapClasses
 
         public void Enter_TextIntoAddress_In_SharepointServiceSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://rsaklfsvrsharep";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.ServerNameEdit.Text = "http://rsaklfsvrdev";
         }
 
         [When(@"I Click Sharepoint Server Source TestConnection")]
