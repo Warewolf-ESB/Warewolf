@@ -45,10 +45,6 @@ namespace Warewolf.Studio.ViewModels
             
         }
 
-        public ManageWebServiceModel()
-        {
-        }
-
         #region Implementation of IWebServiceModel
 
         
@@ -74,11 +70,6 @@ namespace Warewolf.Studio.ViewModels
                 return UpdateRepository.TestWebService(inputValues);
             }
             return "Error";
-        }
-
-        public void SaveService(IWebService toModel)
-        {
-            UpdateRepository.Save(toModel);
         }
 
         #endregion

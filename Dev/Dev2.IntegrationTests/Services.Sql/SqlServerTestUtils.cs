@@ -27,7 +27,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 DatabaseName = "Dev2TestingDB",
-                Server = "RSAKLFSVRGENDEV",
+                Server = "RSAKLFSVRDEV",
                 AuthenticationType = authenticationType,
                 ServerType = enSourceType.SqlDatabase,
                 ReloadActions = true,
