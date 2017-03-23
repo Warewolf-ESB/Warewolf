@@ -64,18 +64,18 @@ namespace Dev2.Core.Tests
         #endregion Variables
 
         #region Methods used by tests
-        protected Mock<IEnvironmentRepository> EmptyEnvRepo { get; set; } 
+        protected Mock<IEnvironmentRepository> EmptyEnvRepo { get; set; }
         protected void CreateFullExportsAndVmWithEmptyRepo()
         {
             CreateResourceRepo();
             var mockEnv = new Mock<IEnvironmentRepository>();
             mockEnv.SetupProperty(g => g.ActiveEnvironment); // Start tracking changes
             mockEnv.Setup(g => g.All()).Returns(new List<IEnvironmentModel>());
-            
+
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             mockEnv.Setup(repository => repository.Source).Returns(mockEnvironmentModel.Object);
-            
+
             var environmentRepo = mockEnv.Object;
             EmptyEnvRepo = mockEnv;
             EventAggregator = new Mock<IEventAggregator>();
@@ -133,6 +133,7 @@ namespace Dev2.Core.Tests
             return result;
         }
 
+  
         protected IEnvironmentRepository GetEnvironmentRepository()
         {
             var models = new List<IEnvironmentModel> { EnvironmentModel.Object };
@@ -157,9 +158,9 @@ namespace Dev2.Core.Tests
             FirstResource = CreateResource(ResourceType.WorkflowService);
             var coll = new Collection<IResourceModel> { FirstResource.Object };
             ResourceRepo.Setup(c => c.All()).Returns(coll);
-            
+
             EnvironmentModel.Setup(m => m.ResourceRepository).Returns(ResourceRepo.Object);
-            
+
         }
 
         protected Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
@@ -200,7 +201,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ID).Returns(ServerId);
             env.Setup(e => e.Name).Returns($"Server_{rand.Next(1, 100)}");
-            
+
             return env;
         }
 
