@@ -185,6 +185,9 @@ Scenario: Test with ForEach containing a Service
 	Then the service debug outputs as
 	  | Variable             | Value    |
 	  | [[Message]] | Hello 1. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
 	
 
 @TestFramework
