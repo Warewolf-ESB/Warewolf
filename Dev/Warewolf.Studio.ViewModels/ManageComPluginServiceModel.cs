@@ -68,11 +68,6 @@ namespace Warewolf.Studio.ViewModels
             return new List<IServiceOutputMapping> { new ServiceOutputMapping("bob", "The", ""), new ServiceOutputMapping("dora", "The",""), new ServiceOutputMapping("Tree", "The","") };
         }
 
-        public void SaveService(IComPluginService toModel)
-        {
-            _updateRepository.Save(toModel);
-        }
-
         #endregion
     }
 }

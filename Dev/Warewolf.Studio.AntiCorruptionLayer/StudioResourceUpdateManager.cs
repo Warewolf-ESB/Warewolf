@@ -9,6 +9,7 @@ using Dev2.Studio.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Dev2.Common.Interfaces.Deploy;
 using Warewolf.Studio.ServerProxyLayer;
 
 namespace Warewolf.Studio.AntiCorruptionLayer
@@ -120,11 +121,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             UpdateManagerProxy.SaveDbSource(toDbSource, GlobalConstants.ServerWorkspaceID);
         }
 
-        public void Save(IWebService model)
-        {
-            UpdateManagerProxy.SaveWebservice(model, GlobalConstants.ServerWorkspaceID);
-        }
-
         public void Save(IWebServiceSource resource)
         {
             try
@@ -147,11 +143,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             {
                 //
             }
-        }
-
-        public void Save(IDatabaseService toDbSource)
-        {
-            UpdateManagerProxy.SaveDbService(toDbSource);
         }
 
         public DataTable TestDbService(IDatabaseService inputValues)
@@ -179,11 +170,6 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             UpdateManagerProxy.SavePluginService(toDbSource);
         }
 
-        public void Save(IComPluginService toDbSource)
-        {
-            UpdateManagerProxy.SaveComPluginService(toDbSource);
-        }
-
         public void Save(IWcfService toSource)
         {
             throw new NotImplementedException();
@@ -208,9 +194,9 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 
         #region Implementation of IStudioUpdateManager
 
-        public void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
+        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
         {
-            UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, destinationEnvironment);
+            return UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, destinationEnvironment);
         }
 
         #endregion
