@@ -3207,6 +3207,97 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CopyUrlLink_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+           
+            CreateFullExportsAndVm();
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(MainViewModel);
+            //---------------Execute Test ----------------------
+            MainViewModel.CopyUrlLink(Guid.Empty, MainViewModel.ActiveServer);
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateNewSchedule_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+           
+            CreateFullExportsAndVm();
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(MainViewModel);
+            //---------------Execute Test ----------------------
+            MainViewModel.CreateNewSchedule(Guid.Empty);
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OpenResourceAsync_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+           
+            CreateFullExportsAndVm();
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()));
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(MainViewModel);
+            //---------------Execute Test ----------------------
+          
+            var task = Task.Run(() => { MainViewModel.OpenResourceAsync(Guid.Empty, MainViewModel.ActiveServer); });
+            task.Wait();
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ShowServerDisconnectedPopup_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+           
+            CreateFullExportsAndVm();
+            var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            mock.Setup(controller => controller.Show(It.IsAny<string>() + Environment.NewLine + Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
+
+            CustomContainer.Register(mock.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(MainViewModel);
+            //---------------Execute Test ----------------------
+          
+            PrivateObject po = new PrivateObject(MainViewModel);
+            po.Invoke("ShowServerDisconnectedPopup");
+            //---------------Test Result -----------------------
+            mock.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DuplicateResource_GivenNotConnected_ShouldPopup()
+        {
+            //---------------Set up test pack-------------------
+           
+            CreateFullExportsAndVm();
+            var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            mock.Setup(controller => controller.Show(It.IsAny<string>() + Environment.NewLine + Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
+
+            CustomContainer.Register(mock.Object);
+            var explorerVm = new Mock<IExplorerItemViewModel>();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(MainViewModel);
+            //---------------Execute Test ----------------------
+           MainViewModel.DuplicateResource(explorerVm.Object);
+            //---------------Test Result -----------------------
+            mock.VerifyAll();
+        }
+
+        [TestMethod]
         public void MainViewModel_HasNewVersion_ShouldCallBrowserPopupContollerToLatestVersionPage()
         {
             var popupController = new Mock<IBrowserPopupController>();
