@@ -1511,6 +1511,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
                 {
                     this.mDotNetPluginSource = new WpfListItem(this);
                     #region Search Criteria
+                    this.mDotNetPluginSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mDotNetPluginSource.SearchProperties[WpfListItem.PropertyNames.Name] = "Dev2.Common.Interfaces.Core.PluginSourceDefinition";
                     this.mDotNetPluginSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
                     #endregion
                 }

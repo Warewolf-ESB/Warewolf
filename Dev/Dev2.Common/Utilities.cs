@@ -50,6 +50,7 @@ namespace Dev2.Common
                 }
                 catch (Exception)
                 {
+                    
                     impersonationContext?.Undo();
                     identity = ServerUser.Identity as WindowsIdentity;
                     if (identity != null)

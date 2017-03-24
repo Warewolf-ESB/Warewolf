@@ -131,7 +131,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"test folder is cleaned")]
         public void ThenTestFolderIsCleaned()
         {
-            //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
@@ -456,7 +455,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"the test builder is open with ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWith(string workflowName)
         {
-
             ResourceModel resourceModel;
             if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
@@ -518,14 +516,40 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"the service debug assert message contains ""(.*)""")]
+        [Given(@"the service debug assert message contains ""(.*)""")]
+        [When(@"the service debug assert message contains ""(.*)""")]
         public void ThenTheServiceDebugAssertMessageContains(string assertString)
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
             // ReSharper disable once PossibleNullReferenceException
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.End).AssertResultList.First().ResultsList;
-            var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
+            
+            var actualAssetMessage = debugItemResults.Select(result =>  result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
+        }
+
+       
+
+        [Then(@"the service debug assert Json message contains ""(.*)""")]
+        [When(@"the service debug assert Json message contains ""(.*)""")]
+        [Given(@"the service debug assert Json message contains ""(.*)""")]
+        public void ThenTheServiceDebugAssertJsonMessageContains(string assertString)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
+            // ReSharper disable once PossibleNullReferenceException
+            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
+
+            var first = debugItemResults.Select(result =>
+            {
+                var webClient = new WebClient();
+                var externalProcessExecutor = new SpecExternalProcessExecutor();
+                externalProcessExecutor.OpenInBrowser( new Uri(result.MoreLink));
+                var downloadStrings = externalProcessExecutor.WebResult[0];
+                return downloadStrings;
+            }).First();
+            StringAssert.Contains(first.ToLower(), assertString.ToLower());
         }
 
 
@@ -656,6 +680,15 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTestOutput.Value = value;
         }
 
+        [Then(@"I change Switch ""(.*)"" arm to ""(.*)""")]
+        public void ThenIChangeSwitchArmTo(string switchName, string ArmInput)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(switchName));
+            var serviceTestOutput = serviceTestStep.StepOutputs.Single();
+            var value = serviceTestOutput.OptionsForValue?.Single(s => s.Equals(ArmInput, StringComparison.InvariantCultureIgnoreCase)) ?? ArmInput;
+            serviceTestOutput.Value = value;
+        }
 
         [Then(@"test result is invalid")]
         public void ThenTestResultIsInvalid()
@@ -1325,6 +1358,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [When(@"I delete ""(.*)""")]
+        [Then(@"I delete ""(.*)""")]
+        [Given(@"I delete ""(.*)""")]
         public void WhenIDelete(string testName)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -1621,12 +1656,15 @@ namespace Dev2.Activities.Specs.TestFramework
             env.ForceLoadResources();
             var sourceResourceRepository = env.ResourceRepository;
             var res = sourceResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
-            if(res != null)
+            if (res != null)
             {
                 var contextualResource = sourceResourceRepository.LoadContextualResourceModel(res.ID);
-                var msg = sourceResourceRepository.FetchResourceDefinition(contextualResource.Environment, GlobalConstants.ServerWorkspaceID, res.ID, false);
+                var msg = sourceResourceRepository.FetchResourceDefinition(contextualResource.Environment,
+                    GlobalConstants.ServerWorkspaceID, res.ID, false);
                 contextualResource.WorkflowXaml = msg.Message;
-                var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+                var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),
+                    new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(),
+                    new Mock<IWorkflowDesignerViewModel>().Object);
                 serviceTestVm.WebClient = new Mock<IWarewolfWebClient>().Object;
                 Assert.IsNotNull(serviceTestVm);
                 Assert.IsNotNull(serviceTestVm.ResourceModel);
@@ -1793,6 +1831,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"I Add all TestSteps")]
+        [When(@"I Add all TestSteps")]
+        [Given(@"I Add all TestSteps")]
         public void ThenIAddAllTestSteps()
         {
 
@@ -1876,6 +1916,95 @@ namespace Dev2.Activities.Specs.TestFramework
                     dynamic searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
                     bool isCorr;
                     var node = searchNode as FlowDecision;
+                    if (node != null)
+                    {
+                        isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    else
+                    {
+                        isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        break;
+                    }
+                }
+            }
+        }
+
+        [Then(@"I Add ""(.*)"" as TestStep All Assert")]
+        public void ThenIAddAsTestStepAllAssert(string actNameToFind)
+        {
+            ThenIAddAsTestStep(actNameToFind);
+            var serviceTest = GetTestFrameworkFromContext();
+
+            foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
+            {
+                var testSteps = serviceTestStep.Children.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                foreach (var s in testSteps)
+                {
+                    s.Type = StepType.Assert;
+                }
+            }
+        }
+
+        [Then(@"I Add Switch ""(.*)"" as TestStep")]
+        [Then(@"I Add Switch ""(.*)"" as TestStep")]
+        [Then(@"I Add Switch ""(.*)"" as TestStep")]
+        public void ThenIAddSwitchAsTestStep(string actNameToFind)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
+            var actStartNode = act.StartNode;
+            if (act.Nodes.Count == 0 && actStartNode != null)
+            {
+                dynamic searchNode = actStartNode as FlowStep ?? (dynamic)(actStartNode as FlowSwitch<string>);
+
+                while (searchNode != null)
+                {
+
+                    bool isCorr;
+                    var node = searchNode as FlowSwitch<string>;
+                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    if (node != null)
+                    {
+                        isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    else
+                    {
+                        isCorr = searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        searchNode = null;
+                    }
+                    else
+                    {
+                        searchNode = searchNode.Next as FlowStep;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var flowNode in act.Nodes)
+                {
+                    dynamic searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowSwitch<string>);
+                    bool isCorr;
+                    if (searchNode == null)
+                    {
+                        searchNode = flowNode as FlowSwitch<string>;
+                    }
+                    var node = searchNode as FlowSwitch<string>;
                     if (node != null)
                     {
                         isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
