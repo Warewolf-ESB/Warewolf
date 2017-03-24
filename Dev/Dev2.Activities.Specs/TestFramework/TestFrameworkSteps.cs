@@ -131,7 +131,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"test folder is cleaned")]
         public void ThenTestFolderIsCleaned()
         {
-            //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
@@ -681,6 +680,15 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTestOutput.Value = value;
         }
 
+        [Then(@"I change Switch ""(.*)"" arm to ""(.*)""")]
+        public void ThenIChangeSwitchArmTo(string switchName, string ArmInput)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(switchName));
+            var serviceTestOutput = serviceTestStep.StepOutputs.Single();
+            var value = serviceTestOutput.OptionsForValue?.Single(s => s.Equals(ArmInput, StringComparison.InvariantCultureIgnoreCase)) ?? ArmInput;
+            serviceTestOutput.Value = value;
+        }
 
         [Then(@"test result is invalid")]
         public void ThenTestResultIsInvalid()
@@ -1940,6 +1948,79 @@ namespace Dev2.Activities.Specs.TestFramework
                 foreach (var s in testSteps)
                 {
                     s.Type = StepType.Assert;
+                }
+            }
+        }
+
+        [Then(@"I Add Switch ""(.*)"" as TestStep")]
+        [Then(@"I Add Switch ""(.*)"" as TestStep")]
+        [Then(@"I Add Switch ""(.*)"" as TestStep")]
+        public void ThenIAddSwitchAsTestStep(string actNameToFind)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
+            var actStartNode = act.StartNode;
+            if (act.Nodes.Count == 0 && actStartNode != null)
+            {
+                dynamic searchNode = actStartNode as FlowStep ?? (dynamic)(actStartNode as FlowSwitch<string>);
+
+                while (searchNode != null)
+                {
+
+                    bool isCorr;
+                    var node = searchNode as FlowSwitch<string>;
+                    // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                    if (node != null)
+                    {
+                        isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    else
+                    {
+                        isCorr = searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        searchNode = null;
+                    }
+                    else
+                    {
+                        searchNode = searchNode.Next as FlowStep;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var flowNode in act.Nodes)
+                {
+                    dynamic searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowSwitch<string>);
+                    bool isCorr;
+                    if (searchNode == null)
+                    {
+                        searchNode = flowNode as FlowSwitch<string>;
+                    }
+                    var node = searchNode as FlowSwitch<string>;
+                    if (node != null)
+                    {
+                        isCorr = node.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+                    else
+                    {
+                        isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    }
+
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        break;
+                    }
                 }
             }
         }
