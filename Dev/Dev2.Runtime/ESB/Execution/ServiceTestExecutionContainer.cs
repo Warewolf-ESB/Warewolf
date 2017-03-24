@@ -521,7 +521,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestStep in failingTestSteps)
                 {
-                    failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription);
+                    failureMessage.AppendLine("Failed Step: " + serviceTestStep.StepDescription + " ");
                     failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
                 }
             }
@@ -529,7 +529,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestStep in invalidTestSteps)
                 {
-                    failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription);
+                    failureMessage.AppendLine("Invalid Step: " + serviceTestStep.StepDescription + " ");
                     failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
                 }
             }
@@ -545,7 +545,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestStep in failingTestOutputs)
                 {
-                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable);
+                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable+ " ");
                     failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
                 }
             }
@@ -604,6 +604,13 @@ namespace Dev2.Runtime.ESB.Execution
             var failingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestFailed);
             pendingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestPending);
             invalidOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestInvalid);
+            if (failingOutputs.Any())
+            {
+                foreach (var serviceTestOutput in failingOutputs)
+                {
+                    serviceTestOutput.Result.Message = DataListUtil.StripBracketsFromValue(serviceTestOutput.Result.Message);
+                }
+            }
             return failingOutputs;
         }
 
