@@ -173,9 +173,9 @@
                                                 <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                 <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                <PropertyCondition Name="Name">RSAKLFSVRGENDEV</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="Name">RSAKLFSVRDEV</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
