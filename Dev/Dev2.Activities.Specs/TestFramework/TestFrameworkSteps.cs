@@ -455,7 +455,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"the test builder is open with ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWith(string workflowName)
         {
-
             ResourceModel resourceModel;
             if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
@@ -517,14 +516,40 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"the service debug assert message contains ""(.*)""")]
+        [Given(@"the service debug assert message contains ""(.*)""")]
+        [When(@"the service debug assert message contains ""(.*)""")]
         public void ThenTheServiceDebugAssertMessageContains(string assertString)
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
             // ReSharper disable once PossibleNullReferenceException
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.End).AssertResultList.First().ResultsList;
-            var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
+            
+            var actualAssetMessage = debugItemResults.Select(result =>  result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
+        }
+
+       
+
+        [Then(@"the service debug assert Json message contains ""(.*)""")]
+        [When(@"the service debug assert Json message contains ""(.*)""")]
+        [Given(@"the service debug assert Json message contains ""(.*)""")]
+        public void ThenTheServiceDebugAssertJsonMessageContains(string assertString)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
+            // ReSharper disable once PossibleNullReferenceException
+            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
+
+            var first = debugItemResults.Select(result =>
+            {
+                var webClient = new WebClient();
+                var externalProcessExecutor = new SpecExternalProcessExecutor();
+                externalProcessExecutor.OpenInBrowser( new Uri(result.MoreLink));
+                var downloadStrings = externalProcessExecutor.WebResult[0];
+                return downloadStrings;
+            }).First();
+            StringAssert.Contains(first.ToLower(), assertString.ToLower());
         }
 
 
@@ -1333,6 +1358,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [When(@"I delete ""(.*)""")]
+        [Then(@"I delete ""(.*)""")]
+        [Given(@"I delete ""(.*)""")]
         public void WhenIDelete(string testName)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -1804,6 +1831,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"I Add all TestSteps")]
+        [When(@"I Add all TestSteps")]
+        [Given(@"I Add all TestSteps")]
         public void ThenIAddAllTestSteps()
         {
 
@@ -1903,6 +1932,22 @@ namespace Dev2.Activities.Specs.TestFramework
                         methodInfo.Invoke(serviceTest, new object[] { modelItem });
                         break;
                     }
+                }
+            }
+        }
+
+        [Then(@"I Add ""(.*)"" as TestStep All Assert")]
+        public void ThenIAddAsTestStepAllAssert(string actNameToFind)
+        {
+            ThenIAddAsTestStep(actNameToFind);
+            var serviceTest = GetTestFrameworkFromContext();
+
+            foreach (var serviceTestStep in serviceTest.SelectedServiceTest.TestSteps)
+            {
+                var testSteps = serviceTestStep.Children.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                foreach (var s in testSteps)
+                {
+                    s.Type = StepType.Assert;
                 }
             }
         }

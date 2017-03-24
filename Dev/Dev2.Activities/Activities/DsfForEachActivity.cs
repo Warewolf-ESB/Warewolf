@@ -211,13 +211,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
         {
-            WorkSurfaceMappingId = Guid.Parse(UniqueID);
             var isNestedForEach = dataObject.ForEachNestingLevel > 0;
             if (!isNestedForEach || _originalUniqueID == Guid.Empty)
             {
-                _originalUniqueID = WorkSurfaceMappingId;
+                _originalUniqueID = Guid.Parse(UniqueID);
             }
-            UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
+            if (!isNestedForEach && _originalUniqueID != Guid.Empty)
+            {
+                UniqueID = _originalUniqueID.ToString();
+            }
+            WorkSurfaceMappingId = Guid.Parse(UniqueID);
+            UniqueID = isNestedForEach ? Guid.NewGuid().ToString() : UniqueID;
         }
 
 
@@ -807,10 +811,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
 
-            dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
             IIndexIterator itr = null;
             InitializeDebug(dataObject);
+            dataObject.ForEachNestingLevel++;
             try
             {
                 ErrorResultTO errors;

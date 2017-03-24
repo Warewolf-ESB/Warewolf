@@ -379,8 +379,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void ForEachParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
         {
-            var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-            var forEach = model.GetCurrentValue() as DsfForEachActivity;
+            var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
+            var forEach = model?.GetCurrentValue() as DsfForEachActivity;
             if (forEach != null)
             {
                 var act = forEach.DataFunc.Handler as IDev2Activity;
@@ -512,7 +512,7 @@ namespace Warewolf.Studio.ViewModels
                             }
                         }
                         SetStepIcon(childStep.ActivityType, childStep);
-                        if (childStep.StepOutputs != null && childStep.StepOutputs.Count > 0 && parent.ActivityType==typeof(DsfEnhancedDotNetDllActivity).Name)
+                        if (childStep.StepOutputs != null && childStep.StepOutputs.Count > 0)
                         {
                             parent.Children.Add(childStep);
                             if (childItem.Children != null && childItem.Children.Count > 0)
