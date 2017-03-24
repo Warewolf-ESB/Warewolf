@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
@@ -29,6 +28,19 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Test tab does not exist after clicking Create Test from debug button");
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.AssignAssert.Exists);
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+        }
+
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void WorkflowWithSequenceToolLoadsAllContainedTools()
+        {
+            ExplorerUIMap.Filter_Explorer("Control Flow - Sequence");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Press_F6();
+            UIMap.Click_Create_Test_From_Debug();
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.SequenceItem.FindUniqueNamesItem.FindOnlyUniqueNamesExpander.Exists);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.SequenceItem.SortNamesItem.SortNamesExpandar.Exists);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.SequenceItem.SplitNamesItem.SplitNamesExpandar.Exists);
         }
 
         [TestMethod]
@@ -187,7 +199,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             }
         }
 
-        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+        private WorkflowServiceTestingUIMapClasses.WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
