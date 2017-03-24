@@ -168,6 +168,27 @@ Scenario: Save multiple New Tests Enabled Save after Edit
 	When I select "Test 1"
 	When I change the test name to "testing2"
 	Then "Save" test is visible
+	
+@TestFramework
+Scenario: Test with ForEach containing a Service
+	Given the test builder is open with "ForEachWithHelloWorldTest"
+	And Tab Header is "ForEachWithHelloWorldTest - Tests"
+	And there are no tests
+	And I click New Test
+	Then a new test is added
+	And I update outputs as
+	| Variable Name    | Value    |
+	| messages(1).name | Hello 1. |
+	| messages(2).name | Hello 2. |
+	| messages(3).name | Hello 3. |	
+	When I run the test
+	Then the service debug outputs as
+	  | Variable             | Value    |
+	  | [[Message]] | Hello 1. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+	
 
 @TestFramework
 Scenario: Save a New Test fails when workflow deleted
@@ -612,6 +633,36 @@ Scenario: Run a passing test and change step type
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 
+@TestFramework 
+Scenario: Run a passing switch test and change step type
+	Given the test builder is open with existing service "Control Flow - Switch"	
+	And Tab Header is "Control Flow - Switch - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Control Flow - Switch - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank	
+	And I Add Switch "[[DiceRollValue]]" as TestStep
+	And I change Switch "[[DiceRollValue]]" arm to "4"
+	And I Add "Assign (1)" as TestStep
+	And I add "Assign (1)" StepOutputs as 
+	| Variable Name | Condition | Value |
+	| [[DiceRollValue]]      | =         | 4 |
+	And save is enabled
+	And test status is pending	
+	And test is enabled	
+	And I save
+	When I run the test
+	Then test result is Passed
+	When I change step "[[DiceRollValue]]" to Mock
+	Then I change Switch "[[DiceRollValue]]" arm to "1"
+	When I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
 @TestFramework
 Scenario: Run a test expecting error 
 	Given the test builder is open with existing service "Hello World"	
@@ -1002,7 +1053,7 @@ Scenario: Run Selected Test in Web
 	When I run selected test in Web
 	Then The WebResponse as
 	| Test Name | Result | Message                                                                                                                     |
-	| Test 1    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected Equal To '' for '[[Message]]' but got 'Hello World.' |
+	| Test 1    | Failed | Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 
@@ -1084,7 +1135,7 @@ Scenario: Run All Tests in Web with failing test
 	Then The WebResponse as
 	| Test Name | Result | Message                                                                                                                     |
 	| Test 1    | Passed |                                                                                                                             |
-	| Test 2    | Failed | Failed Output For Variable: MessageMessage: Failed: Assert Equal. Expected Equal To '' for '[[Message]]' but got 'Hello World.' |
+	| Test 2    | Failed | Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
 
 Scenario: Run Selected Test passed with all teststeps fails
 	Given the test builder is open with "Hello World"
