@@ -1671,9 +1671,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
                 {
                     this.mAssemblyRefNamespace = new WpfListItem(this);
                     #region Search Criteria
-                    this.mAssemblyRefNamespace.SearchProperties[WpfListItem.PropertyNames.Name] = "{\"AssemblyLocation\":\"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyTok" +
-                        "en=b77a5c561934e089, processorArchitecture=AMD64\",\"AssemblyName\":\"\",\"FullName\":\"" +
-                        "AssemblyRef\",\"MethodName\":null,\"JsonObject\":\"{}\"}";
+                    this.mAssemblyRefNamespace.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "{\"AssemblyLocation\":\"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyTok" +
+                                "en=b77a5c561934e089", PropertyExpressionOperator.Contains));
                     this.mAssemblyRefNamespace.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
                     #endregion
                 }
