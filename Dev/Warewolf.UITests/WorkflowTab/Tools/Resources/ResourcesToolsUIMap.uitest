@@ -631,8 +631,10 @@
                                                                             <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                                            <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.PluginSourceDefinition</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
@@ -643,8 +645,8 @@
                                                                             <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
