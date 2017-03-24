@@ -1350,7 +1350,7 @@ namespace Dev2.Studio.ViewModels
         private void ShowServerDisconnectedPopup()
         {
             var controller = CustomContainer.Get<IPopupController>();
-            controller?.Show(string.Format(Warewolf.Studio.Resources.Languages.Core.ServerDisconnected, ActiveServer.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
+            controller?.Show(string.Format(Warewolf.Studio.Resources.Languages.Core.ServerDisconnected, ActiveServer?.DisplayName?.Replace("(Connected)", "")) + Environment.NewLine +
                              Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, true, false, false, false, false);
         }
