@@ -68,6 +68,7 @@ namespace Warewolf.Studio.ViewModels
                 _emailServiceSource.Path = emailServiceSource.Path;
                 // ReSharper disable once VirtualMemberCallInContructor
                 FromModel(_emailServiceSource);
+                Item = ToModel();
                 SetupHeaderTextFromExisting();
             });
         }
