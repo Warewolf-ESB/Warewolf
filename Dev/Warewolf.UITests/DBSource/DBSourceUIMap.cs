@@ -1,18 +1,8 @@
-﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-using System.Windows.Input;
-using MouseButtons = System.Windows.Forms.MouseButtons;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
-using System.IO;
 using TechTalk.SpecFlow;
-using Warewolf.UITests.Common;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
@@ -52,10 +42,10 @@ namespace Warewolf.UITests.DBSource.DBSourceUIMapClasses
         [Given(@"I Enter TestUser Username And Password on Database source")]
         [When(@"I Enter TestUser Username And Password on Database source")]
         [Then(@"I Enter TestUser Username And Password on Database source")]
-        public void IEnterRunAsUserTestUserOnDatabaseSource()
+        public void IEnterRunAsUserTestUserOnDatabaseSource(string testuser, string password)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = "testuser";
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "test123";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Text = testuser;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Text = password;
         }
 
         [Given(@"I Click DB Source Wizard Test Connection Button")]
@@ -75,22 +65,22 @@ namespace Warewolf.UITests.DBSource.DBSourceUIMapClasses
         public void Assert_The_DB_Source_Wizard_Test_Succeeded_Image_Is_Visible()
         {
             var point = new Point();
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRGENDEV and waiting for the spinner.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ConnectionPassedImage.TryGetClickablePoint(out point), "New DB source wizard test succeeded image is not visible after testing with RSAKLFSVRDEV and waiting for the spinner.");
         }
 
         [When(@"I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist")]
         public void Select_RSAKLFSVRGENDEV_From_Server_Source_Wizard_Dropdownlist()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV, new Point(97, 17));
-            Assert.AreEqual("RSAKLFSVRGENDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "RSAKLFSVRGENDEV is not selected as the server in the DB source wizard.");
+            Assert.AreEqual("RSAKLFSVRDEV", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text, "RSAKLFSVRDEV is not selected as the server in the DB source wizard.");
         }
 
         [Then(@"I Enter Text Into Database Server Tab")]
         [Given(@"I Enter Text Into Database Server Tab")]
         [Then(@"I Enter Text Into Database Server Tab")]
-        public void Enter_Text_Into_DatabaseServer_Tab()
+        public void Enter_Text_Into_DatabaseServer_Tab(string databaseServer)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = databaseServer;
         }
 
         [When(@"I Enter RunAsUser(Root) Username And Password on Database source")]
@@ -211,13 +201,13 @@ namespace Warewolf.UITests.DBSource.DBSourceUIMapClasses
         [Then(@"RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox")]
         public void Assert_RSAKLFSVRGENDEV_appears_as_an_option_in_the_DB_source_wizard_server_combobox()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV.Exists, "RSAKLFSVRGENDEV does not exist as an option in DB source wizard server combobox.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.RSAKLFSVRGENDEV.Exists, "RSAKLFSVRDEV does not exist as an option in DB source wizard server combobox.");
         }
 
         [When(@"I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox")]
         public void Type_RSAKLFSVRGENDEV_into_DB_Source_Wizard_Server_Textbox()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRGENDEV";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.ServerComboBox.Textbox.Text = "RSAKLFSVRDEV";
         }
 
         public UIMap UIMap
