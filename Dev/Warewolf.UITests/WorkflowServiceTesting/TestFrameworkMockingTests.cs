@@ -4,6 +4,7 @@ using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowServiceTesting
 {
@@ -199,7 +200,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             }
         }
 
-        private WorkflowServiceTestingUIMapClasses.WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+        private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {

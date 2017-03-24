@@ -29,94 +29,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
     public partial class WorkflowServiceTestingUIMap
     {
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfCell resultsCell = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.ResultsCell;
-            WpfComboBox assetionComboBox = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.AssertionCell.AssetionComboBox;
-            WpfEdit assertionValue = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.AssertValueCell.AssertValueComboBox.AssertionValue;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'Item: Warewolf.Studio.ViewModels.ServiceTestOutput...' cell equals 'Cell'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.ResultsCellControlType, resultsCell.ControlType.ToString());
-
-            // Verify that the 'ControlType' property of 'UI_AssertOp_[[@human]]_AutoID' combo box equals 'ComboBox'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.AssetionComboBoxControlType, assetionComboBox.ControlType.ToString());
-
-            // Verify that the 'ControlType' property of 'Text' text box equals 'Edit'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.AssertionValueControlType, assertionValue.ControlType.ToString());
-        }
-        
-        /// <summary>
-        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod2()
-        {
-            #region Variable Declarations
-            WpfEdit resultEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.ResultsCell.ResultEdit;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'UI_AssertValue_[[@human]]_AutoID' text box equals 'Edit'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.ResultEditControlType, resultEdit.ControlType.ToString());
-        }
-        
-        /// <summary>
-        /// AssertMethod3 - Use 'AssertMethod3ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod3()
-        {
-            #region Variable Declarations
-            WpfEdit resultEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.FavFoodItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_FavouTable.UIItemRow.ResultCell.ResultEdit;
-            WpfEdit valueEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.FavFoodItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_FavouTable.UIItemRow.AssertValueCell.AssertValueComboBox.ValueEdit;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'UI_AssertValue_[[@foods]]_AutoID' text box equals 'Edit'
-            Assert.AreEqual(this.AssertMethod3ExpectedValues.ResultEditControlType, resultEdit.ControlType.ToString());
-
-            // Verify that the 'ControlType' property of 'Text' text box equals 'Edit'
-            Assert.AreEqual(this.AssertMethod3ExpectedValues.ValueEditControlType, valueEdit.ControlType.ToString());
-        }
-        
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod2ExpectedValues == null))
-                {
-                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
-                }
-                return this.mAssertMethod2ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod3ExpectedValues AssertMethod3ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod3ExpectedValues == null))
-                {
-                    this.mAssertMethod3ExpectedValues = new AssertMethod3ExpectedValues();
-                }
-                return this.mAssertMethod3ExpectedValues;
-            }
-        }
-        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -143,75 +56,9 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
-        
-        private AssertMethod3ExpectedValues mAssertMethod3ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'Item: Warewolf.Studio.ViewModels.ServiceTestOutput...' cell equals 'Cell'
-        /// </summary>
-        public string ResultsCellControlType = "Cell";
-        
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'UI_AssertOp_[[@human]]_AutoID' combo box equals 'ComboBox'
-        /// </summary>
-        public string AssetionComboBoxControlType = "ComboBox";
-        
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'Text' text box equals 'Edit'
-        /// </summary>
-        public string AssertionValueControlType = "Edit";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod2'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod2ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'UI_AssertValue_[[@human]]_AutoID' text box equals 'Edit'
-        /// </summary>
-        public string ResultEditControlType = "Edit";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod3'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class AssertMethod3ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'UI_AssertValue_[[@foods]]_AutoID' text box equals 'Edit'
-        /// </summary>
-        public string ResultEditControlType = "Edit";
-        
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'Text' text box equals 'Edit'
-        /// </summary>
-        public string ValueEditControlType = "Edit";
         #endregion
     }
     
@@ -9967,6 +9814,18 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
         
         #region Properties
+        public SequenceItem SequenceItem
+        {
+            get
+            {
+                if ((this.mSequenceItem == null))
+                {
+                    this.mSequenceItem = new SequenceItem(this);
+                }
+                return this.mSequenceItem;
+            }
+        }
+        
         public UIWarewolfStudioViewMoTreeItem1 UIWarewolfStudioViewMoTreeItem
         {
             get
@@ -9981,7 +9840,282 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         #endregion
         
         #region Fields
+        private SequenceItem mSequenceItem;
+        
         private UIWarewolfStudioViewMoTreeItem1 mUIWarewolfStudioViewMoTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SequenceItem : WpfTreeItem
+    {
+        
+        public SequenceItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public SplitNamesItem SplitNamesItem
+        {
+            get
+            {
+                if ((this.mSplitNamesItem == null))
+                {
+                    this.mSplitNamesItem = new SplitNamesItem(this);
+                }
+                return this.mSplitNamesItem;
+            }
+        }
+        
+        public SortNamesItem SortNamesItem
+        {
+            get
+            {
+                if ((this.mSortNamesItem == null))
+                {
+                    this.mSortNamesItem = new SortNamesItem(this);
+                }
+                return this.mSortNamesItem;
+            }
+        }
+        
+        public FindUniqueNamesItem FindUniqueNamesItem
+        {
+            get
+            {
+                if ((this.mFindUniqueNamesItem == null))
+                {
+                    this.mFindUniqueNamesItem = new FindUniqueNamesItem(this);
+                }
+                return this.mFindUniqueNamesItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SplitNamesItem mSplitNamesItem;
+        
+        private SortNamesItem mSortNamesItem;
+        
+        private FindUniqueNamesItem mFindUniqueNamesItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SplitNamesItem : WpfTreeItem
+    {
+        
+        public SplitNamesItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public SplitNamesExpandar SplitNamesExpandar
+        {
+            get
+            {
+                if ((this.mSplitNamesExpandar == null))
+                {
+                    this.mSplitNamesExpandar = new SplitNamesExpandar(this);
+                }
+                return this.mSplitNamesExpandar;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SplitNamesExpandar mSplitNamesExpandar;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SplitNamesExpandar : WpfExpander
+    {
+        
+        public SplitNamesExpandar(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_Split Names (3)_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton SplitNames
+        {
+            get
+            {
+                if ((this.mSplitNames == null))
+                {
+                    this.mSplitNames = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSplitNames.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+                    this.mSplitNames.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSplitNames.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSplitNames;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mSplitNames;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SortNamesItem : WpfTreeItem
+    {
+        
+        public SortNamesItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public SortNamesExpandar SortNamesExpandar
+        {
+            get
+            {
+                if ((this.mSortNamesExpandar == null))
+                {
+                    this.mSortNamesExpandar = new SortNamesExpandar(this);
+                }
+                return this.mSortNamesExpandar;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SortNamesExpandar mSortNamesExpandar;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class SortNamesExpandar : WpfExpander
+    {
+        
+        public SortNamesExpandar(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_Sort Names Alphabetically_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton SortNames
+        {
+            get
+            {
+                if ((this.mSortNames == null))
+                {
+                    this.mSortNames = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSortNames.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+                    this.mSortNames.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSortNames.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSortNames;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mSortNames;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FindUniqueNamesItem : WpfTreeItem
+    {
+        
+        public FindUniqueNamesItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public FindOnlyUniqueNamesExpander FindOnlyUniqueNamesExpander
+        {
+            get
+            {
+                if ((this.mFindOnlyUniqueNamesExpander == null))
+                {
+                    this.mFindOnlyUniqueNamesExpander = new FindOnlyUniqueNamesExpander(this);
+                }
+                return this.mFindOnlyUniqueNamesExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private FindOnlyUniqueNamesExpander mFindOnlyUniqueNamesExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class FindOnlyUniqueNamesExpander : WpfExpander
+    {
+        
+        public FindOnlyUniqueNamesExpander(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_Find Only Unique Names_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton FindOnlyUniqueNames
+        {
+            get
+            {
+                if ((this.mFindOnlyUniqueNames == null))
+                {
+                    this.mFindOnlyUniqueNames = new WpfButton(this);
+                    #region Search Criteria
+                    this.mFindOnlyUniqueNames.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+                    this.mFindOnlyUniqueNames.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFindOnlyUniqueNames.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFindOnlyUniqueNames;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mFindOnlyUniqueNames;
         #endregion
     }
     
