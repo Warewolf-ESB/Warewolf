@@ -3264,7 +3264,7 @@ namespace Dev2.Core.Tests
            
             CreateFullExportsAndVm();
             var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-            mock.Setup(controller => controller.Show(It.IsAny<string>() + Environment.NewLine + Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
+            mock.Setup(controller => controller.Show(It.IsAny<string>(), Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
 
             CustomContainer.Register(mock.Object);
             //---------------Assert Precondition----------------
@@ -3285,7 +3285,7 @@ namespace Dev2.Core.Tests
            
             CreateFullExportsAndVm();
             var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-            mock.Setup(controller => controller.Show(It.IsAny<string>() + Environment.NewLine + Warewolf.Studio.Resources.Languages.Core.ServerReconnectForActions, Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
+            mock.Setup(controller => controller.Show(It.IsAny<string>(), Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
 
             CustomContainer.Register(mock.Object);
             var explorerVm = new Mock<IExplorerItemViewModel>();
