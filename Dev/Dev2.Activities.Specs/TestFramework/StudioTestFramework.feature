@@ -2645,5 +2645,5 @@ Scenario: Test Workflow with Loop Constructs - Select and Apply example workflow
 	When I save
 	And I run the test
 	Then test result is Failed
-	And the service debug assert Json message contains "Message: Failed: Assert Equal. Expected Equal To '' for '[[@Pet]]' but got"
+	And the service debug assert Json message contains "Message: Failed: Assert Equal. Expected Equal To '' for '@Pet' but got"
 	When I delete "Test 1"
