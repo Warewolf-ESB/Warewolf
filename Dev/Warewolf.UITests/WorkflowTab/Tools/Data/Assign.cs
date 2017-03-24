@@ -89,6 +89,14 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
             DataToolsUIMap.Remove_Assign_Row_1_With_Context_Menu();
         }
 
+        [TestMethod]
+        [TestCategory("DesignSurfaceExpandAndCollapse")]
+        public void ExpandAndCollapseMultiAssignTool()
+        {
+            WorkflowTabUIMap.Click_Assign_Tool_ExpandAll();
+            WorkflowTabUIMap.Click_Assign_Tool_CollapseAll();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
