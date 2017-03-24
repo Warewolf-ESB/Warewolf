@@ -24,6 +24,7 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -47,8 +48,11 @@ namespace Dev2.Runtime.ESB.Execution
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
             _request = request;
+            TstCatalog = TestCatalog.Instance;
+            ResourceCat = ResourceCatalog.Instance;
         }
-
+        protected ITestCatalog TstCatalog { get; set; }
+        protected IResourceCatalog ResourceCat { get; set; }
         /// <summary>
         /// Executes the specified errors.
         /// </summary>
@@ -59,6 +63,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
 
             errors = new ErrorResultTO();
+            ITestCatalog testCatalog = TstCatalog ?? TestCatalog.Instance;
             // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
             Guid result = GlobalConstants.NullDataListID;
 
@@ -100,11 +105,11 @@ namespace Dev2.Runtime.ESB.Execution
 
 
             ErrorResultTO to = errors;
-            var serviceTestModelTo = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+            var serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
             if (serviceTestModelTo == null)
             {
-                TestCatalog.Instance.Load();
-                serviceTestModelTo = TestCatalog.Instance.FetchTest(DataObject.ResourceID, DataObject.TestName);
+                testCatalog.Load();
+                serviceTestModelTo = testCatalog.FetchTest(DataObject.ResourceID, DataObject.TestName);
             }
             if (serviceTestModelTo == null)
             {
@@ -123,7 +128,7 @@ namespace Dev2.Runtime.ESB.Execution
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 return Guid.NewGuid();
             }
-            
+
             if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
             {
                 Impersonator impersonator = new Impersonator();
@@ -157,17 +162,19 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 result = ExecuteWf(to, serviceTestModelTo);
             });
-            foreach (var err in DataObject.Environment.Errors)
-            {
-                errors.AddError(err, true);
-            }
-            foreach (var err in DataObject.Environment.AllErrors)
-            {
-                errors.AddError(err, true);
-            }
+            if (DataObject.Environment.Errors != null)
+                foreach (var err in DataObject.Environment.Errors)
+                {
+                    errors.AddError(err, true);
+                }
+            if (DataObject.Environment.AllErrors != null)
+                foreach (var err in DataObject.Environment.AllErrors)
+                {
+                    errors.AddError(err, true);
+                }
 
             Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
-            
+
             return result;
         }
 
@@ -410,20 +417,22 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else
                     {
-                        if(serviceTestOutput != null)
+                        if (serviceTestOutput != null)
                         {
-                            serviceTestOutput.Result = new TestRunResult {RunTestResult = RunResult.TestPending};
+                            serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
                         }
                     }
                 }
             }
         }
 
+       
 
         private IServiceTestModelTO Eval(Guid resourceId, IDSFDataObject dataObject, IServiceTestModelTO test)
         {
             Dev2Logger.Debug("Getting Resource to Execute");
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceId);
+            var resourceCatalog = ResourceCat ?? ResourceCatalog.Instance;
+            IDev2Activity resource = resourceCatalog.Parse(TheWorkspace.ID, resourceId);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var execPlan = serializer.SerializeToBuilder(resource);
             var clonedExecPlan = serializer.Deserialize<IDev2Activity>(execPlan);
@@ -452,12 +461,12 @@ namespace Dev2.Runtime.ESB.Execution
                         dataObject.ServiceTest = test;
                         UpdateToPending(test.TestSteps);
                         EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue, test.TestSteps);
-                        if(test.Outputs != null)
+                        if (test.Outputs != null)
                         {
                             var dev2DecisionFactory = Dev2DecisionFactory.Instance();
                             var testRunResults = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory)).ToList();
                             testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
-                            if(!testPassed)
+                            if (!testPassed)
                             {
                                 failureMessage = failureMessage.Append(string.Join("", testRunResults.Select(result => result.Message).Where(s => !string.IsNullOrEmpty(s)).ToList()));
                             }
@@ -480,7 +489,7 @@ namespace Dev2.Runtime.ESB.Execution
         private static void UpdateTestWithStepValues(IServiceTestModelTO test)
         {
             var testPassed = test.TestPassed;
-            
+
             IEnumerable<IServiceTestStep> pendingSteps;
             IEnumerable<IServiceTestStep> invalidSteps;
             IEnumerable<IServiceTestStep> failingSteps;
@@ -502,11 +511,11 @@ namespace Dev2.Runtime.ESB.Execution
             var hasFailingOutputs = failingTestOutputs?.Any() ?? false;
             var hasPendingOutputs = pendingTestOutputs?.Any() ?? false;
             var hasInvalidOutputs = invalidTestOutputs?.Any() ?? false;
-            var testStepPassed = TestPassedBasedOnSteps(hasPendingSteps, hasInvalidSteps, hasFailingSteps) && TestPassedBasedOnOutputs(hasPendingOutputs,hasInvalidOutputs ,hasFailingOutputs);
+            var testStepPassed = TestPassedBasedOnSteps(hasPendingSteps, hasInvalidSteps, hasFailingSteps) && TestPassedBasedOnOutputs(hasPendingOutputs, hasInvalidOutputs, hasFailingOutputs);
 
             testPassed = testPassed && testStepPassed;
 
-            var failureMessage = UpdateFailureMessage(hasPendingSteps, pendingTestSteps,  hasInvalidSteps, invalidTestSteps, hasFailingSteps, failingTestSteps, hasPendingOutputs, pendingTestOutputs, hasInvalidOutputs, invalidTestOutputs, hasFailingOutputs, failingTestOutputs, serviceTestSteps);
+            var failureMessage = UpdateFailureMessage(hasPendingSteps, pendingTestSteps, hasInvalidSteps, invalidTestSteps, hasFailingSteps, failingTestSteps, hasPendingOutputs, pendingTestOutputs, hasInvalidOutputs, invalidTestOutputs, hasFailingOutputs, failingTestOutputs, serviceTestSteps);
             test.FailureMessage = failureMessage.ToString();
             test.TestFailing = !testPassed;
             test.TestPassed = testPassed;
@@ -535,7 +544,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             if (hasPendingSteps)
             {
-                foreach(var serviceTestStep in pendingTestSteps)
+                foreach (var serviceTestStep in pendingTestSteps)
                 {
                     failureMessage.AppendLine("Pending Step: " + serviceTestStep.StepDescription);
                 }
@@ -559,7 +568,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             if (hasPendingOutputs)
             {
-                foreach(var serviceTestStep in pendingTestOutputs)
+                foreach (var serviceTestStep in pendingTestOutputs)
                 {
                     failureMessage.AppendLine("Pending Output for Variable: " + serviceTestStep.Variable);
                 }
@@ -628,16 +637,16 @@ namespace Dev2.Runtime.ESB.Execution
             test.LastRunDate = DateTime.Now;
 
             var testRunResult = new TestRunResult { TestName = test.TestName };
-            if(test.TestFailing)
+            if (test.TestFailing)
             {
                 testRunResult.RunTestResult = RunResult.TestFailed;
                 testRunResult.Message = test.FailureMessage;
             }
-            if(test.TestPassed)
+            if (test.TestPassed)
             {
                 testRunResult.RunTestResult = RunResult.TestPassed;
             }
-            if(test.TestInvalid)
+            if (test.TestInvalid)
             {
                 testRunResult.RunTestResult = RunResult.TestInvalid;
             }
@@ -649,19 +658,19 @@ namespace Dev2.Runtime.ESB.Execution
         {
             var fetchErrors = DataObject.Environment.FetchErrors();
             var hasErrors = DataObject.Environment.HasErrors();
-            if(test.ErrorExpected)
+            if (test.ErrorExpected)
             {
                 var testErrorContainsText = test.ErrorContainsText ?? "";
                 testPassed = hasErrors && testPassed && fetchErrors.ToLower().Contains(testErrorContainsText.ToLower());
-                if(!testPassed)
+                if (!testPassed)
                 {
                     failureMessage.Append(string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, testErrorContainsText, fetchErrors));
                 }
             }
-            else if(test.NoErrorExpected)
+            else if (test.NoErrorExpected)
             {
                 testPassed = !hasErrors && testPassed;
-                if(hasErrors)
+                if (hasErrors)
                 {
                     failureMessage.AppendLine(fetchErrors);
                 }
@@ -672,7 +681,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {
-            var expressionType = output.AssertOp??string.Empty;
+            var expressionType = output.AssertOp ?? string.Empty;
             IFindRecsetOptions opt = FindRecsetOptions.FindMatch(expressionType);
             var decisionType = DecisionDisplayHelper.GetValue(expressionType);
 
@@ -743,8 +752,8 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testResult.RunTestResult = RunResult.TestFailed;
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
-                    var actMsg = string.Format(msg, val2, variable, val1,val3);
-                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();                   
+                    var actMsg = string.Format(msg, val2, variable, val1, val3);
+                    testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
                 }
                 output.Result = testResult;
                 ret.Add(testResult);
