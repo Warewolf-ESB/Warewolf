@@ -207,8 +207,6 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var src = ToSource();
-                src.Path = Item.Path??"";
-                src.ResourceName = Item.ResourceName;
                 Save(src);
                 Item = src;
                 _emailServiceSource = src;
