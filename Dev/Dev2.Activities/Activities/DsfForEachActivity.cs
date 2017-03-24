@@ -50,11 +50,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private string _forEachElementName;
         private string _displayName;
-// ReSharper disable ConvertToConstant.Local
+        // ReSharper disable ConvertToConstant.Local
         readonly int _previousInputsIndex = -1;
 
         readonly int _previousOutputsIndex = -1;
-// ReSharper restore ConvertToConstant.Local
+        // ReSharper restore ConvertToConstant.Local
         private string _inputsToken = "*";
         private string _outputsToken = "*";
 
@@ -68,7 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // ReSharper disable MemberCanBePrivate.Global
         public enForEachType ForEachType { get; set; }
-      
+
 
         [FindMissing]
         public string From { get; set; }
@@ -89,7 +89,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         // ReSharper disable UnusedMember.Global
         public string FromDisplayName
-            // ReSharper restore UnusedMember.Global
+        // ReSharper restore UnusedMember.Global
         {
             get
             {
@@ -120,7 +120,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // ReSharper disable UnusedMember.Global
         public int ExecutionCount
-            // ReSharper restore UnusedMember.Global
+        // ReSharper restore UnusedMember.Global
         {
             get
             {
@@ -133,11 +133,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
         // ReSharper restore MemberCanBePrivate.Global
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         // ReSharper disable UnusedMember.Global
         public Variable test { get; set; }
         // ReSharper restore UnusedMember.Global
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         public ActivityFunc<string, bool> DataFunc { get; set; }
 
         // ReSharper disable UnusedMember.Global
@@ -545,12 +545,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
                     AddDebugItem(new DebugEvalResult(CsvIndexes, "Csv Indexes", environment, update), debugItem);
-     
+
                 }
                 if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
                     AddDebugItem(new DebugEvalResult(From, "From", environment, update), debugItem);
- 
+
                 }
                 if (ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
@@ -560,7 +560,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if (ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
-    
+
 
                     AddDebugItem(new DebugEvalResult(ExecutionEnvironment.GetPositionColumnExpression(Recordset), "Recordset ", environment, update), debugItem);
                 }
@@ -595,7 +595,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     // this is wrong, we need the last index ;)
 
                     int idx = operationalData.IterationCount;
-                    
+
                     //Handle csv and range differently ;)
                     if (ForEachType == enForEachType.InCSV || ForEachType == enForEachType.InRange)
                     {
@@ -691,7 +691,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 throw new Exception("DsfForEachActivity - RestoreHandlerFunction has encountered a null Function");
             }
             _inputsToken = "*";
-            _outputsToken = "*";           
+            _outputsToken = "*";
         }
 
         private ForEachInnerActivityTO GetInnerActivity(out string error)
@@ -729,7 +729,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (dataObject != null && operationalData != null)
             {
 
-              
+
 
                 if (operationalData.IndexIterator.HasMore())
                 {
@@ -820,7 +820,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ErrorResultTO errors;
                 ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out errors, update);
 
-                foreach(var err in errors.FetchErrors())
+                foreach (var err in errors.FetchErrors())
                 {
                     dataObject.Environment.AddError(err);
                 }
@@ -830,24 +830,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 ForEachInnerActivityTO innerA = GetInnerActivity(out error);
                 var exeAct = innerA.InnerActivity;
                 allErrors.AddError(error);
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                 }
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.IsDebugNested = true;
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
                 exePayload.InnerActivity = innerA;
-                
+
                 while (itr.HasMore())
                 {
                     operationalData = exePayload;
                     int idx = exePayload.IndexIterator.FetchNextIndex();
                     int innerupdate = 0;
-                    if(exePayload.ForEachType != enForEachType.NumOfExecution)
+                    if (exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
                         innerupdate = idx;
                     }
@@ -856,21 +856,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     operationalData.IncIterationCount();
                 }
-                if(errors.HasErrors())
+                if (errors.HasErrors())
                 {
                     allErrors.MergeErrors(errors);
-                }                
+                }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFForEach", e);
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                if(itr != null)
+                if (itr != null)
                 {
-                    if(ForEachType != enForEachType.NumOfExecution)
+                    if (ForEachType != enForEachType.NumOfExecution)
                     {
                         RestoreHandlerFn();
                     }
@@ -885,7 +885,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var testRunResult = new TestRunResult();
                         GetFinalTestRunResult(serviceTestStep, testRunResult);
                         serviceTestStep.Result = testRunResult;
-                        
+
                     }
                 }
                 dataObject.ParentInstanceID = _previousParentId;
@@ -893,7 +893,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.IsDebugNested = false;
                 if (dataObject.IsDebugMode())
                 {
-                    if (dataObject.IsServiceTestExecution && serviceTestStep!=null)
+                    if (dataObject.IsServiceTestExecution && serviceTestStep != null)
                     {
                         var debugItems = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
                         debugItems = debugItems.Where(state => state.WorkSurfaceMappingId == serviceTestStep.UniqueId).ToList();
@@ -913,10 +913,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.ForEachNestingLevel--;
                     dataObject.IsDebugNested = false;
                     // Handle Errors
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
                         DisplayAndWriteError("DsfForEachActivity", allErrors);
-                        foreach(var fetchError in allErrors.FetchErrors())
+                        foreach (var fetchError in allErrors.FetchErrors())
                         {
                             dataObject.Environment.AddError(fetchError);
                         }
@@ -929,7 +929,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
-            var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
+            var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult != RunResult.TestPassed).ToList();
             if (nonPassingSteps != null && nonPassingSteps.Count == 0)
             {
                 testRunResult.Message = Messages.Test_PassedResult;
@@ -937,7 +937,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                if(nonPassingSteps != null)
+                if (nonPassingSteps != null)
                 {
                     var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
                     testRunResult.Message = failMessage;
@@ -946,13 +946,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
 
-            
+
         }
 
         private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
-            ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject,serviceTestTestSteps,_childUniqueID);            
-        }        
+            ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, _childUniqueID);
+        }
 
         #region GetForEachInputs/Outputs
 
