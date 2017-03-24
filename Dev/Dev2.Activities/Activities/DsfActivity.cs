@@ -11,6 +11,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Authentication;
 using System.Text;
@@ -213,18 +214,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ObjectName { get; set; }
 
         public string ObjectResult { get; set; }
-        protected override bool CanInduceIdle => true;
-
-        #endregion
-
-        #region Overridden NativeActivity Methods
-
-        // ReSharper disable RedundantOverridenMember
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
-        // ReSharper restore RedundantOverridenMember
 
         string _serviceUri;
         InArgument<string> _friendlySourceName;
@@ -238,6 +227,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
             UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
         }
+
+        [ExcludeFromCodeCoverage] //This execution is no longer used
         protected override void OnExecute(NativeActivityContext context)
         {
 
@@ -268,7 +259,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var oldResourceId = dataObject.ResourceID;
-
+           
             InitializeDebug(dataObject);
 
             try
@@ -284,7 +275,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     dataObject.ResourceID = resourceId;
                 }
-
+                
                 if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
                     DispatchDebugState(dataObject, StateType.Before, 0);
@@ -339,16 +330,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                     }
-
-                    bool whereErrors = dataObject.Environment.HasErrors();
-
-                    SetValues(context, whereErrors);
+                    
                 }
             }
             finally
             {
-
-
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
@@ -374,15 +360,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RunWorkflowAsync = false;
                 dataObject.RemoteInvokerID = Guid.Empty.ToString();
                 dataObject.EnvironmentID = Guid.Empty;
-                dataObject.ResourceID = oldResourceId;
+                dataObject.ResourceID = oldResourceId;                
             }
-        }
-
-        void SetValues(NativeActivityContext context, bool whereErrors)
-        {
-            Result.Set(context, whereErrors);
-            HasError.Set(context, whereErrors);
-            IsValid.Set(context, whereErrors);
         }
 
         internal IAuthorizationService AuthorizationService
@@ -445,9 +424,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
-            if (DataObject != null)
-            {
-            }
         }
 
         protected virtual void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
@@ -475,7 +451,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
 
             dataObject.EnvironmentID = EnvironmentID?.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
-            dataObject.RemoteServiceType = Type.Expression?.ToString() ?? "";
+            dataObject.RemoteServiceType = Type?.Expression?.ToString() ?? "";
             ParentServiceName = dataObject.ServiceName;
 
 
@@ -489,7 +465,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var oldResourceId = dataObject.ResourceID;
-
+            var wasTestExecution = dataObject.IsServiceTestExecution;
             InitializeDebug(dataObject);
 
             try
@@ -506,7 +482,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     dataObject.ResourceID = resourceId;
                 }
-
                 parentServiceName = dataObject.ParentServiceName;
                 serviceName = dataObject.ServiceName;
                 dataObject.ParentServiceName = serviceName;
@@ -538,7 +513,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     allErrors.MergeErrors(tmpErrors);
                     ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, update);
-
                     allErrors.MergeErrors(tmpErrors);
 
                     AfterExecutionCompleted(tmpErrors);
@@ -564,7 +538,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             dataObject.Environment.Errors.Add(allError);
                         }
-                        //dataObject.Environment.AddError(allErrors.MakeDataListReady());
                         // add to datalist in variable specified
                         if (!String.IsNullOrEmpty(OnErrorVariable))
                         {
@@ -579,7 +552,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var dt = DateTime.Now;
                     DispatchDebugState(dataObject, StateType.After, update, dt);
                     ChildDebugStateDispatch(dataObject);
-                    _debugOutputs = new List<DebugItem>();
                     _debugOutputs = new List<DebugItem>();
                     DispatchDebugState(dataObject, StateType.Duration, update, dt);
                 }

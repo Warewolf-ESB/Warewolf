@@ -1621,12 +1621,15 @@ namespace Dev2.Activities.Specs.TestFramework
             env.ForceLoadResources();
             var sourceResourceRepository = env.ResourceRepository;
             var res = sourceResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
-            if(res != null)
+            if (res != null)
             {
                 var contextualResource = sourceResourceRepository.LoadContextualResourceModel(res.ID);
-                var msg = sourceResourceRepository.FetchResourceDefinition(contextualResource.Environment, GlobalConstants.ServerWorkspaceID, res.ID, false);
+                var msg = sourceResourceRepository.FetchResourceDefinition(contextualResource.Environment,
+                    GlobalConstants.ServerWorkspaceID, res.ID, false);
                 contextualResource.WorkflowXaml = msg.Message;
-                var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
+                var serviceTestVm = new ServiceTestViewModel(contextualResource, new SynchronousAsyncWorker(),
+                    new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(),
+                    new Mock<IWorkflowDesignerViewModel>().Object);
                 serviceTestVm.WebClient = new Mock<IWarewolfWebClient>().Object;
                 Assert.IsNotNull(serviceTestVm);
                 Assert.IsNotNull(serviceTestVm.ResourceModel);
