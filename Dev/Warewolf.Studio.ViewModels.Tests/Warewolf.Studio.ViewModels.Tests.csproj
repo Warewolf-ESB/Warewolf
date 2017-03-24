@@ -142,6 +142,8 @@
     <Compile Include="ManageComPluginSourceModelTests.cs" />
     <Compile Include="ManageComPluginSourceViewModelTests.cs" />
     <Compile Include="DatabaseSourceViewModelBaseTests.cs" />
+    <Compile Include="ManageOAuthSourceModelTests.cs" />
+    <Compile Include="ManageExchangeSourceModelTests.cs" />
     <Compile Include="ManageOdbcSourceViewModelTests.cs" />
     <Compile Include="ManagePostgreSqlSourceViewModelTests.cs" />
     <Compile Include="ManageMySqlSourceViewModelTests.cs" />

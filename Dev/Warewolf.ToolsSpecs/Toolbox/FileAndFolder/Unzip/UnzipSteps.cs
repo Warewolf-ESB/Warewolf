@@ -24,8 +24,6 @@ using Dev2.Interfaces;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
-using Dev2.Activities.Designers2.Unzip;
-using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
 {
