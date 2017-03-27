@@ -5,6 +5,7 @@ using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
 using System.Collections.Generic;
 using System.Data;
+using Dev2.Common.Interfaces.Deploy;
 
 namespace Dev2.Common.Interfaces
 {
@@ -12,7 +13,6 @@ namespace Dev2.Common.Interfaces
     {
         void Save(IServerSource serverSource);
         void Save(IDbSource toDbSource);
-        void Save(IWebService model);
         void Save(IWebServiceSource model);
         void Save(IPluginSource source);
         void Save(IComPluginSource source);
@@ -46,7 +46,7 @@ namespace Dev2.Common.Interfaces
         Action<Guid, bool> ServerSaved { get; set; }
         void FireServerSaved(Guid savedServerID, bool isDeleted = false);
 
-        void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment);
+        List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment);
     }
 
     public delegate void ItemSaved(bool refresh);

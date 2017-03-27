@@ -77,8 +77,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                _value = value;
-                if (!string.IsNullOrEmpty(_value))
+                if (string.IsNullOrEmpty(_value) && !string.IsNullOrEmpty(value))
                 {
                     if (AddNewAction != null)
                     {
@@ -89,6 +88,7 @@ namespace Warewolf.Studio.ViewModels
                         AddStepOutputRow?.Invoke(Variable);
                     }
                 }
+                _value = value;
                 OnPropertyChanged(() => Value);
             }
         }

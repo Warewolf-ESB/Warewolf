@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,9 +29,11 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
 using Dev2.Factory;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
@@ -1145,7 +1148,7 @@ namespace Dev2.Core.Tests
 
 
         #endregion
-        
+
 
         #region DeactivateItem
 
@@ -3111,7 +3114,7 @@ namespace Dev2.Core.Tests
             environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
 
             var resourceRepository = new Mock<IResourceRepository>();
-            
+
             environmentModel.SetupGet(e => e.ResourceRepository).Returns(resourceRepository.Object);
             resourceModel.SetupGet(r => r.Environment).Returns(environmentModel.Object);
 
@@ -3147,7 +3150,7 @@ namespace Dev2.Core.Tests
             environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
 
             var resourceRepository = new Mock<IResourceRepository>();
-            
+
             environmentModel.SetupGet(e => e.ResourceRepository).Returns(resourceRepository.Object);
             resourceModel.SetupGet(r => r.Environment).Returns(environmentModel.Object);
 
@@ -3206,6 +3209,315 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsFalse(isDownloading);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CopyUrlLink_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            //---------------Execute Test ----------------------
+            ShellViewModel.CopyUrlLink(Guid.Empty, ShellViewModel.ActiveServer);
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateNewSchedule_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            //---------------Execute Test ----------------------
+            ShellViewModel.CreateNewSchedule(Guid.Empty);
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetRefreshExplorerState_GivenTrue_ShouldSetExplorerStateCorrectly()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            Assert.IsNotNull(ShellViewModel.ExplorerViewModel);
+            //---------------Execute Test ----------------------
+            ShellViewModel.SetRefreshExplorerState(true);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(ShellViewModel.ExplorerViewModel.IsRefreshing);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BrowserDebug_GivenId_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var resourceModel = new Mock<IContextualResourceModel>();
+
+            var wcm = new Mock<IWorksurfaceContextManager>();
+            wcm.Setup(manager => manager.DisplayResourceWizard(resourceModel.Object));
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
+                .Returns(resourceModel.Object);
+            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            try
+            {
+                //---------------Execute Test ----------------------
+                ShellViewModel.BrowserDebug(Guid.Empty, ShellViewModel.ActiveServer);
+                Assert.Fail();
+            }
+            catch (NullReferenceException)//Actual Quick debug fails
+            {
+                //---------------Test Result -----------------------
+                EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+                wcm.Verify(manager => manager.DisplayResourceWizard(resourceModel.Object));
+            }
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void NewComPluginSource_GivenPath_ShouldOpenSurfaceWithCorrectPath()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var resourceModel = new Mock<IContextualResourceModel>();
+
+            var wcm = new Mock<IWorksurfaceContextManager>();
+            wcm.Setup(manager => manager.NewComPluginSource("path"));
+            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+
+            //---------------Execute Test ----------------------
+            ShellViewModel.NewComPluginSource("path");
+            //---------------Test Result -----------------------
+            wcm.VerifyAll();
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void AddDeploySurface_GivenExplorereItems_ShouldOpenSurfaceWithCorrectExplorereItems()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            PrivateObject pv = new PrivateObject(ShellViewModel);
+
+            var wcm = new Mock<IWorksurfaceContextManager>();
+            IEnumerable<IExplorerTreeItem> enumerable = new List<IExplorerTreeItem>();
+            wcm.Setup(manager => manager.AddDeploySurface(enumerable));
+            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+
+            //---------------Execute Test ----------------------
+            ShellViewModel.AddDeploySurface(enumerable);
+            //---------------Test Result -----------------------
+            wcm.VerifyAll();
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OpenVersion_GivenVersionInfo_ShouldOpenSurfaceWithCorrectVersion()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            PrivateObject pv = new PrivateObject(ShellViewModel);
+
+            var wcm = new Mock<IWorksurfaceContextManager>();
+            IVersionInfo version = new VersionInfo();
+            wcm.Setup(manager => manager.OpenVersion(Guid.Empty, version));
+            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+
+            //---------------Execute Test ----------------------
+            ShellViewModel.OpenVersion(Guid.Empty, version);
+            //---------------Test Result -----------------------
+            wcm.VerifyAll();
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void StudioDebug_GivenId_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var resourceModel = new Mock<IContextualResourceModel>();
+
+            var wcm = new Mock<IWorksurfaceContextManager>();
+            wcm.Setup(manager => manager.DisplayResourceWizard(resourceModel.Object));
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
+                .Returns(resourceModel.Object);
+            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            try
+            {
+                //---------------Execute Test ----------------------
+                ShellViewModel.StudioDebug(Guid.Empty, ShellViewModel.ActiveServer);
+                Assert.Fail();
+            }
+            catch (NullReferenceException)//Actual Quick debug fails
+            {
+                //---------------Test Result -----------------------
+                EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+                wcm.Verify(manager => manager.DisplayResourceWizard(resourceModel.Object));
+            }
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void NewSchedule_GivenId_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var resourceModel = new Mock<IContextualResourceModel>();
+
+            var wcm = new Mock<IWorksurfaceContextManager>();
+            wcm.Setup(manager => manager.CreateNewScheduleWorkSurface(resourceModel.Object));
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
+                .Returns(resourceModel.Object);
+            pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+
+            //---------------Execute Test ----------------------
+            ShellViewModel.NewSchedule(Guid.Empty);
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
+            wcm.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void OpenResourceAsync_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()));
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            //---------------Execute Test ----------------------
+
+            var task = Task.Run(() => { ShellViewModel.OpenResourceAsync(Guid.Empty, ShellViewModel.ActiveServer); });
+            task.Wait();
+            //---------------Test Result -----------------------
+            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ShowServerDisconnectedPopup_GivenresourceIdAndServer_ShouldLoadResourceModel()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            mock.Setup(controller => controller.Show(It.IsAny<string>(), Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
+
+            CustomContainer.Register(mock.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            //---------------Execute Test ----------------------
+
+            PrivateObject po = new PrivateObject(ShellViewModel);
+            po.Invoke("ShowServerDisconnectedPopup");
+            //---------------Test Result -----------------------
+            mock.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DuplicateResource_GivenNotConnected_ShouldPopup()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            mock.Setup(controller => controller.Show(It.IsAny<string>(), Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
+
+            CustomContainer.Register(mock.Object);
+            var explorerVm = new Mock<IExplorerItemViewModel>();
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            //---------------Execute Test ----------------------
+            ShellViewModel.DuplicateResource(explorerVm.Object);
+            //---------------Test Result -----------------------
+            mock.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SaveAllCommand_GivenWorkflowItemAndCanSav_ShouldSaveItem()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+            var surfaeViewModel = new Mock<IWorkSurfaceViewModel>();
+            var workSurfaceKey = new WorkSurfaceKey()
+            {
+                WorkSurfaceContext = WorkSurfaceContext.Workflow
+            };
+            var surfaceContext = new Mock<WorkSurfaceContextViewModel>(workSurfaceKey, surfaeViewModel.Object);
+            ShellViewModel.Items.Add(surfaceContext.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(ShellViewModel);
+            Assert.IsNotNull(ShellViewModel.SaveAllCommand);
+            Assert.IsNotNull(ShellViewModel.Items);
+
+            //---------------Execute Test ----------------------
+            ShellViewModel.SaveAllCommand.Execute(null);
+            //---------------Test Result -----------------------
+            surfaceContext.VerifyAll();
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DeployResource_GivenIsNew_ShouldReturnNull()
+        {
+            //---------------Set up test pack-------------------
+
+            CreateFullExportsAndVm();
+
+            //---------------Assert Precondition----------------
+            Assert.IsNull(ShellViewModel.DeployResource);
+
+            //---------------Execute Test ----------------------
+            ShellViewModel.DeployResource = new Mock<IContextualResourceModel>().Object;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(ShellViewModel.DeployResource);
+        }
+
+
 
         [TestMethod]
         public void MainViewModel_HasNewVersion_ShouldCallBrowserPopupContollerToLatestVersionPage()

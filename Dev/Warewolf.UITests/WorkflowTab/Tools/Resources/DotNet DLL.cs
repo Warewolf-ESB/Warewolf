@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
@@ -11,7 +12,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
     public class DotNet_DLL_UITests
     {
         [TestMethod]
-		[TestCategory("Resource Tools")]
+        [TestCategory("Resource Tools")]
         public void DotNetDLLTool_Small_And_LargeView_Then_NewSource_UITest()
         {
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists, "DotNet DLL tool does not exist on the design surface after dragging in from the toolbox.");
@@ -37,31 +38,18 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton.Enabled, "GAC Assembly Combobox Button is not enabled");
             const string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading.dll";
             DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll;
-            UIMap.Save_With_Ribbon_Button_And_Dialog("NewDotnetPluginSource");
+            const string Newdotnetpluginsource = "NewDotnetPluginSource";
+            UIMap.Save_With_Ribbon_Button_And_Dialog(Newdotnetpluginsource);
             DotNetPluginSourceUIMap.Click_Close_DotNetPlugin_Source_Tab();
             ResourcesToolsUIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
             ResourcesToolsUIMap.Select_New_Source_From_DotNetDLLTool();
             ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
             Assert.AreEqual(newDll, DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
+            ExplorerUIMap.Filter_Explorer(Newdotnetpluginsource);
+            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
-
-        [TestMethod]
-        [TestCategory("Resource Tools")]
-        public void DotNetDLLTool_EditSource_UITest()
-        {
-            ResourcesToolsUIMap.Select_Source_From_DotNetDLLTool();
-            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
-            ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
-            Assert.IsFalse(string.IsNullOrEmpty(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox is not enabled");
-            string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading2.dll";
-            DotNetPluginSourceUIMap.Change_Dll_And_Save(newDll);
-            DotNetPluginSourceUIMap.Click_Close_DotNetPlugin_Source_Tab();
-            ResourcesToolsUIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
-            ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
-            Assert.AreEqual(newDll, DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
-        }
-
-
+        
         [TestMethod]
         [TestCategory("Resource Tools")]
         public void Selecting_Source_Enables_ClassName_UITests()
@@ -93,6 +81,36 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander.ActivitiesDesignButton.ConstructorsComboBox.CtorListItem.Exists);
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander.ActivitiesDesignButton.ConstructorsComboBox.CtorSystemStringListItem.Exists);
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.CtorExpander.ActivitiesDesignButton.ConstructorsComboBox.CtorSystemStringSystListItem.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Resource Tools")]
+        public void DotNetDLLTool_EditSource_UITest()
+        {
+            var countBefore = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.Items.Count;
+            ResourcesToolsUIMap.Select_Source_From_DotNetDLLTool();
+            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
+            Assert.IsFalse(string.IsNullOrEmpty(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox is not enabled");
+            string newDll = @"C:\ProgramData\Warewolf\Resources\TestingDotnetDllCascading2.dll"; DotNetPluginSourceUIMap.Change_Dll_And_Save(newDll);
+            DotNetPluginSourceUIMap.Click_Close_DotNetPlugin_Source_Tab();
+            ResourcesToolsUIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
+            var countAfter = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.Items.Count;
+            Assert.AreEqual(countBefore, countAfter);
+            ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
+            Assert.AreEqual(newDll, DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
+        }
+
+        //WOLF-2541
+        [TestMethod]
+        [TestCategory("Resource Tools")]
+        public void GAC_Selecting_Classname_Loads_Class_Constructors_UITests()
+        {
+            ResourcesToolsUIMap.Select_Second_Item_From_DotNet_DLL_Large_View_Source_Combobox();
+            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ClassNameComboBox.Enabled);
+            ResourcesToolsUIMap.Select_DotNet_Dll_AssemblyRef();
+            var exists = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.NoconstructoronastatText.Exists;
+            Assert.IsTrue(exists);
         }
 
         [TestMethod]
@@ -169,7 +187,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             ResourcesToolsUIMap.Select_DotNet_DLL_Large_View_SetName_Action_For_FirstAction_From_Actions_Combobox();
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.ActionMethodListBoxList.ActivitiesDesignListItem2.ActivitiesExpander.ActivitiesDesignButton.ActionsComboBox.Enabled);
         }
-        
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -255,6 +273,21 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         private ResourcesToolsUIMap _ResourcesToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

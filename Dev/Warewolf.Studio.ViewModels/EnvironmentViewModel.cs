@@ -11,6 +11,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -792,6 +793,7 @@ namespace Warewolf.Studio.ViewModels
                 NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewRabbitMqSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 NewDropboxSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewDropboxSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 NewSharepointSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSharepointSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                NewWcfSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewWcfSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
 
                 OnPropertyChanged(() => CanCreateSource);
             }
@@ -985,8 +987,10 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
+        [ExcludeFromCodeCoverage]
         public ICommand RenameCommand { get; set; }
         public ICommand CreateFolderCommand { get; set; }
+        [ExcludeFromCodeCoverage]
         public ICommand DeleteCommand { get; set; }
         public ICommand ShowVersionHistory { get; set; }
         public ICommand RollbackCommand { get; set; }
@@ -1106,8 +1110,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsConnecting = true;
                 var explorerItems = await Server.LoadExplorer();
-
-                CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
+                if (explorerItems != null)
+                {
+                    CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
+                }
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
@@ -1118,7 +1124,14 @@ namespace Warewolf.Studio.ViewModels
 
         public IExplorerTreeItem FindByPath(string path)
         {
-            var allChildren = Children.Flatten(model => model.Children);
+            var allChildren = Children.Flatten(model =>
+            {
+                if (model?.Children != null)
+                {
+                    return model.Children;
+                }
+                return new List<IExplorerItemViewModel>();
+            });
             if (path.EndsWith("\\"))
             {
                 path = path.TrimEnd('\\');

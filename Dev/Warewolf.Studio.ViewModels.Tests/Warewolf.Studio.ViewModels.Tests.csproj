@@ -24,15 +24,6 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
@@ -148,6 +139,8 @@
     <Compile Include="ManageComPluginSourceViewModelTests.cs" />
     <Compile Include="DatabaseSourceViewModelBaseTests.cs" />
     <Compile Include="ManageDbServiceModelTests.cs" />
+    <Compile Include="ManageOAuthSourceModelTests.cs" />
+    <Compile Include="ManageExchangeSourceModelTests.cs" />
     <Compile Include="ManageOdbcSourceViewModelTests.cs" />
     <Compile Include="ManagePluginServiceModelTests.cs" />
     <Compile Include="ManagePostgreSqlSourceViewModelTests.cs" />

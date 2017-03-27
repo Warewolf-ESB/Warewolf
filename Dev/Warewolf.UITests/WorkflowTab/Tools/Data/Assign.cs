@@ -89,6 +89,30 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
             DataToolsUIMap.Remove_Assign_Row_1_With_Context_Menu();
         }
 
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignTool_AddVariablesInsertRow_UITest()
+        {
+            const string Variable1Name = "SomeVariable";
+            const string Variable1Value = "50";
+            DataToolsUIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable1Name + "]]", Variable1Value, 1);
+            Assert.AreEqual(Variable1Name, WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 1.");
+            const string Variable2Name = "SomeOtherVariable";
+            const string Variable2Value = "100";
+            DataToolsUIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable2Name + "]]", Variable2Value, 2);
+            Assert.AreEqual(Variable2Name, WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem2.ScrollViewerPane.NameTextbox.Text, "Scalar variable not found in variable list after adding to assign tool row 2.");
+            DataToolsUIMap.Insert_Assign_Row_1_With_Context_Menu();
+            DataToolsUIMap.Remove_Assign_Row_1_With_Context_Menu_Keeps_Row_3();
+        }
+
+        [TestMethod]
+        [TestCategory("DesignSurfaceExpandAndCollapse")]
+        public void ExpandAndCollapseMultiAssignTool()
+        {
+            WorkflowTabUIMap.Click_Assign_Tool_ExpandAll();
+            WorkflowTabUIMap.Click_Assign_Tool_CollapseAll();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

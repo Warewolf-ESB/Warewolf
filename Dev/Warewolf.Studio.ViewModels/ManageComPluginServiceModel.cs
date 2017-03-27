@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Interfaces;
+using Warewolf.Core;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -60,6 +62,11 @@ namespace Warewolf.Studio.ViewModels
         public string TestService(IComPluginService inputValues)
         {
             return _updateRepository.TestPluginService(inputValues);
+        }
+
+        public IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IPluginAction action)
+        {
+            return new List<IServiceOutputMapping> { new ServiceOutputMapping("bob", "The", ""), new ServiceOutputMapping("dora", "The",""), new ServiceOutputMapping("Tree", "The","") };
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
@@ -21,9 +22,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SavePluginSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
-
-
-
+        
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;
@@ -47,14 +46,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var src = serializer.Deserialize<PluginSourceDefinition>(resourceDefinition);
                 if (src.Path.EndsWith("\\"))
                     src.Path = src.Path.Substring(0, src.Path.LastIndexOf("\\", StringComparison.Ordinal));
-                var res = new PluginSource
+                PluginSource res;
+                var existingSource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);
+                if (existingSource != null)
                 {
-                    ResourceID = src.Id,
-                    ConfigFilePath = src.ConfigFilePath,
-                    ResourceName = src.Name
-                };
+                    res = existingSource as PluginSource;
+                }
+                else
+                {
+                    res = new PluginSource
+                    {
+                        ResourceID = src.Id,
+                        ConfigFilePath = src.ConfigFilePath,
+                        ResourceName = src.Name
+                    };
+                }
+                Debug.Assert(res != null, "res != null");
                 if (!string.IsNullOrEmpty(src.FileSystemAssemblyName))
-                {
+                {                    
                     res.AssemblyLocation = src.FileSystemAssemblyName;
                 }
                 else if (!string.IsNullOrEmpty(src.GACAssemblyName))

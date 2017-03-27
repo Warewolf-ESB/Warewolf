@@ -112,7 +112,8 @@
                              ItemsSource="{Binding Tests}" SelectionMode="Single" 
                              x:Name="TestsListbox"
                              SelectedItem="{Binding SelectedServiceTest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                             ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             IsSynchronizedWithCurrentItem="True">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -412,14 +413,13 @@
                                 <TextBlock Grid.Row="0" Text="Test Inputs" FontWeight="Bold"/>
                                 <Border Grid.Row="1" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1" MaxHeight="136">
                                     <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Inputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-															AutoGenerateColumns="False"
-															BorderThickness="0"
-															Style="{StaticResource ActivityMappingDataGridStyle}"
-															x:Name="TestInputs">
+														   AutoGenerateColumns="False"
+														   BorderThickness="0"
+														   Style="{StaticResource ActivityMappingDataGridStyle}"
+														   x:Name="TestInputs">
 
                                         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                                         <DataGrid.Columns >
-                                            
                                             <DataGridTemplateColumn Width="*"
 																	MinWidth="125"
 																	Header="Variable"
@@ -428,9 +428,9 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <TextBlock KeyboardNavigation.IsTabStop="False" 
-																	Focusable="True" 
-																	ToolTip="{Binding Path=Variable}" 
-																	Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+																   Focusable="True" 
+																   ToolTip="{Binding Path=Variable}" 
+																   Text="{Binding Path=Variable, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -441,39 +441,25 @@
 																	d:DataContext="{d:DesignInstance Type=interfaces:IServiceTestInput}">
                                                 <DataGridTemplateColumn.CellTemplate >
                                                     <DataTemplate>
-                                                        <!--<TextBox Margin="1,0,1,1" 
-                                                                 AcceptsReturn="True"
-                                                                 VerticalScrollBarVisibility="Auto"
-                                                                 Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                                 ToolTip="{x:Static languages:Tooltips.ServiceTestInputValueTooltip}"
-                                                                 AutomationProperties.AutomationId="UI_AssertValue_AutoID">
+                                                        <ui:IntellisenseTextBox AllowMultilinePaste="True"
+						                                                        AllowUserCalculateMode="True"
+						                                                        AllowUserInsertLine="True"
+						                                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+						                                                        VerticalScrollBarVisibility="Auto"
+						                                                        TextWrapping="Wrap"
+						                                                        Margin="0,0,1,1"
+						                                                        AcceptsReturn="True"
+						                                                        MaxHeight="80"
+						                                                        Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+						                                                        Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+						                                                        IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+						                                                        Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+				   	                                                            ToolTip="{x:Static languages:Tooltips.ServiceTestInputValueTooltip}"
+                                                                                AutomationProperties.AutomationId="UI_AssertValue_AutoID">
                                                             <i:Interaction.Behaviors>
                                                                 <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestInputsValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                             </i:Interaction.Behaviors>
-                                                        </TextBox>-->
-
-                                                        <ui:IntellisenseTextBox 
-						                                    AllowMultilinePaste="True"
-						                                    AllowUserCalculateMode="True"
-						                                    AllowUserInsertLine="True"
-						                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-						                                    VerticalScrollBarVisibility="Auto"
-						                                    TextWrapping="Wrap"
-						                                    Margin="0,0,1,1"
-						                                    AcceptsReturn="True"
-						                                    MaxHeight="80"
-						                                    Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-						                                    Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-						                                    IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-						                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-				   	                                        ToolTip="{x:Static languages:Tooltips.ServiceTestInputValueTooltip}"
-                                                            
-                                                            AutomationProperties.AutomationId="UI_AssertValue_AutoID">
-                                                            <i:Interaction.Behaviors>
-                                                                                       <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestInputsValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                </i:Interaction.Behaviors>
-                                                                            </ui:IntellisenseTextBox>
-
+                                                        </ui:IntellisenseTextBox>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
@@ -486,11 +472,11 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <CheckBox IsChecked="{Binding Path=EmptyIsNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																	HorizontalAlignment="Center"
-																	Checked="ToggleButton_OnChecked"
-																	Unchecked="ToggleButton_OnChecked"
-																	ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}"
-																	AutomationProperties.AutomationId="UI_TestInputsEmptyIsNull_AutoID">
+																  HorizontalAlignment="Center"
+																  Checked="ToggleButton_OnChecked"
+																  Unchecked="ToggleButton_OnChecked"
+																  ToolTip="{x:Static languages:Tooltips.InputEmptyIsNullToolTip}"
+																  AutomationProperties.AutomationId="UI_TestInputsEmptyIsNull_AutoID">
                                                             <i:Interaction.Behaviors>
                                                                 <core:HelpSetter Text="{x:Static languages:HelpText.InputEmptyIsNullDefaultValueHelp}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                             </i:Interaction.Behaviors>
@@ -504,306 +490,312 @@
 
                                 <TextBlock Grid.Row="2" Text="Assert/Mock" FontWeight="Bold" HorizontalAlignment="Left"/>
 
-                                <ig:XamDataTree Grid.Row="3" 
-											    x:Name="StepTestDataTree"
-											    ItemsSource="{Binding SelectedServiceTest.TestSteps}"
-											    NodeStyle="{StaticResource ServiceTestXamDataTreeNodeControlStyle}">
-                                    <ig:XamDataTree.GlobalNodeLayouts>
-                                        <ig:NodeLayout Key="ServiceTestStep"
-													    DisplayMemberPath="StepDescription"
-													    TargetTypeName="IServiceTestStep"
-                                                        AutomationProperties.AutomationId="{Binding StringFormat=UI_Node{0}_AutoID, Path=Node.Data.StepDescription}">
-                                            <ig:NodeLayout.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid>
-                                                        <Grid.Width>
-                                                            <MultiBinding Converter="{StaticResource ServiceTestWidthConverter}">
-                                                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTreeNodeControl}}" />
-                                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type ig:XamDataTree}}" />
-                                                            </MultiBinding>
-                                                        </Grid.Width>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="*"/>
-                                                        </Grid.RowDefinitions>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
+                                <TreeView Grid.Row="3" 
+		                                  x:Name="StepTestDataTree"
+		                                  ItemsSource="{Binding SelectedServiceTest.TestSteps, Mode=TwoWay, IsAsync=True}"
+		                                  HorizontalAlignment="Stretch"
+		                                  Margin="{StaticResource ElementBorderTop}"
+		                                  Focusable="False" 
+		                                  HorizontalContentAlignment="Stretch"
+		                                  Style="{StaticResource TestViewStepTreeViewStyle}"
+		                                  Grid.IsSharedSizeScope="True"
+		                                  AutomationProperties.AutomationId="UI_VariableTreeView_AutoID"
+		                                  ScrollViewer.CanContentScroll="True"
+		                                  VirtualizingStackPanel.IsVirtualizing="True"
+		                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+		                                  VirtualizingStackPanel.ScrollUnit="Pixel"  
+		                                  VirtualizingStackPanel.CacheLength="2,1"
+		                                  VirtualizingStackPanel.CacheLengthUnit="Item"
+                                          VirtualizingStackPanel.IsVirtualizingWhenGrouping="True" 
+                                          VirtualizingStackPanel.IsContainerVirtualizable="True">
+                                    <TreeView.ItemTemplate>
+                                        <HierarchicalDataTemplate DataType="{x:Type interfaces:IServiceTestStep}" ItemsSource="{Binding Path=Children, IsAsync=True}">
+                                            <Grid>
+                                                <Grid.Width>
+					                                <MultiBinding Converter="{StaticResource ServiceTestWidthConverter}">
+                                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type TreeViewItem}}" />
+                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type TreeView}}" />
+					                                </MultiBinding>
+				                                </Grid.Width>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
 
-                                                        <DockPanel Background="{StaticResource WarewolfPanelGreyBrush}" LastChildFill="False" 
-                                                                   Visibility="{Binding Path=Node.Data.IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterNegative}}" >
-                                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="{StaticResource ControlBorderLeft}">
+                                                <DockPanel Background="{StaticResource WarewolfPanelGreyBrush}" 
+                                                           LastChildFill="False" 
+							                               Visibility="{Binding IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterNegative}}" >
+                                                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="{StaticResource ControlBorderLeft}">
 
-                                                                <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=Node.Data.TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
-                                                                <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=Node.Data.TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
-                                                                <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=Node.Data.TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,2,0,0"/>
-                                                                <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=Node.Data.TestPending, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
+                                                        <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
+                                                        <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
+                                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,2,0,0"/>
+                                                        <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,2,0,0" />
 
-                                                                <Image Source="{Binding Path=Node.Data.StepIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
-                                                                <TextBlock Text="{Binding Path=Node.Data.StepDescription}" 
-																		    ToolTip="{Binding Path=Node.Data.StepDescription}" 
-																		    FontWeight="Bold" Foreground="{StaticResource WareWolfBlackBrush}" 
-																		    HorizontalAlignment="Stretch"/>
-                                                            </StackPanel>
+                                                        <Image Source="{Binding StepIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
+                                                        <TextBlock Text="{Binding StepDescription}" 
+									                               ToolTip="{Binding StepDescription}" 
+									                               FontWeight="Bold" Foreground="{StaticResource WareWolfBlackBrush}" 
+									                               HorizontalAlignment="Stretch"/>
+                                                    </StackPanel>
 
-                                                            <Button DockPanel.Dock="Right" 
-																    x:Name="DeleteTestStepButton"
-																    Style="{StaticResource ButtonBlackTransparentStyle}" 
-																    Margin="0,-3,0,0" 
-																    Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
-																    CommandParameter="{Binding Path=Node.Data}"
-																    ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
-																    AutomationProperties.AutomationId="{Binding StringFormat=UI_TestStepDelete_{0}_AutoID, Path=Node.Data.StepDescription}">
-                                                                <fa:FontAwesome Icon="Trash"/>
-                                                                <i:Interaction.Behaviors>
-                                                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                </i:Interaction.Behaviors>
-                                                            </Button>
-                                                        </DockPanel>
-                                                        <Expander x:Name="TestStepExpander" 
-															        Visibility="{Binding Path=Node.Data.IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}" 
-															        Header="{Binding Path=Node.Data}" 
-															        IsExpanded="{Binding Path=Node.Data.IsTestStepExpanded}" 
-															        Style="{StaticResource ServiceTestTestStepExpander}" 
-                                                                    AutomationProperties.AutomationId="{Binding StringFormat=UI_ServiceTestTestStepExpander_{0}_AutoID, Path=Node.Data.StepDescription}">
-                                                            <Expander.HeaderTemplate>
-                                                                <DataTemplate>
-                                                                    <DockPanel x:Name="TestStepDockPanel" LastChildFill="False" >
-                                                                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                                                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
-                                                                                <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="2,0,0,0"/>
-                                                                                <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                            </StackPanel>
-                                                                            <Image Source="{Binding Path=StepIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
-                                                                            <TextBlock Text="{Binding Path=StepDescription}" 
-																					   ToolTip="{Binding Path=StepDescription}" 
-                                                                                       TextTrimming="CharacterEllipsis"
-																					   FontWeight="Bold" 
-																					   HorizontalAlignment="Stretch">
-                                                                                <TextBlock.Width>
-                                                                                    <MultiBinding Converter="{StaticResource ServiceTestHeaderTemplateWidthConverter}">
-                                                                                        <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
-                                                                                    </MultiBinding>
-                                                                                </TextBlock.Width>
-                                                                            </TextBlock>
+                                                    <Button DockPanel.Dock="Right" 
+							                                x:Name="DeleteTestStepButton"
+							                                Style="{StaticResource ButtonBlackTransparentStyle}" 
+							                                Margin="0,-3,0,0" 
+							                                Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
+							                                CommandParameter="{Binding .}"
+							                                ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
+							                                AutomationProperties.AutomationId="{Binding StringFormat=UI_TestStepDelete_{0}_AutoID, Path=StepDescription}">
+                                                        <fa:FontAwesome Icon="Trash"/>
+                                                        <i:Interaction.Behaviors>
+                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </Button>
+                                                </DockPanel>
+                                                <Expander x:Name="TestStepExpander" 
+							                              Visibility="{Binding IsTestStepExpanderEnabled, Converter={StaticResource BoolToVisibilityConverterPositive}}" 
+							                              Header="{Binding .}" 
+							                              IsExpanded="{Binding IsTestStepExpanded}" 
+							                              Style="{StaticResource ServiceTestTestStepExpander}" 
+							                              AutomationProperties.AutomationId="{Binding StringFormat=UI_ServiceTestTestStepExpander_{0}_AutoID, Path=StepDescription}">
+                                                    <Expander.HeaderTemplate>
+                                                        <DataTemplate>
+                                                            <DockPanel x:Name="TestStepDockPanel" LastChildFill="False" >
+                                                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
+                                                                        <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                        <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                        <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="2,0,0,0"/>
+                                                                        <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                    </StackPanel>
+                                                                    <Image Source="{Binding StepIcon}" Margin="5,0,3,0" Height="16" Width="16"/>
+                                                                    <TextBlock Text="{Binding StepDescription}" 
+												                               ToolTip="{Binding StepDescription}" 
+												                               TextTrimming="CharacterEllipsis"
+												                               FontWeight="Bold" 
+												                               HorizontalAlignment="Stretch">
+                                                                        <TextBlock.Width>
+                                                                            <MultiBinding Converter="{StaticResource ServiceTestHeaderTemplateWidthConverter}">
+                                                                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type Expander}}" />
+                                                                            </MultiBinding>
+                                                                        </TextBlock.Width>
+                                                                    </TextBlock>
+                                                                </StackPanel>
+
+                                                                <Button DockPanel.Dock="Right" 
+										                                x:Name="DeleteTestStepButton"
+										                                Style="{StaticResource ButtonBlackTransparentStyle}" 
+										                                Margin="0,-3,0,0" 
+										                                Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
+										                                CommandParameter="{Binding ElementName=DeleteTestStepButton, Path=DataContext}"
+										                                ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
+										                                AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
+                                                                    <fa:FontAwesome Icon="Trash"/>
+                                                                    <i:Interaction.Behaviors>
+                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                    </i:Interaction.Behaviors>
+                                                                </Button>
+                                                            </DockPanel>
+                                                        </DataTemplate>
+                                                    </Expander.HeaderTemplate>
+                                                    <controls:Dev2DataGrid x:Name="SmallDataGrid"
+											                               Grid.Row="1"
+											                               Grid.Column="0"
+											                               Grid.ColumnSpan="2"
+											                               ItemsSource="{Binding StepOutputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+											                               Style="{StaticResource ActivityMappingDataGridStyle}"
+											                               BorderBrush="{StaticResource XamGridBorderBrush}"
+											                               Height="Auto"
+											                               MaxHeight="107"
+											                               AutomationProperties.AutomationId="{Binding StringFormat=UI_StepOutputs_{0}_AutoID, Path=StepDescription}"
+											                               HeadersVisibility="All" HorizontalScrollBarVisibility="Auto">
+                                                        <DataGrid.Columns>
+                                                            <DataGridTemplateColumn AutomationProperties.AutomationId="UI_StepOutputColumnOne_AutoID" Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
+                                                                            <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                            <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                            <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ControlBorderLeft}"/>
+                                                                            <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
                                                                         </StackPanel>
-
-                                                                        <Button DockPanel.Dock="Right" 
-																			    x:Name="DeleteTestStepButton"
-																			    Style="{StaticResource ButtonBlackTransparentStyle}" 
-																			    Margin="0,-3,0,0" 
-																			    Command="{Binding ElementName=StepTestDataTree, Path=DataContext.DeleteTestStepCommand }" 
-																			    CommandParameter="{Binding ElementName=DeleteTestStepButton, Path=DataContext}"
-																			    ToolTip="{x:Static languages:Tooltips.ServiceTestStepDeleteStepTooltip}"
-																			    AutomationProperties.AutomationId="UI_TestStepDelete_AutoID">
-                                                                            <fa:FontAwesome Icon="Trash"/>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <DataGridTemplateColumn AutomationProperties.AutomationId="UI_StepOutputResultColumn_AutoID" Width="*" MinWidth="125" Header="Result" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBox Margin="1,0,1,1"
+													                             Text="{Binding Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													                             TextChanged="AutoCompleteBox_OnTextChanged"
+													                             ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertVariableTooltip}"
+													                             IsEnabled="{Binding Path=CanEditVariable}">
                                                                             <i:Interaction.Behaviors>
-                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepDeleteStepHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                             </i:Interaction.Behaviors>
-                                                                        </Button>
-                                                                    </DockPanel>
-                                                                </DataTemplate>
-                                                            </Expander.HeaderTemplate>
-                                                            <controls:Dev2DataGrid x:Name="SmallDataGrid"
-																			       Grid.Row="1"
-																			       Grid.Column="0"
-																			       Grid.ColumnSpan="2"
-																			       ItemsSource="{Binding Path=Data.StepOutputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																			       Style="{StaticResource ActivityMappingDataGridStyle}"
-                                                                                   BorderBrush="{StaticResource XamGridBorderBrush}"
-                                                                                   Height="Auto"
-                                                                                   MaxHeight="107"
-                                                                                   AutomationProperties.AutomationId="{Binding StringFormat=UI_StepOutputs_{0}_AutoID, Path=Data.StepDescription}"
-                                                                                   HeadersVisibility="All" HorizontalScrollBarVisibility="Auto">
-                                                                <DataGrid.Columns>
-                                                                    <DataGridTemplateColumn Width="20" MinWidth="20" MaxWidth="20" Header="" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
-                                                                        <DataGridTemplateColumn.CellTemplate>
-                                                                            <DataTemplate>
-                                                                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,0,0,0">
-                                                                                    <fa:FontAwesome Icon="Check" Foreground="Green" ToolTip="{x:Static languages:Tooltips.ServiceTestPassedTooltip}" FontSize="16" Visibility="{Binding Path=TestPassed, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                    <fa:FontAwesome Icon="Times" Foreground="Red" ToolTip="{x:Static languages:Tooltips.ServiceTestFailingTooltip}" FontSize="16"  Visibility="{Binding Path=TestFailing, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                    <fa:FontAwesome Icon="Exclamation" Foreground="OrangeRed" ToolTip="{x:Static languages:Tooltips.ServiceTestInvalidTooltip}" FontSize="16"  Visibility="{Binding Path=TestInvalid, Converter={StaticResource BoolToVisibilityConverter}}" Margin="{StaticResource ControlBorderLeft}"/>
-                                                                                    <fa:FontAwesome Icon="Question" Foreground="Black" ToolTip="{x:Static languages:Tooltips.ServiceTestPendingTooltip}" FontSize="16" Visibility="{Binding Path=TestPending, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                                                                </StackPanel>
-                                                                            </DataTemplate>
-                                                                        </DataGridTemplateColumn.CellTemplate>
-                                                                    </DataGridTemplateColumn>
-                                                                    <DataGridTemplateColumn Width="*" MinWidth="125" Header="Result" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
-                                                                        <DataGridTemplateColumn.CellTemplate>
-                                                                            <DataTemplate>
-                                                                                <TextBox Margin="1,0,1,1"
-                                                                                         Text="{Binding Path=Variable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                                                         TextChanged="AutoCompleteBox_OnTextChanged"
-                                                                                         ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertVariableTooltip}"
-                                                                                         IsEnabled="{Binding Path=CanEditVariable}">
-                                                                                    <i:Interaction.Behaviors>
-                                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertVariableHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                    </i:Interaction.Behaviors>
-                                                                                    <AutomationProperties.AutomationId >
-                                                                                        <Binding StringFormat="UI_AssertValue_{0}_AutoID" Path="Variable"/>
-                                                                                    </AutomationProperties.AutomationId>
-                                                                                </TextBox>
-                                                                            </DataTemplate>
-                                                                        </DataGridTemplateColumn.CellTemplate>
-                                                                    </DataGridTemplateColumn>
+                                                                            <AutomationProperties.AutomationId >
+                                                                                <Binding StringFormat="UI_AssertValue_{0}_AutoID" Path="Variable"/>
+                                                                            </AutomationProperties.AutomationId>
+                                                                        </TextBox>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <DataGridTemplateColumn AutomationProperties.AutomationId="UI_StepOutputAssertMockColumn_AutoID" Width="*" MinWidth="125" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
+                                                                <DataGridTemplateColumn.HeaderTemplate>
+                                                                    <DataTemplate>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="50*"/>
+                                                                                <ColumnDefinition Width="50*"/>
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <RadioButton Grid.Column="0" 
+														                                 ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertRadioButtonTooltip}" 
+														                                 Content="Assert" 
+														                                 Margin="8,-3,0,0"
+														                                 Checked="ToggleButton_OnChecked"
+														                                 Unchecked="ToggleButton_OnChecked"
+														                                 IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.AssertSelected}"
+														                                 AutomationProperties.AutomationId="{Binding Path=DataContext.Description, StringFormat=UI_AssertRadioButton_{0}_AutoID}">
+                                                                                <i:Interaction.Behaviors>
+                                                                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                </i:Interaction.Behaviors>
+                                                                            </RadioButton>
+                                                                            <RadioButton Grid.Column="1" 
+														                                 ToolTip="{x:Static languages:Tooltips.ServiceTestStepMockRadioButtonTooltip}" 
+														                                 Content="Mock" 
+														                                 Margin="0,-3,0,0"
+														                                 Checked="ToggleButton_OnChecked"
+														                                 Unchecked="ToggleButton_OnChecked"
+														                                 IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.MockSelected}"
+														                                 AutomationProperties.AutomationId="{Binding Path=DataContext.Description, StringFormat=UI_MockRadioButton_{0}_AutoID}">
+                                                                                <i:Interaction.Behaviors>
+                                                                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepMockRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                </i:Interaction.Behaviors>
+                                                                            </RadioButton>
+                                                                        </Grid>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.HeaderTemplate>
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+													                              Margin="1,0,1,1"
+													                              SelectionChanged="Selector_OnSelectionChanged"
+													                              IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.AssertSelected}"
+													                              ItemsSource="{Binding Path=AssertOps}"
+													                              SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+													                              ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertOpsTooltip}"
+													                              AutomationProperties.AutomationId="{Binding Path=Variable, StringFormat=UI_AssertOp_{0}_AutoID}">
+                                                                            <i:Interaction.Behaviors>
+                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                            </i:Interaction.Behaviors>
+                                                                        </ComboBox>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <DataGridTemplateColumn AutomationProperties.AutomationId="UI_StepOutputValueColumn_AutoID" 
+                                                                                    Width="*" 
+													                                MinWidth="125" 
+													                                Header="Value" 
+													                                HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+													                                Visibility="{Binding Path=IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <Grid>
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition />
+                                                                                <ColumnDefinition />
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <StackPanel Grid.Column="0"
+														                                Grid.ColumnSpan="2" 
+														                                Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
 
-                                                                    <DataGridTemplateColumn Width="*" MinWidth="125" HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}">
-                                                                        <DataGridTemplateColumn.HeaderTemplate>
-                                                                            <DataTemplate>
-                                                                                <Grid>
-                                                                                    <Grid.ColumnDefinitions>
-                                                                                        <ColumnDefinition Width="50*"/>
-                                                                                        <ColumnDefinition Width="50*"/>
-                                                                                    </Grid.ColumnDefinitions>
-                                                                                    <RadioButton Grid.Column="0" 
-																							    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertRadioButtonTooltip}" 
-																							    Content="Assert" 
-																							    Margin="8,-3,0,0"
-                                                                                                Checked="ToggleButton_OnChecked"
-																                            	Unchecked="ToggleButton_OnChecked"
-																							    IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
-																							    AutomationProperties.AutomationId="{Binding Path=DataContext.Data.Description, StringFormat=UI_AssertRadioButton_{0}_AutoID}">
-                                                                                        <i:Interaction.Behaviors>
-                                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                        </i:Interaction.Behaviors>
-                                                                                    </RadioButton>
-                                                                                    <RadioButton Grid.Column="1" 
-																							    ToolTip="{x:Static languages:Tooltips.ServiceTestStepMockRadioButtonTooltip}" 
-																							    Content="Mock" 
-																							    Margin="0,-3,0,0"
-                                                                                                Checked="ToggleButton_OnChecked"
-																                            	Unchecked="ToggleButton_OnChecked"
-																							    IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.MockSelected}"
-                                                                                                AutomationProperties.AutomationId="{Binding Path=DataContext.Data.Description, StringFormat=UI_MockRadioButton_{0}_AutoID}">
-                                                                                        <i:Interaction.Behaviors>
-                                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepMockRadioButtonHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                        </i:Interaction.Behaviors>
-                                                                                    </RadioButton>
-                                                                                </Grid>
-                                                                            </DataTemplate>
-                                                                        </DataGridTemplateColumn.HeaderTemplate>
-                                                                        <DataGridTemplateColumn.CellTemplate>
-                                                                            <DataTemplate>
-                                                                                <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-																					        Margin="1,0,1,1"
-                                                                                            SelectionChanged="Selector_OnSelectionChanged"
-																					        IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=DataContext.Data.AssertSelected}"
-																					        ItemsSource="{Binding Path=AssertOps}"
-																					        SelectedValue="{Binding Path=AssertOp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-																					        ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertOpsTooltip}"
-																					        AutomationProperties.AutomationId="{Binding Path=Variable, StringFormat=UI_AssertOp_{0}_AutoID}">
+                                                                                <ui:IntellisenseTextBox AllowMultilinePaste="True"
+															                                            AllowUserCalculateMode="True"
+															                                            AllowUserInsertLine="True"
+															                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+															                                            VerticalScrollBarVisibility="Auto"
+															                                            TextWrapping="Wrap"
+															                                            Margin="0,0,1,1"
+															                                            TextChanged="AutoCompleteBox_OnTextChanged"
+															                                            AcceptsReturn="True"
+															                                            MaxHeight="80"
+															                                            Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+															                                            IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
+															                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+															                                            ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertValueTooltip}"
+														                                                IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
+														                                                Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+														                                                AutomationProperties.AutomationId="{Binding Path=Value, StringFormat=UI_AssertValue_{0}_AutoID}">
                                                                                     <i:Interaction.Behaviors>
-                                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertOpsHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                    </i:Interaction.Behaviors>
+                                                                                </ui:IntellisenseTextBox>
+                                                                            </StackPanel>
+
+                                                                            <TextBox Margin="1,0,1,1"
+													                                 Grid.Column="0"
+													                                 TextChanged="AutoCompleteBox_OnTextChanged"
+													                                 Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													                                 ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertFromTooltip}"
+													                                 Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+													                                 customControls:WatermarkTextBox.Watermark="From"
+													                                 AutomationProperties.AutomationId="{Binding Path=From, StringFormat=UI_AssertFrom_{0}_AutoID}">
+                                                                                <i:Interaction.Behaviors>
+                                                                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                </i:Interaction.Behaviors>
+                                                                            </TextBox>
+
+                                                                            <TextBox Margin="1,0,1,1"
+													                                 Grid.Column="1"
+													                                 TextChanged="AutoCompleteBox_OnTextChanged"
+													                                 Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													                                 ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertToTooltip}"
+													                                 Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+													                                 customControls:WatermarkTextBox.Watermark="To"
+													                                 AutomationProperties.AutomationId="{Binding Path=To, StringFormat=UI_AssertTo_{0}_AutoID}">
+                                                                                <i:Interaction.Behaviors>
+                                                                                    <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
+                                                                                </i:Interaction.Behaviors>
+                                                                            </TextBox>
+
+                                                                            <StackPanel Grid.Column="0"
+														                                Grid.ColumnSpan="2" 
+														                                Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                                                                                <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
+															                              Margin="1,0,1,1"
+															                              ItemsSource="{Binding Path=OptionsForValue}"
+															                              SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+															                              Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+															                              ToolTip="{x:Static languages:Tooltips.ServiceTestStepOptionsForValueTooltip}"
+															                              AutomationProperties.AutomationId="{Binding StringFormat=UI_OptionsForValue_{0}_AutoID, Path=Variable}">
+                                                                                    <i:Interaction.Behaviors>
+                                                                                        <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
                                                                                     </i:Interaction.Behaviors>
                                                                                 </ComboBox>
-                                                                            </DataTemplate>
-                                                                        </DataGridTemplateColumn.CellTemplate>
-                                                                    </DataGridTemplateColumn>
-
-                                                                    <DataGridTemplateColumn Width="*" 
-																						    MinWidth="125" 
-																						    Header="Value" 
-																						    HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
-																						    Visibility="{Binding Path=IsSearchCriteriaVisible, Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
-                                                                        <DataGridTemplateColumn.CellTemplate>
-                                                                            <DataTemplate>
-                                                                                <Grid>
-                                                                                    <Grid.ColumnDefinitions>
-                                                                                        <ColumnDefinition />
-                                                                                        <ColumnDefinition />
-                                                                                    </Grid.ColumnDefinitions>
-                                                                                    <StackPanel Grid.Column="0"
-																							    Grid.ColumnSpan="2" 
-																							    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                                                                    
-                                                                                        <ui:IntellisenseTextBox 
-						                                                                            AllowMultilinePaste="True"
-						                                                                            AllowUserCalculateMode="True"
-						                                                                            AllowUserInsertLine="True"
-						                                                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-						                                                                            VerticalScrollBarVisibility="Auto"
-						                                                                            TextWrapping="Wrap"
-						                                                                            Margin="0,0,1,1"
-                                                                                                     TextChanged="AutoCompleteBox_OnTextChanged"
-						                                                                            AcceptsReturn="True"
-						                                                                            MaxHeight="80"
-						                                                                            Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						                                                                            IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-						                                                                            Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-				   	                                                                                ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertValueTooltip}"
-																							    IsEnabled="{Binding Path=IsSearchCriteriaEnabled, UpdateSourceTrigger=PropertyChanged}"
-																							    Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                                                                                AutomationProperties.AutomationId="{Binding Path=Value, StringFormat=UI_AssertValue_{0}_AutoID}">
-                                                                                            <i:Interaction.Behaviors>
-                                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                            </i:Interaction.Behaviors>
-                                                                                        </ui:IntellisenseTextBox>
-                                                                                    </StackPanel>
-
-                                                                                    <TextBox Margin="1,0,1,1"
-																					        Grid.Column="0"
-                                                                                            TextChanged="AutoCompleteBox_OnTextChanged"
-																					        Text="{Binding Path=From, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																					        ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertFromTooltip}"
-																					        Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-																					        customControls:WatermarkTextBox.Watermark="From"
-                                                                                            AutomationProperties.AutomationId="{Binding Path=From, StringFormat=UI_AssertFrom_{0}_AutoID}">
-                                                                                        <i:Interaction.Behaviors>
-                                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertFromHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                        </i:Interaction.Behaviors>
-                                                                                    </TextBox>
-
-                                                                                    <TextBox Margin="1,0,1,1"
-																						    Grid.Column="1"
-                                                                                            TextChanged="AutoCompleteBox_OnTextChanged"
-																						    Text="{Binding Path=To, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-																						    ToolTip="{x:Static languages:Tooltips.ServiceTestStepAssertToTooltip}"
-																						    Visibility="{Binding Path=IsBetweenCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-																						    customControls:WatermarkTextBox.Watermark="To"
-                                                                                            AutomationProperties.AutomationId="{Binding Path=To, StringFormat=UI_AssertTo_{0}_AutoID}">
-                                                                                        <i:Interaction.Behaviors>
-                                                                                            <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepAssertToHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                        </i:Interaction.Behaviors>
-                                                                                    </TextBox>
-
-                                                                                    <StackPanel Grid.Column="0"
-																							    Grid.ColumnSpan="2" 
-																							    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                                                                                        <ComboBox ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-																							        Margin="1,0,1,1"
-																							        ItemsSource="{Binding Path=OptionsForValue}"
-																							        SelectedValue="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-																							        Visibility="{Binding Path=IsSinglematchCriteriaVisible,Converter={StaticResource BoolToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-																							        ToolTip="{x:Static languages:Tooltips.ServiceTestStepOptionsForValueTooltip}"
-																							        AutomationProperties.AutomationId="{Binding StringFormat=UI_OptionsForValue_{0}_AutoID, Path=Variable}">
-                                                                                            <i:Interaction.Behaviors>
-                                                                                                <core:HelpSetter Text="{x:Static languages:HelpText.ServiceTestStepOptionsForValueHelpText}" DataContext="{Binding DataContext, ElementName=ServiceTestUserControl}" />
-                                                                                            </i:Interaction.Behaviors>
-                                                                                        </ComboBox>
-                                                                                    </StackPanel>
-                                                                                </Grid>
-                                                                            </DataTemplate>
-                                                                        </DataGridTemplateColumn.CellTemplate>
-                                                                    </DataGridTemplateColumn>
-                                                                </DataGrid.Columns>
-                                                            </controls:Dev2DataGrid>
-                                                        </Expander>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ig:NodeLayout.ItemTemplate>
-                                        </ig:NodeLayout>
-                                    </ig:XamDataTree.GlobalNodeLayouts>
-                                </ig:XamDataTree>
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                            </DataGridTemplateColumn>
+                                                        </DataGrid.Columns>
+                                                    </controls:Dev2DataGrid>
+                                                </Expander>
+                                            </Grid>
+                                        </HierarchicalDataTemplate>
+                                    </TreeView.ItemTemplate>
+                                </TreeView>
 
                                 <TextBlock Grid.Row="4" Text="Assert Outputs" FontWeight="Bold"/>
                                 <Border Grid.Row="5" BorderBrush="{StaticResource XamGridBorderBrush}" BorderThickness="1" MaxHeight="136">
                                     <controls:Dev2DataGrid ItemsSource="{Binding SelectedServiceTest.Outputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-														    AutoGenerateColumns="False"
-														    BorderThickness="0"      
-														    Style="{StaticResource ActivityMappingDataGridStyle}"
-														    x:Name="TestOutputsGrid">
+														   AutoGenerateColumns="False"
+														   BorderThickness="0"      
+														   Style="{StaticResource ActivityMappingDataGridStyle}"
+														   x:Name="TestOutputsGrid">
 
                                         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
                                         <DataGrid.Columns>
@@ -869,7 +861,7 @@
                                                             <StackPanel Grid.Column="0"
 																	    Grid.ColumnSpan="2" 
 																	    Visibility="{Binding Path=HasOptionsForValue, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                                             
+
                                                                 <ui:IntellisenseTextBox 
 						                                                            AllowMultilinePaste="True"
 						                                                            AllowUserCalculateMode="True"

@@ -3,6 +3,7 @@ using Dev2.Common.Interfaces.WebServices;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 // ReSharper disable InconsistentNaming
 
@@ -49,6 +50,6 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
     /// </summary>
     public interface IUpdateManager : IUpdateManagerSave, IUpdateManagerTest
     {
-        void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironmentId);
+        List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironmentId);
     }
 }

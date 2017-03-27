@@ -902,6 +902,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="NewSharepointSourceTooltip" xml:space="preserve">
     <value>Create a new sharepoint source</value>
   </data>
+  <data name="NewWcfSourceTooltip" xml:space="preserve">
+    <value>Create a new wcf source</value>
+  </data>
   <data name="NewServiceTooltip" xml:space="preserve">
     <value>Create a new service [CTRL+W]</value>
   </data>

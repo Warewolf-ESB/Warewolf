@@ -3378,3 +3378,20 @@ Scenario: Executing unsaved workflow should execute by ID
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = 1 |
 	  | 2 | [[rec(2).a]] = 2  |
+
+Scenario:WF with RabbitMq Consume timeout 5
+	Given I have a workflow "RabbitMqConsume5mintimeout"
+	And "RabbitMqConsume5mintimeout" contains RabbitMQPublish and Queue1 "DsfPublishRabbitMQActivity" into "[[result1]]"
+	And "RabbitMqConsume5mintimeout" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" with timeout 5 seconds into "[[result]]"
+	When "RabbitMqConsume5mintimeout" is executed
+    Then the workflow execution has "No" error
+	And the "RabbitMqConsume5mintimeout" has a start and end duration
+	And "RabbitMqConsume5mintimeout" Duration is greater or equal to 5 seconds
+	
+Scenario:WF with RabbitMq Consume with no timeout 
+	Given I have a workflow "RabbitMqConsumeNotimeout"
+	And "RabbitMqConsumeNotimeout" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" with timeout -1 seconds into "[[result]]"
+	When "RabbitMqConsumeNotimeout" is executed
+    Then the workflow execution has "No" error
+	And the "RabbitMqConsumeNotimeout" has a start and end duration
+	And "RabbitMqConsumeNotimeout" Duration is less or equal to 2 seconds

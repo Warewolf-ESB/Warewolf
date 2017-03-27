@@ -75,7 +75,7 @@ namespace Dev2.Core.Tests
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             mockEnv.Setup(repository => repository.Source).Returns(mockEnvironmentModel.Object);
-            
+
             var environmentRepo = mockEnv.Object;
             EmptyEnvRepo = mockEnv;
             EventAggregator = new Mock<IEventAggregator>();
@@ -157,9 +157,9 @@ namespace Dev2.Core.Tests
             FirstResource = CreateResource(ResourceType.WorkflowService);
             var coll = new Collection<IResourceModel> { FirstResource.Object };
             ResourceRepo.Setup(c => c.All()).Returns(coll);
-            
+
             EnvironmentModel.Setup(m => m.ResourceRepository).Returns(ResourceRepo.Object);
-            
+
         }
 
         protected Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
@@ -200,7 +200,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.EnvironmentID).Returns(ServerId);
             env.Setup(e => e.Name).Returns($"Server_{rand.Next(1, 100)}");
-            
+
             return env;
         }
 

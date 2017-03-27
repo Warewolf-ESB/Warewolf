@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.ServiceModel;
 using Microsoft.Practices.Prism.Commands;
@@ -298,6 +299,7 @@ namespace Warewolf.Studio.ViewModels
                             }
                         }
                     }
+                    var deployResponse = new List<IDeployResult>();
                     if (supportsDirectServerDeploy)
                     {
                         if (destEnv != null)
@@ -309,13 +311,15 @@ namespace Warewolf.Studio.ViewModels
                                 UserName = destEnv.Connection.UserName,
                                 Password = destEnv.Connection.Password
                             };
-                            sourceEnvServer.UpdateRepository.Deploy(notfolders, Destination.DeployTests, destConnection);
+                            deployResponse = sourceEnvServer.UpdateRepository.Deploy(notfolders, Destination.DeployTests, destConnection);
                         }
                     }
-                    else
+                    
+                    if(!supportsDirectServerDeploy || deployResponse.Where(r => r.HasError).Any())
                     {
                         _shell.DeployResources(sourceEnvServer.EnvironmentID, destinationEnvironmentId, notfolders, Destination.DeployTests);
                     }
+
                     DeploySuccessfull = true;
                     DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
                     var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);

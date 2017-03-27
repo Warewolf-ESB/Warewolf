@@ -7,9 +7,9 @@ using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.Windows.Input;
+using Warewolf.UITests.ComPluginSource;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses

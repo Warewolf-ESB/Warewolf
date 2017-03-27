@@ -41,10 +41,10 @@ namespace Warewolf.Studio.CustomControls
 
             try
             {
-                var xamDataTreeNodeControl = values[0] as XamDataTreeNodeControl;
+                var xamDataTreeNodeControl = values[0] as TreeViewItem;
                 if (xamDataTreeNodeControl != null)
                 {
-                    return (double)values[1] - xamDataTreeNodeControl.Node.Manager.Level * 21 - 35;
+                    return xamDataTreeNodeControl.ActualWidth - 22;
                 }
                 return 22;
             }

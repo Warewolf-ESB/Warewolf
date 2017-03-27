@@ -504,18 +504,10 @@ namespace Warewolf.Studio.ViewModels
 
         public ObservableCollection<IServiceTestStep> TestSteps
         {
-            get
-            {
-                if (_testSteps == null)
-                {
-                    _testSteps = new ObservableCollection<IServiceTestStep>();
-                }
-                return _testSteps;
-            }
+            get { return _testSteps ?? (_testSteps = new ObservableCollection<IServiceTestStep>()); }
             set
             {
                 _testSteps = value;
-                
                 OnPropertyChanged(() => TestSteps);
             }
         }
