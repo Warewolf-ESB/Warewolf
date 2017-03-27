@@ -665,11 +665,11 @@ Scenario: Run a passing switch test and change step type
 
 @TestFramework
 Scenario: Run a test expecting error 
-	Given the test builder is open with existing service "Hello World"	
-	And Tab Header is "Hello World - Tests"
+	Given the test builder is open with existing service "HelloWorldWithError"	
+	And Tab Header is "HelloWorldWithError - Tests"
 	When I click New Test
 	Then a new test is added
-	And Tab Header is "Hello World - Tests *"
+	And Tab Header is "HelloWorldWithError - Tests *"
 	And test name starts with "Test 1"
 	And username is blank
 	And password is blank
