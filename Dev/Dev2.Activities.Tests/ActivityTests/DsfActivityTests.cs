@@ -13,6 +13,7 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Text;
 using ActivityUnitTests;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
@@ -57,6 +58,76 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
             Assert.AreEqual(5, inRes.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_GetForEachInputs")]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void DsfActivity_GetForEachInputs_WhenExecuted_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var dsfActivity = new DsfActivity();
+
+            //------------Execute Test---------------------------
+            dsfActivity.GetForEachInputs();
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_GetForEachOutputs")]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void DsfActivity_GetForEachOutputs_WhenExecuted_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var dsfActivity = new DsfActivity();
+
+            //------------Execute Test---------------------------
+            dsfActivity.GetForEachOutputs();
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_UpdateForEachInputs")]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void DsfActivity_UpdateForEachInputs_WhenExecuted_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var dsfActivity = new DsfActivity();
+
+            //------------Execute Test---------------------------
+            dsfActivity.UpdateForEachInputs(new List<Tuple<string, string>>());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_UpdateForEachOutputs")]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void DsfActivity_UpdateForEachOutputs_WhenExecuted_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var dsfActivity = new DsfActivity();
+
+            //------------Execute Test---------------------------
+            dsfActivity.UpdateForEachOutputs(new List<Tuple<string, string>>());
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_GetFindMissingType")]
+        public void DsfActivity_GetFindMissingType_Executed_ReturnsDsfActivity()
+        {
+            //------------Setup for test--------------------------
+            var dsfActivity = new DsfActivity();
+
+            //------------Execute Test---------------------------
+            var findMissingType = dsfActivity.GetFindMissingType();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(enFindMissingType.DsfActivity,findMissingType);
         }
 
         [TestMethod]
@@ -197,8 +268,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
-                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
-                //       if this is NOT provided which will cause the tests to fail!
                 ServerID = Guid.NewGuid(),
                 IsDebug = true,
                 ForEachNestingLevel = 1
@@ -210,6 +279,162 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateDebugParentID(dataObject);
             Assert.AreNotEqual(originalGuid.ToString(), act.UniqueID);
             Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_Constructor")]
+        public void DsfActivity_Constructor_WithParameters_ShouldSetValues()
+        {
+            //------------Setup for test--------------------------
+            const string toolboxFriendlyName = "toolBoxName";
+            const string iconPath = "iconPath";
+            const string serviceName = "serviceName";
+            const string dataTags = "tags";
+            const string resultValidationRequiredTags = "resValidationTags";
+            const string resultValidationExpression = "resValidationExp";
+            //------------Execute Test---------------------------
+
+            var dsfActivity = new DsfActivity(toolboxFriendlyName,iconPath,serviceName,dataTags,resultValidationRequiredTags,resultValidationExpression);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(toolboxFriendlyName,dsfActivity.ToolboxFriendlyName);
+            Assert.AreEqual(serviceName, dsfActivity.ServiceName);
+            Assert.AreEqual(dataTags, dsfActivity.DataTags);
+            Assert.AreEqual(resultValidationRequiredTags, dsfActivity.ResultValidationRequiredTags);
+            Assert.AreEqual(resultValidationExpression, dsfActivity.ResultValidationExpression);
+            Assert.IsFalse(dsfActivity.IsService);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_Inputs")]
+        public void DsfActivity_Inputs_GivenValue_ShouldSetProperty()
+        {
+            //------------Setup for test--------------------------
+            var dsfActivity = new DsfActivity();
+            
+            //------------Execute Test---------------------------
+            dsfActivity.Inputs = new List<IServiceInput>();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfActivity.Inputs);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_Inputs")]
+        public void DsfActivity_Inputs_GivenNull_ShouldNotSetProperty()
+        {
+            //------------Setup for test--------------------------
+            var dsfActivity = new DsfActivity();
+            dsfActivity.Inputs = new List<IServiceInput>();
+            //------------Assert Precondition--------------------
+            Assert.IsNotNull(dsfActivity.Inputs);
+            //------------Execute Test---------------------------
+            dsfActivity.Inputs = null;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfActivity.Inputs);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_ExecuteTool")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivity_ExecuteTool_DataObjectWithNullChannel_ShouldError()
+        // ReSharper restore InconsistentNaming
+        {
+            var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
+            {
+                ServerID = Guid.NewGuid(),
+                IsDebug = true,
+                ForEachNestingLevel = 1
+            };
+
+            DsfActivity act = new DsfActivity();
+            var originalGuid = Guid.NewGuid();
+            act.UniqueID = originalGuid.ToString();
+            act.Execute(dataObject, 0);
+            Assert.IsTrue(dataObject.Environment.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_BeforeExecutionStart")]
+        public void DsfActivity_GetOutputs_NotObjectAndOutputMapping_GetsOutputs()
+        {
+            //------------Setup for test--------------------------
+            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = null };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(outputs);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_BeforeExecutionStart")]
+        public void DsfActivity_GetOutptus_ObjectAndOutputMapping_GetsObjectName()
+        {
+            //------------Setup for test--------------------------
+            DsfActivity act = new DsfActivity
+            {
+                InputMapping = ActivityStrings.DsfActivityInputMapping,
+                OutputMapping = ActivityStrings.DsfActivityOutputMapping,
+                ResourceID = null,
+                IsObject =  true,
+                ObjectName = "Obj",
+                ObjectResult = "{Name:BOb}"
+            };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(outputs);
+            Assert.AreEqual("Obj",outputs[0]);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity_OnExecute")]
+        public void DsfActivity_OnExecute_WhenIsTestExecutionShouldUpdateDataObject_SetBackToTrue()
+        {
+            //------------Setup for test--------------------------
+            var environmentID = Guid.Empty;
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+            var resourceID = Guid.NewGuid();
+            
+            DsfActivity act = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = Guid.Empty
+            };
+            var mockAutorizationService = new Mock<IAuthorizationService>();
+            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
+
+            PrivateObject p = new PrivateObject(act);
+            p.SetProperty("AuthorizationService", mockAutorizationService.Object);
+
+            //------------Execute Test---------------------------
+            TestStartNode = new FlowStep
+            {
+                Action = act
+            };
+
+            TestData = "<DataList></DataList>";
+            CurrentDl = "<DataList></DataList>";
+            User = new Mock<IPrincipal>().Object;
+            ExecuteProcess(dataObject, true, null, false, true, false, environmentID);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataObject.IsServiceTestExecution);
         }
     }
 }

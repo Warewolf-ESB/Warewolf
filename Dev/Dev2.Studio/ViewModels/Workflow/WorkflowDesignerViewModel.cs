@@ -1703,6 +1703,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             ModelService = instance;
             ModelService.ModelChanged += ModelServiceModelChanged;
+            if (_activityCollection == null)
+            {
+                _activityCollection = ModelService.Find(ModelService.Root, typeof(Activity));
+            }
+            if (_modelItems == null)
+            {
+                _modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
+            }
         }
 
         private void SubscribeToDebugSelectionChanged()
@@ -1762,9 +1770,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (ModelService != null)
             {
-                var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
                 // ReSharper disable MaximumChainedReferences
-                var selectedModelItem = (from mi in modelItems
+                var selectedModelItem = (from mi in _modelItems
                                          let instanceID = ModelItemUtils.GetUniqueID(mi)
                                          where instanceID == itemId || instanceID == parentId
                                          select mi).FirstOrDefault();
@@ -1787,7 +1794,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return null;
         }
-
 
         private void SelectSingleModelItem(ModelItem selectedModelItem)
         {
@@ -1816,10 +1822,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             Selection.Union(_wd.Context, selectedModelItem);
 
-            ModelService modelService = _wd.Context.Services.GetService<ModelService>();
-            IEnumerable<ModelItem> activityCollection = modelService.Find(modelService.Root, typeof(Activity));
-
-            var modelItems = activityCollection as ModelItem[] ?? activityCollection.ToArray();
+            var modelItems = _activityCollection as ModelItem[] ?? _activityCollection.ToArray();
             var index = modelItems.ToList().IndexOf(selectedModelItem);
             if (index != -1)
             {
@@ -1869,11 +1872,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private static void BringIntoView(FrameworkElement view)
         {
-            view?.BringIntoView();
+            Application.Current?.Dispatcher?.InvokeAsync(() => view?.BringIntoView(), DispatcherPriority.Background);
         }
         protected void LoadDesignerXaml()
         {
-
             var xaml = _resourceModel.WorkflowXaml;
 
             // if null, try fetching. It appears there is more than the two routes identified to populating xaml ;(
@@ -2437,6 +2439,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private string _showDependenciesTooltip;
         private ICommand _newServiceCommand;
         private ModelItem _selectedItem;
+        private IEnumerable<ModelItem> _modelItems;
+        private IEnumerable<ModelItem> _activityCollection;
 
         /// <summary>
         /// Models the service model changed.

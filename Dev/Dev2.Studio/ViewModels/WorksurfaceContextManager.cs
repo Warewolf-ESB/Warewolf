@@ -312,7 +312,7 @@ namespace Dev2.Studio.ViewModels
                 testViewModel.RunAllTestsInBrowserCommand.Execute(null);
             }
         }
-        
+
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var pluginSourceViewModel = new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
@@ -1105,7 +1105,7 @@ namespace Dev2.Studio.ViewModels
                 Name = connection.ResourceName
             };
 
-            
+
 
             EditServer(selectedServer, ActiveServer);
         }

@@ -140,24 +140,9 @@ namespace Dev2.Studio.AppResources.Behaviors
                     if (mi != null)
                     {
                         int watermarkIndex = WatermarkIndexes.IndexOf(i);
-                        if (watermarkIndex != -1)
-                        {
-                            WatermarkSential.IsWatermarkBeingApplied = true;
-                            ModelProperty modelProperty = mi.Properties[WatermarkPropertyName];
-                            if (modelProperty != null)
-                            {
-                                modelProperty.SetValue(WatermarkText[watermarkIndex]);
-                            }
-                        }
-                        else
-                        {
-                            WatermarkSential.IsWatermarkBeingApplied = true;
-                            ModelProperty modelProperty = mi.Properties[WatermarkPropertyName];
-                            if (modelProperty != null)
-                            {
-                                modelProperty.SetValue("");
-                            }
-                        }
+                        WatermarkSential.IsWatermarkBeingApplied = true;
+                        ModelProperty modelProperty = mi.Properties[WatermarkPropertyName];
+                        modelProperty?.SetValue(watermarkIndex != -1 ? WatermarkText[watermarkIndex] : "");
                     }
                     else
                     {
@@ -226,7 +211,10 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void observable_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            UpdateWatermarks();
+            if (e.NewItems != null)
+            {
+                UpdateWatermarks();
+            }
         }
 
         private void notifyPropertyChangedImplimentor_PropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -366,7 +366,7 @@ namespace ActivityUnitTests
                 return;
             }
             var brackettedField = DataListUtil.AddBracketsToValueIfNotExist(fieldToRetrieve);
-            CommonFunctions.WarewolfEvalResult evalResult = null;
+            CommonFunctions.WarewolfEvalResult evalResult;
             try
             {
                 evalResult = env.Eval(brackettedField, 0, true);

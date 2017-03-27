@@ -16,7 +16,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +24,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
+using RabbitMQ.Client.Events;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
@@ -48,7 +48,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public List<string> _messages;
         public string _result = "Success";
         public ushort _prefetch;
-        public int _timeOut = TimeSpan.FromMilliseconds(5000).Seconds;
+        public int _timeOut;
 
         public DsfConsumeRabbitMQActivity()
         {
@@ -62,6 +62,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             _messages = new List<string>();
             ResourceCatalog = resourceCatalog;
         }
+
 
 
         public Guid RabbitMQSourceResourceId { get; set; }
@@ -163,7 +164,8 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 {
                     using (Channel = Connection.CreateModel())
                     {
-                        if (!string.IsNullOrEmpty(TimeOut)) _timeOut = int.Parse(TimeOut);
+                        if (!string.IsNullOrEmpty(TimeOut))
+                            _timeOut = int.Parse(TimeOut);
                         _prefetch = string.IsNullOrEmpty(prefetch) ? (ushort)0 : ushort.Parse(prefetch);
                         if (_prefetch == 0)
                         {
@@ -183,7 +185,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
                             }
 
-                            while (response != null && _prefetch>msgCount)
+                            while (response != null && _prefetch > msgCount)
                             {
                                 _messages.Add(Encoding.Default.GetString(response.Body));
                                 msgCount++;
@@ -194,45 +196,92 @@ namespace Dev2.Activities.RabbitMQ.Consume
                                 catch (Exception)
                                 {
                                     throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
-                                }                                
-                            }                            
+                                }
+
+                            }
                         }
                         else
                         {
-                            Consumer = new QueueingBasicConsumer(Channel);
-                            try
+
+                            if (!string.IsNullOrEmpty(TimeOut))
                             {
-                                Channel.BasicConsume(queueName, false, Consumer);
-                            }
-                            catch (Exception)
-                            {
-                                throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
-                            }
-                            BasicDeliverEventArgs basicDeliverEventArgs;
-                            ulong? tag = null;
-                            while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out basicDeliverEventArgs) && _prefetch>msgCount)
-                            {
-                                if (basicDeliverEventArgs == null)
+                                Consumer = new QueueingBasicConsumer(Channel);
+                                try
                                 {
-                                    _messages.Add(string.Empty);
-                                    _result = string.Format("Empty, timeout: {0} second(s)", _timeOut);
+                                    Channel.BasicConsume(queueName, false, Consumer);
+                                }
+                                catch (Exception)
+                                {
+                                    throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
+                                }
+                                BasicDeliverEventArgs basicDeliverEventArgs;
+                                ulong? tag = null;
+                                while (Consumer.Queue.Dequeue((int)TimeSpan.FromSeconds(_timeOut).TotalMilliseconds, out basicDeliverEventArgs) && _prefetch > msgCount)
+                                {
+                                    if (basicDeliverEventArgs == null)
+                                    {
+                                        _messages.Add(string.Empty);
+                                        _result = string.Format("Empty, timeout: {0} second(s)", _timeOut);
+                                    }
+                                    else
+                                    {
+                                        var body = basicDeliverEventArgs.Body;
+                                        _messages.Add(Encoding.Default.GetString(body));
+                                        tag = basicDeliverEventArgs.DeliveryTag;
+                                    }
+                                    msgCount++;
+                                }
+                                if (tag.HasValue)
+                                {
+                                    Channel.BasicAck(tag.Value, _prefetch != 1);
+                                }
+                            }
+                            else
+                            {
+                                uint messageCount;
+                                try
+                                {
+                                    messageCount = Channel.MessageCount(queueName);
+                                }
+                                catch (Exception)
+                                {
+                                    messageCount = 0;
+                                }
+                                Consumer = new QueueingBasicConsumer(Channel);
+                                try
+                                {
+                                    Channel.BasicConsume(queueName, false, Consumer);
+                                }
+                                catch (Exception)
+                                {
+                                    throw new Exception(string.Format(ErrorResource.RabbitQueueNotFound, queueName));
+                                }
+
+                                ulong? tag = null;
+                                for (int i = 0; i < messageCount && _prefetch > msgCount; i++)
+                                {
+                                    var ea = Consumer.Queue.Dequeue();
+                                    var body = ea.Body;
+
+                                    _messages.Add(Encoding.Default.GetString(body));
+                                    tag = ea.DeliveryTag;
+                                    msgCount++;
+                                }
+                                if (tag.HasValue)
+                                {
+                                    Channel.BasicAck(tag.Value, _prefetch != 1);
                                 }
                                 else
                                 {
-                                    var body = basicDeliverEventArgs.Body;
-                                    _messages.Add(Encoding.Default.GetString(body));
-                                    tag = basicDeliverEventArgs.DeliveryTag;
+                                    _messages.Add(string.Empty);
+                                    _result = "Empty";
                                 }
-                                msgCount++;                                
                             }
-                            if (tag.HasValue)
-                            {
-                                Channel.BasicAck(tag.Value, _prefetch != 1);
-                            }
+
                         }
                     }
-                }                
-                return new List<string> { _result};
+                }
+                return new List<string> { _result };
             }
             catch (Exception ex)
             {
@@ -241,11 +290,13 @@ namespace Dev2.Activities.RabbitMQ.Consume
             }
         }
 
+
+
         #region Overrides of DsfBaseActivity
 
         public override List<string> GetOutputs()
         {
-            return new List<string> {Response,Result};
+            return new List<string> { Response, Result };
         }
 
         #endregion
@@ -287,17 +338,17 @@ namespace Dev2.Activities.RabbitMQ.Consume
             {
                 if (DataListUtil.IsValueScalar(Response))
                 {
-                    dataObject.Environment.Assign(Response,_messages.Last(),update);
+                    dataObject.Environment.Assign(Response, _messages.Last(), update);
                 }
                 else
                 {
-                    foreach(var message in _messages)
+                    foreach (var message in _messages)
                     {
                         dataObject.Environment.Assign(Response, message, update);
                     }
                 }
             }
-           
+
         }
 
     }

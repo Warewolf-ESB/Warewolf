@@ -140,12 +140,16 @@ namespace Dev2.Activities
         }
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
         {
-            WorkSurfaceMappingId = Guid.Parse(UniqueID);
             var isNestedForEach = dataObject.ForEachNestingLevel > 0;
-            if (!isNestedForEach || _originalUniqueID==Guid.Empty)
+            if (!isNestedForEach || _originalUniqueID == Guid.Empty)
             {
-                _originalUniqueID = WorkSurfaceMappingId;
+                _originalUniqueID = Guid.Parse(UniqueID);
             }
+            if (!isNestedForEach && _originalUniqueID != Guid.Empty)
+            {
+                UniqueID = _originalUniqueID.ToString();
+            }
+            WorkSurfaceMappingId = Guid.Parse(UniqueID);
             UniqueID = isNestedForEach ? Guid.NewGuid().ToString() : UniqueID;
         }
         /// <summary>
@@ -178,9 +182,9 @@ namespace Dev2.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             _previousParentID = dataObject.ParentInstanceID;
-            dataObject.ForEachNestingLevel++;
             InitializeDebug(dataObject);
-            if(dataObject.IsDebugMode())
+            dataObject.ForEachNestingLevel++;
+            if (dataObject.IsDebugMode())
             {
                 DispatchDebugState(dataObject, StateType.Before, update);
             }

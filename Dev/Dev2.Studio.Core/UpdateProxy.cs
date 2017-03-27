@@ -5,6 +5,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
@@ -400,7 +401,7 @@ namespace Dev2.Studio.Core
 
         #region Implementation of IUpdateManager
 
-        public void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
+        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("DirectDeploy");
@@ -408,7 +409,8 @@ namespace Dev2.Studio.Core
             comsController.AddPayloadArgument("resourceIDsToDeploy", serialiser.SerializeToBuilder(resourceIDsToDeploy));
             comsController.AddPayloadArgument("deployTests", new StringBuilder(deployTests.ToString()));
             comsController.AddPayloadArgument("destinationEnvironmentId", serialiser.SerializeToBuilder(destinationEnvironment));
-            var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+            var output = comsController.ExecuteCommand<List<IDeployResult>>(con, GlobalConstants.ServerWorkspaceID);
+            return output;
         }
 
         #endregion

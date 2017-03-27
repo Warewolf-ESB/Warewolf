@@ -102,9 +102,28 @@ namespace Warewolf.Studio.ViewModels
                     }
                     SetControlFlowValues(value);
                 }
+                AddNewEmptyRow();
                 OnPropertyChanged(() => StepOutputs);
                 IsTestStepExpanded = StepOutputs?.Count > 0;
                 IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
+            }
+        }
+
+        private void AddNewEmptyRow()
+        {
+            if (_stepOutputs?.Count >= 1)
+            {
+                var lastOrDefault = _stepOutputs.LastOrDefault(
+                        output => !string.IsNullOrWhiteSpace(output.Variable) && !string.IsNullOrWhiteSpace(output.Value));
+                var firstOrDefault = _stepOutputs.FirstOrDefault(
+                        output => !string.IsNullOrWhiteSpace(output.Variable) && !string.IsNullOrWhiteSpace(output.Value));
+                if (lastOrDefault != null)
+                {
+                    if (DataListUtil.IsValueRecordset(firstOrDefault?.Variable))
+                    {
+                        _stepOutputs.Add(new ServiceTestOutput("", "", "", ""));
+                    }
+                }
             }
         }
 
@@ -352,17 +371,31 @@ namespace Warewolf.Studio.ViewModels
                         if (StepOutputs.FirstOrDefault(output=>output.Variable.Equals(indexedName,StringComparison.InvariantCultureIgnoreCase))==null)
                         {
                             var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
-                            StepOutputs.Add(serviceTestOutput);
+                            StepOutputs?.Add(serviceTestOutput);
                         }
                     }
                 }
                 else
                 {
-                    var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
+                    if (StepOutputs != null && StepOutputs.Count >= 1)
                     {
-                        AddNewAction = () => AddNewOutput(varName)
-                    };
-                    StepOutputs.Add(serviceTestOutput);
+                        var testOutput = StepOutputs.Last();
+                        if (string.IsNullOrWhiteSpace(testOutput?.Variable) && string.IsNullOrWhiteSpace(testOutput?.Value))
+                        {
+                            if (testOutput != null)
+                            {
+                                testOutput.Variable = varName;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
+                        {
+                            AddNewAction = () => AddNewOutput(varName)
+                        };
+                        StepOutputs?.Add(serviceTestOutput);
+                    }
                 }
             }
         }

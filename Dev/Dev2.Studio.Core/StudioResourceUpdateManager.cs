@@ -4,6 +4,7 @@ using System.Data;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.WebServices;
@@ -196,9 +197,9 @@ namespace Dev2.Studio.Core
 
         #region Implementation of IStudioUpdateManager
 
-        public void Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
+        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
         {
-            UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, destinationEnvironment);
+            return UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, destinationEnvironment);
         }
 
         #endregion
