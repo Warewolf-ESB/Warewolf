@@ -57,6 +57,7 @@ namespace Dev2.Activities
         {
             InFields = string.Empty;
             ResultFields = string.Empty;
+            Result = string.Empty;
         }
 
         #endregion
@@ -93,6 +94,10 @@ namespace Dev2.Activities
 
             var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
+            if (Result == null)
+            {
+                Result = string.Empty;
+            }
             var toresultfields = Result.Split(',');
             var fromFields = InFields.Split(',');
             var fromResultFieldresultfields = ResultFields.Split(',');
