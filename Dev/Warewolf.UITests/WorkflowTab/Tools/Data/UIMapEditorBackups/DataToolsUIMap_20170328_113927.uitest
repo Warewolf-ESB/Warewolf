@@ -41,14 +41,14 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
-    <AssertAction UIObjectName="DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart">
+    <!--<AssertAction UIObjectName="ToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
       <ExpectedValue>True</ExpectedValue>
       <MessageOnValidationFailure>Flowchart does not exist.</MessageOnValidationFailure>
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
+    </AssertAction>-->
     <TestStepMarkerAction Comment="" MarkerInformation="Open_Tools_UI_Map_Designer_To_Flowchart">
       <ParameterName />
       <StepId>-1</StepId>
@@ -57,6 +57,23 @@
       <Disabled>false</Disabled>
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <AssertAction UIObjectName="DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIDsfMultiAssignActiviCustom.UISmallViewContentCustom.UISmallDataGridTable.UIUI_ActivityGridRow_0Row.UIItemUnlimitedApplicaCell.UIUI_TextBox_AutoIDComboBox.UITextEdit">
+      <ParameterName />
+      <PropertyName>ControlType</PropertyName>
+      <ExpectedValue>Edit</ExpectedValue>
+      <MessageOnValidationFailure />
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
@@ -80,7 +97,40 @@
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Custom" Id="TabManSplitPane" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="DockManager" FriendlyName="DockManager" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                <PropertyCondition Name="AutomationId">DockManager</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Custom" Id="SplitPaneMiddle" FriendlyName="" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <SearchConfigurations>
+                    <SearchConfiguration>NextTo</SearchConfiguration>
+                    <SearchConfiguration>Distinct</SearchConfiguration>
+                  </SearchConfigurations>
+                  <AndCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Custom" Id="UIUI_SplitPane_AutoIDCustom" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -93,7 +143,7 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="TabList" Id="TabMan" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -105,7 +155,7 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="TabPage" Id="WorkflowTab" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                    <UIObject ControlType="TabPage" Id="UIDev2StudioViewModelsTabPage" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -117,7 +167,7 @@
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
-                        <UIObject ControlType="Custom" Id="WorkSurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                        <UIObject ControlType="Custom" Id="UIDev2StudioViewModelsCustom" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -130,7 +180,7 @@
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants>
-                            <UIObject ControlType="Custom" Id="WorkflowDesignerView" FriendlyName="ContentDockManager" SpecialControlType="None">
+                            <UIObject ControlType="Custom" Id="UIContentDockManagerCustom" FriendlyName="ContentDockManager" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -142,8 +192,81 @@
                                 <PropertyCondition Name="AutomationId">ContentDockManager</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
+                              <Descendants />
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Custom" Id="TabManSplitPane" FriendlyName="SplitPaneMiddle" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="TabList" Id="TabMan" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf</WindowTitle>
+                    <WindowTitle>Warewolf</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="TabPage" Id="WorkflowTab" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Custom" Id="WorkSurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                            <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="Custom" Id="WorkflowDesignerView" FriendlyName="UserControl_1" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                <PropertyCondition Name="ClassName">Uia.DesignerView</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">UserControl_1</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
                               <Descendants>
-                                <UIObject ControlType="Custom" Id="WorkflowDesigner_Custom" FriendlyName="UI_WorkflowDesigner_AutoID" SpecialControlType="None">
+                                <UIObject ControlType="Custom" Id="UIUI_WorkflowDesigner_Custom" FriendlyName="UI_WorkflowDesigner_AutoID" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -156,7 +279,7 @@
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="Custom" Id="DesignerView" FriendlyName="UserControl_1" SpecialControlType="None">
+                                    <UIObject ControlType="Custom" Id="UIUserControl_1Custom" FriendlyName="UserControl_1" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -169,7 +292,7 @@
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
-                                        <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="scrollViewer" SpecialControlType="None">
+                                        <UIObject ControlType="Pane" Id="UIScrollViewerPane" FriendlyName="scrollViewer" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -182,7 +305,7 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
-                                            <UIObject ControlType="Custom" Id="ActivityTypeDesigner" FriendlyName="ActivityBuilder" SpecialControlType="None">
+                                            <UIObject ControlType="Custom" Id="UIActivityBuilderCustom" FriendlyName="ActivityBuilder" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -195,7 +318,7 @@
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants>
-                                                <UIObject ControlType="Custom" Id="WorkflowItemPresenter" FriendlyName="WorkflowItemPresenter" SpecialControlType="None">
+                                                <UIObject ControlType="Custom" Id="UIWorkflowItemPresenteCustom" FriendlyName="WorkflowItemPresenter" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -208,10 +331,189 @@
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants>
-                                                    <UIObject ControlType="Custom" Id="Flowchart" FriendlyName="Flowchart" SpecialControlType="None">
+                                                    <UIObject ControlType="Custom" Id="UIFlowchartCustom" FriendlyName="Flowchart" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
                                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                        <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">Unsaved 7(FlowchartDesigner)</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Custom" Id="UIDsfMultiAssignActiviCustom" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">Assign (0)(MultiAssignDesigner)</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Custom" Id="UISmallViewContentCustom" FriendlyName="SmallViewContent" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.Small</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">SmallViewContent</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="Table" Id="UISmallDataGridTable" FriendlyName="SmallDataGrid" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">SmallDataGrid</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Row" Id="UIUI_ActivityGridRow_0Row" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <SearchConfigurations>
+                                                                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                                      </SearchConfigurations>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI_ActivityGridRow_0_AutoID</PropertyCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Cell" Id="UIItemUnlimitedApplicaCell" FriendlyName="Item: Unlimited.Applications.BusinessDesignStudio...." SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ColumnHeader" />
+                                                                            <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="ComboBox" Id="UIUI_TextBox_AutoIDComboBox" FriendlyName="UI_TextBox_AutoID" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_TextBox_AutoID</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                                    <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants />
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="Custom" Id="DesignerView" FriendlyName="UserControl_1" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.DesignerView</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UserControl_1</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="scrollViewer" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">scrollViewer</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Custom" Id="ActivityTypeDesigner" FriendlyName="ActivityBuilder" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.ActivityTypeDesigner</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">ActivityTypeDesigner</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Custom" Id="WorkflowItemPresenter" FriendlyName="WorkflowItemPresenter" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.WorkflowItemPresenter</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">WorkflowItemPresenter</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Custom" Id="Flowchart" FriendlyName="Flowchart" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="ControlType">Custom</PropertyCondition>
@@ -223,13 +525,13 @@
                                                         <UIObject ControlType="Custom" Id="MultiAssign" FriendlyName="DsfMultiAssignActivity" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                            <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId" Operator="Contains">(MultiAssignDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">MultiAssignDesigner</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
@@ -237,7 +539,6 @@
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
                                                                 <WindowTitle>Warewolf</WindowTitle>
-                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -251,7 +552,6 @@
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf</WindowTitle>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -264,7 +564,6 @@
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
-                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                       </WindowTitles>
                                                                       <SearchConfigurations>
                                                                         <SearchConfiguration>AlwaysSearch</SearchConfiguration>
@@ -283,9 +582,8 @@
                                                                           </WindowTitles>
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -353,8 +651,7 @@
                                                                           </WindowTitles>
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
                                                                           </AndCondition>
@@ -395,10 +692,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">0</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -442,9 +739,8 @@
                                                                           </WindowTitles>
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -511,8 +807,7 @@
                                                                           </WindowTitles>
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
                                                                           </AndCondition>
@@ -553,10 +848,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">0</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -600,9 +895,8 @@
                                                                           </WindowTitles>
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -669,8 +963,7 @@
                                                                           </WindowTitles>
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
                                                                           </AndCondition>
@@ -711,10 +1004,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">0</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -786,9 +1079,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">Variable</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -828,9 +1121,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">New Value</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -889,7 +1182,7 @@
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">Variable</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -931,7 +1224,7 @@
                                                                           <AndCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">New Value</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -988,9 +1281,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">Variable</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -1030,9 +1323,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">New Value</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -1089,9 +1382,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">Variable</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -1131,9 +1424,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">New Value</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -1471,95 +1764,6 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
-                                                            </UIObject>
-                                                            <UIObject ControlType="Custom" Id="UISmallViewContentCustom" FriendlyName="SmallViewContent" SpecialControlType="None">
-                                                              <TechnologyName>UIA</TechnologyName>
-                                                              <WindowTitles>
-                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                              </WindowTitles>
-                                                              <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                                <PropertyCondition Name="ClassName">Uia.Small</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">SmallViewContent</PropertyCondition>
-                                                              </AndCondition>
-                                                              <SupportLevel>0</SupportLevel>
-                                                              <Descendants>
-                                                                <UIObject ControlType="Table" Id="UISmallDataGridTable" FriendlyName="SmallDataGrid" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">SmallDataGrid</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants>
-                                                                    <UIObject ControlType="Row" Id="UIUI_ActivityGridRow_0Row" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <SearchConfigurations>
-                                                                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
-                                                                      </SearchConfigurations>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
-                                                                        <PropertyCondition Name="AutomationId">UI_ActivityGridRow_0_AutoID</PropertyCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants>
-                                                                        <UIObject ControlType="Cell" Id="UIItemUnlimitedApplicaCell" FriendlyName="Item: Unlimited.Applications.BusinessDesignStudio...." SpecialControlType="None">
-                                                                          <TechnologyName>UIA</TechnologyName>
-                                                                          <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                          </WindowTitles>
-                                                                          <AndCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
-                                                                            <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                          </AndCondition>
-                                                                          <SupportLevel>0</SupportLevel>
-                                                                          <Descendants>
-                                                                            <UIObject ControlType="ComboBox" Id="UIUI_TextBox_AutoIDComboBox" FriendlyName="UI_TextBox_AutoID" SpecialControlType="None">
-                                                                              <TechnologyName>UIA</TechnologyName>
-                                                                              <WindowTitles>
-                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                              </WindowTitles>
-                                                                              <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                                <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI_TextBox_AutoID</PropertyCondition>
-                                                                              </AndCondition>
-                                                                              <SupportLevel>0</SupportLevel>
-                                                                              <Descendants>
-                                                                                <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
-                                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                                  <WindowTitles>
-                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                                  </WindowTitles>
-                                                                                  <AndCondition>
-                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                                                                    <PropertyCondition Name="AutomationId">Text</PropertyCondition>
-                                                                                  </AndCondition>
-                                                                                  <SupportLevel>0</SupportLevel>
-                                                                                  <Descendants />
-                                                                                </UIObject>
-                                                                              </Descendants>
-                                                                            </UIObject>
-                                                                          </Descendants>
-                                                                        </UIObject>
-                                                                      </Descendants>
-                                                                    </UIObject>
-                                                                  </Descendants>
-                                                                </UIObject>
-                                                              </Descendants>
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
@@ -2920,10 +3124,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3022,10 +3226,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3166,10 +3370,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3209,10 +3413,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3269,10 +3473,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3312,10 +3516,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3355,10 +3559,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">2</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3387,10 +3591,10 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader" />
                                                                             <PropertyCondition Name="ColumnIndex">2</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3489,9 +3693,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">Input</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3558,9 +3762,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">With</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3626,9 +3830,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">Using</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3712,9 +3916,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">Input</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3754,9 +3958,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">With</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3782,9 +3986,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">Using</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -3841,9 +4045,9 @@
                                                                             <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">With</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -5398,6 +5602,20 @@
               </Descendants>
             </UIObject>
           </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="6097488">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\SANELE.MTHEMBU)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants />
         </TopLevelWindow>
       </TopLevelWindows>
     </UIMap>
