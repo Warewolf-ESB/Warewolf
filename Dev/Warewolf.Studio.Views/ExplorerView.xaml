@@ -680,6 +680,7 @@
 
                                             <MenuItem Name="ShowHideVersions"
 								  Command="{Binding ShowVersionHistory}"
+                                  CommandParameter="{Binding .}"
 								  Header="{Binding VersionHeader}"
 								  Style="{StaticResource MenuItemStyle}"
 								  IsEnabled="{Binding CanShowVersions}"
@@ -701,10 +702,9 @@
 
                                             <MenuItem Name="OpenVersion"
 								  Command="{Binding OpenVersionCommand}"
-								  CommandParameter="{Binding Data}"
 								  Header="Open Version"
 								  Style="{StaticResource MenuItemStyle}"
-								  IsEnabled="{Binding IsVersion}" 
+								  IsEnabled="{Binding IsVersion, UpdateSourceTrigger=PropertyChanged}" 
 								  ToolTip="{Binding OpenVersionTooltip}"
 								  Visibility="{Binding IsOpenVersionVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 

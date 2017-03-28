@@ -379,7 +379,25 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.CopyUrlCommand(ResourceId, Server);
             });
             ShowDependenciesCommand = new DelegateCommand(o => ShowDependencies());
-            ShowVersionHistory = new DelegateCommand(o => AreVersionsVisible = !AreVersionsVisible);
+            ShowVersionHistory = new DelegateCommand(selecteExplorerItem =>
+            {
+                AreVersionsVisible = !AreVersionsVisible;
+
+                var explorerItemViewModel = selecteExplorerItem as ExplorerItemViewModel;
+                if (explorerItemViewModel == null) return;
+                foreach (var child in explorerItemViewModel.Children)
+                {
+                    if (child.IsVersion)
+                    {
+                        var permissions = Server?.GetPermissions(child.ResourceId);
+                        if (permissions.HasValue)
+                        {
+                            child.SetPermissions(permissions.Value);
+                        }
+
+                    }
+                }
+            });
             DeleteCommand = new DelegateCommand(o => Delete());
             DuplicateCommand = new DelegateCommand(o => DuplicateResource(), o => CanDuplicate);
             CreateTestCommand = new DelegateCommand(o => CreateTest(), o => CanCreateTest);
@@ -1494,7 +1512,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView && !IsResourceVersion;
+                return _canView ;
             }
             set
             {
@@ -1561,7 +1579,8 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    _children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
+                    var versionInfos = _explorerRepository.GetVersions(ResourceId);
+                    _children = new ObservableCollection<IExplorerItemViewModel>(versionInfos.Select(a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
                     {
                         ResourceName = "v." + a.VersionNumber + " " + a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " + a.Reason.Replace(".xml", ""),
                         VersionNumber = a.VersionNumber,
