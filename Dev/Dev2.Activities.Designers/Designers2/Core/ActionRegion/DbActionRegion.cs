@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
-        private IAsyncWorker _worker;
+        private readonly IAsyncWorker _worker;
 
         public DbActionRegion()
         {
@@ -158,15 +158,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.Name))
                         StorePreviousValues(_selectedAction.GetIdentifier());
-                }
-                var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                var region = outputs as OutputsRegion;
-                if (region != null)
-                {
-                    region.Outputs = new ObservableCollection<IServiceOutputMapping>();
-                    region.RecordsetName = String.Empty;
 
+                    var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
+                    var region = outputs as OutputsRegion;
+                    if (region != null)
+                    {
+                        region.Outputs = new ObservableCollection<IServiceOutputMapping>();
+                        region.RecordsetName = String.Empty;
+                        region.IsEnabled = false;
+                    }
                 }
+                
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
             }
