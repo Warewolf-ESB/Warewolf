@@ -1023,7 +1023,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         [BeforeTestRun]
         public static void CopyEncryptionKey()
         {
-            File.Copy(Environment.CurrentDirectory + @"\key.opk", @"C:\Temp\key.opk", true);
+            if (!File.Exists(@"C:\Temp\key.opk"))
+            {
+                File.Copy(Environment.CurrentDirectory + @"\key.opk", @"C:\Temp\key.opk", true);
+            }
         }
     }
 }
