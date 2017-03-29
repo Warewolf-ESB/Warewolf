@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Dropbox.Api;
-using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
+using Dropbox.Api.Stone;
 using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016

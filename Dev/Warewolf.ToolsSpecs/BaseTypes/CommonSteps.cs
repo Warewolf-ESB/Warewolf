@@ -1019,5 +1019,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             return null;
         }
+
+        [BeforeTestRun]
+        public static void CopyEncryptionKey()
+        {
+            if (!File.Exists(@"C:\Temp\key.opk"))
+            {
+                File.Copy(Environment.CurrentDirectory + @"\key.opk", @"C:\Temp\key.opk", true);
+            }
+        }
     }
 }

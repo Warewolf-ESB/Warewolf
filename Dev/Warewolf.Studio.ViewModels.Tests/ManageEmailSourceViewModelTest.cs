@@ -211,8 +211,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _emailSource.VerifySet(it => it.EnableSsl = expectedEnableSsl);
             _emailSource.VerifySet(it => it.EmailFrom = expectedEmailFrom);
             _emailSource.VerifySet(it => it.EmailTo = expectedEmailTo);
-            _emailSource.VerifySet(it => it.Path = expectedPath);
-            _emailSource.VerifySet(it => it.ResourceName = expectedResourceName);
             Assert.AreEqual(expectedHeaderText, _targetSource.HeaderText);
             Assert.AreEqual(expectedHeader, _targetSource.Header);
             _updateManagerMock.Verify(it => it.Save(_emailSource.Object));
@@ -856,8 +854,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _emailSource.VerifySet(it => it.EnableSsl = expectedEnableSsl);
             _emailSource.VerifySet(it => it.EmailFrom = expectedEmailFrom);
             _emailSource.VerifySet(it => it.EmailTo = expectedEmailTo);
-            _emailSource.VerifySet(it => it.Path = expectedPath);
-            _emailSource.VerifySet(it => it.ResourceName = expectedResourceName);
             Assert.AreEqual(expectedHeaderText, _targetSource.HeaderText);
             Assert.AreEqual(expectedHeader, _targetSource.Header);
             _updateManagerMock.Verify(it => it.Save(_emailSource.Object));

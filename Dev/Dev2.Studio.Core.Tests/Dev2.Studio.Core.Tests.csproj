@@ -34,16 +34,6 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
     <Reference Include="FontAwesome.WPF, Version=4.5.0.37524, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
@@ -353,6 +343,7 @@
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
     <Compile Include="Workflows\WorkflowInputDataViewModelTest.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepositoryTests.cs" />
+    <Compile Include="WorksurfaceContextManagerTests.cs" />
     <Compile Include="WorkSurfaceContextViewModelTests.cs" />
     <Compile Include="WorksurfaceKeyFactoryTests.cs" />
     <Compile Include="XML\XmlResource.cs" />

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
@@ -11,6 +12,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
     public class SqlServerTests
     {
         const string SourceName = "SQLServerSourceFromTool";
+        const string ServiceName = "UITestingSqlServerOutputs";
 
         [TestMethod]
         [TestCategory("Database Tools")]
@@ -40,8 +42,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
             DBSourceUIMap.Click_UserButton_On_DatabaseSource();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Exists);
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Exists);
-            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab();
-            DBSourceUIMap.IEnterRunAsUserTestUserOnDatabaseSource();
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRDEV");
+            DBSourceUIMap.IEnterRunAsUserTestUserOnDatabaseSource("testuser", "test123");
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
             DBSourceUIMap.Select_Dev2TestingDB_From_DB_Source_Wizard_Database_Combobox();
@@ -62,6 +64,17 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
             DatabaseToolsUIMap.Click_EditSourceButton_On_SQLServerTool();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected);
             Assert.AreEqual("master", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
+        }
+
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void Open_SqlServer_Contains_Outputs()
+        {
+            ExplorerUIMap.Filter_Explorer(ServiceName);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DatabaseToolsUIMap.SqlServerDatabaseTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.RecordSetTextBoxEdit.Enabled, "Recordset textbox is not enabled on SQL Server database connector tool large view.");
         }
 
         #region Additional test attributes
@@ -89,6 +102,21 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
         }
 
         private UIMap _UIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         WorkflowTabUIMap WorkflowTabUIMap
         {

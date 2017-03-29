@@ -2,9 +2,9 @@ using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dropbox.Api;
-using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
 using System;
+using Dropbox.Api.Stone;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
