@@ -41,6 +41,31 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
+    <AssertAction UIObjectName="WorkflowTabUIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2StudioViewModelsTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIDsfActivityCustom.UILargeViewContentCustom.UIInputsDataGridTable.UIUI_ActivityGridRow_0Row.UIItemDev2StudioViewMoCell.UIItemComboBox.UITextEdit">
+      <ParameterName />
+      <PropertyName>ControlType</PropertyName>
+      <ExpectedValue>Edit</ExpectedValue>
+      <MessageOnValidationFailure />
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <AssertAction UIObjectName="WorkflowTabUIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2StudioViewModelsTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_WorkflowDesigner_Custom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIDsfActivityCustom.UILargeViewContentCustom.UIOutputsDataGridTable.UIUI_ActivityGridRow_0Row.UIItemDev2StudioViewMoCell.UIItemComboBox.UITextEdit">
+      <ParameterName />
+      <PropertyName>ControlType</PropertyName>
+      <ExpectedValue>Edit</ExpectedValue>
+      <MessageOnValidationFailure />
+      <Type>String</Type>
+      <PropertyCondition>AreEqual</PropertyCondition>
+    </AssertAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Assertion</MarkerRegionType>
+    </TestStepMarkerAction>
     <AssertAction UIObjectName="ToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart">
       <ParameterName />
       <PropertyName>Exists</PropertyName>
@@ -3965,7 +3990,22 @@
                 </UIObject>
               </Descendants>
             </UIObject>
-            <UIObject ControlType="Custom" Id="TabManSplitPane" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="263444">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\SANELE.MTHEMBU)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UIUI_SplitPane_AutoIDCustom" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -3978,7 +4018,7 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="TabList" Id="TabMan" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -3990,7 +4030,7 @@
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="TabPage" Id="WorkflowTab" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                    <UIObject ControlType="TabPage" Id="UIDev2StudioViewModelsTabPage" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -4002,7 +4042,7 @@
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
-                        <UIObject ControlType="Custom" Id="WorkflowSurfaceContext" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                        <UIObject ControlType="Custom" Id="UIDev2StudioViewModelsCustom" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -4015,7 +4055,7 @@
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
                           <Descendants>
-                            <UIObject ControlType="Custom" Id="ContentDockManagerCustom" FriendlyName="ContentDockManager" SpecialControlType="None">
+                            <UIObject ControlType="Custom" Id="UIContentDockManagerCustom" FriendlyName="ContentDockManager" SpecialControlType="None">
                               <TechnologyName>UIA</TechnologyName>
                               <WindowTitles>
                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -4028,7 +4068,7 @@
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
-                                <UIObject ControlType="Custom" Id="WorkflowDesignerView" FriendlyName="UI_WorkflowDesigner_AutoID" SpecialControlType="None">
+                                <UIObject ControlType="Custom" Id="UIUI_WorkflowDesigner_Custom" FriendlyName="UI_WorkflowDesigner_AutoID" SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -4041,7 +4081,7 @@
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="Custom" Id="DesignerView" FriendlyName="UserControl_1" SpecialControlType="None">
+                                    <UIObject ControlType="Custom" Id="UIUserControl_1Custom" FriendlyName="UserControl_1" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -4054,7 +4094,7 @@
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
-                                        <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="scrollViewer" SpecialControlType="None">
+                                        <UIObject ControlType="Pane" Id="UIScrollViewerPane" FriendlyName="scrollViewer" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -4067,7 +4107,7 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
-                                            <UIObject ControlType="Custom" Id="ActivityTypeDesigner" FriendlyName="ActivityBuilder" SpecialControlType="None">
+                                            <UIObject ControlType="Custom" Id="UIActivityBuilderCustom" FriendlyName="ActivityBuilder" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -4080,7 +4120,7 @@
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants>
-                                                <UIObject ControlType="Custom" Id="WorkflowItemPresenter" FriendlyName="WorkflowItemPresenter" SpecialControlType="None">
+                                                <UIObject ControlType="Custom" Id="UIWorkflowItemPresenteCustom" FriendlyName="WorkflowItemPresenter" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -4093,22 +4133,23 @@
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants>
-                                                    <UIObject ControlType="Custom" Id="Flowchart" FriendlyName="Flowchart" SpecialControlType="None">
+                                                    <UIObject ControlType="Custom" Id="UIFlowchartCustom" FriendlyName="Flowchart" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
                                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
-                                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                                                         <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">Unsaved 1(FlowchartDesigner)</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
-                                                        <UIObject ControlType="Custom" Id="HelloWorldWorkFlow" FriendlyName="DsfWorkflowActivity" SpecialControlType="None">
+                                                        <UIObject ControlType="Custom" Id="UIDsfActivityCustom" FriendlyName="DsfActivity" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
-                                                            <WindowTitle>Warewolf</WindowTitle>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -4118,10 +4159,10 @@
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
-                                                            <UIObject ControlType="Custom" Id="ServiceDesignerLargeView" FriendlyName="LargeViewContent" SpecialControlType="None">
+                                                            <UIObject ControlType="Custom" Id="UILargeViewContentCustom" FriendlyName="LargeViewContent" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
-                                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -4131,10 +4172,10 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="Table" Id="InputsDataGridTable" FriendlyName="InputsDataGrid" SpecialControlType="None">
+                                                                <UIObject ControlType="Table" Id="UIInputsDataGridTable" FriendlyName="InputsDataGrid" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -4143,10 +4184,10 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Row" Id="InputsGridRowOne" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Row" Id="UIUI_ActivityGridRow_0Row" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
-                                                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                       </WindowTitles>
                                                                       <SearchConfigurations>
                                                                         <SearchConfiguration>AlwaysSearch</SearchConfiguration>
@@ -4158,23 +4199,23 @@
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
-                                                                        <UIObject ControlType="Cell" Id="InputsGridRowOneCell" FriendlyName="Item: Dev2.Studio.ViewModels.DataList.InputOutputV..." SpecialControlType="None">
+                                                                        <UIObject ControlType="Cell" Id="UIItemDev2StudioViewMoCell" FriendlyName="Item: Dev2.Studio.ViewModels.DataList.InputOutputV..." SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
+                                                                            <PropertyCondition Name="ColumnHeader">Input Data or [[Variable]]</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
-                                                                            <PropertyCondition Name="ColumnHeader">Input Data or [[Variable]]</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="ComboBox" Id="InputsAutoCompleteTextBox" FriendlyName="" SpecialControlType="None">
+                                                                            <UIObject ControlType="ComboBox" Id="UIItemComboBox" FriendlyName="" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
-                                                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -4182,10 +4223,10 @@
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
-                                                                                <UIObject ControlType="Edit" Id="InputsAutoCompleteTextBoxText" FriendlyName="Text" SpecialControlType="None">
+                                                                                <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
                                                                                   <TechnologyName>UIA</TechnologyName>
                                                                                   <WindowTitles>
-                                                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                                   </WindowTitles>
                                                                                   <AndCondition>
                                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -4203,10 +4244,10 @@
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
-                                                                <UIObject ControlType="Table" Id="OutputsDataGridTable" FriendlyName="OutputsDataGrid" SpecialControlType="None">
+                                                                <UIObject ControlType="Table" Id="UIOutputsDataGridTable" FriendlyName="OutputsDataGrid" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -4215,10 +4256,10 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="Row" Id="OutputsGridRowOne" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Row" Id="UIUI_ActivityGridRow_0Row" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
-                                                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                       </WindowTitles>
                                                                       <SearchConfigurations>
                                                                         <SearchConfiguration>AlwaysSearch</SearchConfiguration>
@@ -4230,23 +4271,23 @@
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants>
-                                                                        <UIObject ControlType="Cell" Id="OutputsGridRowOneCell" FriendlyName="Item: Dev2.Studio.ViewModels.DataList.InputOutputV..." SpecialControlType="None">
+                                                                        <UIObject ControlType="Cell" Id="UIItemDev2StudioViewMoCell" FriendlyName="Item: Dev2.Studio.ViewModels.DataList.InputOutputV..." SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="ColumnHeader">To [[Variable]]</PropertyCondition>
                                                                             <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="ComboBox" Id="OutputsAutoCompleteTextBox" FriendlyName="" SpecialControlType="None">
+                                                                            <UIObject ControlType="ComboBox" Id="UIItemComboBox" FriendlyName="" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
-                                                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -4254,10 +4295,10 @@
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
-                                                                                <UIObject ControlType="Edit" Id="OutputsAutoCompleteTextBoxText" FriendlyName="Text" SpecialControlType="None">
+                                                                                <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
                                                                                   <TechnologyName>UIA</TechnologyName>
                                                                                   <WindowTitles>
-                                                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                                   </WindowTitles>
                                                                                   <AndCondition>
                                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
