@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DBSource.DBSourceUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
@@ -11,6 +12,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
     public class SqlServerTests
     {
         const string SourceName = "SQLServerSourceFromTool";
+        const string ServiceName = "UITestingSqlServerOutputs";
 
         [TestMethod]
         [TestCategory("Database Tools")]
@@ -64,6 +66,17 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
             Assert.AreEqual("master", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.masterText.DisplayText);
         }
 
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void Open_SqlServer_Contains_Outputs()
+        {
+            ExplorerUIMap.Filter_Explorer(ServiceName);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DatabaseToolsUIMap.SqlServerDatabaseTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.RecordSetTextBoxEdit.Enabled, "Recordset textbox is not enabled on SQL Server database connector tool large view.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -89,6 +102,21 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
         }
 
         private UIMap _UIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         WorkflowTabUIMap WorkflowTabUIMap
         {
