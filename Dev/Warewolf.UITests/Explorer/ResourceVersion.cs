@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.UITests
@@ -13,10 +15,10 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void ShowVersionHistory_ForResource()
         {
-            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.Filter_Explorer("VersionTestWorkflow");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
-            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Bobby";
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
             ExplorerUIMap.DoubleClick_Explorer_Localhost_Second_Item();
@@ -78,6 +80,21 @@ namespace Warewolf.UITests
         }
 
         private DataToolsUIMap _DataToolsUIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         #endregion
     }
