@@ -102,7 +102,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
 
         [TestMethod]
         [TestCategory("Resource Tools")]
-        public void DotNetDLLTool_EditSource_UITest()
+        public void COMDLLTool_EditSource_UITest()
         {
             ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
             var countBefore = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.SourcesCombobox.Items.Count;
@@ -115,10 +115,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             MyComPluginSourceUIMap.Select_AssemblyFile_From_COMPluginDataTree("connection");
             UIMap.Click_Save_RibbonButton();
             MyComPluginSourceUIMap.Click_COMPluginSource_CloseTabButton();
-            ResourcesToolsUIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
+            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
             var countAfter =ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.SourcesCombobox.Items.Count;
             Assert.AreEqual(countBefore, countAfter);
-            ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
         }
 
         #region Additional test attributes
