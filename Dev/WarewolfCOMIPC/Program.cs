@@ -15,7 +15,7 @@ using WarewolfCOMIPC.Client;
 namespace WarewolfCOMIPC
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    class Program
+    class Program : IDisposable
     {
         static void Main(string[] args)
         {
@@ -27,12 +27,25 @@ namespace WarewolfCOMIPC
             Console.WriteLine("Starting Server Pipe Stream");
             using (var pipe = new NamedPipeServerStream(token, PipeDirection.InOut, 253, PipeTransmissionMode.Message))
             {
+                DisposeAction = () =>
+                {
+                    try
+                    {
+                        pipe?.Disconnect();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                };
                 Console.WriteLine("Waiting Server Pipe Stream");
                 pipe.WaitForConnection();
                 AcceptMessagesFromPipe(pipe);
+
             }
         }
 
+        static Action DisposeAction;
         private static void AcceptMessagesFromPipe(NamedPipeServerStream pipe)
         {
 
@@ -65,9 +78,9 @@ namespace WarewolfCOMIPC
                     {
                         LoadLibrary(data, serializer, pipe);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        var newException = new Exception("Error executing COM",e);
+                        var newException = new Exception("Error executing COM", e);
                         var sw = new StreamWriter(pipe);
                         serializer.Serialize(sw, newException);
                         sw.Flush();
@@ -99,7 +112,7 @@ namespace WarewolfCOMIPC
                         var objectInstance = Activator.CreateInstance(type);
                         Type dispatchedtype = DispatchUtility.GetType(objectInstance, false);
                         Console.WriteLine("Got Type:" + dispatchedtype.FullName);
-                        
+
                         Console.WriteLine("Serializing and sending:" + dispatchedtype.FullName);
                         formatter.Serialize(sw, dispatchedtype);
                         sw.Flush();
@@ -136,49 +149,49 @@ namespace WarewolfCOMIPC
                     }
                     break;
                 case Execute.ExecuteSpecifiedMethod:
-                {
-                    Console.WriteLine("Executing GeMethods for:" + data.CLSID);
-                    var type = Type.GetTypeFromCLSID(data.CLSID, true);
-                    var objectInstance = Activator.CreateInstance(type);
-                    var paramsObjects = BuildValuedTypeParams(data.Parameters);
-                    try
                     {
+                        Console.WriteLine("Executing GeMethods for:" + data.CLSID);
+                        var type = Type.GetTypeFromCLSID(data.CLSID, true);
+                        var objectInstance = Activator.CreateInstance(type);
+                        var paramsObjects = BuildValuedTypeParams(data.Parameters);
+                        try
+                        {
                             var result = DispatchUtility.Invoke(objectInstance, data.MethodToCall, paramsObjects);
                             if (result != null && result.ToString() == "System.__ComObject")
                             {
                                 var retType = DispatchUtility.GetType(result, false);
                                 var props = retType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
                                 var retObj = new JObject();
-                                foreach(var propertyInfo in props)
+                                foreach (var propertyInfo in props)
                                 {
                                     var propValue = retType.InvokeMember(propertyInfo.Name, BindingFlags.Instance | BindingFlags.GetProperty, null, result, null);
-                                    retObj.Add(propertyInfo.Name,new JValue(propValue.ToString()));
+                                    retObj.Add(propertyInfo.Name, new JValue(propValue.ToString()));
                                 }
                                 formatter.Serialize(sw, retObj);
                                 sw.Flush();
                             }
                             else
                             {
-                                if (result!=null && result.ToString() == "0")
+                                if (result != null && result.ToString() == "0")
                                 {
                                     result = "0";
                                 }
                                 formatter.Serialize(sw, result ?? "Success");
                                 sw.Flush();
                             }
-                        Console.WriteLine("Execution completed " + data.MethodToCall);
-                    }
-                    catch(Exception ex)
-                    {
-                        if(ex.InnerException != null)
+                            Console.WriteLine("Execution completed " + data.MethodToCall);
+                        }
+                        catch (Exception ex)
                         {
-                            throw new COMException(ex.InnerException?.Message);
+                            if (ex.InnerException != null)
+                            {
+                                throw new COMException(ex.InnerException?.Message);
+                            }
                         }
                     }
-                }
                     break;
                 case Execute.GetNamespaces:
-                {
+                    {
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var loadedAssembly = type.Assembly;
                         // ensure we flush out the rubbish that GAC brings ;)
@@ -207,7 +220,7 @@ namespace WarewolfCOMIPC
                 var methodParameter = setupInfo[index];
 
                 var methodParameterTypeName = methodParameter.TypeName;
-                var type = Type.GetTypeFromProgID(methodParameterTypeName.Substring(0,methodParameterTypeName.IndexOf("&,",StringComparison.InvariantCultureIgnoreCase)));
+                var type = Type.GetTypeFromProgID(methodParameterTypeName.Substring(0, methodParameterTypeName.IndexOf("&,", StringComparison.InvariantCultureIgnoreCase)));
                 if (type != null)
                 {
                     BuildObjectType(type, methodParameter, valuedTypeList, index);
@@ -223,7 +236,7 @@ namespace WarewolfCOMIPC
         private static void BuildPrimitiveType(string methodParameterTypeName, ParameterInfoTO methodParameter, object[] valuedTypeList, int index)
         {
             var type = Type.GetType(methodParameterTypeName);
-            if(type != null)
+            if (type != null)
             {
                 try
                 {
@@ -244,16 +257,41 @@ namespace WarewolfCOMIPC
         {
             var obj = Activator.CreateInstance(type);
             var anonymousType = JsonConvert.DeserializeObject(methodParameter.DefaultValue.ToString()) as JObject;
-            if(anonymousType != null)
+            if (anonymousType != null)
             {
                 var props = anonymousType.Properties().ToList();
-                foreach(var prop in props)
+                foreach (var prop in props)
                 {
                     var valueForProp = prop.Value.ToString();
                     type.InvokeMember(prop.Name, BindingFlags.Instance | BindingFlags.SetProperty | BindingFlags.Public, null, obj, new object[] { valueForProp });
                 }
                 valuedTypeList[index] = obj;
             }
+        }
+        ~Program()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        private bool _disposed;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                DisposeAction?.Invoke();
+            }
+
+            // Free any unmanaged objects here.
+
+            _disposed = true;
         }
     }
 }
