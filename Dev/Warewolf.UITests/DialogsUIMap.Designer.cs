@@ -2564,7 +2564,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
                     #region Search Criteria
                     this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
                     this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
-                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
                     this.mMatchCell.WindowTitles.Add("ActivityDefaultWindow");
                     #endregion
                 }
@@ -2594,7 +2594,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("ActivityDefaultWindow");
             #endregion
         }
@@ -2663,7 +2663,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "#";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
             this.WindowTitles.Add("ActivityDefaultWindow");
             #endregion
         }
@@ -2700,7 +2700,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "MatchType";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
             this.WindowTitles.Add("ActivityDefaultWindow");
             #endregion
         }
