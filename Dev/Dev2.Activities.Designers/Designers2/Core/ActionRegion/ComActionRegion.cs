@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void UpdateBasedOnNamespace()
         {
-            if (_source?.SelectedSource != null)
+            if (_source?.SelectedSource != null && _namespace?.SelectedNamespace != null)
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
                 SelectedAction = null;
