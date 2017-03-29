@@ -99,6 +99,22 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             
         }
 
+        [TestMethod]
+        [TestCategory("Resource Tools")]
+        public void DotNetDLLTool_EditSource_UITest()
+        {
+            var countBefore = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.Items.Count;
+            ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
+            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
+            ComPluginSourceUIMap.Select_AssemblyFile_From_COMPluginDataTree("connection");
+            ComPluginSourceUIMap.Click_COMPluginSource_CloseTabButton();
+            ResourcesToolsUIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
+            var countAfter = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.Items.Count;
+            Assert.AreEqual(countBefore, countAfter);
+            ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
