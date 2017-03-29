@@ -19,7 +19,10 @@ namespace Warewolf.UITests
             UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
-            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_Second_Item();
+            Assert.AreEqual(2, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.Tabs.Count);
+            ExplorerUIMap.RightClick_Explorer_Localhost_SecondItem();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Enabled, "The open option is not enabled on the context menu");
         }
 
         #region Additional test attributes
