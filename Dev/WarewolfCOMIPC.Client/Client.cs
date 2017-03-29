@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Threading;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -14,8 +15,6 @@ namespace WarewolfCOMIPC.Client
         private bool _disposed;
         private readonly NamedPipeClientStream _pipe;
         private readonly Process _process;
-        private static Client _client;
-        private static readonly object padlock = new object();
 
         private Client()
         {
@@ -36,19 +35,16 @@ namespace WarewolfCOMIPC.Client
             
             _pipe.ReadMode = PipeTransmissionMode.Message;
         }
-        
+
         /// <summary>
         /// Gets the instance.
         /// </summary>
-        public static Client IPCExecutor
+        public static Client IPCExecutor => executor.Value;
+        static readonly Lazy<Client> executor = new Lazy<Client>(ValueFactory, LazyThreadSafetyMode.ExecutionAndPublication);
+
+        private static Client ValueFactory()
         {
-            get
-            {
-                lock (padlock)
-                {
-                    return _client ?? (_client = new Client());
-                }
-            }
+            return new Client();
         }
 
         /// <summary>
