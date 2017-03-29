@@ -109,8 +109,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
             ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
             MyComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner.DrawHighlight();
-            //ComPluginSourceUIMap.MainStudioWindow.DockManager.RefreshButton.Spinner.DrawHighlight();
-            //ComPluginSourceUIMap.UIWarewolfDEV2NKOSINATWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.RefreshButton.Spinner.DrawHighlight();
             UIMap.WaitForSpinner(MyComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner);
             MyComPluginSourceUIMap.Select_AssemblyFile_From_COMPluginDataTree("connection");
             UIMap.Click_Save_RibbonButton();
