@@ -8,8 +8,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
 using Dropbox.Api;
-using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
+using Dropbox.Api.Stone;
 using Moq;
 
 // ReSharper disable InconsistentNaming
