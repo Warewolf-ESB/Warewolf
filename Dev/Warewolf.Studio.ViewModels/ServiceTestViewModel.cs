@@ -379,8 +379,8 @@ namespace Warewolf.Studio.ViewModels
 
         private void ForEachParent(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, IServiceTestStep parent)
         {
-            var model = WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
-            var forEach = model.GetCurrentValue() as DsfForEachActivity;
+            var model = WorkflowDesignerViewModel?.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ID);
+            var forEach = model?.GetCurrentValue() as DsfForEachActivity;
             if (forEach != null)
             {
                 var act = forEach.DataFunc.Handler as IDev2Activity;
@@ -512,7 +512,7 @@ namespace Warewolf.Studio.ViewModels
                             }
                         }
                         SetStepIcon(childStep.ActivityType, childStep);
-                        if (childStep.StepOutputs != null && childStep.StepOutputs.Count > 0 && parent.ActivityType==typeof(DsfEnhancedDotNetDllActivity).Name)
+                        if (childStep.StepOutputs != null && childStep.StepOutputs.Count > 0)
                         {
                             parent.Children.Add(childStep);
                             if (childItem.Children != null && childItem.Children.Count > 0)
@@ -2127,39 +2127,18 @@ namespace Warewolf.Studio.ViewModels
                     _selectedServiceTest.PropertyChanged -= ActionsForPropChanges;
                 }
 
-                if (_selectedServiceTest?.TestSteps != null)
-                {
-                    var serviceTestSteps = _selectedServiceTest?.TestSteps.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
-                    foreach (var serviceTestStep in serviceTestSteps)
-                    {
-                        if (serviceTestStep?.StepOutputs != null)
-                        {
-                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
-                            {
-                                ((ServiceTestOutput)serviceTestOutput).PropertyChanged -= OnStepOutputPropertyChanges;
-                            }
-                        }
-                    }
-                }
                 _selectedServiceTest = value;
                 _selectedServiceTest.IsTestLoading = true;
                 _selectedServiceTest.PropertyChanged += ActionsForPropChanges;
 
-                if (_selectedServiceTest?.TestSteps != null)
+                var serviceTestSteps = _selectedServiceTest?.TestSteps?.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
+                if (serviceTestSteps != null)
                 {
-                    var serviceTestSteps = _selectedServiceTest?.TestSteps.Flatten(step => step.Children ?? new ObservableCollection<IServiceTestStep>());
-                    foreach (var serviceTestStep in serviceTestSteps)
+                    foreach (var serviceTestOutput in serviceTestSteps.Where(serviceTestStep => serviceTestStep?.StepOutputs != null).SelectMany(serviceTestStep => serviceTestStep.StepOutputs))
                     {
-                        if (serviceTestStep?.StepOutputs != null)
-                        {
-                            foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
-                            {
-                                ((ServiceTestOutput)serviceTestOutput).PropertyChanged += OnStepOutputPropertyChanges;
-                            }
-                        }
+                        ((ServiceTestOutput) serviceTestOutput).PropertyChanged += OnStepOutputPropertyChanges;
                     }
                 }
-
                 SetSelectedTestUrl();
                 SetDuplicateTestTooltip();
                 OnPropertyChanged(() => SelectedServiceTest);

@@ -131,6 +131,7 @@ namespace Dev2.Studio.ViewModels
 
     public class WorksurfaceContextManager : IWorksurfaceContextManager
     {
+        private readonly IEnvironmentRepository _environmentRepository;
         private readonly MainViewModel _mainViewModel;
         private readonly bool _createDesigners;
         private readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) => WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
@@ -139,6 +140,12 @@ namespace Dev2.Studio.ViewModels
         {
             _createDesigners = createDesigners;
             _mainViewModel = mainViewModel;
+        }
+
+        public WorksurfaceContextManager(bool createDesigners, MainViewModel mainViewModel, IEnvironmentRepository environmentRepository)
+            : this(createDesigners, mainViewModel)
+        {
+            _environmentRepository = environmentRepository;
         }
 
         public void Handle(RemoveResourceAndCloseTabMessage message)
@@ -194,7 +201,8 @@ namespace Dev2.Studio.ViewModels
 
         public void EditServer(IServerSource selectedServer, IServer activeServer)
         {
-            var environmentModel = EnvironmentRepository.Instance.Get(activeServer.EnvironmentID);
+            var environmentRepository = _environmentRepository ?? EnvironmentRepository.Instance;
+            var environmentModel = environmentRepository.Get(activeServer.EnvironmentID);
             var viewModel = new ManageNewServerViewModel(new ManageNewServerSourceModel(activeServer.UpdateRepository, activeServer.QueryProxy, activeServer.DisplayName), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedServer, _mainViewModel.AsyncWorker, new ExternalProcessExecutor());
             var vm = new SourceViewModel<IServerSource>(_mainViewModel.EventPublisher, viewModel, _mainViewModel.PopupProvider, new ManageServerControl(), environmentModel);
 
@@ -316,7 +324,7 @@ namespace Dev2.Studio.ViewModels
                 testViewModel.RunAllTestsInBrowserCommand.Execute(null);
             }
         }
-        
+
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
             var pluginSourceViewModel = new ManagePluginSourceViewModel(new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveEnvironment.Name), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _mainViewModel.AsyncWorker);
@@ -1109,7 +1117,7 @@ namespace Dev2.Studio.ViewModels
                 Name = connection.ResourceName
             };
 
-            
+
 
             EditServer(selectedServer, ActiveServer);
         }

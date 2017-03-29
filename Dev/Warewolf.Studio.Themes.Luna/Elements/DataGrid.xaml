@@ -350,7 +350,16 @@
         </Setter>
     </Style>
     <Style x:Key="DefaultDataGridCellStyle" TargetType="{x:Type DataGridCell}">
-        <Setter Property="AutomationProperties.AutomationId" Value="UI_DataGridCell_AutoID" />
+        <Setter Property="AutomationProperties.AutomationId">
+            <Setter.Value>
+                <MultiBinding StringFormat="UI_Cell{0}Column{1}">
+                    <!-- bind to row automation name (which contains row index) -->
+                    <Binding Path="(AutomationProperties.Name)" RelativeSource="{RelativeSource AncestorType=DataGridRow}" />
+                    <!-- bind to column index -->
+                    <Binding Path="(DataGridCell.TabIndex)" RelativeSource="{RelativeSource Mode=Self}" />
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Background" Value="{StaticResource DataGridBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource DataGridBorderBrush}" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
