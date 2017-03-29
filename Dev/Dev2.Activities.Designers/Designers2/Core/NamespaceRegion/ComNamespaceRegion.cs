@@ -102,7 +102,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
                 // ReSharper disable once ExplicitCallerInfoArgument
                 UpdateBasedOnSource();
-                SelectedNamespace = null;
+                
                 // ReSharper disable once ExplicitCallerInfoArgument
                 OnPropertyChanged(@"IsEnabled");
             }
@@ -123,7 +123,9 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         {
             if (_source?.SelectedSource != null)
             {
-                Namespaces = _model.GetNameSpaces(_source.SelectedSource);
+                SelectedNamespace = null;
+                var ns = _model.GetNameSpaces(_source.SelectedSource);
+                Namespaces = ns;
 
 
                 IsNamespaceEnabled = true;
@@ -256,12 +258,12 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         private void SetSelectedNamespace(INamespaceItem value)
         {
-            if (value != null)
-            {
+            //if (value != null)
+            //{
                 _selectedNamespace = value;
                 SavedNamespace = value;
                 Namespace = value;
-            }
+            //}
             OnPropertyChanged("SelectedNamespace");
         }
 
