@@ -48,9 +48,9 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugUsingUnsvaceWorkflow()
         {
-            ExplorerUIMap.Filter_Explorer(HelloWorld);
-            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();            
-            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();            
+            ExplorerUIMap.Filter_Explorer("VersionTestWorkflow");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Matthew";
             UIMap.Press_F6();
             Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
         }
