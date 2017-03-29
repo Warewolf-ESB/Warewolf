@@ -1185,6 +1185,42 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(end.Duration.Ticks > 0);
         }
 
+        [Then(@"""(.*)"" Duration is less or equal to (.*) seconds")]
+        [Given(@"""(.*)"" Duration is less or equal to (.*) seconds")]
+        [When(@"""(.*)"" Duration is less or equal to (.*) seconds")]
+        public void ThenDurationIsLessOrEqualToSeconds(string workflowName, int duration)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+
+            var end = debugStates.First(wf => wf.Name.Equals("End"));
+            Assert.IsTrue(end.Duration.Ticks > 0);
+            var condition = end.Duration.Seconds <= duration;
+            Assert.IsTrue(condition);
+        }
+
+        [Then(@"""(.*)"" Duration is greater or equal to (.*) seconds")]
+        [When(@"""(.*)"" Duration is greater or equal to (.*) seconds")]
+        [Given(@"""(.*)"" Duration is greater or equal to (.*) seconds")]
+        public void ThenDurationIsGreaterOrEqualToSeconds(string workflowName, int duration)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            var end = debugStates.First(wf => wf.Name.Equals("End"));
+            Assert.IsTrue(end.Duration.Ticks > 0);
+            var condition = end.Duration.Seconds >= duration;
+            Assert.IsTrue(condition);
+        }
+
+
+
+
         [Then(@"the nested ""(.*)"" in WorkFlow ""(.*)"" debug inputs as")]
         public void ThenTheNestedInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
         {
@@ -3404,6 +3440,22 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
         }
 
+        [Given(@"""(.*)"" contains RabbitMQPublish and Queue1 ""(.*)"" into ""(.*)""")]
+        public void GivenContainsRabbitandQueue1MQPublishInto(string parentName, string activityName, string variable)
+        {
+            var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
+                ,
+                Result = variable
+                ,
+                DisplayName = activityName,
+                QueueName = "Queue1",
+                Message = "msg"
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfPublishRabbitMqActivity);
+        }
+
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeInto(string parentName, string activityName, string variable)
         {
@@ -3417,6 +3469,23 @@ namespace Dev2.Activities.Specs.Composition
             };
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
+
+        [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" with timeout (.*) seconds into ""(.*)""")]
+        public void GivenContainsRabbitMQConsumeWithTimeoutSecondsInto(string parentName, string activityName, int timeout, string variable)
+        {
+            var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
+                ,
+                Result = variable
+                ,
+                DisplayName = activityName,
+                TimeOut = timeout == -1 ? "" : timeout.ToString(),
+                QueueName = "Queue1",
+            };
+            _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
+        }
+
 
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" and Queue Name '(.*)' into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeAndQueueNameInto(string parentName, string activityName, string queueName, string resultVariable)

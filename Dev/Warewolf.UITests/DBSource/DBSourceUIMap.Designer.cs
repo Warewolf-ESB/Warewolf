@@ -580,7 +580,7 @@ namespace Warewolf.UITests.DBSource.DBSourceUIMapClasses
                 {
                     this.mRSAKLFSVRGENDEV = new WpfListItem(this);
                     #region Search Criteria
-                    this.mRSAKLFSVRGENDEV.SearchProperties[WpfListItem.PropertyNames.Name] = "RSAKLFSVRGENDEV";
+                    this.mRSAKLFSVRGENDEV.SearchProperties[WpfListItem.PropertyNames.Name] = "RSAKLFSVRDEV";
                     this.mRSAKLFSVRGENDEV.WindowTitles.Add("Warewolf");
                     #endregion
                 }

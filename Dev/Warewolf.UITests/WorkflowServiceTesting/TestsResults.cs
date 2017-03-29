@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UITests.WorkflowServiceTesting;
 
 namespace Warewolf.UITests
 {

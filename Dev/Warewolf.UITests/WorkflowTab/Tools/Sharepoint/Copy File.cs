@@ -48,6 +48,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Sharepoint
             SharepointSourceUIMap.Enter_Sharepoint_ServerSource_User_Credentials();
             SharepointSourceUIMap.Click_Sharepoint_Server_Source_TestConnection();
             SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.DrawHighlight();
+            UIMap.WaitForControlEnabled(SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton);
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             SharepointSourceUIMap.Click_Close_SharepointSource_Tab_Button();
@@ -60,6 +61,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Sharepoint
             SharepointSourceUIMap.Click_WindowsButton_On_SharepointSource();
             SharepointSourceUIMap.Click_Sharepoint_Server_Source_TestConnection();
             SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.DrawHighlight();
+            UIMap.WaitForControlEnabled(SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton);
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             SharepointSourceUIMap.Click_Close_SharepointSource_Tab_Button();
             SharepointToolsUIMap.Open_SharepointCopyTool_LargeView();

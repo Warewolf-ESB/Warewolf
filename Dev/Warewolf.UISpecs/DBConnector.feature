@@ -1,4 +1,4 @@
-﻿@DBConnector
+﻿	@DBConnector
 Feature: DBConnector
 	In order to connect to databases
 	As a Warewolf Studio user
@@ -8,10 +8,10 @@ Scenario: Create New DB Connector With Variables
 	Given The Warewolf Studio is running
 	And I Click New SQLServerSource Explorer Context Menu
 	And I Type rsaklfsvrgen into DB Source Wizard Server Textbox
-	Given RSAKLFSVRGENDEV appears as an option in the DB source wizard server combobox
-	When I Select RSAKLFSVRGENDEV From Server Source Wizard Dropdownlist
+	Given RSAKLFSVRDEV appears as an option in the DB source wizard server combobox
+	When I Select RSAKLFSVRDEV From Server Source Wizard Dropdownlist
 	And I Click UserButton On Database Source
-	And I Enter TestUser Username And Password on Database source
+	And I Enter TestUser Username "testuser" And Password "test123" on Database source
 	And I Click DB Source Wizard Test Connection Button
 	Given The DB Source Wizard Test Succeeded Image Is Visible
 	When I Select Dev2TestingDB From DB Source Wizard Database Combobox
@@ -39,7 +39,9 @@ Scenario: Create DB Source From Tool
 	When I Click New Workflow Ribbon Button
 	And I Drag Toolbox SQL Server Tool Onto DesignSurface
 	And I Select NewSQLServerDatabaseSource FromSqlServerTool
-	And I Type RSAKLFSVRGENDEV into DB Source Wizard Server Textbox
+	And I Type rsaklfsvrgen into DB Source Wizard Server Textbox
+	Given RSAKLFSVRDEV appears as an option in the DB source wizard server combobox
+	When I Select RSAKLFSVRDEV From Server Source Wizard Dropdownlist
 	And I Click DB Source Wizard Test Connection Button
 	Then The DB Source Wizard Test Succeeded Image Is Visible
 	

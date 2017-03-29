@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UITests.ComPluginSource;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests

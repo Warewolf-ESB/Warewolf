@@ -22,6 +22,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
 using Dev2.Activities.Designers2.Sequence;
@@ -58,7 +59,7 @@ namespace Dev2.Activities.Designers2.Core
             Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;
-            
+
         }
 
         #region Overrides of WorkflowViewElement
@@ -70,7 +71,7 @@ namespace Dev2.Activities.Designers2.Core
         protected override void OnContextMenuLoaded(ContextMenu menu)
         {
             int indexOfOpenItem = -1;
-            foreach(var menuItem in menu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
+            foreach (var menuItem in menu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
             {
                 indexOfOpenItem = menu.Items.IndexOf(menuItem);
                 break;
@@ -162,19 +163,19 @@ namespace Dev2.Activities.Designers2.Core
         {
             var originalSource = eventArgs.OriginalSource;
             var fe = originalSource as FrameworkElement;
-            if(fe != null && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
+            if (fe != null && (fe.TemplatedParent is ToggleButton || fe.TemplatedParent is ActivityDesignerButton))
             {
                 return;
             }
 
-            if(originalSource is Panel || originalSource is Shape || originalSource is Decorator ||
+            if (originalSource is Panel || originalSource is Shape || originalSource is Decorator ||
                originalSource is ScrollViewer)
             {
-                if(eventArgs.Source is Large)
+                if (eventArgs.Source is Large)
                 {
                     return;
                 }
-                if (ViewModel!=null && ViewModel.IsSelected)
+                if (ViewModel != null && ViewModel.IsSelected)
                 {
                     ShowCollapseLargeView();
                     eventArgs.Handled = true;
@@ -185,13 +186,13 @@ namespace Dev2.Activities.Designers2.Core
 
         void ShowCollapseLargeView()
         {
-            if(ViewModel != null && ViewModel.HasLargeView)
+            if (ViewModel != null && ViewModel.HasLargeView)
             {
-                if(ViewModel.ShowSmall)
+                if (ViewModel.ShowSmall)
                 {
                     ViewModel.Expand();
                 }
-                else if(ViewModel.ShowLarge)
+                else if (ViewModel.ShowLarge)
                 {
                     ViewModel.Collapse();
                 }
@@ -200,10 +201,10 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            if(!_isSetFocusActionSet)
+            if (!_isSetFocusActionSet)
             {
                 var vm = DataContext as ActivityDesignerViewModel;
-                if(vm != null)
+                if (vm != null)
                 {
                     vm.SetIntialFocusAction(SetInitialiFocus);
                     _isSetFocusActionSet = true;
@@ -215,7 +216,7 @@ namespace Dev2.Activities.Designers2.Core
 
         private void SetInitialiFocus()
         {
-            if(!_isInitialFocusDone)
+            if (!_isInitialFocusDone)
             {
                 ContentDesignerTemplate.SetInitialFocus();
                 _isInitialFocusDone = true;
@@ -275,12 +276,11 @@ namespace Dev2.Activities.Designers2.Core
         void OnSelectionChanged(Selection item)
         {
             ViewModel.IsSelected = item.SelectedObjects.Any(modelItem => modelItem == ModelItem);
-             //item.PrimarySelection == ModelItem;
         }
 
         void OnDesignerManagementServiceChanged(IDesignerManagementService designerManagementService)
         {
-            if(_designerManagementService != null)
+            if (_designerManagementService != null)
             {
                 _designerManagementService.CollapseAllRequested -= OnDesignerManagementServiceCollapseAllRequested;
                 _designerManagementService.ExpandAllRequested -= OnDesignerManagementServiceExpandAllRequested;
@@ -288,17 +288,15 @@ namespace Dev2.Activities.Designers2.Core
                 _designerManagementService = null;
             }
 
-            if(designerManagementService != null)
+            if (designerManagementService != null)
             {
                 _designerManagementService = designerManagementService;
-                
+
                 _designerManagementService.CollapseAllRequested += OnDesignerManagementServiceCollapseAllRequested;
                 _designerManagementService.ExpandAllRequested += OnDesignerManagementServiceExpandAllRequested;
                 _designerManagementService.RestoreAllRequested += OnDesignerManagementServiceRestoreAllRequested;
             }
         }
-
-
 
         protected void OnDesignerManagementServiceRestoreAllRequested(object sender, EventArgs e)
         {
@@ -338,7 +336,7 @@ namespace Dev2.Activities.Designers2.Core
 
         void OnRoutedEventHandler(object sender, RoutedEventArgs args)
         {
-            OnLoaded();
+            Application.Current?.Dispatcher?.InvokeAsync(OnLoaded, DispatcherPriority.Background);
         }
 
         void ActivityDesignerUnloaded(object sender, RoutedEventArgs e)
@@ -349,7 +347,7 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual void OnUnloaded()
         {
-  
+
         }
 
         // Do not make this method virtual.
@@ -369,18 +367,18 @@ namespace Dev2.Activities.Designers2.Core
         void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if(!_isDisposed)
+            if (!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if(disposing)
+                if (disposing)
                 {
                     // Dispose managed resources.
                     //OnDispose();
-//                    if(_dataContext != null)
-//                    {
-//                        _dataContext.Dispose();
-//                    }
+                    //                    if(_dataContext != null)
+                    //                    {
+                    //                        _dataContext.Dispose();
+                    //                    }
                 }
 
                 // Call the appropriate methods to clean up
@@ -394,22 +392,20 @@ namespace Dev2.Activities.Designers2.Core
         protected void BuildInitialContextMenu()
         {
             ContextMenu = new ContextMenu();
-            
-            if(ViewModel != null && ViewModel.HasLargeView)
+
+            if (ViewModel != null && ViewModel.HasLargeView)
             {
                 _showCollapseLargeView = new MenuItem { Header = "Show Large View" };
                 _showCollapseLargeView.Click += ShowCollapseFromContextMenu;
                 _showCollapseLargeView.SetValue(AutomationProperties.AutomationIdProperty, "UI_ShowLargeViewMenuItem_AutoID");
                 ContextMenu.Items.Add(_showCollapseLargeView);
             }
-
         }
 
         void ShowCollapseFromContextMenu(object sender, RoutedEventArgs e)
         {
             ShowCollapseLargeView();
         }
-
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
@@ -430,14 +426,14 @@ namespace Dev2.Activities.Designers2.Core
                         if (ViewModel.ShowLarge)
                         {
                             var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Compress, Brushes.Black);
-                            var icon = new Image {Source = imageSource, Height = 14, Width = 14};
+                            var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
                             _showCollapseLargeView.Header = "Collapse Large View";
                             _showCollapseLargeView.Icon = icon;
                         }
                         else if (ViewModel.ShowSmall)
                         {
                             var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
-                            var icon = new Image {Source = imageSource, Height = 14, Width = 14};
+                            var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
                             _showCollapseLargeView.Header = "Show Large View";
                             _showCollapseLargeView.Icon = icon;
                         }

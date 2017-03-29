@@ -631,8 +631,10 @@
                                                                             <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                                            <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.PluginSourceDefinition</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
@@ -643,8 +645,8 @@
                                                                             <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -775,9 +777,9 @@
                                                                             <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                            <PropertyCondition Name="Name">{"AssemblyLocation":"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=AMD64","AssemblyName":"","FullName":"AssemblyRef","MethodName":null,"JsonObject":"{}"}</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Name" Operator="Contains">{"AssemblyLocation":"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
