@@ -6820,7 +6820,7 @@
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
@@ -6888,7 +6888,7 @@
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
                                                                   </AndCondition>
@@ -6929,10 +6929,10 @@
                                                                     <WindowTitle>Warewolf</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnHeader" />
                                                                     <PropertyCondition Name="ColumnIndex">0</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
@@ -6977,7 +6977,7 @@
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
@@ -7044,7 +7044,7 @@
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
                                                                   </AndCondition>
@@ -7085,10 +7085,10 @@
                                                                     <WindowTitle>Warewolf</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnHeader" />
                                                                     <PropertyCondition Name="ColumnIndex">0</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
@@ -7133,7 +7133,7 @@
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
@@ -7200,7 +7200,7 @@
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
                                                                   </AndCondition>
@@ -7241,10 +7241,10 @@
                                                                     <WindowTitle>Warewolf</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                     <PropertyCondition Name="ColumnHeader" />
                                                                     <PropertyCondition Name="ColumnIndex">0</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
