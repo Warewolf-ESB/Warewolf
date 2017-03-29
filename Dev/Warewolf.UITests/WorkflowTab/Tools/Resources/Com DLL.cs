@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UITests.ComPluginSource;
+using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
@@ -25,7 +26,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
                     .Flowchart.ComDll.LargeView.SourcesCombobox.Exists,
                 "Sources Combobox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+               ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.EditSourceButton.Exists,
                 "EditSources Button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
@@ -40,12 +41,12 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
                     .Flowchart.ComDll.LargeView.NamespaceCombobox.Exists,
                 "Namespace Combobox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+               ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.RefreshNamespaceButton.Exists,
                 "RefeshNamespace Button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+               ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.ActionsCombobox.Exists,
                 "Actions Combobox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
@@ -70,7 +71,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
                     .Flowchart.ComDll.LargeView.OutputToObjectCheckbox.Exists,
                 "OutputToObjective Checkbox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+               ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.OutputsTable.Exists,
                 "Outputs Table does not exist on Com DLL tool large view after openning it by double clicking the small view.");
@@ -80,7 +81,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
                     .Flowchart.ComDll.LargeView.RecordsetNameTextbox.Exists,
                 "RecrodsetName Textbox does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             Assert.IsTrue(
-                ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
+               ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
                     .Flowchart.ComDll.LargeView.OnErrorPanel.Exists,
                 "OnError Pane does not exist on Com DLL tool large view after openning it by double clicking the small view.");
@@ -103,14 +104,19 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         [TestCategory("Resource Tools")]
         public void DotNetDLLTool_EditSource_UITest()
         {
-            var countBefore = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.Items.Count;
             ResourcesToolsUIMap.Select_Source_From_ComDLLTool();
-            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
+            var countBefore = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.SourcesCombobox.Items.Count;
+            Assert.IsTrue(ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
             ResourcesToolsUIMap.Click_EditSourceButton_On_ComDLLTool();
-            ComPluginSourceUIMap.Select_AssemblyFile_From_COMPluginDataTree("connection");
-            ComPluginSourceUIMap.Click_COMPluginSource_CloseTabButton();
+            MyComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner.DrawHighlight();
+            //ComPluginSourceUIMap.MainStudioWindow.DockManager.RefreshButton.Spinner.DrawHighlight();
+            //ComPluginSourceUIMap.UIWarewolfDEV2NKOSINATWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsSourceTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.RefreshButton.Spinner.DrawHighlight();
+            UIMap.WaitForSpinner(MyComPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.COMPlugInSourceTab.WorkSurfaceContext.RefreshButton.RefreshSpinner);
+            MyComPluginSourceUIMap.Select_AssemblyFile_From_COMPluginDataTree("connection");
+            UIMap.Click_Save_RibbonButton();
+            MyComPluginSourceUIMap.Click_COMPluginSource_CloseTabButton();
             ResourcesToolsUIMap.DotNetDLLTool_ChangeView_With_DoubleClick();
-            var countAfter = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.Items.Count;
+            var countAfter =ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.SourcesCombobox.Items.Count;
             Assert.AreEqual(countBefore, countAfter);
             ResourcesToolsUIMap.Click_EditSourceButton_On_DotNetDLLTool();
         }
@@ -156,7 +162,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
 
         private WorkflowTabUIMap _WorkflowTabUIMap;
 
-        ComPluginSourceUIMap ComPluginSourceUIMap
+        ComPluginSourceUIMap MyComPluginSourceUIMap
         {
             get
             {
@@ -185,6 +191,21 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         private ResourcesToolsUIMap _ResourcesToolsUIMap;
+
+       DialogsUIMap MyDialogsUIMap
+        {
+            get
+            {
+                if (_MyDialogsUIMap == null)
+                {
+                    _MyDialogsUIMap = new DialogsUIMap();
+                }
+
+                return _MyDialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _MyDialogsUIMap;
 
         #endregion
     }

@@ -1,28 +1,17 @@
-﻿using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
-using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowServiceTesting;
-using Warewolf.UITests.Settings.SettingsUIMapClasses;
-using Warewolf.UITests.Deploy.DeployUIMapClasses;
-using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
-using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 
 namespace Warewolf.UITests.DialogsUIMapClasses
