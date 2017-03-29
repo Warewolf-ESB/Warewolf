@@ -63,49 +63,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     regClsidKey?.Close();
                 });
-               /* foreach (var clsid in subKeyNames)
-                {
-                    var regClsidKey = regClis.OpenSubKey(clsid);
-                    if (regClsidKey != null)
-                    {
-                        var progID = regClsidKey.OpenSubKey("ProgID");
-                        var regPath = regClsidKey.OpenSubKey("InprocServer32" +
-                                                             "") ?? regClsidKey.OpenSubKey("LocalServer");
-
-                        if (regPath != null && progID != null)
-                        {
-                            var pid = progID.GetValue("");
-                            regPath.Close();
-
-                            try
-                            {
-                                if (pid != null)
-                                {
-                                    var typeFromProgID = Type.GetTypeFromCLSID(Guid.Parse(clsid));
-                                    if (typeFromProgID == null)
-                                    {
-                                        continue;
-                                    }
-                                    var fullName = typeFromProgID.FullName;
-                                    dllListings.Add(new DllListing
-                                    {
-                                        ClsId = clsid,
-                                        Is32Bit = fullName.Equals("System.__ComObject"),
-                                        Name = pid.ToString(),
-                                        IsDirectory = false,
-                                        FullName = pid.ToString(),
-                                        Children = new IFileListing[0]
-                                    });
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Dev2Logger.Error("GetComDllListingsService-Execute", e);
-                            }
-                        }
-                    }
-                    regClsidKey?.Close();
-                }*/
                 regClis.Close();
             }
 
