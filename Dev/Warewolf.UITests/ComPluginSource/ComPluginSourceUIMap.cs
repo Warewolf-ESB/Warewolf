@@ -8,7 +8,7 @@ using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Warewolf.UITests.WorkflowServiceTesting;
 
-namespace Warewolf.UITests.ComPluginSource
+namespace Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses
 {
     [Binding]
     public partial class ComPluginSourceUIMap

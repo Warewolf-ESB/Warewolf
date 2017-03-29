@@ -1,10 +1,8 @@
 ﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
@@ -12,7 +10,6 @@ using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using System.Drawing;
 using System.IO;
 using TechTalk.SpecFlow;
-using Warewolf.UITests.Common;
 using Warewolf.UITests.WorkflowServiceTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;

@@ -10,6 +10,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
@@ -30,8 +31,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Contribute;
         }
 
-        IExplorerServerResourceRepository _serverExplorerRepository;
+        private IResourceCatalog _resourceCatalog;
 
+        public SaveComPluginSource()
+        {
+            
+        }
+        public SaveComPluginSource(IResourceCatalog resourceCatalog)
+        {
+            _resourceCatalog = resourceCatalog;
+        }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -51,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     src.ResourcePath = src.ResourcePath.Substring(0, src.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
 
                 ComPluginSource res1;
-                var existingSource = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, src.Name);
+                var existingSource = ResourceCat.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, src.Name);
                 if (existingSource != null)
                 {
                     res1 = existingSource;
@@ -70,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
 
 
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res1, src.ResourcePath);
+                ResourceCat.SaveResource(GlobalConstants.ServerWorkspaceID, res1, src.ResourcePath);
                 msg.HasError = false;
 
             }
@@ -93,10 +102,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return newDs;
         }
-        public IExplorerServerResourceRepository ServerExplorerRepo
+        public IResourceCatalog ResourceCat
         {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
+            get { return _resourceCatalog ?? ResourceCatalog.Instance; }
+            set { _resourceCatalog = value; }
         }
         public string HandlesType()
         {
