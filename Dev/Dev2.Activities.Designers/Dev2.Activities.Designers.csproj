@@ -263,6 +263,7 @@
     </Compile>
     <Compile Include="Designers2\Core\ActionInputDatatalistMapper.cs" />
     <Compile Include="Designers2\Core\ActionRegion\ComActionRegion.cs" />
+    <Compile Include="Designers2\Core\ActionRegion\DbActionMemento.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegion.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DbActionRegionODBC.cs" />
     <Compile Include="Designers2\Core\ActionRegion\DotNetActionRegion.cs" />
