@@ -632,7 +632,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 model => model.ResourceId == resource.ID);
             if (explorerItemViewModel != null && explorerItemViewModel.GetType() == typeof (VersionViewModel))
             {
-                explorerItemViewModel.Parent.AreVersionsVisible = true;
+                if (explorerItemViewModel.Parent != null)
+                {
+                    explorerItemViewModel.Parent.AreVersionsVisible = true;
+                }
             }
         }
 
