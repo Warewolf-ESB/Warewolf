@@ -1580,26 +1580,40 @@ namespace Warewolf.Studio.ViewModels
                 if (value)
                 {
                     var versionInfos = _explorerRepository.GetVersions(ResourceId);
-                    _children = new ObservableCollection<IExplorerItemViewModel>(versionInfos.Select(a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
+                    if (versionInfos.Count <= 0)
                     {
-                        ResourceName = "v." + a.VersionNumber + " " + a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " + a.Reason.Replace(".xml", ""),
-                        VersionNumber = a.VersionNumber,
-                        VersionInfo = a,
-                        ResourceId = ResourceId,
-                        IsVersion = true,
-                        CanEdit = false,
-                        CanCreateWorkflowService = false,
-                        ShowContextMenu = true,
-                        CanCreateSource = false,
-                        IsResourceVersion = true,
-                        AllowResourceCheck = false,
-                        IsResourceChecked = false,
-                        CanDelete = CanDelete,
-                        ResourceType = "Version"
+                        _areVersionsVisible = false;
+                        VersionHeader = "Show Version History";
                     }
-                    ));
-                    OnPropertyChanged(() => Children);
-                    if (Children.Count > 0) IsExpanded = true;
+                    else
+                    {
+                        _children =
+                            new ObservableCollection<IExplorerItemViewModel>(
+                                versionInfos.Select(
+                                    a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
+                                    {
+                                        ResourceName =
+                                            "v." + a.VersionNumber + " " +
+                                            a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " +
+                                            a.Reason.Replace(".xml", ""),
+                                        VersionNumber = a.VersionNumber,
+                                        VersionInfo = a,
+                                        ResourceId = ResourceId,
+                                        IsVersion = true,
+                                        CanEdit = false,
+                                        CanCreateWorkflowService = false,
+                                        ShowContextMenu = true,
+                                        CanCreateSource = false,
+                                        IsResourceVersion = true,
+                                        AllowResourceCheck = false,
+                                        IsResourceChecked = false,
+                                        CanDelete = CanDelete,
+                                        ResourceType = "Version"
+                                    }
+                                    ));
+                        OnPropertyChanged(() => Children);
+                        if (Children.Count > 0) IsExpanded = true;
+                    }
                 }
                 else
                 {
