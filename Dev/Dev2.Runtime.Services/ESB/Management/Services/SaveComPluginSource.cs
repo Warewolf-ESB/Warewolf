@@ -31,8 +31,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         IExplorerServerResourceRepository _serverExplorerRepository;
-       
-       
+
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
@@ -45,19 +45,32 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ComPluginSource", out resourceDefinition);
 
                 var src = serializer.Deserialize<ComPluginSourceDefinition>(resourceDefinition);
-                if(src.ResourcePath == null) 
+                if (src.ResourcePath == null)
                     src.ResourcePath = string.Empty;
                 if (src.ResourcePath.EndsWith("\\"))
                     src.ResourcePath = src.ResourcePath.Substring(0, src.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
-                var res = new ComPluginSource
+
+                ComPluginSource res1;
+                var existingSource = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, src.Name);
+                if (existingSource != null)
                 {
-                    ResourceID = src.Id,
-                    ClsId = src.ClsId,
-                    Is32Bit = src.Is32Bit,
-                    ComName = src.SelectedDll.Name,
-                    ResourceName = src.ResourceName
-                };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.ResourcePath);
+                    res1 = existingSource;
+                }
+                else
+                {
+                    res1 = new ComPluginSource
+                    {
+                        ResourceID = src.Id,
+                        ClsId = src.ClsId,
+                        Is32Bit = src.Is32Bit,
+                        ComName = src.SelectedDll.Name,
+                        ResourceName = src.ResourceName
+                    };
+                }
+
+
+
+                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res1, src.ResourcePath);
                 msg.HasError = false;
 
             }
@@ -66,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error(err);
-                  
+
             }
 
             return serializer.SerializeToBuilder(msg);
