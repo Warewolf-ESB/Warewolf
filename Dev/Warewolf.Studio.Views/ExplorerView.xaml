@@ -699,14 +699,6 @@
 								                      ToolTip="{Binding RollbackTooltip}"
 								                      Visibility="{Binding IsRollbackVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-                                            <MenuItem Name="OpenVersion"
-								                      Command="{Binding OpenVersionCommand}"
-								                      Header="Open Version"
-								                      Style="{StaticResource MenuItemStyle}"
-								                      IsEnabled="{Binding IsVersion, UpdateSourceTrigger=PropertyChanged}" 
-								                      ToolTip="{Binding OpenVersionTooltip}"
-								                      Visibility="{Binding IsOpenVersionVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
                                             <Separator>
                                                 <Separator.Style>
                                                     <Style TargetType="{x:Type Separator}">
