@@ -158,7 +158,6 @@ namespace Warewolf.Studio.ViewModels
         private bool _canDuplicate;
         private bool _canCreateTest;
         private bool _canViewRunAllTests;
-        private string _openVersionTooltip;
         private string _newServiceTooltip;
         private string _newServerSourceTooltip;
         private string _newSqlServerSourceTooltip;
@@ -382,26 +381,10 @@ namespace Warewolf.Studio.ViewModels
             ShowVersionHistory = new DelegateCommand(selecteExplorerItem =>
             {
                 AreVersionsVisible = !AreVersionsVisible;
-
-                var explorerItemViewModel = selecteExplorerItem as ExplorerItemViewModel;
-                if (explorerItemViewModel == null) return;
-                foreach (var child in explorerItemViewModel.Children)
-                {
-                    if (child.IsVersion)
-                    {
-                        var permissions = Server?.GetPermissions(child.ResourceId);
-                        if (permissions.HasValue)
-                        {
-                            child.SetPermissions(permissions.Value);
-                        }
-
-                    }
-                }
             });
             DeleteCommand = new DelegateCommand(o => Delete());
             DuplicateCommand = new DelegateCommand(o => DuplicateResource(), o => CanDuplicate);
             CreateTestCommand = new DelegateCommand(o => CreateTest(), o => CanCreateTest);
-            OpenVersionCommand = new DelegateCommand(o => OpenVersion());
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand(clickCount =>
             {
@@ -435,10 +418,6 @@ namespace Warewolf.Studio.ViewModels
             _explorerItemViewModelCommandController.ShowDependenciesCommand(ResourceId, Server, IsSource || IsServer);
         }
 
-        private void OpenVersion()
-        {
-            _explorerItemViewModelCommandController.OpenCommand(this, Server);
-        }
         void DeleteVersion()
         {
             _explorerItemViewModelCommandController.DeleteVersionCommand(_explorerRepository, this, Parent, ResourceName);
@@ -698,7 +677,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 CanEdit = true;
                 CanExecute = false;
-                if (isDeploy)
+                if (isDeploy || IsVersion)
                 {
                     CanEdit = false;
                 }
@@ -1544,7 +1523,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _isVersion = value;
-                OpenVersionTooltip = _isVersion ? Resources.Languages.Tooltips.OpenVersionTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 RollbackTooltip = _isVersion ? Resources.Languages.Tooltips.RollbackTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => IsVersion);
             }
@@ -1612,7 +1590,10 @@ namespace Warewolf.Studio.ViewModels
                                     }
                                     ));
                         OnPropertyChanged(() => Children);
-                        if (Children.Count > 0) IsExpanded = true;
+                        if (Children.Count > 0)
+                        {
+                            UpdateResourceVersions();
+                        }
                     }
                 }
                 else
@@ -1623,6 +1604,26 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AreVersionsVisible);
             }
         }
+
+        private void UpdateResourceVersions()
+        {
+            IsExpanded = true;
+            foreach (var child in Children)
+            {
+                var explorerItemViewModel = child as ExplorerItemViewModel;
+                if (explorerItemViewModel != null && explorerItemViewModel.IsVersion)
+                {
+                    var permissions = Server?.GetPermissions(explorerItemViewModel.ResourceId);
+                    if (permissions.HasValue)
+                    {
+                        explorerItemViewModel.SetPermissions(permissions.Value);
+                        explorerItemViewModel.CanDelete = CanDelete;
+                    }
+                    explorerItemViewModel.IsRollbackVisible = explorerItemViewModel.Parent.IsService;
+                }
+            }
+        }
+
         public IVersionInfo VersionInfo
         {
             get
@@ -1790,7 +1791,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICommand OpenVersionCommand { get; set; }
         public ICommand DeleteVersionCommand { get; set; }
         public ICommand ShowDependenciesCommand { get; set; }
 
@@ -2026,15 +2026,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string OpenVersionTooltip
-        {
-            get { return _openVersionTooltip; }
-            set
-            {
-                _openVersionTooltip = value;
-                OnPropertyChanged(() => OpenVersionTooltip);
-            }
-        }
         public string NewServiceTooltip
         {
             get { return _newServiceTooltip; }
