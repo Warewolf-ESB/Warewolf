@@ -296,13 +296,13 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual void OnSomethingChanged(IToolRegion args)
+        protected void OnSomethingChanged(IToolRegion args)
         {
             SomethingChanged?.Invoke(this, args);
         }
