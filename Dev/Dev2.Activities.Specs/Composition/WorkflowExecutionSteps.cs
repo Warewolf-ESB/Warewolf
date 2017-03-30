@@ -25,6 +25,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Activities.DropBox2016.DownloadActivity;
+using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.Scripting;
@@ -2680,6 +2681,35 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, uploadActivity);
         }
+
+        [Given(@"""(.*)"" contains a DropboxList ""(.*)"" Setup as")]
+        public void GivenContainsADropboxListSetupAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var listActivity = new DsfDropboxFileListActivity()
+            {
+                DisplayName = dotNetServiceName,
+
+            };
+            var dropBoxSource = GetDropBoxSource();
+            listActivity.SelectedSource = dropBoxSource;
+            var result = table.Rows[0]["Result"];
+            var DropboxFile = table.Rows[0]["DropboxFile"];
+            listActivity.ToPath = DropboxFile;
+            var read = table.Rows[0]["Read"];
+            var loadSubFolders = table.Rows[0]["LoadSubFolders"];
+            switch (read)
+            {
+                case "Files":                    listActivity.IsFilesSelected = true;                    break;
+                case "Folders":                    listActivity.IsFoldersSelected = true;                    break;
+                case "All":                    listActivity.IsFilesAndFoldersSelected = true;                    break;
+            }
+            var b = bool.Parse(loadSubFolders);
+            listActivity.IsRecursive = b;
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, listActivity);
+
+        }
+
 
         private static DropBoxSource GetDropBoxSource()
         {
