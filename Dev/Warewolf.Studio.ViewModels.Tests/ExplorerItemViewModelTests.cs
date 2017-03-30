@@ -575,8 +575,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ShowVersionHistory.Execute(null);
             Assert.IsTrue(_target.ShowVersionHistory.CanExecute(null));
 
+            //Changed to False as there is now a count on the return of versions
             //assert
-            Assert.IsTrue(_target.AreVersionsVisible);
+            Assert.IsFalse(_target.AreVersionsVisible);
         }
 
         [TestMethod]
@@ -645,18 +646,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
         }
 
         [TestMethod]
         public void TestDeleteCommandResourceTypeVersionUserDeclined()
         {
             //arrange
-            // var explorerRepositoryMock = new Mock<IExplorerRepository>();
             _target.ResourceType = "Version";
             _target.IsResourceVersion = true;
-            //if (_popupController.ShowDeleteVersionMessage(ResourceName) == MessageBoxResult.Yes)
-            //serverMock.SetupGet(it => it.ExplorerRepository).Returns(explorerRepositoryMock.Object);
             _popupControllerMock.Setup(it => it.ShowDeleteVersionMessage(It.IsAny<string>())).Returns(MessageBoxResult.No);
 
             //act
@@ -667,7 +664,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Verify(it => it.Delete(It.IsAny<IExplorerItemViewModel>()), Times.Never);
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
             //assert
-            //DeleteVersion();
         }
 
 
@@ -934,7 +930,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _explorerRepositoryMock.Verify(it => it.Delete(_target));
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
         }
 
         [TestMethod]
