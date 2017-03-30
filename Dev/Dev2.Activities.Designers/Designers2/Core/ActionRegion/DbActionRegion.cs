@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         private bool _isRefreshing;
         private double _labelWidth;
         private IList<string> _errors;
-        private IAsyncWorker _worker;
+        private readonly IAsyncWorker _worker;
 
         public DbActionRegion()
         {
@@ -158,15 +158,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.Name))
                         StorePreviousValues(_selectedAction.GetIdentifier());
-                }
-                var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                var region = outputs as OutputsRegion;
-                if (region != null)
-                {
-                    region.Outputs = new ObservableCollection<IServiceOutputMapping>();
-                    region.RecordsetName = String.Empty;
 
+                    var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
+                    var region = outputs as OutputsRegion;
+                    if (region != null)
+                    {
+                        region.Outputs = new ObservableCollection<IServiceOutputMapping>();
+                        region.RecordsetName = String.Empty;
+                        region.IsEnabled = false;
+                    }
                 }
+                
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
             }
@@ -381,81 +383,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             var handler = SomethingChanged;
             handler?.Invoke(this, args);
-        }
-    }
-
-    public class DbActionMemento : IActionToolRegion<IDbAction>
-    {
-        private IDbAction _selectedAction;
-
-        #region Implementation of INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Implementation of IToolRegion
-
-        public string ToolRegionName { get; set; }
-        public bool IsEnabled { get; set; }
-        public IList<IToolRegion> Dependants { get; set; }
-        public IList<string> Errors { get; set; }
-
-        public IToolRegion CloneRegion()
-        {
-            return null;
-        }
-
-        public void RestoreRegion(IToolRegion toRestore)
-        {
-        }
-
-        public EventHandler<List<string>> ErrorsHandler
-        {
-            get
-            {
-                return null;
-            }
-            set
-            {
-            }
-        }
-
-        #endregion
-
-        #region Implementation of IActionToolRegion<IDbAction>
-
-        public IDbAction SelectedAction
-        {
-            get
-            {
-                return _selectedAction;
-            }
-            set
-            {
-                _selectedAction = value;
-            }
-        }
-        public ICollection<IDbAction> Actions { get; set; }
-        public ICommand RefreshActionsCommand { get; set; }
-        public bool IsActionEnabled { get; set; }
-        public bool IsRefreshing { get; set; }
-        public event SomethingChanged SomethingChanged;
-        public double LabelWidth { get; set; }
-
-        #endregion
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        protected virtual void OnSomethingChanged(IToolRegion args)
-        {
-            var handler = SomethingChanged;
-            handler?.Invoke(this, args);
-        }
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
