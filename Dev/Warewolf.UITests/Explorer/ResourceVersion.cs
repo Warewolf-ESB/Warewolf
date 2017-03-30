@@ -24,7 +24,12 @@ namespace Warewolf.UITests
             ExplorerUIMap.DoubleClick_Explorer_Localhost_Second_Item();
             Assert.AreEqual(2, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.Tabs.Count);
             ExplorerUIMap.RightClick_Explorer_Localhost_SecondItem();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Exists, "The open option does not exist on the context menu");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Enabled, "The open option is not enabled on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Delete.Exists, "The delete option does not exist on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Delete.Enabled, "The delete option is not enabled on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Exists, "The make current version option does not exist on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Enabled, "The make current version option is not enabled on the context menu");
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
         }
 
