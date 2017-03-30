@@ -66,16 +66,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
 
         [TestMethod]
         [TestCategory("Data Tools")]
-        public void AssignTool_DebugOutput_UITest()
-        {
-            DataToolsUIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
-            UIMap.Press_F6();
-            UIMap.WaitForSpinner(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
-            WorkflowTabUIMap.Click_Debug_Output_Assign_Cell();
-        }
-
-        [TestMethod]
-        [TestCategory("Data Tools")]
         public void AssignTool_AddRemoveVariables_UITest()
         {
             const string Variable1Name = "SomeVariable";

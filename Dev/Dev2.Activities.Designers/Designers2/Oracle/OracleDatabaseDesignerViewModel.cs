@@ -102,7 +102,6 @@ namespace Dev2.Activities.Designers2.Oracle
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
             {
-                FixErrors();
                 IsWorstErrorReadOnly = true;
             });
 
@@ -303,11 +302,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
         private string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming
-
-        private void FixErrors()
-        {
-        }
-
+        
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -336,7 +331,7 @@ namespace Dev2.Activities.Designers2.Oracle
             {
                 SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.Oracle) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker);
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
                     List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
