@@ -24,6 +24,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Activities.DropBox2016.DeleteActivity;
+using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.Scripting;
@@ -2655,10 +2656,7 @@ namespace Dev2.Activities.Specs.Composition
 
             };
 
-            var guid = "dc163197-7a76-4f4c-a783-69d6d53b2f3a".ToGuid();
-            var resourceList = LocalEnvModel.ResourceRepository.LoadContextualResourceModel(guid);
-            var serviceDefinition = resourceList.ToServiceDefinition();
-            var dropBoxSource = new DropBoxSource(serviceDefinition.ToXElement());
+            var dropBoxSource = GetDropBoxSource();
             uploadActivity.SelectedSource = dropBoxSource;
             var localFile = table.Rows[0]["Local File"];
             var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
@@ -2673,7 +2671,7 @@ namespace Dev2.Activities.Specs.Composition
                 using (File.Create(localFile))
                 {
 
-                }   
+                }
             }
             catch (Exception e)
             {
@@ -2683,6 +2681,36 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, uploadActivity);
         }
 
+        private static DropBoxSource GetDropBoxSource()
+        {
+            var guid = "dc163197-7a76-4f4c-a783-69d6d53b2f3a".ToGuid();
+            var resourceList = LocalEnvModel.ResourceRepository.LoadContextualResourceModel(guid);
+            var serviceDefinition = resourceList.ToServiceDefinition();
+            var dropBoxSource = new DropBoxSource(serviceDefinition.ToXElement());
+            return dropBoxSource;
+        }
+
+        [Given(@"""(.*)"" contains a DropboxDownLoad ""(.*)"" Setup as")]
+        public void GivenContainsADropboxDownLoadSetupAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var downloadActivity = new DsfDropBoxDownloadActivity()
+            {
+                DisplayName = dotNetServiceName,
+
+            };
+            var dropBoxSource = GetDropBoxSource();
+            downloadActivity.SelectedSource = dropBoxSource;
+            downloadActivity.FromPath = table.Rows[0]["Local File"];
+            downloadActivity.ToPath = table.Rows[0]["DropboxFile"];
+            var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
+            downloadActivity.OverwriteFile = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
+            var result = table.Rows[0]["Result"];
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, downloadActivity);
+
+        }
+
+
         [Given(@"""(.*)"" contains a DropboxDelete ""(.*)"" Setup as")]
         public void GivenContainsADropboxDeleteSetupAs(string parentName, string dotNetServiceName, Table table)
         {
@@ -2691,10 +2719,7 @@ namespace Dev2.Activities.Specs.Composition
                 DisplayName = dotNetServiceName,
 
             };
-            var guid = "dc163197-7a76-4f4c-a783-69d6d53b2f3a".ToGuid();
-            var resourceList = LocalEnvModel.ResourceRepository.LoadContextualResourceModel(guid);
-            var serviceDefinition = resourceList.ToServiceDefinition();
-            var dropBoxSource = new DropBoxSource(serviceDefinition.ToXElement());
+            var dropBoxSource = GetDropBoxSource();
             deleteActivity.SelectedSource = dropBoxSource;
             var dropboxFile = table.Rows[0]["DropboxFile"];
             deleteActivity.DeletePath = dropboxFile;

@@ -2665,11 +2665,10 @@ Then test result is Passed
 When I delete "Test 1"
 
 Scenario: Test Wf With Dropbox Delete Tool
-
 Given I have a workflow "TestWFWithDropBoxDelete"	
 And "TestWFWithDropBoxDelete" contains a DropboxUpload "UploadTool" Setup as
-| Local File      | OverwriteOrAdd | DropboxFile | Result  |
-| C:\Home.Delete | Overwrite      | ToDelete.xml  | [[res]] |
+| Local File     | OverwriteOrAdd | DropboxFile  | Result  |
+| C:\Home.Delete | Overwrite      | ToDelete.xml | [[res]] |
 And "TestWFWithDropBoxDelete" contains a DropboxDelete "DeleteTool" Setup as
 | DropboxFile     |  Result  |
 | ToDelete.xml|  [[res]] |
@@ -2678,6 +2677,24 @@ Then the test builder is open with "TestWFWithDropBoxDelete"
 And I click New Test
 And I Add "UploadTool" as TestStep 
 And I Add "DeleteTool" as TestStep 
+When I save
+And I run the test
+Then test result is Passed
+When I delete "Test 1"
+
+Scenario: Test Wf With Dropbox Download Tool
+Given I have a workflow "TestWFWithDropBoxDowload"	
+And "TestWFWithDropBoxDowload" contains a DropboxUpload "UploadTool" Setup as
+| Local File      | OverwriteOrAdd | DropboxFile | Result  |
+| C:\Home.Delete | Overwrite      | Download.xml  | [[res]] |
+And "TestWFWithDropBoxDowload" contains a DropboxDownLoad "DownloadTool" Setup as
+| Local File     | OverwriteOrAdd | DropboxFile  | Result  |
+| C:\Home.Delete | Overwrite      | Download.xml | [[res]] |
+And I save workflow "TestWFWithDropBoxDowload"
+Then the test builder is open with "TestWFWithDropBoxDowload"
+And I click New Test
+And I Add "UploadTool" as TestStep 
+And I Add "DownloadTool" as TestStep 
 When I save
 And I run the test
 Then test result is Passed
