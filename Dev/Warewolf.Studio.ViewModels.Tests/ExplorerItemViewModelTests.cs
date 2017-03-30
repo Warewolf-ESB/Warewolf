@@ -751,13 +751,14 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             _target.ResourceType = "Version";
             _target.IsResourceVersion = true;
+            _target.IsVersion = true;
             var versionInfoMock = new Mock<IVersionInfo>();
             _target.VersionInfo = versionInfoMock.Object;
             _explorerTreeItemMock.Setup(it => it.ResourceId).Returns(Guid.NewGuid());
 
             //act
-            _target.OpenVersionCommand.Execute(null);
-            Assert.IsTrue(_target.OpenVersionCommand.CanExecute(null));
+            _target.OpenCommand.Execute(null);
+            Assert.IsTrue(_target.OpenCommand.CanExecute(null));
 
             //assert
             _shellViewModelMock.Verify(it => it.OpenVersion(_target.Parent.ResourceId, _target.VersionInfo));
