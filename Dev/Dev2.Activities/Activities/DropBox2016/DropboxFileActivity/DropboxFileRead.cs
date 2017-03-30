@@ -22,7 +22,11 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             _path = path;
             _includeMediaInfo = includeMediaInfo;
             _includeDeleted = includeDeleted;
-            if (!string.IsNullOrWhiteSpace(path) && !path.StartsWith(@"/"))
+            if (string.IsNullOrEmpty(path))
+            {
+                path = "";
+            }
+            else if (!string.IsNullOrWhiteSpace(path) && !path.StartsWith(@"/"))
             {
                 path = string.Concat(@"/", path);
             }
