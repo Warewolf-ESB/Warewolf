@@ -35,7 +35,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         public void Open_Tools_UI_Map_Designer_To_Flowchart()
         {
             #region Variable Declarations
-            WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom flowchart = this.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
@@ -105,74 +105,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         }
         
         #region Properties
-        public DockManager DockManager
-        {
-            get
-            {
-                if ((this.mDockManager == null))
-                {
-                    this.mDockManager = new DockManager(this);
-                }
-                return this.mDockManager;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private DockManager mDockManager;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class DockManager : WpfCustom
-    {
-        
-        public DockManager(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DockManager";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public SplitPaneMiddle SplitPaneMiddle
-        {
-            get
-            {
-                if ((this.mSplitPaneMiddle == null))
-                {
-                    this.mSplitPaneMiddle = new SplitPaneMiddle(this);
-                }
-                return this.mSplitPaneMiddle;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private SplitPaneMiddle mSplitPaneMiddle;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class SplitPaneMiddle : WpfCustom
-    {
-        
-        public SplitPaneMiddle(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
-            this.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
-            this.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
         public TabManSplitPane TabManSplitPane
         {
             get
@@ -201,7 +133,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -233,8 +165,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
-            this.WindowTitles.Add("Warewolf");
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -266,7 +197,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -299,7 +230,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -330,9 +261,42 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
-            this.WindowTitles.Add("Warewolf");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WorkflowDesigner_Custom WorkflowDesigner_Custom
+        {
+            get
+            {
+                if ((this.mWorkflowDesigner_Custom == null))
+                {
+                    this.mWorkflowDesigner_Custom = new WorkflowDesigner_Custom(this);
+                }
+                return this.mWorkflowDesigner_Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WorkflowDesigner_Custom mWorkflowDesigner_Custom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class WorkflowDesigner_Custom : WpfCustom
+    {
+        
+        public WorkflowDesigner_Custom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowDesignerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_WorkflowDesigner_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -365,7 +329,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DesignerView";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UserControl_1";
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -398,7 +362,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
             this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "scrollViewer";
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -431,7 +395,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ActivityTypeDesigner";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ActivityTypeDesigner";
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -464,7 +428,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -496,7 +460,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -626,8 +590,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MultiAssignDesigner";
-            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "MultiAssignDesigner", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf");
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "(MultiAssignDesigner)", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -711,6 +675,18 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 return this.mAddButton;
             }
         }
+        
+        public UISmallViewContentCustom UISmallViewContentCustom
+        {
+            get
+            {
+                if ((this.mUISmallViewContentCustom == null))
+                {
+                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
+                }
+                return this.mUISmallViewContentCustom;
+            }
+        }
         #endregion
         
         #region Fields
@@ -725,6 +701,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         private QuickVariableInputContent mQuickVariableInputContent;
         
         private WpfButton mAddButton;
+        
+        private UISmallViewContentCustom mUISmallViewContentCustom;
         #endregion
     }
     
@@ -739,6 +717,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
             this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
             this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -771,6 +750,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
             this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -832,6 +812,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
             this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
             this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
@@ -890,8 +871,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1009,7 +991,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -1080,7 +1063,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1177,8 +1160,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1295,7 +1279,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -1366,7 +1351,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1463,8 +1448,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1581,7 +1567,8 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
             this.WindowTitles.Add("Warewolf");
             #endregion
@@ -1652,7 +1639,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1857,7 +1844,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Variable";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1926,7 +1913,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "New Value";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -2042,7 +2029,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Variable";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -2111,7 +2098,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "New Value";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -2227,7 +2214,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Variable";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -2296,7 +2283,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "New Value";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -2412,7 +2399,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Variable";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -2481,7 +2468,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "New Value";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -2972,6 +2959,174 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         
         #region Fields
         private WpfButton mPreviewButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISmallViewContentCustom : WpfCustom
+    {
+        
+        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISmallDataGridTable UISmallDataGridTable
+        {
+            get
+            {
+                if ((this.mUISmallDataGridTable == null))
+                {
+                    this.mUISmallDataGridTable = new UISmallDataGridTable(this);
+                }
+                return this.mUISmallDataGridTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISmallDataGridTable mUISmallDataGridTable;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UISmallDataGridTable : WpfTable
+    {
+        
+        public UISmallDataGridTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ActivityGridRow_0Row UIUI_ActivityGridRow_0Row
+        {
+            get
+            {
+                if ((this.mUIUI_ActivityGridRow_0Row == null))
+                {
+                    this.mUIUI_ActivityGridRow_0Row = new UIUI_ActivityGridRow_0Row(this);
+                }
+                return this.mUIUI_ActivityGridRow_0Row;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ActivityGridRow_0Row mUIUI_ActivityGridRow_0Row;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ActivityGridRow_0Row : WpfRow
+    {
+        
+        public UIUI_ActivityGridRow_0Row(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIItemUnlimitedApplicaCell UIItemUnlimitedApplicaCell
+        {
+            get
+            {
+                if ((this.mUIItemUnlimitedApplicaCell == null))
+                {
+                    this.mUIItemUnlimitedApplicaCell = new UIItemUnlimitedApplicaCell(this);
+                }
+                return this.mUIItemUnlimitedApplicaCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIItemUnlimitedApplicaCell mUIItemUnlimitedApplicaCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIItemUnlimitedApplicaCell : WpfCell
+    {
+        
+        public UIItemUnlimitedApplicaCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_TextBox_AutoIDComboBox UIUI_TextBox_AutoIDComboBox
+        {
+            get
+            {
+                if ((this.mUIUI_TextBox_AutoIDComboBox == null))
+                {
+                    this.mUIUI_TextBox_AutoIDComboBox = new UIUI_TextBox_AutoIDComboBox(this);
+                }
+                return this.mUIUI_TextBox_AutoIDComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_TextBox_AutoIDComboBox mUIUI_TextBox_AutoIDComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_TextBox_AutoIDComboBox : WpfComboBox
+    {
+        
+        public UIUI_TextBox_AutoIDComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_TextBox_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UITextEdit
+        {
+            get
+            {
+                if ((this.mUITextEdit == null))
+                {
+                    this.mUITextEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUITextEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUITextEdit;
         #endregion
     }
     
@@ -5499,7 +5654,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -5668,7 +5823,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6013,7 +6168,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6081,9 +6236,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6190,9 +6345,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 {
                     this.mMergeTypeCell = new WpfCell(this);
                     #region Search Criteria
-                    this.mMergeTypeCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+                    this.mMergeTypeCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
                     this.mMergeTypeCell.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "2";
-                    this.mMergeTypeCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+                    this.mMergeTypeCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
                     this.mMergeTypeCell.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -6218,9 +6373,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6288,9 +6443,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6391,9 +6546,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "2";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6648,7 +6803,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6767,7 +6922,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "With";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6872,7 +7027,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Using";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -7052,7 +7207,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Input";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -7121,7 +7276,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "With";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -7158,7 +7313,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Using";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -7260,7 +7415,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "With";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
