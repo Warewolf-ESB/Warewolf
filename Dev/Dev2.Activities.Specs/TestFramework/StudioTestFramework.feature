@@ -2665,14 +2665,19 @@ Then test result is Passed
 When I delete "Test 1"
 
 Scenario: Test Wf With Dropbox Delete Tool
-Given I have a workflow "TestWFWithDropBoxUpload"	
-And "TestWFWithDropBoxUpload" contains a DropboxUpload "UploadTool" Setup as
+
+Given I have a workflow "TestWFWithDropBoxDelete"	
+And "TestWFWithDropBoxDelete" contains a DropboxUpload "UploadTool" Setup as
 | Local File      | OverwriteOrAdd | DropboxFile | Result  |
-| C:\Home.Dropbox | Overwrite      | source.xml  | [[res]] |
-And I save workflow "TestWFWithDropBoxUpload"
-Then the test builder is open with "TestWFWithDropBoxUpload"
+| C:\Home.Delete | Overwrite      | ToDelete.xml  | [[res]] |
+And "TestWFWithDropBoxDelete" contains a DropboxDelete "DeleteTool" Setup as
+| DropboxFile     |  Result  |
+| ToDelete.xml|  [[res]] |
+And I save workflow "TestWFWithDropBoxDelete"
+Then the test builder is open with "TestWFWithDropBoxDelete"
 And I click New Test
 And I Add "UploadTool" as TestStep 
+And I Add "DeleteTool" as TestStep 
 When I save
 And I run the test
 Then test result is Passed

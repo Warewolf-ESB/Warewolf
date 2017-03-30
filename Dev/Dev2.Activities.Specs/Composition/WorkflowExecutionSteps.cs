@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.Scripting;
@@ -2680,6 +2681,26 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, uploadActivity);
+        }
+
+        [Given(@"""(.*)"" contains a DropboxDelete ""(.*)"" Setup as")]
+        public void GivenContainsADropboxDeleteSetupAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var deleteActivity = new DsfDropBoxDeleteActivity()
+            {
+                DisplayName = dotNetServiceName,
+
+            };
+            var guid = "dc163197-7a76-4f4c-a783-69d6d53b2f3a".ToGuid();
+            var resourceList = LocalEnvModel.ResourceRepository.LoadContextualResourceModel(guid);
+            var serviceDefinition = resourceList.ToServiceDefinition();
+            var dropBoxSource = new DropBoxSource(serviceDefinition.ToXElement());
+            deleteActivity.SelectedSource = dropBoxSource;
+            var dropboxFile = table.Rows[0]["DropboxFile"];
+            deleteActivity.DeletePath = dropboxFile;
+            var result = table.Rows[0]["Result"];
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, deleteActivity);
         }
 
         [Given(@"""(.*)"" constructorinputs (.*) with inputs as")]
