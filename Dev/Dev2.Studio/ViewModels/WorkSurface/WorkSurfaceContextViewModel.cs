@@ -37,7 +37,6 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Common.Interfaces;
 using Dev2.Interfaces;
 using Warewolf.Studio.ViewModels;
 
