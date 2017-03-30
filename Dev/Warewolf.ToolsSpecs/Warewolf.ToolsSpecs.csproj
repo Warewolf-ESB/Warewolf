@@ -219,11 +219,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Read File.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
