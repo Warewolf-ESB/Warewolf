@@ -109,12 +109,10 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             if (string.IsNullOrEmpty(FromPath))
             {
                 dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileLocation);
-                return;
             }
             if (string.IsNullOrEmpty(ToPath))
             {
                 dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileDestination);
-                return;
             }
             base.ExecuteTool(dataObject, update);
         }
@@ -124,7 +122,11 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         //All units used here has been unit tested seperately
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(evaluatedValues["ToPath"]);
+            string localToPath;
+            evaluatedValues.TryGetValue("ToPath", out localToPath);
+            string localFromPath;
+            evaluatedValues.TryGetValue("FromPath", out localFromPath);
+            IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(localToPath);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(GetClient());
             var dropboxSuccessResult = dropboxExecutionResult as DropboxDownloadSuccessResult;
@@ -134,7 +136,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
                 var bytes = Response.GetContentAsByteArrayAsync().Result;
                 if (Response.Response.IsFile)
                 {
-                    LocalPathManager = new LocalPathManager(evaluatedValues["FromPath"]);
+                    LocalPathManager = new LocalPathManager(localFromPath);
                     var validFolder = LocalPathManager.GetFullFileName();
                     var fileExist = LocalPathManager.FileExist();
                     if (fileExist && !OverwriteFile)

@@ -107,12 +107,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             if (string.IsNullOrEmpty(FromPath))
             {
                 dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileLocation);
-                return;
             }
             if (string.IsNullOrEmpty(ToPath))
             {
                 dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileDestination);
-                return;
             }
             base.ExecuteTool(dataObject, update);
         }

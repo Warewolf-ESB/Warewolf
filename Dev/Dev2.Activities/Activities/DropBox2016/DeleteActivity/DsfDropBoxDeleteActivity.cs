@@ -87,7 +87,6 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             if (string.IsNullOrEmpty(DeletePath))
             {
                 dataObject.Environment.AddError(ErrorResource.DropBoxConfirmCorrectFileLocation);
-                return;
             }
             base.ExecuteTool(dataObject, update);
         }
