@@ -25,6 +25,26 @@ namespace Warewolf.UITests
             Assert.AreEqual(2, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.Tabs.Count);
             ExplorerUIMap.RightClick_Explorer_Localhost_SecondItem();
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Enabled, "The open option is not enabled on the context menu");
+            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void OpenVersionHistory_ForResource()
+        {
+            ExplorerUIMap.Filter_Explorer("VersionTestWorkflow");
+            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Batman";
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
+            ExplorerUIMap.RightClick_Explorer_Localhost_SecondItem();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Enabled, "The make current version option is not enabled on the context menu");
+            ExplorerUIMap.Select_Make_Current_Version();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            Assert.AreEqual("Bobby", DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text);
+            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
         }
 
         #region Additional test attributes
