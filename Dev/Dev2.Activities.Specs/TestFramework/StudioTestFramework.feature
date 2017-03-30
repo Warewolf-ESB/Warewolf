@@ -2647,3 +2647,33 @@ Scenario: Test Workflow with Loop Constructs - Select and Apply example workflow
 	Then test result is Failed
 	And the service debug assert Json message contains "Message: Failed: Assert Equal. Expected Equal To '' for '@Pet' but got"
 	When I delete "Test 1"
+
+#Storage Category
+
+Scenario: Test Wf With Dropbox Upload Tool
+Given I have a workflow "TestWFWithDropBoxUpload"	
+And "TestWFWithDropBoxUpload" contains a DropboxUpload "UploadTool" Setup as
+| Local File      | OverwriteOrAdd | DropboxFile | Result  |
+| C:\Home.Dropbox | Overwrite      | source.xml  | [[res]] |
+And I save workflow "TestWFWithDropBoxUpload"
+Then the test builder is open with "TestWFWithDropBoxUpload"
+And I click New Test
+And I Add "UploadTool" as TestStep 
+When I save
+And I run the test
+Then test result is Passed
+When I delete "Test 1"
+
+Scenario: Test Wf With Dropbox Delete Tool
+Given I have a workflow "TestWFWithDropBoxUpload"	
+And "TestWFWithDropBoxUpload" contains a DropboxUpload "UploadTool" Setup as
+| Local File      | OverwriteOrAdd | DropboxFile | Result  |
+| C:\Home.Dropbox | Overwrite      | source.xml  | [[res]] |
+And I save workflow "TestWFWithDropBoxUpload"
+Then the test builder is open with "TestWFWithDropBoxUpload"
+And I click New Test
+And I Add "UploadTool" as TestStep 
+When I save
+And I run the test
+Then test result is Passed
+When I delete "Test 1"

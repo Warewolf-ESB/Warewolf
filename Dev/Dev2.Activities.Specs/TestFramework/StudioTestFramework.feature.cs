@@ -7903,6 +7903,98 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test Wf With Dropbox Upload Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWfWithDropboxUploadTool()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Wf With Dropbox Upload Tool", ((string[])(null)));
+#line 2653
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 2654
+testRunner.Given("I have a workflow \"TestWFWithDropBoxUpload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table265 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Local File",
+                        "OverwriteOrAdd",
+                        "DropboxFile",
+                        "Result"});
+            table265.AddRow(new string[] {
+                        "C:\\Home.Dropbox",
+                        "Overwrite",
+                        "source.xml",
+                        "[[res]]"});
+#line 2655
+testRunner.And("\"TestWFWithDropBoxUpload\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table265, "And ");
+#line 2658
+testRunner.And("I save workflow \"TestWFWithDropBoxUpload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2659
+testRunner.Then("the test builder is open with \"TestWFWithDropBoxUpload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2660
+testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2661
+testRunner.And("I Add \"UploadTool\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2662
+testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2663
+testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2664
+testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2665
+testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test Wf With Dropbox Delete Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWfWithDropboxDeleteTool()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Wf With Dropbox Delete Tool", ((string[])(null)));
+#line 2667
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 2668
+testRunner.Given("I have a workflow \"TestWFWithDropBoxUpload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table266 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Local File",
+                        "OverwriteOrAdd",
+                        "DropboxFile",
+                        "Result"});
+            table266.AddRow(new string[] {
+                        "C:\\Home.Dropbox",
+                        "Overwrite",
+                        "source.xml",
+                        "[[res]]"});
+#line 2669
+testRunner.And("\"TestWFWithDropBoxUpload\" contains a DropboxUpload \"UploadTool\" Setup as", ((string)(null)), table266, "And ");
+#line 2672
+testRunner.And("I save workflow \"TestWFWithDropBoxUpload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2673
+testRunner.Then("the test builder is open with \"TestWFWithDropBoxUpload\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2674
+testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2675
+testRunner.And("I Add \"UploadTool\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2676
+testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2677
+testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2678
+testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2679
+testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

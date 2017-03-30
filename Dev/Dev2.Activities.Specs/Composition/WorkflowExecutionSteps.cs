@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.RabbitMQ.Publish;
@@ -2604,6 +2605,8 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
+
+
         [Given(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         [Then(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         public void GivenContainsAnDotNetDLLAs(string parentName, string dotNetServiceName, Table table)
@@ -2640,6 +2643,43 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddVariableToVariableList(ActionOutputVaribale);
             _commonSteps.AddVariableToVariableList(recNumber);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
+        }
+
+        [Given(@"""(.*)"" contains a DropboxUpload ""(.*)"" Setup as")]
+        public void GivenContainsADropboxUploadSetupAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var uploadActivity = new DsfDropBoxUploadActivity()
+            {
+                DisplayName = dotNetServiceName,
+
+            };
+
+            var guid = "dc163197-7a76-4f4c-a783-69d6d53b2f3a".ToGuid();
+            var resourceList = LocalEnvModel.ResourceRepository.LoadContextualResourceModel(guid);
+            var serviceDefinition = resourceList.ToServiceDefinition();
+            var dropBoxSource = new DropBoxSource(serviceDefinition.ToXElement());
+            uploadActivity.SelectedSource = dropBoxSource;
+            var localFile = table.Rows[0]["Local File"];
+            var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
+            var dropboxFile = table.Rows[0]["DropboxFile"];
+            var result = table.Rows[0]["Result"];
+            uploadActivity.FromPath = localFile;
+            uploadActivity.OverWriteMode = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
+            uploadActivity.ToPath = dropboxFile;
+
+            try
+            {
+                using (File.Create(localFile))
+                {
+
+                }   
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, uploadActivity);
         }
 
         [Given(@"""(.*)"" constructorinputs (.*) with inputs as")]
