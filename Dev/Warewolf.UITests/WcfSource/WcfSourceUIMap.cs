@@ -8,7 +8,7 @@ using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
-using Warewolf.UITests.WorkflowServiceTesting;
+using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests.WcfSource.WcfSourceUIMapClasses
 {

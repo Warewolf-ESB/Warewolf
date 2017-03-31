@@ -11,7 +11,7 @@ using Warewolf.UITests.Common;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 
-namespace Warewolf.UITests.WorkflowServiceTesting
+namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses
 {
     [Binding]
     public partial class WorkflowServiceTestingUIMap
@@ -199,9 +199,9 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.DeleteAssertButton);
         }
 
-        public void Expand_DotnetDll_ByClickingCheckbox(bool isChecked)
+        public void Expand_DotnetDll_ByClickingCheckbox()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.ExpansionIndicator);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItemExpand);
         }
 
         public void SetConstructorAssertValue(string value)
