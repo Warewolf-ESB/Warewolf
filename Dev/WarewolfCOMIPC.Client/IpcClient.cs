@@ -9,15 +9,15 @@ using Newtonsoft.Json;
 // ReSharper disable NonLocalizedString
 namespace WarewolfCOMIPC.Client
 {
-    public class Client : IDisposable
+    public class IpcClient : IDisposable, IDev2IpcClient
     {
         private bool _disposed;
-        private readonly NamedPipeClientStream _pipe;
+        private readonly INamedPipeClientStreamWrapper _pipeWrapper;
         private readonly Process _process;
-        private static Client _client;
+        private static IpcClient _ipcClient;
         private static readonly object padlock = new object();
 
-        private Client()
+        private IpcClient()
         {
             string token = Guid.NewGuid().ToString();
 
@@ -31,25 +31,33 @@ namespace WarewolfCOMIPC.Client
                 CreateNoWindow = true
             };
             _process = Process.Start(psi);
-            _pipe = new NamedPipeClientStream(".", token, PipeDirection.InOut);
-            _pipe.Connect();
-            
-            _pipe.ReadMode = PipeTransmissionMode.Message;
+            _pipeWrapper = new NamedPipeClientStreamWrapper(".", token, PipeDirection.InOut);
+            _pipeWrapper.Connect();
+
+            _pipeWrapper.ReadMode = PipeTransmissionMode.Message;
         }
-        
+
+        public IpcClient(INamedPipeClientStreamWrapper clientStreamWrapper)
+        {
+            _pipeWrapper = clientStreamWrapper;
+        }
+
+
         /// <summary>
         /// Gets the instance.
         /// </summary>
-        public static Client IPCExecutor
+        public static IpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper = null)
         {
-            get
+            if (clientStreamWrapper != null)
             {
-                lock (padlock)
-                {
-                    return _client ?? (_client = new Client());
-                }
+                return new IpcClient(clientStreamWrapper);
+            }
+            lock (padlock)
+            {
+                return _ipcClient ?? (_ipcClient = new IpcClient());
             }
         }
+
 
         /// <summary>
         /// Executes a call to a library.
@@ -63,7 +71,7 @@ namespace WarewolfCOMIPC.Client
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
             if (_disposed)
-                throw new ObjectDisposedException(nameof(Client));
+                throw new ObjectDisposedException(nameof(IpcClient));
             var info = new CallData
             {
                 CLSID = clsid,
@@ -75,13 +83,13 @@ namespace WarewolfCOMIPC.Client
 
             // Write request to server
             var serializer = new JsonSerializer();
-            var sw = new StreamWriter(_pipe);
+            var sw = new StreamWriter(_pipeWrapper.GetInternalStream());
             serializer.Serialize(sw, JsonConvert.SerializeObject(info));
             sw.Flush();
 
-            var sr = new StreamReader(_pipe);
+            var sr = new StreamReader(_pipeWrapper.GetInternalStream());
             var jsonTextReader = new JsonTextReader(sr);
-         
+
             object result;
             switch (info.Execute)
             {
@@ -95,8 +103,8 @@ namespace WarewolfCOMIPC.Client
                         {
                             throw exception;
                         }
-                        var IPCreturn = result as string;
-                        var reader = new StringReader(IPCreturn);
+                        var ipCreturn = result as string;
+                        var reader = new StringReader(ipCreturn ?? "");
                         return serializer.Deserialize(reader, typeof(Type));
 
                     }
@@ -108,11 +116,11 @@ namespace WarewolfCOMIPC.Client
                         {
                             throw exception;
                         }
-                        
+
                         return JsonConvert.DeserializeObject<List<MethodInfoTO>>(result.ToString());
                     }
                 case Execute.GetNamespaces:
-                {
+                    {
                         result = serializer.Deserialize(jsonTextReader, typeof(List<string>));
                         var exception = result as Exception;
                         if (exception != null)
@@ -124,19 +132,21 @@ namespace WarewolfCOMIPC.Client
                     }
                 case Execute.ExecuteSpecifiedMethod:
                     {
-                        var obj = serializer.Deserialize(jsonTextReader);
-                        result = obj.ToString();
+                       
                         try
                         {
+                            var obj = serializer.Deserialize(jsonTextReader);
+                            result = obj.ToString();
                             var exception = JsonConvert.DeserializeObject<Exception>(result.ToString());
                             if (exception != null)
                             {
                                 throw exception;
                             }
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
                             // Do nothing was not an exception
+                            result = null;
                         }
                         return result;
                     }
@@ -152,11 +162,11 @@ namespace WarewolfCOMIPC.Client
         /// </summary>
         protected void Close()
         {
-            _pipe.Close();
+            _pipeWrapper.Close();
             _process.Kill();
         }
 
-        ~Client()
+        ~IpcClient()
         {
             Dispose(false);
         }
@@ -175,7 +185,7 @@ namespace WarewolfCOMIPC.Client
             if (disposing)
             {
                 Close();
-                _pipe.Dispose();
+                _pipeWrapper.Dispose();
             }
 
             // Free any unmanaged objects here.

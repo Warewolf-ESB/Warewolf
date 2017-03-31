@@ -387,9 +387,9 @@
     <Compile Include="ServiceModel\Data\WcfSource.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginBroker.cs" />
+    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginRuntimeHandler.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\IRuntime.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginInvokeArgs.cs" />
-    <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginRuntimeHandler.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ComPlugin\ComPluginServiceExecutionFactory.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\MySqlDatabaseBroker.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\ODBCDatabaseBroker.cs" />
