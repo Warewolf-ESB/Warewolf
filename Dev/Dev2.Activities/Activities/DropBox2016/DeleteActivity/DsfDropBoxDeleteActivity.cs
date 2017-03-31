@@ -8,6 +8,8 @@ using Dropbox.Api;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
@@ -25,6 +27,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         private DropboxClient _client;
         protected Exception Exception;
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
+        private IDropboxClientWrapper _dropboxClientWrapper;
 
         public DsfDropBoxDeleteActivity()
         {
@@ -32,6 +35,11 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
             DisplayName = "Delete from Dropbox";
         }
 
+        protected DsfDropBoxDeleteActivity(IDropboxClientWrapper dropboxClientWrapper)
+            :this()
+        {
+            _dropboxClientWrapper = dropboxClientWrapper;
+        }
         public OauthSource SelectedSource { get; set; }
 
         [Inputs("Path in the user's Dropbox")]
@@ -55,7 +63,8 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             DropboxSingleExecutor = new DropboxDelete(evaluatedValues["DeletePath"]);
-            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
+            _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
+            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
             var dropboxSuccessResult = dropboxExecutionResult as DropboxDeleteSuccessResult;
             if (dropboxSuccessResult != null)
             {
