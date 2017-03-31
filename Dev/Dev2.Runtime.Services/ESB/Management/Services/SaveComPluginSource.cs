@@ -5,7 +5,6 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -60,10 +59,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                     src.ResourcePath = src.ResourcePath.Substring(0, src.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
 
                 ComPluginSource res1;
-                var existingSource = ResourceCat.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, src.Name);
+                var existingSource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);
                 if (existingSource != null)
                 {
-                    res1 = existingSource;
+                    res1 = existingSource as ComPluginSource;
                 }
                 else
                 {

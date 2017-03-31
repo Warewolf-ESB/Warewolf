@@ -8,13 +8,52 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using Dev2.Common.ExtMethods;
+using Dev2.Runtime;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
+using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using WarewolfCOMIPC.Client;
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {
 
+    public sealed class TestIsolation<T> : IDisposable where T : MarshalByRefObject
+    {
+        private AppDomain _domain;
+        private readonly T _value;
 
+        public TestIsolation(params object[] args)
+        {
+            _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
+                 null, AppDomain.CurrentDomain.SetupInformation);
+
+            Type type = typeof(T);
+
+            _value = (T)_domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName, false, BindingFlags.CreateInstance, null, args, CultureInfo.CurrentCulture, null);
+        }
+
+        public T Value => _value;
+
+        public void Dispose()
+        {
+            if (_domain != null)
+            {
+                AppDomain.Unload(_domain);
+
+                _domain = null;
+            }
+        }
+    }
     /// <summary>
     /// Summary description for ComPluginRuntimeHandlerTest
     /// </summary>
@@ -23,230 +62,304 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
     public class ComComPluginRuntimeHandlerTest
     {
 
-        //[TestMethod]
-        //[Owner("Nkosinathi Sangweni")]
-        //[TestCategory("ComPluginRuntimeHandler_ListMethods")]
-        //public void ComPluginRuntimeHandler_ListMethods_WhenInvalidLocation_ExpectNoResults()
-        //{
-        //    //------------Setup for test--------------------------
-        //    //------------Execute Test---------------------------
-        //    using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-        //    {
-        //        var result = isolated.Value.ListMethods("D267A886-0BAD-4457-BD3A-B800D3C671D0", false);
-        //        Assert.AreEqual(10, result.Count);
-        //    }
-        //}
+        private const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        // ReSharper disable once UnusedMember.Global
+        public TestContext TestContext { get; set; }
 
-    //        private const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
-    //        /// <summary>
-    //        ///Gets or sets the test context which provides
-    //        ///information about and functionality for the current test run.
-    //        ///</summary>
-    //        // ReSharper disable once UnusedMember.Global
-    //        public TestContext TestContext { get; set; }
-    //
-    //        #region FetchNamespaceListObject
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_FetchNamespaceListObject")]
-    //        public void ComPluginRuntimeHandler_FetchNamespaceListObject_WhenValidDll_ExpectNamespaces()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            var source = CreateComPluginSource();
-    //            //------------Execute Test---------------------------
-    //            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                var result = isolated.Value.FetchNamespaceListObject(source);
-    //                //------------Assert Results-------------------------
-    //                Assert.IsTrue(result.Count > 0);
-    //            }
-    //        }
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_FetchNamespaceListObject")]
-    //        [ExpectedException(typeof(NullReferenceException))]
-    //        public void ComPluginRuntimeHandler_FetchNamespaceListObject_WhenNullDll_ExpectException()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            //------------Execute Test---------------------------
-    //            using (Isolated<ComPluginRuntimeHandler> isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                isolated.Value.FetchNamespaceListObject(null);
-    //                //------------Assert Results-------------------------
-    //            }
-    //        }
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_FetchNamespaceListObject")]
-    //        [ExpectedException(typeof(NullReferenceException))]
-    //        public void ComPluginRuntimeHandler_FetchNamespaceListObject_WhenNullLocationAndInvalidSourceID_ExpectException()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                isolated.Value.FetchNamespaceListObject(new ComPluginSource());
-    //            }
-    //
-    //        }
-    //
-    //        #endregion
-    //
-    //        #region ValidatePlugin
-    //
-    //        #endregion
-    //
-    //        #region ListNamespaces
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_ListNamespaces")]
-    //        public void ComPluginRuntimeHandler_ListNamespaces_WhenValidClassID_ExpectNamespaces()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            var source = CreateComPluginSource();
-    //            //------------Execute Test---------------------------
-    //            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                var result = isolated.Value.ListNamespaces(source.ClsId, false);
-    //                Assert.IsNotNull(result);
-    //            }
-    //        }
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_ListNamespaces")]
-    //        [ExpectedException(typeof(NullReferenceException))]
-    //        public void ComPluginRuntimeHandler_ListNamespaces_WhenNullLocation_ExpectException()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            //------------Execute Test---------------------------
-    //            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                isolated.Value.ListNamespaces(null,false);
-    //            }
-    //        }
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_ListMethods")]
-    //        public void ComPluginRuntimeHandler_ListMethods_WhenInvalidLocation_ExpectNoResults()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            //------------Execute Test---------------------------
-    //            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                var result = isolated.Value.ListMethods(string.Empty,false);
-    //                Assert.AreEqual(0, result.Count);
-    //            }
-    //        }
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_ListMethods")]
-    //        public void ComPluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            //------------Execute Test---------------------------
-    //            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                var result = isolated.Value.ListMethods(adodbConnectionClassId,true);
-    //                Assert.AreEqual(55, result.Count);
-    //            }
-    //        }
-    //
-    //        #endregion
-    //
-    //        #region Run
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_Run")]
-    //        public void ComPluginRuntimeHandler_Run_WhenInvalidMethod_ExpectException()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            var svc = CreatePluginService();
-    //            CreateComPluginSource();
-    //            //------------Execute Test---------------------------
-    //            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
-    //                var run = isolated.Value.Run(args);
-    //                Assert.IsNotNull(run);
-    //            }
-    //        }
-    //
-    //        [TestMethod]
-    //        [Owner("Nkosinathi Sangweni")]
-    //        [TestCategory("ComPluginRuntimeHandler_Run")]
-    //        [ExpectedException(typeof(NullReferenceException))]
-    //        public void ComPluginRuntimeHandler_Run_WhenNullParameters_ExpectException()
-    //        {
-    //            //------------Setup for test--------------------------
-    //            var svc = CreatePluginService();
-    //            var source = CreateComPluginSource();
-    //            //------------Execute Test---------------------------
-    //            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
-    //            {
-    //                var args = new ComPluginInvokeArgs { ClsId = source.ClsId, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = null };
-    //                isolated.Value.Run(args);
-    //            }
-    //        }
-    //
-    //        #endregion
-    //
-    //
-    //
-    //        #region Helper Methods
-    //
-    //        static ComPluginSource CreateComPluginSource(bool invalidResourceID = false)
-    //        {
-    //
-    //            var resourceID = Guid.Empty;
-    //            if (!invalidResourceID)
-    //            {
-    //                resourceID = Guid.NewGuid();
-    //            }
-    //
-    //            return new ComPluginSource
-    //            {
-    //                ResourceID = resourceID,
-    //                ResourceName = "Dummy",
-    //                ResourceType = "ComPluginSource",
-    //                ResourcePath = "Test",
-    //                ClsId = adodbConnectionClassId
-    //            };
-    //        }
-    //
-    //        private static ComPluginService CreatePluginService()
-    //        {
-    //            return CreatePluginService(new ServiceMethod
-    //            {
-    //                Name = "DummyMethod"
-    //            });
-    //        }
-    //
-    //        private static ComPluginService CreatePluginService(ServiceMethod method)
-    //        {
-    //            var type = typeof(DummyClassForPluginTest);
-    //
-    //            var source = CreateComPluginSource();
-    //            var service = new ComPluginService
-    //            {
-    //                ResourceID = Guid.NewGuid(),
-    //                ResourceName = "DummyPluginService",
-    //                ResourceType = "PluginService",
-    //                ResourcePath = "Tests",
-    //                Namespace = type.FullName,
-    //                Method = method,
-    //                Source = source,
-    //
-    //            };
-    //            return service;
-    //        }
-    //
-    //        #endregion
-}
+        #region FetchNamespaceListObject
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_ListMethods")]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ComPluginRuntimeHandler_ListMethods_WhenValidDll_ExpectListMethods_32bit()
+        {
+            //------------Setup for test--------------------------
+            var source = CreateComPluginSource();
+            source.Is32Bit = true;
+            //------------Execute Test---------------------------
+            var mock = new Mock<INamedPipeClientStreamWrapper>();
+            var memoryStream = new MemoryStream();
+            var list = new List<string>() { "Home" };
+            memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
+            mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
+            var isolated = new ComPluginRuntimeHandler(mock.Object);
+            isolated.ListMethods(adodbConnectionClassId, true);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_ListMethods")]
+        public void ComPluginRuntimeHandler_ListMethods_WhenValidDll_ExpectListMethods_64Bit()
+        {
+            //------------Setup for test--------------------------
+            var source = CreateComPluginSource();
+            source.Is32Bit = false;
+            //------------Execute Test---------------------------
+            var mock = new Mock<INamedPipeClientStreamWrapper>();
+            var memoryStream = new MemoryStream();
+            var list = new List<string>() { "Home" };
+            memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
+            mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
+            var isolated = new ComPluginRuntimeHandler(mock.Object);
+            var result = isolated.ListMethods(adodbConnectionClassId, false);
+            //------------Assert Results-------------------------
+            CollectionAssert.AllItemsAreUnique(result);
+            CollectionAssert.AllItemsAreNotNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_FetchNamespaceListObject")]
+        public void ComPluginRuntimeHandler_FetchNamespaceListObject_WhenValidDll_ExpectNamespaces()
+        {
+            //------------Setup for test--------------------------
+            var source = CreateComPluginSource();
+            source.Is32Bit = true;
+            //------------Execute Test---------------------------
+            var mock = new Mock<INamedPipeClientStreamWrapper>();
+            var memoryStream = new MemoryStream();
+            var list = new List<string>() { "Home" };
+            memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
+            mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
+            var isolated = new ComPluginRuntimeHandler(mock.Object);
+            var result = isolated.FetchNamespaceListObject(source);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, result.Count);
+            var assemblyLocation = result[0].AssemblyLocation;
+            Assert.IsTrue(string.IsNullOrEmpty(assemblyLocation));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_FetchNamespaceListObject")]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ComPluginRuntimeHandler_FetchNamespaceListObject_WhenNullDll_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (Isolated<ComPluginRuntimeHandler> isolated = new Isolated<ComPluginRuntimeHandler>())
+            {
+                isolated.Value.FetchNamespaceListObject(null);
+                //------------Assert Results-------------------------
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_FetchNamespaceListObject")]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ComPluginRuntimeHandler_FetchNamespaceListObject_WhenNullLocationAndInvalidSourceID_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
+            {
+                isolated.Value.FetchNamespaceListObject(new ComPluginSource());
+            }
+
+        }
+
+        #endregion
+
+        #region ValidatePlugin
+
+        #endregion
+
+        #region ListNamespaces
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_ListNamespaces")]
+        public void ComPluginRuntimeHandler_ListNamespaces_WhenValidClassID_ExpectNamespaces()
+        {
+            //------------Setup for test--------------------------
+            var source = CreateComPluginSource();
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
+            {
+                var result = isolated.Value.FetchNamespaceListObject(source);
+                Assert.IsNotNull(result);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_ListNamespaces")]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ComPluginRuntimeHandler_ListNamespaces_WhenNullLocation_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
+            {
+                isolated.Value.FetchNamespaceListObject(null);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_ListMethods")]
+        public void ComPluginRuntimeHandler_ListMethods_WhenInvalidLocation_ExpectNoResults()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
+            {
+                var result = isolated.Value.ListMethods(string.Empty, false);
+                Assert.AreEqual(0, result.Count);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_ListMethods")]
+        public void ComPluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
+            {
+                var result = isolated.Value.ListMethods(adodbConnectionClassId, true);
+                CollectionAssert.AllItemsAreUnique(result);
+                Assert.AreNotEqual(0, result.Count);
+            }
+        }
+
+        #endregion
+
+        #region Run and test
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_Run")]
+        public void ComPluginRuntimeHandler_Run_WhenInvalidMethod_ExpectNoReturn()
+        {
+            //------------Setup for test--------------------------
+            var svc = CreatePluginService();
+            CreateComPluginSource();
+            //------------Execute Test-------------------------- -
+            var isolated = new ComPluginRuntimeHandler();
+
+            var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
+            var run = isolated.Run(args);
+            Assert.IsNull(run);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_Test")]
+        public void ComPluginRuntimeHandler_Test_WhenInvalidMethod_ExpectNoReturn()
+        {
+            //------------Setup for test--------------------------
+            var svc = CreatePluginService();
+            CreateComPluginSource();
+            //------------Execute Test-------------------------- -
+            var isolated = new ComPluginRuntimeHandler();
+            string outString;
+            var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
+            var run = isolated.Test(args, out outString);
+            Assert.IsNotNull(run);
+            Assert.IsNull(outString);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_Test")]
+        public void ComPluginRuntimeHandler_Test_WhenValidMethod_ExpectReturn()
+        {
+            //------------Setup for test--------------------------
+            var svc = CreatePluginService();
+            CreateComPluginSource();
+            var mock = new Mock<INamedPipeClientStreamWrapper>();
+            var memoryStream = new MemoryStream();
+            var list = new List<string>() { "Home" };
+            memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
+            mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
+            //------------Execute Test-------------------------- -
+            var isolated = new ComPluginRuntimeHandler(mock.Object);
+            string outString;
+            var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "ToString", Parameters = svc.Method.Parameters, Is32Bit = true };
+            var run = isolated.Test(args, out outString);
+            Assert.IsNotNull(run);
+            Assert.IsNull(outString);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ComPluginRuntimeHandler_Run")]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void ComPluginRuntimeHandler_Run_WhenNullParameters_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var svc = CreatePluginService();
+            var source = CreateComPluginSource();
+            //------------Execute Test---------------------------
+            using (var isolated = new Isolated<ComPluginRuntimeHandler>())
+            {
+                var args = new ComPluginInvokeArgs { ClsId = source.ClsId, AssemblyName = "Foo", Fullname = svc.Namespace, Method = svc.Method.Name, Parameters = null };
+                isolated.Value.Run(args);
+            }
+        }
+
+
+
+        #endregion
+
+
+
+        #region Helper Methods
+
+        static ComPluginSource CreateComPluginSource(bool invalidResourceID = false)
+        {
+
+            var resourceID = Guid.Empty;
+            if (!invalidResourceID)
+            {
+                resourceID = Guid.NewGuid();
+            }
+
+            return new ComPluginSource
+            {
+                ResourceID = resourceID,
+                ResourceName = "Dummy",
+                ResourceType = "ComPluginSource",
+                ClsId = adodbConnectionClassId
+            };
+        }
+
+        private static ComPluginService CreatePluginService()
+        {
+            return CreatePluginService(new ServiceMethod
+            {
+                Name = "DummyMethod"
+            });
+        }
+
+        private static ComPluginService CreatePluginService(ServiceMethod method)
+        {
+            var type = typeof(DummyClassForPluginTest);
+
+            var source = CreateComPluginSource();
+            var service = new ComPluginService
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "DummyPluginService",
+                ResourceType = "PluginService",
+                Namespace = type.FullName,
+                Method = method,
+                Source = source,
+            };
+            return service;
+        }
+
+        #endregion
+    }
 }
