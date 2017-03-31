@@ -1,39 +1,39 @@
 ﻿#Requires -RunAsAdministrator
 $ServiceOutput = ""
 
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
     sleep 5
     taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" /f
 }
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" | %{$Output = $_}
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
     sleep 5
 	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" /f
 }
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" | %{$Output = $_}
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
     sleep 5
 	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" /f
 }
 
-sc.exe stop "Warewolf Server" | %{$ServiceOutput += "`n" + $_}
+sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
 if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has not been started.`n") {
     Write-Host $ServiceOutput
     sleep 5
 }
 
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" | %{$Output = $_}
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
     sleep 5
 	taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" /f
 }
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" | %{$Output = $_}
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
     sleep 5
 	taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" /f
 }
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" | %{$Output = $_}
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$Output = $_}
 if (!($Output.StartsWith("INFO: "))) {
     sleep 5
 	taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" /f
