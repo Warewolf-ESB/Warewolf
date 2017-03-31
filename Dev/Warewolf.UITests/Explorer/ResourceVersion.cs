@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.UITests
@@ -13,12 +15,40 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void ShowVersionHistory_ForResource()
         {
-            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.Filter_Explorer("VersionTestWorkflow");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
-            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Bobby";
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_Second_Item();
+            Assert.AreEqual(2, UIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.Tabs.Count);
+            ExplorerUIMap.RightClick_Explorer_Localhost_SecondItem();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Exists, "The open option does not exist on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Enabled, "The open option is not enabled on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Delete.Exists, "The delete option does not exist on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Delete.Enabled, "The delete option is not enabled on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Exists, "The make current version option does not exist on the context menu");
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Enabled, "The make current version option is not enabled on the context menu");
+            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void OpenVersionHistory_ForResource()
+        {
+            ExplorerUIMap.Filter_Explorer("VersionTestWorkflow");
+            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Batman";
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
+            ExplorerUIMap.RightClick_Explorer_Localhost_SecondItem();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Enabled, "The make current version option is not enabled on the context menu");
+            ExplorerUIMap.Select_Make_Current_Version();
+            UIMap.Click_Close_Workflow_Tab_Button();
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            Assert.AreEqual("Bobby", DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text);
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
         }
 
@@ -75,6 +105,21 @@ namespace Warewolf.UITests
         }
 
         private DataToolsUIMap _DataToolsUIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         #endregion
     }

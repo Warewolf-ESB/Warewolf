@@ -34,7 +34,6 @@ namespace Dev2.Common.Interfaces
 
         ICommand ViewSwaggerCommand { get; set; }
         ICommand OpenCommand { get; set; }
-        ICommand OpenVersionCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
         ICommand ShowDependenciesCommand { get; set; }
         ICommand LostFocus { get; set; }
