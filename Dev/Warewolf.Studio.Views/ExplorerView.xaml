@@ -556,10 +556,22 @@
 								                      Command="{Binding RenameCommand}"
 								                      CommandParameter="{Binding Data}"
 								                      Header="Rename"
-								                      Style="{StaticResource MenuItemStyle}"
 								                      InputGestureText="[F2]"
 								                      IsEnabled="{Binding CanRename}"
 								                      ToolTip="{Binding RenameTooltip}">
+                                                <MenuItem.Style>
+                                                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsVersion}" Value="True"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </MenuItem.Style>
                                                 <i:Interaction.Behaviors>
                                                     <views:RenameTreeNode DataContext="{Binding Data}" Node="{Binding Node}" Tree="{Binding Path=Node.Manager.NodeLayout.Tree}" />
                                                 </i:Interaction.Behaviors>
@@ -593,9 +605,21 @@
 								                      Command="{Binding DuplicateCommand}"
 								                      CommandParameter="{Binding Path=Data}"
 								                      Header="Duplicate"
-								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanDuplicate}"
 								                      ToolTip="{Binding DuplicateTooltip}">
+                                                <MenuItem.Style>
+                                                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsVersion}" Value="True"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </MenuItem.Style>
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Clone" />
                                                 </MenuItem.Icon>
@@ -630,10 +654,27 @@
 								                      CommandParameter="{Binding Path=Data}"
 								                      InputGestureText="[Ctrl+D]"
 								                      Header="Deploy"
-								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanDeploy}"
-								                      ToolTip="{Binding DeployTooltip}"
-                                                      Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+								                      ToolTip="{Binding DeployTooltip}">
+                                                <MenuItem.Style>
+                                                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsVersion}" Value="True"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </MultiDataTrigger>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsVersion}" Value="False"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </MenuItem.Style>
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
                                                 </MenuItem.Icon>
@@ -694,10 +735,22 @@
 								                      Command="{Binding RollbackCommand}"
 								                      CommandParameter="{Binding Data}"
 								                      Header="Make Current Version"
-								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding IsVersion}" 
-								                      ToolTip="{Binding RollbackTooltip}"
-								                      Visibility="{Binding IsRollbackVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+								                      ToolTip="{Binding RollbackTooltip}">
+                                                <MenuItem.Style>
+                                                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsVersion}" Value="True"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Visibility" Value="{Binding IsRollbackVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                            </MultiDataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </MenuItem.Style>
+                                            </MenuItem>
 
                                             <Separator>
                                                 <Separator.Style>

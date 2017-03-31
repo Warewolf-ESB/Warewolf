@@ -92,7 +92,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Options"});
             table1.AddRow(new string[] {
-                        "RSAKLFSVRGENDEV"});
+                        "RSAKLFSVRDEV"});
             table1.AddRow(new string[] {
                         "RSAKLFSVRPDC"});
             table1.AddRow(new string[] {
@@ -102,7 +102,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 31
    testRunner.Then("the intellisense contains these options", ((string)(null)), table1, "Then ");
 #line 37
-   testRunner.And("I type Select The Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Select The Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
    testRunner.And("Database dropdown is \"Collapsed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
@@ -165,7 +165,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 63
  testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 64
- testRunner.And("I type Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
  testRunner.And("I Select Authentication Type as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
@@ -294,7 +294,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 114
    testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 115
-   testRunner.And("I type Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 116
    testRunner.And("I Select Authentication Type as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 117
@@ -396,7 +396,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 156
  testRunner.Given("I open \"Database Source - Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 157
- testRunner.And("Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 158
  testRunner.And("Authentication Type is selected as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 159
@@ -457,7 +457,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 182
  testRunner.Given("I open \"Database Source - Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 183
- testRunner.And("Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 184
  testRunner.And("Authentication Type is selected as \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 185
@@ -508,7 +508,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 203
    testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 204
-   testRunner.When("I type Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("I type Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 205
    testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 206
@@ -556,7 +556,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Options"});
             table2.AddRow(new string[] {
-                        "RSAKLFSVRGENDEV"});
+                        "RSAKLFSVRDEV"});
             table2.AddRow(new string[] {
                         "RSAKLFSVRPDC"});
             table2.AddRow(new string[] {
@@ -566,7 +566,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 223
    testRunner.Then("the intellisense contains these options", ((string)(null)), table2, "Then ");
 #line 229
-   testRunner.And("I type Select The Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("I type Select The Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 230
    testRunner.And("I Select Authentication Type as \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 231
@@ -609,7 +609,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 246
  testRunner.Given("I open New Database Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 247
- testRunner.And("I type Server as \"RSAKLFSVRGENDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type Server as \"RSAKLFSVRDEV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 248
  testRunner.And("I Select Authentication Type as \"Windows\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 249
