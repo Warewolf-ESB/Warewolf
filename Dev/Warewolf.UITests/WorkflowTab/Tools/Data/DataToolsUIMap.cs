@@ -283,7 +283,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         public void Move_Assign_Message_Tool_On_The_Design_Surface()
         {
             Point point;
-            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.WaitForControlCondition((control)=> { return control.TryGetClickablePoint(out point); });
+            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.WaitForControlCondition((control)=> { return control.TryGetClickablePoint(out point); }, 60000);
             Mouse.StartDragging(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, new Point(94, 11));
             Mouse.StopDragging(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, 70, 3);
         }

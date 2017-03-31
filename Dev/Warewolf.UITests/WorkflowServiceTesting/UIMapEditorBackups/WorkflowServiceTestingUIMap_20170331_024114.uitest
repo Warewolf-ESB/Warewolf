@@ -4415,6 +4415,19 @@
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants>
+                                                    <UIObject ControlType="Button" Id="ExpansionIndicator" FriendlyName="ExpansionIndicator" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">Expander</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
                                                     <UIObject ControlType="TreeItem" Id="DefaultCtor" FriendlyName="" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
@@ -5153,19 +5166,6 @@
                                                       </Descendants>
                                                     </UIObject>
                                                   </Descendants>
-                                                </UIObject>
-                                                <UIObject ControlType="Button" Id="DotnetDllTreeItemExpand" FriendlyName="ExpansionIndicator" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">Expander</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
                                                 </UIObject>
                                               </Descendants>
                                             </UIObject>
