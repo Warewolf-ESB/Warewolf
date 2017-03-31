@@ -10,11 +10,30 @@ namespace Warewolf.UITests.DebugOutputTests
     public class DebugOutputWindowTests
     {
         const string SelectionHighlightWf = "SelectionHighlightWf";
+        const string DropboxSelectionHighlightWf = "DropboxSelectionHighlightWf";
         [TestMethod]
         [TestCategory("Debug Input")]
         // ReSharper disable once InconsistentNaming
         public void WorkFlowSelection_Validation_UITest()
         {
+            ExplorerUIMap.Filter_Explorer(SelectionHighlightWf);
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            UIMap.Press_F6();
+            ExplorerUIMap.Click_AssignStep_InDebugOutput();
+            var assignFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
+            Assert.IsTrue(assignFocus);
+            ExplorerUIMap.Click_DesicionStep_InDebugOutput();
+            var assignHasNoFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
+            Assert.IsTrue(assignHasNoFocus);
+        }
+
+        [TestMethod]
+        [TestCategory("Debug Input")]
+        public void DropboxWorkFlowSelection_Validation_UITest()
+        {
+            ExplorerUIMap.Filter_Explorer(DropboxSelectionHighlightWf);
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            UIMap.Press_F6();
             ExplorerUIMap.Click_AssignStep_InDebugOutput();
             var assignFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
             Assert.IsTrue(assignFocus);
@@ -30,9 +49,7 @@ namespace Warewolf.UITests.DebugOutputTests
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            ExplorerUIMap.Filter_Explorer(SelectionHighlightWf);
-            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
-            UIMap.Press_F6();
+            
         }
 
         UIMap UIMap

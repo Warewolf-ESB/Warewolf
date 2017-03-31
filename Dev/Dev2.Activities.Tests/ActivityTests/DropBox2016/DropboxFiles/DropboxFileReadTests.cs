@@ -1,10 +1,10 @@
 ﻿using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.Result;
-using Dropbox.Api;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 {
@@ -16,7 +16,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             var mock = new Mock<IDropboxFileRead>();
             var successResult = new DropboxListFolderSuccesResult(It.IsAny<ListFolderResult>());
-            mock.Setup(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()))
+            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
                  .Returns(successResult);
             return mock;
         }
@@ -43,8 +43,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             Assert.IsNotNull(downloadMock);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            downloadMock.Object.ExecuteTask(It.IsAny<DropboxClient>());
-            downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
+            downloadMock.Object.ExecuteTask(It.IsAny<IDropboxClientWrapper>());
+            downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()));
         }
 
         [TestMethod]

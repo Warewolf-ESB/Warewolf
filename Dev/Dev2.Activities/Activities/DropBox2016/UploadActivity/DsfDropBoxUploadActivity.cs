@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -24,6 +26,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
     [ToolDescriptorInfo("Dropbox", "Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Upload")]
     public class DsfDropBoxUploadActivity : DsfBaseActivity
     {
+        private IDropboxClientWrapper _clientWrapper;
         private DropboxClient _client;
         private bool _addMode;
         private bool _overWriteMode;
@@ -36,6 +39,12 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = "Upload to Dropbox";
             OverWriteMode = true;
+        }
+
+        public DsfDropBoxUploadActivity(IDropboxClientWrapper clientWrapper)
+            :this()
+        {
+            _clientWrapper = clientWrapper;
         }
 
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -116,13 +125,14 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         }
 
         #endregion Overrides of DsfBaseActivity
-
+        
         //All units used here has been unit tested seperately
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
             var writeMode = GetWriteMode();
             DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
-            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(GetClient());
+            _clientWrapper = _clientWrapper ?? new DropboxClientWrapper(GetClient());
+            var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_clientWrapper);
             var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
             if (dropboxSuccessResult != null)
             {
