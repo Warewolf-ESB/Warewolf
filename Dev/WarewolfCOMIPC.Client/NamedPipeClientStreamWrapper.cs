@@ -1,0 +1,45 @@
+﻿using System.IO.Pipes;
+
+namespace WarewolfCOMIPC.Client
+{
+    public class NamedPipeClientStreamWrapper : INamedPipeClientStreamWrapper
+    {
+        readonly NamedPipeClientStream _pipeClientStream;
+        public NamedPipeClientStreamWrapper(string v, string token, PipeDirection inOut)
+        {
+            _pipeClientStream = new NamedPipeClientStream(v, token, inOut);
+        }
+
+        public NamedPipeClientStream GetInternalStream()
+        {
+            return _pipeClientStream;
+        }
+
+        public void Connect()
+        {
+            _pipeClientStream.Connect();
+        }
+
+        public void Close()
+        {
+            _pipeClientStream.Close();
+        }
+
+        public void Dispose()
+        {
+            _pipeClientStream.Dispose();
+        }
+
+        public PipeTransmissionMode ReadMode
+        {
+            get
+            {
+                return _pipeClientStream.ReadMode;
+            }
+            set
+            {
+                _pipeClientStream.ReadMode = value;
+            }
+        }
+    }
+}
