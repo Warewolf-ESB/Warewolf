@@ -282,10 +282,10 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
 
         public void Move_Assign_Message_Tool_On_The_Design_Surface()
         {
-            var multiAssign1 = MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            multiAssign1.EnsureClickable(new Point(90, 7));
-            Mouse.StartDragging(multiAssign1, new Point(94, 11));
-            Mouse.StopDragging(multiAssign1, 70, 3);
+            Point point;
+            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.WaitForControlCondition((control)=> { return control.TryGetClickablePoint(out point); });
+            Mouse.StartDragging(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, 70, 3);
         }
 
         [Then(@"I Enter ""(.*)"" in the Assign message tool")]
