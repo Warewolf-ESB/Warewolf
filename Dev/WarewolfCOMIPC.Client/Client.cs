@@ -150,7 +150,7 @@ namespace WarewolfCOMIPC.Client
         /// <summary>
         /// Gracefully close connection to server
         /// </summary>
-        protected virtual void Close()
+        protected void Close()
         {
             _pipe.Close();
             _process.Kill();
@@ -167,7 +167,7 @@ namespace WarewolfCOMIPC.Client
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (_disposed)
                 return;
