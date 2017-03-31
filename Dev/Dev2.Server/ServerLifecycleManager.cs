@@ -235,7 +235,7 @@ namespace Dev2
         readonly IPulseLogger _pulseLogger;
         private int _daysToKeepTempFiles;
         private readonly PulseTracker _pulseTracker;
-        private Client _ipcClient;
+        private IpcClient _ipcIpcClient;
 
         /// <summary>
         /// Get a value indicating if the lifecycle manager has been disposed.
@@ -352,7 +352,7 @@ namespace Dev2
                 InitializeServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
-                _ipcClient = Client.IPCExecutor;
+                _ipcIpcClient = IpcClient.GetIPCExecutor();
                 var catalog = LoadResourceCatalog();
                 StartWebServer();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
@@ -687,10 +687,10 @@ namespace Dev2
                     _owinServer.Dispose();
                     _owinServer = null;
                 }
-                if (_ipcClient != null)
+                if (_ipcIpcClient != null)
                 {
-                    _ipcClient.Dispose();
-                    _ipcClient = null;
+                    _ipcIpcClient.Dispose();
+                    _ipcIpcClient = null;
                 }
                 DebugDispatcher.Instance.Shutdown();
             }

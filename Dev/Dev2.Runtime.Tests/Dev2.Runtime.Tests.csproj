@@ -480,6 +480,10 @@
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj">
+      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
+      <Name>WarewolfCOMIPC.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
       <Name>WarewolfLanguageParser</Name>
