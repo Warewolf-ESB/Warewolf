@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Dev2.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Microsoft.Win32;
 
@@ -18,9 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (regClis != null)
             {
-                IEnumerable<string> subKeyNames = regClis.GetSubKeyNames();
-                var listings = dllListings;
-                Parallel.ForEach(subKeyNames, clsid =>
+                foreach (var clsid in regClis.GetSubKeyNames())
                 {
                     var regClsidKey = regClis.OpenSubKey(clsid);
                     if (regClsidKey != null)
@@ -38,21 +34,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                             {
                                 if (pid != null)
                                 {
-                                    var typeFromProgID = Type.GetTypeFromCLSID(clsid.ToGuid());
-
-                                    if (typeFromProgID != null)
+                                    var typeFromProgID = Type.GetTypeFromCLSID(Guid.Parse(clsid));
+                                    if (typeFromProgID == null)
                                     {
-                                        var fullName = typeFromProgID.FullName;
-                                        listings.Add(new DllListing
-                                        {
-                                            ClsId = clsid,
-                                            Is32Bit = fullName.Equals("System.__ComObject"),
-                                            Name = pid.ToString(),
-                                            IsDirectory = false,
-                                            FullName = pid.ToString(),
-                                            Children = new IFileListing[0]
-                                        });
+                                        continue;
                                     }
+                                    var fullName = typeFromProgID.FullName;
+                                    dllListings.Add(new DllListing
+                                    {
+                                        ClsId = clsid,
+                                        Is32Bit = fullName.Equals("System.__ComObject"),
+                                        Name = pid.ToString(),
+                                        IsDirectory = false,
+                                        FullName = pid.ToString(),
+                                        Children = new IFileListing[0]
+                                    });
                                 }
                             }
                             catch (Exception e)
@@ -62,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     }
                     regClsidKey?.Close();
-                });
+                }
                 regClis.Close();
             }
 
