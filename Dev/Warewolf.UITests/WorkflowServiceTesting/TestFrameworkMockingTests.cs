@@ -47,7 +47,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
-        public void CreateTestFromDebugUsingUnsvaceWorkflow()
+        public void CreateTestFromDebugButtonDisabledOnUnsavedWorkflow()
         {
             ExplorerUIMap.Filter_Explorer(HelloWorld);
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();            
