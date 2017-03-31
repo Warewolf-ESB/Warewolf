@@ -83,6 +83,8 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Then(@"I DoubleClick Explorer Localhost First Item")]
         public void DoubleClick_Explorer_Localhost_First_Item()
         {
+            Point point;
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out point); });
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
@@ -101,6 +103,12 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void DoubleClick_Explorer_Localhost_Second_Item()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem);
+        }
+        
+        [When(@"I DoubleClick Explorer Localhost First Item First SubItem")]
+        public void DoubleClick_Explorer_Localhost_First_Item_First_SubItem_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
         }
 
         [Given(@"Folder Is Removed From Explorer")]
