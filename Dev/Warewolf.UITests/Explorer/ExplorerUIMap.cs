@@ -86,6 +86,15 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
         }
 
+        [Given(@"I Select Make Current Version")]
+        [When(@"I Select Make Current Version")]
+        [Then(@"I Select Make Current Version")]
+        public void Select_Make_Current_Version()
+        {
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem);
+            Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
+        }
+
         [Given(@"I DoubleClick Explorer Localhost Second Item")]
         [When(@"I DoubleClick Explorer Localhost Second Item")]
         [Then(@"I DoubleClick Explorer Localhost Second Item")]
@@ -302,6 +311,14 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void RightClick_Explorer_Localhost_FirstItem()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+
+        [Given(@"I RightClick Explorer Localhost Second Item")]
+        [When(@"I RightClick Explorer Localhost Second Item")]
+        [Then(@"I RightClick Explorer Localhost Second Item")]
+        public void RightClick_Explorer_Localhost_SecondItem()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
 
         [Given(@"I RightClick Localhost")]
