@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Dev2.Common.ExtMethods;
@@ -22,38 +22,14 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using TestingDotnetDllCascading;
 using WarewolfCOMIPC.Client;
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {
 
-    public sealed class TestIsolation<T> : IDisposable where T : MarshalByRefObject
-    {
-        private AppDomain _domain;
-        private readonly T _value;
-
-        public TestIsolation(params object[] args)
-        {
-            _domain = AppDomain.CreateDomain("Isolated:" + Guid.NewGuid(),
-                 null, AppDomain.CurrentDomain.SetupInformation);
-
-            Type type = typeof(T);
-
-            _value = (T)_domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName, false, BindingFlags.CreateInstance, null, args, CultureInfo.CurrentCulture, null);
-        }
-
-        public T Value => _value;
-
-        public void Dispose()
-        {
-            if (_domain != null)
-            {
-                AppDomain.Unload(_domain);
-
-                _domain = null;
-            }
-        }
-    }
     /// <summary>
     /// Summary description for ComPluginRuntimeHandlerTest
     /// </summary>
@@ -75,7 +51,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_ListMethods")]
-        [ExpectedException(typeof(NullReferenceException))]
         public void ComPluginRuntimeHandler_ListMethods_WhenValidDll_ExpectListMethods_32bit()
         {
             //------------Setup for test--------------------------
@@ -88,8 +63,9 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
             var isolated = new ComPluginRuntimeHandler(mock.Object);
-            isolated.ListMethods(adodbConnectionClassId, true);
+            var serviceMethodList = isolated.ListMethods(adodbConnectionClassId, true);
             //------------Assert Results-------------------------
+            Assert.AreEqual(0, serviceMethodList.Count);
         }
 
         [TestMethod]
@@ -133,6 +109,77 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             Assert.AreEqual(1, result.Count);
             var assemblyLocation = result[0].AssemblyLocation;
             Assert.IsTrue(string.IsNullOrEmpty(assemblyLocation));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildValuedTypeParams_GivenValid_ShouldPassThrough()
+        {
+            //---------------Set up test pack-------------------
+            var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
+            var memoryStream = new MemoryStream();
+            var serializeObject = JsonConvert.SerializeObject(GetType());
+            memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
+            pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
+            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
+            var type = typeof(ComPluginRuntimeHandler);
+            var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
+            ComPluginInvokeArgs args = new ComPluginInvokeArgs
+            {
+                ClsId = adodbConnectionClassId,
+                Is32Bit = false,
+                Method = "ToString",
+                Parameters = new List<MethodParameter>()
+                {
+                    new MethodParameter()
+                    {
+                        Value = "hi",
+                        TypeName = typeof(string).FullName
+                    }
+                }
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(client);
+            //---------------Execute Test ----------------------
+            var enumerable = methodInfo.Invoke("BuildValuedTypeParams",new object[] { args }) as IEnumerable<object>;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1,enumerable?.Count());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildValuedTypeParams_GivenValidObjectparam_ShouldPassThrough()
+        {
+            //---------------Set up test pack-------------------
+            var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
+            var memoryStream = new MemoryStream();
+            var serializeObject = JsonConvert.SerializeObject(GetType());
+            memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
+            pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
+            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
+            var type = typeof(ComPluginRuntimeHandler);
+            var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
+            ComPluginInvokeArgs args = new ComPluginInvokeArgs
+            {
+                ClsId = adodbConnectionClassId,
+                Is32Bit = false,
+                Method = "ToString",
+                Parameters = new List<MethodParameter>()
+                {
+                    new MethodParameter()
+                    {
+                        Value = new Human().SerializeToJsonString(new DefaultSerializationBinder())
+                        ,
+                        TypeName = typeof(Human).FullName
+                    }
+                }
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(client);
+            //---------------Execute Test ----------------------
+            var enumerable = methodInfo.Invoke("BuildValuedTypeParams",new object[] { args }) as IEnumerable<object>;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1,enumerable?.Count());
         }
 
         [TestMethod]
