@@ -117,7 +117,8 @@ namespace WarewolfCOMIPC.Client
                             throw exception;
                         }
 
-                        return JsonConvert.DeserializeObject<List<MethodInfoTO>>(result.ToString());
+                        var value = result?.ToString();
+                        return value == null ? new List<MethodInfoTO>() : JsonConvert.DeserializeObject<List<MethodInfoTO>>(value);
                     }
                 case Execute.GetNamespaces:
                     {
@@ -132,7 +133,7 @@ namespace WarewolfCOMIPC.Client
                     }
                 case Execute.ExecuteSpecifiedMethod:
                     {
-                       
+
                         try
                         {
                             var obj = serializer.Deserialize(jsonTextReader);
@@ -163,7 +164,7 @@ namespace WarewolfCOMIPC.Client
         protected void Close()
         {
             _pipeWrapper.Close();
-            _process.Kill();
+            _process?.Kill();
         }
 
         ~IpcClient()
