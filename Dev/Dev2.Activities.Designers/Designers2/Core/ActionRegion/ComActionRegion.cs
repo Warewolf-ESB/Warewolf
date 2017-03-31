@@ -140,10 +140,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void UpdateBasedOnNamespace()
         {
-            if (_source?.SelectedSource != null)
+            SelectedAction = null;
+            IsActionEnabled = false;
+            IsEnabled = false;
+            if (_source?.SelectedSource != null && _namespace?.SelectedNamespace != null)
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-                SelectedAction = null;
                 IsActionEnabled = true;
                 IsEnabled = true;
             }
@@ -151,8 +153,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null;
-            return _source.SelectedSource != null;
+            IsActionEnabled = _source.SelectedSource != null && _namespace?.SelectedNamespace != null;
+            return _source.SelectedSource != null && _namespace?.SelectedNamespace != null;
         }
 
         public IPluginAction SelectedAction
@@ -371,13 +373,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual void OnSomethingChanged(IToolRegion args)
+        protected void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
             handler?.Invoke(this, args);
