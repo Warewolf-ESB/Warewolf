@@ -30,11 +30,11 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRGENDEV |
+   | RSAKLFSVRDEV |
    | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
-   And I type Select The Server as "RSAKLFSVRGENDEV"
+   And I type Select The Server as "RSAKLFSVRDEV"
    And Database dropdown is "Collapsed"
    And I Select Authentication Type as "Windows"
    And "Save" is "Disabled"
@@ -61,7 +61,7 @@ Scenario: Creating New DB Source General Testing
 @MySqlDbSource
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
-	And I type Server as "RSAKLFSVRGENDEV"
+	And I type Server as "RSAKLFSVRDEV"
 	And I Select Authentication Type as "User"
 	Then Username field is "Visible"
 	And Password field is "Visible"
@@ -112,7 +112,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
  @MySqlDbSource
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRGENDEV"
+	  And I type Server as "RSAKLFSVRDEV"
 	  And I Select Authentication Type as "User"
 	  Then Username field is "Visible"
 	  And Password field is "Visible"
@@ -154,7 +154,7 @@ Scenario: Testing as Windows and swapping it resets the test connection
 @MySqlDbSource
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
-	And Server as "RSAKLFSVRGENDEV"
+	And Server as "RSAKLFSVRDEV"
 	And Authentication Type is selected as "User"
 	And Username field is "testuser"
 	And Password field is "******"
@@ -180,7 +180,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 @MySqlDbSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
-	And Server as "RSAKLFSVRGENDEV"
+	And Server as "RSAKLFSVRDEV"
 	And Authentication Type is selected as "User"
 	And Username field is "testuser"
 	And Password field is "******"
@@ -201,7 +201,7 @@ Scenario: Editing saved DB Source Remembers credentials
 @MySqlDbSource
 Scenario: Cancel DB Source Test
    Given I open New Database Source
-   When I type Server as "RSAKLFSVRGENDEV"
+   When I type Server as "RSAKLFSVRDEV"
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "User"
@@ -222,11 +222,11 @@ Scenario: Changing database type after testing connection
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRGENDEV |
+   | RSAKLFSVRDEV |
    | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
-   And I type Select The Server as "RSAKLFSVRGENDEV"
+   And I type Select The Server as "RSAKLFSVRDEV"
    And I Select Authentication Type as "Windows"
    And "Test Connection" is "Enabled"
    When I click "Test Connection"
@@ -244,7 +244,7 @@ Scenario: Changing database type after testing connection
 @MySqlDbSource
 Scenario: Creating New DB Source as Windows Auth
 	Given I open New Database Source
-	And I type Server as "RSAKLFSVRGENDEV"
+	And I type Server as "RSAKLFSVRDEV"
 	And I Select Authentication Type as "Windows"
 	Then Username field is "Collapsed"
 	And Password field is "Collapsed"

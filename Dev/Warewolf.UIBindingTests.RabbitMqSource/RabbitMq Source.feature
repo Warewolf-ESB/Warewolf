@@ -21,7 +21,7 @@ Scenario: Create New RabbitMq source
 Scenario: Enable Send and Enable Save
 	Given I open New RabbitMq Source
 	Then "New RabbitMQ Source" tab is opened
-	And I type Host as "rsaklfsvrgendev"
+	And I type Host as "rsaklfsvrdev"
 	And "Port" input is "5672"
 	And I type Username as "test"
 	And I type Password as "test"

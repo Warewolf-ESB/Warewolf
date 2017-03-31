@@ -1618,6 +1618,9 @@ namespace Warewolf.Studio.ViewModels
                     {
                         explorerItemViewModel.SetPermissions(permissions.Value);
                         explorerItemViewModel.CanDelete = CanDelete;
+                        explorerItemViewModel.CanRename = false;
+                        explorerItemViewModel.CanDuplicate = false;
+                        explorerItemViewModel.CanDeploy = false;
                     }
                     explorerItemViewModel.IsRollbackVisible = explorerItemViewModel.Parent.IsService;
                 }
