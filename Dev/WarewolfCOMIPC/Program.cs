@@ -39,7 +39,7 @@ namespace WarewolfCOMIPC
 
             // Receive CallData from client
             //var formatter = new BinaryFormatter();
-            Console.WriteLine("Client Connected to Server Pipe Stream");
+            Console.WriteLine("IpcClient Connected to Server Pipe Stream");
             var serializer = new JsonSerializer();
             var sr = new StreamReader(pipe);
             var jsonTextReader = new JsonTextReader(sr);
@@ -55,7 +55,7 @@ namespace WarewolfCOMIPC
             }
             if (callData != null)
             {
-                Console.WriteLine("Client Data read and Deserialized to Server Pipe Stream");
+                Console.WriteLine("IpcClient Data read and Deserialized to Server Pipe Stream");
                 Console.WriteLine(callData.GetType());
                 var data = JsonConvert.DeserializeObject<CallData>(callData);
 
@@ -79,7 +79,7 @@ namespace WarewolfCOMIPC
             }
             else
             {
-                Console.WriteLine("Client Data not read nor Deserialized to Server Pipe Stream");
+                Console.WriteLine("IpcClient Data not read nor Deserialized to Server Pipe Stream");
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System.IO.Pipes;
+﻿using System.IO;
+using System.IO.Pipes;
 
 namespace WarewolfCOMIPC.Client
 {
@@ -8,6 +9,6 @@ namespace WarewolfCOMIPC.Client
         PipeTransmissionMode ReadMode { get; set; }
         void Connect();
         void Close();
-        NamedPipeClientStream GetInternalStream();
+        Stream GetInternalStream();
     }
 }
