@@ -72,7 +72,7 @@ namespace WarewolfCOMIPC.Client
             // Write request to server
             var serializer = new JsonSerializer();
             var sw = new StreamWriter(_pipe);
-            serializer.Serialize(sw, info);
+            serializer.Serialize(sw, JsonConvert.SerializeObject(info));
             sw.Flush();
 
             var sr = new StreamReader(_pipe);
@@ -85,24 +85,27 @@ namespace WarewolfCOMIPC.Client
                 case Execute.GetType:
                     {
 
-                        result = serializer.Deserialize(jsonTextReader, typeof(Type));
+                        result = serializer.Deserialize(jsonTextReader, typeof(string));
                         var exception = result as Exception;
                         if (exception != null)
                         {
                             throw exception;
                         }
-                        return result;
+                        var IPCreturn = result as string;
+                        var reader = new StringReader(IPCreturn);
+                        return serializer.Deserialize(reader, typeof(Type));
 
                     }
                 case Execute.GetMethods:
                     {
-                        result = serializer.Deserialize(jsonTextReader, typeof(List<MethodInfoTO>));
+                        result = serializer.Deserialize(jsonTextReader, typeof(string));
                         var exception = result as Exception;
                         if (exception != null)
                         {
                             throw exception;
                         }
-                        return result;
+                        
+                        return JsonConvert.DeserializeObject<List<MethodInfoTO>>(result.ToString());
                     }
                 case Execute.GetNamespaces:
                 {
@@ -143,7 +146,7 @@ namespace WarewolfCOMIPC.Client
         /// <summary>
         /// Gracefully close connection to server
         /// </summary>
-        protected virtual void Close()
+        protected void Close()
         {
             _pipe.Close();
             _process.Kill();
@@ -160,7 +163,7 @@ namespace WarewolfCOMIPC.Client
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (_disposed)
                 return;

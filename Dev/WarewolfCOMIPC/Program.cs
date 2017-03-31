@@ -56,20 +56,21 @@ namespace WarewolfCOMIPC
             var serializer = new JsonSerializer();
             var sr = new StreamReader(pipe);
             var jsonTextReader = new JsonTextReader(sr);
-            object callData = new object();
+            string callData;
             try
             {
-                callData = serializer.Deserialize(jsonTextReader, typeof(CallData));
+                callData = serializer.Deserialize<string>(jsonTextReader);
             }
-            catch (Exception)
+            catch 
             {
+                callData = null;
                 //
             }
             if (callData != null)
             {
                 Console.WriteLine("Client Data read and Deserialized to Server Pipe Stream");
                 Console.WriteLine(callData.GetType());
-                var data = (CallData)callData;
+                var data = JsonConvert.DeserializeObject<CallData>(callData);
 
                 while (data.Status != KeepAliveStatus.Close)
                 {
@@ -127,6 +128,15 @@ namespace WarewolfCOMIPC
                         var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
                         MethodInfo[] methods = dispatchedtype.GetMethods();
 
+                        //List<string> methodInfos = new List<string>();
+
+                        //foreach (var method in methods)
+                        //{
+                        //    methodInfos.Add(JsonConvert.SerializeObject(method));
+                        //}
+
+
+
                         List<MethodInfoTO> methodInfos = methods
                             .Select(info => new MethodInfoTO
                             {
@@ -143,7 +153,8 @@ namespace WarewolfCOMIPC
                             }).ToList();
                         Console.WriteLine($"Got {methods.Count()} mrthods");
                         Console.WriteLine("Serializing and sending methods for:" + dispatchedtype.FullName);
-                        formatter.Serialize(sw, methodInfos);
+                        var json = JsonConvert.SerializeObject(methodInfos);
+                        formatter.Serialize(sw, json);
                         sw.Flush();
                         Console.WriteLine("Sent methods for:" + dispatchedtype.FullName);
                     }
