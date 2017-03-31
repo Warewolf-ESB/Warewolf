@@ -78,6 +78,56 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ComActionRegion_ChangedSelectedAction")]
+        public void ComActionRegion_ChangeSelectedAction_Scenerio_Result()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var act = new DsfComDllActivity { SourceId = id };
+            var src = new Mock<IComPluginServiceModel>();
+            var dotNetsrc = new ComPluginSourceDefinition { Id = id, ResourceName = "johnny" };
+            var action = new PluginAction { FullName = "bravo", Method = "bravo", ReturnType = typeof(string), Variables = new List<INameValue>()};
+            var action2 = new PluginAction { FullName = "simpson", Method = "simpson", ReturnType = typeof(string), Variables = new List<INameValue>()};
+            src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc });
+
+            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            sourceRegion.SelectedSource = dotNetsrc;
+
+            var namespaceItem = new NamespaceItem { FullName = "johnny" };
+            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            comNamespaceRegion.SelectedNamespace = namespaceItem;
+
+            //------------Execute Test---------------------------
+            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+            dotNetActionRegion.SelectedAction = action;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(action, dotNetActionRegion.SelectedAction);
+            Assert.AreEqual(action.FullName, dotNetActionRegion.SelectedAction.FullName);
+            Assert.AreEqual(action.Method, dotNetActionRegion.SelectedAction.Method);
+            Assert.AreEqual(typeof(string), dotNetActionRegion.SelectedAction.ReturnType);
+            Assert.AreEqual(0, dotNetActionRegion.SelectedAction.Variables.Count);
+            Assert.IsTrue(dotNetActionRegion.CanRefresh());
+
+            dotNetActionRegion.SelectedAction = action2;
+            Assert.AreEqual(action2, dotNetActionRegion.SelectedAction);
+            Assert.AreEqual(action2.FullName, dotNetActionRegion.SelectedAction.FullName);
+            Assert.AreEqual(action2.Method, dotNetActionRegion.SelectedAction.Method);
+            Assert.AreEqual(typeof(string), dotNetActionRegion.SelectedAction.ReturnType);
+            Assert.AreEqual(0, dotNetActionRegion.SelectedAction.Variables.Count);
+            Assert.IsTrue(dotNetActionRegion.CanRefresh());
+
+            dotNetActionRegion.SelectedAction = action;
+            Assert.AreEqual(action, dotNetActionRegion.SelectedAction);
+            Assert.AreEqual(action.FullName, dotNetActionRegion.SelectedAction.FullName);
+            Assert.AreEqual(action.Method, dotNetActionRegion.SelectedAction.Method);
+            Assert.AreEqual(typeof(string), dotNetActionRegion.SelectedAction.ReturnType);
+            Assert.AreEqual(0, dotNetActionRegion.SelectedAction.Variables.Count);
+            Assert.IsTrue(dotNetActionRegion.CanRefresh());
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComActionRegion_ChangeActionSomethingChanged")]
         public void ComActionRegion_ChangeActionSomethingChanged_ExpectedChange_Result()
