@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -43,30 +41,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             var msg = new ExecuteMessage();
             var serializer = new Dev2JsonSerializer();
             Dev2Logger.Info("Get COMDll Listings");
-
+            
             try
             {
-                
-                List<DllListing> dllListings = new List<DllListing>();
-                LazyInitializer.EnsureInitialized(ref dllListings);
+                List<DllListing> dllListings;
                 using (Isolated<ComDllLoaderHandler> isolated = new Isolated<ComDllLoaderHandler>())
                 {
                     var openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry32);
-                    var openBaseKey64 = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry64);
-                    var comDllLoaderHandler = isolated.Value;
-                    var action = new Action(() =>
-                    {
-                        var listings = comDllLoaderHandler.GetListings(openBaseKey);
-                        dllListings.AddRange(listings);
-
-                    });
-                    var action1 = new Action(() =>
-                    {
-                        var listings = comDllLoaderHandler.GetListings(openBaseKey64);
-                        dllListings.AddRange(listings);
-                    });
-                    Parallel.Invoke(action, action1);
-
+                    dllListings = isolated.Value.GetListings(openBaseKey);
+                    openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry64);
+                    dllListings.AddRange(isolated.Value.GetListings(openBaseKey));
                 }
                 msg.Message = serializer.SerializeToBuilder(dllListings);
             }
