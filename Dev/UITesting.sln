@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5176818D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{420E71D8-43C5-48B2-978E-0D37C2349407}"
 	ProjectSection(SolutionItems) = preProject
+		Dev2.Server\Decrypt Server Resources.ps1 = Dev2.Server\Decrypt Server Resources.ps1
 		TestScripts\Scorched Get (excluding nuget packages).bat = TestScripts\Scorched Get (excluding nuget packages).bat
 		Studio.Run.bat = Studio.Run.bat
 	EndProjectSection
