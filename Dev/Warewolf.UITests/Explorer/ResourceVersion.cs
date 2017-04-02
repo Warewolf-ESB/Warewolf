@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
@@ -17,6 +18,7 @@ namespace Warewolf.UITests
         {
             ExplorerUIMap.Filter_Explorer("ShowVersionsTestWorkflow");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text == "Bob", 60000);
             DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Bobby";
             WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
@@ -30,7 +32,6 @@ namespace Warewolf.UITests
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Delete.Enabled, "The delete option is not enabled on the context menu");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Exists, "The make current version option does not exist on the context menu");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Enabled, "The make current version option is not enabled on the context menu");
-            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
         }
 
         [TestMethod]
