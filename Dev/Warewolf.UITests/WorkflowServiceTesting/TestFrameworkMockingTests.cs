@@ -53,7 +53,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             WorkflowTabUIMap.Make_Workflow_Savable();
             UIMap.Press_F6();
-            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
+            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Create test from debug output button is enabled on unsaved workflow.");
         }
 
         [TestMethod]
