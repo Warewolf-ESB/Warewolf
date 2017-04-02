@@ -1,7 +1,7 @@
 
 <Service ID="2252dfd0-5ecf-4376-9861-30cec1ad5836" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="OpenVersionsTestWorkflow" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6299.14946">
   <DisplayName>OpenVersionsTestWorkflow</DisplayName>
-  <Category>OpenVersionsTestWorkflow</Category>
+  <Category>VersionTestWorkflow</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
