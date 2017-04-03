@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -230,6 +231,46 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             Assert.AreEqual("1.00", ages[2]);
             Assert.AreEqual("-3.46", ages[3]);
             Assert.AreEqual("0.88", ages[4]);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SelectAndApplyActivity_SetupExecute")]
+        public void SelectAndApplyActivity_SetupExecute_GivenNullDataSource_DataObjectsHasCorrectErrors()
+        {
+            var activity = new DsfNumberFormatActivity
+                {
+                    Expression = "[[result]]",
+                    Result = "[[result]]",
+                    RoundingType = Dev2EnumConverter.ConvertEnumValueToString(enRoundingType.Up),
+                    RoundingDecimalPlaces = "2",
+                    DecimalPlacesToShow = "2"
+                };
+            
+            
+            //------------Setup for test--------------------------
+            //SetupArgumentsForFormatNumber("", "", activity);
+            DataObject.Environment = new ExecutionEnvironment();
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "5.2687454"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "2.3"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "1"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "-3.4554"), 0);
+            DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "0.875768"), 0);
+            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity();
+            dsfSelectAndApplyActivity.ApplyActivityFunc.Handler = activity;
+            TestStartNode = new FlowStep
+            {
+                Action = dsfSelectAndApplyActivity
+            };
+            CurrentDl = string.Empty;
+            TestData = string.Empty;
+            //------------Execute Test---------------------------
+            ExecuteProcess(DataObject);
+            //------------Assert Results-------------------------
+            var errors = DataObject.Environment.Errors;
+            Assert.AreEqual(2, errors.Count);
+            Assert.IsTrue(errors.Contains(ErrorResource.DataSourceEmpty));
+            Assert.IsTrue(errors.Contains(string.Format(ErrorResource.CanNotBeEmpty, "Alias")));
         }  
 
         [TestMethod]
@@ -255,6 +296,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             var ages = DataObject.Environment.EvalAsListOfStrings("[[Person(*).Age]]", 0);
             var evalAsList = DataObject.Environment.EvalAsList("[[b]]", 1);
         }
+
 
         #region Private Test Methods
 
