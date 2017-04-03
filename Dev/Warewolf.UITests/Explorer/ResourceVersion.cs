@@ -18,7 +18,8 @@ namespace Warewolf.UITests
         {
             ExplorerUIMap.Filter_Explorer("ShowVersionsTestWorkflow");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            WorkflowTabUIMap.Make_Workflow_Savable();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text == "Bob", 60000);
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Bobby";
             WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
@@ -39,7 +40,7 @@ namespace Warewolf.UITests
         {
             ExplorerUIMap.Filter_Explorer("OpenVersionsTestWorkflow");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            WorkflowTabUIMap.Make_Workflow_Savable();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Bobby";
             WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "No version history found for workflow 'OpenVersionsTestWorkflow'. This UI test expects version history for this resource to start with.");
