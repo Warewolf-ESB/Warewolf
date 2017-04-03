@@ -78,11 +78,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 if (pluginResult != null)
                 {
-                    jsonResult = pluginResult.ToString();
+                    if (pluginResult is KeyValuePair<bool, string>)
+                    {
+                        KeyValuePair<bool, string> pluginKeyValuePair = (KeyValuePair<bool, string>) pluginResult;
+                        jsonResult = "Exception: " + pluginKeyValuePair.Value;
+                    }
+                    else
+                    {
+                        jsonResult = pluginResult.ToString();
+                    }
                     pluginResult = AdjustPluginResult(pluginResult);
                     var tmpData = dataBrowser.Map(pluginResult);
                     dataSourceShape.Paths.AddRange(tmpData);
-
                 }
 
                 var result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
