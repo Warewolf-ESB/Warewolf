@@ -144,10 +144,11 @@ namespace WarewolfCOMIPC.Client
                                 throw exception;
                             }
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                             // Do nothing was not an exception
-                            result = null;
+                            var baseException = ex.GetBaseException();
+                            return new KeyValuePair<bool,string>(true, baseException.Message);
                         }
                         return result;
                     }
