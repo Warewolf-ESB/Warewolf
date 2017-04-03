@@ -13,7 +13,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -90,7 +89,7 @@ namespace Dev2
 
         static int RunMain(string[] arguments)
         {
-            var result = 0;
+            const int result = 0;
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
                 Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
@@ -142,7 +141,6 @@ namespace Dev2
         bool _isDisposed;
         bool _isWebServerEnabled;
         bool _isWebServerSslEnabled;
-        readonly string[] _arguments;
         Dev2Endpoint[] _endpoints;
         Timer _timer;
         IDisposable _owinServer;
@@ -176,7 +174,6 @@ namespace Dev2
             _pulseLogger.Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
             _pulseTracker.Start();
-            _arguments = arguments ?? new string[0];
             SetWorkingDirectory();
             MoveSettingsFiles();
             var settingsConfigFile = EnvironmentVariables.ServerLogSettingsFile;
@@ -406,46 +403,6 @@ namespace Dev2
             }
         }
 
-        static bool EnsureRunningAsAdministrator(string[] arguments)
-        {
-
-            try
-            {
-                if (!IsElevated())
-                {
-                    var startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location) { Verb = "runas", Arguments = string.Join(" ", arguments) };
-
-                    var process = new Process { StartInfo = startInfo };
-
-                    try
-                    {
-                        process.Start();
-                    }
-                    catch (Exception e)
-                    {
-                        LogException(e);
-                    }
-
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                LogException(e);
-            }
-
-            return true;
-        }
-
-        static bool IsElevated()
-        {
-            var currentIdentity = WindowsIdentity.GetCurrent();
-            {
-                var principal = new WindowsPrincipal(currentIdentity);
-                return principal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
-        }
-
         internal void ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
         {
             if (string.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
@@ -484,7 +441,7 @@ namespace Dev2
             try
             {
                 string webServerSslPort = null;
-                var webServerPort = ParseArguments(ref webServerSslPort);
+                string webServerPort = null;
 
                 GlobalConstants.WebServerPort = webServerPort = !string.IsNullOrEmpty(webServerPort) ? webServerPort : ConfigurationManager.AppSettings["webServerPort"];
                 GlobalConstants.WebServerSslPort = webServerSslPort = !string.IsNullOrEmpty(webServerSslPort) ? webServerSslPort : ConfigurationManager.AppSettings["webServerSslPort"];
@@ -525,39 +482,6 @@ namespace Dev2
             {
                 Fail("Server initialization failed", ex);
             }
-        }
-
-        private string ParseArguments(ref string webServerSslPort)
-        {
-            var webServerPort = "";
-            var arguments = new Dictionary<string, string>();
-
-            if (_arguments.Any())
-            {
-                foreach (var t in _arguments)
-                {
-                    var arg = t.Split('=');
-                    if (arg.Length == 2)
-                    {
-                        arguments.Add(arg[0].Replace("/", string.Empty), arg[1]);
-                    }
-                }
-            }
-
-            foreach (var argument in arguments)
-            {
-                if (argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    webServerPort = argument.Value;
-                    continue;
-                }
-
-                if (argument.Key.Equals("webServerSslPort", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    webServerSslPort = argument.Value;
-                }
-            }
-            return webServerPort;
         }
 
         private void EnableSSLForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
