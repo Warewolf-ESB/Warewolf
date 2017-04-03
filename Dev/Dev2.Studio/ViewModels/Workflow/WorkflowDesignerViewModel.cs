@@ -1076,6 +1076,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (computedValue is IDev2Activity)
                 {
                     (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
+                    _modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
+                }
+                if (computedValue is Activity)
+                {
+                    _activityCollection = ModelService.Find(ModelService.Root, typeof(Activity));
                 }
 
                 if (mi.ItemType == typeof(FlowSwitch<string>))
@@ -1094,6 +1099,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     AddSwitch(mi);
                 }
+                
             }
             return addedItems;
         }
