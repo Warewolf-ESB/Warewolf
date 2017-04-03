@@ -1,4 +1,5 @@
-﻿using System.Activities;
+﻿using System;
+using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
@@ -254,6 +255,48 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             //------------Assert Results-------------------------
             var ages = DataObject.Environment.EvalAsListOfStrings("[[Person(*).Age]]", 0);
             var evalAsList = DataObject.Environment.EvalAsList("[[b]]", 1);
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SelectAndApplyActivity_SetupExecute")]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void SelectAndApplyActivity_UpdateForEachInputs_ThrowsException()
+        {
+            var activity = new DsfSelectAndApplyActivity();
+            activity.UpdateForEachInputs(new List<Tuple<string, string>>());
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SelectAndApplyActivity_SetupExecute")]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void SelectAndApplyActivity_UpdateForEachOutputs_ThrowsException()
+        {
+            var activity = new DsfSelectAndApplyActivity();
+            activity.UpdateForEachOutputs(new List<Tuple<string, string>>());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SelectAndApplyActivity_SetupExecute")]
+        public void SelectAndApplyActivity_GetForEachInputs()
+        {
+            var activity = new DsfSelectAndApplyActivity();
+            activity.Alias = "[[Rec(*)]]";
+            var dsfForEachItems = activity.GetForEachInputs();
+            Assert.AreEqual(dsfForEachItems.Single().Value, "[[Rec(*)]]");
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SelectAndApplyActivity_SetupExecute")]
+        public void SelectAndApplyActivity_GetForEachOutputs()
+        {
+            var activity = new DsfSelectAndApplyActivity();
+            activity.Alias = "[[Rec(*)]]";
+            var dsfForEachItems = activity.GetForEachOutputs();
+            Assert.AreEqual(dsfForEachItems.Single().Value, "[[Rec()]]");
         }
 
         #region Private Test Methods
