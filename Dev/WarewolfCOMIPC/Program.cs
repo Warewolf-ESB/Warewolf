@@ -115,15 +115,6 @@ namespace WarewolfCOMIPC
                         var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
                         MethodInfo[] methods = dispatchedtype.GetMethods();
 
-                        //List<string> methodInfos = new List<string>();
-
-                        //foreach (var method in methods)
-                        //{
-                        //    methodInfos.Add(JsonConvert.SerializeObject(method));
-                        //}
-
-
-
                         List<MethodInfoTO> methodInfos = methods
                             .Select(info => new MethodInfoTO
                             {

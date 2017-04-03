@@ -272,6 +272,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IManageServiceInputViewModel<IPluginService>
 
         public Action TestAction { get; set; }
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public ICommand TestCommand { get; private set; }
 
         public bool TestPassed
@@ -332,7 +333,9 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public ImageSource TestIconImageSource { get; set; }
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public ICommand CloseCommand { get; private set; }
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
         public ICommand OkCommand { get; private set; }
         public Action OkAction { get; set; }
         public Action CloseAction { get; set; }
