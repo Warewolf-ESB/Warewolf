@@ -10,24 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts"
 		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Studio", "Studio", "{86F22FF8-2B3F-491E-9B44-703381DBAAA5}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Studio\Cleanup.bat = TestScripts\Studio\Cleanup.bat
-		TestScripts\Studio\Startup.bat = TestScripts\Studio\Startup.bat
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BEB57930-B3B0-402B-B9F5-0A7B8E5B4173}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Server\Cleanup.bat = TestScripts\Server\Cleanup.bat
-		TestScripts\Server\Startup.bat = TestScripts\Server\Startup.bat
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{E3E0D6CF-ED1E-481A-B7E7-98D5A0E7E0B7}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Server\Service\Cleanup.bat = TestScripts\Server\Service\Cleanup.bat
-		TestScripts\Server\Service\Startup.bat = TestScripts\Server\Service\Startup.bat
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5176818D-D7C0-454B-BC12-FD619C57811C}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
@@ -65,9 +47,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {420E71D8-43C5-48B2-978E-0D37C2349407}
-		{86F22FF8-2B3F-491E-9B44-703381DBAAA5} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
-		{BEB57930-B3B0-402B-B9F5-0A7B8E5B4173} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
-		{E3E0D6CF-ED1E-481A-B7E7-98D5A0E7E0B7} = {BEB57930-B3B0-402B-B9F5-0A7B8E5B4173}
 		{5176818D-D7C0-454B-BC12-FD619C57811C} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution

@@ -9511,12 +9511,50 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
                 return this.mDecision;
             }
         }
+        
+        public WpfCustom Connector1
+        {
+            get
+            {
+                if ((this.mConnector1 == null))
+                {
+                    this.mConnector1 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mConnector1.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mConnector1.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
+                    this.mConnector1.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mConnector1;
+            }
+        }
+        
+        public WpfCustom Connector2
+        {
+            get
+            {
+                if ((this.mConnector2 == null))
+                {
+                    this.mConnector2 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mConnector2.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mConnector2.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
+                    this.mConnector2.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mConnector2;
+            }
+        }
         #endregion
         
         #region Fields
         private MultiAssign mMultiAssign;
         
         private Decision mDecision;
+        
+        private WpfCustom mConnector1;
+        
+        private WpfCustom mConnector2;
         #endregion
     }
     
