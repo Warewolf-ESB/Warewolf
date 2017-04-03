@@ -91,99 +91,13 @@ namespace Dev2
         static int RunMain(string[] arguments)
         {
             var result = 0;
-
-            var options = new CommandLineParameters();
-            var parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
-            if (!parser.ParseArguments(arguments, options))
-            {
-                return 80;
-            }
-
-            var commandLineParameterProcessed = false;
-            if (options.Install)
-            {
-                Dev2Logger.Info("Starting Install");
-                commandLineParameterProcessed = true;
-
-                if (!EnsureRunningAsAdministrator(arguments))
-                {
-                    Dev2Logger.Info("Cannot install because the server is not running as an admin user");
-                    return result;
-                }
-
-                if (!WindowsServiceManager.Install())
-                {
-                    result = 81;
-                    Dev2Logger.Info("Install Success Result is 81");
-                }
-            }
-
-            if (options.StartService)
-            {
-                Dev2Logger.Info("Starting Service");
-                commandLineParameterProcessed = true;
-
-                if (!EnsureRunningAsAdministrator(arguments))
-                {
-                    Dev2Logger.Info("Cannot start because the server is not running as an admin user");
-                    return result;
-                }
-
-                if (!WindowsServiceManager.StartService(null))
-                {
-                    Dev2Logger.Info("Starting Service success. result 83");
-                    result = 83;
-                }
-            }
-
-            if (options.StopService)
-            {
-                Dev2Logger.Info("Stopping Service");
-                commandLineParameterProcessed = true;
-
-                if (!EnsureRunningAsAdministrator(arguments))
-                {
-                    Dev2Logger.Info("Cannot stop because the server is not running as an admin user");
-                    return result;
-                }
-
-                if (!WindowsServiceManager.StopService(null))
-                {
-                    Dev2Logger.Info("Stopping Service success. result 84");
-                    result = 84;
-                }
-            }
-
-            if (options.Uninstall)
-            {
-                Dev2Logger.Info("Uninstall Service");
-                commandLineParameterProcessed = true;
-
-                if (!EnsureRunningAsAdministrator(arguments))
-                {
-                    Dev2Logger.Info("Cannot uninstall because the server is not running as an admin user");
-                    return result;
-                }
-
-                if (!WindowsServiceManager.Uninstall())
-                {
-                    Dev2Logger.Info("Uninstall Service success. result 92");
-                    result = 82;
-                }
-            }
-
-            if (commandLineParameterProcessed)
-            {
-                Dev2Logger.Info("Command line processed. Returning");
-                return result;
-            }
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
                 Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
             };
-            if (Environment.UserInteractive || options.IntegrationTestMode)
+            if (Environment.UserInteractive)
             {
-                Dev2Logger.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
+                Dev2Logger.Info("** Starting In Interactive Mode **");
                 using (_singleton = new ServerLifecycleManager(arguments))
                 {
                     _singleton.Run(true);
