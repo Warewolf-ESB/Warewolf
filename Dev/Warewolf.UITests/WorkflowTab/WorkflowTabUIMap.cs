@@ -1312,6 +1312,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         public void Make_Workflow_Savable()
         {
             Drag_Toolbox_Comment_Onto_DesignSurface();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Failed to make workflow savable.");
         }
 
         [Then(@"I Click workflow tab")]

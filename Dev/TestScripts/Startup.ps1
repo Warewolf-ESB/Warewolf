@@ -63,7 +63,7 @@ if (Test-Path "$PSScriptRoot\Cleanup.ps1") {
 if ($ServerPath -eq "") {
     $CurrentDirectory = $PSScriptRoot
     $NumberOfParentsSearched = 0
-    while ($ServerPath -eq "" -and $NumberOfParentsSearched++ -lt 7) {
+    while ($ServerPath -eq "" -and $NumberOfParentsSearched++ -lt 7 -and $CurrentDirectory -ne $null) {
         if (Test-Path "$CurrentDirectory\Warewolf Server.exe") {
             $ServerPath = "$CurrentDirectory\Warewolf Server.exe"
         } elseif (Test-Path "$CurrentDirectory\Server\Warewolf Server.exe") {
