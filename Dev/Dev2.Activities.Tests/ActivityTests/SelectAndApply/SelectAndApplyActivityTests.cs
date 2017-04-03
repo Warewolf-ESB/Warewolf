@@ -25,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         {
             return new DsfSelectAndApplyActivity();
         }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("SelectAndApplyActivity_Construct")]
@@ -35,6 +36,32 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(selectAndApplyActivity);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SelectAndApplyActivity_GetFindMissingType")]
+        public void SelectAndApplyActivity_GetFindMissingType_GivenInstance_ShouldNotBeNull()
+        {
+            //------------Setup for test--------------------------
+            var selectAndApplyActivity = CreateActivity();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            var enFindMissingType = selectAndApplyActivity.GetFindMissingType();
+            Assert.AreEqual(enFindMissingType, enFindMissingType.ForEach);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("SelectAndApplyActivity_GetFindMissingType")]
+        public void SelectAndApplyActivity_GetOutputs_GivenInstance_ShouldNotBeNull()
+        {
+            //------------Setup for test--------------------------
+            var selectAndApplyActivity = CreateActivity();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            var outputs = selectAndApplyActivity.GetOutputs();
+            Assert.AreEqual(0, outputs.Count);
         }
 
         [TestMethod]
