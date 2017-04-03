@@ -140,12 +140,10 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         private void UpdateBasedOnNamespace()
         {
-            SelectedAction = null;
-            IsActionEnabled = false;
-            IsEnabled = false;
-            if (_source?.SelectedSource != null && _namespace?.SelectedNamespace != null)
+            if (_source?.SelectedSource != null)
             {
                 Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
+                SelectedAction = null;
                 IsActionEnabled = true;
                 IsEnabled = true;
             }
@@ -153,8 +151,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null && _namespace?.SelectedNamespace != null;
-            return _source.SelectedSource != null && _namespace?.SelectedNamespace != null;
+            var isActionEnabled = _source.SelectedSource != null;
+            IsActionEnabled = isActionEnabled;
+            return isActionEnabled;
         }
 
         public IPluginAction SelectedAction

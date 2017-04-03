@@ -334,7 +334,6 @@ namespace Dev2.Activities.Designers2.ComDLL
                 {
                     SourceChangedAction = () =>
                         {
-                            OutputsRegion.IsEnabled = false;
                             if (Regions != null)
                             {
                                 foreach (var toolRegion in Regions)
