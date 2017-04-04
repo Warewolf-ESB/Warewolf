@@ -114,6 +114,7 @@ namespace Warewolf.UIBindingTests.OracleSource
         }
 
         [Given(@"Server as ""(.*)""")]
+        [When(@"Server as ""(.*)""")]
         public void GivenServerAs(string server)
         {
             var db = FeatureContext.Current.Get<IDbSource>("dbsrc");
