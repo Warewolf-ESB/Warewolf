@@ -14,7 +14,7 @@ using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.WebSource.WebSourceUIMapClasses;
-using Warewolf.UITests.WorkflowServiceTesting;
+using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests.Tabs
 {

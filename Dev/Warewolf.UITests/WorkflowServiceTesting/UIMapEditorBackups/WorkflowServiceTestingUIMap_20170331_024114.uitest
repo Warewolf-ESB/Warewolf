@@ -40,58 +40,7 @@
     </Group>
   </Configuration>
   <InitializeActions />
-  <ExecuteActions>
-    <AssertAction UIObjectName="WorkflowServiceTestingUIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_ServiceTestView_ACustom.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.ResultsCell">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>Cell</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="WorkflowServiceTestingUIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_ServiceTestView_ACustom.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.AssertionCell.AssetionComboBox">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>ComboBox</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <AssertAction UIObjectName="WorkflowServiceTestingUIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_ServiceTestView_ACustom.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.AssertValueCell.AssertValueComboBox.AssertionValue">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>Edit</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="WorkflowServiceTestingUIMap.UIWarewolfDEV2SANELEMTWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_ServiceTestView_ACustom.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.ResultsCell.ResultEdit">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>Edit</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod2">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-  </ExecuteActions>
+  <ExecuteActions />
   <CleanupActions />
   <OnErrorActions />
   <Maps>
@@ -5466,6 +5415,532 @@
                                             </UIObject>
                                           </Descendants>
                                         </UIObject>
+                                        <UIObject ControlType="Tree" Id="UIUI_VariableTreeView_Tree" FriendlyName="UI_VariableTreeView_AutoID" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Tree</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_VariableTreeView_AutoID</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="TreeItem" Id="SequenceItem" FriendlyName="" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                              </WindowTitles>
+                                              <SearchConfigurations>
+                                                <SearchConfiguration>Expand</SearchConfiguration>
+                                              </SearchConfigurations>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                <PropertyCondition Name="Instance">2</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="TreeItem" Id="SplitNamesItem" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <SearchConfigurations>
+                                                    <SearchConfiguration>Distinct</SearchConfiguration>
+                                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                                  </SearchConfigurations>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Expander" Id="SplitNamesExpandar" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_ServiceTestTestStepExpander_Split Names (3)_AutoID</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Button" Id="SplitNames" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                                <UIObject ControlType="TreeItem" Id="SortNamesItem" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <SearchConfigurations>
+                                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                                  </SearchConfigurations>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                    <PropertyCondition Name="Instance">3</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Expander" Id="SortNamesExpandar" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_ServiceTestTestStepExpander_Sort Names Alphabetically_AutoID</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Button" Id="SortNames" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                                <UIObject ControlType="TreeItem" Id="FindUniqueNamesItem" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <SearchConfigurations>
+                                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                                  </SearchConfigurations>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Expander" Id="FindOnlyUniqueNamesExpander" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_ServiceTestTestStepExpander_Find Only Unique Names_AutoID</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Button" Id="FindOnlyUniqueNames" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="TreeItem" Id="UIWarewolfStudioViewMoTreeItem" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                              </WindowTitles>
+                                              <SearchConfigurations>
+                                                <SearchConfiguration>Expand</SearchConfiguration>
+                                              </SearchConfigurations>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ServiceTestStep</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="TreeItem" Id="UIItemTreeItem" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <SearchConfigurations>
+                                                    <SearchConfiguration>Distinct</SearchConfiguration>
+                                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                                  </SearchConfigurations>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Expander" Id="UIWarewolfStudioViewMoExpander" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_ServiceTestTestStepExpander_.ctor _AutoID</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Table" Id="UIUI_StepOutputs_ctor_Table" FriendlyName="UI_StepOutputs_.ctor _AutoID" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">UI_StepOutputs_.ctor _AutoID</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Row" Id="UIItemRow" FriendlyName="" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <SearchConfigurations>
+                                                                <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                              </SearchConfigurations>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="Cell" Id="ResultsCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="ColumnHeader">Result</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Edit" Id="ResultEdit" FriendlyName="UI_AssertValue_[[@human]]_AutoID" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI_AssertValue_[[@human]]_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                                <UIObject ControlType="Cell" Id="AssertionCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="ColumnHeader" />
+                                                                    <PropertyCondition Name="ColumnIndex">2</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="ComboBox" Id="AssetionComboBox" FriendlyName="UI_AssertOp_[[@human]]_AutoID" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI_AssertOp_[[@human]]_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                                <UIObject ControlType="Cell" Id="AssertValueCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="ColumnHeader">Value</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="ComboBox" Id="AssertValueComboBox" FriendlyName="UI_AssertValue_{ &quot;$id&quot;: &quot;1&quot;, &quot;$type&quot;: &quot;TestingDotn..." SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI_AssertValue_{
+  "$id": "1",
+  "$type": "TestingDotnetDllCascading.Human",
+  "Name": "Default",
+  "PersonFood": {
+    "$id": "2",
+    "$type": "TestingDotnetDllCascading.Food",
+    "FoodName": "DefaultFood"
+  },
+  "SurName": null
+}_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Edit" Id="AssertionValue" FriendlyName="Text" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                                <UIObject ControlType="TreeItem" Id="FavFoodItem" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <SearchConfigurations>
+                                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                                  </SearchConfigurations>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Expander" Id="UIWarewolfStudioViewMoExpander" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_ServiceTestTestStepExpander_FavouriteFoods_AutoID</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Table" Id="UIUI_StepOutputs_FavouTable" FriendlyName="UI_StepOutputs_FavouriteFoods_AutoID" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">UI_StepOutputs_FavouriteFoods_AutoID</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Row" Id="UIItemRow" FriendlyName="" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <SearchConfigurations>
+                                                                <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                              </SearchConfigurations>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="Cell" Id="ResultCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="ColumnHeader">Result</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Edit" Id="ResultEdit" FriendlyName="UI_AssertValue_[[@foods]]_AutoID" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI_AssertValue_[[@foods]]_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                                <UIObject ControlType="Cell" Id="AssertCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="ColumnHeader" />
+                                                                    <PropertyCondition Name="ColumnIndex">2</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="ComboBox" Id="AssertComboBox" FriendlyName="UI_AssertOp_[[@foods]]_AutoID" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI_AssertOp_[[@foods]]_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                                <UIObject ControlType="Cell" Id="AssertValueCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="ColumnHeader">Value</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="ComboBox" Id="AssertValueComboBox" FriendlyName="UI_AssertValue_[ { &quot;$id&quot;: &quot;1&quot;, &quot;$type&quot;: &quot;TestingDo..." SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI_AssertValue_[
+  {
+    "$id": "1",
+    "$type": "TestingDotnetDllCascading.Food",
+    "FoodName": "Pizza"
+  },
+  {
+    "$id": "2",
+    "$type": "TestingDotnetDllCascading.Food",
+    "FoodName": "Burger"
+  },
+  {
+    "$id": "3",
+    "$type": "TestingDotnetDllCascading.Food",
+    "FoodName": "Chicken"
+  }
+]_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Edit" Id="ValueEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
                                       </Descendants>
                                     </UIObject>
                                   </Descendants>
@@ -5802,178 +6277,7 @@
                                             <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ServiceTestStep</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
-                                          <Descendants>
-                                            <UIObject ControlType="TreeItem" Id="UIItemTreeItem" FriendlyName="" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                              </WindowTitles>
-                                              <SearchConfigurations>
-                                                <SearchConfiguration>Distinct</SearchConfiguration>
-                                                <SearchConfiguration>Expand</SearchConfiguration>
-                                              </SearchConfigurations>
-                                              <AndCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants>
-                                                <UIObject ControlType="Expander" Id="UIWarewolfStudioViewMoExpander" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                    <PropertyCondition Name="ControlType">Expander</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">UI_ServiceTestTestStepExpander_.ctor _AutoID</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants>
-                                                    <UIObject ControlType="Table" Id="UIUI_StepOutputs_ctor_Table" FriendlyName="UI_StepOutputs_.ctor _AutoID" SpecialControlType="None">
-                                                      <TechnologyName>UIA</TechnologyName>
-                                                      <WindowTitles>
-                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                      </WindowTitles>
-                                                      <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                                                        <PropertyCondition Name="AutomationId">UI_StepOutputs_.ctor _AutoID</PropertyCondition>
-                                                      </AndCondition>
-                                                      <SupportLevel>0</SupportLevel>
-                                                      <Descendants>
-                                                        <UIObject ControlType="Row" Id="UIItemRow" FriendlyName="" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                          </WindowTitles>
-                                                          <SearchConfigurations>
-                                                            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
-                                                          </SearchConfigurations>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="ControlType">Row</PropertyCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants>
-                                                            <UIObject ControlType="Cell" Id="ResultsCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
-                                                              <TechnologyName>UIA</TechnologyName>
-                                                              <WindowTitles>
-                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                              </WindowTitles>
-                                                              <AndCondition>
-                                                                <PropertyCondition Name="ColumnHeader">Result</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
-                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                              </AndCondition>
-                                                              <SupportLevel>0</SupportLevel>
-                                                              <Descendants>
-                                                                <UIObject ControlType="Edit" Id="ResultEdit" FriendlyName="UI_AssertValue_[[@human]]_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_AssertValue_[[@human]]_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                              </Descendants>
-                                                            </UIObject>
-                                                            <UIObject ControlType="Cell" Id="AssertionCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
-                                                              <TechnologyName>UIA</TechnologyName>
-                                                              <WindowTitles>
-                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                              </WindowTitles>
-                                                              <AndCondition>
-                                                                <PropertyCondition Name="ColumnHeader" />
-                                                                <PropertyCondition Name="ColumnIndex">2</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
-                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                              </AndCondition>
-                                                              <SupportLevel>0</SupportLevel>
-                                                              <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="AssetionComboBox" FriendlyName="UI_AssertOp_[[@human]]_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_AssertOp_[[@human]]_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                              </Descendants>
-                                                            </UIObject>
-                                                            <UIObject ControlType="Cell" Id="AssertValueCell" FriendlyName="Item: Warewolf.Studio.ViewModels.ServiceTestOutput..." SpecialControlType="None">
-                                                              <TechnologyName>UIA</TechnologyName>
-                                                              <WindowTitles>
-                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                              </WindowTitles>
-                                                              <AndCondition>
-                                                                <PropertyCondition Name="ColumnHeader">Value</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
-                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                              </AndCondition>
-                                                              <SupportLevel>0</SupportLevel>
-                                                              <Descendants>
-                                                                <UIObject ControlType="ComboBox" Id="AssertValueComboBox" FriendlyName="UI_AssertValue_{ &quot;$id&quot;: &quot;1&quot;, &quot;$type&quot;: &quot;TestingDotn..." SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_AssertValue_{
-  "$id": "1",
-  "$type": "TestingDotnetDllCascading.Human",
-  "Name": "Default",
-  "PersonFood": {
-    "$id": "2",
-    "$type": "TestingDotnetDllCascading.Food",
-    "FoodName": "DefaultFood"
-  },
-  "SurName": null
-}_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants>
-                                                                    <UIObject ControlType="Edit" Id="AssertionValue" FriendlyName="Text" SpecialControlType="None">
-                                                                      <TechnologyName>UIA</TechnologyName>
-                                                                      <WindowTitles>
-                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                      </WindowTitles>
-                                                                      <AndCondition>
-                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
-                                                                      </AndCondition>
-                                                                      <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
-                                                                    </UIObject>
-                                                                  </Descendants>
-                                                                </UIObject>
-                                                              </Descendants>
-                                                            </UIObject>
-                                                          </Descendants>
-                                                        </UIObject>
-                                                      </Descendants>
-                                                    </UIObject>
-                                                  </Descendants>
-                                                </UIObject>
-                                              </Descendants>
-                                            </UIObject>
-                                          </Descendants>
+                                          <Descendants />
                                         </UIObject>
                                       </Descendants>
                                     </UIObject>
