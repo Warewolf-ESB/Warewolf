@@ -192,7 +192,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     IsConnected = false;
                     ServerDisconnected?.Invoke(this, SelectedConnection);
-                    PopupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
+                    PopupController?.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
                         , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }

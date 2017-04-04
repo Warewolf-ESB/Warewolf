@@ -297,6 +297,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
             var serverEnvironmentId = Guid.NewGuid();
             serverMock.SetupGet(it => it.EnvironmentID).Returns(serverEnvironmentId);
+            serverMock.SetupGet(it => it.IsConnected).Returns(true);
             _changedProperties.Clear();
             var serverConnectedRaised = false;
             _target.ServerConnected = (sender, e) =>
@@ -647,6 +648,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             localhost.Setup(server => server.DisplayName).Returns("localhost (Connected)");
             var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator());
             //------------Execute Test---------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(
+                controller =>
+                    controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning,
+                        It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(),
+                        It.IsAny<bool>(), It.IsAny<bool>()));
             PrivateObject privateObject = new PrivateObject(connectControlViewModel);
             privateObject.SetProperty("IsConnecting", false);
             privateObject.Invoke("OnServerOnNetworkStateChanged", args.Object, _serverMock.Object);
