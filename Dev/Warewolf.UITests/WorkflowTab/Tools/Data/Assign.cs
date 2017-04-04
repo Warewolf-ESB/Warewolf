@@ -63,6 +63,15 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
             WorkflowTabUIMap.Click_PrefixContainsInvalidText_Hyperlink();
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PrefixEdit.HasFocus);
         }
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void AssignTool_DebugOutput_UITest()
+        {
+            DataToolsUIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
+            UIMap.Press_F6();
+            UIMap.WaitForSpinner(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);
+            WorkflowTabUIMap.Click_Debug_Output_Assign_Cell();             
+        }
 
         [TestMethod]
         [TestCategory("Data Tools")]
