@@ -138,13 +138,9 @@ Scenario: Cancel DB Source Test
 
 @OracleDbSource
 Scenario: Editing saved DB Source Remembers credentials for Oracle
-Given I open "Database Source - testOracle" 
-	And Server as "localhost"
-	And Username field is "testuser"
-	And Password field is "******"
-	And Database "Dev2TestingDB" is selected 
-	And "Save" is "Disabled"
+	When I open "Database Source - testOracle"
 	Then "Test Connection" is "Enabled" 
+	And "Save" is "Disabled"
 	And "Save" is "Disabled"
 	And Database dropdown is "Collapsed"
 	And "Test Connection" is "Enabled"
