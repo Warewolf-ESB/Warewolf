@@ -335,7 +335,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "ToString", Parameters = svc.Method.Parameters, Is32Bit = true };
             var run = isolated.Test(args, out outString);
             Assert.IsNotNull(run);
-            Assert.IsNull(outString);
+            Assert.IsNotNull(outString);
 
         }
 
