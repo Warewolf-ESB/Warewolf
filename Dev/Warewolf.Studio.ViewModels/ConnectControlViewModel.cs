@@ -23,6 +23,8 @@ using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
+using Warewolf.Resource.Errors;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 // ReSharper disable InconsistentNaming
 
@@ -190,6 +192,8 @@ namespace Warewolf.Studio.ViewModels
                     }
                     IsConnected = false;
                     ServerDisconnected?.Invoke(this, SelectedConnection);
+                    PopupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
+                        , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
             else
@@ -377,7 +381,7 @@ namespace Warewolf.Studio.ViewModels
                 try
                 {
                     var connected = await connection.ConnectAsync();
-                    if (connected)
+                    if (connected && connection.IsConnected)
                     {
                         if (ShouldUpdateActiveEnvironment)
                         {
@@ -397,7 +401,7 @@ namespace Warewolf.Studio.ViewModels
                         }
                     }
                     OnPropertyChanged(() => connection.IsConnected);
-                    if (ServerConnected != null && connected)
+                    if (ServerConnected != null && connected && connection.IsConnected)
                     {
                         ServerConnected(this, connection);
                         if (ShouldUpdateActiveEnvironment)

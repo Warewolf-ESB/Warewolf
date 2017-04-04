@@ -43,6 +43,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
@@ -309,6 +310,9 @@ namespace Dev2.Network
                             ConnectionRetry();
                         }
                     }
+                    IPopupController popup = CustomContainer.Get<IPopupController>();
+                    popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
             catch (AggregateException aex)
@@ -339,6 +343,9 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
+                IPopupController popup = CustomContainer.Get<IPopupController>();
+                popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 HandleConnectError(e);
                 return false;
             }
