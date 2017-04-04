@@ -154,13 +154,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source as Windows Auth")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New ODBC DB Source as Windows Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New ODBC Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ODBCSource")]
-        public virtual void CreatingNewDBSourceAsWindowsAuth()
+        public virtual void CreatingNewODBCDBSourceAsWindowsAuth()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source as Windows Auth", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New ODBC DB Source as Windows Auth", new string[] {
                         "ODBCSource"});
 #line 59
 this.ScenarioSetup(scenarioInfo);

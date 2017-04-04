@@ -12,7 +12,6 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
     public class SqlServerTests
     {
         const string SourceName = "SQLServerSourceFromTool";
-        const string ServiceName = "UITestingSqlServerOutputs";
 
         [TestMethod]
         [TestCategory("Database Tools")]
@@ -70,7 +69,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database
         [TestCategory("Database Tools")]
         public void Open_SqlServer_Contains_Outputs()
         {
-            ExplorerUIMap.Filter_Explorer(ServiceName);
+            ExplorerUIMap.Filter_Explorer("UITestingSqlServerOutputs");
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             DatabaseToolsUIMap.SqlServerDatabaseTool_ChangeView_With_DoubleClick();

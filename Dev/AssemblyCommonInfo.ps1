@@ -63,7 +63,7 @@ if (-not "$CustomVersionString" -eq "") {
 				} else {
 					Write-Host Double checking with hard coded integration manager repo...
 					# Check tag against hard coded integration manager repo
-					$originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags "file:////rsaklfsvrgendev/Git-Repositories/Warewolf-ESB" $FullVersionString
+					$originTag = git -C "$WarewolfGitRepoDirectory" ls-remote --tags "file:////rsaklfsvrdev/Git-Repositories/Warewolf" $FullVersionString
 					if ($originTag.length -ne 0) {
 						Write-Host Hard coded integration manager repo has tag `"$originTag`".
 					} else {

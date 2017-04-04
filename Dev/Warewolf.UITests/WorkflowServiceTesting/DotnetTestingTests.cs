@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Common;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowServiceTesting
 {
@@ -27,7 +28,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void ExpandingDotnetDllShowsChildStepsExpandedTrue()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.DefaultCtor.ConstructorExpander.Exists);
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.DefaultCtor.ConstructorExpander.StepOutputs_ctor_Table.Exists);
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.DefaultCtor.ConstructorExpander.UIWarewolfStudioViewMoButton.Exists);
@@ -43,7 +44,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void DeletingConstructorRemovesTheStep()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             WorkflowServiceTestingUIMap.Click_TestViewDotNet_DLL_Constructor_DeleteButton();
             var controlExistsNow = UIMap.ControlExistsNow(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.DefaultCtor.ConstructorExpander);
             Assert.IsFalse(controlExistsNow);
@@ -53,7 +54,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void DeletingFavouriteRemovesTheStep()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             WorkflowServiceTestingUIMap.Click_TestViewDotNet_DLL_FavouriteFood_DeleteButton();
             var controlExistsNow = UIMap.ControlExistsNow(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.UIWarewolfStudioViewMoTreeItem.DotnetDllTreeItem.CtorFavouriteFood.FavouriteFoodsExpander);
             Assert.IsFalse(controlExistsNow);
@@ -63,7 +64,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void ConstructorValuesAreLoadedCorreclty()
         {           
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             var variableFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.ResultsCell.ResultEdit.Text;
             Assert.AreEqual("[[@human]]", variableFromDebug);
             var variableValueFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.AssertValueCell.AssertValueComboBox.AssertionValue.Text;
@@ -76,7 +77,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void ChangeVariableOnTheStepoutPutSetsTheDisplayNameWithAStar()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             WorkflowServiceTestingUIMap.Save_Tets_With_Shortcut();
             WorkflowServiceTestingUIMap.SetConstructorVariable("[[@newVar]]");
             WorkflowServiceTestingUIMap.Assert_Display_Text_ContainStar("Tab", true);
@@ -88,7 +89,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void FavouriteFoodsValuesAreLoadedCorreclty()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             var variableFromDebug = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.FavFoodItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_FavouTable.UIItemRow.ResultCell.ResultEdit.Text;
             Assert.AreEqual("[[@foods]]", variableFromDebug);
             var operand = WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.FavFoodItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_FavouTable.UIItemRow.AssertCell.AssertComboBox.SelectedItem;
@@ -114,7 +115,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void RunTestsWithAssertHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             WorkflowServiceTestingUIMap.SetConstructorAssertValue("");
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Pending.Exists);
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Fail);
@@ -128,7 +129,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void RunTestsWithAssertHasTheTestPassing()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Pending.Exists);
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists);
@@ -141,7 +142,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void RunTestsWithMockHasTheTestFailingWhenConstructorValueIsSetToEmpty()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             WorkflowServiceTestingUIMap.SetConstructorAssertValue("");
             WorkflowServiceTestingUIMap.ClickConstructorMockRadio(true);
             WorkflowServiceTestingUIMap.ClickFavouriteMockRadio(true);
@@ -155,7 +156,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Mocking Tests")]
         public void RunTestsWithMockHasTheTestPassing()
         {
-            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox(true);
+            WorkflowServiceTestingUIMap.Expand_DotnetDll_ByClickingCheckbox();
             WorkflowServiceTestingUIMap.ClickConstructorMockRadio(true);
             WorkflowServiceTestingUIMap.ClickFavouriteMockRadio(true);
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
@@ -171,13 +172,11 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            ExplorerUIMap.Filter_Explorer(DotnetWorkflowForTesting);
+            ExplorerUIMap.Filter_Explorer("DotnetWorkflowForTesting");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
         }
-
-        public const string DotnetWorkflowForTesting = "DotnetWorkflowForTesting";
 
         UIMap UIMap
         {
