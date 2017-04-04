@@ -132,7 +132,7 @@ namespace Dev2.Tests.Runtime.Services
                 { "ComPluginSource", source.SerializeToJsonStringBuilder() }
             };
             var catalog = new Mock<IResourceCatalog>();
-            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<string>()));
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName,It.IsAny<string>(), It.IsAny<string>()));
             catalog.Setup(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(),It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             var saveComPluginSource = new SaveComPluginSource(catalog.Object);
             //---------------Assert Precondition----------------
@@ -141,13 +141,13 @@ namespace Dev2.Tests.Runtime.Services
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsFalse(result.HasError);
-            catalog.Verify(resourceCatalog => resourceCatalog.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<string>()));
+            catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName, It.IsAny<string>(), It.IsAny<string>()));
             catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Execute_GivenResourceDefination_ShouldGivenExisingReturnResourceDefinationMsg()
+        public void Execute_GivenResourceDefination_GivenExising_ShouldReturnResourceDefinationMsg()
         {
             //---------------Set up test pack-------------------
             var serializer = new Dev2JsonSerializer();
@@ -169,7 +169,7 @@ namespace Dev2.Tests.Runtime.Services
             };
             var catalog = new Mock<IResourceCatalog>();
             var comPluginSource = new ComPluginSource();
-            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<string>())).Returns(comPluginSource);
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName, It.IsAny<string>(), It.IsAny<string>())).Returns(comPluginSource);
             catalog.Setup(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), comPluginSource, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
             var saveComPluginSource = new SaveComPluginSource(catalog.Object);
             //---------------Assert Precondition----------------
@@ -178,7 +178,7 @@ namespace Dev2.Tests.Runtime.Services
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsFalse(result.HasError);
-            catalog.Verify(resourceCatalog => resourceCatalog.GetResource<ComPluginSource>(It.IsAny<Guid>(), It.IsAny<string>()));
+            catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName, It.IsAny<string>(), It.IsAny<string>()));
             catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), comPluginSource, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
         }
        
