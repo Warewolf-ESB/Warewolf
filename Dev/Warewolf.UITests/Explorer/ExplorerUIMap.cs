@@ -425,7 +425,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Then(@"I Click Explorer Connect Remote Server Button")]
         public void Click_Explorer_RemoteServer_Connect_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));            
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ConnectServerButton, new Point(11, 10));
         }
 
         [Given(@"I Click Connect Control InExplorer")]
@@ -926,7 +926,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Duplicate.Exists, "Duplicate does not exist in explorer context menu.");
-            Mouse.Click (UIMap.MainStudioWindow.ExplorerContextMenu.Duplicate, new Point(62, 10));
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Duplicate, new Point(62, 10));
             Assert.IsTrue(DialogsUIMap.SaveDialogWindow.Exists, "Duplicate dialog does not exist after clicking duplicate in the explorer context menu.");
         }
 
@@ -942,6 +942,10 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void Click_AssignStep_InDebugOutput()
         {
             Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.AssignOnDebugOutput);
+        }
+        public void Click_SelectAndApplyStep_InDebugOutput()
+        {
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.SelectandapplyTreeItem);
         }
 
         public void Click_DesicionStep_InDebugOutput()
