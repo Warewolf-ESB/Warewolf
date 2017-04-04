@@ -120,7 +120,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         List<ModelItem> _selectedDebugItems = new List<ModelItem>();
         DelegateCommand _expandAllCommand;
         // ReSharper disable once InconsistentNaming
-        private ModelService ModelService;
+        protected ModelService ModelService;
         IContextualResourceModel _resourceModel;
         // ReSharper disable once InconsistentNaming
         protected Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
@@ -1706,7 +1706,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void ModelServiceSubscribe(ModelService instance)
+        protected void ModelServiceSubscribe(ModelService instance)
         {
             ModelService = instance;
             ModelService.ModelChanged += ModelServiceModelChanged;

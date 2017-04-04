@@ -23,7 +23,16 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
             DataToolsUIMap.Open_BaseConvertTool_QVIView();
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.QuickVariableInputContent.Exists, "Base Conversion QVI Window does not exist on the design surface");
         }
-
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void BaseConvertTool_EnterData_Then_Debug_UITest()
+        {
+            DataToolsUIMap.Enter_SomeData_Into_BaseConvertTool_Row1ValueTextbox();
+            Assert.AreEqual("SomeData", DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.BaseConvert.SmallView.DataGrid.Row1.Cell.Listbox.ValueTextbox.Text);
+            UIMap.Press_F6(); 
+            UIMap.WaitForControlNotVisible(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner); 
+            WorkflowTabUIMap.Click_Debug_Output_BaseConvert_Cell(); 
+        } 
 
         #region Additional test attributes
 
