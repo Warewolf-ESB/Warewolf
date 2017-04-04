@@ -702,6 +702,9 @@
   <data name="ErrorConnectingToServer" xml:space="preserve">
     <value>Error connecting to server. Please check your network connection.</value>
   </data>
+  <data name="EnsureConnectionToServerWorking" xml:space="preserve">
+    <value>Please ensure that your server is still running and your network connection is working.</value>
+  </data>
   <data name="ErrorEnumeratingDirectory" xml:space="preserve">
     <value>Error enumerating directory.</value>
   </data>

@@ -943,6 +943,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please ensure that your server is still running and your network connection is working..
+        /// </summary>
+        public static string EnsureConnectionToServerWorking {
+            get {
+                return ResourceManager.GetString("EnsureConnectionToServerWorking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please ensure that the {0} is an integer value..
         /// </summary>
         public static string EnsureValueIsInteger {
