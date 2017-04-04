@@ -538,6 +538,34 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [ExpectedException(typeof(Exception))]
+        public void PerformExecution_GivenNoToPath_ShouldPassesThrough()
+        {
+            //---------------Set up test pack-------------------
+            var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+                .Returns(new DropboxFailureResult(new Exception("Test Exception")));
+            var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock();
+            dropboxFileListActivityMock.DropboxResult = new DropboxFailureResult(TestConstant.ExceptionInstance.Value);
+            dropboxFileListActivityMock.SelectedSource =
+                new DropBoxSource
+                {
+                    AccessToken = "Test"
+                };
+            dropboxFileListActivityMock.GetDropboxSingleExecutor(mockExecutor.Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dropboxFileListActivityMock);
+            //---------------Execute Test ----------------------
+            dropboxFileListActivityMock.PerformBaseExecution(new Dictionary<string, string>
+            {
+              
+            });
+            //---------------Test Result -----------------------
+            mockExecutor.Verify(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void GetDebugInputs_GivenValues_ShouldAddDebugInputs()
         {
             //---------------Set up test pack-------------------

@@ -35,7 +35,7 @@ namespace Warewolf.UIBindingTests.OracleSource
             Utils.SetupResourceDictionary();
             var manageDatabaseSourceControl = new ManageDatabaseSourceControl();
             var mockStudioUpdateManager = new Mock<IManageDatabaseSourceModel>();
-            mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "TEST", "RSAKLFSVRGENDEV", "RSAKLFSVRPDC", "RSAKLFSVRTFSBLD", "RSAKLFSVRWRWBLD" });
+            mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "TEST", "RSAKLFSVRDEV", "RSAKLFSVRPDC", "RSAKLFSVRTFSBLD", "RSAKLFSVRWRWBLD" });
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -100,7 +100,7 @@ namespace Warewolf.UIBindingTests.OracleSource
             {
                 Name = name,
                 Id = Guid.NewGuid(),
-                ServerName = "RSAKLFSVRGENDEV",
+                ServerName = "RSAKLFSVRDEV",
                 AuthenticationType = AuthenticationType.Windows
             };
             FeatureContext.Current["dbsrc"] = dbsrc;
@@ -114,6 +114,7 @@ namespace Warewolf.UIBindingTests.OracleSource
         }
 
         [Given(@"Server as ""(.*)""")]
+        [When(@"Server as ""(.*)""")]
         public void GivenServerAs(string server)
         {
             var db = FeatureContext.Current.Get<IDbSource>("dbsrc");

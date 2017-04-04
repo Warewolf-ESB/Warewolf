@@ -30,7 +30,7 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRGENDEV |
+   | RSAKLFSVRDEV |
    | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
@@ -38,7 +38,7 @@ Scenario: Creating New DB Source General Testing
    | Options              |
    | Microsoft SQL Server |
    | MySQL                |
-   And I type Select The Server as "RSAKLFSVRGENDEV"
+   And I type Select The Server as "RSAKLFSVRDEV"
    And Database dropdown is "Collapsed"
    And I Select Authentication Type as "Windows"
    And "Save" is "Disabled"
@@ -65,7 +65,7 @@ Scenario: Creating New DB Source General Testing
 @SQLDbSource
 Scenario: Creating New DB Source as User Auth
     Given I open New Database Source
-    And I type Server as "RSAKLFSVRGENDEV"
+    And I type Server as "RSAKLFSVRDEV"
     And I Select Authentication Type as "User"
     Then Username field is "Visible"
     And Password field is "Visible"
@@ -116,7 +116,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
  @SQLDbSource
 Scenario: Incorrect Server Address Shows correct error message
       Given I open New Database Source
-      And I type Server as "RSAKLFSVRGENDEV"
+      And I type Server as "RSAKLFSVRDEV"
       And I Select Authentication Type as "User"
       Then Username field is "Visible"
       And Password field is "Visible"
@@ -158,7 +158,7 @@ Scenario: Testing as Windows and swapping it resets the test connection
 @SQLDbSource
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
-    And Server as "RSAKLFSVRGENDEV"
+    And Server as "RSAKLFSVRDEV"
     And Authentication Type is selected as "User"
     And Username field is "testuser"
     And Password field is "******"
@@ -184,7 +184,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 @SQLDbSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
-    And Server as "RSAKLFSVRGENDEV"
+    And Server as "RSAKLFSVRDEV"
     And Authentication Type is selected as "User"
     And Username field is "testuser"
     And Password field is "******"
@@ -205,7 +205,7 @@ Scenario: Editing saved DB Source Remembers credentials
 @SQLDbSource
 Scenario: Cancel DB Source Test
    Given I open New Database Source
-   When I type Server as "RSAKLFSVRGENDEV"
+   When I type Server as "RSAKLFSVRDEV"
    And "Save" is "Disabled"
    And "Test Connection" is "Enabled"
    And I Select Authentication Type as "User"
@@ -226,7 +226,7 @@ Scenario: Changing database type after testing connection
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRGENDEV |
+   | RSAKLFSVRDEV |
    | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
@@ -234,7 +234,7 @@ Scenario: Changing database type after testing connection
    | Options              |
    | Microsoft SQL Server |
    | MySQL                |
-   And I type Select The Server as "RSAKLFSVRGENDEV"
+   And I type Select The Server as "RSAKLFSVRDEV"
    And I Select Authentication Type as "Windows"
    And "Test Connection" is "Enabled"
    When I click "Test Connection"
@@ -249,30 +249,9 @@ Scenario: Changing database type after testing connection
    Then "Save" is "Enabled"
 
 @SQLDbSource
-Scenario: Editing saved DB Source Remembers credentials for SqlServer
-Given I open "Database Source - testOracle" 
-    And Server as "localhost"
-    And Authentication Type is selected as "User"
-    And Username field is "testuser"
-    And Password field is "******"
-	And Database "Dev2TestingDB" is selected 
-    And "Save" is "Disabled"
-	When I Select Authentication Type as "Windows"
-    Then "Test Connection" is "Enabled" 
-    And "Save" is "Disabled"
-    And Database dropdown is "Collapsed"
-    And "Test Connection" is "Enabled"
-    And Test Connecton is "Successful"
-    And "Save" is "Enabled"
-    And Database dropdown is "Visible"
-    And I select "Dev2TestingDB2" as Database
-    And "Save" is "Enabled" 
-
-
-@SQLDbSource
-Scenario: Creating New DB Source as Windows Auth
+Scenario: Creating New SQL Server DB Source as Windows Auth
     Given I open New Database Source
-    And I type Server as "RSAKLFSVRGENDEV"
+    And I type Server as "RSAKLFSVRDEV"
     And I Select Authentication Type as "Windows"
     Then Username field is "Collapsed"
     And Password field is "Collapsed"

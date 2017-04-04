@@ -4,6 +4,7 @@ using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
@@ -69,6 +70,24 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.IsNotNull(dropboxFileRead);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateNewdropboxFileRead_GivenNullPath_ShouldBeValid()
+        {
+            //---------------Set up test pack-------------------
+            var dropboxFileRead = new DropboxFileRead(true, null, false, false);
+            PrivateObject type = new PrivateObject(dropboxFileRead);
+            var staticField = type.GetField("_path", BindingFlags.Instance | BindingFlags.NonPublic);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dropboxFileRead);
+            Assert.IsNotNull(staticField);
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(staticField);
+            Assert.AreEqual("", "");
+
         }
     }
 }

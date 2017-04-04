@@ -158,7 +158,6 @@ namespace Warewolf.Studio.ViewModels
         private bool _canDuplicate;
         private bool _canCreateTest;
         private bool _canViewRunAllTests;
-        private string _openVersionTooltip;
         private string _newServiceTooltip;
         private string _newServerSourceTooltip;
         private string _newSqlServerSourceTooltip;
@@ -379,11 +378,13 @@ namespace Warewolf.Studio.ViewModels
                 _explorerItemViewModelCommandController.CopyUrlCommand(ResourceId, Server);
             });
             ShowDependenciesCommand = new DelegateCommand(o => ShowDependencies());
-            ShowVersionHistory = new DelegateCommand(o => AreVersionsVisible = !AreVersionsVisible);
+            ShowVersionHistory = new DelegateCommand(selecteExplorerItem =>
+            {
+                AreVersionsVisible = !AreVersionsVisible;
+            });
             DeleteCommand = new DelegateCommand(o => Delete());
             DuplicateCommand = new DelegateCommand(o => DuplicateResource(), o => CanDuplicate);
             CreateTestCommand = new DelegateCommand(o => CreateTest(), o => CanCreateTest);
-            OpenVersionCommand = new DelegateCommand(o => OpenVersion());
             VersionHeader = "Show Version History";
             Expand = new DelegateCommand(clickCount =>
             {
@@ -417,10 +418,6 @@ namespace Warewolf.Studio.ViewModels
             _explorerItemViewModelCommandController.ShowDependenciesCommand(ResourceId, Server, IsSource || IsServer);
         }
 
-        private void OpenVersion()
-        {
-            _explorerItemViewModelCommandController.OpenCommand(this, Server);
-        }
         void DeleteVersion()
         {
             _explorerItemViewModelCommandController.DeleteVersionCommand(_explorerRepository, this, Parent, ResourceName);
@@ -680,7 +677,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 CanEdit = true;
                 CanExecute = false;
-                if (isDeploy)
+                if (isDeploy || IsVersion)
                 {
                     CanEdit = false;
                 }
@@ -1494,7 +1491,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                return _canView && !IsResourceVersion;
+                return _canView ;
             }
             set
             {
@@ -1526,7 +1523,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _isVersion = value;
-                OpenVersionTooltip = _isVersion ? Resources.Languages.Tooltips.OpenVersionTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 RollbackTooltip = _isVersion ? Resources.Languages.Tooltips.RollbackTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => IsVersion);
             }
@@ -1561,26 +1557,44 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? "Show Version History" : "Hide Version History";
                 if (value)
                 {
-                    _children = new ObservableCollection<IExplorerItemViewModel>(_explorerRepository.GetVersions(ResourceId).Select(a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
+                    var versionInfos = _explorerRepository.GetVersions(ResourceId);
+                    if (versionInfos.Count <= 0)
                     {
-                        ResourceName = "v." + a.VersionNumber + " " + a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " + a.Reason.Replace(".xml", ""),
-                        VersionNumber = a.VersionNumber,
-                        VersionInfo = a,
-                        ResourceId = ResourceId,
-                        IsVersion = true,
-                        CanEdit = false,
-                        CanCreateWorkflowService = false,
-                        ShowContextMenu = true,
-                        CanCreateSource = false,
-                        IsResourceVersion = true,
-                        AllowResourceCheck = false,
-                        IsResourceChecked = false,
-                        CanDelete = CanDelete,
-                        ResourceType = "Version"
+                        _areVersionsVisible = false;
+                        VersionHeader = "Show Version History";
                     }
-                    ));
-                    OnPropertyChanged(() => Children);
-                    if (Children.Count > 0) IsExpanded = true;
+                    else
+                    {
+                        _children =
+                            new ObservableCollection<IExplorerItemViewModel>(
+                                versionInfos.Select(
+                                    a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
+                                    {
+                                        ResourceName =
+                                            "v." + a.VersionNumber + " " +
+                                            a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " +
+                                            a.Reason.Replace(".xml", ""),
+                                        VersionNumber = a.VersionNumber,
+                                        VersionInfo = a,
+                                        ResourceId = ResourceId,
+                                        IsVersion = true,
+                                        CanEdit = false,
+                                        CanCreateWorkflowService = false,
+                                        ShowContextMenu = true,
+                                        CanCreateSource = false,
+                                        IsResourceVersion = true,
+                                        AllowResourceCheck = false,
+                                        IsResourceChecked = false,
+                                        CanDelete = CanDelete,
+                                        ResourceType = "Version"
+                                    }
+                                    ));
+                        OnPropertyChanged(() => Children);
+                        if (Children.Count > 0)
+                        {
+                            UpdateResourceVersions();
+                        }
+                    }
                 }
                 else
                 {
@@ -1590,6 +1604,29 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => AreVersionsVisible);
             }
         }
+
+        private void UpdateResourceVersions()
+        {
+            IsExpanded = true;
+            foreach (var child in Children)
+            {
+                var explorerItemViewModel = child as ExplorerItemViewModel;
+                if (explorerItemViewModel != null && explorerItemViewModel.IsVersion)
+                {
+                    var permissions = Server?.GetPermissions(explorerItemViewModel.ResourceId);
+                    if (permissions.HasValue)
+                    {
+                        explorerItemViewModel.SetPermissions(permissions.Value);
+                        explorerItemViewModel.CanDelete = CanDelete;
+                        explorerItemViewModel.CanRename = false;
+                        explorerItemViewModel.CanDuplicate = false;
+                        explorerItemViewModel.CanDeploy = false;
+                    }
+                    explorerItemViewModel.IsRollbackVisible = explorerItemViewModel.Parent.IsService;
+                }
+            }
+        }
+
         public IVersionInfo VersionInfo
         {
             get
@@ -1757,7 +1794,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public ICommand OpenVersionCommand { get; set; }
         public ICommand DeleteVersionCommand { get; set; }
         public ICommand ShowDependenciesCommand { get; set; }
 
@@ -1993,15 +2029,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public string OpenVersionTooltip
-        {
-            get { return _openVersionTooltip; }
-            set
-            {
-                _openVersionTooltip = value;
-                OnPropertyChanged(() => OpenVersionTooltip);
-            }
-        }
         public string NewServiceTooltip
         {
             get { return _newServiceTooltip; }
