@@ -6599,6 +6599,22 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mDecisionOnDebugOutput;
             }
         }
+        
+        public WpfTreeItem SelectandapplyTreeItem
+        {
+            get
+            {
+                if ((this.mSelectandapplyTreeItem == null))
+                {
+                    this.mSelectandapplyTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSelectandapplyTreeItem.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+                    this.mSelectandapplyTreeItem.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mSelectandapplyTreeItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -6611,6 +6627,8 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         private WpfTreeItem mAssignOnDebugOutput;
         
         private WpfTreeItem mDecisionOnDebugOutput;
+        
+        private WpfTreeItem mSelectandapplyTreeItem;
         #endregion
     }
     
