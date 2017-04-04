@@ -9,7 +9,6 @@ namespace Warewolf.UITests.ServerSource
     public class ServerSourceTests
     {
         private const string SourceName = "CodedUITestServerSource";
-        private const string ExistingSourceName = "ExistingCodedUITestServerSource";
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -61,6 +60,7 @@ namespace Warewolf.UITests.ServerSource
         [Owner("Nkosinathi Sangweni")]
         public void EditServerSource_LoadCorrectly()
         {
+            const string ExistingSourceName = "ExistingCodedUITestServerSource";
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WaitForControlReady(60000);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist after clicking edit on an explorer server source context menu and waiting 1 minute (60000ms).");

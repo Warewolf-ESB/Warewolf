@@ -469,7 +469,41 @@ namespace Warewolf.Studio.Views
 
         private void TreeViewItemPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+            var viewItem = sender as TreeViewItem;
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+            if (viewItem?.DataContext is EnvironmentViewModel)
+            {
+                return;
+            }
+            if (viewItem?.DataContext is VersionViewModel)
+            {
+                OpenVersion(e, treeViewItem);
+            }
+            else if (viewItem?.DataContext is ExplorerItemViewModel)
+            {
+                OpenOrExpandResource(e, treeViewItem);
+            }
+        }
+
+        private void OpenVersion(MouseButtonEventArgs e, TreeViewItem treeViewItem)
+        {
+            var versionViewModel = treeViewItem?.DataContext as VersionViewModel;
+            if (versionViewModel != null)
+            {
+                if (ValidateItemDoubleClick(e, versionViewModel)) return;
+
+                if (versionViewModel.CanView)
+                {
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    versionViewModel.OpenCommand.Execute(this);
+                    e.Handled = true;
+                    Mouse.OverrideCursor = null;
+                }
+            }
+        }
+
+        private void OpenOrExpandResource(MouseButtonEventArgs e, TreeViewItem treeViewItem)
+        {
             var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
             if (explorerItemViewModel != null)
             {
@@ -480,7 +514,7 @@ namespace Warewolf.Studio.Views
                     explorerItemViewModel.IsExpanded = !explorerItemViewModel.IsExpanded;
                     e.Handled = false;
                 }
-                else if (explorerItemViewModel.CanView)
+                else if (explorerItemViewModel.CanView && !explorerItemViewModel.IsResourceVersion)
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
                     explorerItemViewModel.OpenCommand.Execute(this);
