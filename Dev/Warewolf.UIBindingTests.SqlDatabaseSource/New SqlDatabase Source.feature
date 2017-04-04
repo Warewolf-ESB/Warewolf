@@ -249,28 +249,7 @@ Scenario: Changing database type after testing connection
    Then "Save" is "Enabled"
 
 @SQLDbSource
-Scenario: Editing saved DB Source Remembers credentials for SqlServer
-Given I open "Database Source - testOracle" 
-    And Server as "localhost"
-    And Authentication Type is selected as "User"
-    And Username field is "testuser"
-    And Password field is "******"
-	And Database "Dev2TestingDB" is selected 
-    And "Save" is "Disabled"
-	When I Select Authentication Type as "Windows"
-    Then "Test Connection" is "Enabled" 
-    And "Save" is "Disabled"
-    And Database dropdown is "Collapsed"
-    And "Test Connection" is "Enabled"
-    And Test Connecton is "Successful"
-    And "Save" is "Enabled"
-    And Database dropdown is "Visible"
-    And I select "Dev2TestingDB2" as Database
-    And "Save" is "Enabled" 
-
-
-@SQLDbSource
-Scenario: Creating New DB Source as Windows Auth
+Scenario: Creating New SQL Server DB Source as Windows Auth
     Given I open New Database Source
     And I type Server as "RSAKLFSVRDEV"
     And I Select Authentication Type as "Windows"
