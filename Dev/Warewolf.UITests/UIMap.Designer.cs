@@ -29,6 +29,19 @@ namespace Warewolf.UITests
     public partial class UIMap
     {
         
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void RecordedMethod1()
+        {
+            #region Variable Declarations
+            WpfCustom uID7dccbadb86c4ae4afd4Custom = this.UIWarewolfASHASHWindow.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UID7dccbadb86c4ae4afd4Custom;
+            #endregion
+
+            // Click 'd7dccbad-b86c-4ae4-afd4-05901b046de9,310;332 310;4...' custom control
+            Mouse.Click(uID7dccbadb86c4ae4afd4Custom, new Point(249, 403));
+        }
+        
         #region Properties
         public MainStudioWindow MainStudioWindow
         {
@@ -41,10 +54,24 @@ namespace Warewolf.UITests
                 return this.mMainStudioWindow;
             }
         }
+        
+        public UIWarewolfASHASHWindow UIWarewolfASHASHWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfASHASHWindow == null))
+                {
+                    this.mUIWarewolfASHASHWindow = new UIWarewolfASHASHWindow();
+                }
+                return this.mUIWarewolfASHASHWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private MainStudioWindow mMainStudioWindow;
+        
+        private UIWarewolfASHASHWindow mUIWarewolfASHASHWindow;
         #endregion
     }
     
@@ -12283,7 +12310,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
             this.WindowTitles.Add("Warewolf");
@@ -12569,7 +12596,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
             this.WindowTitles.Add("Warewolf");
@@ -12855,7 +12882,7 @@ namespace Warewolf.UITests
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "0";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
             this.WindowTitles.Add("Warewolf");
@@ -19685,6 +19712,109 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfText mMSAccessDatabaseText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfASHASHWindow : WpfWindow
+    {
+        
+        public UIWarewolfASHASHWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (ASH\\ASH)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
+        {
+            get
+            {
+                if ((this.mUIWorkflowItemPresenteCustom == null))
+                {
+                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
+                }
+                return this.mUIWorkflowItemPresenteCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWorkflowItemPresenteCustom : WpfCustom
+    {
+        
+        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIFlowchartCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIFlowchartCustom mUIFlowchartCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIFlowchartCustom : WpfCustom
+    {
+        
+        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(FlowchartDesigner)";
+            this.WindowTitles.Add("Warewolf (ASH\\ASH)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UID7dccbadb86c4ae4afd4Custom
+        {
+            get
+            {
+                if ((this.mUID7dccbadb86c4ae4afd4Custom == null))
+                {
+                    this.mUID7dccbadb86c4ae4afd4Custom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUID7dccbadb86c4ae4afd4Custom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mUID7dccbadb86c4ae4afd4Custom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "d7dccbad-b86c-4ae4-afd4-05901b046de9,310;332 310;438 295;438";
+                    this.mUID7dccbadb86c4ae4afd4Custom.WindowTitles.Add("Warewolf (ASH\\ASH)");
+                    #endregion
+                }
+                return this.mUID7dccbadb86c4ae4afd4Custom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUID7dccbadb86c4ae4afd4Custom;
         #endregion
     }
 }

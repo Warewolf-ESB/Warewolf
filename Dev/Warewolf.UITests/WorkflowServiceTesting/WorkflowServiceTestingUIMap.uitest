@@ -4415,19 +4415,6 @@
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants>
-                                                    <UIObject ControlType="Button" Id="ExpansionIndicator" FriendlyName="ExpansionIndicator" SpecialControlType="None">
-                                                      <TechnologyName>UIA</TechnologyName>
-                                                      <WindowTitles>
-                                                        <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
-                                                      </WindowTitles>
-                                                      <AndCondition>
-                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="AutomationId">Expander</PropertyCondition>
-                                                      </AndCondition>
-                                                      <SupportLevel>0</SupportLevel>
-                                                      <Descendants />
-                                                    </UIObject>
                                                     <UIObject ControlType="TreeItem" Id="DefaultCtor" FriendlyName="" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
@@ -5167,6 +5154,19 @@
                                                     </UIObject>
                                                   </Descendants>
                                                 </UIObject>
+                                                <UIObject ControlType="Button" Id="DotnetDllTreeItemExpand" FriendlyName="ExpansionIndicator" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">Expander</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
                                               </Descendants>
                                             </UIObject>
                                           </Descendants>
@@ -5291,6 +5291,34 @@
                                                                   <Descendants />
                                                                 </UIObject>
                                                               </Descendants>
+                                                            </UIObject>
+                                                            <UIObject ControlType="Custom" Id="Connector1" FriendlyName="Connector1" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.ConnectorWithoutStartDot</PropertyCondition>
+                                                                <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
+                                                            <UIObject ControlType="Custom" Id="Connector2" FriendlyName="Connector2" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.ConnectorWithoutStartDot</PropertyCondition>
+                                                                <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>

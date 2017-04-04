@@ -6,7 +6,7 @@ using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-using Warewolf.UITests.WorkflowServiceTesting;
+using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 
 namespace Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses
 {
