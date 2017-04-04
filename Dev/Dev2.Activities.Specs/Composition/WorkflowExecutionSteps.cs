@@ -561,6 +561,31 @@ namespace Dev2.Activities.Specs.Composition
             return debugToUse;
         }
 
+       
+
+
+       [Then(@"Workflow ""(.*)"" has errors")]
+        public void ThenWorkflowHasErrors(string workFlowName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            var workflowId = debugStates.Last(wf => wf.DisplayName.Equals(workFlowName)).ID;
+
+            var toolSpecificDebug = debugStates.Last(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(workFlowName));
+            foreach (var tableRow in table.Rows)
+            {
+                var strings = toolSpecificDebug.ErrorMessage.Replace("\n", ",").Replace("\r", "").Split(',');
+                var predicate = tableRow["Error"];
+                var first = strings.First(p => p == predicate);
+                Assert.IsFalse(string.IsNullOrEmpty(first));
+            }
+        }
+
+
         [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInStepForDebugOutputsAs(string toolName, int stepNumber, string forEachName, Table table)
         {
@@ -583,8 +608,9 @@ namespace Dev2.Activities.Specs.Composition
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
 
 
-            _commonSteps.ThenTheDebugOutputAs(table, debugToUse.Outputs
-                                                    .SelectMany(s => s.ResultsList).ToList());
+            var outputDebugItems = debugToUse.Outputs
+                .SelectMany(s => s.ResultsList).ToList();
+            _commonSteps.ThenTheDebugOutputAs(table, outputDebugItems);
         }
 
         [Given(@"""(.*)"" contains a ""(.*)"" service ""(.*)"" with mappings")]

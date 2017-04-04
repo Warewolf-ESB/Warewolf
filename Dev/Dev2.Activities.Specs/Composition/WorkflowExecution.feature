@@ -1295,6 +1295,46 @@ Scenario: Workflow with Assign and ForEach
 	 And each "11714Nested" contains debug outputs for "Assign (1)" as
       | variable | value    |
       | [[a]]    | warewolf | 
+
+Scenario: Workflow with ForEach InRecordset Not entered
+Given I have a workflow "WFWithForEachRecordsetNotentered"
+And "WFWithForEachRecordsetNotentered" contains a Foreach "ForEachTest1" as "InRecordset" executions ""
+When "WFWithForEachRecordsetNotentered" is executed
+Then the workflow execution has "AN" error
+And Workflow "WFWithForEachRecordsetNotentered" has errors
+		| Error                                     |
+		| The Recordset Field is Required           |
+		| Cannot execute a For Each with no content |
+	
+Scenario: Workflow with ForEach InRange Not entered
+	Given I have a workflow "WFWithForEachInRangeNotentered"
+	And "WFWithForEachInRangeNotentered" contains a Foreach "ForEachTest1" as "InRange" executions ""
+	When "WFWithForEachInRangeNotentered" is executed
+	Then the workflow execution has "AN" error
+	And Workflow "WFWithForEachInRangeNotentered" has errors
+			| Error                                     |
+			| The FROM field is Required                |
+			| Cannot execute a For Each with no content |				
+
+Scenario: Workflow with ForEach NumberOfExecutes Not entered
+	Given I have a workflow "WFWithForEachNumberOfExecutesNotentered"
+	And "WFWithForEachNumberOfExecutesNotentered" contains a Foreach "ForEachTest1" as "NumOfExecution" executions ""
+	When "WFWithForEachNumberOfExecutesNotentered" is executed
+	Then the workflow execution has "AN" error
+	And Workflow "WFWithForEachNumberOfExecutesNotentered" has errors
+			| Error                                                     |
+			| Number of executes must be a whole number from 1 onwards. |
+			| Cannot execute a For Each with no content                 |
+
+Scenario: Workflow with ForEach InCsv Not entered
+	Given I have a workflow "WFWithForEachInCsvNotentered"
+	And "WFWithForEachInCsvNotentered" contains a Foreach "ForEachTest1" as "InCSV" executions ""
+	When "WFWithForEachInCsvNotentered" is executed
+	Then the workflow execution has "AN" error
+	And Workflow "WFWithForEachInCsvNotentered" has errors
+			| Error                                     |
+			| The CSV Field is Required               |
+			| Cannot execute a For Each with no content |
 	          
 Scenario: Workflow with ForEach which contains assign
       Given I have a workflow "WFWithForEachContainingAssign"
