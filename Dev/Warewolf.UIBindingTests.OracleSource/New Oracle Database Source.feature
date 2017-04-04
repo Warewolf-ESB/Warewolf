@@ -135,18 +135,3 @@ Scenario: Cancel DB Source Test
    Then the validation message as "Test Cancelled" 
    Then "Test Connection" is "Enabled"
    And "Save" is "Disabled"
-
-@OracleDbSource
-Scenario: Editing saved DB Source Remembers credentials for Oracle
-	When I open "Database Source - testOracle"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	And "Save" is "Disabled"
-	And Database dropdown is "Collapsed"
-	And "Test Connection" is "Enabled"
-	And Test Connecton is "Successful"
-	And "Save" is "Enabled"
-	And Database dropdown is "Visible"
-	And I select "Dev2TestingDB2" as Database
-
-	
