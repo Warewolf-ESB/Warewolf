@@ -242,7 +242,7 @@ Scenario: Changing database type after testing connection
 
 
 @MySqlDbSource
-Scenario: Creating New DB Source as Windows Auth
+Scenario: Creating New MySQL DB Source as Windows Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRDEV"
 	And I Select Authentication Type as "Windows"
