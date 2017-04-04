@@ -289,7 +289,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.IsConnected);
             Assert.IsTrue(_changedProperties.Contains("SelectedConnection"));
             Assert.IsFalse(isSelectedEnvironmentChangedRaised);
-            Assert.IsTrue(isCanExecuteChangedRaised);
+            Assert.IsTrue(isCanExecuteChangedRaised, "Can execute changed event on edit connection command on target of a deploy not raised after setting selected target server.");
         }
 
         [TestMethod]

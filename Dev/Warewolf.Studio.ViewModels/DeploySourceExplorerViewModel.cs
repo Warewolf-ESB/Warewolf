@@ -84,13 +84,7 @@ namespace Warewolf.Studio.ViewModels
                 if (_serverVersion == null)
                 {
                     var serverVersion = SelectedServer.GetServerVersion();
-                    if (serverVersion != Resources.Languages.Core.ServerVersionUnavailable) {
-                        _serverVersion = Version.Parse(serverVersion);
-                    }
-                    else
-                    {
-                        _serverVersion = null;
-                    }
+                    _serverVersion = serverVersion != Resources.Languages.Core.ServerVersionUnavailable ? Version.Parse(serverVersion) : null;
                 }
                 environmentViewModel.SelectAll = () => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
 
