@@ -828,7 +828,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string error;
                 ForEachInnerActivityTO innerA = GetInnerActivity(out error);
-                var exeAct = innerA.InnerActivity;
+                var exeAct = innerA?.InnerActivity;
                 allErrors.AddError(error);
                 if (dataObject.IsDebugMode())
                 {
@@ -842,7 +842,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 exePayload.InnerActivity = innerA;
 
-                while (itr.HasMore())
+                while (itr?.HasMore() ?? false)
                 {
                     operationalData = exePayload;
                     int idx = exePayload.IndexIterator.FetchNextIndex();
@@ -851,8 +851,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         innerupdate = idx;
                     }
-                    _childUniqueID = exeAct.UniqueID;
-                    exeAct.Execute(dataObject, innerupdate);
+                    _childUniqueID = exeAct?.UniqueID;
+                    exeAct?.Execute(dataObject, innerupdate);
 
                     operationalData.IncIterationCount();
                 }
