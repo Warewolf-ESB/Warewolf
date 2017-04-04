@@ -33,7 +33,7 @@ namespace Warewolf.UIBindingTests.Odbc
             Utils.SetupResourceDictionary();
             var manageDatabaseSourceControl = new ManageDatabaseSourceControl();
             var mockStudioUpdateManager = new Mock<IManageDatabaseSourceModel>();
-            mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "TEST", "RSAKLFSVRGENDEV", "RSAKLFSVRPDC", "RSAKLFSVRTFSBLD", "RSAKLFSVRWRWBLD" });
+            mockStudioUpdateManager.Setup(model => model.GetComputerNames()).Returns(new List<string> { "TEST", "RSAKLFSVRDEV", "RSAKLFSVRPDC", "RSAKLFSVRTFSBLD", "RSAKLFSVRWRWBLD" });
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();

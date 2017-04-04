@@ -423,7 +423,7 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Warewolf.Security</Name>
     </ProjectReference>
@@ -500,7 +500,8 @@ if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Res
 if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(TargetDir)Resources - UITests"
 taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING"
 taskkill /f /im WarewolfCOMIPC.vshost.exe /fi "STATUS eq RUNNING"
-xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"</PostBuildEvent>
+xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"
+if "$(ConfigurationName)"=="Debug" xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.pdb" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>copy /Y "$(SolutionDir)Binaries\Trackerbird.x64.dll" "$(TargetDir)"

@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -175,7 +175,20 @@ namespace Warewolf.Studio.ViewModels
             if (_popupController.ShowDeleteVersionMessage(resourceName) == MessageBoxResult.Yes)
             {
                 explorerRepository.Delete(explorerItemViewModel);
-                parent?.RemoveChild(parent.Children.First(a => a.ResourceName == resourceName));
+                var parentChildren = new ObservableCollection<IExplorerItemViewModel>(parent.Children);
+
+                var index = 0;
+                for (var i = 0; i < parentChildren.Count; i++)
+                {
+                    if (parentChildren[i].ResourceName == resourceName)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                parentChildren.RemoveAt(index);
+                parent.Children = new ObservableCollection<IExplorerItemViewModel>(parentChildren);
             }
         }
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)

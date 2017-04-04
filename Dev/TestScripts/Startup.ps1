@@ -63,7 +63,7 @@ if (Test-Path "$PSScriptRoot\Cleanup.ps1") {
 if ($ServerPath -eq "") {
     $CurrentDirectory = $PSScriptRoot
     $NumberOfParentsSearched = 0
-    while ($ServerPath -eq "" -and $NumberOfParentsSearched++ -lt 7) {
+    while ($ServerPath -eq "" -and $NumberOfParentsSearched++ -lt 7 -and $CurrentDirectory -ne $null) {
         if (Test-Path "$CurrentDirectory\Warewolf Server.exe") {
             $ServerPath = "$CurrentDirectory\Warewolf Server.exe"
         } elseif (Test-Path "$CurrentDirectory\Server\Warewolf Server.exe") {
@@ -91,19 +91,33 @@ if ($ServerPath -eq "") {
     }
 }
 
-if ((Get-Service "Warewolf Server" -ErrorAction SilentlyContinue) -eq $null) {
-    if ($DotCoverPath -eq "") {
+$ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
+if ($DotCoverPath -eq "") {
+    if ($ServerService -eq $null) {
         New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
-    } else {
-        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover /TargetExecutable=\`"" + $ServerPath + "\`" /LogFile=\`"%ProgramData%\Warewolf\Server Log\dotCover.log\`" /Output=\`"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\`""
-        New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
-    }
-} else {
-	if ($DotCoverPath -eq "") {
+    } else {    
 		Write-Host Configuring service to $ServerPath
 		sc.exe config "Warewolf Server" binPath= "$ServerPath"
+    }
+} else {
+    $ServerBinDir = (Get-Item $ServerPath).Directory.FullName 
+    $RunnerXML = @"
+<AnalyseParams>
+<TargetExecutable>$ServerPath</TargetExecutable>
+<TargetArguments></TargetArguments>
+<Output>$env:ProgramData\Warewolf\Server Log\dotCover.dcvr</Output>
+<Scope>
+	<ScopeEntry>$ServerBinDir\**\*.dll</ScopeEntry>
+	<ScopeEntry>$ServerBinDir\**\*.exe</ScopeEntry>
+</Scope>
+</AnalyseParams>
+"@
+
+    Out-File -LiteralPath "$ServerBinDir\DotCoverRunner.xml" -Encoding default -InputObject $RunnerXML
+    $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"" + $ServerBinDir + "\DotCoverRunner.xml\`" /LogFile=\`"$env:ProgramData\Warewolf\Server Log\dotCover.log\`""
+    if ($ServerService -eq $null) {
+        New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
 	} else {
-		$BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover /TargetExecutable=\`"" + $ServerPath + "\`" /LogFile=\`"%ProgramData%\Warewolf\Server Log\dotCover.log\`" /Output=\`"%ProgramData%\Warewolf\Server Log\dotCover.dcvr\`""
 		Write-Host Configuring service to $BinPathWithDotCover
 		sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
 	}
@@ -170,7 +184,22 @@ if (!($SkipStudioStartup)) {
 			Start-Process "$StudioPath"
 			sleep 60
 		} else {
-			Start-Process $DotCoverPath "cover /TargetExecutable=`"$StudioPath`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`" /Output=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr`""
+            $StudioBinDir = (Get-Item $StudioPath).Directory.FullName 
+            $RunnerXML = @"
+<AnalyseParams>
+<TargetExecutable>$StudioPath</TargetExecutable>
+<TargetArguments></TargetArguments>
+<LogFile>$env:LocalAppData\Warewolf\Studio Logs\dotCover.log</LogFile>
+<Output>$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr</Output>
+<Scope>
+	<ScopeEntry>$StudioBinDir/**/*.dll</ScopeEntry>
+	<ScopeEntry>$StudioBinDir/**/*.exe</ScopeEntry>
+</Scope>
+</AnalyseParams>
+"@
+
+            Out-File -LiteralPath "$StudioBinDir\DotCoverRunner.xml" -Encoding default -InputObject $RunnerXML
+			Start-Process $DotCoverPath "cover `"$StudioBinDir\DotCoverRunner.xml`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`""
 			sleep 900
 		}
 		Write-Host Studio has started.

@@ -56,7 +56,7 @@ Scenario: Cancel DB Source Test
    And "Save" is "Disabled"
 
 @ODBCSource
-Scenario: Creating New DB Source as Windows Auth
+Scenario: Creating New ODBC DB Source as Windows Auth
 	Given I open New Database Source
 	And "Save" is "Disabled"
 	And "Test Connection" is "Enabled"
