@@ -118,5 +118,6 @@ namespace Dev2.Studio.Interfaces
         Task<bool> CheckForNewVersion();
         bool ShowDeleteDialogForFolder(string folderBeingDeleted);
         IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
+        void OpenCurrentVersion(Guid resourceId, Guid environmentId);
     }
 }

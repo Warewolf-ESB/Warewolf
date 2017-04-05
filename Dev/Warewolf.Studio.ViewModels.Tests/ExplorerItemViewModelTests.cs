@@ -499,8 +499,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.OpenCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.SetActiveEnvironment(_target.Server.EnvironmentID));
-            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server));
+            _shellViewModelMock.Verify(it => it.SetActiveServer(_target.Server.EnvironmentID));
             _shellViewModelMock.Verify(it => it.OpenResource(_target.ResourceId, _target.Server.EnvironmentID, _target.Server));
         }
 
@@ -704,30 +703,30 @@ namespace Warewolf.Studio.ViewModels.Tests
             studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>(), It.IsAny<bool>()));
         }
 
-        [TestMethod]
-        public void TestDeleteCommandResourceTypeServerDeleteSuccess_ShowDependencies()
-        {
-            //arrange
-            _shellViewModelMock.Setup(model => model.ShowDependencies(It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<bool>()));
-            var environmentModelMock = new Mock<IEnvironmentModel>();
-            environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = false, ShowDependencies = true });
-            _target.EnvironmentModel = environmentModelMock.Object;
-            _target.ResourceType = "Server";
-            _target.IsServer = true;
-            _target.ResourceId = Guid.NewGuid();
-            _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
-            var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
+        //[TestMethod]
+        //public void TestDeleteCommandResourceTypeServerDeleteSuccess_ShowDependencies()
+        //{
+        //    //arrange
+        //    _shellViewModelMock.Setup(model => model.ShowDependencies(It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<bool>()));
+        //    var environmentModelMock = new Mock<IEnvironmentModel>();
+        //    environmentModelMock.SetupGet(it => it.ID).Returns(Guid.NewGuid());
+        //    _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = false, ShowDependencies = true });
+        //    _target.EnvironmentModel = environmentModelMock.Object;
+        //    _target.ResourceType = "Server";
+        //    _target.IsServer = true;
+        //    _target.ResourceId = Guid.NewGuid();
+        //    _popupControllerMock.Setup(it => it.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
+        //    var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
+        //    _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
 
-            //act
-            _target.DeleteCommand.Execute(null);
-            Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
+        //    //act
+        //    _target.DeleteCommand.Execute(null);
+        //    Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
 
-            //assert
-            _explorerRepositoryMock.Verify(it => it.Delete(_target), Times.Once);
-            _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
-        }
+        //    //assert
+        //    _explorerRepositoryMock.Verify(it => it.Delete(_target), Times.Once);
+        //    _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
+        //}
 
 
         [TestMethod]
@@ -867,7 +866,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.ShowContextMenu, createdFolder.ShowContextMenu);
             Assert.IsTrue(createdFolder.IsRenaming);
 
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.OpenVersionTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.NewServiceTooltip, _target.NewServiceTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.NewServerSourceTooltip, _target.NewServerSourceTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.NewSqlServerSourceTooltip, _target.NewSqlServerSourceTooltip);
