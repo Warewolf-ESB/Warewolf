@@ -34,7 +34,6 @@ using System.Windows.Threading;
 using System.Xaml;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Common;
