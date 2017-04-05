@@ -642,7 +642,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var resourceCatalog = new Mock<IResourceCatalog>();
             var rabbitMQSource = new RabbitMQSource
             {
-                HostName = "rsaklfsvrgendev",
+                HostName = "rsaklfsvrdev",
                 Port = 5672,
                 UserName = "test",
                 Password = "test"

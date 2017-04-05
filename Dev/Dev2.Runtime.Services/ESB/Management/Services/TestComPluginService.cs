@@ -59,15 +59,24 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 string serializedResult;
                 var result = _pluginServices.Value.Test(serializer.SerializeToBuilder(res).ToString(), out serializedResult);
-                msg.HasError = false;
-                msg.Message = serializer.SerializeToBuilder(new RecordsetListWrapper { Description = result.Description, RecordsetList = result, SerializedResult = serializedResult });
+
+                if (serializedResult.StartsWith("Exception: "))
+                {
+                    msg.HasError = true;
+                    msg.Message = new StringBuilder(serializedResult);
+                    Dev2Logger.Error(serializedResult);
+                }
+                else
+                {
+                    msg.HasError = false;
+                    msg.Message = serializer.SerializeToBuilder(new RecordsetListWrapper { Description = result.Description, RecordsetList = result, SerializedResult = serializedResult });
+                }
             }
             catch (Exception err)
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error(err);
-
             }
 
             return serializer.SerializeToBuilder(msg);

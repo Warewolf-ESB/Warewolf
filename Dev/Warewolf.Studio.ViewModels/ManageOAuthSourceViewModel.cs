@@ -1,6 +1,7 @@
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Data.ServiceModel;
+using Dev2.Interfaces;
 using Dropbox.Api;
 using Microsoft.Practices.Prism.Commands;
 using System;

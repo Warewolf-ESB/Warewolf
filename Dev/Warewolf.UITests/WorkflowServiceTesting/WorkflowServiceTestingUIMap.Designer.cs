@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UITests.WorkflowServiceTesting
+namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
@@ -4525,6 +4525,23 @@ namespace Warewolf.UITests.WorkflowServiceTesting
                 return this.mOutputMessageStep;
             }
         }
+        
+        public WpfButton DotnetDllTreeItemExpand
+        {
+            get
+            {
+                if ((this.mDotnetDllTreeItemExpand == null))
+                {
+                    this.mDotnetDllTreeItemExpand = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDotnetDllTreeItemExpand.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
+                    this.mDotnetDllTreeItemExpand.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDotnetDllTreeItemExpand.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mDotnetDllTreeItemExpand;
+            }
+        }
         #endregion
         
         #region Fields
@@ -4545,6 +4562,8 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         private DiceRollExpander mDiceRollExpander;
         
         private OutputMessageStep mOutputMessageStep;
+        
+        private WpfButton mDotnetDllTreeItemExpand;
         #endregion
     }
     
@@ -7913,23 +7932,6 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
         
         #region Properties
-        public WpfButton ExpansionIndicator
-        {
-            get
-            {
-                if ((this.mExpansionIndicator == null))
-                {
-                    this.mExpansionIndicator = new WpfButton(this);
-                    #region Search Criteria
-                    this.mExpansionIndicator.SearchProperties[WpfButton.PropertyNames.AutomationId] = "Expander";
-                    this.mExpansionIndicator.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mExpansionIndicator.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
-                    #endregion
-                }
-                return this.mExpansionIndicator;
-            }
-        }
-        
         public DefaultCtor DefaultCtor
         {
             get
@@ -7973,8 +7975,6 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         #endregion
         
         #region Fields
-        private WpfButton mExpansionIndicator;
-        
         private DefaultCtor mDefaultCtor;
         
         private CtorFavouriteFood mCtorFavouriteFood;
@@ -9511,12 +9511,50 @@ namespace Warewolf.UITests.WorkflowServiceTesting
                 return this.mDecision;
             }
         }
+        
+        public WpfCustom Connector1
+        {
+            get
+            {
+                if ((this.mConnector1 == null))
+                {
+                    this.mConnector1 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mConnector1.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mConnector1.SearchProperties[WpfControl.PropertyNames.Instance] = "1";
+                    this.mConnector1.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mConnector1;
+            }
+        }
+        
+        public WpfCustom Connector2
+        {
+            get
+            {
+                if ((this.mConnector2 == null))
+                {
+                    this.mConnector2 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mConnector2.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mConnector2.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
+                    this.mConnector2.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mConnector2;
+            }
+        }
         #endregion
         
         #region Fields
         private MultiAssign mMultiAssign;
         
         private Decision mDecision;
+        
+        private WpfCustom mConnector1;
+        
+        private WpfCustom mConnector2;
         #endregion
     }
     

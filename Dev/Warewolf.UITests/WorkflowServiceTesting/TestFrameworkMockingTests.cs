@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
@@ -46,13 +48,13 @@ namespace Warewolf.UITests.WorkflowServiceTesting
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
-        public void CreateTestFromDebugUsingUnsvaceWorkflow()
+        public void CreateTestFromDebugButtonDisabledOnUnsavedWorkflow()
         {
-            ExplorerUIMap.Filter_Explorer(HelloWorld);
-            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();            
-            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();            
+            ExplorerUIMap.Filter_Explorer("VersionTestWorkflow");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Matthew";
             UIMap.Press_F6();
-            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled);
+            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Create test from debug output button is enabled on unsaved workflow.");
         }
 
         [TestMethod]

@@ -2,6 +2,15 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using System.Windows.Input;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+
 // ReSharper disable InconsistentNaming
 
 namespace Warewolf.UITests
@@ -13,13 +22,30 @@ namespace Warewolf.UITests
         [TestCategory("Explorer")]
         public void ShowVersionHistory_ForResource()
         {
-            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.Filter_Explorer("ShowVersionsTestWorkflow");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
-            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+            WorkflowTabUIMap.Make_Workflow_Savable();
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void OpenVersionHistory_ForResource()
+        {
+            ExplorerUIMap.Filter_Explorer("OpenVersionsTestWorkflow");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text != string.Empty, 60000);
+            UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text = "Bobby";
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "No version history found for workflow after editting and saving it.");
+            ExplorerUIMap.RightClick_Explorer_Localhost_First_Item_First_SubItem();
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem.Enabled, "The make current version option is not enabled on the explorer context menu.");
+            ExplorerUIMap.Select_Make_Current_Version();
+            UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text != string.Empty, 60000);
+            Assert.AreEqual("Trivial workflow for testing make current version in the explorer.", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text, "Workflow did not roll back to older version.");
         }
 
         #region Additional test attributes
@@ -75,6 +101,36 @@ namespace Warewolf.UITests
         }
 
         private DataToolsUIMap _DataToolsUIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        UtilityToolsUIMap UtilityToolsUIMap
+        {
+            get
+            {
+                if (_UtilityToolsUIMap == null)
+                {
+                    _UtilityToolsUIMap = new UtilityToolsUIMap();
+                }
+
+                return _UtilityToolsUIMap;
+            }
+        }
+
+        private UtilityToolsUIMap _UtilityToolsUIMap;
 
         #endregion
     }

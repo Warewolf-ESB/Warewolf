@@ -19,7 +19,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
-    [ToolDescriptorInfo ("Dropbox", "List Contents", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_List_Contents")]
+    [ToolDescriptorInfo("Dropbox", "List Contents", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_List_Contents")]
     public class DsfDropboxFileListActivity : DsfBaseActivity
     {
         // ReSharper disable MemberCanBePrivate.Global
@@ -99,7 +99,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            var toPath = evaluatedValues["ToPath"];
+            string toPath;
+            evaluatedValues.TryGetValue("ToPath", out toPath);
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);

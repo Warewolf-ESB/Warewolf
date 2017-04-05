@@ -332,6 +332,7 @@
     <Compile Include="Services\ReloadTestsTests.cs" />
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />
+    <Compile Include="Services\SaveComPluginSourceTests.cs" />
     <Compile Include="Services\SavePluginServiceTests.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
     <Compile Include="Services\DirectDeployTest.cs" />
@@ -455,7 +456,7 @@
       <Project>{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}</Project>
       <Name>Dev2.UnitTestUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Warewolf.Security\Warewolf.Security.csproj">
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{ca5e9373-46fe-41b9-ab2e-bd637f48b456}</Project>
       <Name>Warewolf.Security</Name>
     </ProjectReference>
@@ -486,6 +487,10 @@
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj">
+      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
+      <Name>WarewolfCOMIPC.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>

@@ -109,7 +109,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.New",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Models", "Warewolf.Studio.Models\Warewolf.Studio.Models.csproj", "{A62DA168-5BF3-4C14-B880-4AD83478E3A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Dev2.Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject
@@ -505,8 +505,7 @@ Global
 		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|Any CPU.Build.0 = Debug|x86
 		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|x86.ActiveCfg = Debug|x86
 		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|x86.Build.0 = Debug|x86
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.ActiveCfg = Release|x86
 		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|x86.ActiveCfg = Release|x86
 		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|x86.Build.0 = Release|x86
 		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

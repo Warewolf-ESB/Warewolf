@@ -30,11 +30,11 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRGENDEV |
+   | RSAKLFSVRDEV |
    | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
-   And I type Select The Server as "RSAKLFSVRGENDEV"
+   And I type Select The Server as "RSAKLFSVRDEV"
    And Database dropdown is "Collapsed"
    And "Save" is "Disabled"
    And "Test Connection" is "Disabled"
@@ -60,7 +60,7 @@ Scenario: Creating New DB Source General Testing
 @OracleDbSource
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
-	And I type Server as "RSAKLFSVRGENDEV"
+	And I type Server as "RSAKLFSVRDEV"
 	And "Save" is "Disabled"
 	When I type Username as "testuser"
 	And I type Password as "test123"
@@ -91,7 +91,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
  @OracleDbSource
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
-	  And I type Server as "RSAKLFSVRGENDEV"	
+	  And I type Server as "RSAKLFSVRDEV"	
 	  When I type Username as "test"
 	  And I type Password as "test"
 	  Then Database dropdown is "Collapsed"
@@ -104,7 +104,7 @@ Scenario: Incorrect Server Address Shows correct error message
 @OracleDbSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
-	And Server as "RSAKLFSVRGENDEV"
+	And Server as "RSAKLFSVRDEV"
 	And Username field is "testuser"
 	And Password field is "******"
 	And "Test Connection" is "Enabled"
@@ -124,7 +124,7 @@ Scenario: Editing saved DB Source Remembers credentials
 @OracleDbSource
 Scenario: Cancel DB Source Test
    Given I open New Database Source
-   When I type Server as "RSAKLFSVRGENDEV"
+   When I type Server as "RSAKLFSVRDEV"
    And "Save" is "Disabled"
    And "Test Connection" is "Disabled"
    When I type Username as "testuser"
@@ -135,22 +135,3 @@ Scenario: Cancel DB Source Test
    Then the validation message as "Test Cancelled" 
    Then "Test Connection" is "Enabled"
    And "Save" is "Disabled"
-
-@OracleDbSource
-Scenario: Editing saved DB Source Remembers credentials for Oracle
-Given I open "Database Source - testOracle" 
-	And Server as "localhost"
-	And Username field is "testuser"
-	And Password field is "******"
-	And Database "Dev2TestingDB" is selected 
-	And "Save" is "Disabled"
-	Then "Test Connection" is "Enabled" 
-	And "Save" is "Disabled"
-	And Database dropdown is "Collapsed"
-	And "Test Connection" is "Enabled"
-	And Test Connecton is "Successful"
-	And "Save" is "Enabled"
-	And Database dropdown is "Visible"
-	And I select "Dev2TestingDB2" as Database
-
-	

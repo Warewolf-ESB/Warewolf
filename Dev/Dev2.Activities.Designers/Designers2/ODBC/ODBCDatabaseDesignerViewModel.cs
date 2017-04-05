@@ -104,14 +104,11 @@ namespace Dev2.Activities.Designers2.ODBC
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
             {
-                FixErrors();
                 IsWorstErrorReadOnly = true;
             });
 
             SetDisplayName("");
-            InitializeImageSource();
             OutputsRegion.OutputMappingEnabled = true;
-
             TestInputCommand = new DelegateCommand(TestProcedure);
 
             InitializeProperties();
@@ -320,15 +317,7 @@ namespace Dev2.Activities.Designers2.ODBC
 
         private string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming
-
-        private void FixErrors()
-        {
-        }
-
-        void InitializeImageSource()
-        {
-        }
-
+        
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -357,13 +346,7 @@ namespace Dev2.Activities.Designers2.ODBC
             {
                 SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.ODBC) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegionOdbc(Model, ModelItem, SourceRegion)
-                {
-                    SourceChangedAction = () =>
-                    {
-                        OutputsRegion.IsEnabled = false;
-                    }
-                };
+                ActionRegion = new DbActionRegionOdbc(Model, ModelItem, SourceRegion);
                 ActionRegion.SomethingChanged += (sender, args) =>
                 {
                     CommandText = ((IODBCActionToolRegion<IDbAction>)ActionRegion).CommandText;
