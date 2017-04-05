@@ -147,6 +147,17 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
             Assert.AreEqual("Remote Connection Integration (Connected)", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.DisplayText, "Selected source server in deploy is not Remote Connection Integration.");
         }
 
+        [Given(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Destination Server Combobox")]
+        [When(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Destination Server Combobox")]
+        [Then(@"I Select RemoteConnectionIntegration \(Connected\) From Deploy Tab Destination Server Combobox")]
+        public void Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected, new Point(226, 13));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected destination server in deploy is not Remote Connection Integration (Connected).");
+        }
+
         [Given(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         [When(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
         [Then(@"I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox")]
