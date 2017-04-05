@@ -49,7 +49,7 @@ namespace Dev2.Tests.Runtime.Services
             var inputs = new Dictionary<string, StringBuilder>();
             var directDeploy = new DirectDeploy();
 
-            var sourceXml = XmlResource.Fetch("WebSource");
+            var sourceXml = XmlResource.Fetch("WebService");
             inputs.Add("ResourceDefinition", sourceXml.ToStringBuilder());
             var checkResource = new Resource(sourceXml);
             
