@@ -133,43 +133,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         #endregion Test properties
 
         #region Test methods
-
-        [TestMethod]
-        public async Task TestOtherServerСonnect()
-        {
-            //arrange
-            var isEnvironmentChanged = false;
-            _target.PropertyChanged += (s, e) =>
-            {
-                isEnvironmentChanged = isEnvironmentChanged || e.PropertyName == "Environments";
-            };
-            var serverMock = new Mock<IServer>();
-            var envId = Guid.NewGuid();
-            serverMock.SetupGet(it => it.EnvironmentID).Returns(envId);
-            serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
-            var explorerMock = new Mock<IExplorerItem>();
-            serverMock.Setup(it => it.LoadExplorer(false)).ReturnsAsync(explorerMock.Object);
-            var isSelectedItemChangedRaised = false;
-            _target.ServerStateChanged += (sender, server) =>
-            {
-                isSelectedItemChangedRaised = ReferenceEquals(_target, sender) &&
-                                              ReferenceEquals(server, serverMock.Object);
-            };
-            var statsAreaMock = new Mock<IDeployStatsViewerViewModel>();
-            _target.StatsArea = statsAreaMock.Object;
-
-            //act
-            await _target.ConnectControlViewModel.Connect(serverMock.Object);
-
-            //assert
-            Assert.IsTrue(isSelectedItemChangedRaised);
-            statsAreaMock.Verify(it => it.ReCalculate());
-            Assert.IsTrue(isEnvironmentChanged);
-            Assert.AreEqual(2, _target.Environments.Count);
-            Assert.AreSame(_target.SelectedEnvironment,
-                _target.Environments.FirstOrDefault(it => it.Server.EnvironmentID == envId));
-        }
-
+        
         [TestMethod]
         public void TestSelectedEnvironmentChanged()
         {

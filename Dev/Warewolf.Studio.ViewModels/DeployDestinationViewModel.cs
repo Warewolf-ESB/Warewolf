@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void ServerConnected(object sender, IServer server)
         {
-            var environmentViewModel = CreateEnvironmentViewModel(sender, server.EnvironmentID);
+            var environmentViewModel = CreateEnvironmentViewModel(sender, server.EnvironmentID, true);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;

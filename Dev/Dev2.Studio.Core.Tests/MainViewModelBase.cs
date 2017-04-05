@@ -108,7 +108,9 @@ namespace Dev2.Core.Tests
             // ReSharper restore ObjectCreationAsStatement
             ShellViewModel = new ShellViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object);
-            ActiveEnvironment = new Mock<IServer>();
+            var activeEnvironment = new Mock<IServer>();
+            activeEnvironment.Setup(server => server.DisplayName).Returns("localhost");
+            ActiveEnvironment = activeEnvironment;
             AuthorizationService = new Mock<IAuthorizationService>();
             ActiveEnvironment.Setup(e => e.AuthorizationService).Returns(AuthorizationService.Object);
 
