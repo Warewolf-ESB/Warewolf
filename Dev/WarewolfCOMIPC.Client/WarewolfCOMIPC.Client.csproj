@@ -48,10 +48,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallData.cs" />
-    <Compile Include="Client.cs" />
+    <Compile Include="IDev2IpcClient.cs" />
+    <Compile Include="INamedPipeClientStreamWrapper.cs" />
+    <Compile Include="IpcClient.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="NamedPipeClientStreamWrapper.cs" />
     <None Include="..\TestScripts\**\*.*">
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

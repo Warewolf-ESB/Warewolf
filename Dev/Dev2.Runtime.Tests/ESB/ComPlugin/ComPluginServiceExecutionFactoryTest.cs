@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Linq;
 using Dev2.Runtime;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
@@ -60,7 +61,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
 
 
-        /*[TestMethod]
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ListMethods_GivenAdodbConnection_ShouldContainOpen()
         {
@@ -77,7 +78,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //---------------Test Result -----------------------
             Assert.IsNotNull(openMethod);
         }
-        */
+        
         #region Helper Methods
 
         static ComPluginSource CreatePluginSource(bool invalidResourceID = false)

@@ -2642,6 +2642,74 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
         }
 
+        [Given(@"""(.*)"" contains an COM DLL ""(.*)"" as")]
+        [Then(@"""(.*)"" contains an COM DLL ""(.*)"" as")]
+        public void GivenContainsAnCOMDLLAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var dsfEnhancedDotNetDllActivity = new DsfComDllActivity()
+            {
+                DisplayName = dotNetServiceName
+            };
+            var namespaceSelected = table.Rows[0]["Namespace"];
+            var Action = table.Rows[0]["Action"];
+
+            var controllerFactory = new CommunicationControllerFactory();
+            var sourceId = "ed7c3655-4922-4f24-9881-83462661832d".ToGuid();
+            var environmentConnection = LocalEnvModel.Connection;
+            var mock = new Mock<IShellViewModel>();
+            StudioServerProxy proxy = new StudioServerProxy(controllerFactory, environmentConnection);
+            var fetchComPluginSources = proxy.QueryManagerProxy.FetchComPluginSources();
+            var pluginSource = fetchComPluginSources.Single(source => source.Id == sourceId);
+            ManageComPluginServiceModel dbServiceModel = new ManageComPluginServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+                                                                                   , proxy.QueryManagerProxy
+                                                                                   , mock.Object
+                                                                                   , new Server(LocalEnvModel));
+            var namespaceItems = dbServiceModel.GetNameSpaces(pluginSource);
+            var namespaceItem = namespaceItems.Single(item => item?.FullName?.Equals(namespaceSelected, StringComparison.CurrentCultureIgnoreCase) ?? false);
+            var pluginActions = dbServiceModel.GetActions(pluginSource, namespaceItem);
+            var pluginAction = pluginActions.First(action => action.Method.Equals(Action, StringComparison.InvariantCultureIgnoreCase));
+            var comPluginServiceDefinition = new ComPluginServiceDefinition()
+            {
+                Action = pluginAction,
+                Source = pluginSource,
+            };
+            var testResult = dbServiceModel.TestService(comPluginServiceDefinition);
+            var serializer = new Dev2JsonSerializer();
+            var responseService = serializer.Deserialize<RecordsetListWrapper>(testResult);
+            if (responseService != null)
+            {
+                if (responseService.RecordsetList.Any(recordset => recordset.HasErrors))
+                {
+                    var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
+                    throw new Exception(errorMessage);
+                }
+                //var TestResults = responseService.SerializedResult;
+                var _recordsetList = responseService.RecordsetList;
+                if (_recordsetList.Any(recordset => recordset.HasErrors))
+                {
+                    var errorMessage = string.Join(Environment.NewLine, _recordsetList.Select(recordset => recordset.ErrorMessage));
+                    throw new Exception(errorMessage);
+                }
+                dsfEnhancedDotNetDllActivity.OutputDescription = responseService.Description;
+                // ReSharper disable MaximumChainedReferences
+                var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
+                {
+                    var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
+                    return serviceOutputMapping;
+                }).Cast<IServiceOutputMapping>().ToList();
+                // ReSharper restore MaximumChainedReferences
+                dsfEnhancedDotNetDllActivity.Outputs = outputMapping;
+            }
+
+
+            dsfEnhancedDotNetDllActivity.Method = pluginAction;
+            dsfEnhancedDotNetDllActivity.Namespace = namespaceItem;
+            dsfEnhancedDotNetDllActivity.SourceId = pluginSource.Id;
+            
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
+        }
+
+
         [Given(@"""(.*)"" constructorinputs (.*) with inputs as")]
         public void GivenConstructorWithInputsAs(string serviceName, int p1, Table table)
         {
