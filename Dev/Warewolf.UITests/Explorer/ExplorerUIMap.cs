@@ -328,6 +328,12 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
+        
+        [When(@"I RightClick Explorer Localhost First Item First SubItem")]
+        public void RightClick_Explorer_Localhost_First_Item_First_SubItem()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
 
         [Given(@"I RightClick Localhost")]
         [When(@"I RightClick Localhost")]
