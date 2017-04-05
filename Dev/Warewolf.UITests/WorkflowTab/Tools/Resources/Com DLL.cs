@@ -91,7 +91,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
                     .Flowchart.ComDll.DoneButton.Exists,
                 "Done button does not exist on Com DLL tool large view after openning it by double clicking the small view.");
             //Small View
-            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+            ResourcesToolsUIMap.ComDLLTool_Collapse_Large_View_To_Small_View_With_DoubleClick();
             Assert.IsTrue(
                 ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext
                     .WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter
@@ -113,7 +113,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
             MyComPluginSourceUIMap.Select_AssemblyFile_From_COMPluginDataTree("connection");
             UIMap.Click_Save_RibbonButton();
             MyComPluginSourceUIMap.Click_COMPluginSource_CloseTabButton();
-            ResourcesToolsUIMap.ComDLLTool_ChangeView_With_DoubleClick();
+            ResourcesToolsUIMap.ComDLLTool_Open_Large_View_With_DoubleClick();
             var countAfter =ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.SourcesCombobox.Items.Count;
             Assert.AreEqual(countBefore, countAfter);
         }
