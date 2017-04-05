@@ -1495,6 +1495,8 @@ Scenario: Executing ForEach in Rec with star which contains Sequence
 	  | # |                       |
 	  | 1 | [[rec(2).d]] = String |
 
+
+
  Scenario: Workflow with ForEach in Rec with star which contains Dot Net DLL
       Given I have a workflow "WFWithForEachContainingDotNetDLL"	
 	   And "WFWithForEachContainingDotNetDLL" contains an Assign "RecVal" as

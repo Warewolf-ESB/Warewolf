@@ -26,6 +26,11 @@ namespace Warewolf.Studio.ViewModels
             var output = explorerRepository.Rollback(resourceId, versionNumber);
             parent.AreVersionsVisible = true;
             parent.ResourceName = output.DisplayName;
+            if (parent.Server != null)
+            {
+                _shellViewModel.CloseResource(resourceId, parent.Server.EnvironmentID);
+                _shellViewModel.OpenCurrentVersion(resourceId, parent.Server.EnvironmentID);
+            }
         }
 
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
