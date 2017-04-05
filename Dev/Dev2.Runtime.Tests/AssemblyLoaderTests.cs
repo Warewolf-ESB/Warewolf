@@ -129,7 +129,7 @@ namespace Dev2.Tests.Runtime
             var cleanName = load.FullName;
             var dirtyname = MakeDirty(cleanName);
             var assemblyNames = load.GetReferencedAssemblies();
-            
+            var numberOfReferencesAssemblies = assemblyNames.Length;
             mock.Setup(wrapper => wrapper.GetReferencedAssemblies(load)).Returns(assemblyNames);
             mock.Setup(wrapper => wrapper.Load(cleanName))
                .Returns(load);
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Runtime
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
             mock.Verify(wrapper => wrapper.Load(cleanName), Times.Exactly(1));
-            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(47));
+            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(numberOfReferencesAssemblies));
         }
 
         [TestMethod]
@@ -157,6 +157,7 @@ namespace Dev2.Tests.Runtime
             var dirtyname = MakeDirty(cleanName);
             var mock = new Mock<IAssemblyWrapper>();
             var assemblyNames = load.GetReferencedAssemblies();
+            var numberOfReferencesAssemblies = assemblyNames.Length;
             mock.Setup(wrapper => wrapper.Load(cleanName)).Returns(load);
             mock.Setup(wrapper => wrapper.Load("")).Throws(new Exception());
          
@@ -177,8 +178,8 @@ namespace Dev2.Tests.Runtime
             assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
             value = (List<string>)fieldInfo.GetValue(assemblyLoader);
             //---------------Test Result -----------------------
-            Assert.AreEqual(47, value.Count);
-            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(47));
+            Assert.AreEqual(numberOfReferencesAssemblies, value.Count);
+            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(numberOfReferencesAssemblies));
             mock.Verify(wrapper => wrapper.GetReferencedAssemblies(load), Times.Once);
        
         }
