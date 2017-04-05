@@ -19,6 +19,7 @@ namespace Dev2.Core.Tests
     public class WorksurfaceContextManagerTests : MainViewModelBase
     {
         Action VerifyAction;
+        Action SetActiveServerAction;
         [TestInitialize]
         public void Initialize()
         {
@@ -31,6 +32,10 @@ namespace Dev2.Core.Tests
             VerifyAction = () =>
             {
                 svr.Verify(server => server.ProxyLayer.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()));
+            };
+            SetActiveServerAction = () =>
+            {
+                ShellViewModel.ActiveServer = svr.Object;
             };
             Task<IExplorerItem> ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
             svr.Setup(a => a.LoadExplorer(false)).Returns(() => ac);
@@ -421,6 +426,7 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+
             var beforeCount = ShellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
@@ -428,6 +434,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
+            server.Setup(server1 => server1.Name).Returns("localhost");
             ShellViewModel.ActiveServer = server.Object;
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Execute Test ----------------------
@@ -456,6 +463,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
+            server.Setup(server1 => server1.Name).Returns("localhost");
             ShellViewModel.ActiveServer = server.Object;
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -486,6 +494,7 @@ namespace Dev2.Core.Tests
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
             server.Setup(server1 => server1.QueryProxy).Returns(new Mock<IQueryManager>().Object);
+            server.Setup(server1 => server1.Name).Returns("localhost");
             ShellViewModel.ActiveServer = server.Object;
             ActiveEnvironment.Setup(model => model.Name).Returns("localhost");
             //---------------Assert Precondition----------------
@@ -820,7 +829,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(envModel.Object);
             var beforeCount = ShellViewModel.Items.Count;
             var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
-
+            SetActiveServerAction.Invoke();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
@@ -845,6 +854,7 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+            SetActiveServerAction.Invoke();
             var beforeCount = ShellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
@@ -870,6 +880,7 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
             var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+            SetActiveServerAction.Invoke();
             var beforeCount = ShellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
