@@ -31,6 +31,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
+using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Factory;
 using Dev2.Runtime.ServiceModel.Data;
@@ -75,6 +76,7 @@ namespace Dev2.Core.Tests
             AppSettings.LocalHost = "http://localhost:3142";
             var svr = new Mock<IServer>();
             svr.Setup(a => a.DisplayName).Returns("Localhost");
+            svr.Setup(a => a.Name).Returns("Localhost");
 
             Task<IExplorerItem> ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
             svr.Setup(a => a.LoadExplorer(false)).Returns(() => ac);
@@ -3448,7 +3450,10 @@ namespace Dev2.Core.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(ShellViewModel);
             //---------------Execute Test ----------------------
-
+            var mock1 = new Mock<IServer>();
+            mock1.Setup(se => se.Name).Returns("a");
+            mock1.Setup(se => se.DisplayName).Returns("a");
+            ShellViewModel.ActiveServer = mock1.Object;
             PrivateObject po = new PrivateObject(ShellViewModel);
             po.Invoke("ShowServerDisconnectedPopup");
             //---------------Test Result -----------------------
@@ -3469,6 +3474,10 @@ namespace Dev2.Core.Tests
             var explorerVm = new Mock<IExplorerItemViewModel>();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(ShellViewModel);
+            var mock1 = new Mock<IServer>();
+            mock1.Setup(se => se.Name).Returns("a");
+            mock1.Setup(se => se.DisplayName).Returns("a");
+            ShellViewModel.ActiveServer = mock1.Object;
             //---------------Execute Test ----------------------
             ShellViewModel.DuplicateResource(explorerVm.Object);
             //---------------Test Result -----------------------
