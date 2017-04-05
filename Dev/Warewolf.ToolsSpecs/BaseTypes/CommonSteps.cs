@@ -1025,6 +1025,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if (!File.Exists(@"C:\Temp\key.opk"))
             {
+                Directory.CreateDirectory(@"C:\Temp");
                 File.Copy(Environment.CurrentDirectory + @"\key.opk", @"C:\Temp\key.opk", true);
             }
         }
