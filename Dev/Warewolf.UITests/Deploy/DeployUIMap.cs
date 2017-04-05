@@ -191,16 +191,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
         }
 
-        [When(@"I Click Deploy Tab Destination Server Connect Button")]
-        [Given(@"I Click Deploy Tab Destination Server Connect Button")]
-        [Then(@"I Click Deploy Tab Destination Server Connect Button")]
-        public void Click_Deploy_Tab_Destination_Server_Connect_Button()
-        {
-            UIMap.WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.ConnectDestinationButton, new Point(13, 12));
-            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Spinner);
-        }
-
         [Given(@"I Click Deploy Tab Destination Server New Remote Server Item")]
         [When(@"I Click Deploy Tab Destination Server New Remote Server Item")]
         [Then(@"I Click Deploy Tab Destination Server New Remote Server Item")]
