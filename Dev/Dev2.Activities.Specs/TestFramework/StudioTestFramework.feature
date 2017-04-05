@@ -2717,7 +2717,6 @@ When I save
 And I run the test
 Then test result is Passed
 When I delete "Test 1"
-	When I delete "Test 1"
 
 Scenario:Test Workflow which contains COM DLL
 	 Given I have a workflow "TestWFCOMDLL"
