@@ -494,11 +494,10 @@ namespace Dev2.Activities.Specs.TestFramework
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
             // ReSharper disable once PossibleNullReferenceException
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
-
+            var externalProcessExecutor = new SpecExternalProcessExecutor();
             var first = debugItemResults.Select(result =>
             {
-                var webClient = new WebClient();
-                var externalProcessExecutor = new SpecExternalProcessExecutor();
+               
                 externalProcessExecutor.OpenInBrowser( new Uri(result.MoreLink));
                 var downloadStrings = externalProcessExecutor.WebResult[0];
                 return downloadStrings;
