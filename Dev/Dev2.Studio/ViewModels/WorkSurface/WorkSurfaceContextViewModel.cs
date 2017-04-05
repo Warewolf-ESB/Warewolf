@@ -37,6 +37,9 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Interfaces;
+using Warewolf.Studio.ViewModels;
+
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -607,6 +610,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
                 _workspaceSaved = true;
+                UpdateResourceVersionInfo(resource);
             }
             else
             {
@@ -615,6 +619,23 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 DisplaySaveResult(saveResult, resource);
             }
             return true;
+        }
+
+        private static void UpdateResourceVersionInfo(IContextualResourceModel resource)
+        {
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var explorerViewModel = mainViewModel?.ExplorerViewModel;
+            var environmentViewModel =
+                explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.ID);
+            var explorerItemViewModel = environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(
+                model => model.ResourceId == resource.ID);
+            if (explorerItemViewModel != null && explorerItemViewModel.GetType() == typeof (VersionViewModel))
+            {
+                if (explorerItemViewModel.Parent != null)
+                {
+                    explorerItemViewModel.Parent.AreVersionsVisible = true;
+                }
+            }
         }
 
         private void DisplaySaveResult(ExecuteMessage result, IContextualResourceModel resource)

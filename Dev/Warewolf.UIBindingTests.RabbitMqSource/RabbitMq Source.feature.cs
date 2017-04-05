@@ -120,7 +120,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 23
  testRunner.Then("\"New RabbitMQ Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 24
- testRunner.And("I type Host as \"rsaklfsvrgendev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type Host as \"rsaklfsvrdev\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
  testRunner.And("\"Port\" input is \"5672\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26

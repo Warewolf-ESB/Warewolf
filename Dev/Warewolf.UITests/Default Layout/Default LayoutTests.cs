@@ -18,7 +18,7 @@ namespace Warewolf.UITests.Workflow
             Process studio = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "Warewolf Studio");
             var fileName = studio?.MainModule.FileName;
             Console.WriteLine("WarewolfStudio Process : " + fileName);
-            Assert.IsTrue(UIMap.ControlExistsNow(UIMap.MainStudioWindow.SideMenuBar.LockunlockthemenuButton.UnlockMenuText), "Side Menu Bar is Open.");
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.LockunlockthemenuButton.UnlockMenuText.Exists, "Side Menu Bar is Open.");
             UIMap.Close_And_Lock_Side_Menu_Bar();
             var dockWidthBefore = UIMap.MainStudioWindow.DockManager.Width;
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
@@ -32,7 +32,7 @@ namespace Warewolf.UITests.Workflow
                 File.Delete(layOutFile);
             }
             ExecuteCommand(fileName);
-            UIMap.WaitForControlVisible(UIMap.MainStudioWindow);
+            UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager);
             var dockWidthAfter = UIMap.MainStudioWindow.DockManager.Width;
             Assert.IsTrue(dockWidthBefore > dockWidthAfter, "Then Menu Bar did not Open/Close");
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.LockunlockthemenuButton.UnlockMenuText.Exists, "Side Menu Bar is Open.");
