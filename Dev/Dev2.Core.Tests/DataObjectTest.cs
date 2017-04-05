@@ -9,7 +9,9 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data;
@@ -19,6 +21,9 @@ using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Warewolf.Storage;
+
 // ReSharper disable FunctionComplexityOverflow
 
 // ReSharper disable InconsistentNaming
@@ -45,6 +50,48 @@ namespace Dev2.Tests
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PopEnvironment_GivenHasNoEnvironments_ShouldNotSetEnvironment()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IExecutionEnvironment>();
+            mock.SetupAllProperties();
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.Environment = mock.Object;
+            PrivateObject privateObject = new PrivateObject(dataObject);
+            var field = privateObject.GetField("_environments", BindingFlags.Instance | BindingFlags.NonPublic) as ConcurrentStack<IExecutionEnvironment>;
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dataObject.Environment);
+            Assert.IsNotNull(field);
+            Assert.AreEqual(0,field.Count);
+            //---------------Execute Test ----------------------
+            dataObject.PopEnvironment();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(dataObject.Environment, mock.Object);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PopEnvironment_GivenNoEnvironments_ShouldSetEnvironment()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IExecutionEnvironment>();
+            mock.SetupAllProperties();
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.Environment = mock.Object;
+            PrivateObject privateObject = new PrivateObject(dataObject);
+            var field = privateObject.GetField("_environments", BindingFlags.Instance | BindingFlags.NonPublic) as ConcurrentStack<IExecutionEnvironment>;
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(dataObject.Environment);
+            Assert.IsNotNull(field);
+            Assert.AreEqual(0,field.Count);
+            //---------------Execute Test ----------------------
+            dataObject.PushEnvironment(new ExecutionEnvironment());
+            dataObject.PopEnvironment();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(dataObject.Environment, mock.Object);
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]

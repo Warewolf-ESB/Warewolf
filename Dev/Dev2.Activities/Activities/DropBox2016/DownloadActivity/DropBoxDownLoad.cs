@@ -1,9 +1,9 @@
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dropbox.Api;
 using Dropbox.Api.Files;
 using System;
+using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api.Stone;
 
 namespace Dev2.Activities.DropBox2016.DownloadActivity
@@ -38,12 +38,12 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         #region Implementation of IDropboxSingleExecutor<IDropboxResult>
 
-        public IDropboxResult ExecuteTask(DropboxClient client)
+        public IDropboxResult ExecuteTask(IDropboxClientWrapper client)
         {
             try
             {
                 var downloadArg = new DownloadArg(_path);
-                IDownloadResponse<FileMetadata> uploadAsync = client.Files.DownloadAsync(downloadArg).Result;
+                IDownloadResponse<FileMetadata> uploadAsync = client.DownloadAsync(downloadArg).Result;
                 return new DropboxDownloadSuccessResult(uploadAsync);
             }
             catch (Exception exception)

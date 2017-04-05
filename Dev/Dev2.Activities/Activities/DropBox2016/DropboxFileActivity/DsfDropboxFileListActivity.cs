@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -30,6 +32,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         public List<string> Files { get; set; }
         private DropboxClient _dropboxClient;
+        private IDropboxClientWrapper _dropboxClientWrapper;
         public Exception Exception { get; set; }
 
         [FindMissing]
@@ -73,6 +76,11 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         {
         }
 
+        protected DsfDropboxFileListActivity(IDropboxClientWrapper dropboxClientWrapper)
+            :this()
+        {
+            _dropboxClientWrapper = dropboxClientWrapper;
+        }
         public DropboxClient GetDropboxClient()
         {
             if (_dropboxClient != null)
@@ -104,7 +112,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
-            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(GetDropboxClient());
+            _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetDropboxClient());
+            var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
             var dropboxSuccessResult = dropboxExecutionResult as DropboxListFolderSuccesResult;
             if (dropboxSuccessResult != null)
             {

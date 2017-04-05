@@ -120,7 +120,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         List<ModelItem> _selectedDebugItems = new List<ModelItem>();
         DelegateCommand _expandAllCommand;
         // ReSharper disable once InconsistentNaming
-        private ModelService ModelService;
+        protected ModelService ModelService;
         IContextualResourceModel _resourceModel;
         // ReSharper disable once InconsistentNaming
         protected Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
@@ -1071,11 +1071,19 @@ namespace Dev2.Studio.ViewModels.Workflow
             for (int i = 0; i < addedItems.Count; i++)
             {
                 var mi = addedItems.ToList()[i];
-
                 var computedValue = mi.Content?.ComputedValue;
+                if (computedValue == null && (mi.ItemType == typeof(DsfFlowDecisionActivity) ||mi.ItemType == typeof(DsfFlowSwitchActivity)))
+                {
+                    computedValue = mi.Source?.Value?.Source?.ComputedValue;
+                }
                 if (computedValue is IDev2Activity)
                 {
                     (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
+                    _modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
+                }
+                if (computedValue is Activity)
+                {
+                    _activityCollection = ModelService.Find(ModelService.Root, typeof(Activity));
                 }
 
                 if (mi.ItemType == typeof(FlowSwitch<string>))
@@ -1094,6 +1102,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     AddSwitch(mi);
                 }
+                
             }
             return addedItems;
         }
@@ -1700,7 +1709,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void ModelServiceSubscribe(ModelService instance)
+        protected void ModelServiceSubscribe(ModelService instance)
         {
             ModelService = instance;
             ModelService.ModelChanged += ModelServiceModelChanged;
@@ -2450,7 +2459,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
-        {
+        { 
             if (e.ModelChangeInfo != null &&
                 e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
             {
@@ -2478,6 +2487,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.CollectionItemAdded)
+            {
+                PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value });
+            }
+
+            if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged 
+                && (e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowDecisionActivity)
+                || e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowSwitchActivity)))
             {
                 PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value });
             }
