@@ -244,15 +244,18 @@ namespace Dev2.Runtime.ESB
                 if (theService != null && theService.Actions.Any())
                 {
                     sa = theService.Actions.FirstOrDefault();
-                    MapServiceActionDependencies(sa);
-                    sa.Service = theService;
-                    _cache.TryAdd(dataObject.ResourceID, sa);
-                    return GenerateContainer(sa, dataObject, _workspace);
+                    if (sa != null)
+                    {
+                        MapServiceActionDependencies(sa);
+                        sa.Service = theService;
+                        _cache.TryAdd(dataObject.ResourceID, sa);
+                        return GenerateContainer(sa, dataObject, _workspace);
+                    }
                 }
 
                 return null;
             }
-            return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
+            return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
         }
 
 
@@ -287,10 +290,13 @@ namespace Dev2.Runtime.ESB
                     if (theService != null && theService.Actions.Any())
                     {
                         var sa = theService.Actions.FirstOrDefault();
-                        MapServiceActionDependencies(sa);
-                        sa.Service = theService;
-                        _cache.TryAdd(dataObject.ResourceID, sa);
-                        executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                        if (sa != null)
+                        {
+                            MapServiceActionDependencies(sa);
+                            sa.Service = theService;
+                            _cache.TryAdd(dataObject.ResourceID, sa);
+                            executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                        }
                     }
 
                     return executionContainer;
@@ -352,14 +358,8 @@ namespace Dev2.Runtime.ESB
 
         private void MapServiceActionDependencies(ServiceAction serviceAction)
         {
-            if (serviceAction != null)
-            {
-                if (!string.IsNullOrWhiteSpace(serviceAction.SourceName))
-                {
-                    serviceAction.Source = _serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
-                }
-            }
-
+            if(!string.IsNullOrWhiteSpace(serviceAction?.SourceName))
+                serviceAction.Source = _serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
         }
 
         #endregion
@@ -367,15 +367,13 @@ namespace Dev2.Runtime.ESB
         #region IDisposable Members
 
         public void Dispose()
-        {
-
+        {            
         }
 
         #endregion
 
         #region DispatchDebugErrors
 
-        // BUG 9706 - 2013.06.22 - TWR : refactored
         private void DispatchDebugErrors(ErrorResultTO errors, IDSFDataObject dataObject, StateType stateType)
         {
             if (errors.HasErrors() && dataObject.IsDebugMode())
