@@ -1907,6 +1907,8 @@ namespace Dev2.Core.Tests.Workflows
             var source = new Mock<ModelItem>();
             source.Setup(c => c.Content).Returns(prop.Object);
 
+            var modelService = new Mock<ModelService>();
+
             #endregion
 
             #region setup mock to change properties
@@ -1919,8 +1921,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #endregion
 
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object);
-
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object, modelService:modelService.Object);
             // Execute unit
             var actual = wd.TestPerformAddItems(source.Object);
 

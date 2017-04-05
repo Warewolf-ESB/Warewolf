@@ -13,7 +13,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
-using Dropbox.Api;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -318,6 +317,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         public void PerformExecution_GivenPaths_ShouldNotThrowException()
         {
             var singleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            var mock = new Mock<IDropboxClientWrapper>();
             var mockResponse = new Mock<IDownloadResponse<FileMetadata>>();
             var mockFile = new Mock<IFile>();
             mockFile.Setup(file => file.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>()));
@@ -328,7 +328,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             succesResult.SetupGet(result => result.GetDownloadResponse().Response)
                 .Returns(new FileMetadata());
 
-            singleExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+            singleExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
                 .Returns(succesResult.Object);
 
 
@@ -336,7 +336,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             Func<string> tempFileName = Path.GetTempFileName;
             localPathManager.Setup(manager => manager.GetFullFileName()).Returns(tempFileName);
 
-            var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>();
+            var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>(mock.Object);
             activity.Setup(downloadActivity => downloadActivity.GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()))
                 .Returns(singleExecutor.Object);
             activity.SetupGet(downloadActivity => downloadActivity.LocalPathManager).Returns(localPathManager.Object);
@@ -357,6 +357,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         public void PerformExecution_GivenNoDropboxFilePaths_ShouldThrowException()
         {
             var singleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+            var mock = new Mock<IDropboxClientWrapper>();
             var exception = new Exception("Test Exception");
             var mockFile = new Mock<IFile>();
             mockFile.Setup(file => file.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>()));
@@ -365,7 +366,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             succesResult.Setup(result => result.GetException())
                 .Returns(exception);
 
-            singleExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+            singleExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
                 .Returns(succesResult.Object);
 
 
@@ -373,7 +374,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             Func<string> tempFileName = Path.GetTempFileName;
             localPathManager.Setup(manager => manager.GetFullFileName()).Returns(tempFileName);
 
-            var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>();
+            var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>(mock.Object);
             activity.Setup(downloadActivity => downloadActivity.GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()))
                 .Returns(singleExecutor.Object);
             activity.Setup(downloadActivity => downloadActivity.GetLocalPathManager()).Returns(localPathManager.Object);
@@ -395,6 +396,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             try
             {
                 var singleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+                var mock = new Mock<IDropboxClientWrapper>();
                 var exception = new Exception("Test Exception not_file");
                 var mockFile = new Mock<IFile>();
                 mockFile.Setup(file => file.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>()));
@@ -403,14 +405,14 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                 succesResult.Setup(result => result.GetException())
                     .Returns(exception);
 
-                singleExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+                singleExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
                     .Returns(succesResult.Object);
 
                 var localPathManager = new Mock<ILocalPathManager>();
                 Func<string> tempFileName = Path.GetTempFileName;
                 localPathManager.Setup(manager => manager.GetFullFileName()).Returns(tempFileName);
 
-                var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>();
+                var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>(mock.Object);
                 activity.Setup(downloadActivity => downloadActivity.GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()))
                     .Returns(singleExecutor.Object);
                 activity.Setup(downloadActivity => downloadActivity.GetLocalPathManager()).Returns(localPathManager.Object);
@@ -439,6 +441,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             try
             {
                 var singleExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
+                var mock = new Mock<IDropboxClientWrapper>();
                 var mockResponse = new Mock<IDownloadResponse<FileMetadata>>();
                 var mockFile = new Mock<IFile>();
                 mockFile.Setup(file => file.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>()));
@@ -450,7 +453,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                     .Returns(mockResponse.Object);
                 succesResult.SetupGet(result => result.GetDownloadResponse().Response)
                             .Returns(new FileMetadata());
-                singleExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+                singleExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
                     .Returns(succesResult.Object);
 
                 var localPathManager = new Mock<ILocalPathManager>();
@@ -460,7 +463,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                 localPathManager.Setup(manager => manager.GetFullFileName()).Returns(tempFileName);
                 localPathManager.Setup(manager => manager.FileExist()).Returns(true);
 
-                var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>();
+                var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>(mock.Object);
                 activity.Setup(downloadActivity => downloadActivity.GetDropboxSingleExecutor(It.IsAny<IDropboxSingleExecutor<IDropboxResult>>()))
                     .Returns(singleExecutor.Object);
                 activity.SetupGet(downloadActivity => downloadActivity.LocalPathManager).Returns(localPathManager.Object);
@@ -487,7 +490,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         public void GetLocalPathManager_GivenLocalManagerIsSet_ShouldReturnLocalManager()
         {
             //---------------Set up test pack-------------------
-            var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>();
+            var mockClient = new Mock<IDropboxClientWrapper>();
+            var activity = new Mock<DsfDropBoxDownloadActivityMockForFiles>(mockClient.Object);
             var mock = new Mock<ILocalPathManager>();
             activity.SetupGet(files => files.LocalPathManager).Returns(mock.Object);
             //---------------Assert Precondition----------------
@@ -541,6 +545,14 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
     public class DsfDropBoxDownloadActivityMockForFiles : DsfDropBoxDownloadActivity
     {
+        private readonly IDropboxClientWrapper _clientWrapper;
+
+        public DsfDropBoxDownloadActivityMockForFiles(IDropboxClientWrapper clientWrapper)
+            :base(clientWrapper)
+        {
+            _clientWrapper = clientWrapper;
+        }
+
         public string PerfomBaseExecution(Dictionary<string, string> dictionaryValues)
         {
             // ReSharper disable once RedundantBaseQualifier
