@@ -5,11 +5,11 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
@@ -30,9 +30,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Contribute;
         }
 
-        IExplorerServerResourceRepository _serverExplorerRepository;
-       
-       
+        private IResourceCatalog _resourceCatalog;
+
+        public SaveComPluginSource()
+        {
+            
+        }
+        public SaveComPluginSource(IResourceCatalog resourceCatalog)
+        {
+            _resourceCatalog = resourceCatalog;
+        }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
@@ -45,19 +53,32 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ComPluginSource", out resourceDefinition);
 
                 var src = serializer.Deserialize<ComPluginSourceDefinition>(resourceDefinition);
-                if(src.ResourcePath == null) 
+                if (src.ResourcePath == null)
                     src.ResourcePath = string.Empty;
                 if (src.ResourcePath.EndsWith("\\"))
                     src.ResourcePath = src.ResourcePath.Substring(0, src.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
-                var res = new ComPluginSource
+
+                ComPluginSource res1;
+                var existingSource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, src.Name);
+                if (existingSource != null)
                 {
-                    ResourceID = src.Id,
-                    ClsId = src.ClsId,
-                    Is32Bit = src.Is32Bit,
-                    ComName = src.SelectedDll.Name,
-                    ResourceName = src.ResourceName
-                };
-                ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.ResourcePath);
+                    res1 = existingSource as ComPluginSource;
+                }
+                else
+                {
+                    res1 = new ComPluginSource
+                    {
+                        ResourceID = src.Id,
+                        ClsId = src.ClsId,
+                        Is32Bit = src.Is32Bit,
+                        ComName = src.SelectedDll.Name,
+                        ResourceName = src.ResourceName
+                    };
+                }
+
+
+
+                ResourceCat.SaveResource(GlobalConstants.ServerWorkspaceID, res1, src.ResourcePath);
                 msg.HasError = false;
 
             }
@@ -66,7 +87,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error(err);
-                  
+
             }
 
             return serializer.SerializeToBuilder(msg);
@@ -80,10 +101,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return newDs;
         }
-        public IExplorerServerResourceRepository ServerExplorerRepo
+        public IResourceCatalog ResourceCat
         {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
+            get { return _resourceCatalog ?? ResourceCatalog.Instance; }
+            set { _resourceCatalog = value; }
         }
         public string HandlesType()
         {
