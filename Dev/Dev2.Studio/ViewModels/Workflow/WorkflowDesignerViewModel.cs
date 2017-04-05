@@ -34,6 +34,7 @@ using System.Windows.Threading;
 using System.Xaml;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -1071,8 +1072,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             for (int i = 0; i < addedItems.Count; i++)
             {
                 var mi = addedItems.ToList()[i];
-
                 var computedValue = mi.Content?.ComputedValue;
+                if (computedValue == null && (mi.ItemType == typeof(DsfFlowDecisionActivity) ||mi.ItemType == typeof(DsfFlowSwitchActivity)))
+                {
+                    computedValue = mi.Source?.Value?.Source?.ComputedValue;
+                }
                 if (computedValue is IDev2Activity)
                 {
                     (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
@@ -2456,7 +2460,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
-        {
+        { 
             if (e.ModelChangeInfo != null &&
                 e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
             {
@@ -2484,6 +2488,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.CollectionItemAdded)
+            {
+                PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value });
+            }
+
+            if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged 
+                && (e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowDecisionActivity)
+                || e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowSwitchActivity)))
             {
                 PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value });
             }
