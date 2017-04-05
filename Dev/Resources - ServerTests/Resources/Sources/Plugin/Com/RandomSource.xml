@@ -1,0 +1,9 @@
+
+<Source ID="ed7c3655-4922-4f24-9881-83462661832d" Name="RandomSource" ResourceType="ComPluginSource" IsValid="false" ClsId="{4E77EC8F-51D8-386C-85FE-7DC931B7A8E7}" Is32Bit="false" ComName="System.Random" Type="ComPluginSource" ServerVersion="0.0.6299.17977" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>RandomSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ComPluginSource</TypeOf>
+  <VersionInfo DateTimeStamp="2017-04-03T08:26:39.0174924+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="ed7c3655-4922-4f24-9881-83462661832d" VersionId="bb7116b4-9ffe-4303-9fe8-15c57b154733" />
+</Source>

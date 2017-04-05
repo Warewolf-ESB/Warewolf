@@ -49,9 +49,9 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugButtonDisabledOnUnsavedWorkflow()
         {
-            ExplorerUIMap.Filter_Explorer("CreateTestFromDebugButtonDisabledOnUnsavedWorkflow");
+            ExplorerUIMap.Filter_Explorer("VersionTestWorkflow");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            WorkflowTabUIMap.Make_Workflow_Savable();
+            DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Matthew";
             UIMap.Press_F6();
             Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CreateTestFromDebugButton.Enabled, "Create test from debug output button is enabled on unsaved workflow.");
         }

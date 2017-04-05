@@ -151,8 +151,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public bool CanRefresh()
         {
-            IsActionEnabled = _source.SelectedSource != null;
-            return _source.SelectedSource != null;
+            var isActionEnabled = _source.SelectedSource != null;
+            IsActionEnabled = isActionEnabled;
+            return isActionEnabled;
         }
 
         public IPluginAction SelectedAction
@@ -371,13 +372,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual void OnSomethingChanged(IToolRegion args)
+        protected void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
             handler?.Invoke(this, args);
