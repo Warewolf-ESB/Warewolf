@@ -247,22 +247,3 @@ Scenario: Changing database type after testing connection
    Then Database dropdown is "Visible"
    And I select "test" as Database
    Then "Save" is "Enabled"
-
-@SQLDbSource
-Scenario: Creating New SQL Server DB Source as Windows Auth
-    Given I open New Database Source
-    And I type Server as "RSAKLFSVRDEV"
-    And I Select Authentication Type as "Windows"
-    Then Username field is "Collapsed"
-    And Password field is "Collapsed"
-    And "Save" is "Disabled"
-    Then "Test Connection" is "Enabled" 
-    And "Save" is "Disabled"
-    Then Database dropdown is "Collapsed"
-    And "Test Connection" is "Enabled"
-    Then Test Connecton is "Successful"
-    And "Save" is "Disabled"
-    And Database dropdown is "Visible"
-    When I select "Dev2TestingDB" as Database
-    Then "Save" is "Enabled" 
-    
