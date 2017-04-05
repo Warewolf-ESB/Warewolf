@@ -2661,7 +2661,7 @@ namespace Dev2.Activities.Specs.Composition
             ManageComPluginServiceModel dbServiceModel = new ManageComPluginServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                    , proxy.QueryManagerProxy
                                                                                    , mock.Object
-                                                                                   , new Server(LocalEnvModel));
+                                                                                   , new Server(Guid.NewGuid(), environmentConnection));
             var namespaceItems = dbServiceModel.GetNameSpaces(pluginSource);
             var namespaceItem = namespaceItems.Single(item => item?.FullName?.Equals(namespaceSelected, StringComparison.CurrentCultureIgnoreCase) ?? false);
             var pluginActions = dbServiceModel.GetActions(pluginSource, namespaceItem);

@@ -624,10 +624,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         private static void UpdateResourceVersionInfo(IContextualResourceModel resource)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             var explorerViewModel = mainViewModel?.ExplorerViewModel;
             var environmentViewModel =
-                explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.ID);
+                explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.EnvironmentID);
             var explorerItemViewModel = environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(
                 model => model.ResourceId == resource.ID);
             if (explorerItemViewModel != null && explorerItemViewModel.GetType() == typeof (VersionViewModel))

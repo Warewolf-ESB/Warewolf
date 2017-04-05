@@ -689,7 +689,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenCurrentVersion(Guid resourceId, Guid environmentId)
         {
-            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
             if (contextualResourceModel != null)
