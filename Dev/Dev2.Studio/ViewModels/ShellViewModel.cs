@@ -687,6 +687,17 @@ namespace Dev2.Studio.ViewModels
             ExplorerViewModel.IsRefreshing = refresh;
         }
 
+        public void OpenCurrentVersion(Guid resourceId, Guid environmentId)
+        {
+            var environmentModel = EnvironmentRepository.Get(environmentId);
+            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+            if (contextualResourceModel != null)
+            {
+                _worksurfaceContextManager.AddWorkSurfaceContext(contextualResourceModel);
+            }
+        }
+
         public void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer)
         {
             var environmentModel = ServerRepository.Get(environmentId);

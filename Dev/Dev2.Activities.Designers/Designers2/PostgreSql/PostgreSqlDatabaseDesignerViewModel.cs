@@ -100,12 +100,10 @@ namespace Dev2.Activities.Designers2.PostgreSql
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new Runtime.Configuration.ViewModels.Base.DelegateCommand(o =>
             {
-                FixErrors();
                 IsWorstErrorReadOnly = true;
             });
 
             SetDisplayName("");
-            InitializeImageSource();
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
 
@@ -302,15 +300,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
 
         private string Type => GetProperty<string>();
         // ReSharper disable InconsistentNaming
-
-        private void FixErrors()
-        {
-        }
-
-        void InitializeImageSource()
-        {
-        }
-
+        
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -345,13 +335,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
                         }
                 };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker)
-                {
-                    SourceChangedAction = () =>
-                        {
-                            OutputsRegion.IsEnabled = false;
-                        }
-                };
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker);
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
                     List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();

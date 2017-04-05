@@ -328,7 +328,21 @@
                                                                         <PropertyCondition Name="AutomationId">NamespaceComboBox</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="ListItem" Id="COMPluginNamespaceItem" FriendlyName="{&quot;AssemblyLocation&quot;:&quot;{00000514-0000-0010-8000-00AA..." SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="Name">{"AssemblyLocation":"{00000514-0000-0010-8000-00AA006D2EA4}","AssemblyName":"ADODB.CursorTypeEnum","FullName":"ADODB.CursorTypeEnum","MethodName":null,"JsonObject":null}</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
                                                                     </UIObject>
                                                                     <UIObject ControlType="Button" Id="RefreshNamespaceButton" FriendlyName="?" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
@@ -354,7 +368,21 @@
                                                                         <PropertyCondition Name="AutomationId">ActionsComboBox</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="ListItem" Id="ComActionsCloseListItem" FriendlyName="Close" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="Name">Close</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
                                                                     </UIObject>
                                                                     <UIObject ControlType="Button" Id="ActionRefreshButton" FriendlyName="?" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
@@ -631,8 +659,10 @@
                                                                             <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                                            <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.PluginSourceDefinition</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
@@ -643,8 +673,8 @@
                                                                             <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
@@ -769,28 +799,15 @@
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
                                                                         </UIObject>
-                                                                        <UIObject ControlType="ListItem" Id="RandomClassName" FriendlyName="{&quot;MethodName&quot;:null,&quot;AssemblyLocation&quot;:&quot;GAC:mscorli..." SpecialControlType="None">
-                                                                          <TechnologyName>UIA</TechnologyName>
-                                                                          <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
-                                                                          </WindowTitles>
-                                                                          <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                            <PropertyCondition Name="Name">{"MethodName":null,"AssemblyLocation":"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=AMD64","AssemblyName":"","FullName":"System.Random","JsonObject":"{}"}</PropertyCondition>
-                                                                          </AndCondition>
-                                                                          <SupportLevel>0</SupportLevel>
-                                                                          <Descendants />
-                                                                        </UIObject>
                                                                         <UIObject ControlType="ListItem" Id="AssemblyRefNamespace" FriendlyName="{&quot;AssemblyLocation&quot;:&quot;GAC:mscorlib, Version=2.0.0.0..." SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                             <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                                                                            <PropertyCondition Name="Name">{"AssemblyLocation":"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=AMD64","AssemblyName":"","FullName":"AssemblyRef","MethodName":null,"JsonObject":"{}"}</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Name" Operator="Contains">{"AssemblyLocation":"GAC:mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants />
@@ -1994,6 +2011,19 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
+                                                                    <UIObject ControlType="Text" Id="NoconstructoronastatText" FriendlyName="No constructor on a static class" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                                        <PropertyCondition Name="Name">No constructor on a static class</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
                                                                 <UIObject ControlType="Button" Id="DoneButton" FriendlyName="Done" SpecialControlType="None">
@@ -2302,6 +2332,281 @@
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">DoneButton</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="ComActionsCancelListItem" FriendlyName="Cancel" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">Cancel</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="ListItem" Id="ComActionsBeginTransListItem" FriendlyName="BeginTrans" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                <PropertyCondition Name="Name">BeginTrans</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2PIETERTEWindow" FriendlyName="Warewolf (DEV2\PIETER.TERBLANCHE)" SpecialControlType="None" SessionId="28971262">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\PIETER.TERBLANCHE)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UIUI_SplitPane_AutoIDCustom" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="TabPage" Id="UIDev2StudioViewModelsTabPage" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Custom" Id="UIDev2StudioViewModelsCustom" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                            <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="Custom" Id="UIContentDockManagerCustom" FriendlyName="ContentDockManager" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">ContentDockManager</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Custom" Id="UIUI_WorkflowDesigner_Custom" FriendlyName="UI_WorkflowDesigner_AutoID" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.WorkflowDesignerView</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">UI_WorkflowDesigner_AutoID</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Custom" Id="UIUserControl_1Custom" FriendlyName="UserControl_1" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.DesignerView</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">UserControl_1</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Pane" Id="UIScrollViewerPane" FriendlyName="scrollViewer" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">scrollViewer</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Custom" Id="UIActivityBuilderCustom" FriendlyName="ActivityBuilder" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                <PropertyCondition Name="ClassName">Uia.ActivityTypeDesigner</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">ActivityTypeDesigner</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Custom" Id="UIWorkflowItemPresenteCustom" FriendlyName="WorkflowItemPresenter" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.WorkflowItemPresenter</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">WorkflowItemPresenter</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Custom" Id="UIFlowchartCustom" FriendlyName="Flowchart" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                        <PropertyCondition Name="ClassName">Uia.FlowchartDesigner</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">Unsaved 2(FlowchartDesigner)</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Custom" Id="UIDsfComDllActivityCustom" FriendlyName="DsfComDllActivity" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.ComDllDesigner</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">Com DLL(ComDllDesigner)</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Custom" Id="UILargeViewContentCustom" FriendlyName="LargeViewContent" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.Large</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">LargeViewContent</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="ComboBox" Id="UISourcesComboBoxComboBox" FriendlyName="SourcesComboBox" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="ListItem" Id="UIDev2CommonInterfacesListItem" FriendlyName="Dev2.Common.Interfaces.Core.ComPluginSourceDefinit..." SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                        <PropertyCondition Name="Name">Dev2.Common.Interfaces.Core.ComPluginSourceDefinition</PropertyCondition>
+                                                                        <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                                <UIObject ControlType="ComboBox" Id="UINamespaceComboBoxComboBox" FriendlyName="NamespaceComboBox" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">NamespaceComboBox</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />

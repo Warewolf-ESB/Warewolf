@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -26,6 +26,11 @@ namespace Warewolf.Studio.ViewModels
             var output = explorerRepository.Rollback(resourceId, versionNumber);
             parent.AreVersionsVisible = true;
             parent.ResourceName = output.DisplayName;
+            if (parent.Server != null)
+            {
+                _shellViewModel.CloseResource(resourceId, parent.Server.EnvironmentID);
+                _shellViewModel.OpenCurrentVersion(resourceId, parent.Server.EnvironmentID);
+            }
         }
 
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
@@ -174,7 +179,20 @@ namespace Warewolf.Studio.ViewModels
             if (_popupController.ShowDeleteVersionMessage(resourceName) == MessageBoxResult.Yes)
             {
                 explorerRepository.Delete(explorerItemViewModel);
-                parent?.RemoveChild(parent.Children.First(a => a.ResourceName == resourceName));
+                var parentChildren = new ObservableCollection<IExplorerItemViewModel>(parent.Children);
+
+                var index = 0;
+                for (var i = 0; i < parentChildren.Count; i++)
+                {
+                    if (parentChildren[i].ResourceName == resourceName)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                parentChildren.RemoveAt(index);
+                parent.Children = new ObservableCollection<IExplorerItemViewModel>(parentChildren);
             }
         }
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)

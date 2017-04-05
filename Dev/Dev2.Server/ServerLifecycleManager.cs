@@ -13,7 +13,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -90,100 +89,14 @@ namespace Dev2
 
         static int RunMain(string[] arguments)
         {
-            var result = 0;
-
-            var options = new CommandLineParameters();
-            var parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
-            if (!parser.ParseArguments(arguments, options))
-            {
-                return 80;
-            }
-
-            var commandLineParameterProcessed = false;
-            if (options.Install)
-            {
-                Dev2Logger.Info("Starting Install");
-                commandLineParameterProcessed = true;
-
-                if (!EnsureRunningAsAdministrator(arguments))
-                {
-                    Dev2Logger.Info("Cannot install because the server is not running as an admin user");
-                    return result;
-                }
-
-                if (!WindowsServiceManager.Install())
-                {
-                    result = 81;
-                    Dev2Logger.Info("Install Success Result is 81");
-                }
-            }
-
-            if (options.StartService)
-            {
-                Dev2Logger.Info("Starting Service");
-                commandLineParameterProcessed = true;
-
-                if (!EnsureRunningAsAdministrator(arguments))
-                {
-                    Dev2Logger.Info("Cannot start because the server is not running as an admin user");
-                    return result;
-                }
-
-                if (!WindowsServiceManager.StartService(null))
-                {
-                    Dev2Logger.Info("Starting Service success. result 83");
-                    result = 83;
-                }
-            }
-
-            if (options.StopService)
-            {
-                Dev2Logger.Info("Stopping Service");
-                commandLineParameterProcessed = true;
-
-                if (!EnsureRunningAsAdministrator(arguments))
-                {
-                    Dev2Logger.Info("Cannot stop because the server is not running as an admin user");
-                    return result;
-                }
-
-                if (!WindowsServiceManager.StopService(null))
-                {
-                    Dev2Logger.Info("Stopping Service success. result 84");
-                    result = 84;
-                }
-            }
-
-            if (options.Uninstall)
-            {
-                Dev2Logger.Info("Uninstall Service");
-                commandLineParameterProcessed = true;
-
-                if (!EnsureRunningAsAdministrator(arguments))
-                {
-                    Dev2Logger.Info("Cannot uninstall because the server is not running as an admin user");
-                    return result;
-                }
-
-                if (!WindowsServiceManager.Uninstall())
-                {
-                    Dev2Logger.Info("Uninstall Service success. result 92");
-                    result = 82;
-                }
-            }
-
-            if (commandLineParameterProcessed)
-            {
-                Dev2Logger.Info("Command line processed. Returning");
-                return result;
-            }
+            const int result = 0;
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
                 Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
             };
-            if (Environment.UserInteractive || options.IntegrationTestMode)
+            if (Environment.UserInteractive)
             {
-                Dev2Logger.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
+                Dev2Logger.Info("** Starting In Interactive Mode **");
                 using (_singleton = new ServerLifecycleManager(arguments))
                 {
                     _singleton.Run(true);
@@ -228,14 +141,13 @@ namespace Dev2
         bool _isDisposed;
         bool _isWebServerEnabled;
         bool _isWebServerSslEnabled;
-        readonly string[] _arguments;
         Dev2Endpoint[] _endpoints;
         Timer _timer;
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
         private int _daysToKeepTempFiles;
         private readonly PulseTracker _pulseTracker;
-        private Client _ipcClient;
+        private IpcClient _ipcIpcClient;
 
         /// <summary>
         /// Get a value indicating if the lifecycle manager has been disposed.
@@ -262,7 +174,6 @@ namespace Dev2
             _pulseLogger.Start();
             _pulseTracker = new PulseTracker(TimeSpan.FromDays(1).TotalMilliseconds);
             _pulseTracker.Start();
-            _arguments = arguments ?? new string[0];
             SetWorkingDirectory();
             MoveSettingsFiles();
             var settingsConfigFile = EnvironmentVariables.ServerLogSettingsFile;
@@ -352,7 +263,7 @@ namespace Dev2
                 InitializeServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
-                _ipcClient = Client.IPCExecutor;
+                _ipcIpcClient = IpcClient.GetIPCExecutor();
                 var catalog = LoadResourceCatalog();
                 StartWebServer();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
@@ -492,46 +403,6 @@ namespace Dev2
             }
         }
 
-        static bool EnsureRunningAsAdministrator(string[] arguments)
-        {
-
-            try
-            {
-                if (!IsElevated())
-                {
-                    var startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location) { Verb = "runas", Arguments = string.Join(" ", arguments) };
-
-                    var process = new Process { StartInfo = startInfo };
-
-                    try
-                    {
-                        process.Start();
-                    }
-                    catch (Exception e)
-                    {
-                        LogException(e);
-                    }
-
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                LogException(e);
-            }
-
-            return true;
-        }
-
-        static bool IsElevated()
-        {
-            var currentIdentity = WindowsIdentity.GetCurrent();
-            {
-                var principal = new WindowsPrincipal(currentIdentity);
-                return principal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
-        }
-
         internal void ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
         {
             if (string.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
@@ -570,7 +441,7 @@ namespace Dev2
             try
             {
                 string webServerSslPort = null;
-                var webServerPort = ParseArguments(ref webServerSslPort);
+                string webServerPort = null;
 
                 GlobalConstants.WebServerPort = webServerPort = !string.IsNullOrEmpty(webServerPort) ? webServerPort : ConfigurationManager.AppSettings["webServerPort"];
                 GlobalConstants.WebServerSslPort = webServerSslPort = !string.IsNullOrEmpty(webServerSslPort) ? webServerSslPort : ConfigurationManager.AppSettings["webServerSslPort"];
@@ -611,39 +482,6 @@ namespace Dev2
             {
                 Fail("Server initialization failed", ex);
             }
-        }
-
-        private string ParseArguments(ref string webServerSslPort)
-        {
-            var webServerPort = "";
-            var arguments = new Dictionary<string, string>();
-
-            if (_arguments.Any())
-            {
-                foreach (var t in _arguments)
-                {
-                    var arg = t.Split('=');
-                    if (arg.Length == 2)
-                    {
-                        arguments.Add(arg[0].Replace("/", string.Empty), arg[1]);
-                    }
-                }
-            }
-
-            foreach (var argument in arguments)
-            {
-                if (argument.Key.Equals("webServerPort", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    webServerPort = argument.Value;
-                    continue;
-                }
-
-                if (argument.Key.Equals("webServerSslPort", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    webServerSslPort = argument.Value;
-                }
-            }
-            return webServerPort;
         }
 
         private void EnableSSLForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
@@ -687,10 +525,10 @@ namespace Dev2
                     _owinServer.Dispose();
                     _owinServer = null;
                 }
-                if (_ipcClient != null)
+                if (_ipcIpcClient != null)
                 {
-                    _ipcClient.Dispose();
-                    _ipcClient = null;
+                    _ipcIpcClient.Dispose();
+                    _ipcIpcClient = null;
                 }
                 DebugDispatcher.Instance.Shutdown();
             }

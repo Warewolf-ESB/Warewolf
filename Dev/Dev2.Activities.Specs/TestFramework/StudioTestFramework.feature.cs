@@ -7903,6 +7903,61 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test Workflow which contains COM DLL")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFramework")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("TestFramework")]
+        public virtual void TestWorkflowWhichContainsCOMDLL()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Workflow which contains COM DLL", ((string[])(null)));
+#line 2651
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line 2652
+  testRunner.Given("I have a workflow \"TestWFCOMDLL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table265 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Source",
+                        "Namespace",
+                        "Action"});
+            table265.AddRow(new string[] {
+                        "RandomSource",
+                        "System.Random",
+                        "Next"});
+#line 2653
+  testRunner.And("\"TestWFCOMDLL\" contains an COM DLL \"COMService\" as", ((string)(null)), table265, "And ");
+#line 2656
+    testRunner.And("I save workflow \"TestWFCOMDLL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2657
+   testRunner.Then("the test builder is open with \"TestWFCOMDLL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2658
+   testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2659
+   testRunner.And("I Add \"COMService\" as TestStep", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table266 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table266.AddRow(new string[] {
+                        "[[PrimitiveReturnValue]]",
+                        "Not Date",
+                        ""});
+#line 2660
+   testRunner.And("I add StepOutputs as", ((string)(null)), table266, "And ");
+#line 2663
+   testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2664
+   testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2665
+   testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 2666
+   testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

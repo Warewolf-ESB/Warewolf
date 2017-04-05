@@ -475,21 +475,32 @@ namespace Warewolf.Studio.Views
 
         private void TreeViewItemPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+            var viewItem = sender as TreeViewItem;
+            TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+
+            var name = viewItem?.DataContext?.GetType().Name;
+
+            if (name == "EnvironmentViewModel")
+            {
+                e.Handled = true;
+                return;
+            }
             var explorerItemViewModel = treeViewItem?.DataContext as ExplorerItemViewModel;
             if (explorerItemViewModel != null)
             {
                 if (ValidateItemDoubleClick(e, explorerItemViewModel)) return;
 
-                if (explorerItemViewModel.IsFolder)
-                {
-                    explorerItemViewModel.IsExpanded = !explorerItemViewModel.IsExpanded;
-                    e.Handled = false;
-                }
-                else if (explorerItemViewModel.CanView)
+                if (explorerItemViewModel.CanView)
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
-                    explorerItemViewModel.OpenCommand.Execute(this);
+                    if (name == "VersionViewModel")
+                    {
+                        explorerItemViewModel.OpenCommand.Execute(this);
+                    }
+                    else if (name == "ExplorerItemViewModel" && !explorerItemViewModel.IsResourceVersion)
+                    {
+                        explorerItemViewModel.OpenCommand.Execute(this);
+                    }
                     e.Handled = true;
                     Mouse.OverrideCursor = null;
                 }

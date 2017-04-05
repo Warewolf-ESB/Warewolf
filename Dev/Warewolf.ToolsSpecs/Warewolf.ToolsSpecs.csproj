@@ -219,7 +219,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
-    <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
+    <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
@@ -504,6 +504,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="key.opk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -576,6 +579,7 @@
     </None>
     <None Include="Toolbox\FileAndFolder\Read File\Read File.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Read File1.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

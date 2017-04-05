@@ -1,16 +1,20 @@
-﻿using TechTalk.SpecFlow;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using TechTalk.SpecFlow;
 using Warewolf.UITests.DialogsUIMapClasses;
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System.Drawing;
 using System.Windows.Input;
-using Warewolf.UITests.ComPluginSource;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
 {
@@ -59,7 +63,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         [When(@"I Double Click SqlServerDatabase Tool to Change View")]
         public void SqlServerDatabaseTool_ChangeView_With_DoubleClick()
         {
-            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(145, 5));
+            Point point;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.WaitForControlCondition((control)=> { return control.TryGetClickablePoint(out point); }, 60000);
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase, new Point(169, 10));
         }
 
         [Given(@"I Double Click SqlBulkInsert Tool to Change View")]
@@ -82,7 +88,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton.Exists, "SQL Server large view does not contain a generate outputs button.");
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.GenerateOutputsButton, new Point(7, 7));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Exists, "SQL Server large view test inputs row 1 test data textbox does not exist.");
+            Assert.IsTrue(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Exists, "SQL Server large view test inputs row 1 test data textbox does not exist.");
         }
 
         [When(@"I Click SQL Server Large View Test Inputs Button")]
@@ -205,15 +211,15 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         [When(@"I Type 0 Into SQL Server Large View Inputs Row1 Data Textbox")]
         public void Type_0_Into_SQL_Server_Large_View_Inputs_Row1_Data_Textbox()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox.Text = "0";
-            Assert.AreEqual("0", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
+            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox.Text = "0";
+            Assert.AreEqual("0", MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
         }
 
         [When(@"I Type 0 Into SQL Server Large View Test Inputs Row1 Test Data Textbox")]
         public void Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text = "0";
-            Assert.AreEqual("0", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
+            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text = "0";
+            Assert.AreEqual("0", MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.TestInputsTable.Row1.TestDataCell.TestDataComboBox.TestDataTextbox.Text, "SQL Server large view test inputs row 1 test data textbox text is not equal to S");
         }
 
         public void Select_Source_From_MySQLTool()

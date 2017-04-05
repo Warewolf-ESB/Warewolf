@@ -13,7 +13,7 @@ using System.Drawing;
 using System.IO;
 using TechTalk.SpecFlow;
 using Warewolf.UITests.Common;
-using Warewolf.UITests.WorkflowServiceTesting;
+using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
@@ -83,7 +83,18 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Then(@"I DoubleClick Explorer Localhost First Item")]
         public void DoubleClick_Explorer_Localhost_First_Item()
         {
+            Point point;
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out point); });
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem);
+        }
+
+        [Given(@"I Select Make Current Version")]
+        [When(@"I Select Make Current Version")]
+        [Then(@"I Select Make Current Version")]
+        public void Select_Make_Current_Version()
+        {
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.MakeCurrentVersionMenuItem);
+            Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(32, 5));
         }
 
         [Given(@"I DoubleClick Explorer Localhost Second Item")]
@@ -92,6 +103,12 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void DoubleClick_Explorer_Localhost_Second_Item()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem);
+        }
+        
+        [When(@"I DoubleClick Explorer Localhost First Item First SubItem")]
+        public void DoubleClick_Explorer_Localhost_First_Item_First_SubItem_Item()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
         }
 
         [Given(@"Folder Is Removed From Explorer")]
@@ -284,6 +301,20 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void RightClick_Explorer_Localhost_FirstItem()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+
+        [Given(@"I RightClick Explorer Localhost Second Item")]
+        [When(@"I RightClick Explorer Localhost Second Item")]
+        [Then(@"I RightClick Explorer Localhost Second Item")]
+        public void RightClick_Explorer_Localhost_SecondItem()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
+        }
+        
+        [When(@"I RightClick Explorer Localhost First Item First SubItem")]
+        public void RightClick_Explorer_Localhost_First_Item_First_SubItem()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
 
         [Given(@"I RightClick Localhost")]
