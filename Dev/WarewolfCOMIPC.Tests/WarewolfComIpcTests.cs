@@ -21,7 +21,7 @@ namespace WarewolfCOMIPC.Test
             var clsid = new Guid("00000514-0000-0010-8000-00AA006D2EA4");
             //------------Execute Test---------------------------
            
-                var execute = Client.Client.IPCExecutor.Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
+                var execute = Client.IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
                 Assert.IsNotNull(execute);
             //------------Assert Results-------------------------
         }
@@ -37,7 +37,7 @@ namespace WarewolfCOMIPC.Test
 
             //---------------Execute Test ----------------------
             {
-                var execute = Client.Client.IPCExecutor.Invoke(classId, "", Execute.GetMethods,  new ParameterInfoTO[] { });
+                var execute = Client.IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods,  new ParameterInfoTO[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -56,7 +56,7 @@ namespace WarewolfCOMIPC.Test
 
             //---------------Execute Test ----------------------
             {
-                var execute = Client.Client.IPCExecutor.Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
+                var execute = Client.IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -75,7 +75,7 @@ namespace WarewolfCOMIPC.Test
 
             //---------------Execute Test ----------------------
             {
-                var execute = Client.Client.IPCExecutor.Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
+                var execute = Client.IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -95,7 +95,7 @@ namespace WarewolfCOMIPC.Test
 
             //---------------Execute Test ----------------------
             {
-//                var execute = Client.Client.IPCExecutor.Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod,  new ParameterInfoTO[] { "SQLServer", "testuser", "test123", -1 });
+//                var execute = IpcClient.IpcClient.IPCExecutor.Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod,  new ParameterInfoTO[] { "SQLServer", "testuser", "test123", -1 });
 //                var actual = execute as string;
 //                Assert.IsNotNull(actual);
                 //---------------Test Result -----------------------

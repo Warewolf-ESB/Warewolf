@@ -2717,3 +2717,21 @@ When I save
 And I run the test
 Then test result is Passed
 When I delete "Test 1"
+	When I delete "Test 1"
+
+Scenario:Test Workflow which contains COM DLL
+	 Given I have a workflow "TestWFCOMDLL"
+	 And "TestWFCOMDLL" contains an COM DLL "COMService" as
+	 | Source       | Namespace     | Action |
+	 | RandomSource | System.Random | Next   |
+	   And I save workflow "TestWFCOMDLL"
+	  Then the test builder is open with "TestWFCOMDLL"
+	  And I click New Test
+	  And I Add "COMService" as TestStep
+	  And I add StepOutputs as  
+	  	 | Variable Name            | Condition | Value |
+	  	 | [[PrimitiveReturnValue]] | Not Date  |       |
+	  When I save
+	  And I run the test
+	  Then test result is Passed
+	  When I delete "Test 1"
