@@ -1,6 +1,5 @@
 ﻿using TechTalk.SpecFlow;
 using Warewolf.UITests.DialogsUIMapClasses;
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
@@ -9,8 +8,8 @@ using System.Drawing;
 using System.Windows.Input;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
-using Warewolf.UITests.ComPluginSource;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UITests.ComPluginSource.ComPluginSourceUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
 {
@@ -282,10 +281,10 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
 
         public void Move_Assign_Message_Tool_On_The_Design_Surface()
         {
-            var multiAssign1 = MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-            multiAssign1.EnsureClickable(new Point(90, 7));
-            Mouse.StartDragging(multiAssign1, new Point(94, 11));
-            Mouse.StopDragging(multiAssign1, 70, 3);
+            Point point;
+            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.WaitForControlCondition((control)=> { return control.TryGetClickablePoint(out point); }, 60000);
+            Mouse.StartDragging(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign, 70, 3);
         }
 
         [Then(@"I Enter ""(.*)"" in the Assign message tool")]

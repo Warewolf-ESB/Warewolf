@@ -109,7 +109,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.SignalR.Wrappers.New",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Models", "Warewolf.Studio.Models\Warewolf.Studio.Models.csproj", "{A62DA168-5BF3-4C14-B880-4AD83478E3A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Dev2.Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
 EndProject

@@ -30,7 +30,7 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRGENDEV |
+   | RSAKLFSVRDEV |
    | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
@@ -38,7 +38,7 @@ Scenario: Creating New DB Source General Testing
    | Options              |
    | Microsoft SQL Server |
    | MySQL                |
-   And I type Select The Server as "RSAKLFSVRGENDEV"
+   And I type Select The Server as "RSAKLFSVRDEV"
    And Database dropdown is "Collapsed"
    And I Select Authentication Type as "Windows"
    And "Save" is "Disabled"
@@ -65,7 +65,7 @@ Scenario: Creating New DB Source General Testing
 @PostgresDbSource
 Scenario: Creating New DB Source as User Auth
     Given I open New Database Source
-    And I type Server as "RSAKLFSVRGENDEV"
+    And I type Server as "RSAKLFSVRDEV"
     And I Select Authentication Type as "User"
     Then Username field is "Visible"
     And Password field is "Visible"
@@ -116,7 +116,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
  @PostgresDbSource
 Scenario: Incorrect Server Address Shows correct error message
       Given I open New Database Source
-      And I type Server as "RSAKLFSVRGENDEV"
+      And I type Server as "RSAKLFSVRDEV"
       And I Select Authentication Type as "User"
       Then Username field is "Visible"
       And Password field is "Visible"
@@ -133,7 +133,7 @@ Scenario: Incorrect Server Address Shows correct error message
 @PostgresDbSource
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
-    And Server as "RSAKLFSVRGENDEV"
+    And Server as "RSAKLFSVRDEV"
     And Authentication Type is selected as "User"
     And Username field is "testuser"
     And Password field is "******"
@@ -159,7 +159,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 @PostgresDbSource
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
-    And Server as "RSAKLFSVRGENDEV"
+    And Server as "RSAKLFSVRDEV"
     And Authentication Type is selected as "User"
     And Username field is "testuser"
     And Password field is "******"
@@ -180,7 +180,7 @@ Scenario: Editing saved DB Source Remembers credentials
 @PostgresDbSource
 Scenario: Cancel DB Source Test
    Given I open New Database Source
-   When I type Server as "RSAKLFSVRGENDEV"
+   When I type Server as "RSAKLFSVRDEV"
    And "Save" is "Disabled"
    And "Test Connection" is "Disabled"
    And I Select Authentication Type as "User"
@@ -201,11 +201,11 @@ Scenario: Changing database type after testing connection
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRGENDEV |
+   | RSAKLFSVRDEV |
    | RSAKLFSVRPDC |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |
-   And I type Select The Server as "RSAKLFSVRGENDEV"
+   And I type Select The Server as "RSAKLFSVRDEV"
    And I Select Authentication Type as "User"
     When I type Username as "postgres"
     And I type Password as "test123"
