@@ -543,9 +543,10 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var mockExecutor = new Mock<IDropboxSingleExecutor<IDropboxResult>>();
-            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()))
+            mockExecutor.Setup(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
                 .Returns(new DropboxFailureResult(new Exception("Test Exception")));
-            var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock();
+            var mock = new Mock<IDropboxClientWrapper>();
+            var dropboxFileListActivityMock = new DsfDropboxFileListActivityMock(mock.Object);
             dropboxFileListActivityMock.DropboxResult = new DropboxFailureResult(TestConstant.ExceptionInstance.Value);
             dropboxFileListActivityMock.SelectedSource =
                 new DropBoxSource
@@ -561,7 +562,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
               
             });
             //---------------Test Result -----------------------
-            mockExecutor.Verify(executor => executor.ExecuteTask(It.IsAny<DropboxClient>()));
+            mockExecutor.Verify(executor => executor.ExecuteTask(It.IsAny<IDropboxClientWrapper>()));
         }
 
         [TestMethod]
