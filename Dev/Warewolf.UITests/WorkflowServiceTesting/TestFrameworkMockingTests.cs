@@ -49,7 +49,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Testing")]
         public void CreateTestFromDebugButtonDisabledOnUnsavedWorkflow()
         {
-            ExplorerUIMap.Filter_Explorer("VersionTestWorkflow");
+            ExplorerUIMap.Filter_Explorer("VersionsTestWorkflow");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row1.ValueCell.IntellisenseCombobox.Textbox.Text = "Matthew";
             UIMap.Press_F6();
