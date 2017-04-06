@@ -283,7 +283,6 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.StartDragging(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, new Point(64, 5));
             Mouse.Move(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SubWorkflow.Exists, "Workflow on the design surface does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
@@ -298,14 +297,13 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.StartDragging(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(64, 5));
             Mouse.Move(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.Exists, "Workflow on the design surface does not exist");
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
         [When(@"I change Hello World input variable")]
         public void Change_HelloWorld_InputVariable()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.ServiceDesignerLargeView.InputsDataGridTable.InputsGridRowOne.InputsGridRowOneCell.InputsAutoCompleteTextBox.InputsAutoCompleteTextBoxText.Text = "NewName";
+            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.ContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.ServiceDesignerLargeView.InputsDataGridTable.InputsGridRowOne.InputsGridRowOneCell.InputsAutoCompleteTextBox.InputsAutoCompleteTextBoxText.Text = "NewName";
             Keyboard.SendKeys("{Tab}", ModifierKeys.None);
             Assert.AreEqual("NewName", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.ServiceDesignerLargeView.InputsDataGridTable.InputsGridRowOne.InputsGridRowOneCell.InputsAutoCompleteTextBox.InputsAutoCompleteTextBoxText.Text);
         }
@@ -1289,7 +1287,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         [Then(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
         public void RightClick_StackOverFlowService_OnDesignSurface()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+            Mouse.Click(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.ContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
         }
 
         [Given(@"I RightClick CreateJSON OnDesignSurface")]

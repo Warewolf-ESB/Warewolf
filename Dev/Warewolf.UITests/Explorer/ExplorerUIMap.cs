@@ -607,7 +607,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         {
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = filterText;
 
-            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem.Exists)
+            if (UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem))
             {
                 Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
 

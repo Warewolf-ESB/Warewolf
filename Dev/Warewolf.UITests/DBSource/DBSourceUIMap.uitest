@@ -167,7 +167,7 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
-                                            <UIObject ControlType="ListItem" Id="RSAKLFSVRGENDEV" FriendlyName="RSAKLFSVRGENDEV" SpecialControlType="None">
+                                            <UIObject ControlType="ListItem" Id="RSAKLFSVRDEV" FriendlyName="RSAKLFSVRDEV" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>Warewolf</WindowTitle>
