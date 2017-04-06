@@ -16,16 +16,16 @@ namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
             UIMap.Click_NewWorkflow_RibbonButton();
             ExplorerUIMap.Filter_Explorer("stackoverflowTestWorkflow");
             WorkflowTabUIMap.Drag_Explorer_Localhost_First_Item_Onto_Workflow_Design_Surface();
-            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.ContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF.Exists);
             WorkflowTabUIMap.RightClick_StackOverFlowService_OnDesignSurface();
             UIMap.Select_Copy_FromContextMenu();
             ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             DataToolsUIMap.RightClick_AssignOnDesignSurface();
             UIMap.Select_Paste_FromContextMenu();
-            var controlExistsNow = UIMap.ControlExistsNow(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StackoverflowWorkflow);
+            var controlExistsNow = UIMap.ControlExistsNow(WorkflowTabUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.ContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF);
             Assert.IsFalse(controlExistsNow);
             UIMap.Click_Close_Workflow_Tab_Button();
-            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.ContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF.Exists);
         }
 
         #region Additional test attributes
