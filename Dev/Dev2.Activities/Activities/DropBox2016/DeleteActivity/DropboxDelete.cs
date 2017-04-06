@@ -3,6 +3,7 @@ using System.Net;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 // ReSharper disable MemberCanBePrivate.Global
@@ -30,11 +31,11 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         }
 
         #region Implementation of IDropboxSingleExecutor<IDropboxResult>
-        public IDropboxResult ExecuteTask(DropboxClient client)
+        public IDropboxResult ExecuteTask(IDropboxClientWrapper client)
         {
             try
             {
-                FileMetadata deleteAsync = client.Files.DeleteAsync(_dropboxPath).Result as FileMetadata;
+                FileMetadata deleteAsync = client.DeleteAsync(_dropboxPath).Result as FileMetadata;
                 return new DropboxDeleteSuccessResult(deleteAsync);
             }
             catch (Exception exception)

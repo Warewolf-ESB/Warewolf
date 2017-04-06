@@ -1,7 +1,7 @@
 ﻿using System;
 using Dev2.Activities.DropBox2016.DeleteActivity;
 using Dev2.Activities.DropBox2016.Result;
-using Dropbox.Api;
+using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -17,7 +17,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
         {
             var mock = new Mock<IDropBoxDelete>();
             var fileMetadata = new DropboxDeleteSuccessResult(new FileMetadata());
-            mock.Setup(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()))
+            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
                  .Returns(fileMetadata);
             return mock;
         }
@@ -47,9 +47,9 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropBoxDelete);
             //------------Execute Test---------------------------
-            dropBoxDelete.Object.ExecuteTask(It.IsAny<DropboxClient>());
+            dropBoxDelete.Object.ExecuteTask(It.IsAny<IDropboxClientWrapper>());
             //------------Assert Results-------------------------
-            dropBoxDelete.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
+            dropBoxDelete.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()));
         }
         
 
