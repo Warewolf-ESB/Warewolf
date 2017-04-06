@@ -108,8 +108,8 @@ Scenario: Cancel Deploy Returns to Deploy Tab
 Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
-	And I Enter "ResourceToDeployInADifferentPath" Into Deploy Source Filter
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
+	And I Enter "ResourceToDeployInADifferentPath" Into Deploy Source Filter
 	And I Select Deploy First Source Item
 	And I Click Deploy Tab Deploy Button
 	Then I Click Deploy version conflicts MessageBox OK

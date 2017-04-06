@@ -50,9 +50,12 @@ namespace Dev2.Settings.Perfcounters
         static IEnvironmentViewModel GetEnvironment()
         {
             var server = ServerRepository.Instance.ActiveServer;
-
-
-            if (server.Permissions == null)
+            if (server == null)
+            {
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                server = shellViewModel?.ActiveServer;
+            }
+            if (server != null && server.Permissions == null)
             {
                 server.Permissions = new List<IWindowsGroupPermission>();
                 if(server.AuthorizationService?.SecurityService != null)
