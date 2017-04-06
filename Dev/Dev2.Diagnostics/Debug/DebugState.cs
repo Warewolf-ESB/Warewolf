@@ -564,7 +564,7 @@ namespace Dev2.Diagnostics.Debug
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             if (propertyName?.Equals("ParentID") ?? false)
             {
-                if (ParentID == Guid.Empty && !IsFirstStep())
+                if (ParentID == Guid.Empty)
                     ParentID = null;
             }
         }

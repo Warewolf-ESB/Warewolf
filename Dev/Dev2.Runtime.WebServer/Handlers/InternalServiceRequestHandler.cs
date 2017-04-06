@@ -100,7 +100,6 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (request.Args != null && request.Args.ContainsKey("DebugPayload"))
             {
                 xmlData = request.Args["DebugPayload"].ToString();
-                //xmlData = xmlData.Replace("DebugPayload", "<XmlData>").Replace("</DataList>", "</XmlData>");
                 xmlData = xmlData.Replace("<DataList>", "<XmlData>").Replace("</DataList>", "</XmlData>");
             }
 
