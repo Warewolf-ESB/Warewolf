@@ -31,7 +31,8 @@ namespace Warewolf.Studio.ViewModels
         {
             VerifyArgument.IsNotNull(@"destination", destination);
             _destination = destination;
-            _destination.ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
+            if (_destination.ConnectControlViewModel != null)
+                _destination.ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
             Status = @"";
         }
 
