@@ -30,8 +30,18 @@ namespace Warewolf.Studio.ViewModels
         public DeployStatsViewerViewModel(IDeployDestinationExplorerViewModel destination)
         {
             VerifyArgument.IsNotNull(@"destination", destination);
-            _destination = destination;            
+            _destination = destination;
+            _destination.ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
             Status = @"";
+        }
+
+        private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
+        {
+            if (_destination?.SelectedEnvironment != null && _destination.SelectedEnvironment.AsList().Count <= 0)
+            {
+                await _destination.SelectedEnvironment.Load(true, true);
+                CheckDestinationPersmisions();
+            }
         }
 
         public DeployStatsViewerViewModel(IList<IExplorerTreeItem> items, IDeployDestinationExplorerViewModel destination)
