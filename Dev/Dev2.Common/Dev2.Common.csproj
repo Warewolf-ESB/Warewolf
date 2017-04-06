@@ -53,6 +53,10 @@
     <Reference Include="ChinhDo.Transactions">
       <HintPath>..\packages\TxFileManager.1.3\lib\net20\ChinhDo.Transactions.dll</HintPath>
     </Reference>
+    <Reference Include="Dropbox.Api, Version=4.0.0.0, Culture=neutral, PublicKeyToken=310f0e82fbb45d01, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dropbox.Api.4.2.4\lib\net45\Dropbox.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\Binaries\Jurassic.dll</HintPath>
     </Reference>
@@ -197,6 +201,7 @@
     <Compile Include="Wrappers\DirectoryEntryWrapper.cs" />
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Wrappers\DomainWrapper.cs" />
+    <Compile Include="Wrappers\DropboxClientWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

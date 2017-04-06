@@ -1,0 +1,9 @@
+
+<Source ID="dc163197-7a76-4f4c-a783-69d6d53b2f3a" Name="DropboxSource" ResourceType="DropBoxSource" IsValid="false" ConnectionString="AccessToken=bGk0eJMHdhAAAAAAAAAAIQHDkwmqzkuwRE7ugjxbueKqONmkw3dS7hw4HKVndPID;AppKey=e44ay8ch41xkjgl" Type="DropBoxSource" ServerVersion="0.0.6295.25694" ServerID="00000000-0000-0000-0000-000000000000">
+  <DisplayName>DropboxSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>DropBoxSource</TypeOf>
+  <VersionInfo DateTimeStamp="2017-03-27T14:23:45.6975795+02:00" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="dc163197-7a76-4f4c-a783-69d6d53b2f3a" VersionId="78f4d814-61a4-4647-baa7-759e311181b8" />
+</Source>

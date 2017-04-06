@@ -7,7 +7,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
-using Dropbox.Api;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 using Moq;
@@ -27,11 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         }
 
         #region Overrides of DsfDropBoxUploadActivity
-
-        protected override DropboxClient GetClient()
-        {
-            return TestConstant.DropboxClientInstance.Value;
-        }
+        
 
         #endregion
 

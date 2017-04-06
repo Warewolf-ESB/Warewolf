@@ -36,7 +36,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
             switch(forEachType)
             {
                 case enForEachType.InRecordset:
-                    
+
+                    if (string.IsNullOrEmpty(recordsetName))
+                    {
+                        errors.AddError(string.Format(ErrorResource.IsRequired, "The Recordset Field"));
+                        break;
+                    }
                     var records = compiler.EvalRecordSetIndexes(recordsetName, update);
                     if (!compiler.HasRecordSet(recordsetName) )
                     {
@@ -109,6 +114,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
 
                     break;
                 case enForEachType.InCSV:
+                    if (string.IsNullOrEmpty(csvNumbers))
+                    {
+                        errors.AddError(string.Format(ErrorResource.IsRequired, "The CSV Field"));
+                        break;
+                    }
                     var csvIndexedsItr = ExecutionEnvironment.WarewolfEvalResultToString( compiler.Eval(csvNumbers, update));
 
                     ErrorResultTO allErrors;
