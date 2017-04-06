@@ -266,6 +266,7 @@
     <Compile Include="FindRecsetOptionsTests\FindRecsetOptionsTests.cs" />
     <Compile Include="FindRecsetOptionsTests\IsNotNullFindRecsetOptionTests.cs" />
     <Compile Include="FindRecsetOptionsTests\IsNullFindRecsetOptionTests.cs" />
+    <Compile Include="ForEachBootstrapTOTests.cs" />
     <Compile Include="Mocks\ActivityOperationBrokerMock.cs" />
     <Compile Include="Mocks\MockAbstractMultipleFilesActivity.cs" />
     <Compile Include="ActivityStrings.Designer.cs">

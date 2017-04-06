@@ -24,9 +24,14 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.SelectAndApply
 {
+   
     [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_Select_and_Apply")]
     public class DsfSelectAndApplyActivity : DsfActivityAbstract<bool>
     {
+        private class NullDataSource : Exception
+        {
+
+        }
         public DsfSelectAndApplyActivity()
         {
             DisplayName = "Select and apply";
@@ -87,6 +92,7 @@ namespace Dev2.Activities.SelectAndApply
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             throw new NotImplementedException();
+
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
@@ -142,7 +148,7 @@ namespace Dev2.Activities.SelectAndApply
                 {
                     dataObject.Environment.AddError(fetchError);
                 }
-                return;
+
             }
             var startTime = DateTime.Now;
             _previousParentId = dataObject.ParentInstanceID;
@@ -150,14 +156,27 @@ namespace Dev2.Activities.SelectAndApply
             _debugOutputs = new List<DebugItem>();
 
             dataObject.ForEachNestingLevel++;
-            var ds = dataObject.Environment.ToStar(DataSource);
-            var expressions = dataObject.Environment.GetIndexes(ds);
-            if (expressions.Count == 0)
-            {
-                expressions.Add(ds);
-            }
+
+            List<string> expressions = new List<string>();
             try
             {
+                string ds;
+                try
+                {
+                    ds = dataObject.Environment.ToStar(DataSource);
+                    expressions = dataObject.Environment.GetIndexes(ds);
+                    if (expressions.Count == 0)
+                    {
+                        expressions.Add(ds);
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    //Do nothing exception aleady added to errors
+                    throw new NullDataSource();
+                }
+
+
                 if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugItemStaticDataParams(Alias, "As", DataSource));
@@ -178,7 +197,7 @@ namespace Dev2.Activities.SelectAndApply
                 {
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
-                
+
                 foreach (var exp in expressions)
                 {
                     //Assign the warewolfAtom to Alias using new environment
@@ -191,6 +210,10 @@ namespace Dev2.Activities.SelectAndApply
                         exeAct.Execute(dataObject, 0);
                     }
                 }
+            }
+            catch (NullDataSource e)
+            {
+                Dev2Logger.Error("DSFSelectAndApply", e);
             }
             catch (Exception e)
             {
@@ -258,7 +281,7 @@ namespace Dev2.Activities.SelectAndApply
                             }
                         }
                     }
-                    
+
                     DispatchDebugState(dataObject, StateType.End, update, startTime, DateTime.Now);
                 }
                 OnCompleted(dataObject);
@@ -276,7 +299,7 @@ namespace Dev2.Activities.SelectAndApply
             }
             else
             {
-                if(nonPassingSteps != null)
+                if (nonPassingSteps != null)
                 {
                     var failMessage = string.Join(Environment.NewLine, nonPassingSteps.Select(step => step.Result.Message));
                     testRunResult.Message = failMessage;
@@ -302,7 +325,9 @@ namespace Dev2.Activities.SelectAndApply
         private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
             ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, _childUniqueID);
-           
-        }        
+
+        }
     }
+
+    
 }

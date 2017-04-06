@@ -33,9 +33,9 @@ namespace Warewolf.UITests.Workflow
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_S_Saves_Dirty_Workflows()
         {
-            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.Filter_Explorer("Shortcut_Control_S_Saves_Dirty_Workflows");
             ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
-            DataToolsUIMap.Move_Assign_Message_Tool_On_The_Design_Surface();
+            WorkflowTabUIMap.Make_Workflow_Savable();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
             WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
