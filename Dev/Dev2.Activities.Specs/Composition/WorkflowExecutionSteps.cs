@@ -668,9 +668,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-            var workflowId = debugStates.Last(wf => wf.DisplayName.Equals(workFlowName)).ID;
-
-            var toolSpecificDebug = debugStates.Last(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(workFlowName));
+            var toolSpecificDebug = debugStates.Last(wf => wf.DisplayName.Equals(workFlowName));
             foreach (var tableRow in table.Rows)
             {
                 var strings = toolSpecificDebug.ErrorMessage.Replace("\n", ",").Replace("\r", "").Split(',');
