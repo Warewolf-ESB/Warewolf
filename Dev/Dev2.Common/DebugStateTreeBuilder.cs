@@ -11,7 +11,7 @@ namespace Dev2.Common
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public static IEnumerable<IDebugState> BuildTree(IEnumerable<IDebugState> source)
         {
-            var groups = source?.GroupBy(i => i.ParentID)?? new List<IGrouping<Guid?, IDebugState>>();
+            var groups = source?.GroupBy(i => i.ParentID) ?? new List<IGrouping<Guid?, IDebugState>>();
             if (!groups.Any())
             {
                 return new List<IDebugState>();
@@ -44,7 +44,16 @@ namespace Dev2.Common
                 && (!node.IsAdded || (node.ActualType?.Contains("DsfForEachActivity") ?? false))
                 && node.StateType != StateType.Duration)//Services have the same Id so, they dont work inside the foreach
             {
-                var debugStates = source[node.ID]?.DistinctBy(state => new { state.ID, state.ParentID })?.ToList();
+                List<IDebugState> debugStates;
+                if (node.ActualType?.Contains("DsfForEachActivity") ?? false)
+                {
+                    debugStates = source[node.ID];
+                }
+                else
+                {
+                    debugStates = source[node.ID]?.DistinctBy(state => new { state.ID, state.ParentID })?.ToList();
+                }
+                
                 node.Children = debugStates ?? new List<IDebugState>();
                 node.IsAdded = true;
                 foreach (var state in node.Children)
