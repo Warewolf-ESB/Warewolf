@@ -74,6 +74,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     PopupController.ShowDeployNameConflict(_stats.RenameErrors);
                 }
+                ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
             };
             SourceConnectControlViewModel = _source.ConnectControlViewModel;
             DestinationConnectControlViewModel = _destination.ConnectControlViewModel;

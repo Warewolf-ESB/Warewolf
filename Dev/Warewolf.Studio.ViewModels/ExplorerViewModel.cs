@@ -335,13 +335,13 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
         }
 
-        private void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
+        private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
             var environmentViewModel = CreateEnvironmentViewModel(sender, environmentId, true);
-            SelectedEnvironment = environmentViewModel;
+            SelectedEnvironment = await environmentViewModel;
         }
 
-        public IEnvironmentViewModel CreateEnvironmentViewModel(object sender, Guid environmentId, bool shouldLoad = false)
+        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModel(object sender, Guid environmentId, bool shouldLoad = false)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
             if (environmentViewModel == null)
@@ -355,7 +355,7 @@ namespace Warewolf.Studio.ViewModels
                     _environments.Add(environmentModel);
                     if (shouldLoad)
                     {
-                        environmentModel.Load();
+                        await environmentModel.Load(true,true);
                     }
                     environmentViewModel = environmentModel;
                 }
