@@ -54,6 +54,10 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = await CreateEnvironmentViewModel(sender, environmentid);
             SelectedEnvironment = environmentViewModel;
             StatsArea?.ReCalculate();
+            if (environmentViewModel != null && environmentViewModel.Children.Count <= 0)
+            {
+                AfterLoad(environmentViewModel.ResourceId);
+            }
         }
 
         #region Overrides of ExplorerViewModel
