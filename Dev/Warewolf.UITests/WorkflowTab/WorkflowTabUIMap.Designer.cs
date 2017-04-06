@@ -1122,7 +1122,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(ServiceDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "(ServiceDesigner)", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1400,7 +1400,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "To [[Variable]]";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
             #endregion
         }
@@ -7387,7 +7387,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(ServiceDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "(ServiceDesigner)", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
