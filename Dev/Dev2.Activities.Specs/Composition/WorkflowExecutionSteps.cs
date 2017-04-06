@@ -2760,16 +2760,16 @@ namespace Dev2.Activities.Specs.Composition
             var namespaceItems = proxy.QueryManagerProxy.FetchNamespacesWithJsonRetunrs(pluginSource);
             var namespaceItem = namespaceItems.Single(item => item.FullName.Equals(ClassName, StringComparison.CurrentCultureIgnoreCase));
             var pluginActions = proxy.QueryManagerProxy.PluginActionsWithReturns(pluginSource, namespaceItem);
+            allPluginActions = pluginActions.ToList();
             var pluginAction = pluginActions.Single(action => action.Method.Equals(Action, StringComparison.InvariantCultureIgnoreCase));
             IList<IPluginConstructor> pluginConstructors = proxy.QueryManagerProxy.PluginConstructors(pluginSource, namespaceItem);
-            pluginAction.OutputVariable = ActionOutputVaribale;
             const string recNumber = "[[rec(*).number]]";
             foreach (var serviceInput in pluginAction.Inputs)
             {
                 serviceInput.Value = recNumber;
             }
             dsfEnhancedDotNetDllActivity.Namespace = namespaceItem;
-            dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
+            dsfEnhancedDotNetDllActivity.SourceId = pluginSource.Id;
             ScenarioContext.Current.Add(dotNetServiceName, dsfEnhancedDotNetDllActivity);
             ScenarioContext.Current.Add("pluginConstructors", pluginConstructors);
             _commonSteps.AddVariableToVariableList(ObjectName);
@@ -2913,6 +2913,7 @@ namespace Dev2.Activities.Specs.Composition
             var namespaceItems = dbServiceModel.GetNameSpaces(pluginSource);
             var namespaceItem = namespaceItems.Single(item => item?.FullName?.Equals(namespaceSelected, StringComparison.CurrentCultureIgnoreCase) ?? false);
             var pluginActions = dbServiceModel.GetActions(pluginSource, namespaceItem);
+            allPluginActions = pluginActions.ToList();
             var pluginAction = pluginActions.First(action => action.Method.Equals(Action, StringComparison.InvariantCultureIgnoreCase));
             var comPluginServiceDefinition = new ComPluginServiceDefinition()
             {
@@ -2955,7 +2956,7 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
         }
 
-
+        private List<IPluginAction> allPluginActions { get; set; }
         [Given(@"""(.*)"" constructorinputs (.*) with inputs as")]
         public void GivenConstructorWithInputsAs(string serviceName, int p1, Table table)
         {
@@ -2975,6 +2976,25 @@ namespace Dev2.Activities.Specs.Composition
                 });
             }
         }
+        
+
+        [Given(@"""(.*)"" service Action ""(.*)"" with inputs and output ""(.*)"" as")]
+        public void GivenServiceActionWithInputsAndOutputAs(string serviceName, string action, string outputVar, Table table)
+        {
+            var dsfEnhancedDotNetDllActivity = ScenarioContext.Current.Get<DsfEnhancedDotNetDllActivity>(serviceName);
+            var pluginAction = allPluginActions.Single(action1 => action1.Method == action);
+            pluginAction.OutputVariable = outputVar;
+            foreach (var tableRow in table.Rows)
+            {
+                var inputName = tableRow["parameterName"];
+                var value = tableRow["value"];
+                var serviceInput = pluginAction.Inputs.Single(input => input.Name == inputName);
+                serviceInput.Value = value;
+            }
+            dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
+        }
+
+
 
         [Given(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign Object ""(.*)"" as")]

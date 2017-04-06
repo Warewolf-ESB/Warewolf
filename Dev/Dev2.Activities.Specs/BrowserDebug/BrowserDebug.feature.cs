@@ -344,21 +344,43 @@ this.ScenarioSetup(scenarioInfo);
                         "type"});
 #line 82
   testRunner.And("\"DotNetService\" constructorinputs 0 with inputs as", ((string)(null)), table8, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "parameterName",
+                        "value",
+                        "type"});
+            table9.AddRow(new string[] {
+                        "a",
+                        "1",
+                        "System.Int32"});
+            table9.AddRow(new string[] {
+                        "b",
+                        "1",
+                        "System.Int32"});
+            table9.AddRow(new string[] {
+                        "c",
+                        "1",
+                        "System.Int32"});
+            table9.AddRow(new string[] {
+                        "d",
+                        "1",
+                        "System.Int32"});
 #line 84
+  testRunner.And("\"DotNetService\" service Action \"BuildInts\" with inputs and output \"[[rec1().num]]" +
+                    "\" as", ((string)(null)), table9, "And ");
+#line 90
   testRunner.When("workflow \"DotNetDLLWf\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 85
+#line 91
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?\" in B" +
                     "rowser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
-  testRunner.And("The Debug in Browser content contains for Dotnet has 4 states", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 87
+#line 92
+  testRunner.And("The Debug in Browser content contains for Dotnet has 3 states", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 93
   testRunner.And("The 1 debug state has 1 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 88
+#line 94
   testRunner.And("The 0 debug state has 0 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 95
   testRunner.And("The 2 debug state has 0 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
-  testRunner.And("The 3 debug state has 0 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -369,55 +391,55 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingAForwardSortRecordsetWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing a Forward Sort Recordset workflow", ((string[])(null)));
-#line 93
+#line 98
 this.ScenarioSetup(scenarioInfo);
-#line 94
+#line 99
   testRunner.Given("I have a workflow \"SortRecordsetWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "variable",
                         "value"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[Degree(1).YearCompleted]]",
                         "2015"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[Degree(2).YearCompleted]]",
                         "2012"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[Degree(3).YearCompleted]]",
                         "2014"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "[[Degree(4).YearCompleted]]",
                         "2013"});
-#line 95
-  testRunner.And("\"SortRecordsetWF\" contains an Assign \"ExampleRecordSet\" as", ((string)(null)), table9, "And ");
+#line 100
+  testRunner.And("\"SortRecordsetWF\" contains an Assign \"ExampleRecordSet\" as", ((string)(null)), table10, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Sort Field",
                         "Sort Order"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "[[Degree().YearCompleted]]",
                         "Forward"});
-#line 101
-  testRunner.And("\"SortRecordsetWF\" contains an Sort \"Degree\" as", ((string)(null)), table10, "And ");
-#line 104
+#line 106
+  testRunner.And("\"SortRecordsetWF\" contains an Sort \"Degree\" as", ((string)(null)), table11, "And ");
+#line 109
   testRunner.And("workflow \"SortRecordsetWF\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 110
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/SortRecordsetWF.debug?\" " +
                     "in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Values"});
-            table11.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "2012"});
-            table11.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "2013"});
-            table11.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "2014"});
-            table11.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "2015"});
-#line 106
-  testRunner.Then("Debugstate in index 2 has output as", ((string)(null)), table11, "Then ");
+#line 111
+  testRunner.Then("Debugstate in index 2 has output as", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -428,7 +450,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingHelloWolrdInAForeachLoopedThreeTimes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Hello Wolrd in a Foreach Looped Three times", ((string[])(null)));
-#line 114
+#line 119
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
