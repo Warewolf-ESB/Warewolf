@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
-using Dropbox.Api;
+using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +18,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         {
             var mock = new Mock<IDropboxDownload>();
             var successResult = new DropboxDownloadSuccessResult(It.IsAny<IDownloadResponse<FileMetadata>>());
-            mock.Setup(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()))
+            mock.Setup(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()))
                  .Returns(successResult);
             return mock;
         }
@@ -46,8 +46,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             Assert.IsNotNull(downloadMock);
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
-            downloadMock.Object.ExecuteTask(It.IsAny<DropboxClient>());
-            downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<DropboxClient>()));
+            downloadMock.Object.ExecuteTask(It.IsAny<IDropboxClientWrapper>());
+            downloadMock.Verify(upload => upload.ExecuteTask(It.IsAny<IDropboxClientWrapper>()));
         }
         
         [TestMethod]

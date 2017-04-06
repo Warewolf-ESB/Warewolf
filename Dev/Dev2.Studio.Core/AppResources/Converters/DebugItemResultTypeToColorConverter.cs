@@ -23,19 +23,23 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var resultType = (DebugItemResultType)value;
-            switch(resultType)
+            DebugItemResultType debugItemResultType;
+            var isDebugItemResultType = Enum.TryParse(value?.ToString(),true,out debugItemResultType);
+            if (isDebugItemResultType)
             {
-                case DebugItemResultType.Variable:
-                    return Application.Current.Resources["DebugItemVariableBrush"];
+                switch (debugItemResultType)
+                {
+                    case DebugItemResultType.Variable:
+                        return Application.Current.Resources["DebugItemVariableBrush"];
 
-                case DebugItemResultType.Value:
-                    return Application.Current.Resources["DebugItemValueBrush"];
+                    case DebugItemResultType.Value:
+                        return Application.Current.Resources["DebugItemValueBrush"];
 
-                default: // DebugItemResultType.Label:
-                    return Application.Current.Resources["DebugItemLabelBrush"];
+                    default: // DebugItemResultType.Label:
+                        return Application.Current.Resources["DebugItemLabelBrush"];
+                }
             }
-
+            return Application.Current.Resources["DebugItemLabelBrush"];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
