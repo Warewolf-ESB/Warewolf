@@ -193,9 +193,9 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table9.AddRow(new string[] {
-                        "[[values(1).up]] = HELLO"});
-            table9.AddRow(new string[] {
                         "[[values(1).low]] = hello"});
+            table9.AddRow(new string[] {
+                        "[[values(1).up]] = HELLO"});
             table9.AddRow(new string[] {
                         "[[output]] = HELLO"});
 #line 44
