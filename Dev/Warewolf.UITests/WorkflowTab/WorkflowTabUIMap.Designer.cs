@@ -7360,6 +7360,23 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         }
         
         #region Properties
+        public WpfCustom stackOverflowTestWF
+        {
+            get
+            {
+                if ((this.mstackOverflowTestWF == null))
+                {
+                    this.mstackOverflowTestWF = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mstackOverflowTestWF.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
+                    this.mstackOverflowTestWF.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "(ServiceDesigner)", PropertyExpressionOperator.Contains));
+                    this.mstackOverflowTestWF.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mstackOverflowTestWF;
+            }
+        }
+        
         public HelloWorldWorkFlow1 HelloWorldWorkFlow
         {
             get
@@ -7374,6 +7391,8 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         #endregion
         
         #region Fields
+        private WpfCustom mstackOverflowTestWF;
+        
         private HelloWorldWorkFlow1 mHelloWorldWorkFlow;
         #endregion
     }
