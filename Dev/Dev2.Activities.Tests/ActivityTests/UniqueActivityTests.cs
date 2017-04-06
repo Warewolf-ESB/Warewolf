@@ -472,8 +472,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(Result, dsfForEachItems[0].Value);
         }
 
-       
-        
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("GetOutputs")]
+        public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        {
+            //------------Setup for test--------------------------
+            const string InFields = "[[Numeric(1).num]]";
+            const string ResultFields = "Up";
+            const string Result = "[[res]]";
+            var act = new DsfUniqueActivity { InFields = InFields, ResultFields = ResultFields, Result = Result };
+            //------------Execute Test---------------------------
+            var outputs = act.GetOutputs();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("[[res]]", outputs[0]);
+        }
+
+
         #region Private Test Methods
 
         private void SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)

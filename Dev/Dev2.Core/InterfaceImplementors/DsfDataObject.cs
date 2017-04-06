@@ -10,6 +10,7 @@
 
 using System;
 using System.Activities.Persistence;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -40,9 +41,8 @@ namespace Dev2.DynamicServices
         #region Class Members
 
         private readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
-        private string _parentServiceName = string.Empty;
         private string _parentWorkflowInstanceId = string.Empty;
-        private readonly Stack<IExecutionEnvironment> _environments; 
+        private readonly ConcurrentStack<IExecutionEnvironment> _environments;
         #endregion Class Members
 
         #region Constructor
@@ -50,13 +50,13 @@ namespace Dev2.DynamicServices
         private DsfDataObject()
         {
             Environment = new ExecutionEnvironment();
-            _environments = new Stack<IExecutionEnvironment>();
+            _environments = new ConcurrentStack<IExecutionEnvironment>();
         }
 
         public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
         {
             Environment = new ExecutionEnvironment();
-            _environments = new Stack<IExecutionEnvironment>();
+            _environments = new ConcurrentStack<IExecutionEnvironment>();
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
 
             if (xmldata != null)
@@ -69,9 +69,9 @@ namespace Dev2.DynamicServices
                         xe = XElement.Parse(xmldata);
                     }
                 }
-                    // ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
                 catch (Exception)
-                    // ReSharper restore EmptyGeneralCatchClause
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // we only trying to parse ;)
                 }
@@ -110,7 +110,7 @@ namespace Dev2.DynamicServices
                     }
                     IsOnDemandSimulation = isOnDemandSimulation;
 
-                    _parentServiceName = ExtractValue(xe, "ParentServiceName");
+                    ParentServiceName = ExtractValue(xe, "ParentServiceName");
                     _parentWorkflowInstanceId = ExtractValue(xe, "ParentWorkflowInstanceId");
 
                     Guid executionCallbackId;
@@ -170,20 +170,10 @@ namespace Dev2.DynamicServices
             if (!IsDebug && !string.IsNullOrEmpty(rawPayload))
             {
                 RawPayload = new StringBuilder(rawPayload);
-                }
+            }
         }
 
-        public Guid DebugEnvironmentId
-        {
-            get
-            {
-                return _debugEnvironmentId;
-            }
-            set
-            {
-                _debugEnvironmentId = value;
-            }
-        }
+        public Guid DebugEnvironmentId { get; set; }
 
         private string ExtractValue(XElement xe, string elementName)
         {
@@ -226,8 +216,10 @@ namespace Dev2.DynamicServices
 
         public void PopEnvironment()
         {
-            Environment=  _environments.Pop();
-
+            IExecutionEnvironment localEnv;
+            var tryPop = _environments.TryPop(out localEnv);
+            if (tryPop)
+                Environment = localEnv;
         }
 
         public void PushEnvironment(IExecutionEnvironment env)
@@ -298,16 +290,12 @@ namespace Dev2.DynamicServices
         public string RemoteInvokerID { get; set; }
         public IList<IDebugState> RemoteDebugItems { get; set; }
         public string RemoteServiceType { get; set; }
-    
+
         public int ParentThreadID { get; set; }
 
         public bool WorkflowResumeable { get; set; }
 
-        public string ParentServiceName
-        {
-            get { return _parentServiceName; }
-            set { _parentServiceName = value; }
-        }
+        public string ParentServiceName { get; set; } = string.Empty;
 
         public string ParentWorkflowInstanceId
         {
@@ -408,7 +396,7 @@ namespace Dev2.DynamicServices
 
         public bool IsDebugMode()
         {
-            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke ) && !RunWorkflowAsync;
+            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
         }
 
         #endregion
@@ -434,7 +422,7 @@ namespace Dev2.DynamicServices
 
             readWriteValues = new Dictionary<XName, object>();
 
-            foreach (PropertyInfo pi in typeof (IDSFDataObject).GetProperties())
+            foreach (PropertyInfo pi in typeof(IDSFDataObject).GetProperties())
             {
                 readWriteValues.Add(_dSfDataObjectNs.GetName(pi.Name).LocalName, pi.GetValue(this, null));
             }
@@ -455,7 +443,7 @@ namespace Dev2.DynamicServices
         {
             foreach (XName key in readWriteValues.Keys)
             {
-                PropertyInfo pi = typeof (IDSFDataObject).GetProperty(key.LocalName);
+                PropertyInfo pi = typeof(IDSFDataObject).GetProperty(key.LocalName);
 
                 if (pi != null)
                 {
@@ -477,7 +465,7 @@ namespace Dev2.DynamicServices
             enDataListMergeTypes datalistOutMergeType;
             // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
             if (Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out datalistOutMergeType))
-                // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+            // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
             {
                 DatalistOutMergeType = datalistOutMergeType;
             }

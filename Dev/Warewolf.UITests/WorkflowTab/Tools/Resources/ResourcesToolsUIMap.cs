@@ -38,10 +38,17 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources.ResourcesToolsUIMapClasse
         }
 
         [When(@"I Double Click ComDLL Tool to Change View")]
-        public void ComDLLTool_ChangeView_With_DoubleClick()
+        public void ComDLLTool_Collapse_Large_View_To_Small_View_With_DoubleClick()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll, new Point(238, 16));
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.Exists, "ComDll tool large view on the design surface does not exist");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.SmallView.Exists, "ComDll tool small view on the design surface does not exist");
+        }
+
+        [When(@"I Double Click ComDLL Tool to Change View")]
+        public void ComDLLTool_Open_Large_View_With_DoubleClick()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll, new Point(238, 16));
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ComDll.LargeView.Exists, "ComDll tool large view on the design surface does not exist");
         }
 
         [When(@"I Double Click WCFService Tool to Change View")]
