@@ -526,22 +526,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
             }
         }
         
-        public WpfButton SourceConnectButton
-        {
-            get
-            {
-                if ((this.mSourceConnectButton == null))
-                {
-                    this.mSourceConnectButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mSourceConnectButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SourceConnectServerbtn_AutoID";
-                    this.mSourceConnectButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mSourceConnectButton;
-            }
-        }
-        
         public WpfText SourceCountText
         {
             get
@@ -624,8 +608,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         
         private WpfButton mShowDependenciesButton;
         
-        private WpfButton mSourceConnectButton;
-        
         private WpfText mSourceCountText;
         
         private SourceServerConectControl mSourceServerConectControl;
@@ -700,22 +682,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
             }
         }
         
-        public WpfButton ConnectDestinationButton
-        {
-            get
-            {
-                if ((this.mConnectDestinationButton == null))
-                {
-                    this.mConnectDestinationButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mConnectDestinationButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_DestinationServerConnectbtn_AutoID";
-                    this.mConnectDestinationButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mConnectDestinationButton;
-            }
-        }
-        
         public WpfCustom Spinner
         {
             get
@@ -736,8 +702,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         
         #region Fields
         private Combobox mCombobox;
-        
-        private WpfButton mConnectDestinationButton;
         
         private WpfCustom mSpinner;
         #endregion
@@ -896,22 +860,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
             }
         }
         
-        public WpfButton ConnectSourceButton
-        {
-            get
-            {
-                if ((this.mConnectSourceButton == null))
-                {
-                    this.mConnectSourceButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mConnectSourceButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SourceConnectServerbtn_AutoID";
-                    this.mConnectSourceButton.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mConnectSourceButton;
-            }
-        }
-        
         public WpfCustom Spinner
         {
             get
@@ -932,8 +880,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         
         #region Fields
         private Combobox1 mCombobox;
-        
-        private WpfButton mConnectSourceButton;
         
         private WpfCustom mSpinner;
         #endregion
