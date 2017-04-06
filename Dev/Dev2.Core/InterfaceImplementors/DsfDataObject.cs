@@ -188,7 +188,6 @@ namespace Dev2.DynamicServices
         #region Properties
 
         private StringBuilder _rawPayload;
-        Guid _debugEnvironmentId;
         private string _parentInstanceID;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
