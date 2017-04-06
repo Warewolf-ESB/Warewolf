@@ -422,10 +422,10 @@
                                                                 <WindowTitle>Warewolf</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ClassName">Uia.ServiceDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">Hello World(ServiceDesigner)</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId" Operator="Contains">(ServiceDesigner)</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
@@ -476,7 +476,6 @@
                                                                               </WindowTitles>
                                                                               <AndCondition>
                                                                                 <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
                                                                                 <PropertyCondition Name="ColumnHeader">Input Data or [[Variable]]</PropertyCondition>
                                                                               </AndCondition>
@@ -547,9 +546,9 @@
                                                                                 <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
-                                                                                <PropertyCondition Name="ColumnHeader">To [[Variable]]</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI_DataGridCell_AutoID</PropertyCondition>
                                                                                 <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                                <PropertyCondition Name="ColumnHeader">To [[Variable]]</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
@@ -3811,6 +3810,22 @@
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
                                                     </UIObject>
+                                                    <UIObject ControlType="TreeItem" Id="SelectandapplyTreeItem" FriendlyName="Select and apply" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\NKOSINATHI.SANGWENI)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <SearchConfigurations>
+                                                        <SearchConfiguration>Expand</SearchConfiguration>
+                                                      </SearchConfigurations>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">Step</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
                                                   </Descendants>
                                                 </UIObject>
                                                 <UIObject ControlType="Edit" Id="StatusBar" FriendlyName="Dev2StatusBarAutomationID" SpecialControlType="None">
@@ -4105,16 +4120,30 @@
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
+                                                        <UIObject ControlType="Custom" Id="stackOverflowTestWF" FriendlyName="DsfActivity" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.ServiceDesigner</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">(ServiceDesigner)</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
                                                         <UIObject ControlType="Custom" Id="HelloWorldWorkFlow" FriendlyName="DsfWorkflowActivity" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
                                                             <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ClassName">Uia.ServiceDesigner</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">Hello World(ServiceDesigner)</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">(ServiceDesigner)</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>

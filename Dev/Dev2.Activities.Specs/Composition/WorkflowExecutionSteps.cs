@@ -23,6 +23,10 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Dev2.Activities.DropBox2016.DeleteActivity;
+using Dev2.Activities.DropBox2016.DownloadActivity;
+using Dev2.Activities.DropBox2016.DropboxFileActivity;
+using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.RabbitMQ.Publish;
@@ -555,6 +559,31 @@ namespace Dev2.Activities.Specs.Composition
             return debugToUse;
         }
 
+       
+
+
+       [Then(@"Workflow ""(.*)"" has errors")]
+        public void ThenWorkflowHasErrors(string workFlowName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
+            var workflowId = debugStates.Last(wf => wf.DisplayName.Equals(workFlowName)).ID;
+
+            var toolSpecificDebug = debugStates.Last(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(workFlowName));
+            foreach (var tableRow in table.Rows)
+            {
+                var strings = toolSpecificDebug.ErrorMessage.Replace("\n", ",").Replace("\r", "").Split(',');
+                var predicate = tableRow["Error"];
+                var first = strings.First(p => p == predicate);
+                Assert.IsFalse(string.IsNullOrEmpty(first));
+            }
+        }
+
+
         [Then(@"the ""(.*)"" in step (.*) for ""(.*)"" debug outputs as")]
         public void ThenTheInStepForDebugOutputsAs(string toolName, int stepNumber, string forEachName, Table table)
         {
@@ -577,8 +606,9 @@ namespace Dev2.Activities.Specs.Composition
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
 
 
-            _commonSteps.ThenTheDebugOutputAs(table, debugToUse.Outputs
-                                                    .SelectMany(s => s.ResultsList).ToList());
+            var outputDebugItems = debugToUse.Outputs
+                .SelectMany(s => s.ResultsList).ToList();
+            _commonSteps.ThenTheDebugOutputAs(table, outputDebugItems);
         }
 
         [Given(@"""(.*)"" contains a ""(.*)"" service ""(.*)"" with mappings")]
@@ -2602,6 +2632,8 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
+
+
         [Given(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         [Then(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         public void GivenContainsAnDotNetDLLAs(string parentName, string dotNetServiceName, Table table)
@@ -2638,6 +2670,116 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddVariableToVariableList(ActionOutputVaribale);
             _commonSteps.AddVariableToVariableList(recNumber);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
+        }
+
+        [Given(@"""(.*)"" contains a DropboxUpload ""(.*)"" Setup as")]
+        public void GivenContainsADropboxUploadSetupAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var uploadActivity = new DsfDropBoxUploadActivity()
+            {
+                DisplayName = dotNetServiceName,
+
+            };
+
+            var dropBoxSource = GetDropBoxSource();
+            uploadActivity.SelectedSource = dropBoxSource;
+            var localFile = table.Rows[0]["Local File"];
+            var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
+            var dropboxFile = table.Rows[0]["DropboxFile"];
+            var result = table.Rows[0]["Result"];
+            uploadActivity.FromPath = localFile;
+            uploadActivity.OverWriteMode = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
+            uploadActivity.ToPath = dropboxFile;
+
+            try
+            {
+                using (File.Create(localFile))
+                {
+
+                }
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, uploadActivity);
+        }
+
+        [Given(@"""(.*)"" contains a DropboxList ""(.*)"" Setup as")]
+        public void GivenContainsADropboxListSetupAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var listActivity = new DsfDropboxFileListActivity()
+            {
+                DisplayName = dotNetServiceName,
+
+            };
+            var dropBoxSource = GetDropBoxSource();
+            listActivity.SelectedSource = dropBoxSource;
+            var result = table.Rows[0]["Result"];
+            var DropboxFile = table.Rows[0]["DropboxFile"];
+            listActivity.ToPath = DropboxFile;
+            var read = table.Rows[0]["Read"];
+            var loadSubFolders = table.Rows[0]["LoadSubFolders"];
+            switch (read)
+            {
+                case "Files":                    listActivity.IsFilesSelected = true;                    break;
+                case "Folders":                    listActivity.IsFoldersSelected = true;                    break;
+                case "All":                    listActivity.IsFilesAndFoldersSelected = true;                    break;
+            }
+            var b = bool.Parse(loadSubFolders);
+            listActivity.IsRecursive = b;
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, listActivity);
+
+        }
+
+
+        private static DropBoxSource GetDropBoxSource()
+        {
+            var guid = "dc163197-7a76-4f4c-a783-69d6d53b2f3a".ToGuid();
+            var resourceList = LocalEnvModel.ResourceRepository.LoadContextualResourceModel(guid);
+            var serviceDefinition = resourceList.ToServiceDefinition();
+            var dropBoxSource = new DropBoxSource(serviceDefinition.ToXElement());
+            return dropBoxSource;
+        }
+
+        [Given(@"""(.*)"" contains a DropboxDownLoad ""(.*)"" Setup as")]
+        public void GivenContainsADropboxDownLoadSetupAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var downloadActivity = new DsfDropBoxDownloadActivity()
+            {
+                DisplayName = dotNetServiceName,
+
+            };
+            var dropBoxSource = GetDropBoxSource();
+            downloadActivity.SelectedSource = dropBoxSource;
+            downloadActivity.FromPath = table.Rows[0]["Local File"];
+            downloadActivity.ToPath = table.Rows[0]["DropboxFile"];
+            var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
+            downloadActivity.OverwriteFile = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
+            var result = table.Rows[0]["Result"];
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, downloadActivity);
+
+        }
+
+
+        [Given(@"""(.*)"" contains a DropboxDelete ""(.*)"" Setup as")]
+        public void GivenContainsADropboxDeleteSetupAs(string parentName, string dotNetServiceName, Table table)
+        {
+            var deleteActivity = new DsfDropBoxDeleteActivity()
+            {
+                DisplayName = dotNetServiceName,
+
+            };
+            var dropBoxSource = GetDropBoxSource();
+            deleteActivity.SelectedSource = dropBoxSource;
+            var dropboxFile = table.Rows[0]["DropboxFile"];
+            deleteActivity.DeletePath = dropboxFile;
+            var result = table.Rows[0]["Result"];
+            _commonSteps.AddVariableToVariableList(result);
+            _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, deleteActivity);
         }
 
         [Given(@"""(.*)"" contains an COM DLL ""(.*)"" as")]

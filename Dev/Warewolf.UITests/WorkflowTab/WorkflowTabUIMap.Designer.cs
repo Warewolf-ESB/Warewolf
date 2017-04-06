@@ -1122,7 +1122,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(ServiceDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "(ServiceDesigner)", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1400,7 +1400,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "To [[Variable]]";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_DataGridCell_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
             #endregion
         }
@@ -6599,6 +6599,22 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mDecisionOnDebugOutput;
             }
         }
+        
+        public WpfTreeItem SelectandapplyTreeItem
+        {
+            get
+            {
+                if ((this.mSelectandapplyTreeItem == null))
+                {
+                    this.mSelectandapplyTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSelectandapplyTreeItem.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+                    this.mSelectandapplyTreeItem.WindowTitles.Add("Warewolf (DEV2\\NKOSINATHI.SANGWENI)");
+                    #endregion
+                }
+                return this.mSelectandapplyTreeItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -6611,6 +6627,8 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         private WpfTreeItem mAssignOnDebugOutput;
         
         private WpfTreeItem mDecisionOnDebugOutput;
+        
+        private WpfTreeItem mSelectandapplyTreeItem;
         #endregion
     }
     
@@ -7342,6 +7360,23 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         }
         
         #region Properties
+        public WpfCustom stackOverflowTestWF
+        {
+            get
+            {
+                if ((this.mstackOverflowTestWF == null))
+                {
+                    this.mstackOverflowTestWF = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mstackOverflowTestWF.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
+                    this.mstackOverflowTestWF.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "(ServiceDesigner)", PropertyExpressionOperator.Contains));
+                    this.mstackOverflowTestWF.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mstackOverflowTestWF;
+            }
+        }
+        
         public HelloWorldWorkFlow1 HelloWorldWorkFlow
         {
             get
@@ -7356,6 +7391,8 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         #endregion
         
         #region Fields
+        private WpfCustom mstackOverflowTestWF;
+        
         private HelloWorldWorkFlow1 mHelloWorldWorkFlow;
         #endregion
     }
@@ -7369,7 +7406,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ServiceDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Hello World(ServiceDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "(ServiceDesigner)", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
