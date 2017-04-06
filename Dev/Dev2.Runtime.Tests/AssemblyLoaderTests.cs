@@ -144,7 +144,7 @@ namespace Dev2.Tests.Runtime
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
             mock.Verify(wrapper => wrapper.Load(cleanName), Times.Exactly(1));
-            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(47));
+            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.AtLeast(2));
         }
 
         [TestMethod]
@@ -177,8 +177,8 @@ namespace Dev2.Tests.Runtime
             assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
             value = (List<string>)fieldInfo.GetValue(assemblyLoader);
             //---------------Test Result -----------------------
-            Assert.AreEqual(47, value.Count);
-            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.Exactly(47));
+            Assert.IsTrue(value.Count > 2);
+            mock.Verify(wrapper => wrapper.Load(It.IsAny<AssemblyName>()), Times.AtLeast(2));
             mock.Verify(wrapper => wrapper.GetReferencedAssemblies(load), Times.Once);
        
         }
