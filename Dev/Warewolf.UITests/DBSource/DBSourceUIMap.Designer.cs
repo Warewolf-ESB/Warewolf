@@ -572,19 +572,19 @@ namespace Warewolf.UITests.DBSource.DBSourceUIMapClasses
         }
         
         #region Properties
-        public WpfListItem RSAKLFSVRGENDEV
+        public WpfListItem RSAKLFSVRDEV
         {
             get
             {
-                if ((this.mRSAKLFSVRGENDEV == null))
+                if ((this.mRSAKLFSVRDEV == null))
                 {
-                    this.mRSAKLFSVRGENDEV = new WpfListItem(this);
+                    this.mRSAKLFSVRDEV = new WpfListItem(this);
                     #region Search Criteria
-                    this.mRSAKLFSVRGENDEV.SearchProperties[WpfListItem.PropertyNames.Name] = "RSAKLFSVRDEV";
-                    this.mRSAKLFSVRGENDEV.WindowTitles.Add("Warewolf");
+                    this.mRSAKLFSVRDEV.SearchProperties[WpfListItem.PropertyNames.Name] = "RSAKLFSVRDEV";
+                    this.mRSAKLFSVRDEV.WindowTitles.Add("Warewolf");
                     #endregion
                 }
-                return this.mRSAKLFSVRGENDEV;
+                return this.mRSAKLFSVRDEV;
             }
         }
         
@@ -606,7 +606,7 @@ namespace Warewolf.UITests.DBSource.DBSourceUIMapClasses
         #endregion
         
         #region Fields
-        private WpfListItem mRSAKLFSVRGENDEV;
+        private WpfListItem mRSAKLFSVRDEV;
         
         private WpfEdit mTextbox;
         #endregion

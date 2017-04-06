@@ -46,7 +46,7 @@ namespace Warewolf.UITests.ServerSource
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
-            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("RSAKLFSVRGENDEV");
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("RSAKLFSVRDEV");
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("IntegrationTester", "I73573r0");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
