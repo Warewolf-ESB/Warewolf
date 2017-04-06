@@ -4120,6 +4120,20 @@
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
+                                                        <UIObject ControlType="Custom" Id="stackOverflowTestWF" FriendlyName="DsfActivity" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ClassName">Uia.ServiceDesigner</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId" Operator="Contains">(ServiceDesigner)</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
                                                         <UIObject ControlType="Custom" Id="HelloWorldWorkFlow" FriendlyName="DsfWorkflowActivity" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>

@@ -1287,7 +1287,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
         [Then(@"I RightClick STACKOVERFLOWTESTWORKFLOW OnDesignSurface")]
         public void RightClick_StackOverFlowService_OnDesignSurface()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
+            Mouse.Click(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.ContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.stackOverflowTestWF, MouseButtons.Right, ModifierKeys.None, new Point(181, 11));
         }
 
         [Given(@"I RightClick CreateJSON OnDesignSurface")]
