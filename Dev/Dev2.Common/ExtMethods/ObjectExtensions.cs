@@ -130,6 +130,12 @@ namespace Dev2.Common.ExtMethods
             var serialize = Deserialize<T>(objectToSerialize);
             return serialize;
         }
+        public static T DeserializeToObject<T>(this StringBuilder objectToSerialize, SerializationBinder binder) 
+        {
+            DeSerializerSettings.Binder = binder;
+            var serialize = Deserialize<T>(objectToSerialize);
+            return serialize;
+        }
         
     }
 

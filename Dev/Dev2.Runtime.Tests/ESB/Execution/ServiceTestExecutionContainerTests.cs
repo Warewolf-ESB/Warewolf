@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data;
@@ -91,8 +93,11 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var execute = serviceTestExecutionContainer.Execute(out errors, 1);
             //---------------Test Result -----------------------
             Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var serviceTestModelTO = serializer.Deserialize<Dev2.Data.ServiceTestModelTO>(esbExecuteRequest.ExecuteResult);
+            var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>(new KnownTypesBinder()
+            {
+                KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
+                        .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
+            });
             Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
         }
 

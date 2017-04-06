@@ -656,10 +656,10 @@ namespace Dev2.Activities.Specs.Composition
             return debugToUse;
         }
 
-       
 
 
-       [Then(@"Workflow ""(.*)"" has errors")]
+
+        [Then(@"Workflow ""(.*)"" has errors")]
         public void ThenWorkflowHasErrors(string workFlowName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -1429,7 +1429,11 @@ namespace Dev2.Activities.Specs.Composition
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
-
+            if (!toolSpecificDebug.Any())
+            {
+                toolSpecificDebug =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             var outputState = toolSpecificDebug.FirstOrDefault();
@@ -2950,7 +2954,7 @@ namespace Dev2.Activities.Specs.Composition
             dsfEnhancedDotNetDllActivity.Method = pluginAction;
             dsfEnhancedDotNetDllActivity.Namespace = namespaceItem;
             dsfEnhancedDotNetDllActivity.SourceId = pluginSource.Id;
-            
+
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
         }
 
@@ -2974,7 +2978,7 @@ namespace Dev2.Activities.Specs.Composition
                 });
             }
         }
-        
+
 
         [Given(@"""(.*)"" service Action ""(.*)"" with inputs and output ""(.*)"" as")]
         public void GivenServiceActionWithInputsAndOutputAs(string serviceName, string action, string outputVar, Table table)
