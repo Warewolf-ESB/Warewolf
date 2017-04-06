@@ -78,16 +78,21 @@ Scenario: Executing a Dotnet plugin workflow
 		Given I have a workflow "DotNetDLLWf"
 		And "DotNetDLLWf" contains an DotNet DLL "DotNetService" as
 	     | Source                   | ClassName                       | ObjectName | Action    | ActionOutputVaribale |
-	     | New DotNet Plugin Source | TestingDotnetDllCascading.Human | [[@human]] | BuildInts | [[rec1().num]]       |
+	     | New DotNet Plugin Source | TestingDotnetDllCascading.Human | [[@human]] | BuildInts | [[rec1().num]]       |		 
 		And "DotNetService" constructorinputs 0 with inputs as
 		| parameterName | value |type|	  
+		And "DotNetService" service Action "BuildInts" with inputs and output "[[rec1().num]]" as 
+		| parameterName | value | type         |
+		| a             | 1     | System.Int32 |
+		| b             | 1     | System.Int32 |
+		| c             | 1     | System.Int32 |
+		| d             | 1     | System.Int32 |
 		When workflow "DotNetDLLWf" is saved "1" time
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?" in Browser
-		And The Debug in Browser content contains for Dotnet has 4 states
+		And The Debug in Browser content contains for Dotnet has 3 states
 		And The 1 debug state has 1 children
 		And The 0 debug state has 0 children
 		And The 2 debug state has 0 children
-		And The 3 debug state has 0 children
 		 
 
 Scenario: Executing a Forward Sort Recordset workflow
