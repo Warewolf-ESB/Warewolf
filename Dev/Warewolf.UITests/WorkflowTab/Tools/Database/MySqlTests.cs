@@ -40,7 +40,7 @@ namespace Warewolf.UITests.Tools
             DBSourceUIMap.Click_UserButton_On_DatabaseSource();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.UserNameTextBox.Exists);
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.PasswordTextBox.Exists);
-            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRGENDEV");
+            DBSourceUIMap.Enter_Text_Into_DatabaseServer_Tab("RSAKLFSVRDEV");
             DBSourceUIMap.IEnterRunAsUserRootOnDatabaseSource();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
