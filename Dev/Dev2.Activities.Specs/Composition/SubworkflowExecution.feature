@@ -43,8 +43,8 @@ Scenario: Workflow with an assign and remote workflow
 	  | 3 | [[values(1).low]] = hello |	  	 
 	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteWF" debug outputs as
 	  |                           |
-	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
+	  | [[values(1).up]] = HELLO  |	 
 	  | [[output]] = HELLO        |
 	
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
