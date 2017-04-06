@@ -36,18 +36,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ServerConnected(object sender, IServer server)
+        private async void ServerConnected(object sender, IServer server)
         {
-            var environmentViewModel = CreateEnvironmentViewModel(sender, server.EnvironmentID, true);
+            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID, true);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;
             StatsArea?.ReCalculate();
         }
 
-        void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)
+        private async void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)
         {
-            var environmentViewModel = CreateEnvironmentViewModel(sender, environmentid);
+            var environmentViewModel = await CreateEnvironmentViewModel(sender, environmentid);
             SelectedEnvironment = environmentViewModel;
             StatsArea?.ReCalculate();
         }
