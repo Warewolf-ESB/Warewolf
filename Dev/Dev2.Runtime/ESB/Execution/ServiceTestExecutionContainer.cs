@@ -426,7 +426,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-       
+
 
         private IServiceTestModelTO Eval(Guid resourceId, IDSFDataObject dataObject, IServiceTestModelTO test)
         {
@@ -554,7 +554,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestStep in failingTestOutputs)
                 {
-                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable+ " ");
+                    failureMessage.AppendLine("Failed Output For Variable: " + serviceTestStep.Variable + " ");
                     failureMessage.AppendLine("Message: " + serviceTestStep.Result?.Message);
                 }
             }
@@ -613,14 +613,15 @@ namespace Dev2.Runtime.ESB.Execution
             var failingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestFailed);
             pendingOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestPending);
             invalidOutputs = test.Outputs?.Where(output => output.Result?.RunTestResult == RunResult.TestInvalid);
-            if (failingOutputs.Any())
+            var serviceTestOutputs = failingOutputs as IServiceTestOutput[] ?? failingOutputs?.ToArray();
+            if (serviceTestOutputs?.Any() ?? false)
             {
-                foreach (var serviceTestOutput in failingOutputs)
+                foreach (var serviceTestOutput in serviceTestOutputs)
                 {
                     serviceTestOutput.Result.Message = DataListUtil.StripBracketsFromValue(serviceTestOutput.Result.Message);
                 }
             }
-            return failingOutputs;
+            return serviceTestOutputs;
         }
 
         private static List<IServiceTestStep> GetStepValues(IServiceTestModelTO test, out IEnumerable<IServiceTestStep> pendingSteps, out IEnumerable<IServiceTestStep> invalidSteps, out IEnumerable<IServiceTestStep> failingSteps)
