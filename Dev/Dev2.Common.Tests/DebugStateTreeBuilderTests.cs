@@ -3,6 +3,7 @@ using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Common.Tests
 {
@@ -65,9 +66,13 @@ namespace Dev2.Common.Tests
             Assert.IsTrue(buildTree.Any(state => state.Children.Any()));
             //---------------Execute Test ----------------------
             var children = buildTree[1].Children;
-            Assert.AreEqual(1, children.Count);
+            Assert.AreEqual(2, children.Count);
+           
             //---------------Test Result -----------------------
             var debugState = children[0];
+            Assert.AreEqual("DsfMultiAssignActivity", debugState.ActualType);
+            Assert.AreEqual("Assign (1)", debugState.DisplayName);
+            debugState = children[1];
             Assert.AreEqual("DsfMultiAssignActivity", debugState.ActualType);
             Assert.AreEqual("Assign (1)", debugState.DisplayName);
             Assert.IsTrue(children.Any(state => !state.Children.Any()));
@@ -102,10 +107,11 @@ namespace Dev2.Common.Tests
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("NestedForEachWorkFlow");
             var debugStates = fetch.DeserializeToObject<List<IDebugState>>();
-            Assert.AreEqual(10, debugStates.Count);
+            Assert.AreEqual(7, debugStates.Count);
             var buildTree = DebugStateTreeBuilder.BuildTree(debugStates).ToList();
             //---------------Assert Precondition----------------
             Assert.IsTrue(buildTree.Any(state => state.Children.Any()));
+            
             //---------------Execute Test ----------------------
             var children = buildTree[1].Children;
             Assert.AreEqual(2, children.Count);

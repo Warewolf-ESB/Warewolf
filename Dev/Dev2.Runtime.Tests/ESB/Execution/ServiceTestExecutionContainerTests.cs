@@ -90,9 +90,14 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Execute Test ----------------------
             ErrorResultTO errors;
             Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
-            var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+            Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
+            {
+                var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+                Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
+            });
+            
             //---------------Test Result -----------------------
-            Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
+            
             var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>(new KnownTypesBinder()
             {
                 KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
