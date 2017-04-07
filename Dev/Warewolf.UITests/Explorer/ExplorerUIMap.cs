@@ -520,16 +520,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             }
         }
 
-        [When(@"I Select NewRemoteServer From Explorer Server Dropdownlist")]
-        public void Select_NewRemoteServer_From_Explorer_Server_Dropdownlist()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(217, 8));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer.Exists, "New Remote Server... does not exist in explorer remote server drop down list");
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsNewRemoteServer.NewRemoteServerItemText, new Point(114, 10));
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.Exists, "Server source wizard does not exist.");
-            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.ProtocolCombobox.ToggleDropdown.Exists, "Server source wizard protocol dropdown does not exist.");
-        }
-
         [When(@"I Move FirstSubItem Into FirstItem Folder")]
         public void Move_FirstSubItem_Into_FirstItem_Folder()
         {

@@ -79,11 +79,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
-            if (server == null)
-            {
-                var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                server = shellViewModel?.ActiveServer;
-            }
             VerifyArgument.IsNotNull("environmentModel", server);
             _server = server;
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
