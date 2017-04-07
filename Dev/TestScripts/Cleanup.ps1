@@ -1,9 +1,12 @@
 ﻿#Requires -RunAsAdministrator
-$ServiceOutput = ""
+Param(
+    [int]$SleepDuration = 5
+)
 
+$Output = ""
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("INFO: "))) {
-    sleep 10
+    sleep $SleepDuration
 	Write-Host $Output.ToString()
     taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" /f 2>&1 | %{$Output = $_}
 	if (!($Output.ToString().StartsWith("INFO: "))) {
@@ -12,7 +15,7 @@ if (!($Output.ToString().StartsWith("INFO: "))) {
 }
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("INFO: "))) {
-    sleep 10
+    sleep $SleepDuration
 	Write-Host $Output.ToString()
 	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" /f 2>&1 | %{$Output = $_}
 	if (!($Output.ToString().StartsWith("INFO: "))) {
@@ -21,7 +24,7 @@ if (!($Output.ToString().StartsWith("INFO: "))) {
 }
 taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("INFO: "))) {
-    sleep 10
+    sleep $SleepDuration
 	Write-Host $Output.ToString()
 	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" /f 2>&1 | %{$Output = $_}
 	if (!($Output.ToString().StartsWith("INFO: "))) {
@@ -29,15 +32,16 @@ if (!($Output.ToString().StartsWith("INFO: "))) {
 	}
 }
 
+$ServiceOutput = ""
 sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
 if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has not been started.`n") {
-    sleep 10
+    sleep $SleepDuration
     Write-Host $ServiceOutput
 }
 
 taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("INFO: "))) {
-    sleep 10
+    sleep $SleepDuration
 	Write-Host $Output.ToString()
 	taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" /f 2>&1 | %{$Output = $_}
 	if (!($Output.ToString().StartsWith("INFO: "))) {
@@ -46,7 +50,7 @@ if (!($Output.ToString().StartsWith("INFO: "))) {
 }
 taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("INFO: "))) {
-    sleep 10
+    sleep $SleepDuration
 	Write-Host $Output.ToString()
 	taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" /f 2>&1 | %{$Output = $_}
 	if (!($Output.ToString().StartsWith("INFO: "))) {
@@ -55,7 +59,7 @@ if (!($Output.ToString().StartsWith("INFO: "))) {
 }
 taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("INFO: "))) {
-    sleep 10
+    sleep $SleepDuration
 	Write-Host $Output.ToString()
 	taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" /f 2>&1 | %{$Output = $_}
 	if (!($Output.ToString().StartsWith("INFO: "))) {
