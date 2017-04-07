@@ -1,7 +1,7 @@
 ﻿Feature: BrowserDebug
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to debug a workflow in Browser
+	As a Warewolf user
+	I want to be able to View full debug content in browser
 
 Scenario: Executing an empty workflow
 		Given I have a workflow "BlankWorkflow"
