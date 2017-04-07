@@ -21,6 +21,14 @@ namespace Dev2.Activities.Specs.BrowserDebug
             _externalProcessExecutor.OpenInBrowser(new Uri(urlString));
         }
 
+        [Then(@"Browser content is ""(.*)""")]
+        public void ThenBrowserContentIs(string p0)
+        {
+            var webResult = _externalProcessExecutor.WebResult.First();
+            var contains = webResult.Contains(p0);
+            Assert.IsTrue(contains);
+        }
+
         [Then(@"The Debug in Browser content contains ""(.*)""")]
         public void ThenTheDebugInBrowserContentContains(string containedText)
         {

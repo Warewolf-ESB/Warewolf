@@ -172,30 +172,31 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
         {
+            IResource localResource = null;
             Guid resourceID;
             if (Guid.TryParse(serviceName, out resourceID))
             {
-                resource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
-                if (resource != null)
+                localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
+                if (localResource != null)
                 {
-                    dataObject.ServiceName = resource.ResourceName;
-                    dataObject.ResourceID = resource.ResourceID;
-                    dataObject.SourceResourceID = resource.ResourceID;
+                    dataObject.ServiceName = localResource.ResourceName;
+                    dataObject.ResourceID = localResource.ResourceID;
+                    dataObject.SourceResourceID = localResource.ResourceID;
                 }
             }
             else
             {
                 if (!string.IsNullOrEmpty(dataObject.ServiceName))
                 {
-                    resource = catalog.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
-                    if (resource != null)
+                    localResource = catalog.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
+                    if (localResource != null)
                     {
-                        dataObject.ResourceID = resource.ResourceID;
-                        dataObject.SourceResourceID = resource.ResourceID;
+                        dataObject.ResourceID = localResource.ResourceID;
+                        dataObject.SourceResourceID = localResource.ResourceID;
                     }
                 }
             }
-            resource = null;
+            resource = localResource;
         }
 
         public static bool CanExecuteCurrentResource(this IDSFDataObject dataObject, IResource resource, IAuthorizationService service)
