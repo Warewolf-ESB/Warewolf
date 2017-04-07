@@ -3,7 +3,6 @@ using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Common.Tests
 {

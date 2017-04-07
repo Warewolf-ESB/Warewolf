@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
