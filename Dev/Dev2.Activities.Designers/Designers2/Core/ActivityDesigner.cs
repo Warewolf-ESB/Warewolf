@@ -331,7 +331,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            ViewModel.UpdateHelpDescriptor(helpText);
+            ViewModel?.UpdateHelpDescriptor(helpText);
         }
 
         void OnRoutedEventHandler(object sender, RoutedEventArgs args)
