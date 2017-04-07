@@ -59,7 +59,7 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-                ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
+                Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton);
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
                 UIMap.Click_Deploy_Ribbon_Button();
@@ -75,7 +75,7 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
                 DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
-                ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
+                Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton);
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
                 UIMap.Click_Deploy_Ribbon_Button();

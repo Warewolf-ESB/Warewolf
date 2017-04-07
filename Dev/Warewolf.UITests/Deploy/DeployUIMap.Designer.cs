@@ -74,10 +74,24 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
                 return this.mDockManager;
             }
         }
+        
+        public DeployDestinationRemoteConnection DeployDestinationRemoteConnection
+        {
+            get
+            {
+                if ((this.mDeployDestinationRemoteConnection == null))
+                {
+                    this.mDeployDestinationRemoteConnection = new DeployDestinationRemoteConnection(this);
+                }
+                return this.mDeployDestinationRemoteConnection;
+            }
+        }
         #endregion
         
         #region Fields
         private DockManager mDockManager;
+        
+        private DeployDestinationRemoteConnection mDeployDestinationRemoteConnection;
         #endregion
     }
     
@@ -1402,6 +1416,43 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         
         #region Fields
         private WpfCheckBox mFirstRemoteResourceCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DeployDestinationRemoteConnection : WpfCustom
+    {
+        
+        public DeployDestinationRemoteConnection(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText ConnectedRemoteServer
+        {
+            get
+            {
+                if ((this.mConnectedRemoteServer == null))
+                {
+                    this.mConnectedRemoteServer = new WpfText(this);
+                    #region Search Criteria
+                    this.mConnectedRemoteServer.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration (Connected)";
+                    this.mConnectedRemoteServer.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConnectedRemoteServer;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mConnectedRemoteServer;
         #endregion
     }
 }

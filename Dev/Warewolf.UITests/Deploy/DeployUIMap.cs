@@ -142,7 +142,6 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         public void Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(226, 13));
             Assert.AreEqual("Remote Connection Integration (Connected)", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.DisplayText, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
@@ -153,8 +152,7 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         public void Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton, new Point(230, 9));
-            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Exists, "Remote Connection Integration option does not exist in Destination server combobox.");
-            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected, new Point(226, 13));
+            Mouse.Click(MainStudioWindow.DeployDestinationRemoteConnection.ConnectedRemoteServer);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected destination server in deploy is not Remote Connection Integration (Connected).");
         }
 
