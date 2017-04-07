@@ -4,10 +4,6 @@ using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
-using System.Windows.Input;
-using MouseButtons = System.Windows.Forms.MouseButtons;
-using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 // ReSharper disable InconsistentNaming

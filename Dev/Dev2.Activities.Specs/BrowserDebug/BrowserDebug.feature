@@ -115,4 +115,6 @@ Scenario: Executing a Forward Sort Recordset workflow
 			| 2014   |
 			| 2015   |
 
-
+Scenario: Executing Hello world in browser 
+Given I Debug "http://localhost:3142/secure/Hello%20World.json?Name=&wid=5f895e8d-07a3-4f87-869f-7c03d86f330b" in Browser
+Then Browser content is "Hello World."
