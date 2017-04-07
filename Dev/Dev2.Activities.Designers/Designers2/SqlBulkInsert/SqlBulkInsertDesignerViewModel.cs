@@ -68,11 +68,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             TableName = "Select a Table..."
         };
 
-        //ModelItem Modelitem;
         public SqlBulkInsertDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator)
         {
-           // Modelitem = modelItem;
             this.RunViewSetup();
         }
 
@@ -81,6 +79,11 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
+            if (server == null)
+            {
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                server = shellViewModel?.ActiveServer;
+            }
             VerifyArgument.IsNotNull("environmentModel", server);
             _server = server;
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
