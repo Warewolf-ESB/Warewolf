@@ -244,6 +244,7 @@ namespace Dev2.Studio.Core.Models
             if(Connection.IsConnected)
             {
                 Connection.Disconnect();
+                OnPropertyChanged("DisplayName");
             }
         }
 
