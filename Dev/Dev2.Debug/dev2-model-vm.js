@@ -99,7 +99,7 @@
     };
     var pageModel = new PageModel();
     ////pageModel.URL("http://rsaklfnkosinath:3142/secure/DownloadedFromSharepoint/Hello%20World.debug?Name=&wid=8331c574-296b-44de-ae7d-6e56e6b9f338");
-    pageModel.URL("http://rsaklfnkosinath:3142/secure/nested.debug?%3CDataList%3E%3C/DataList%3E&wid=8331c574-296b-44de-ae7d-6e56e6b9f338");
+    pageModel.URL("http://rsaklfnkosinath:3142/secure/DownloadedFromSharepoint/Hello%20World.debug?Name=&wid=8331c574-296b-44de-ae7d-6e56e6b9f338");
 
     //self.debugUrl = ko.observable("http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=540beccb-b4f5-4b34-bc37-aa24b26370e2");
 
