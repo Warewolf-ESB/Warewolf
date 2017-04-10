@@ -32,8 +32,11 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull(@"destination", destination);
             _destination = destination;
             if (_destination.ConnectControlViewModel != null)
+            {
                 _destination.ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
+            }
             Status = @"";
+
         }
 
         private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
@@ -165,7 +168,44 @@ namespace Warewolf.Studio.ViewModels
                 Calculate(_items);
             }
         }
-
+        public void CheckDestinationPersmisions(ICollection<IExplorerItemViewModel> models)
+        {
+            _destinationItems = _destination.SelectedEnvironment?.AsList();
+            if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment == null || !_destination.SelectedEnvironment.IsConnected)
+            {
+                foreach (var currentItem in models)
+                {
+                    currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
+                }
+            }
+            else
+            {
+                if (models?.Count > 0)
+                {
+                    foreach (var currentItem in models)
+                    {
+                        var explorerItemViewModel =
+                            _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
+                        {
+                            if (explorerItemViewModel != null)
+                            {
+                                if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
+                                {
+                                    if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
+                                    {
+                                        currentItem.CanDeploy = explorerItemViewModel.CanContribute;
+                                    }
+                                    else
+                                        currentItem.CanDeploy = true;
+                                }
+                            }
+                            else
+                                currentItem.CanDeploy = true;
+                        }
+                    }
+                }
+            }
+        }
         public void CheckDestinationPersmisions()
         {
             _destinationItems = _destination.SelectedEnvironment?.AsList();
@@ -204,6 +244,8 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
+
+       
 
         private static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
         {            

@@ -164,7 +164,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                
+
                 await RefreshEnvironment(environmentViewModel, true);
             }
         }
@@ -184,11 +184,15 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.DisplayName.Replace("(Connected)", "").Trim() == resourceName);
             foreach (var environmentViewModel in environmentViewModels)
             {
-                await RefreshEnvironment(environmentViewModel, refresh);
+                await RefreshEnvironment(environmentViewModel, refresh).ContinueWith(task =>
+                {
+                    var viewModel = this as DeploySourceExplorerViewModel;
+                    viewModel?.RunStats.Invoke(environmentViewModel.AsList());
+                });
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
-            //ConnectControlViewModel?.LoadServers();
+            
         }
 
         private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
@@ -198,7 +202,11 @@ namespace Warewolf.Studio.ViewModels
             if (environmentViewModel.IsConnected)
             {
                 environmentViewModel.ForcedRefresh = true;
-                await environmentViewModel.Load(true, refresh);
+                await environmentViewModel.Load(true, refresh).ContinueWith(task =>
+                {
+                    var viewModel = this as DeploySourceExplorerViewModel;
+                    viewModel?.RunStats?.Invoke(SelectedEnvironment.AsList());
+                }); 
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
@@ -239,7 +247,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Environments);
             }
         }
-        
+
         public event SelectedExplorerItemChanged SelectedItemChanged;
 
         public void UpdateHelpDescriptor(string helpText)
@@ -307,7 +315,7 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _isLoading;
 
-        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator,bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction = null, bool loadLocalHost = true)
+        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction = null, bool loadLocalHost = true)
         {
             if (shellViewModel == null)
             {
@@ -355,7 +363,7 @@ namespace Warewolf.Studio.ViewModels
                     _environments.Add(environmentModel);
                     if (shouldLoad)
                     {
-                        await environmentModel.Load(true,true);
+                        await environmentModel.Load(true, true);
                     }
                     environmentViewModel = environmentModel;
                 }
@@ -468,7 +476,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 //
             }
-            
+
         }
 
         protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)
