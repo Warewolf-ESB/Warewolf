@@ -99,6 +99,7 @@
     <EmbeddedResource Include="Json\ForEachWorkFlow.json" />
     <EmbeddedResource Include="Json\NestedForEachWorkFlow.json" />
     <EmbeddedResource Include="Json\ForEachWithHelloWorldTest.json" />
+    <EmbeddedResource Include="Json\AllTools.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
