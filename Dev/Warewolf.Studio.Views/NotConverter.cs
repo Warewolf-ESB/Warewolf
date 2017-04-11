@@ -16,12 +16,12 @@ namespace Warewolf.Studio.Views
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return _convertor.Convert( !(bool)value,targetType,parameter,culture);
+            return _convertor.Convert( value != null && !(bool)value,targetType,parameter,culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return _convertor.Convert(!(bool)value, targetType, parameter, culture);
+            return _convertor.Convert(value != null && !(bool)value, targetType, parameter, culture);
         }
     }
 }

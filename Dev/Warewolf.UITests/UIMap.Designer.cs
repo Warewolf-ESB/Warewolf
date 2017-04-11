@@ -66,12 +66,26 @@ namespace Warewolf.UITests
                 return this.mUIWarewolfASHASHWindow;
             }
         }
+        
+        public UIWarewolfDEV2PIETERTEWindow UIWarewolfDEV2PIETERTEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2PIETERTEWindow == null))
+                {
+                    this.mUIWarewolfDEV2PIETERTEWindow = new UIWarewolfDEV2PIETERTEWindow();
+                }
+                return this.mUIWarewolfDEV2PIETERTEWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private MainStudioWindow mMainStudioWindow;
         
         private UIWarewolfASHASHWindow mUIWarewolfASHASHWindow;
+        
+        private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
         #endregion
     }
     
@@ -979,6 +993,18 @@ namespace Warewolf.UITests
                 return this.mWebServiceSourceToEditListItem;
             }
         }
+        
+        public ComboboxListItemAsDuplicatedConnection ComboboxListItemAsDuplicatedConnection
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsDuplicatedConnection == null))
+                {
+                    this.mComboboxListItemAsDuplicatedConnection = new ComboboxListItemAsDuplicatedConnection(this);
+                }
+                return this.mComboboxListItemAsDuplicatedConnection;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1103,6 +1129,8 @@ namespace Warewolf.UITests
         private WpfListItem mEmailSourceToEditListItem;
         
         private WpfListItem mWebServiceSourceToEditListItem;
+        
+        private ComboboxListItemAsDuplicatedConnection mComboboxListItemAsDuplicatedConnection;
         #endregion
     }
     
@@ -19716,6 +19744,43 @@ namespace Warewolf.UITests
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboboxListItemAsDuplicatedConnection : WpfCustom
+    {
+        
+        public ComboboxListItemAsDuplicatedConnection(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "DuplicatedCodedUITestServerSource";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "DuplicatedCodedUITestServerSource";
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
     public class UIWarewolfASHASHWindow : WpfWindow
     {
         
@@ -19816,5 +19881,19 @@ namespace Warewolf.UITests
         #region Fields
         private WpfCustom mUID7dccbadb86c4ae4afd4Custom;
         #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2PIETERTEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2PIETERTEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\PIETER.TERBLANCHE)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
     }
 }
