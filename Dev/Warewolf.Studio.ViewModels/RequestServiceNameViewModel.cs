@@ -20,6 +20,7 @@ using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
+using Dev2.ConnectionHelpers;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -135,6 +136,7 @@ namespace Warewolf.Studio.ViewModels
             }
             finally
             {
+                ConnectControlSingleton.Instance.ReloadServer();
                 IsDuplicating = false;
             }
         }
@@ -329,7 +331,7 @@ namespace Warewolf.Studio.ViewModels
                 if (_environmentViewModel.Children != null)
                     foreach (var explorerItemViewModel in _environmentViewModel.Children.Flatten(model => model.Children))
                     {
-                        explorerItemViewModel.SetPermissions((Permissions) permissions);
+                        explorerItemViewModel.SetPermissions((Permissions)permissions);
                     }
             }
 
