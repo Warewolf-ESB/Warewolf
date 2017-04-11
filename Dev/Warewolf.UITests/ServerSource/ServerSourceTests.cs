@@ -45,6 +45,7 @@ namespace Warewolf.UITests.ServerSource
         {
             //Create Source
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();

@@ -22,7 +22,6 @@
     <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
     <converters4:TypeToIconConverter x:Key="TypeToIconConverter" />
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisConverter" />    
-    <converters:PercentageConverter x:Key="PercentageConverter" />
     <converters2:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
     <converters:NegateVisibilityConverter x:Key="NegateVisibilityConverter" />
     <converters2:DoubleToMarginLeftConverter x:Key="DoubleToMarginLeftConverter" />
