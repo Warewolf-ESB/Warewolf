@@ -192,8 +192,8 @@ if (!($SkipStudioStartup)) {
 <LogFile>$env:LocalAppData\Warewolf\Studio Logs\dotCover.log</LogFile>
 <Output>$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr</Output>
 <Scope>
-	<ScopeEntry>$StudioBinDir/**/*.dll</ScopeEntry>
-	<ScopeEntry>$StudioBinDir/**/*.exe</ScopeEntry>
+	<ScopeEntry>$StudioBinDir\**\*.dll</ScopeEntry>
+	<ScopeEntry>$StudioBinDir\**\*.exe</ScopeEntry>
 </Scope>
 </AnalyseParams>
 "@
