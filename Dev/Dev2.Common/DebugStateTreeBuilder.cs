@@ -39,7 +39,7 @@ namespace Dev2.Common
                 List<IDebugState> debugStates;
                 if (node.ActualType?.Contains("DsfForEachActivity") ?? false)
                 {
-                    var states = source[node.ID].DistinctBy(state => new { state.ID, state.ParentID, state.SessionID }).ToList();
+                    var states = source[node.ID].DistinctBy(state => new { state.ID, state.ParentID, state.SessionID, state.EndTime, state.StartTime }).ToList();
                     debugStates = states;
                 }
                 else
