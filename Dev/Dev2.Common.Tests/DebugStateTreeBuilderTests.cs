@@ -66,7 +66,7 @@ namespace Dev2.Common.Tests
             //---------------Execute Test ----------------------
             var children = buildTree[1].Children;
             Assert.AreEqual(2, children.Count);
-           
+
             //---------------Test Result -----------------------
             var debugState = children[0];
             Assert.AreEqual("DsfMultiAssignActivity", debugState.ActualType);
@@ -110,7 +110,7 @@ namespace Dev2.Common.Tests
             var buildTree = DebugStateTreeBuilder.BuildTree(debugStates).ToList();
             //---------------Assert Precondition----------------
             Assert.IsTrue(buildTree.Any(state => state.Children.Any()));
-            
+
             //---------------Execute Test ----------------------
             var children = buildTree[1].Children;
             Assert.AreEqual(2, children.Count);
@@ -123,6 +123,32 @@ namespace Dev2.Common.Tests
             Assert.AreEqual("Assign (1)", firstGrandChild.Single().DisplayName);
             Assert.AreEqual("Assign (1)", secondGrandChild.Single().DisplayName);
 
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildTree_GivenStatesWithNestesWithService_ShouldAddChildrenCorrectly()
+        {
+            //---------------Set up test pack-------------------
+            var fetch = JsonResource.Fetch("ForEachWithHelloWorldTest");
+            var debugStates = fetch.DeserializeToObject<List<IDebugState>>();
+            Assert.AreEqual(22, debugStates.Count);
+            var treeStates = DebugStateTreeBuilder.BuildTree(debugStates).ToList();
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(treeStates.Any(state => state.Children.Any()));
+            var allStates = treeStates.Count;
+            Assert.AreEqual(4, allStates);
+            //---------------Execute Test ----------------------
+            var debugState = treeStates.Single(state => state.DisplayName.Equals("Assign (3)"));
+            var hasChildren = debugState.Children.Any();
+            Assert.IsFalse(hasChildren);
+            debugState = treeStates.Single(state => state.DisplayName.Equals("For Each"));
+            hasChildren = debugState.Children.Any();
+            Assert.IsTrue(hasChildren);
+            var count = debugState.Children.Count;
+            Assert.AreEqual(3, count);
+            var allHas4Children = debugState.Children.All(state => state.Children.Count == 4);
+            Assert.IsTrue(allHas4Children);
         }
 
     }

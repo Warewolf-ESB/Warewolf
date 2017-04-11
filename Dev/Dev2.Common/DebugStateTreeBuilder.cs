@@ -24,15 +24,7 @@ namespace Dev2.Common
                 for (var i = 0; i < roots.Count(); i++)
                     AddChildren(roots[i], dict);
             }
-            var debugStates = roots?.DistinctBy(state => new
-            {
-                state.ID
-                                       ,
-                state.StateType
-                                       ,
-                state.Children
-
-            }).ToList();
+            var debugStates = roots?.DistinctBy(state => new { state.ID, state.StateType, state.Children }).ToList();
 
             return debugStates;
 
@@ -47,13 +39,16 @@ namespace Dev2.Common
                 List<IDebugState> debugStates;
                 if (node.ActualType?.Contains("DsfForEachActivity") ?? false)
                 {
-                    debugStates = source[node.ID];
+                    var states = source[node.ID].DistinctBy(state => new { state.ID, state.ParentID, state.SessionID }).ToList();
+                    debugStates = states;
                 }
                 else
                 {
-                    debugStates = source[node.ID]?.DistinctBy(state => new { state.ID, state.ParentID })?.ToList();
+                    debugStates = source[node.ID]?
+                                            .Where(state => state.ID != node.ID)
+                                        .ToList();
                 }
-                
+
                 node.Children = debugStates ?? new List<IDebugState>();
                 node.IsAdded = true;
                 foreach (var state in node.Children)
