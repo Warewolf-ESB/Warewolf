@@ -3,29 +3,9 @@ Param(
     [int]$SleepDuration = 5
 )
 
-#Kill Studio Gently
-$Output = ""
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$Output = $_}
-if (!($Output.ToString().StartsWith("INFO: "))) {
-	Write-Host $Output.ToString() + " STATUS eq RUNNING"
-    sleep $SleepDuration
-}
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$Output = $_}
-if (!($Output.ToString().StartsWith("INFO: "))) {
-	Write-Host $Output.ToString() + " STATUS eq UNKNOWN"
-    sleep $SleepDuration
-}
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$Output = $_}
-if (!($Output.ToString().StartsWith("INFO: "))) {
-	Write-Host $Output.ToString() + " STATUS eq NOT RESPONDING"
-    sleep $SleepDuration
-}
-
-#Kill Studio Forcefully
-taskkill /im "Warewolf Studio.exe" /f 2>&1 | %{$Output = $_}
-if ($Output.ToString() -ne "ERROR: The process `"Warewolf Studio.exe`" not found.") {
-	Write-Host $Output.ToString()
-}
+taskkill /im "Warewolf Studio.exe"
+Wait-Process "Warewolf Studio" -Timeout $SleepDuration
+taskkill /im "Warewolf Studio.exe" /f
 
 $ServiceOutput = ""
 sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
@@ -34,28 +14,9 @@ if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has no
     sleep $SleepDuration
 }
 
-#Kill Server Gently
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$Output = $_}
-if (!($Output.ToString().StartsWith("INFO: "))) {
-	Write-Host $Output.ToString() + " STATUS eq RUNNING"
-    sleep $SleepDuration
-}
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$Output = $_}
-if (!($Output.ToString().StartsWith("INFO: "))) {
-	Write-Host $Output.ToString() + " STATUS eq UNKNOWN"
-    sleep $SleepDuration
-}
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$Output = $_}
-if (!($Output.ToString().StartsWith("INFO: "))) {
-	Write-Host $Output.ToString() + " STATUS eq NOT RESPONDING"
-    sleep $SleepDuration
-}
-
-#Kill Server Forcefully
-taskkill /im "Warewolf Server.exe" /f 2>&1 | %{$Output = $_}
-if ($Output.ToString() -ne "ERROR: The process `"Warewolf Server.exe`" not found.") {
-	Write-Host $Output.ToString()
-}
+taskkill /im "Warewolf Server.exe"
+Wait-Process "Warewolf Server" -Timeout $SleepDuration
+taskkill /im "Warewolf Server.exe" /f
 
 $ToClean = `
 "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
