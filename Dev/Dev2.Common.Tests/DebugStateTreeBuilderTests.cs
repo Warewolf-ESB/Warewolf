@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -170,7 +169,6 @@ namespace Dev2.Common.Tests
             var errorMessage = debugState.ErrorMessage.Split('\n');
             Assert.IsNotNull(errorMessage);
             Assert.AreNotEqual(0, errorMessage.Length);
-            Assert.AreNotEqual(TimeSpan.Zero, debugState.Duration);
 
         }
 
