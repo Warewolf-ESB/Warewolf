@@ -147,5 +147,5 @@ Scenario: Resource Permissions Toggles Deploy button correctly
 	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for Remote Server
 	And I set AuthenticationType to Public
 	When I Click Deploy Ribbon Button
-	And I Select RemoteConnectionIntegration (Connected) From Deploy Tab Destination Server Combobox
+	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
 	Then I validate I can not Deploy "ResourceWithViewAndExecutePerm"
