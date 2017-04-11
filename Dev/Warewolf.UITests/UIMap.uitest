@@ -11453,6 +11453,34 @@
               <SupportLevel>0</SupportLevel>
               <Descendants />
             </UIObject>
+            <UIObject ControlType="Custom" Id="ComboboxListItemAsDuplicatedConnection" FriendlyName="DuplicatedCodedUITestServerSource" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
+                <PropertyCondition Name="Name">DuplicatedCodedUITestServerSource</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Text" Id="Text" FriendlyName="DuplicatedCodedUITestServerSource" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                    <PropertyCondition Name="Name">DuplicatedCodedUITestServerSource</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
+                </UIObject>
+              </Descendants>
+            </UIObject>
           </Descendants>
         </TopLevelWindow>
         <TopLevelWindow ControlType="Window" Id="UIWarewolfASHASHWindow" FriendlyName="Warewolf (ASH\ASH)" SpecialControlType="None" SessionId="330108">
@@ -11513,6 +11541,20 @@
               </Descendants>
             </UIObject>
           </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2PIETERTEWindow" FriendlyName="Warewolf (DEV2\PIETER.TERBLANCHE)" SpecialControlType="None" SessionId="88610234">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\PIETER.TERBLANCHE)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants />
         </TopLevelWindow>
       </TopLevelWindows>
     </UIMap>
