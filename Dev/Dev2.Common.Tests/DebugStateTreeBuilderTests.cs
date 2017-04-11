@@ -159,10 +159,10 @@ namespace Dev2.Common.Tests
             //---------------Set up test pack-------------------
             var fetch = JsonResource.Fetch("AllTools");
             var debugStates = fetch.DeserializeToObject<List<IDebugState>>();
-            Assert.AreEqual(78, debugStates.Count);
+            Assert.AreEqual(76, debugStates.Count);
             var treeStates = DebugStateTreeBuilder.BuildTree(debugStates).ToList();
             //---------------Assert Precondition----------------
-            Assert.IsTrue(treeStates.Any(state => state.Children.Any()));
+            Assert.IsFalse(treeStates.Any(state => state.Children.Any()));
             var allStates = treeStates.Count;
             Assert.AreEqual(76, allStates);
             //---------------Execute Test ----------------------

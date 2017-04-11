@@ -376,7 +376,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 92
   testRunner.And("The Debug in Browser content contains for Dotnet has 3 states", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
-  testRunner.And("The 1 debug state has 1 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("The 1 debug state has 2 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
   testRunner.And("The 0 debug state has 0 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 95

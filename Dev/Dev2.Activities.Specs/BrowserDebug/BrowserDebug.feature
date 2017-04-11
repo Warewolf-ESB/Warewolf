@@ -90,7 +90,7 @@ Scenario: Executing a Dotnet plugin workflow
 		When workflow "DotNetDLLWf" is saved "1" time
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/DotNetDLLWf.debug?" in Browser
 		And The Debug in Browser content contains for Dotnet has 3 states
-		And The 1 debug state has 1 children
+		And The 1 debug state has 2 children
 		And The 0 debug state has 0 children
 		And The 2 debug state has 0 children
 		 
