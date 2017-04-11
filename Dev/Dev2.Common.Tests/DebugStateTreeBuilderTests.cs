@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -149,6 +150,28 @@ namespace Dev2.Common.Tests
             Assert.AreEqual(3, count);
             var allHas4Children = debugState.Children.All(state => state.Children.Count == 4);
             Assert.IsTrue(allHas4Children);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildTree_GivenStatesAllToolsWorkflow_ShouldAggregateErrors()
+        {
+            //---------------Set up test pack-------------------
+            var fetch = JsonResource.Fetch("AllTools");
+            var debugStates = fetch.DeserializeToObject<List<IDebugState>>();
+            Assert.AreEqual(78, debugStates.Count);
+            var treeStates = DebugStateTreeBuilder.BuildTree(debugStates).ToList();
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(treeStates.Any(state => state.Children.Any()));
+            var allStates = treeStates.Count;
+            Assert.AreEqual(76, allStates);
+            //---------------Execute Test ----------------------
+            var debugState = treeStates.Last(state => state.StateType == StateType.End && state.DisplayName == "All Tools");
+            var errorMessage = debugState.ErrorMessage.Split('\n');
+            Assert.IsNotNull(errorMessage);
+            Assert.AreNotEqual(0, errorMessage.Length);
+            Assert.AreNotEqual(TimeSpan.Zero, debugState.Duration);
+
         }
 
     }

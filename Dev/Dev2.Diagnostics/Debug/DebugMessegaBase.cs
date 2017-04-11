@@ -30,7 +30,7 @@ namespace Dev2.Diagnostics.Debug
         }
 
 
-        public virtual IList<IDebugState> FetchDebugItems(Guid clientId, Guid sessionId)
+        public IList<IDebugState> FetchDebugItems(Guid clientId, Guid sessionId)
         {
             lock (Lock)
             {
