@@ -40,8 +40,8 @@ namespace Warewolf.Studio.ViewModels
             // ReSharper disable once VirtualMemberCallInContructor
             LoadEnvironment(localhostEnvironment);
 
-            ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer,aggregator,_shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
-                
+            ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
+
             ShowConnectControl = true;
             ConnectControlViewModel.ServerConnected += ServerConnected;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
@@ -68,16 +68,19 @@ namespace Warewolf.Studio.ViewModels
 
         async void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            if (_environments.Count != _shellViewModel?.ExplorerViewModel?.Environments?.Count)
+            var connectControlViewModel = sender as ConnectControlViewModel;
+            var task = Task.Run(async () => { await CreateNewEnvironment(connectControlViewModel?.SelectedConnection); });
+            task.Wait();
+            if (_environments.Count == _shellViewModel?.ExplorerViewModel?.Environments?.Count)
             {
-                var environmentViewModel = _shellViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(
-                        model => model.ResourceId == environmentId);
-
-                await CreateNewEnvironment(environmentViewModel?.Server);
+                UpdateItemForDeploy(environmentId);
             }
             else
             {
-                UpdateItemForDeploy(environmentId);
+                var environmentViewModel = _shellViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(
+                    model => model.ResourceId == environmentId) ?? _environments.FirstOrDefault(p => p.ResourceId == environmentId);
+
+                await CreateNewEnvironment(environmentViewModel?.Server);
             }
         }
 
