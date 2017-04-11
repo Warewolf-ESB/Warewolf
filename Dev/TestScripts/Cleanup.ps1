@@ -3,35 +3,28 @@ Param(
     [int]$SleepDuration = 5
 )
 
-$KillRunningStudioOutput = ""
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$KillRunningStudioOutput = $_}
-if (!($KillRunningStudioOutput.ToString().StartsWith("INFO: "))) {
-	Write-Host $KillRunningStudioOutput.ToString()
+#Kill Studio Gently
+$Output = ""
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$Output = $_}
+if (!($Output.ToString().StartsWith("INFO: "))) {
+	Write-Host $Output.ToString() + " STATUS eq RUNNING"
     sleep $SleepDuration
-    taskkill /im "Warewolf Studio.exe" /fi "STATUS eq RUNNING" /f 2>&1 | %{$KillRunningStudioOutput = $_}
-	if (!($KillRunningStudioOutput.ToString().StartsWith("INFO: "))) {
-		Write-Host $KillRunningStudioOutput.ToString()
-	}
 }
-$KillUnknownStudioOutput = ""
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$KillUnknownStudioOutput = $_}
-if (!($KillUnknownStudioOutput.ToString().StartsWith("INFO: "))) {
-	Write-Host $KillUnknownStudioOutput.ToString()
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$Output = $_}
+if (!($Output.ToString().StartsWith("INFO: "))) {
+	Write-Host $Output.ToString() + " STATUS eq UNKNOWN"
     sleep $SleepDuration
-	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq UNKNOWN" /f 2>&1 | %{$KillUnknownStudioOutput = $_}
-	if (!($KillUnknownStudioOutput.ToString().StartsWith("INFO: "))) {
-		Write-Host $KillUnknownStudioOutput.ToString()
-	}
 }
-$KillUnresponsiveStudioOutput = ""
-taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$KillUnresponsiveStudioOutput = $_}
-if (!($KillUnresponsiveStudioOutput.ToString().StartsWith("INFO: "))) {
-	Write-Host $KillUnresponsiveStudioOutput.ToString()
+taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$Output = $_}
+if (!($Output.ToString().StartsWith("INFO: "))) {
+	Write-Host $Output.ToString() + " STATUS eq NOT RESPONDING"
     sleep $SleepDuration
-	taskkill /im "Warewolf Studio.exe" /fi "STATUS eq NOT RESPONDING" /f 2>&1 | %{$KillUnresponsiveStudioOutput = $_}
-	if (!($KillUnresponsiveStudioOutput.ToString().StartsWith("INFO: "))) {
-		Write-Host $KillUnresponsiveStudioOutput.ToString()
-	}
+}
+
+#Kill Studio Forcefully
+taskkill /im "Warewolf Studio.exe" /f 2>&1 | %{$Output = $_}
+if ($Output.ToString() -ne "ERROR: The process `"Warewolf Studio.exe`" not found.") {
+	Write-Host $Output.ToString()
 }
 
 $ServiceOutput = ""
@@ -41,35 +34,27 @@ if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has no
     sleep $SleepDuration
 }
 
-$KillRunningServerOutput = ""
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$KillRunningServerOutput = $_}
-if (!($KillRunningServerOutput.ToString().StartsWith("INFO: "))) {
-	Write-Host $KillRunningServerOutput.ToString()
+#Kill Server Gently
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" 2>&1 | %{$Output = $_}
+if (!($Output.ToString().StartsWith("INFO: "))) {
+	Write-Host $Output.ToString() + " STATUS eq RUNNING"
     sleep $SleepDuration
-	taskkill /im "Warewolf Server.exe" /fi "STATUS eq RUNNING" /f 2>&1 | %{$KillRunningServerOutput = $_}
-	if (!($KillRunningServerOutput.ToString().StartsWith("INFO: "))) {
-		Write-Host $KillRunningServerOutput.ToString()
-	}
 }
-$KillUnknownServerOutput = ""
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$KillUnknownServerOutput = $_}
-if (!($KillUnknownServerOutput.ToString().StartsWith("INFO: "))) {
-	Write-Host $KillUnknownServerOutput.ToString()
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" 2>&1 | %{$Output = $_}
+if (!($Output.ToString().StartsWith("INFO: "))) {
+	Write-Host $Output.ToString() + " STATUS eq UNKNOWN"
     sleep $SleepDuration
-	taskkill /im "Warewolf Server.exe" /fi "STATUS eq UNKNOWN" /f 2>&1 | %{$KillUnknownServerOutput = $_}
-	if (!($KillUnknownServerOutput.ToString().StartsWith("INFO: "))) {
-		Write-Host $KillUnknownServerOutput.ToString()
-	}
 }
-$KillUnresponsiveServerOutput = ""
-taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$KillUnresponsiveServerOutput = $_}
-if (!($KillUnresponsiveServerOutput.ToString().StartsWith("INFO: "))) {
-	Write-Host $KillUnresponsiveServerOutput.ToString()
+taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" 2>&1 | %{$Output = $_}
+if (!($Output.ToString().StartsWith("INFO: "))) {
+	Write-Host $Output.ToString() + " STATUS eq NOT RESPONDING"
     sleep $SleepDuration
-	taskkill /im "Warewolf Server.exe" /fi "STATUS eq NOT RESPONDING" /f 2>&1 | %{$KillUnresponsiveServerOutput = $_}
-	if (!($KillUnresponsiveServerOutput.ToString().StartsWith("INFO: "))) {
-		Write-Host $KillUnresponsiveServerOutput.ToString()
-	}
+}
+
+#Kill Server Forcefully
+taskkill /im "Warewolf Server.exe" /f 2>&1 | %{$Output = $_}
+if ($Output.ToString() -ne "ERROR: The process `"Warewolf Server.exe`" not found.") {
+	Write-Host $Output.ToString()
 }
 
 $ToClean = `
