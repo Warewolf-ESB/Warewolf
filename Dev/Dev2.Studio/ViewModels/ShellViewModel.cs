@@ -484,6 +484,7 @@ namespace Dev2.Studio.ViewModels
             PopupProvider = popupController ?? new PopupController();
             ServerRepository = serverRepository;
             _activeServer = LocalhostServer;
+            ServerRepository.ActiveServer = _activeServer;
             ShouldUpdateActiveState = true;
             SetActiveServer(_activeServer.EnvironmentID);
 
