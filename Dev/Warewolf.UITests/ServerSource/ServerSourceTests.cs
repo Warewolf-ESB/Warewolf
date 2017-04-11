@@ -1,15 +1,15 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UITests.ServerSource
 {
     [CodedUITest]
     public class ServerSourceTests
     {
-        private const string SourceNameContextMenu = "CodedUITestServerSource";
-        private const string ExistingSourceName = "ExistingCodedUITestServerSource";
         private const string SourceName = "CodedUITestServerSource";
 
         [TestMethod]
@@ -51,8 +51,8 @@ namespace Warewolf.UITests.ServerSource
             ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
             //Save Source
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
-            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceNameContextMenu);
-            ExplorerUIMap.Filter_Explorer(SourceNameContextMenu);
+            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            ExplorerUIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
         }
@@ -73,7 +73,21 @@ namespace Warewolf.UITests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             Assert.AreEqual("IntegrationTester", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
         }
-        
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void DuplicateServerSource_AddsToConnectControl()
+        {
+            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu(SourceName);
+            const string newName = "DuplicatedCodedUITestServerSource";
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
+            DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
+            ExplorerUIMap.WaitForExplorerFirstRemoteServerSpinner();
+            ExplorerUIMap.Filter_Explorer(newName);
+            Assert.AreEqual(newName, ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
+            ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsDuplicatedConnection.Exists);
+        }
 
         #region Additional test attributes
 
@@ -128,6 +142,35 @@ namespace Warewolf.UITests.ServerSource
         }
 
         private ServerSourceUIMap _ServerSourceUIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

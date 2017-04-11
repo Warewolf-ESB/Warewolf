@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -60,6 +61,13 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(CloseView, CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
+
+            if (ServerRepository.Instance.ActiveServer == null)
+            {
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                ServerRepository.Instance.ActiveServer = shellViewModel?.ActiveServer;
+            }
+
             return this;
         }
 
@@ -83,6 +91,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void CallDuplicateService()
         {
+            ObservableCollection<IExplorerItemViewModel> childItems = null;
             try
             {
                 IsDuplicating = true;
@@ -117,7 +126,7 @@ namespace Warewolf.Studio.ViewModels
                         var duplicatedItems = executeCommand.DuplicatedItems;
                         var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                         var parentItem = SelectedItem ?? _explorerItemViewModel.Parent;
-                        var childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
+                        childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
                         var explorerItemViewModels = parentItem.Children;
                         explorerItemViewModels.AddRange(childItems);
                         parentItem.Children = explorerItemViewModels;
@@ -137,7 +146,25 @@ namespace Warewolf.Studio.ViewModels
             finally
             {
                 ConnectControlSingleton.Instance.ReloadServer();
+
+                if (childItems != null)
+                {
+                    foreach (var childItem in childItems.Where(model => model.ResourceType == "Dev2Server"))
+                    {
+                        FireServerSaved(childItem.ResourceId);
+                    }
+                }
+
                 IsDuplicating = false;
+            }
+        }
+
+        private void FireServerSaved(Guid savedServerId, bool isDeleted = false)
+        {
+            if (_environmentViewModel.Server.UpdateRepository.ServerSaved != null)
+            {
+                var handler = _environmentViewModel.Server.UpdateRepository.ServerSaved;
+                handler.Invoke(savedServerId, isDeleted);
             }
         }
 
