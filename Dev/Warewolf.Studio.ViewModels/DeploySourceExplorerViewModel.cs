@@ -69,10 +69,13 @@ namespace Warewolf.Studio.ViewModels
         async void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
             var connectControlViewModel = sender as ConnectControlViewModel;
-            var task = Task.Run(async () => { await CreateNewEnvironment(connectControlViewModel?.SelectedConnection); });
-            task.Wait();
-            if (_environments.Count == _shellViewModel?.ExplorerViewModel?.Environments?.Count)
+            if(connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
             {
+                var task = Task.Run(async () => { await CreateNewEnvironment(connectControlViewModel.SelectedConnection); });
+                task.Wait();
+            }
+            if (_environments.Count == _shellViewModel?.ExplorerViewModel?.Environments?.Count)
+            {                
                 UpdateItemForDeploy(environmentId);
             }
             else
