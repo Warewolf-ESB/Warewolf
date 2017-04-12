@@ -8,8 +8,9 @@ $Output = ""
 taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("ERROR: "))) {
 	Write-Host $Output.ToString()
+    Wait-Process "Warewolf Studio" -Timeout $WaitForCloseTimeout  2>&1 | out-null
+    taskkill /im "Warewolf Studio.exe"  2>&1 | out-null
 }
-Wait-Process "Warewolf Studio" -Timeout $WaitForCloseTimeout  2>&1 | out-null
 taskkill /im "Warewolf Studio.exe" /f  2>&1 | out-null
 
 #Stop Server
