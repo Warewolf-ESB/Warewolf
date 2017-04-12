@@ -51,7 +51,9 @@ namespace Dev2.Studio.Interfaces.Deploy
         string RenameErrors { get; }
 
         void ReCalculate();
-        
+
+        void CheckDestinationPersmisions();
+
         void CheckDestinationPersmisions(ICollection<IExplorerItemViewModel> models);
     }
 }
