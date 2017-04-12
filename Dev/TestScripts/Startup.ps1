@@ -180,9 +180,15 @@ if (!($SkipStudioStartup)) {
 	}
 
 	if ($StudioPath -ne "") {
-        $StudioLogFilePath = "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log"
-        if (Test-Path $StudioLogFilePath) {
-            Remove-Item $StudioLogFilePath -Force
+        $StudioLogFile = "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log"
+        if (Test-Path $StudioLogFile) {
+            #Studio Log File Backup
+            $num = 1
+            while(Test-Path -Path "$StudioLogFile.$num")
+            {
+                $num += 1
+            }
+            $StudioLogFile | Move-Item -Destination "$StudioLogFile.$num"
         }
 		if ($DotCoverPath -eq "") {
 			Start-Process "$StudioPath"
@@ -204,8 +210,8 @@ if (!($SkipStudioStartup)) {
             Out-File -LiteralPath "$StudioBinDir\DotCoverRunner.xml" -Encoding default -InputObject $RunnerXML
 			Start-Process $DotCoverPath "cover `"$StudioBinDir\DotCoverRunner.xml`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`""
 		}
-        while (!(Test-Path $StudioLogFilePath)){
-            Write-Host 'WARNING: Waiting for Warewolf Studio to start...' -ForegroundColor DarkYellow
+        while (!(Test-Path $StudioLogFile)){
+            Write-Warning 'Waiting for Warewolf Studio to start...' -ForegroundColor DarkYellow
             Sleep 3
         }
 		Write-Host Studio has started.
