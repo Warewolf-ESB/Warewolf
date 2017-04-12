@@ -478,7 +478,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
             Select_RemoteConnectionIntegration_From_Explorer();
             Playback.Wait(1000);
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
             UIMap.Click_Settings_RibbonButton();
             var deleteFirstResourceButton = SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
             if (deleteFirstResourceButton.Enabled)
@@ -499,6 +498,11 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             }
             SettingsUIMap.Set_FirstResource_ResourcePermissions(resource, "Public", true, true);
             SettingsUIMap.Click_Close_Settings_Tab_Button();
+        }
+
+        public void Click_First_Remote_Server_On_Explorer_Tree()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer);
         }
 
         [Given(@"I Save Valid Service With Ribbon Button And Dialog As ""(.*)""")]
