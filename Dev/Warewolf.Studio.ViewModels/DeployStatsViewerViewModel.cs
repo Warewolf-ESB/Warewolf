@@ -168,21 +168,22 @@ namespace Warewolf.Studio.ViewModels
                 Calculate(_items);
             }
         }
-        public void CheckDestinationPersmisions(ICollection<IExplorerItemViewModel> models)
+        public void CheckDestinationPersmisions(ICollection<IExplorerTreeItem> models = null)
         {
+            var newItems = models ?? _items;
             _destinationItems = _destination.SelectedEnvironment?.AsList();
             if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment == null || !_destination.SelectedEnvironment.IsConnected)
             {
-                foreach (var currentItem in models)
+                foreach (var currentItem in newItems)
                 {
                     currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
                 }
             }
             else
             {
-                if (models?.Count > 0)
+                if (newItems?.Count > 0)
                 {
-                    foreach (var currentItem in models)
+                    foreach (var currentItem in newItems)
                     {
                         var explorerItemViewModel =
                             _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
@@ -206,44 +207,44 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-        public void CheckDestinationPersmisions()
-        {
-            _destinationItems = _destination.SelectedEnvironment?.AsList();
-            if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment==null || !_destination.SelectedEnvironment.IsConnected)
-            {
-                foreach (var currentItem in _items)
-                {
-                    currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
-                }
-            }
-            else
-            {
-                if (_items?.Count > 0)
-                {
-                    foreach (var currentItem in _items)
-                    {
-                        var explorerItemViewModel =
-                            _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
-                        {
-                            if (explorerItemViewModel != null)
-                            {
-                                if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
-                                {
-                                    if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
-                                    {
-                                        currentItem.CanDeploy = explorerItemViewModel.CanContribute;
-                                    }
-                                    else
-                                        currentItem.CanDeploy = true;
-                                }
-                            }
-                            else
-                                currentItem.CanDeploy = true;
-                        }
-                    }
-                }
-            }
-        }
+        //public void CheckDestinationPersmisions()
+        //{
+        //    _destinationItems = _destination.SelectedEnvironment?.AsList();
+        //    if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment==null || !_destination.SelectedEnvironment.IsConnected)
+        //    {
+        //        foreach (var currentItem in _items)
+        //        {
+        //            currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (_items?.Count > 0)
+        //        {
+        //            foreach (var currentItem in _items)
+        //            {
+        //                var explorerItemViewModel =
+        //                    _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
+        //                {
+        //                    if (explorerItemViewModel != null)
+        //                    {
+        //                        if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
+        //                        {
+        //                            if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
+        //                            {
+        //                                currentItem.CanDeploy = explorerItemViewModel.CanContribute;
+        //                            }
+        //                            else
+        //                                currentItem.CanDeploy = true;
+        //                        }
+        //                    }
+        //                    else
+        //                        currentItem.CanDeploy = true;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
        
 

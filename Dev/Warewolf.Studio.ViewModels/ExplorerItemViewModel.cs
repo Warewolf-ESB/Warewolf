@@ -686,9 +686,12 @@ namespace Warewolf.Studio.ViewModels
         public void SetPermission(Permissions permission, bool isDeploy = false)
         {
             SetNonePermissions();
+            
             if (Server.CanDeployFrom)
             {
-                CanDeploy = true;
+                var permissions = Server.GetPermissions(ResourceId);
+                CanDeploy = permission.HasFlag(Permissions.Contribute);
+                //CanDeploy = true;
             }
             if (permission.HasFlag(Permissions.View))
             {
