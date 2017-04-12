@@ -495,7 +495,6 @@
     <Compile Include="Views\Administration\StartPageWindow.xaml.cs">
       <DependentUpon>StartPageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DataList\InvertSign.cs" />
     <Compile Include="Views\DataMapping\DataMapping.xaml.cs">
       <DependentUpon>DataMapping.xaml</DependentUpon>
     </Compile>

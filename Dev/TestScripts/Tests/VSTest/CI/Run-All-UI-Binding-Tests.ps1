@@ -61,7 +61,7 @@ foreach ($file in Get-ChildItem $TestAssembliesPath -Include Warewolf.UIBindingT
 }
 
 # Create full VSTest argument string.
-$FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList
+$FullArgsList = $TestAssembliesList + " /logger:trx /Parallel" + $TestList
 
 # Display full command including full argument string.
 Write-Host `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
