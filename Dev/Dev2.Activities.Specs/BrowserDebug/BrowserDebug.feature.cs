@@ -307,7 +307,7 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.And("I Debug \"http://localhost:3142/secure/Acceptance%20Tests/ForEachAssigneWF.debug?\"" +
                     " in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
-  testRunner.Then("The Debug in Browser content contains the variable assigned executed \"4\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+     testRunner.And("The 1 debug state has 4 children", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

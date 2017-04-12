@@ -72,7 +72,7 @@ Scenario: Executing a Foreach workflow
 	    | [[Year]]	| 2017  |
 		When workflow "ForEachAssigneWF" is saved "1" time
 		And I Debug "http://localhost:3142/secure/Acceptance%20Tests/ForEachAssigneWF.debug?" in Browser
-		Then The Debug in Browser content contains the variable assigned executed "4" times
+	    And The 1 debug state has 4 children
   
 Scenario: Executing a Dotnet plugin workflow
 		Given I have a workflow "DotNetDLLWf"
