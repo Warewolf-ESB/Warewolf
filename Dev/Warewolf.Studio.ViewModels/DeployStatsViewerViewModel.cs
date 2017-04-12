@@ -44,7 +44,7 @@ namespace Warewolf.Studio.ViewModels
             if (_destination?.SelectedEnvironment != null && _destination.SelectedEnvironment.AsList().Count <= 0)
             {
                 await _destination.SelectedEnvironment.Load(true, true);
-                CheckDestinationPersmisions();
+                CheckDestinationPersmisions(null);
             }
         }
 
@@ -170,19 +170,24 @@ namespace Warewolf.Studio.ViewModels
         }
         public void CheckDestinationPersmisions(ICollection<IExplorerItemViewModel> models)
         {
+            var item = _items;
+            if(models!=null)
+            {
+                item = (IList<IExplorerTreeItem>)models;
+            }
             _destinationItems = _destination.SelectedEnvironment?.AsList();
             if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment == null || !_destination.SelectedEnvironment.IsConnected)
             {
-                foreach (var currentItem in models)
+                foreach (var currentItem in item)
                 {
                     currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
                 }
             }
             else
             {
-                if (models?.Count > 0)
+                if (item?.Count > 0)
                 {
-                    foreach (var currentItem in models)
+                    foreach (var currentItem in item)
                     {
                         var explorerItemViewModel =
                             _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
@@ -205,47 +210,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
-        }
-        public void CheckDestinationPersmisions()
-        {
-            _destinationItems = _destination.SelectedEnvironment?.AsList();
-            if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment==null || !_destination.SelectedEnvironment.IsConnected)
-            {
-                foreach (var currentItem in _items)
-                {
-                    currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
-                }
-            }
-            else
-            {
-                if (_items?.Count > 0)
-                {
-                    foreach (var currentItem in _items)
-                    {
-                        var explorerItemViewModel =
-                            _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
-                        {
-                            if (explorerItemViewModel != null)
-                            {
-                                if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
-                                {
-                                    if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
-                                    {
-                                        currentItem.CanDeploy = explorerItemViewModel.CanContribute;
-                                    }
-                                    else
-                                        currentItem.CanDeploy = true;
-                                }
-                            }
-                            else
-                                currentItem.CanDeploy = true;
-                        }
-                    }
-                }
-            }
-        }
-
-       
+        }               
 
         private static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
         {            
@@ -333,7 +298,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
-            CheckDestinationPersmisions();
+            CheckDestinationPersmisions(null);
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();
