@@ -686,12 +686,10 @@ namespace Warewolf.Studio.ViewModels
         public void SetPermission(Permissions permission, bool isDeploy = false)
         {
             SetNonePermissions();
-            
+
             if (Server.CanDeployFrom)
             {
-                var permissions = Server.GetPermissions(ResourceId);
-                CanDeploy = permission.HasFlag(Permissions.Contribute);
-                //CanDeploy = true;
+                CanDeploy = true;
             }
             if (permission.HasFlag(Permissions.View))
             {
@@ -1063,10 +1061,7 @@ namespace Warewolf.Studio.ViewModels
                     _isSelected = value;
 
                     OnPropertyChanged(() => IsSelected);
-                    if (_shellViewModel != null)
-                    {
-                        _shellViewModel.SetActiveServer(Server.EnvironmentID);
-                    }
+                    _shellViewModel?.SetActiveServer(Server.EnvironmentID);
                 }
             }
         }
