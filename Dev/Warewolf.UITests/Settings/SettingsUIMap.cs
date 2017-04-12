@@ -379,6 +379,15 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
             var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
             if (deleteFirstResourceButton.Enabled)
             {
+                var selectedResource = FindSelectedResourceText(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).DisplayText;
+                if(!selectedResource.EndsWith(resource))
+                {
+                    Mouse.Click(deleteFirstResourceButton);
+                    UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                }
+            }
+            if (deleteFirstResourceButton.Enabled)
+            {
                 var isViewChecked = FindViewPermissionsCheckbox(
                     MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
                         .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
