@@ -1,6 +1,6 @@
 ﻿#Requires -RunAsAdministrator
 Param(
-    [decimal]$WaitForCloseTimeout = 900.0
+    [decimal]$WaitForCloseTimeout = 1200.0
 )
 
 #Stop Studio
@@ -8,13 +8,13 @@ $Output = ""
 taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("ERROR: "))) {
 	Write-Host $Output.ToString()
-    [int]$RetryCount = 3
+    [int]$RetryCount = 10
     1..$RetryCount | % { 
         Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$RetryCount))  2>&1 | out-null
-        taskkill /im "Warewolf Studio.exe"  2>&1 | out-null 
+        taskkill /im "Warewolf Studio.exe"  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
     }
 }
-taskkill /im "Warewolf Studio.exe" /f  2>&1 | out-null
+taskkill /im "Warewolf Studio.exe" /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
 
 #Stop Server
 $ServiceOutput = ""
