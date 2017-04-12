@@ -303,7 +303,7 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         public void ValidateICanDeploy(string resource)
         {
             Filter_Deploy_Source_Explorer(resource);
-            Playback.Wait(1000);
+            Playback.Wait(5000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.FirstRemoteResource.FirstRemoteResourceCheckBox.Enabled, "The Deploy selection checkbox is not Enabled");
         }
 

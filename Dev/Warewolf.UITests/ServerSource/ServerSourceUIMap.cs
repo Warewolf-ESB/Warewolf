@@ -90,6 +90,7 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
         [Then(@"I set AuthenticationType to Public")]
         public void ChangeServerAuthenticationTypeToPublic()
         {
+            ExplorerUIMap.Click_First_Remote_Server_On_Explorer_Tree();
             ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
             var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
             if (!publicRadioButton.Selected)
