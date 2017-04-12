@@ -25,7 +25,7 @@ namespace Warewolf.Studio.ViewModels
         IEnumerable<IExplorerTreeItem> _preselected;
         private Version _serverVersion;
         private object _serverInformation;
-        public System.Action<ICollection<IExplorerItemViewModel>> RunStats { get; set; }
+        public System.Action<ICollection<IExplorerTreeItem>> RunStats { get; set; }
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
         {
             if (shellViewModel == null)
