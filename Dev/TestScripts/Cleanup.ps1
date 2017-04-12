@@ -1,6 +1,6 @@
 ﻿#Requires -RunAsAdministrator
 Param(
-    [int]$SleepDuration = 900
+    [int]$WaitForCloseTimeout = 900
 )
 
 #Stop Studio
@@ -9,7 +9,7 @@ taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
 if (!($Output.ToString().StartsWith("ERROR: "))) {
 	Write-Host $Output.ToString()
 }
-Wait-Process "Warewolf Studio" -Timeout $SleepDuration  2>&1 | out-null
+Wait-Process "Warewolf Studio" -Timeout $WaitForCloseTimeout  2>&1 | out-null
 taskkill /im "Warewolf Studio.exe" /f  2>&1 | out-null
 
 #Stop Server
@@ -17,7 +17,7 @@ $ServiceOutput = ""
 sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
 if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has not been started.`n") {
     Write-Host $ServiceOutput
-    Wait-Process "Warewolf Server" -Timeout $SleepDuration  2>&1 | out-null
+    Wait-Process "Warewolf Server" -Timeout $WaitForCloseTimeout  2>&1 | out-null
 }
 taskkill /im "Warewolf Server.exe" /f  2>&1 | out-null
 
