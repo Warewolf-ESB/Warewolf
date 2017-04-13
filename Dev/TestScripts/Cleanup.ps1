@@ -10,10 +10,13 @@ taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
 
 #Soft Kill
 [int]$i = 0
-while (!($Output.ToString().StartsWith("ERROR: ")) -and $i -lt $WaitForCloseRetryCount) {
+[string]$WaitTimeoutMessage = "This command stopped operation because process"
+[string]$WaitOutput = $WaitTimeoutMessage
+while (!($Output.ToString().StartsWith("ERROR: ")) -and $WaitOutput.ToString().StartsWith($WaitTimeoutMessage) -and $i -lt $WaitForCloseRetryCount) {
 	$i += 1
 	Write-Host $Output.ToString()
-	Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$WaitForCloseRetryCount))  2>&1 | %{$Output = $_}
+    Write-Host $WaitOutput.ToString().replace($WaitTimeoutMessage, "")
+	Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$WaitForCloseRetryCount))  2>&1 | %{$WaitOutput = $_}
 	taskkill /im "Warewolf Studio.exe"  2>&1 |  %{$Output = $_}
 }
 
