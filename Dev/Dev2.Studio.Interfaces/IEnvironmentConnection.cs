@@ -26,7 +26,7 @@ using Dev2.Common.Interfaces.Studio.Core;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Studio.Interfaces
 {
-    public interface IEnvironmentConnection:IDisposable
+    public interface IEnvironmentConnection:IDisposable,IEquatable<IEnvironmentConnection>
     {
         // PBI 6690 - 2013.07.04 - TWR : added
         IEventPublisher ServerEvents { get; }

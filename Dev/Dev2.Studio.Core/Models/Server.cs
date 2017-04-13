@@ -332,7 +332,12 @@ namespace Dev2.Studio.Core.Models
             {
                 return false;
             }
-            return EnvironmentID == other.EnvironmentID;
+            if (EnvironmentID != other.EnvironmentID)
+            {
+                return false;
+            }
+            var isEqual = other.Connection.Equals(Connection);
+            return isEqual;
         }
 
         public override bool Equals(object obj)

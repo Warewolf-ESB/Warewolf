@@ -374,9 +374,8 @@ namespace Dev2.Core.Tests.Environments
         {
             // DO NOT use mock as test requires IEquatable of IEnvironmentModel
             var c1 = CreateMockConnection();
-            //var wizard = new Mock<IWizardEngine>();
             var e1 = new Server(Guid.NewGuid(), c1.Object);
-
+            c1.Setup(connection => connection.Equals(e1.Connection)).Returns(true);
             var source = new Mock<IServer>();
             var repo = new TestServerRespository(source.Object, e1);
             var startCount = repo.All().Count;
@@ -394,6 +393,7 @@ namespace Dev2.Core.Tests.Environments
             //------------Setup for test--------------------------
             var c1 = CreateMockConnection();
             var e1 = new Server(Guid.NewGuid(), c1.Object);
+            c1.Setup(connection => connection.Equals(e1.Connection)).Returns(true);
             var source = new Mock<IServer>();
             IServer _editedEnvironment = null;
             var repo = new TestServerRespository(source.Object, e1);
@@ -555,8 +555,11 @@ namespace Dev2.Core.Tests.Environments
             c3.Setup(c => c.Disconnect()).Verifiable();
 
             var e1 = new Server(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            c1.Setup(connection => connection.Equals(e1.Connection)).Returns(true);
             var e2 = new Server(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            c2.Setup(connection => connection.Equals(e2.Connection)).Returns(true);
             var e3 = new Server(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
+            c3.Setup(connection => connection.Equals(e3.Connection)).Returns(true);
 
             var repo = new TestServerRespository(source.Object, e1, e2, e3);
 
@@ -613,8 +616,11 @@ namespace Dev2.Core.Tests.Environments
             c3.Setup(c => c.Disconnect()).Verifiable();
 
             var e1 = new Server(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object);
+            c1.Setup(connection => connection.Equals(e1.Connection)).Returns(true);
             var e2 = new Server(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object);
+            c2.Setup(connection => connection.Equals(e2.Connection)).Returns(true);
             var e3 = new Server(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object);
+            c3.Setup(connection => connection.Equals(e3.Connection)).Returns(true);
 
             var repo = new TestServerRespository(source.Object, e1, e2, e3);
 
@@ -1362,9 +1368,11 @@ namespace Dev2.Core.Tests.Environments
 
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerID).Returns(Guid.NewGuid());
+            connection.Setup(c => c.ID).Returns(Guid.NewGuid());
             connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
+            connection.Setup(c => c.AuthenticationType).Returns(AuthenticationType.Windows);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(new SynchronousAsyncWorker());
             connection.SetupProperty(c => c.DisplayName);
