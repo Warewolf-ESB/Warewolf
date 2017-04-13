@@ -184,12 +184,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.DisplayName.Replace("(Connected)", "").Trim() == resourceName);
             foreach (var environmentViewModel in environmentViewModels)
             {
-                await RefreshEnvironment(environmentViewModel, refresh).ContinueWith(task =>
-                {
-                    var viewModel = this as DeploySourceExplorerViewModel;
-                    var explorerTreeItems = environmentViewModel.AsList() as ICollection<IExplorerTreeItem>;
-                    viewModel?.RunStats.Invoke(explorerTreeItems ?? new List<IExplorerTreeItem>());
-                });
+                await RefreshEnvironment(environmentViewModel, refresh);
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
@@ -203,12 +198,7 @@ namespace Warewolf.Studio.ViewModels
             if (environmentViewModel.IsConnected)
             {
                 environmentViewModel.ForcedRefresh = true;
-                await environmentViewModel.Load(true, refresh).ContinueWith(task =>
-                {
-                    var viewModel = this as DeploySourceExplorerViewModel;
-                    var explorerItemViewModels = SelectedEnvironment.AsList() as ICollection<IExplorerTreeItem>;
-                    viewModel?.RunStats?.Invoke(explorerItemViewModels ?? new List<IExplorerTreeItem>());
-                });
+                await environmentViewModel.Load(true, refresh);
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
