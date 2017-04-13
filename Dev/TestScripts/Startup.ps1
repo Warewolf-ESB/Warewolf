@@ -211,7 +211,7 @@ if (!($SkipStudioStartup)) {
 			Start-Process $DotCoverPath "cover `"$StudioBinDir\DotCoverRunner.xml`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`""
 		}
         while (!(Test-Path $StudioLogFile)){
-            Write-Warning 'Waiting for Warewolf Studio to start...'
+            Write-Warning 'Waiting for Studio to start...'
             Sleep 3
         }
 		Write-Host Studio has started.
