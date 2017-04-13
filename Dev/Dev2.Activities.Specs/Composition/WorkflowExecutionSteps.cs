@@ -2829,9 +2829,15 @@ namespace Dev2.Activities.Specs.Composition
             var loadSubFolders = table.Rows[0]["LoadSubFolders"];
             switch (read)
             {
-                case "Files":                    listActivity.IsFilesSelected = true;                    break;
-                case "Folders":                    listActivity.IsFoldersSelected = true;                    break;
-                case "All":                    listActivity.IsFilesAndFoldersSelected = true;                    break;
+                case "Files":
+                    listActivity.IsFilesSelected = true;
+                    break;
+                case "Folders":
+                    listActivity.IsFoldersSelected = true;
+                    break;
+                case "All":
+                    listActivity.IsFilesAndFoldersSelected = true;
+                    break;
             }
             var b = bool.Parse(loadSubFolders);
             listActivity.IsRecursive = b;
