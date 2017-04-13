@@ -168,22 +168,22 @@ namespace Warewolf.Studio.ViewModels
                 Calculate(_items);
             }
         }
-        public void CheckDestinationPersmisions(ICollection<IExplorerTreeItem> models = null)
+
+        public void CheckDestinationPersmisions()
         {
-            var newItems = models ?? _items;
             _destinationItems = _destination.SelectedEnvironment?.AsList();
             if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment == null || !_destination.SelectedEnvironment.IsConnected)
             {
-                foreach (var currentItem in newItems)
+                foreach (var currentItem in _items)
                 {
                     currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
                 }
             }
             else
             {
-                if (newItems?.Count > 0)
+                if (_items?.Count > 0)
                 {
-                    foreach (var currentItem in newItems)
+                    foreach (var currentItem in _items)
                     {
                         var explorerItemViewModel =
                             _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
@@ -197,7 +197,9 @@ namespace Warewolf.Studio.ViewModels
                                         currentItem.CanDeploy = explorerItemViewModel.CanContribute;
                                     }
                                     else
+                                    {
                                         currentItem.CanDeploy = true;
+                                    }
                                 }
                             }
                             else
@@ -207,46 +209,8 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-        //public void CheckDestinationPersmisions()
-        //{
-        //    _destinationItems = _destination.SelectedEnvironment?.AsList();
-        //    if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment==null || !_destination.SelectedEnvironment.IsConnected)
-        //    {
-        //        foreach (var currentItem in _items)
-        //        {
-        //            currentItem.CanDeploy = currentItem.Server.CanDeployFrom;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (_items?.Count > 0)
-        //        {
-        //            foreach (var currentItem in _items)
-        //            {
-        //                var explorerItemViewModel =
-        //                    _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
-        //                {
-        //                    if (explorerItemViewModel != null)
-        //                    {
-        //                        if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
-        //                        {
-        //                            if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
-        //                            {
-        //                                currentItem.CanDeploy = explorerItemViewModel.CanContribute;
-        //                            }
-        //                            else
-        //                                currentItem.CanDeploy = true;
-        //                        }
-        //                    }
-        //                    else
-        //                        currentItem.CanDeploy = true;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
-       
+
 
         private static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
         {            
