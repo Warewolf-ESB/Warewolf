@@ -357,9 +357,14 @@ namespace Dev2.Studio.Core
                 foreach (var newEnv in environments.Where(newEnv => Environments.Contains(newEnv)))
                 {
                     var res = Environments.FirstOrDefault(a => a.EnvironmentID == newEnv.EnvironmentID);
-                    if (res != null)
+                    if (res != null && !res.Equals(newEnv))
                     {
-                        res.Name = newEnv.Name;                        
+                        if (res.IsConnected)
+                        {
+                            res.Disconnect();                            
+                        }
+                        Environments.Remove(res);
+                        Environments.Add(newEnv);
                     }
                 }
 
@@ -439,7 +444,7 @@ namespace Dev2.Studio.Core
         {
             if (defaultEnvironment == null)
             {
-                throw new ArgumentNullException("defaultEnvironment");
+                throw new ArgumentNullException(nameof(defaultEnvironment));
             }
 
             var result = new List<IServer>();
@@ -530,14 +535,9 @@ namespace Dev2.Studio.Core
                 {
                     foreach (var connection in servers)
                     {
-                        var existingEnvironment = Environments.FirstOrDefault(model => model.EnvironmentID == connection.ResourceID);
-                        if (existingEnvironment != null && existingEnvironment.IsConnected)
-                        {
-                            //existingEnvironment.Disconnect();
-                        }
                         if (!string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress))
                         {
-                            var environmentModel = CreateEnvironmentModel(connection);                            
+                            var environmentModel = CreateEnvironmentModel(connection);
                             result.Add(environmentModel);
                         }
                     }
@@ -633,9 +633,9 @@ namespace Dev2.Studio.Core
                 return string.Empty;
             }
 
-            const string ToLookFor = "AppServerUri";
-            var appServerUriIdx = connectionstring.IndexOf(ToLookFor, StringComparison.Ordinal);
-            var length = ToLookFor.Length;
+            const string toLookFor = "AppServerUri";
+            var appServerUriIdx = connectionstring.IndexOf(toLookFor, StringComparison.Ordinal);
+            var length = toLookFor.Length;
             var substring = connectionstring.Substring(appServerUriIdx + length + 1);
             var indexofDelimiter = substring.IndexOf(';');
             var uri = substring.Substring(0, indexofDelimiter);

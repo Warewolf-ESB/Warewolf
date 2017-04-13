@@ -274,5 +274,26 @@ namespace Dev2.Network
             handler?.Invoke(this, e);
         }
         #endregion
+
+        public bool Equals(IEnvironmentConnection other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            var isEqual = other.ID == ID && other.AuthenticationType == AuthenticationType &&
+                          other.AppServerUri.Equals(AppServerUri) && other.WebServerUri.Equals(WebServerUri);
+            return isEqual;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as IEnvironmentConnection);
+        }
+
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode();
+        }
     }
 }
