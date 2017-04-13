@@ -295,6 +295,9 @@ Use a comma to separate the variables.</value>
   <data name="TestsDeleteSelectedTestDisabledTooltip" xml:space="preserve">
     <value>Cannot delete an enabled test</value>
   </data>
+  <data name="SchedulesDeleteSelectedScheduleDisabledTooltip" xml:space="preserve">
+    <value>Cannot delete an enabled schedule</value>
+  </data>
   <data name="TestEditorToolTip" xml:space="preserve">
     <value>View the current tests for this resource</value>
   </data>
