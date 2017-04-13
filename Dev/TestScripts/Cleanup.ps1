@@ -15,7 +15,10 @@ taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
 while (!($Output.ToString().StartsWith("ERROR: ")) -and $WaitOutput.ToString().StartsWith($WaitTimeoutMessage) -and $i -lt $WaitForCloseRetryCount) {
 	$i += 1
 	Write-Host $Output.ToString()
-    Write-Host $WaitOutput.ToString().replace($WaitTimeoutMessage, "")
+    $FormatWaitForCloseTimeoutMessage = $WaitOutput.ToString().replace($WaitTimeoutMessage, "")
+    if ($FormatWaitForCloseTimeoutMessage -ne "") {
+        Write-Host $FormatWaitForCloseTimeoutMessage
+    }
 	Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$WaitForCloseRetryCount))  2>&1 | %{$WaitOutput = $_}
 	taskkill /im "Warewolf Studio.exe"  2>&1 |  %{$Output = $_}
 }
