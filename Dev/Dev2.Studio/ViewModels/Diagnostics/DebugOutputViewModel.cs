@@ -715,7 +715,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         {
                             remoteEnvironmentModel.Connect();
                         }
-                        if (content.ParentID != Guid.Empty)
+                        var parentID = content.ParentID.GetValueOrDefault();
+                        if (parentID != Guid.Empty)
                         {
                             if (remoteEnvironmentModel.AuthorizationService != null)
                             {
@@ -768,13 +769,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 return;
             }
-            Dev2Logger.Debug(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID, content.DisplayName));
+            Dev2Logger.Debug(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID.GetValueOrDefault(), content.DisplayName));
             if (_lastStep != null && DebugStatus == DebugStatus.Finished && content.StateType == StateType.Message)
             {
                 var lastDebugStateProcessed = _lastStep;
                 _lastStep = null;
                 _dispatchLastDebugState = true;
-                AddItemToTreeImpl(new DebugState { StateType = StateType.Message, Message = Resources.CompilerMessage_ExecutionInterrupted, ParentID = lastDebugStateProcessed.ParentID });
+                AddItemToTreeImpl(new DebugState { StateType = StateType.Message, Message = Resources.CompilerMessage_ExecutionInterrupted, ParentID = lastDebugStateProcessed.ParentID.GetValueOrDefault() });
                 AddItemToTreeImpl(lastDebugStateProcessed);
                 _dispatchLastDebugState = false;
             }
@@ -794,13 +795,14 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         private bool AddTreeViewItemToRootItems(IDebugState content)
         {
-            if (content.StateType == StateType.Message && content.ParentID == Guid.Empty)
+            var parentID = content.ParentID.GetValueOrDefault();
+            if (content.StateType == StateType.Message && parentID == Guid.Empty)
             {
                 RootItems.Add(new DebugStringTreeViewItemViewModel { Content = content.Message, ActivityTypeName = content.ActualType});
             }
             else
             {
-                var isRootItem = content.ParentID == Guid.Empty || content.ID == content.ParentID;
+                var isRootItem = parentID == Guid.Empty || content.ID == parentID;
 
                 var child = CreateChildTreeViewItem(content);
 
@@ -855,13 +857,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private IDebugTreeViewItemViewModel CreateParentTreeViewItem(IDebugState content, IDebugTreeViewItemViewModel child)
         {
             IDebugTreeViewItemViewModel parent;
-            if (!_contentItemMap.TryGetValue(content.ParentID, out parent))
+            if (!_contentItemMap.TryGetValue(content.ParentID.GetValueOrDefault(), out parent))
             {
                 parent = new DebugStateTreeViewItemViewModel(ServerRepository)
                 {
                     ActivityTypeName = content.ActualType
                 };
-                _contentItemMap.Add(content.ParentID, parent);
+                _contentItemMap.Add(content.ParentID.GetValueOrDefault(), parent);
             }
             child.Parent = parent;
             parent.Children.Add(child);

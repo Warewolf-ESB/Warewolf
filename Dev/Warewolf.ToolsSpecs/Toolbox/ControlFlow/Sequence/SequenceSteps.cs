@@ -534,7 +534,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             scenarioContext.TryGetValue("activity", out sequence);
             if(sequence != null)
             {
-                var innerActivitiesDebugStates = debugStates.Where(state => state.ParentID.ToString() == sequence.UniqueID.ToString());
+                var innerActivitiesDebugStates = debugStates.Where(state => state.ParentID.GetValueOrDefault().ToString() == sequence.UniqueID.ToString());
                 var count = innerActivitiesDebugStates.Count();
                 Assert.IsTrue(count > 0);
             }
@@ -598,7 +598,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 var sequenceDebugState = debugStates.Where(state => state.DisplayName == sequence.DisplayName);
                 var debugStateOfSequence = sequenceDebugState as IDebugState[] ?? sequenceDebugState.ToArray();
                 Assert.IsTrue(debugStateOfSequence.Any());
-                Assert.IsTrue(debugStateOfSequence.All(state => state.ParentID.ToString() == forEachActivity.UniqueID));
+                Assert.IsTrue(debugStateOfSequence.All(state => state.ParentID.GetValueOrDefault().ToString() == forEachActivity.UniqueID));
             }
 
             Dictionary<string, Activity> activityList;

@@ -43,8 +43,8 @@ Scenario: Workflow with an assign and remote workflow
 	  | 3 | [[values(1).low]] = hello |	  	 
 	  And the "WorkflowUsedBySpecs" in Workflow "TestAssignWithRemoteWF" debug outputs as
 	  |                           |
-	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
+	  | [[values(1).up]] = HELLO  |	 
 	  | [[output]] = HELLO        |
 	
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
@@ -70,8 +70,8 @@ Scenario: Error from workflow service is expected to buble out
 	  And "TestAssignWithRemoteOutputsErrors" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  | inputData        | [[inputData]] | output              | [[output]]       |
-	  |                  |               | values(*).up     | [[values().&up]] |
-	  |                  |               | values(*).low     | [[values().low]] |
+	  |                  |               | values(*).up        | [[values().&up]] |
+	  |                  |               | values(*).low       | [[values().low]] |
 	  When "TestAssignWithRemoteOutputsErrors" is executed
 	  Then the "TestAssignWithRemoteOutputsErrors" workflow execution has "AN" error
 	  And the "AssignData" in WorkFlow "TestAssignWithRemoteOutputsErrors" debug inputs as

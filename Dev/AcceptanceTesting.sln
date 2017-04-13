@@ -289,6 +289,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Interfaces", "Dev
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Interfaces", "Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj", "{61A15557-1D18-4C69-88EB-31BF49B7FB50}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Debug", "Dev2.Debug\Dev2.Debug.csproj", "{705D3D56-1551-4EE1-89A0-6CFEF2642508}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1045,6 +1047,14 @@ Global
 		{C4FD9624-0C14-4F86-9ADD-6DBB4F5ACB97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4FD9624-0C14-4F86-9ADD-6DBB4F5ACB97}.Release|x86.ActiveCfg = Release|Any CPU
 		{C4FD9624-0C14-4F86-9ADD-6DBB4F5ACB97}.Release|x86.Build.0 = Release|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Debug|x86.Build.0 = Debug|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|x86.ActiveCfg = Release|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|x86.Build.0 = Release|Any CPU
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}.Debug|x86.ActiveCfg = Debug|Any CPU

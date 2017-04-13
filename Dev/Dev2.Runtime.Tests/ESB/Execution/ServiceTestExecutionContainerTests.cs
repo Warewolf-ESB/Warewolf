@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
@@ -13,6 +15,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Interfaces;
+using Dev2.Services.Security;
 using Dev2.Tests.Runtime.JSON;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -71,7 +74,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var fetch = JsonResource.Fetch("Sequence");
             Dev2JsonSerializer s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
-           
+
             var cataLog = new Mock<ITestCatalog>();
             cataLog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
             cataLog.Setup(cat => cat.FetchTest(resourceId, TestName)).Returns(testModelTO);
@@ -81,7 +84,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest,cataLog.Object,resourceCat.Object);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object, resourceCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(serviceTestExecutionContainer, "ServiceTestExecutionContainer is Null.");
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
@@ -89,12 +92,33 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             //---------------Execute Test ----------------------
             ErrorResultTO errors;
             Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
-            var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+            Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
+            {
+                var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+                Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
+            });
+
             //---------------Test Result -----------------------
-            Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var serviceTestModelTO = serializer.Deserialize<Dev2.Data.ServiceTestModelTO>(esbExecuteRequest.ExecuteResult);
-            Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
+            try
+            {
+                var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>(new KnownTypesBinder()
+                {
+                    KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
+                        .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
+                });
+                Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
+            }
+            catch (Exception)
+            {
+                var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<TestRunResult>(new KnownTypesBinder()
+                {
+                    KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
+                        .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
+                });
+                Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
+            }
+
+            //
         }
 
         [TestMethod]
@@ -138,6 +162,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             TstCatalog = catalog;
             ResourceCat = resourceCatalog;
         }
-        
+
     }
 }

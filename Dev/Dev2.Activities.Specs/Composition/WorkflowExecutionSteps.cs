@@ -70,9 +70,16 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Data.TO;
+using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
+using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
+using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.Execution;
 using Dev2.Studio.Core.Factories;
+using Dev2.Workspaces;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Core;
@@ -100,9 +107,96 @@ namespace Dev2.Activities.Specs.Composition
             AppSettings.LocalHost = "http://localhost:3142";
         }
 
+
+        new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
+        {
+
+
+            var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
+            svc.SetActivity(FlowchartProcess);
+            Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
+
+            if (CurrentDl == null)
+            {
+                CurrentDl = TestData;
+            }
+
+            var errors = new ErrorResultTO();
+            if (ExecutionId == Guid.Empty)
+            {
+
+                if (dataObject != null)
+                {
+                    dataObject.ExecutingUser = User;
+                    dataObject.DataList = new StringBuilder(CurrentDl);
+                }
+
+            }
+
+            if (errors.HasErrors())
+            {
+                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+
+                if (throwException)
+                {
+                    throw new Exception(errorString);
+                }
+            }
+
+            if (dataObject == null)
+            {
+
+                dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+                {
+                    // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                    //       if this is NOT provided which will cause the tests to fail!
+                    ServerID = Guid.NewGuid(),
+                    ExecutingUser = User,
+                    IsDebug = isDebugMode,
+                    EnvironmentID = currentEnvironmentId,
+                    IsRemoteInvokeOverridden = overrideRemote,
+                    DataList = new StringBuilder(CurrentDl)
+                };
+
+            }
+            if (!string.IsNullOrEmpty(TestData))
+            {
+                ExecutionEnvironmentUtils.UpdateEnvironmentFromXmlPayload(DataObject, new StringBuilder(TestData), CurrentDl, 0);
+            }
+            dataObject.IsDebug = isDebug;
+
+            // we now need to set a thread ID ;)
+            dataObject.ParentThreadID = 1;
+
+            if (isRemoteInvoke)
+            {
+                dataObject.RemoteInvoke = true;
+                dataObject.RemoteInvokerID = Guid.NewGuid().ToString();
+            }
+
+            var esbChannel = mockChannel.Object;
+            if (channel != null)
+            {
+                esbChannel = channel;
+            }
+            dataObject.ExecutionToken = new ExecutionToken();
+            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+
+            errors.ClearErrors();
+            CustomContainer.Register<IActivityParser>(new ActivityParser());
+            if (dataObject.ResourceID == Guid.Empty)
+            {
+                dataObject.ResourceID = Guid.NewGuid();
+            }
+            dataObject.Environment = DataObject.Environment;
+            wfec.Eval(FlowchartProcess, dataObject, 0);
+            DataObject = dataObject;
+            return dataObject;
+        }
         const int EnvironmentConnectionTimeout = 3000;
 
         private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
+        private SpecExternalProcessExecutor _externalProcessExecutor;
         private readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
         private readonly CommonSteps _commonSteps;
 
@@ -126,6 +220,7 @@ namespace Dev2.Activities.Specs.Composition
             mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             CustomContainer.Register(mockServer.Object);
             CustomContainer.Register(mockshell.Object);
+            _externalProcessExecutor = new SpecExternalProcessExecutor();
         }
 
         [Given(@"Debug states are cleared")]
@@ -383,7 +478,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
@@ -408,7 +503,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowId = Guid.Empty;
             }
 
-            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId).ToList();
             Assert.IsTrue(sequenceDebug.Count >= stepNumber);
 
             var sequenceId = sequenceDebug[stepNumber - 1].ID;
@@ -416,7 +511,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(sequenceIsInForEach);
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(item => item.Inputs)
@@ -440,7 +535,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowId = Guid.Empty;
             }
 
-            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId).ToList();
             Assert.IsTrue(sequenceDebug.Count >= stepNumber);
 
             var sequenceId = sequenceDebug[stepNumber - 1].ID;
@@ -448,7 +543,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(sequenceIsInForEach);
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsNotNull(toolSpecificDebug);
             IDebugState debugState = toolSpecificDebug.FirstOrDefault();
             if (debugState != null)
@@ -489,7 +584,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowId = Guid.Empty;
             }
 
-            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId).ToList();
             Assert.IsTrue(sequenceDebug.Count >= stepNumber);
 
             var sequenceId = sequenceDebug[stepNumber - 1].ID;
@@ -497,7 +592,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(sequenceIsInForEach);
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsNotNull(toolSpecificDebug);
             IDebugState debugState = toolSpecificDebug.FirstOrDefault();
             if (debugState != null)
@@ -537,7 +632,7 @@ namespace Dev2.Activities.Specs.Composition
                 workflowId = Guid.Empty;
             }
 
-            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId).ToList();
             Assert.IsTrue(sequenceDebug.Count >= stepNumber);
 
             var sequenceId = sequenceDebug[stepNumber - 1].ID;
@@ -545,7 +640,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(sequenceIsInForEach);
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
                                                     .SelectMany(item => item.Outputs)
@@ -559,10 +654,10 @@ namespace Dev2.Activities.Specs.Composition
             return debugToUse;
         }
 
-       
 
 
-       [Then(@"Workflow ""(.*)"" has errors")]
+
+        [Then(@"Workflow ""(.*)"" has errors")]
         public void ThenWorkflowHasErrors(string workFlowName, Table table)
         {
             Dictionary<string, Activity> activityList;
@@ -571,9 +666,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-            var workflowId = debugStates.Last(wf => wf.DisplayName.Equals(workFlowName)).ID;
-
-            var toolSpecificDebug = debugStates.Last(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(workFlowName));
+            var toolSpecificDebug = debugStates.Last(wf => wf.DisplayName.Equals(workFlowName));
             foreach (var tableRow in table.Rows)
             {
                 var strings = toolSpecificDebug.ErrorMessage.Replace("\n", ",").Replace("\r", "").Split(',');
@@ -601,7 +694,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
             var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
 
@@ -1035,18 +1128,21 @@ namespace Dev2.Activities.Specs.Composition
 
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
-
-            foreach (var activity in activityList)
+            if (activityList != null)
             {
-                if (TestStartNode.Action == null)
+
+                foreach (var activity in activityList)
                 {
-                    TestStartNode.Action = activity.Value;
-                }
-                else
-                {
-                    var flowStep = new FlowStep { Action = activity.Value };
-                    flowSteps.Last().Next = flowStep;
-                    flowSteps.Add(flowStep);
+                    if (TestStartNode.Action == null)
+                    {
+                        TestStartNode.Action = activity.Value;
+                    }
+                    else
+                    {
+                        var flowStep = new FlowStep { Action = activity.Value };
+                        flowSteps.Last().Next = flowStep;
+                        flowSteps.Add(flowStep);
+                    }
                 }
             }
 
@@ -1095,7 +1191,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             _commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
                                                     .SelectMany(s => s.Inputs)
@@ -1179,7 +1275,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var id =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
-            var children = debugStates.Count(a => a.ParentID == id);
+            var children = debugStates.Count(a => a.ParentID.GetValueOrDefault() == id);
             Assert.AreEqual(count, children);
         }
 
@@ -1193,7 +1289,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
-            id.ForEach(x => Assert.AreEqual(childCount, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == toolName)));
+            id.ForEach(x => Assert.AreEqual(childCount, debugStates.Count(a => a.ParentID.GetValueOrDefault() == x.ID && a.DisplayName == toolName)));
 
         }
 
@@ -1207,7 +1303,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
-            id.ForEach(x => Assert.AreEqual(1, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == nestedToolName)));
+            id.ForEach(x => Assert.AreEqual(1, debugStates.Count(a => a.ParentID.GetValueOrDefault() == x.ID && a.DisplayName == nestedToolName)));
         }
 
         T Get<T>(string keyName)
@@ -1293,10 +1389,10 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             Assert.IsTrue(toolSpecificDebug.All(a => a.Server == remoteName));
-            Assert.IsTrue(debugStates.Where(ds => ds.ParentID == workflowId && !ds.DisplayName.Equals(toolName)).All(a => a.Server == "localhost"));
+            Assert.IsTrue(debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && !ds.DisplayName.Equals(toolName)).All(a => a.Server == "localhost"));
         }
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs is")]
         public void ThenTheInWorkflowDebugOutputsIs(string p0, string p1, Table table)
@@ -1330,8 +1426,12 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
-
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+            if (!toolSpecificDebug.Any())
+            {
+                toolSpecificDebug =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             var outputState = toolSpecificDebug.FirstOrDefault();
@@ -2367,18 +2467,20 @@ namespace Dev2.Activities.Specs.Composition
 
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
-
-            foreach (var activity in activityList)
+            if (activityList != null)
             {
-                if (TestStartNode.Action == null)
+                foreach (var activity in activityList)
                 {
-                    TestStartNode.Action = activity.Value;
-                }
-                else
-                {
-                    var flowStep = new FlowStep { Action = activity.Value };
-                    flowSteps.Last().Next = flowStep;
-                    flowSteps.Add(flowStep);
+                    if (TestStartNode.Action == null)
+                    {
+                        TestStartNode.Action = activity.Value;
+                    }
+                    else
+                    {
+                        var flowStep = new FlowStep { Action = activity.Value };
+                        flowSteps.Last().Next = flowStep;
+                        flowSteps.Add(flowStep);
+                    }
                 }
             }
 
@@ -2444,6 +2546,8 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [When(@"workflow ""(.*)"" is saved ""(.*)"" time")]
+        [Then(@"workflow ""(.*)"" is saved ""(.*)"" time")]
+        [Given(@"workflow ""(.*)"" is saved ""(.*)"" time")]
         public void WhenWorkflowIsSavedTime(string workflowName, int count)
         {
             Guid id;
@@ -2468,19 +2572,20 @@ namespace Dev2.Activities.Specs.Composition
             TestStartNode = new FlowStep();
             flowSteps.Add(TestStartNode);
 
-            foreach (var activity in activityList)
-            {
-                if (TestStartNode.Action == null)
+            if (activityList != null)
+                foreach (var activity in activityList)
                 {
-                    TestStartNode.Action = activity.Value;
+                    if (TestStartNode.Action == null)
+                    {
+                        TestStartNode.Action = activity.Value;
+                    }
+                    else
+                    {
+                        var flowStep = new FlowStep { Action = activity.Value };
+                        flowSteps.Last().Next = flowStep;
+                        flowSteps.Add(flowStep);
+                    }
                 }
-                else
-                {
-                    var flowStep = new FlowStep { Action = activity.Value };
-                    flowSteps.Last().Next = flowStep;
-                    flowSteps.Add(flowStep);
-                }
-            }
 
             IContextualResourceModel resourceModel;
             IServer server;
@@ -2596,6 +2701,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
         }
+
         [Given(@"""(.*)"" contains a Sequence ""(.*)"" as")]
         public void GivenContainsASequenceAs(string parentName, string activityName)
         {
@@ -2654,16 +2760,16 @@ namespace Dev2.Activities.Specs.Composition
             var namespaceItems = proxy.QueryManagerProxy.FetchNamespacesWithJsonRetunrs(pluginSource);
             var namespaceItem = namespaceItems.Single(item => item.FullName.Equals(ClassName, StringComparison.CurrentCultureIgnoreCase));
             var pluginActions = proxy.QueryManagerProxy.PluginActionsWithReturns(pluginSource, namespaceItem);
+            allPluginActions = pluginActions.ToList();
             var pluginAction = pluginActions.Single(action => action.Method.Equals(Action, StringComparison.InvariantCultureIgnoreCase));
             IList<IPluginConstructor> pluginConstructors = proxy.QueryManagerProxy.PluginConstructors(pluginSource, namespaceItem);
-            pluginAction.OutputVariable = ActionOutputVaribale;
             const string recNumber = "[[rec(*).number]]";
             foreach (var serviceInput in pluginAction.Inputs)
             {
                 serviceInput.Value = recNumber;
             }
             dsfEnhancedDotNetDllActivity.Namespace = namespaceItem;
-            dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
+            dsfEnhancedDotNetDllActivity.SourceId = pluginSource.Id;
             ScenarioContext.Current.Add(dotNetServiceName, dsfEnhancedDotNetDllActivity);
             ScenarioContext.Current.Add("pluginConstructors", pluginConstructors);
             _commonSteps.AddVariableToVariableList(ObjectName);
@@ -2807,6 +2913,7 @@ namespace Dev2.Activities.Specs.Composition
             var namespaceItems = dbServiceModel.GetNameSpaces(pluginSource);
             var namespaceItem = namespaceItems.Single(item => item?.FullName?.Equals(namespaceSelected, StringComparison.CurrentCultureIgnoreCase) ?? false);
             var pluginActions = dbServiceModel.GetActions(pluginSource, namespaceItem);
+            allPluginActions = pluginActions.ToList();
             var pluginAction = pluginActions.First(action => action.Method.Equals(Action, StringComparison.InvariantCultureIgnoreCase));
             var comPluginServiceDefinition = new ComPluginServiceDefinition()
             {
@@ -2845,11 +2952,11 @@ namespace Dev2.Activities.Specs.Composition
             dsfEnhancedDotNetDllActivity.Method = pluginAction;
             dsfEnhancedDotNetDllActivity.Namespace = namespaceItem;
             dsfEnhancedDotNetDllActivity.SourceId = pluginSource.Id;
-            
+
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
         }
 
-
+        private List<IPluginAction> allPluginActions { get; set; }
         [Given(@"""(.*)"" constructorinputs (.*) with inputs as")]
         public void GivenConstructorWithInputsAs(string serviceName, int p1, Table table)
         {
@@ -2869,6 +2976,25 @@ namespace Dev2.Activities.Specs.Composition
                 });
             }
         }
+
+
+        [Given(@"""(.*)"" service Action ""(.*)"" with inputs and output ""(.*)"" as")]
+        public void GivenServiceActionWithInputsAndOutputAs(string serviceName, string action, string outputVar, Table table)
+        {
+            var dsfEnhancedDotNetDllActivity = ScenarioContext.Current.Get<DsfEnhancedDotNetDllActivity>(serviceName);
+            var pluginAction = allPluginActions.Single(action1 => action1.Method == action);
+            pluginAction.OutputVariable = outputVar;
+            foreach (var tableRow in table.Rows)
+            {
+                var inputName = tableRow["parameterName"];
+                var value = tableRow["value"];
+                var serviceInput = pluginAction.Inputs.Single(input => input.Name == inputName);
+                serviceInput.Value = value;
+            }
+            dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
+        }
+
+
 
         [Given(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
@@ -2934,7 +3060,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(workflowName)).ToList();
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(workflowName)).ToList();
             Assert.AreEqual(0, toolSpecificDebug.Count);
         }
 
@@ -4133,7 +4259,5 @@ namespace Dev2.Activities.Specs.Composition
                 Add("debugStates", new List<IDebugState>());
             }
         }
-
-
     }
 }

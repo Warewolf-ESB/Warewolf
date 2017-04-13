@@ -77,9 +77,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Mock<IPrincipal> principle = new Mock<IPrincipal>();
             Mock<IIdentity> mockIdentity = new Mock<IIdentity>();
             mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
-            principle.Setup(p => p.Identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
-            principle.Setup(p => p.Identity.Name).Verifiable();
             ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
             ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
 
@@ -92,12 +90,10 @@ namespace Dev2.Tests.Runtime.WebServer
             ctx.Setup(c => c.Request.User).Returns(principle.Object);
 
             var webGetRequestHandler = new WebGetRequestHandler();
-
             //------------Execute Test---------------------------
             webGetRequestHandler.ProcessRequest(ctx.Object);
-
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
+            principle.Verify(p => p.Identity, Times.AtLeast(1));
         }
     }
 }

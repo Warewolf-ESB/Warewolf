@@ -32,3 +32,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyVersion("0.0.*")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Designers.Tests")]
 [assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]

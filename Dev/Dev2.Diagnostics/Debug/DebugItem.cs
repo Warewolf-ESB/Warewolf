@@ -14,9 +14,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Utils;
@@ -222,51 +219,6 @@ namespace Dev2.Diagnostics
         #endregion
 
         #endregion
-
-        #region IXmlSerializable
-
-        public XmlSchema GetSchema()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            reader.MoveToContent();
-
-            if(reader.ReadToDescendant("DebugItemResults"))
-            {
-                ResultsList = new List<IDebugItemResult>();
-                reader.ReadStartElement();
-                while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItemResult")
-                {
-                    var item = new DebugItemResult();
-                    item.ReadXml(reader);
-                    ResultsList.Add(item);
-                }
-
-                if(reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugItemResults")
-                {
-                    reader.ReadEndElement();
-                }
-            }
-
-            reader.Read();
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            writer.WriteStartElement("DebugItemResults");
-            writer.WriteAttributeString("Count", ResultsList.Count.ToString(CultureInfo.InvariantCulture));
-
-            var resultSer = new XmlSerializer(typeof(DebugItemResult));
-            foreach(var other in ResultsList)
-            {
-                resultSer.Serialize(writer, other);
-            }
-            writer.WriteEndElement();
-        }
-
-        #endregion
+        
     }
 }
