@@ -1,6 +1,6 @@
 ﻿#Requires -RunAsAdministrator
 Param(
-    [int]$WaitForCloseTimeout = 1200,
+    [int]$WaitForCloseTimeout = 1800,
 	[int]$WaitForCloseRetryCount = 10
 )
 
