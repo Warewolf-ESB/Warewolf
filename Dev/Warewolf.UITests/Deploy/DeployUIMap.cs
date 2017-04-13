@@ -80,6 +80,7 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         [Then(@"Deploy Button Is Enabled")]
         public void ThenDeployButtonIsEnabled()
         {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.WaitForControlCondition((control) => { return (control as WpfButton).Enabled; }, 60000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, "Deploy button is not enabled");
         }
 

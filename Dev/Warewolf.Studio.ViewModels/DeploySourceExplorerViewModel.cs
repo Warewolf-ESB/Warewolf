@@ -25,7 +25,6 @@ namespace Warewolf.Studio.ViewModels
         IEnumerable<IExplorerTreeItem> _preselected;
         private Version _serverVersion;
         private object _serverInformation;
-        public System.Action<ICollection<IExplorerTreeItem>> RunStats { get; set; }
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
         {
             if (shellViewModel == null)
@@ -60,10 +59,6 @@ namespace Warewolf.Studio.ViewModels
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
             ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
             IsDeploy = true;
-            RunStats = models =>
-            {
-                _statsArea.CheckDestinationPersmisions(models);
-            };
         }
 
         async void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
