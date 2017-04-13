@@ -187,12 +187,13 @@ namespace Warewolf.Studio.ViewModels
                 await RefreshEnvironment(environmentViewModel, refresh).ContinueWith(task =>
                 {
                     var viewModel = this as DeploySourceExplorerViewModel;
-                    viewModel?.RunStats.Invoke(environmentViewModel.AsList());
+                    var explorerTreeItems = environmentViewModel.AsList() as ICollection<IExplorerTreeItem>;
+                    viewModel?.RunStats.Invoke(explorerTreeItems ?? new List<IExplorerTreeItem>());
                 });
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
-            
+
         }
 
         private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
@@ -205,8 +206,9 @@ namespace Warewolf.Studio.ViewModels
                 await environmentViewModel.Load(true, refresh).ContinueWith(task =>
                 {
                     var viewModel = this as DeploySourceExplorerViewModel;
-                    viewModel?.RunStats?.Invoke(SelectedEnvironment.AsList());
-                }); 
+                    var explorerItemViewModels = SelectedEnvironment.AsList() as ICollection<IExplorerTreeItem>;
+                    viewModel?.RunStats?.Invoke(explorerItemViewModels ?? new List<IExplorerTreeItem>());
+                });
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
