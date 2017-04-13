@@ -37,8 +37,6 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
-
-using Dev2.Interfaces;
 using Warewolf.Studio.ViewModels;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global

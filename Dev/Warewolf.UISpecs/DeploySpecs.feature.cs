@@ -494,11 +494,6 @@ this.ScenarioSetup(scenarioInfo);
 #line 148
  testRunner.And("I set AuthenticationType to Public", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 149
- testRunner.When("I Click Deploy Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 150
- testRunner.And("I Select RemoteConnectionIntegration (Connected) From Deploy Tab Destination Serv" +
-                    "er Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
  testRunner.Then("I validate I can not Deploy \"ResourceWithViewAndExecutePerm\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

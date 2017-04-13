@@ -52,8 +52,8 @@ namespace Dev2.Studio.Interfaces.Deploy
 
         void ReCalculate();
 
-        void CheckDestinationPersmisions();
+        //void CheckDestinationPersmisions();
 
-        void CheckDestinationPersmisions(ICollection<IExplorerItemViewModel> models);
+        void CheckDestinationPersmisions(ICollection<IExplorerTreeItem> models);
     }
 }
