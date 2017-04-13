@@ -188,6 +188,7 @@ namespace Dev2.DynamicServices
         #region Properties
 
         private StringBuilder _rawPayload;
+        private string _parentInstanceID;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
@@ -236,12 +237,17 @@ namespace Dev2.DynamicServices
 
         public Guid EnvironmentID { get; set; }
 
-        public string ParentInstanceID { get; set; }
+        public string ParentInstanceID
+        {
+            get { return _parentInstanceID; }
+            set { _parentInstanceID = value; }
+        }
         public Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
         public string CurrentBookmarkName { get; set; }
         public string ServiceName { get; set; }
         public string TestName { get; set; }
         public bool IsServiceTestExecution { get; set; }
+        public bool IsDebugFromWeb { get; set; }
         public Guid WorkflowInstanceId { get; set; }
         public bool IsDebug { get; set; }
         public Guid WorkspaceID { get; set; }
@@ -377,6 +383,7 @@ namespace Dev2.DynamicServices
             result.TestName = TestName;
             result.SourceResourceID = SourceResourceID;
             result.IsServiceTestExecution = IsServiceTestExecution;
+            result.IsDebugFromWeb = IsDebugFromWeb;
             if (ServiceTest != null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();

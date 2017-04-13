@@ -451,6 +451,9 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         public static void FeaureCleanup()
         {
             DisposeResources();
+
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
 
         [When(@"I click ""(.*)""")]

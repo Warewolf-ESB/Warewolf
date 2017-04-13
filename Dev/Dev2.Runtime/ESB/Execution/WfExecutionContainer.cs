@@ -91,6 +91,7 @@ namespace Dev2.Runtime.ESB.Execution
         Guid ExecuteWf(ErrorResultTO to)
         {
             Guid result = new Guid();
+            DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors;
             try
@@ -100,7 +101,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                 if (DataObject.IsDebugMode())
                 {
-                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DateTime.Now, true, false, false);
+                    wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, true, false, false);
                 }
                 if (CanExecute(DataObject.ResourceID, DataObject, AuthorizationContext.Execute))
                 {

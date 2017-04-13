@@ -218,7 +218,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void SwitchFromDebug(IDebugTreeViewItemViewModel itemContent, IDebugState debugItemContent)
         {
-            var processFlowSwitch = ProcessFlowSwitch(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID));
+            var processFlowSwitch = ProcessFlowSwitch(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID.GetValueOrDefault()));
             if (processFlowSwitch != null)
             {
                 if (debugItemContent.Outputs != null && debugItemContent.Outputs.Count > 0)
@@ -241,7 +241,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void DecisionFromDebug(IDebugTreeViewItemViewModel itemContent, IDebugState debugItemContent)
         {
-            var processFlowDecision = ProcessFlowDecision(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID));
+            var processFlowDecision = ProcessFlowDecision(WorkflowDesignerViewModel.GetModelItem(debugItemContent.WorkSurfaceMappingId, debugItemContent.ParentID.GetValueOrDefault()));
             if (processFlowDecision != null)
             {
                 if (debugItemContent.Outputs != null && debugItemContent.Outputs.Count > 0)

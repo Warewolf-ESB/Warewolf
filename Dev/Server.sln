@@ -142,6 +142,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Resources",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingDotnetDllCascading", "TestingDotnetDllCascading\TestingDotnetDllCascading.csproj", "{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Debug", "Dev2.Debug\Dev2.Debug.csproj", "{705D3D56-1551-4EE1-89A0-6CFEF2642508}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -550,6 +552,14 @@ Global
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Release|x86.ActiveCfg = Release|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Release|x86.Build.0 = Release|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Debug|x86.Build.0 = Debug|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|x86.ActiveCfg = Release|Any CPU
+		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

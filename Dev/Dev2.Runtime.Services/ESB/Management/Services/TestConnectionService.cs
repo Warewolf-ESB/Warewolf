@@ -51,7 +51,7 @@
 
                     Dev2Logger.Info("Test connection Service");
                     StringBuilder resourceDefinition;
-                    string workspaceIdString = string.Empty;
+                    var workspaceIdString = string.Empty;
 
                     values.TryGetValue("ServerSource", out resourceDefinition);
 

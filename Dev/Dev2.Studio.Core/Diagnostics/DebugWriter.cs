@@ -24,7 +24,7 @@ namespace Dev2.Diagnostics
         {
             if(write == null)
             {
-                throw new ArgumentNullException("write");
+                throw new ArgumentNullException(nameof(write));
             }
             ID = Guid.NewGuid();
             _write = write;

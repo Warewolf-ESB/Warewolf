@@ -49,6 +49,12 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="BrowserDebug\BrowserDebugSteps.cs" />
+    <Compile Include="BrowserDebug\BrowserDebug.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BrowserDebug.feature</DependentUpon>
+    </Compile>
     <Compile Include="Composition\ExampleWorkflowExecution.feature.cs">
       <DependentUpon>ExampleWorkflowExecution.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -65,6 +71,8 @@
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
+    <Compile Include="ISpecExternalProcessExecutor.cs" />
+    <Compile Include="SpecExternalProcessExecutor.cs" />
     <Compile Include="TestFramework\StudioTestFramework.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -212,6 +220,7 @@
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -255,6 +264,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="BrowserDebug\BrowserDebug.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BrowserDebug.feature.cs</LastGenOutput>
+    </None>
     <None Include="Composition\ExampleWorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExampleWorkflowExecution.feature.cs</LastGenOutput>
@@ -331,6 +344,10 @@
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
+      <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
+      <Name>Dev2.Runtime</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
       <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>

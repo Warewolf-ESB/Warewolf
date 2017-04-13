@@ -10,8 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Xml.Serialization;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
@@ -20,7 +18,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
     /// </summary>
 
     // ReSharper disable InconsistentNaming
-    public interface IDebugState : IEquatable<IDebugState>, IXmlSerializable
+    public interface IDebugState : IEquatable<IDebugState>
     {
         /// <summary>
         ///     Gets or sets the workspace ID.
@@ -41,7 +39,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// <summary>
         ///     Gets or sets the parent ID.
         /// </summary>
-        Guid ParentID { get; set; } 
+        Guid? ParentID { get; set; } 
         
         /// <summary>
         ///     Gets or sets the Source Resource ID.
@@ -77,6 +75,8 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         ///     Gets or sets a value indicating whether this instance is simulation.
         /// </summary>
         bool IsSimulation { get; set; }
+
+        bool IsAdded { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has an error.
@@ -162,19 +162,14 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
 
         Guid SessionID { get; set; }
         Guid WorkSurfaceMappingId { get; set; }
-
-        /// <summary>
-        ///     Writes this instance to the specified writer.
-        /// </summary>
-        /// <param name="writer">The writer to which this instance is written.</param>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        void Write(IByteWriterBase writer);
-
+        
         bool IsFinalStep();
 
         bool IsFirstStep();
 
         bool IsDurationVisible { get; set; }
         string ActualType  { get; set; }
+
+        List<IDebugState> Children { get; set; }
     }
 }

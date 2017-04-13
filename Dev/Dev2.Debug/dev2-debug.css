@@ -1,0 +1,16 @@
+﻿body {
+}
+
+.dev2-input-variable {
+    color: red
+}
+.dev2-input-operator {
+    color: blue
+}
+.dev2-input-value {
+    color: orange
+}
+
+.dev2-values {
+    font-weight: bold
+}

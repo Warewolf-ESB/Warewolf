@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
@@ -47,51 +46,6 @@ using Dev2.Studio.Interfaces.Enums;
 
 namespace Dev2.Activities.Specs.TestFramework
 {
-    internal interface ISpecExternalProcessExecutor : IExternalProcessExecutor
-    {
-        List<string> WebResult { get; set; }
-    }
-
-    internal class SpecExternalProcessExecutor : ISpecExternalProcessExecutor
-    {
-        #region Implementation of IExternalProcessExecutor
-
-        public SpecExternalProcessExecutor()
-        {
-            WebResult = new List<string>();
-        }
-
-        public void OpenInBrowser(Uri url)
-        {
-
-            try
-            {
-                using (var client = new WebClient())
-                {
-
-
-                    client.Credentials = CredentialCache.DefaultNetworkCredentials;
-
-                    WebResult.Add(client.DownloadString(url));
-                }
-
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e);
-            }
-
-        }
-
-        #endregion
-
-        #region Implementation of ISpecExternalProcessExecutor
-
-        public List<string> WebResult { get; set; }
-
-        #endregion
-    }
-
     [Binding]
     [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public class StudioTestFrameworkSteps
@@ -539,11 +493,10 @@ namespace Dev2.Activities.Specs.TestFramework
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
             // ReSharper disable once PossibleNullReferenceException
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
-
+            var externalProcessExecutor = new SpecExternalProcessExecutor();
             var first = debugItemResults.Select(result =>
             {
-                var webClient = new WebClient();
-                var externalProcessExecutor = new SpecExternalProcessExecutor();
+               
                 externalProcessExecutor.OpenInBrowser( new Uri(result.MoreLink));
                 var downloadStrings = externalProcessExecutor.WebResult[0];
                 return downloadStrings;

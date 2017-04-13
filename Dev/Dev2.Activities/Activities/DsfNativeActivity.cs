@@ -113,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (debugDispatcher == null)
             {
-                throw new ArgumentNullException("debugDispatcher");
+                throw new ArgumentNullException(nameof(debugDispatcher));
             }
 
             if (!string.IsNullOrEmpty(displayName))
@@ -278,7 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ErrorMessage = "Termination due to error in activity",
                     HasError = true
                 };
-                DebugDispatcher.Instance.Write(debugState, dataObject.IsServiceTestExecution, dataObject.TestName);
+                DebugDispatcher.Instance.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName);
             }
         }
 
@@ -388,7 +388,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (state != null)
             {
-                _debugDispatcher.Write(state, dataObject.IsServiceTestExecution, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                _debugDispatcher.Write(state, dataObject.IsServiceTestExecution,dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
             }
         }
 

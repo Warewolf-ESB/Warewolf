@@ -58,7 +58,7 @@ namespace Dev2.Diagnostics.Debug
             }
             _writers.TryAdd(workspaceId, writer);
         }
-        
+
 
         /// <summary>
         /// Removes the specified workspace from the dispatcher.
@@ -69,7 +69,7 @@ namespace Dev2.Diagnostics.Debug
             IDebugWriter writer;
             _writers.TryRemove(workspaceId, out writer);
         }
-        
+
         /// <summary>
         /// Gets the writer for the given workspace ID.
         /// </summary>
@@ -84,44 +84,49 @@ namespace Dev2.Diagnostics.Debug
 
         public void Shutdown()
         {
-            _shutdownRequested = true;           
+            _shutdownRequested = true;
         }
-        
-        public void Write(IDebugState debugState,bool isTestExecution,string testName, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
+
+        public void Write(IDebugState debugState, bool isTestExecution,bool isDebugFromWeb, string testName, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
         {
-            if(debugState == null)
+            if (debugState == null)
             {
                 return;
             }
 
             if (isTestExecution)
             {
-                TestDebugMessageRepo.Instance.AddDebugItem(debugState.SourceResourceID,testName,debugState);
+                TestDebugMessageRepo.Instance.AddDebugItem(debugState.SourceResourceID, testName, debugState);
+                return;
+            }
+            if (isDebugFromWeb)
+            {
+                WebDebugMessageRepo.Instance.AddDebugItem(debugState.ClientID, debugState.SessionID, debugState);
                 return;
             }
 
-            
-            if(isRemoteInvoke)
+
+            if (isRemoteInvoke)
             {
                 RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerId, debugState);
                 return;
             }
-            
-            if(remoteDebugItems != null)
+
+            if (remoteDebugItems != null)
             {
                 Guid parentId;
                 Guid.TryParse(parentInstanceId, out parentId);
-                foreach(var item in remoteDebugItems)
+                foreach (var item in remoteDebugItems)
                 {
                     item.WorkspaceID = debugState.WorkspaceID;
                     item.OriginatingResourceID = debugState.OriginatingResourceID;
                     item.ClientID = debugState.ClientID;
                     Guid remoteEnvironmentId;
-                    if(Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
+                    if (Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
                     {
                         item.EnvironmentID = remoteEnvironmentId;
                     }
-                    if(item.ParentID == Guid.Empty)
+                    if (item.ParentID == Guid.Empty)
                     {
                         item.ParentID = parentId;
                     }
@@ -130,7 +135,7 @@ namespace Dev2.Diagnostics.Debug
 
                 remoteDebugItems.Clear();
             }
-            Dev2Logger.Debug(string.Format("EnvironmentID: {0} Debug:{1}", debugState.EnvironmentID, debugState.DisplayName));
+            Dev2Logger.Debug($"EnvironmentID: {debugState.EnvironmentID} Debug:{debugState.DisplayName}");
             QueueWrite(debugState);
 
             if (debugState.IsFinalStep())
@@ -146,16 +151,16 @@ namespace Dev2.Diagnostics.Debug
                     }
                 }
             }
-        }        
+        }
 
         static void QueueWrite(IDebugState debugState)
         {
-            if(debugState != null)
+            if (debugState != null)
             {
-                DebugMessageRepo.Instance.AddDebugItem(debugState.ClientID,debugState.SessionID,debugState);
+                DebugMessageRepo.Instance.AddDebugItem(debugState.ClientID, debugState.SessionID, debugState);
 
             }
         }
-        
+
     }
 }

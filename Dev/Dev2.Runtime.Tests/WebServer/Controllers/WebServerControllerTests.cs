@@ -46,6 +46,110 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             Assert.AreEqual(typeof(WebsiteResourceHandler), controller.ProcessRequestHandlerType);
             CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
         }
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerController_Get")]
+        public void WebServerController_GetDecisions_InvokesWebsiteResourceHandler()
+        {
+            //------------Setup for test--------------------------
+            var requestVariables = new NameValueCollection
+            {
+                { "website", WebSite },
+                { "path", "dialogs/SaveDialog.htm" }
+            };
+            var controller = new TestWebServerController(HttpMethod.Get);
+
+            //------------Execute Test---------------------------
+            controller.GetDecisions(WebSite, "SaveDialog.htm");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebsiteResourceHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerController_Get")]
+        public void WebServerController_GetDialogs_InvokesWebsiteResourceHandler()
+        {
+            //------------Setup for test--------------------------
+            var requestVariables = new NameValueCollection
+            {
+                { "website", WebSite },
+                { "path", "dialogs/SaveDialog.htm" }
+            };
+            var controller = new TestWebServerController(HttpMethod.Get);
+
+            //------------Execute Test---------------------------
+            controller.GetDialogs(WebSite, "SaveDialog.htm");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebsiteResourceHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerController_Get")]
+        public void WebServerController_GetServices_InvokesWebsiteResourceHandler()
+        {
+            //------------Setup for test--------------------------
+            var requestVariables = new NameValueCollection
+            {
+                { "website", WebSite },
+                { "path", "dialogs/SaveDialog.htm" }
+            };
+            var controller = new TestWebServerController(HttpMethod.Get);
+
+            //------------Execute Test---------------------------
+            controller.GetServices(WebSite, "SaveDialog.htm");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebsiteResourceHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerController_Get")]
+        public void WebServerController_GetSwitch_InvokesWebsiteResourceHandler()
+        {
+            //------------Setup for test--------------------------
+            var requestVariables = new NameValueCollection
+            {
+                { "website", WebSite },
+                { "path", "dialogs/SaveDialog.htm" }
+            };
+            var controller = new TestWebServerController(HttpMethod.Get);
+
+            //------------Execute Test---------------------------
+            controller.GetSwitch(WebSite, "SaveDialog.htm");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebsiteResourceHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerController_Get")]
+        public void WebServerController_GetSources_InvokesWebsiteResourceHandler()
+        {
+            //------------Setup for test--------------------------
+            var requestVariables = new NameValueCollection
+            {
+                { "website", WebSite },
+                { "path", "dialogs/SaveDialog.htm" }
+            };
+            var controller = new TestWebServerController(HttpMethod.Get);
+
+            //------------Execute Test---------------------------
+            controller.GetSources(WebSite, "SaveDialog.htm");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebsiteResourceHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -156,6 +260,24 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             Assert.AreEqual(typeof(WebPostRequestHandler), controller.ProcessRequestHandlerType);
             CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
         }
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerController_Execute")]
+        public void WebServerController_Execute_InvokesWebPostRequestHandler()
+        {
+            //------------Setup for test--------------------------
+            var requestVariables = new NameValueCollection
+            {
+                { "servicename", "HelloWorld" }
+            };
+            var controller = new TestWebServerController(HttpMethod.Post);
+
+            //------------Execute Test---------------------------
+            controller.ExecuteService("HelloWorld.apis.json");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(GetApisJsonServiceHandler), controller.ProcessRequestHandlerType);
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -205,6 +327,56 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("WebServerController_Execute")]
+        public void WebServerController_ExecuteDotDebug_Get_InvokesWebGetRequestHandler()
+        {
+            //------------Setup for test--------------------------
+            const string requestUrl = "http://http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=7af4273a-4e31-4559-be7d-eecfb4c1b10e";
+            var requestVariables = new NameValueCollection
+            {
+                    {"isPublic",true.ToString()},
+                    {"IsDebug",true.ToString() },
+                    {"servicename","HelloWorld.debug" }
+
+
+            };
+
+            var controller = new TestWebServerController(HttpMethod.Get, requestUrl);
+            //------------Execute Test---------------------------
+            controller.ExecuteSecureWorkflow("HelloWorld.debug");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("WebServerController_Execute")]
+        public void WebServerController_ExecuteDotDebug_Post_InvokesWebPostRequestHandler()
+        {
+            //------------Setup for test--------------------------
+            const string requestUrl = "http://http://rsaklfnkosinath:3142/secure/Hello%20World.debug?Name=&wid=7af4273a-4e31-4559-be7d-eecfb4c1b10e";
+            var requestVariables = new NameValueCollection
+            {
+                    {"isPublic",true.ToString()},
+                    {"IsDebug",true.ToString() },
+                    {"servicename","HelloWorld.debug" }
+
+
+            };
+
+            var controller = new TestWebServerController(HttpMethod.Post, requestUrl);
+            //------------Execute Test---------------------------
+            controller.ExecuteSecureWorkflow("HelloWorld.debug");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebPostRequestHandler), controller.ProcessRequestHandlerType);
+            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("WebServerController_Execute")]
         public void WebServerControllerPublic_ExecuteGivenTestsRun_Get_InvokesWebPostRequestHandler()
         {
             //------------Setup for test--------------------------
@@ -225,6 +397,29 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             //------------Assert Results-------------------------
             Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
             CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("WebServerController_Execute")]
+        public void WebServerControllerPublic_ExecuteGivenNullUri_InvokesWebPostRequestHandler()
+        {
+            //------------Setup for test--------------------------
+            const string requestUrl = "http://rsaklfnkosinath:3142/Public/Hello%20World/.tests";
+            var requestVariables = new NameValueCollection
+            {
+                  { "path", requestUrl },
+                  { "isPublic", true.ToString() },
+                { "servicename", "*" },
+            };
+
+            var controller = new TestWebServerController(HttpMethod.Get, requestUrl);
+            //------------Execute Test---------------------------
+            controller.Request.RequestUri = null;
+            controller.ExecutePublicWorkflow("HelloWorld");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
         }
 
         [TestMethod]
@@ -296,6 +491,34 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(WebsiteResourceHandler));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerController_CreateHandler")]
+        public void WebServerController_ExecuteGetLogFile()
+        {
+            //------------Setup for test--------------------------
+            var controller = new TestWebServerController(HttpMethod.Get);
+            //------------Bookmark Test---------------------------
+            var result = controller.ExecuteGetLogFile();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(HttpResponseMessage));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WebServerController_CreateHandler")]
+        public void WebServerController_ExecuteGetRootLevelApisJson()
+        {
+            //------------Setup for test--------------------------
+            var controller = new TestWebServerController(HttpMethod.Get);
+            //------------Bookmark Test---------------------------
+            var result = controller.ExecuteGetRootLevelApisJson();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(HttpResponseMessage));
         }
     }
 }

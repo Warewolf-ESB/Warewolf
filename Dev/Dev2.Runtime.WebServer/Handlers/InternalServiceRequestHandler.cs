@@ -20,6 +20,7 @@ using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Warewolf.Resource.Errors;
@@ -28,7 +29,19 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class InternalServiceRequestHandler : AbstractWebRequestHandler
     {
+        private readonly IResourceCatalog _catalog;
+        private readonly IAuthorizationService _authorizationService;
         public IPrincipal ExecutingUser { private get; set; }
+
+        public InternalServiceRequestHandler()
+            :this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
+        {            
+        }
+        public InternalServiceRequestHandler(IResourceCatalog catalog, IAuthorizationService authorizationService)
+        {
+            _catalog = catalog;
+            _authorizationService = authorizationService;
+        }
 
         public override void ProcessRequest(ICommunicationContext ctx)
         {
@@ -94,7 +107,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 xmlData = "<DataList></DataList>";
             }
-            bool isDebug = false;
+            var isDebug = false;
             if (request.Args != null && request.Args.ContainsKey("IsDebug"))
             {
                 var debugString = request.Args["IsDebug"].ToString();
@@ -103,7 +116,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     isDebug = false;
                 }
             }
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
             if (isDebug)
             {
@@ -112,8 +125,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.StartTime = DateTime.Now;
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
-
-            var resource = request.ResourceID != Guid.Empty ? ResourceCatalog.Instance.GetResource(workspaceID, request.ResourceID) : ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
+            
+            var resource = request.ResourceID != Guid.Empty ? _catalog.GetResource(workspaceID, request.ResourceID) : _catalog.GetResource(workspaceID, request.ServiceName);
             var isManagementResource = false;
             if (!string.IsNullOrEmpty(request.TestName))
             {
@@ -124,7 +137,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 dataObject.ResourceID = resource.ResourceID;
                 dataObject.SourceResourceID = resource.ResourceID;
-                isManagementResource = ResourceCatalog.Instance.ManagementServices.ContainsKey(resource.ResourceID);
+                isManagementResource = _catalog.ManagementServices.ContainsKey(resource.ResourceID);
             }
             else
             {
@@ -160,9 +173,10 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
                         else if (dataObject.IsServiceTestExecution)
                         {
-                            if (ServerAuthorizationService.Instance != null)
+                            
+                            if (_authorizationService != null)
                             {
-                                var authorizationService = ServerAuthorizationService.Instance;
+                                var authorizationService = _authorizationService;
                                 var hasContribute =
                                     authorizationService.IsAuthorized(AuthorizationContext.Contribute,
                                         Guid.Empty.ToString());
@@ -173,7 +187,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                                 }
                             }
                         }
-                        
+
                         channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                     });
 
@@ -195,9 +209,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 return new StringBuilder();
             }
 
-            
-
-            ExecuteMessage msg = new ExecuteMessage { HasError = true };
+            var msg = new ExecuteMessage { HasError = true };
             msg.SetMessage(string.Join(Environment.NewLine, dataObject.Environment.Errors));
 
             return serializer.SerializeToBuilder(msg);

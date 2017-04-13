@@ -1748,7 +1748,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (debugState != null)
                 {
                     var workSurfaceMappingId = debugState.WorkSurfaceMappingId;
-                    var selectedModelItem = GetSelectedModelItem(workSurfaceMappingId, debugState.ParentID);
+                    var selectedModelItem = GetSelectedModelItem(workSurfaceMappingId, debugState.ParentID.GetValueOrDefault());
                     if (selectedModelItem != null)
                     {
                         switch (args.SelectionType)
