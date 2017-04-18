@@ -11,7 +11,8 @@
     xmlns:debug="clr-namespace:Dev2.Common.Interfaces.Diagnostics.Debug;assembly=Dev2.Common.Interfaces"
     xmlns:errors1="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-    xmlns:converters6="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core">
+    xmlns:converters6="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
+    xmlns:converters7="clr-namespace:Dev2.Studio.Core.AppResources.Converters">
 
     <activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter" />
@@ -32,6 +33,7 @@
     <converters:DebugItemResultTypeToColorConverter x:Key="DebugItemResultTypeToColorConverter" />
     <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     <converters5:SchedulerStatusToCheckedConverter x:Key="SchedulerStatusToCheckedConverter" />
+    <converters7:InverseScheduleStatusConverter x:Key="InverseScheduleStatusConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     <converters:DeployViewConnectedToVisiblityConverter x:Key="DeployViewConnectedToVisiblityConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible" NotNullVisibilityValue="Collapsed" NullVisibilityValue="Visible" />
