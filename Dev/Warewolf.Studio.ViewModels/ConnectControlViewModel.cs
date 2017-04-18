@@ -79,6 +79,7 @@ namespace Warewolf.Studio.ViewModels
 
         void UpdateRepositoryOnServerSaved(Guid savedServerID, bool isDeleted = false)
         {
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var currentServer = Servers.FirstOrDefault(server => server.EnvironmentID == savedServerID);
             var idx = -1;
             if (currentServer != null)
@@ -91,6 +92,12 @@ namespace Warewolf.Studio.ViewModels
                 idx = Servers.IndexOf(currentServer);
                 currentServer.NetworkStateChanged -= OnServerOnNetworkStateChanged;
                 Servers.Remove(currentServer);
+
+                var environmentViewModel = shellViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == currentServer.EnvironmentID);
+                if (environmentViewModel != null)
+                {
+                    shellViewModel.ExplorerViewModel?.Environments?.Remove(environmentViewModel);
+                }
             }
             if (isDeleted)
             {
@@ -107,7 +114,6 @@ namespace Warewolf.Studio.ViewModels
             }
             updatedServer.NetworkStateChanged += OnServerOnNetworkStateChanged;
             Servers.Insert(idx, updatedServer);
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
             SelectedConnection = shellViewModel?.LocalhostServer;
         }
 
@@ -278,13 +284,14 @@ namespace Warewolf.Studio.ViewModels
                     _selectedConnection = value;
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
                     {
-                        CheckVersionConflict().Wait();
+                        // ReSharper disable once UnusedVariable
+                        var isConnected = CheckVersionConflict();
                     }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);
                     SelectedEnvironmentChanged?.Invoke(this, value.EnvironmentID);
                     var delegateCommand = EditConnectionCommand as DelegateCommand;
-                    delegateCommand?.RaiseCanExecuteChanged();                    
+                    delegateCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
