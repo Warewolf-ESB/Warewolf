@@ -2,6 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UITests.Settings.SettingsUIMapClasses;
 
 namespace Warewolf.UITests
 {
@@ -76,6 +79,17 @@ namespace Warewolf.UITests
             Assert.AreEqual("2", displayText);
         }
 
+        [TestMethod]
+        [TestCategory("Deploy")]
+        public void Deploy_ResourcePermissions_TogglesDeployButtonCorrectly()
+        {
+            const string Source = "ResourceWithViewAndExecutePerm";
+            SettingsUIMap.SetupPublicPermissionsForForLocalhost(Source);
+            ExplorerUIMap.SetupPublicPermissionsForForRemoteServer(Source);
+            ServerSourceUIMap.ChangeServerAuthenticationTypeToPublic();
+            DeployUIMap.ValidateICanNotDeploy(Source);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -131,6 +145,50 @@ namespace Warewolf.UITests
 
         private DeployUIMap _DeployUIMap;
 
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
+
+        ServerSourceUIMap ServerSourceUIMap
+        {
+            get
+            {
+                if (_ServerSourceUIMap == null)
+                {
+                    _ServerSourceUIMap = new ServerSourceUIMap();
+                }
+
+                return _ServerSourceUIMap;
+            }
+        }
+
+        private ServerSourceUIMap _ServerSourceUIMap;
         #endregion
     }
 }

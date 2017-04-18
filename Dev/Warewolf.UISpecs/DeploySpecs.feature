@@ -140,10 +140,3 @@ Scenario: Changing Seleced Server On desploy Source While Connected To Remote Se
 	And I Select RemoteConnectionIntegration From Explorer
 	And I Select localhost From Deploy Tab Source Server Combobox
 	And I validate the Resource tree is loaded
-
-Scenario: Resource Permissions Toggles Deploy button correctly
-	Given The Warewolf Studio is running
-	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for localhost
-	And I setup Public Permissions for "ResourceWithViewAndExecutePerm" for Remote Server
-	And I set AuthenticationType to Public
-	Then I validate I can not Deploy "ResourceWithViewAndExecutePerm"
