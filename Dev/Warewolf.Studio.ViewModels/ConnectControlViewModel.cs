@@ -38,8 +38,8 @@ namespace Warewolf.Studio.ViewModels
         ObservableCollection<IServer> _servers;
         bool _isLoading;
         private Guid? _selectedId;
+        private readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
-        private bool _shouldUpdateActiveEnvironment;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator, ObservableCollection<IServer> servers = null)
         {
@@ -52,7 +52,8 @@ namespace Warewolf.Studio.ViewModels
                 throw new ArgumentNullException(nameof(aggregator));
             }
             Server = server;
-            LoadServers(servers);
+            _existingServers = servers;
+            LoadServers();
             SelectedConnection = server;
             EditConnectionCommand = new DelegateCommand(AllowConnectionEdit,CanExecuteMethod);
             NewConnectionCommand = new DelegateCommand(NewServer);
@@ -69,14 +70,7 @@ namespace Warewolf.Studio.ViewModels
             PopupController = popupController;
         }
 
-        public bool ShouldUpdateActiveEnvironment
-        {
-            get { return _shouldUpdateActiveEnvironment; }
-            set
-            {
-                _shouldUpdateActiveEnvironment = value; 
-            }
-        }
+        public bool ShouldUpdateActiveEnvironment { get; set; }
 
         private bool CanExecuteMethod()
         {
@@ -117,39 +111,22 @@ namespace Warewolf.Studio.ViewModels
             SelectedConnection = shellViewModel?.LocalhostServer;
         }
 
-        public void LoadServers(ObservableCollection<IServer> servers)
+        public void LoadServers()
         {
-            if (servers != null)
+            var servers = new ObservableCollection<IServer>();
+            if (_existingServers != null)
             {
-                if (Servers == null)
-                {
-                    Servers = new ObservableCollection<IServer>();
-                }
-                RemoveServerDisconnect();
-                Servers.Clear();
-                Servers.AddRange(servers);
-                SetupServerDisconnect();
-                if (_selectedId != null && _selectedId != Guid.Empty)
-                {
-                    var selectConnection = Servers.FirstOrDefault(server => server.EnvironmentID == _selectedId);
-                    SelectedConnection = null;
-                    SelectedConnection = selectConnection;
-                }
+                servers = _existingServers;
             }
             else
             {
-                LoadServers();
+                var serverConnections = ServerRepository.Instance.All();
+                if (serverConnections != null)
+                {
+                    servers.AddRange(serverConnections);
+                }
             }
-        }
-
-        public void LoadServers()
-        {
-            var serverConnections = ServerRepository.Instance.All();
-            var servers = new ObservableCollection<IServer>();
-            if(serverConnections != null)
-            {
-                servers.AddRange(serverConnections);
-            }
+            
             if (Servers == null)
             {
                 Servers = new ObservableCollection<IServer>();
@@ -192,8 +169,8 @@ namespace Warewolf.Studio.ViewModels
                     }
                     IsConnected = false;
                     ServerDisconnected?.Invoke(this, SelectedConnection);
-                    PopupController?.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
-                        , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                    PopupController?.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
             else
@@ -213,11 +190,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async Task ConnectOrDisconnect()
+        private async Task<bool> ConnectOrDisconnect()
         {
+            var isConnected = false;
             if (_selectedConnection == null)
             {
-                return;
+                return false;
             }
             
             if (_selectedConnection.IsConnected && _selectedConnection.HasLoaded)
@@ -236,22 +214,23 @@ namespace Warewolf.Studio.ViewModels
                 IsConnecting = true;
                 IsConnected = false;
                 IsLoading = true;
-                await Connect(_selectedConnection);
+                isConnected = await Connect(_selectedConnection);
                 IsConnected = _selectedConnection.IsConnected;
                 IsConnecting = false;
                 IsLoading = false;
                 SetActiveEnvironment();
             }
+            return isConnected;
         }
 
-        async void CheckVersionConflict()
+        async Task CheckVersionConflict()
         {
             try
             {
                 IsLoading = true;
                 IsConnecting = true;
-                await ConnectOrDisconnect();
-                if (_selectedConnection.IsConnected)
+                var isConnected = await ConnectOrDisconnect();
+                if (_selectedConnection.IsConnected && isConnected)
                 {
                     Version sourceVersionNumber;
                     Version.TryParse(_selectedConnection.GetServerVersion(), out sourceVersionNumber);
@@ -299,7 +278,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedConnection = value;
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
                     {
-                        CheckVersionConflict();
+                        var isConnected = CheckVersionConflict();
                     }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);

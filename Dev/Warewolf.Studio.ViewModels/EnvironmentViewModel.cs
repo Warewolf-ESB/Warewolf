@@ -968,7 +968,6 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
-        #region COMMANDS
 
         public ICommand NewServiceCommand { get; set; }
         public ICommand NewServerCommand { get; set; }
@@ -998,8 +997,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand Expand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
-
-        #endregion
 
         public string DisplayName
         {
@@ -1274,7 +1271,6 @@ namespace Warewolf.Studio.ViewModels
             return itemCreated;
         }
 
-
         public ExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem)
         {
             var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
@@ -1336,7 +1332,6 @@ namespace Warewolf.Studio.ViewModels
                     explorerItemViewModel?.Dispose();
                 }
         }
-
         
         public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
         {
