@@ -62,9 +62,11 @@ namespace Warewolf.UITests.DialogsUIMapClasses
             Assert.IsTrue(UIMap.ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
         }
 
-        public void Enter_ConfigFile_In_SelectFilesWindow()
+        [When("I Enter Config File In Select Files Window")]
+        public void Enter_ConfigFile_In_SelectFilesWindow(string fileName)
         {
-            Mouse.Click(SelectFilesWindow.DrivesDataTree.CTreeItem.swapfile);
+            SelectFilesWindow.DriveNameIntellisensComboBox.Textbox.Text = fileName;
+            Keyboard.SendKeys(SelectFilesWindow.DriveNameIntellisensComboBox.Textbox, "{Enter}", ModifierKeys.None);
             Mouse.Click(SelectFilesWindow.SelectButton);
         }
 
