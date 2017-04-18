@@ -424,7 +424,6 @@ namespace Warewolf.Studio.ViewModels
                     if (_selectedId != null)
                     {
                         shellViewModel?.OpenResource(SelectedConnection.EnvironmentID, ServerRepository.Instance.Source.EnvironmentID, shellViewModel.LocalhostServer);
-                        SelectedConnection = shellViewModel?.LocalhostServer;
                     }
                 }
             }
