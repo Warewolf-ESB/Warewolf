@@ -13,7 +13,6 @@ namespace Warewolf.Studio.ViewModels
     public class DeployStatsViewerViewModel : BindableBase, IDeployStatsViewerViewModel
     {
         readonly IDeployDestinationExplorerViewModel _destination;
-        //readonly IExplorerViewModel _destination;
         int _connectors;
         int _services;
         int _sources;
@@ -54,11 +53,6 @@ namespace Warewolf.Studio.ViewModels
             _destination = destination;
         }
 
-        #region Implementation of IDeployStatsViewerViewModel
-
-        /// <summary>
-        /// Services being deployed
-        /// </summary>
         public int Connectors
         {
             get
@@ -71,9 +65,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Connectors);
             }
         }
-        /// <summary>
-        /// Services Being Deployed
-        /// </summary>
         public int Services
         {
             get
@@ -86,9 +77,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Services);
             }
         }
-        /// <summary>
-        /// Sources being Deployed
-        /// </summary>
         public int Sources
         {
             get
@@ -101,9 +89,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Sources);
             }
         }
-        /// <summary>
-        /// What is unknown is unknown to me
-        /// </summary>
         public int Unknown
         {
             get
@@ -116,9 +101,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Unknown);
             }
         }
-        /// <summary>
-        /// The count of new resources being deployed
-        /// </summary>
         public int NewResources
         {
             get
@@ -131,9 +113,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => NewResources);
             }
         }
-        /// <summary>
-        /// The count of overidded resources
-        /// </summary>
         public int Overrides
         {
             get
@@ -146,9 +125,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Overrides);
             }
         }
-        /// <summary>
-        /// The status of the last deploy
-        /// </summary>
         public string Status
         {
             get
@@ -210,13 +186,10 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-
-
         private static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
         {            
             return Equals(currentItem.Server, explorerItemViewModel.Server);
         }
-
 
         public void Calculate(IList<IExplorerTreeItem> items)
         {
@@ -317,13 +290,10 @@ namespace Warewolf.Studio.ViewModels
         {
             return res.Contains(@"Source") || res.Contains(@"Server");
         }
-        #endregion
     }
 
     public class ConflictEqualityComparer : IEqualityComparer<Conflict>
     {
-        #region Implementation of IEqualityComparer<in Conflict>
-
         public bool Equals(Conflict x, Conflict y)
         {
             if(x?.SourceName==y?.SourceName && x?.DestinationName == y?.DestinationName)
@@ -337,7 +307,5 @@ namespace Warewolf.Studio.ViewModels
         {
             return 0;
         }
-
-        #endregion
     }
 }

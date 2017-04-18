@@ -3060,6 +3060,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server dropped.
+        /// </summary>
+        public static string ServerDroppedErrorHeading {
+            get {
+                return ResourceManager.GetString("ServerDroppedErrorHeading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server input path {0} is not set.
         /// </summary>
         public static string ServerInputPathEmpty {

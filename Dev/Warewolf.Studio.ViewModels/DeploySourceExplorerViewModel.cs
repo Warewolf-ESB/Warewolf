@@ -17,8 +17,6 @@ namespace Warewolf.Studio.ViewModels
     {
         readonly IDeployStatsViewerViewModel _statsArea;
 
-        #region Implementation of IDeployDestinationExplorerViewModel
-
         readonly IShellViewModel _shellViewModel;
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _loaded;
@@ -42,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
 
             ShowConnectControl = true;
-            ConnectControlViewModel.ServerConnected += ServerConnected;
+            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             _statsArea = statsArea;
             foreach (var environmentViewModel in _environments)
@@ -57,11 +55,14 @@ namespace Warewolf.Studio.ViewModels
             IsRefreshing = false;
             ShowConnectControl = false;
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
-            ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
+            ConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
+            {
+                await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id);
+            };
             IsDeploy = true;
         }
 
-        async void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
+        async Task DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
             var connectControlViewModel = sender as ConnectControlViewModel;
             if(connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
@@ -81,8 +82,6 @@ namespace Warewolf.Studio.ViewModels
                 await CreateNewEnvironment(environmentViewModel?.Server);
             }
         }
-
-        #region Overrides of ExplorerViewModel
 
         protected void AfterLoad(Guid environmentID)
         {
@@ -138,8 +137,6 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-
-        #endregion
 
         public override ObservableCollection<IEnvironmentViewModel> Environments
         {
@@ -261,10 +258,6 @@ namespace Warewolf.Studio.ViewModels
 
         public virtual Version ServerVersion => _serverVersion ?? (_serverVersion = Version.Parse(SelectedServer.GetServerVersion()));
 
-        /// <summary>
-        /// used to select a list of items from the explorer
-        /// </summary>
-        /// <param name="selectedItems"></param>
         private void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
         {
             var count = SelectedEnvironment.AsList().Count + 1;
@@ -292,29 +285,30 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        #endregion
-
-        async void ServerConnected(object _, IServer server)
+        async Task<bool> ServerConnected(object _, IServer server)
         {
-            await CreateNewEnvironment(server);
+            var isCreated = await CreateNewEnvironment(server);
+            return isCreated;
         }
 
-        private async Task CreateNewEnvironment(IServer server)
+        private async Task<bool> CreateNewEnvironment(IServer server)
         {
+            var isLoaded = false;
             if (server == null)
             {
-                return;
+                return false;
             }
             var createNew = _environments.All(environmentViewModel => environmentViewModel.ResourceId != server.EnvironmentID);
             if (createNew)
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
-                await environmentModel.Load(IsDeploy);
+                isLoaded = await environmentModel.Load(IsDeploy);
                 OnPropertyChanged(() => Environments);
                 _statsArea.Calculate(environmentModel.AsList().Select(model => model as IExplorerTreeItem).ToList());
             }
             AfterLoad(server.EnvironmentID);
+            return isLoaded;
         }
 
         private bool IsDeploy { get; set; }

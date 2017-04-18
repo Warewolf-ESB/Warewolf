@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -12,17 +13,16 @@ namespace Warewolf.Studio.ViewModels
         private bool _deployTests;
         private Version _serverVersion;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
-        readonly IShellViewModel _shellViewModel;
-
-        #region Implementation of IDeployDestinationExplorerViewModel
 
         public DeployDestinationViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator,false)
         {
-            _shellViewModel = shellViewModel;
-            ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
-            ConnectControlViewModel.SelectedEnvironmentChanged += DeploySourceExplorerViewModelSelectedEnvironmentChanged;
-            ConnectControlViewModel.ServerConnected += ServerConnected;
+            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
+            ConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
+            {
+                await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id);
+            };
+            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async void ServerConnected(object sender, IServer server)
+        private async Task<IEnvironmentViewModel> ServerConnected(object sender, IServer server)
         {
             var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID, true);
             environmentViewModel?.Server?.GetServerVersion();
@@ -47,9 +47,10 @@ namespace Warewolf.Studio.ViewModels
             {
                 AfterLoad(environmentViewModel.ResourceId);
             }
+            return environmentViewModel;
         }
 
-        private async void DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)
+        private async Task<IEnvironmentViewModel> DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)
         {
             var environmentViewModel = await CreateEnvironmentViewModel(sender, environmentid);
             SelectedEnvironment = environmentViewModel;
@@ -58,9 +59,8 @@ namespace Warewolf.Studio.ViewModels
             {
                 AfterLoad(environmentViewModel.ResourceId);
             }
+            return environmentViewModel;
         }
-
-        #region Overrides of ExplorerViewModel
 
         public override bool IsLoading
         {
@@ -74,11 +74,6 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => IsLoading);
             }
         }
-
-        #endregion
-
-        #region Overrides of ExplorerViewModel
-
         protected override void AfterLoad(Guid environmentId)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
@@ -93,13 +88,6 @@ namespace Warewolf.Studio.ViewModels
             }
             StatsArea?.ReCalculate();
         }
-
-        #endregion
-
-        #endregion
-
-        #region Implementation of IDeployDestinationExplorerViewModel
-
         public event ServerSate ServerStateChanged;
         public virtual Version MinSupportedVersion => Version.Parse(SelectedEnvironment.Server.GetMinSupportedVersion());
 
@@ -117,7 +105,5 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(()=> DeployTests);
             }
         }
-
-        #endregion
     }
 }
