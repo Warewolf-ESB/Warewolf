@@ -1,17 +1,30 @@
 ﻿#Requires -RunAsAdministrator
 Param(
-    [int]$WaitForCloseTimeout = 900
+    [int]$WaitForCloseTimeout = 1800,
+	[int]$WaitForCloseRetryCount = 10
 )
 
 #Stop Studio
 $Output = ""
 taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
-if (!($Output.ToString().StartsWith("ERROR: "))) {
+
+#Soft Kill
+[int]$i = 0
+[string]$WaitTimeoutMessage = "This command stopped operation because process"
+[string]$WaitOutput = $WaitTimeoutMessage
+while (!($Output.ToString().StartsWith("ERROR: ")) -and $WaitOutput.ToString().StartsWith($WaitTimeoutMessage) -and $i -lt $WaitForCloseRetryCount) {
+	$i += 1
 	Write-Host $Output.ToString()
-    Wait-Process "Warewolf Studio" -Timeout $WaitForCloseTimeout  2>&1 | out-null
-    taskkill /im "Warewolf Studio.exe"  2>&1 | out-null
+    $FormatWaitForCloseTimeoutMessage = $WaitOutput.ToString().replace($WaitTimeoutMessage, "")
+    if ($FormatWaitForCloseTimeoutMessage -ne "") {
+        Write-Host $FormatWaitForCloseTimeoutMessage
+    }
+	Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$WaitForCloseRetryCount))  2>&1 | %{$WaitOutput = $_}
+	taskkill /im "Warewolf Studio.exe"  2>&1 |  %{$Output = $_}
 }
-taskkill /im "Warewolf Studio.exe" /f  2>&1 | out-null
+
+#Force Kill
+taskkill /im "Warewolf Studio.exe" /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
 
 #Stop Server
 $ServiceOutput = ""
