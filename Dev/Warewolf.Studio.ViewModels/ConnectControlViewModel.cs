@@ -278,7 +278,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedConnection = value;
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
                     {
-                        var isConnected = CheckVersionConflict();
+                        CheckVersionConflict().Wait();
                     }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);
