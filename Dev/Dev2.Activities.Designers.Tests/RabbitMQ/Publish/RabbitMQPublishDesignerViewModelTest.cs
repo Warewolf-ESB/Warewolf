@@ -11,7 +11,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable InconsistentNaming
 
@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Publish
         public void RabbitMQPublishDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);

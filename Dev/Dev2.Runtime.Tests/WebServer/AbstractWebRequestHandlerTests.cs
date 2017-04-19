@@ -13,6 +13,7 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Data;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -27,7 +28,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Runtime.WebServer
 {

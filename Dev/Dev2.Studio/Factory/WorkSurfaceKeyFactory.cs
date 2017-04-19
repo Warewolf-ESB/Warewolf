@@ -14,8 +14,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Factory
@@ -98,7 +98,7 @@ namespace Dev2.Factory
                 WorkSurfaceContext = context,
                 ResourceID = resourceModel.ID,
                 ServerID = resourceModel.ServerID,
-                EnvironmentID = resourceModel.Environment.ID
+                EnvironmentID = resourceModel.Environment.EnvironmentID
             };
         }
 
@@ -108,8 +108,8 @@ namespace Dev2.Factory
             var origin = debugState.WorkspaceID;
             if (origin != Guid.Empty)
             {
-                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
-                Guid environmentID = environmentModel.ID;
+                IServer server = ServerRepository.Instance.FindSingle(model => model.Connection.WorkspaceID == origin);
+                Guid environmentID = server.EnvironmentID;
                 return new WorkSurfaceKey
                 {
                     WorkSurfaceContext = WorkSurfaceContext.Workflow,

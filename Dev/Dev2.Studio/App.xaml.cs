@@ -71,7 +71,7 @@ namespace Dev2.Studio
     /// </summary>
     public partial class App : IApp
     {
-        MainViewModel _mainViewModel;
+        ShellViewModel _shellViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
         // ReSharper disable RedundantDefaultFieldInitializer
         // ReSharper disable NotAccessedField.Local
@@ -171,8 +171,8 @@ namespace Dev2.Studio
             new Bootstrapper().Start();
             
             base.OnStartup(e);
-            _mainViewModel = MainWindow.DataContext as MainViewModel;
-            if(_mainViewModel != null)
+            _shellViewModel = MainWindow.DataContext as ShellViewModel;
+            if(_shellViewModel != null)
             {
                 CreateDummyWorkflowDesignerForCaching();
                 SplashView.CloseSplash();
@@ -184,7 +184,7 @@ namespace Dev2.Studio
                 }
                 Dev2Logger.AddEventLogging(settingsConfigFile,"Warewolf Studio");
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
-                _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
+                _appExceptionHandler = new AppExceptionHandler(this, _shellViewModel);
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
@@ -234,7 +234,7 @@ namespace Dev2.Studio
 
         private async void CheckForDuplicateResources()
         {
-            var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
+            var server = ServerRepository.Instance.Source;
             var loadExplorerDuplicates = await server.LoadExplorerDuplicates();
             if (loadExplorerDuplicates?.Count > 0)
             {
@@ -247,9 +247,9 @@ namespace Dev2.Studio
         private void ShowSplash()
         {            
             // Create the window 
-            var server = new Warewolf.Studio.AntiCorruptionLayer.Server(EnvironmentRepository.Instance.Source);
+            var server = ServerRepository.Instance.Source;
             server.Connect();
-            CustomContainer.Register<IServer>(server);
+            CustomContainer.Register(server);
             var toolBoxViewModel = new ToolboxViewModel(new ToolboxModel(server, server, null), new ToolboxModel(server, server, null));
             CustomContainer.Register<IToolboxViewModel>(toolBoxViewModel);
 
@@ -289,7 +289,7 @@ namespace Dev2.Studio
             Tracker.Stop();
 
             // this is already handled ;)
-            _mainViewModel?.PersistTabs(true);
+            _shellViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();

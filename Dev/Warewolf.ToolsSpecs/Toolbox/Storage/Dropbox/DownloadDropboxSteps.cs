@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Moq;
 using TechTalk.SpecFlow;
 using System.Linq.Expressions;
@@ -11,12 +10,13 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Storage;
 using Dev2.Activities.Designers2.DropBox2016.Download;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
 {
@@ -36,8 +36,8 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         {
             var dropBoxUploadTool = new DsfDropBoxDownloadActivity();
             var modelItem = ModelItemUtils.CreateModelItem(dropBoxUploadTool);
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
@@ -48,14 +48,14 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             };
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
             mockResourcRepositorySetUp.Setup(repository => repository.FindSourcesByType<OauthSource>(mockEnvironmentModel.Object, It.IsAny<enSourceType>()))
                 .Returns(sources);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourcRepositorySetUp.Object);
 
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
             var mock = new Mock<IResourceCatalog>();
             mock.Setup(catalog => catalog.GetResourceList<Resource>(It.IsAny<Guid>())).Returns(new List<IResource>());
             var downloadViewModel = new DropBoxDownloadViewModel(modelItem, dropBoxSourceManager.Object);
@@ -70,9 +70,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             return scenarioContext.Get<DropBoxDownloadViewModel>("downloadViewModel");
         }
 
-        Mock<IEnvironmentModel> GeEnvrionmentModel()
+        Mock<IServer> GeEnvrionmentModel()
         {
-            return scenarioContext.Get<Mock<IEnvironmentModel>>("mockEnvironmentModel");
+            return scenarioContext.Get<Mock<IServer>>("mockEnvironmentModel");
         }
 
         Mock<IEventAggregator> GetEventAggregator()

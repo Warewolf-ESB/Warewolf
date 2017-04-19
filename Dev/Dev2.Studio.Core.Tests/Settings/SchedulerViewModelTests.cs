@@ -19,7 +19,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -31,16 +31,18 @@ using Dev2.Scheduler;
 using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
+using Dev2.Studio.Interfaces.Enums;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Settings
@@ -55,7 +57,7 @@ namespace Dev2.Core.Tests.Settings
             AppSettings.LocalHost = "http://localhost:3142";
             var shell = new Mock<IShellViewModel>();
             var lcl = new Mock<IServer>();
-            lcl.Setup(a => a.ResourceName).Returns("Localhost");
+            lcl.Setup(a => a.DisplayName).Returns("Localhost");
             shell.Setup(x => x.LocalhostServer).Returns(lcl.Object);
             shell.Setup(x => x.ActiveServer).Returns(new Mock<IServer>().Object);
             CustomContainer.Register(shell.Object);
@@ -71,7 +73,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SchedulerViewModel(null, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a=> new Mock<IEnvironmentModel>().Object);
+            new SchedulerViewModel(null, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a=> new Mock<IServer>().Object);
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -99,7 +101,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SchedulerViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object,a=> new Mock<IEnvironmentModel>().Object);
+            new SchedulerViewModel(new Mock<IEventAggregator>().Object, null, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object,a=> new Mock<IServer>().Object);
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -113,7 +115,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, null, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, null, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -126,7 +128,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, null, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, null, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
@@ -139,7 +141,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var schdulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schdulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(schdulerViewModel);
             Assert.IsNotNull(schdulerViewModel.Errors);
@@ -153,7 +155,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             schedulerViewModel.SelectedTask.Errors = new ErrorResultTO();
@@ -170,7 +172,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
             schedulerViewModel.DisplayName = "displayName";
             //------------Assert Results-------------------------
             Assert.AreEqual("displayName", schedulerViewModel.DisplayName);
@@ -184,7 +186,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var schdulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schdulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(schdulerViewModel);
             Assert.IsNotNull(schdulerViewModel.Errors);
@@ -199,7 +201,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             string expectedHelpText = Warewolf.Studio.Resources.Languages.HelpText.SchedulerSettingsHelpTextSettingsView;
 
             //------------Assert Results-------------------------
@@ -216,7 +218,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_ShowError_WithSaveError_HasErrorsTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { SelectedTask = new ScheduledResourceForTest() };
 
             //------------Execute Test---------------------------
             schedulerViewModel.ShowError("Error while saving: test error");
@@ -231,7 +233,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_ShowError_WithNormalError_HasErrorsTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { SelectedTask = new ScheduledResourceForTest() };
             var _hasErrorChange = false;
             var _errorChange = false;
 
@@ -262,7 +264,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_ClearError_WithNormalError_HasErrorsSet()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { SelectedTask = new ScheduledResourceForTest() };
             var _hasErrorChange = false;
             var _errorChange = false;
 
@@ -297,7 +299,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_Trigger_SetTrigger_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             ScheduleTrigger scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
             schedulerViewModel.Trigger = scheduleTrigger;
             var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf", Guid.NewGuid().ToString());
@@ -326,7 +328,7 @@ namespace Dev2.Core.Tests.Settings
             scheduleResource.UserName = "some user";
             scheduleResource.Password = "some password";
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var schedulerViewModel = new SchedulerViewModelForTest(env.Object);
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -364,7 +366,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_Trigger_SetTrigger_IsDirtyFalse()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             ScheduleTrigger scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
             schedulerViewModel.Trigger = scheduleTrigger;
             var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf",Guid.NewGuid().ToString());
@@ -389,7 +391,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_RunAsapIfScheduleMissed_SetRunAsapIfScheduleMissed_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -407,7 +409,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_Status_SetStatus_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -426,7 +428,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeepToBlank_ValueIsZero()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -441,7 +443,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeepToNoNumeric_ValueIsZero()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -458,7 +460,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest; //Fires DebugOutMessage for null SelectedHistory
             //------------Execute Test---------------------------
@@ -481,7 +483,7 @@ namespace Dev2.Core.Tests.Settings
             var _accountNameChanged = false;
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
@@ -515,7 +517,7 @@ namespace Dev2.Core.Tests.Settings
             var _accountNameChanged = false;
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             schedulerViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage);
@@ -549,7 +551,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             schedulerViewModel.ShowError(Warewolf.Studio.Resources.Languages.Core.SchedulerLoginErrorMessage);
@@ -571,7 +573,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(c => c.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(eventAggregator.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
 
             //------------Execute Test---------------------------
             schedulerViewModel.SetConnectionError();
@@ -594,8 +596,8 @@ namespace Dev2.Core.Tests.Settings
             var resources = new ObservableCollection<IScheduledResource>();
             var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
             resources.Add(scheduledResourceForTest);
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEnvironmentModel>().Object);
-            var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IServer>().Object);
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -627,7 +629,7 @@ namespace Dev2.Core.Tests.Settings
             var resources = new ObservableCollection<IScheduledResource>();
             var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
             resources.Add(scheduledResourceForTest);
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             
             env.Setup(a => a.IsConnected).Returns(true);
@@ -639,13 +641,17 @@ namespace Dev2.Core.Tests.Settings
 
             var mockEnvConnection = new Mock<IEnvironmentConnection>();
             mockEnvConnection.Setup(connection => connection.ServerID).Returns(Guid.NewGuid());
+            mockEnvConnection.Setup(connection => connection.IsConnected).Returns(true);
             env.Setup(a => a.Connection).Returns(mockEnvConnection.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
 
-            var server = new Mock<IServer>();
-            server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission> {WindowsGroupPermission.CreateAdministrators()});
-            
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), server.Object, a => env.Object, System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
+            var activeServer = new Server(Guid.NewGuid(), mockEnvConnection.Object)
+            {
+                Permissions = new List<IWindowsGroupPermission> {WindowsGroupPermission.CreateAdministrators()}
+            };
+            ServerRepository.Instance.ActiveServer = activeServer;
+
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), activeServer, a => activeServer, System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
             //------------Assert Results-------------------------
             Assert.IsNotNull(schedulerViewModel.CurrentEnvironment);
             Assert.IsNotNull(schedulerViewModel.CurrentEnvironment.AuthorizationService);
@@ -666,7 +672,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -702,7 +708,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             env.Setup(a => a.IsConnected).Returns(true);
@@ -768,7 +774,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             env.Setup(a => a.IsConnected).Returns(true);
@@ -805,7 +811,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(c => c.IsConnected).Returns(false);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -838,7 +844,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -871,7 +877,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.No).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -920,7 +926,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -955,7 +961,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -987,7 +993,7 @@ namespace Dev2.Core.Tests.Settings
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(c => c.ShowNameChangedConflict(It.IsAny<string>(), It.IsAny<string>())).Returns(MessageBoxResult.Cancel).Verifiable();
             var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopupController.Object, new SynchronousAsyncWorker());
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -1022,7 +1028,7 @@ namespace Dev2.Core.Tests.Settings
             scheduledResourceForTest.UserName = "some user";
             scheduledResourceForTest.Password = "some password";
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var schedulerViewModel = new SchedulerViewModelForTest(env.Object);
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
@@ -1055,8 +1061,8 @@ namespace Dev2.Core.Tests.Settings
             resources.Add(scheduledResourceForTest);
             scheduledResourceForTest.UserName = "some user";
             scheduledResourceForTest.Password = "some password";
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEnvironmentModel>().Object);
-            var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IServer>().Object);
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -1099,7 +1105,7 @@ namespace Dev2.Core.Tests.Settings
 
             var agg = new Mock<IEventAggregator>();
             agg.Setup(a => a.Publish(It.IsAny<DebugOutputMessage>())).Verifiable();
-            var schedulerViewModel = new SchedulerViewModel(agg.Object, new DirectoryObjectPickerDialog(), new PopupController(), new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(agg.Object, new DirectoryObjectPickerDialog(), new PopupController(), new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
 
 
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
@@ -1190,7 +1196,7 @@ namespace Dev2.Core.Tests.Settings
             var _errorsChange = false;
             var _errorChange = false;
             var _selectedHistoryChange = false;
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
             schedulerViewModel.ActiveItem = activeItem;
@@ -1268,7 +1274,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
 
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
 
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
@@ -1291,7 +1297,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_Name_WasEmptyStringValidString_ClearsErrorMessage()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
 
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
@@ -1319,7 +1325,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
 
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
 
             var scheduledResourceForTest = new ScheduledResourceForTest { WorkflowName = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
@@ -1345,7 +1351,7 @@ namespace Dev2.Core.Tests.Settings
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
 
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
             mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
@@ -1373,7 +1379,7 @@ namespace Dev2.Core.Tests.Settings
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
 
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
             mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
@@ -1409,7 +1415,7 @@ namespace Dev2.Core.Tests.Settings
             scheduledResourceForTest.IsDirty = false;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
 
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
             mockScheduledResourceModel.Setup(model => model.ScheduledResources).Returns(resources);
@@ -1428,7 +1434,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_History_Get_ShouldCallCreateHistoryOnScheduledResourceModel()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
@@ -1455,7 +1461,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var _historyMustChange = false;
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
             var activeItem = new TabItem { Header = "Settings" };
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
@@ -1480,13 +1486,13 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            server.Setup(a => a.DisplayName).Returns("LocalHost");
             var shell = new Mock<IShellViewModel>();
             CustomContainer.Register<IShellViewModel>(shell.Object);
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
             shell.Setup(a => a.ActiveServer).Returns(server.Object);
             var _historyMustChange = false;
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
             var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
@@ -1510,7 +1516,7 @@ namespace Dev2.Core.Tests.Settings
             var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()), new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object)
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object)
             {
                 ScheduledResourceModel = resourceModel.Object
             };
@@ -1526,7 +1532,7 @@ namespace Dev2.Core.Tests.Settings
             var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()), new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object)
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object)
                 {
                     ScheduledResourceModel = resourceModel.Object,
                     SelectedTask = resources[0],
@@ -1546,7 +1552,7 @@ namespace Dev2.Core.Tests.Settings
             var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
-            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IEnvironmentModel>().Object)
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object)
                 {
                     ScheduledResourceModel = resourceModel.Object,
                     SelectedTask = resources[0],
@@ -1568,7 +1574,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(a => a.IsConnected).Returns(true);
             var svr = new Mock<IServer>();
             svr.Setup(a => a.IsConnected).Returns(true);
@@ -1610,7 +1616,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
             popupController.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), "", false, true, false, false, false, false)).Returns(MessageBoxResult.OK).Verifiable();
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(a => a.IsConnected).Returns(true);
             var svr = new Mock<IServer>();
             svr.Setup(a => a.IsConnected).Returns(true);
@@ -1651,8 +1657,8 @@ namespace Dev2.Core.Tests.Settings
 
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
-            var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -1704,8 +1710,8 @@ namespace Dev2.Core.Tests.Settings
 
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
-            var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -1739,8 +1745,8 @@ namespace Dev2.Core.Tests.Settings
 
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
-            var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(true);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -1770,8 +1776,8 @@ namespace Dev2.Core.Tests.Settings
 
             Mock<IPopupController> mockPopUpController = new Mock<IPopupController>();
             mockPopUpController.Setup(c => c.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
-            var env = new Mock<IEnvironmentModel>();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, mockPopUpController.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+            var env = new Mock<IServer>();
             var auth = new Mock<IAuthorizationService>();
             env.Setup(a => a.IsConnected).Returns(false);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -1799,7 +1805,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
 
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEnvironmentModel>().Object);
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IServer>().Object);
             var resources = new ObservableCollection<IScheduledResource>();
             Mock<IScheduleTrigger> mockScheduleTrigger = new Mock<IScheduleTrigger>();
             mockScheduleTrigger.Setup(c => c.Trigger.Instance).Returns(new DailyTrigger());
@@ -1849,7 +1855,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("New Task1", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1",Guid.NewGuid().ToString()
                 ) { NumberOfHistoryToKeep = 1 } };
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
@@ -1865,9 +1871,9 @@ namespace Dev2.Core.Tests.Settings
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
 
             Mock<IResourcePickerDialog> mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
-            mockResourcePickerDialog.Setup(c => c.ShowDialog(It.IsAny<IEnvironmentModel>())).Returns(true);
+            mockResourcePickerDialog.Setup(c => c.ShowDialog(It.IsAny<IServer>())).Returns(true);
 
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { CurrentEnvironment = mockEnvironmentModel.Object };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { CurrentEnvironment = mockEnvironmentModel.Object };
             
             var treeItem = new Mock<IExplorerTreeItem>();
             treeItem.Setup(a => a.ResourceName).Returns("TestFlow2");
@@ -1931,7 +1937,7 @@ namespace Dev2.Core.Tests.Settings
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
@@ -1946,7 +1952,7 @@ namespace Dev2.Core.Tests.Settings
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.No);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
             //------------Execute Test---------------------------
             Assert.IsTrue(schedulerViewModel.DoDeactivate(true));
             //------------Assert Results-------------------------
@@ -2005,7 +2011,7 @@ namespace Dev2.Core.Tests.Settings
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
@@ -2020,7 +2026,7 @@ namespace Dev2.Core.Tests.Settings
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
             //------------Execute Test---------------------------
             Assert.IsFalse(schedulerViewModel.DoDeactivate(true));
             //------------Assert Results-------------------------
@@ -2039,7 +2045,7 @@ namespace Dev2.Core.Tests.Settings
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
@@ -2054,7 +2060,7 @@ namespace Dev2.Core.Tests.Settings
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = scheduledResourceForTest };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { SelectedTask = scheduledResourceForTest };
 
             var auth = new Mock<IAuthorizationService>();
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -2081,7 +2087,7 @@ namespace Dev2.Core.Tests.Settings
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(serializeObject);
@@ -2096,7 +2102,7 @@ namespace Dev2.Core.Tests.Settings
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object) { SelectedTask = scheduledResourceForTest };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object, a => new Mock<IServer>().Object) { SelectedTask = scheduledResourceForTest };
 
             var auth = new Mock<IAuthorizationService>();
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -2138,13 +2144,13 @@ namespace Dev2.Core.Tests.Settings
 
     internal class SchedulerViewModelForTest : SchedulerViewModel
     {
-        public SchedulerViewModelForTest(IEnvironmentModel env) : base( a => env)
+        public SchedulerViewModelForTest(IServer env) : base( a => env)
         {
             SchedulerTaskManager = new ScheduleTaskManagerStub(this,System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
         }
 
         public SchedulerViewModelForTest(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
-            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object)
+            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IServer>().Object, a => new Mock<IServer>().Object)
         {
             SchedulerTaskManager = new ScheduleTaskManagerStub(this, System.Threading.Tasks.Task.FromResult(new Mock<IResourcePickerDialog>().Object));
         }

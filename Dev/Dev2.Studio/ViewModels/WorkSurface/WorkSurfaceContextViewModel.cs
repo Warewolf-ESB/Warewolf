@@ -21,12 +21,8 @@ using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Help;
@@ -37,7 +33,10 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Interfaces;
+using Dev2.Common.Interfaces.Enums;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
@@ -73,7 +72,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         private AuthorizeCommand _quickDebugCommand;
         private AuthorizeCommand _quickViewInBrowserCommand;
 
-        private readonly IEnvironmentModel _environmentModel;
+        private readonly IServer _server;
         private readonly IPopupController _popupController;
         private readonly Action<IContextualResourceModel, bool, System.Action> _saveDialogAction;
         private IStudioCompileMessageRepoFactory _studioCompileMessageRepoFactory;
@@ -85,7 +84,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public WorkSurfaceKey WorkSurfaceKey { get; }
 
-        public IEnvironmentModel Environment
+        public IServer Environment
         {
             get
             {
@@ -190,11 +189,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (model != null)
             {
                 model.WorkflowChanged += UpdateForWorkflowChange;
-                _environmentModel = model.EnvironmentModel;
-                if (_environmentModel != null)
+                _server = model.Server;
+                if (_server != null)
                 {
-                    _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
-                    _environmentModel.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
+                    _server.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
+                    _server.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
                 }
             }
             
@@ -623,10 +622,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         private static void UpdateResourceVersionInfo(IContextualResourceModel resource)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             var explorerViewModel = mainViewModel?.ExplorerViewModel;
             var environmentViewModel =
-                explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.ID);
+                explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.EnvironmentID);
             var explorerItemViewModel = environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(
                 model => model.ResourceId == resource.ID);
             if (explorerItemViewModel != null && explorerItemViewModel.GetType() == typeof (VersionViewModel))
@@ -712,14 +711,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         /// </summary>
         protected override void OnDispose()
         {
-            if (_environmentModel != null)
+            if (_server != null)
             {
-                _environmentModel.IsConnectedChanged -= EnvironmentModelOnIsConnectedChanged();
+                _server.IsConnectedChanged -= EnvironmentModelOnIsConnectedChanged();
 
-                if (_environmentModel.Connection != null)
+                if (_server.Connection != null)
                 {
                     // ReSharper disable DelegateSubtraction
-                    _environmentModel.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
+                    _server.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
                 }
             }
 

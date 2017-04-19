@@ -9,13 +9,13 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
@@ -397,7 +397,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             else
             {
                 mockUpdateManager.Setup(manager => manager.TestDbConnection(It.IsAny<IDbSource>()))
-                    .Throws(new WarewolfTestException(loginFailedForUserTest, new Exception(loginFailedForUserTest)));
+                    .Throws(new Exception(loginFailedForUserTest, new Exception(loginFailedForUserTest)));
             }
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.PerformTestConnection();

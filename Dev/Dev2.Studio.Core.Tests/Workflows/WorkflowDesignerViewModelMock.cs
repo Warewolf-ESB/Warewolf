@@ -18,7 +18,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
 using Dev2.Utilities;
@@ -78,12 +78,12 @@ namespace Dev2.Core.Tests.Workflows
 
         protected override bool IsDesignerViewVisible => _isDesignerViewVisible;
 
-        public void SetActiveEnvironment(IEnvironmentModel environmentModel)
+        public void SetActiveEnvironment(IServer server)
         {
-            ActiveEnvironment = environmentModel;
+            ActiveEnvironment = server;
         }
 
-        public IEnvironmentModel GetActiveEnvironment()
+        public IServer GetActiveEnvironment()
         {
             return ActiveEnvironment;
         }
@@ -95,9 +95,9 @@ namespace Dev2.Core.Tests.Workflows
 
         public List<ModelItem> SelectedDebugModelItems => SelectedDebugItems;
 
-        public void TestCheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel environmentModel)
+        public void TestCheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IServer server)
         {
-            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, environmentModel);
+            WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, server);
         }
 
         public void TestModelServiceModelChanged(ModelChangedEventArgs e)

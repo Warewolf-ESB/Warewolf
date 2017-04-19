@@ -16,10 +16,8 @@ using System.Net;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
-using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Services;
 using Dev2.Studio;
@@ -27,13 +25,14 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
 using Dev2.Studio.Core.Services.System;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Threading;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2
 {
-    public class Bootstrapper : Bootstrapper<IMainViewModel>
+    public class Bootstrapper : Bootstrapper<IShellViewModel>
     {
         protected override void PrepareApplication()
         {
@@ -79,8 +78,8 @@ namespace Dev2
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IPopupController>(new PopupController());
-            var mainViewModel = new MainViewModel();
-            CustomContainer.Register<IMainViewModel>(mainViewModel);
+            var mainViewModel = new ShellViewModel();
+            CustomContainer.Register<IShellViewModel>(mainViewModel);
             CustomContainer.Register<IShellViewModel>(mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
             var conn = new ServerProxy("http://localHost:3142",CredentialCache.DefaultNetworkCredentials, new AsyncWorker());

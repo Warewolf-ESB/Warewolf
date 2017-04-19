@@ -11,7 +11,7 @@
 using System;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -80,15 +80,15 @@ namespace Dev2.Core.Tests.Environments
         static void TestLoad(bool useParameterless)
         {
             var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
-            var repository = new Mock<IEnvironmentRepository>();
+            var repository = new Mock<IServerRepository>();
             repository.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
 
             if(useParameterless)
             {
                 
-                EnvironmentRepository.Instance.IsLoaded = true;  // so that we don't connect to a server!
-                EnvironmentRepository.Instance.Clear();
-                EnvironmentRepository.Instance.Save(targetEnv.Object);
+                ServerRepository.Instance.IsLoaded = true;  // so that we don't connect to a server!
+                ServerRepository.Instance.Clear();
+                ServerRepository.Instance.Save(targetEnv.Object);
             }
 
             var provider = new TestServerProvider();
@@ -97,7 +97,7 @@ namespace Dev2.Core.Tests.Environments
             Assert.AreEqual(1, servers.Count);
 
             Assert.AreSame(servers[0], targetEnv.Object);
-            Assert.AreEqual(servers[0].ID, targetEnv.Object.ID);
+            Assert.AreEqual(servers[0].EnvironmentID, targetEnv.Object.EnvironmentID);
             Assert.AreEqual(servers[0].Name, targetEnv.Object.Name);
             // remove the last two properties from mock ;)
         }

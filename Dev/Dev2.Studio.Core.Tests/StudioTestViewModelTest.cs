@@ -6,11 +6,9 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Interfaces;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Threading;
 using Dev2.ViewModels;
@@ -33,11 +31,11 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
             //------------Execute Test---------------------------
             CustomContainer.Register(new Mock<IPopupController>().Object);
             var eventAggregator = new Mock<IEventAggregator>();
@@ -68,11 +66,11 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
             CustomContainer.Register(new Mock<IPopupController>().Object);
@@ -108,14 +106,14 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
-            var mvm = new Mock<IMainViewModel>();
+            var mvm = new Mock<IShellViewModel>();
             mvm.Setup(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
             CustomContainer.Register(mvm.Object);
             CustomContainer.Register(new Mock<IPopupController>().Object);
@@ -138,7 +136,7 @@ namespace Dev2.Core.Tests
 
             vm.HelpText = string.Empty;
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -167,14 +165,14 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
-            var mvm = new Mock<IMainViewModel>();
+            var mvm = new Mock<IShellViewModel>();
             mvm.Setup(model => model.HelpViewModel.UpdateHelpText(It.IsAny<string>()));
             CustomContainer.Register(mvm.Object);
             CustomContainer.Register(new Mock<IPopupController>().Object);
@@ -197,7 +195,7 @@ namespace Dev2.Core.Tests
 
             vm.HelpText = string.Empty;
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -230,11 +228,11 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
             CustomContainer.Register(new Mock<IPopupController>().Object);
@@ -269,15 +267,15 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
             CustomContainer.Register(new Mock<IPopupController>().Object);
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(new Mock<IHelpWindowViewModel>().Object);
             CustomContainer.Register(mockMainViewModel.Object);
             var eventAggregator = new Mock<IEventAggregator>();
@@ -287,7 +285,7 @@ namespace Dev2.Core.Tests
             var serviceTestViewModel = new Mock<IServiceTestViewModel>();
             serviceTestViewModel.Setup(model => model.WorkflowDesignerViewModel).Returns(mockWorkSurfaceViewModel.Object);
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -337,11 +335,11 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
             var popupController = new Mock<IPopupController>();
@@ -367,7 +365,7 @@ namespace Dev2.Core.Tests
             Assert.IsNull(vm.HelpText);
             Assert.IsFalse(vm.IsDirty);
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -400,11 +398,11 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
 
@@ -429,7 +427,7 @@ namespace Dev2.Core.Tests
             Assert.IsNull(vm.HelpText);
             Assert.IsFalse(vm.IsDirty);
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -460,11 +458,11 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
 
@@ -489,7 +487,7 @@ namespace Dev2.Core.Tests
             Assert.IsNull(vm.HelpText);
             Assert.IsFalse(vm.IsDirty);
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -523,11 +521,11 @@ namespace Dev2.Core.Tests
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.Setup(e => e.Name).Returns("My Env");
             var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
 
             //------------Execute Test---------------------------
 
@@ -552,7 +550,7 @@ namespace Dev2.Core.Tests
             Assert.IsNull(vm.HelpText);
             Assert.IsFalse(vm.IsDirty);
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
             resourceModel.Setup(model => model.Environment).Returns(env.Object);

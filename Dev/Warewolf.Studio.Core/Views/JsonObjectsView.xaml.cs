@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 
 // ReSharper disable once CheckNamespace

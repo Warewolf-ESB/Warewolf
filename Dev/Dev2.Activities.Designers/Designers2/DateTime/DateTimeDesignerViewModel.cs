@@ -14,7 +14,7 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.DateAndTime;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.DateTime
 {
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Designers2.DateTime
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

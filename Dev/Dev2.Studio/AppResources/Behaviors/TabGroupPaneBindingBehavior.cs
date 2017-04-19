@@ -97,16 +97,16 @@ namespace Dev2.Studio.AppResources.Behaviors
             var host = sender as DocumentContentHost;
             var workSurfaceContextViewModel = host?.ActiveDocument?.DataContext as WorkSurfaceContextViewModel;
             
-            if (_mainViewModel == null)
+            if (_shellViewModel == null)
             {
-                var mainViewModel = DocumentHost?.DataContext as MainViewModel;
-                _mainViewModel = mainViewModel;                
+                var mainViewModel = DocumentHost?.DataContext as ShellViewModel;
+                _shellViewModel = mainViewModel;                
             }
-            if (_mainViewModel != null)
+            if (_shellViewModel != null)
             {
-                if (_mainViewModel.ActiveItem != workSurfaceContextViewModel)
+                if (_shellViewModel.ActiveItem != workSurfaceContextViewModel)
                 {
-                    _mainViewModel.ActiveItem = workSurfaceContextViewModel;
+                    _shellViewModel.ActiveItem = workSurfaceContextViewModel;
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         #endregion DocumentHost
 
         private static List<TabGroupPane> _tabGroupPanes;
-        private MainViewModel _mainViewModel;
+        private ShellViewModel _shellViewModel;
 
         private void ActiveItemChanged(WorkSurfaceContextViewModel workSurfaceContextViewModel)
         {
@@ -136,8 +136,8 @@ namespace Dev2.Studio.AppResources.Behaviors
         static void RefreshActiveEnvironment(object sender)
         {
             var frameworkElement = sender as FrameworkElement;
-            var vm = frameworkElement?.DataContext as MainViewModel;
-            vm?.RefreshActiveEnvironment();
+            var vm = frameworkElement?.DataContext as ShellViewModel;
+            vm?.RefreshActiveServer();
         }
 
         #region Event Handlers
@@ -145,23 +145,23 @@ namespace Dev2.Studio.AppResources.Behaviors
         void DocumentHostOnActiveDocumentChanged(object sender, RoutedPropertyChangedEventArgs<ContentPane> routedPropertyChangedEventArgs)
         {
 
-            var mainViewModel = DocumentHost?.DataContext as MainViewModel;
+            var mainViewModel = DocumentHost?.DataContext as ShellViewModel;
             if (mainViewModel != null)
             {
-                if (_mainViewModel == null)
+                if (_shellViewModel == null)
                 {
-                    _mainViewModel = mainViewModel;
-                    _mainViewModel.ActiveItemChanged = ActiveItemChanged;
+                    _shellViewModel = mainViewModel;
+                    _shellViewModel.ActiveItemChanged = ActiveItemChanged;
                 }
 
                 var workSurfaceContextViewModel = routedPropertyChangedEventArgs.NewValue?.DataContext as WorkSurfaceContextViewModel;
-                _mainViewModel.ActiveItemChanged = null;
-                _mainViewModel.ActiveItem = workSurfaceContextViewModel;
+                _shellViewModel.ActiveItemChanged = null;
+                _shellViewModel.ActiveItem = workSurfaceContextViewModel;
                 if (workSurfaceContextViewModel != null)
                 {
-                    _mainViewModel.PersistTabs();
+                    _shellViewModel.PersistTabs();
                 }
-                _mainViewModel.ActiveItemChanged = ActiveItemChanged;
+                _shellViewModel.ActiveItemChanged = ActiveItemChanged;
             }
         }
 

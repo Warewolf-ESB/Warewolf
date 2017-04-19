@@ -17,14 +17,12 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Core.Tests.Utils;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,7 +30,9 @@ using Microsoft.Win32.TaskScheduler;
 using Moq;
 using TechTalk.SpecFlow;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable UnusedMember.Global
 
@@ -91,12 +91,12 @@ namespace Dev2.Activities.Specs.Scheduler
             CustomContainer.Register(mockshell.Object);
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IEnvironmentModel>().Object);
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+            IServer server = ServerRepository.Instance.Source;
 
-            environmentModel.Connect();
-            scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(environmentModel, () => { });
-            scheduler.CurrentEnvironment = environmentModel;
+            server.Connect();
+            scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(server, () => { });
+            scheduler.CurrentEnvironment = server;
             scheduler.CreateNewTask();
             scheduler.SelectedTask.Name = _scenarioContext["ScheduleName"].ToString();
             scheduler.SelectedTask.OldName = "bob";

@@ -10,7 +10,8 @@
 
 using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable UnusedMember.Local
 
 namespace Dev2.Activities.Designers2.ReadFolder
@@ -42,7 +43,7 @@ namespace Dev2.Activities.Designers2.ReadFolder
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

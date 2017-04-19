@@ -7,14 +7,13 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Security;
-using Dev2.Tests.Runtime.XML;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -49,7 +48,7 @@ namespace Dev2.Tests.Runtime.Services
             var inputs = new Dictionary<string, StringBuilder>();
             var directDeploy = new DirectDeploy();
 
-            var sourceXml = XmlResource.Fetch("WebSource");
+            var sourceXml = Dev2.Tests.Runtime.XML.XmlResource.Fetch("WebSource");
             inputs.Add("ResourceDefinition", sourceXml.ToStringBuilder());
             var checkResource = new Resource(sourceXml);
             

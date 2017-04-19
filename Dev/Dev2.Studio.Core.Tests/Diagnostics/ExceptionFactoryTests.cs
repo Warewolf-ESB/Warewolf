@@ -10,24 +10,24 @@
 
 using System;
 using System.Text;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
     [TestClass]
     public class ExceptionFactoryTests
     {
-        Mock<IEnvironmentModel> _contextModel;
+        Mock<IServer> _contextModel;
         private Mock<IEnvironmentConnection> _con;
 
         [TestInitialize]
         public void MyTestInitialize()
         {
-            _contextModel = new Mock<IEnvironmentModel>();
+            _contextModel = new Mock<IServer>();
 
             _con = new Mock<IEnvironmentConnection>();
 

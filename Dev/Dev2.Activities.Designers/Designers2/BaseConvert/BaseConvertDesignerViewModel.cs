@@ -14,7 +14,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Converters;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.BaseConvert
 {
@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers2.BaseConvert
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

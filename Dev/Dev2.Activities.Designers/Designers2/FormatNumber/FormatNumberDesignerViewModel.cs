@@ -14,8 +14,8 @@ using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.DataList.Contract;
-using Dev2.Interfaces;
+using Dev2.Data.Interfaces.Enums;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.FormatNumber
 {
@@ -72,7 +72,7 @@ namespace Dev2.Activities.Designers2.FormatNumber
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

@@ -3,7 +3,6 @@
                     xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                     xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
-                    xmlns:contract="clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"
     xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
     xmlns:converters4="clr-namespace:Dev2.Converters;assembly=Dev2.Core"
                     xmlns:converters1="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
@@ -12,7 +11,7 @@
     xmlns:errors1="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
     xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
     xmlns:converters6="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
-    xmlns:converters7="clr-namespace:Dev2.Studio.Core.AppResources.Converters">
+    xmlns:enums="clr-namespace:Dev2.Data.Interfaces.Enums;assembly=Dev2.Data.Interfaces">
 
     <activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter" />
@@ -81,9 +80,9 @@
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>
             <converters:EnumCollection>
-                <x:Static Member="contract:enRoundingType.Normal" />    
-                <x:Static Member="contract:enRoundingType.Up" />
-                <x:Static Member="contract:enRoundingType.Down" />
+                <x:Static Member="enums:enRoundingType.Normal" />    
+                <x:Static Member="enums:enRoundingType.Up" />
+                <x:Static Member="enums:enRoundingType.Down" />
             </converters:EnumCollection>
         </converters:EnumToBoolConverter.TrueEnumValues>
     </converters:EnumToBoolConverter>

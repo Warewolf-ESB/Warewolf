@@ -10,7 +10,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 using Moq;
 
 namespace Warewolf.Studio.ViewModels.Tests
@@ -44,8 +44,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 _windowsGroupPermissionMock.Object
             });
-            _localhostServerMock.Setup(it => it.GetServerConnections()).Returns(new List<IServer>());
-            _localhostServerMock.SetupGet(it => it.ResourceName).Returns("localhostServerResourceName");
+            //_localhostServerMock.Setup(it => it.GetServerConnections()).Returns(new List<IServer>());
+            _localhostServerMock.SetupGet(it => it.DisplayName).Returns("localhostServerResourceName");
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_localhostServerMock.Object);
             _eventAggregatorMock = new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>();
             _target = new ExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object,true);
@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentId = _target.ConnectControlViewModel.SelectedConnection.EnvironmentID;
 
             var mockServer = new Mock<IServer>();
-            mockServer.Setup(server => server.ResourceName).Returns("localhostServerResourceName");
+            mockServer.Setup(server => server.DisplayName).Returns("localhostServerResourceName");
             mockServer.Setup(server => server.EnvironmentID).Returns(environmentId);
             environmentViewModelMock.SetupGet(it => it.Server).Returns(mockServer.Object);
             
@@ -384,30 +384,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #region Test methods
 
         [TestMethod]
-        public void TestServerDisconnect()
-        {
-            //arrange
-            var isEnvironmentChanged = false;
-            _target.PropertyChanged += (s, e) =>
-            {
-                isEnvironmentChanged = isEnvironmentChanged || e.PropertyName == "Environments";
-            };
-            var childMock = new Mock<IExplorerItemViewModel>();
-            childMock.SetupGet(it => it.IsVisible).Returns(true);
-            _target.Environments.First().AddChild(childMock.Object);
-            _localhostServerMock.SetupGet(it => it.IsConnected).Returns(true);
-            _localhostServerMock.SetupGet(it => it.HasLoaded).Returns(true);
-
-            //act
-            _target.ConnectControlViewModel.ToggleConnectionStateCommand.Execute(null);
-
-            //assert
-            childMock.VerifySet(it => it.IsVisible = false);
-            Assert.IsTrue(isEnvironmentChanged);
-            Assert.IsFalse(_target.Environments.Any());
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void TestConstructorArgumentNull()
         {
@@ -457,7 +433,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             netwworkStateChangedEventArgs.SetupGet(it => it.State).Returns(ConnectionNetworkState.Connected);
             var server1Mock = new Mock<IServer>();
             server1Mock.SetupGet(it => it.EnvironmentID).Returns(Guid.Empty);
-            server1Mock.SetupGet(it => it.ResourceID).Returns(Guid.Empty);
             _target.ConnectControlViewModel.Servers.Add(server1Mock.Object);
             _target.ConnectControlViewModel.LoadServers();
             _target.IsLoading = false;
@@ -589,7 +564,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var helpWindowViewModelMock = new Mock<IHelpWindowViewModel>();
-            var mainViewModelMock = new Mock<IMainViewModel>();
+            var mainViewModelMock = new Mock<IShellViewModel>();
             mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpWindowViewModelMock.Object);
             CustomContainer.Register(mainViewModelMock.Object);
 

@@ -12,13 +12,12 @@ using System;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.ConnectionHelpers;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Workflow;
 using Dev2.Threading;
@@ -33,7 +32,7 @@ namespace Dev2.Dialogs
         readonly enDsfActivityType _activityType;
 
         public IExplorerViewModel SingleEnvironmentExplorerViewModel{get; private set;}
-        IEnvironmentModel _environmentModel;
+        IServer _server;
         IExplorerTreeItem _selectedResource;
 
         /// <summary>
@@ -105,10 +104,10 @@ namespace Dev2.Dialogs
             }
         }
 
-        public bool ShowDialog(IEnvironmentModel environmentModel = null)
+        public bool ShowDialog(IServer server = null)
         {
             DsfActivityDropViewModel dropViewModel;
-            _environmentModel = environmentModel;
+            _server = server;
             return ShowDialog(out dropViewModel);
         }
 
@@ -129,7 +128,7 @@ namespace Dev2.Dialogs
             {
               
                // environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
-                dropViewModel.SelectedResourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ID == selected.ResourceId, true) as IContextualResourceModel;
+                dropViewModel.SelectedResourceModel = _server.ResourceRepository.FindSingle(c => c.ID == selected.ResourceId, true) as IContextualResourceModel;
     
             }
             var dropWindow = CreateDialog(dropViewModel);

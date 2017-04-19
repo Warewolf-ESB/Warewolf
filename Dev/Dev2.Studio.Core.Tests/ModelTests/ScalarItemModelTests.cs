@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Data.Binary_Objects;
-using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.ModelTests

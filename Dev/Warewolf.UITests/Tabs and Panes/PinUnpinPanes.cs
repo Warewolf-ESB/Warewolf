@@ -59,7 +59,7 @@ namespace Warewolf.UITests.Tabs
         [TestCategory("Tabs and Panes")]
         public void UnpinServerSourceWizardTab()
         {
-            ExplorerUIMap.Select_NewRemoteServer_From_Explorer_Server_Dropdownlist();
+            ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
             UIMap.Unpin_Tab_With_Drag(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab);
         }
 

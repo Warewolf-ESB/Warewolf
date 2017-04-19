@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Moq;
 
 namespace Dev2.Activities.Designers.Tests.DropBox2016
@@ -22,9 +22,9 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016
                 return mock.Object;
             });
 
-        public static Lazy<IEnvironmentModel> EnvLazy = new Lazy<IEnvironmentModel>(() =>
+        public static Lazy<IServer> EnvLazy = new Lazy<IServer>(() =>
         {
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var oauthSources = new List<DropBoxSource> { new DropBoxSource { ResourceName = "Dropbox Source" } };
             mockResourceRepo.Setup(repository => repository.GetResourceList<DropBoxSource>(env.Object)).Returns(oauthSources);

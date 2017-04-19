@@ -14,8 +14,8 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Dev2.Annotations;
-using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -44,8 +44,8 @@ namespace Dev2.Settings
         
         private static void OnHelpTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(e.NewValue as string?? "");
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.HelpViewModel?.UpdateHelpText(e.NewValue as string?? "");
         }
         
         public bool IsDirty

@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Controller;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
-using Warewolf.Studio.AntiCorruptionLayer;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 // ReSharper disable RedundantAssignment
@@ -433,7 +430,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         public void GivenWarewolfServerIsRunning()
         {
 
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             if (!environmentModel.IsConnected)
                 environmentModel.Connect();
             var controllerFactory = new CommunicationControllerFactory();
@@ -499,7 +496,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         public void WhenIOpen(string p0)
         {
             var guid = ScenarioContext.Current.Get<Guid>("resourceId");
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environmentModel");
+            var environmentModel = ScenarioContext.Current.Get<IServer>("environmentModel");
             IContextualResourceModel loadContextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(guid);
             if(ScenarioContext.Current.ContainsKey("resourceModel"))
                 ScenarioContext.Current["resourceModel"] = loadContextualResourceModel;

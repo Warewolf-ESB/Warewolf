@@ -3,8 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.DB;
-using Warewolf.Core;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -26,7 +25,7 @@ namespace Warewolf.Studio.ViewModels
             _updateRepository = updateRepository;
             _queryProxy = queryProxy;
             _shell = shell;
-            shell.SetActiveServer(server);
+            shell.SetActiveServer(server.EnvironmentID);
         }
 
         public IStudioUpdateManager UpdateRepository => _updateRepository;
@@ -55,16 +54,6 @@ namespace Warewolf.Studio.ViewModels
         public string TestService(IWcfService inputValues)
         {
             return _updateRepository.TestWcfService(inputValues);
-        }
-
-        public IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IWcfAction action)
-        {
-            return new List<IServiceOutputMapping> { new ServiceOutputMapping("bob", "The", ""), new ServiceOutputMapping("dora", "The", ""), new ServiceOutputMapping("Tree", "The", "") };
-        }
-
-        public void SaveService(IWcfService toModel)
-        {
-            _updateRepository.Save(toModel);
         }
     }
 }

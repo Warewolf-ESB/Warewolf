@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;

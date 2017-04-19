@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Controller;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Security
 {

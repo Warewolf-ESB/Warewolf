@@ -15,8 +15,8 @@ using System.Text;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -87,7 +87,7 @@ namespace Dev2.Core.Tests
             #endregion
 
             var flowController = new FlowController();
-            var message = new ConfigureDecisionExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = true };
+            var message = new ConfigureDecisionExpressionMessage { ModelItem = source.Object, Server = env.Object, IsNew = true };
 
             flowController.Handle(message);
         }
@@ -151,7 +151,7 @@ namespace Dev2.Core.Tests
             var message = new ConfigureSwitchExpressionMessage
             {
                 ModelItem = source.Object,
-                EnvironmentModel = env.Object,
+                Server = env.Object,
                 IsNew = true
             };
             //------------Execute Test---------------------------
@@ -218,7 +218,7 @@ namespace Dev2.Core.Tests
             var message = new ConfigureCaseExpressionMessage
             {
                 ModelItem = source.Object,
-                EnvironmentModel = env.Object
+                Server = env.Object
             };
             //------------Execute Test---------------------------
             flowController.Handle(message);
@@ -284,7 +284,7 @@ namespace Dev2.Core.Tests
             var message = new EditCaseExpressionMessage
             {
                 ModelItem = source.Object,
-                EnvironmentModel = env.Object
+                Server = env.Object
             };
             //------------Execute Test---------------------------
             flowController.Handle(message);

@@ -10,9 +10,9 @@
 
 using System;
 using System.Text;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable once CheckNamespace
@@ -22,24 +22,24 @@ namespace Dev2.Studio.Core.ViewModels
     {
         #region Class Members
 
-        private readonly IEnvironmentModel _environmentModel;
+        private readonly IServer _server;
         private IContextualResourceModel _contexttualResourceModel;
 
         #endregion Class Members
 
         #region Ctor
 
-        public ResourceDesignerViewModel(IContextualResourceModel model, IEnvironmentModel environmentModel)
+        public ResourceDesignerViewModel(IContextualResourceModel model, IServer server)
         {
             _contexttualResourceModel = model;
-            _environmentModel = environmentModel;
+            _server = server;
         }
 
         #endregion
 
         #region Properties
 
-        public IEnvironmentModel EnvironmentModel => _environmentModel;
+        public IServer Server => _server;
 
         public StringBuilder ServiceDefinition
         {

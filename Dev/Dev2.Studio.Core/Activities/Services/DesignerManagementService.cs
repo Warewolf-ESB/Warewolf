@@ -10,7 +10,7 @@
 
 using System;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Activities.Services

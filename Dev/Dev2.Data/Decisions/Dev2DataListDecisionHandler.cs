@@ -17,12 +17,13 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Decisions.Operations;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming

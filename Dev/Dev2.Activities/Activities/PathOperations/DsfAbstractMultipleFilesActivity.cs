@@ -16,6 +16,7 @@ using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common.Interfaces;
 using Dev2.Data;
+using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -27,6 +28,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.PathOperations
 {

@@ -12,8 +12,8 @@ using System;
 using System.IO;
 using System.Text;
 using Dev2.Communication;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -504,7 +504,7 @@ namespace Dev2.Core.Tests.Workspaces
             mockConnection.Setup(c => c.WorkspaceID).Returns(workspaceID);
             mockConnection.Setup(c => c.ServerID).Returns(serverID);
 
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(c => c.Connection).Returns(mockConnection.Object);
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.Environment).Returns(env.Object);
@@ -523,8 +523,8 @@ namespace Dev2.Core.Tests.Workspaces
             mockConnection.Setup(c => c.WorkspaceID).Returns(workspaceID);
             mockConnection.Setup(c => c.ServerID).Returns(serverID);
 
-            var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.ID).Returns(envID);
+            var env = new Mock<IServer>();
+            env.Setup(e => e.EnvironmentID).Returns(envID);
             env.Setup(environmentModel => environmentModel.Connection).Returns(mockConnection.Object);
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.Environment).Returns(env.Object);

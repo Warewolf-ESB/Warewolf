@@ -22,6 +22,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities
 {

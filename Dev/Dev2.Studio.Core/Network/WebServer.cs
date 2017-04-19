@@ -11,7 +11,6 @@
 using Dev2.Common;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Controller;
-using Dev2.Studio.Core.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -20,6 +19,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable CheckNamespace

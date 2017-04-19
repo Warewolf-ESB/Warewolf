@@ -12,7 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Utils

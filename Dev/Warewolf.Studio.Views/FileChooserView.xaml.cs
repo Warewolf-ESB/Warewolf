@@ -16,6 +16,7 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Wrappers;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 

@@ -11,9 +11,9 @@
 using System;
 using System.Globalization;
 using Dev2.Common.ExtMethods;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.MathOperations;
-using Dev2.Data.TO;
-using Dev2.DataList.Contract;
 using Dev2.MathOperations;
 using Warewolf.Resource.Errors;
 
@@ -39,7 +39,7 @@ namespace Dev2.Data.Operations
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">formatNumberTO</exception>
         // ReSharper disable InconsistentNaming
-        public string Format(FormatNumberTO formatNumberTO)
+        public string Format(IFormatNumberTO formatNumberTO)
         // ReSharper restore InconsistentNaming
         {
             if(formatNumberTO == null)
@@ -67,7 +67,7 @@ namespace Dev2.Data.Operations
         #region Private Methods
 
         // ReSharper disable InconsistentNaming
-        private string BuildRoundingExpression(FormatNumberTO formatNumberTO)
+        private string BuildRoundingExpression(IFormatNumberTO formatNumberTO)
         // ReSharper restore InconsistentNaming
         {
             string expression;
@@ -96,7 +96,7 @@ namespace Dev2.Data.Operations
         }
 
         // ReSharper disable InconsistentNaming
-        private string Round(FormatNumberTO formatNumberTO)
+        private string Round(IFormatNumberTO formatNumberTO)
         // ReSharper restore InconsistentNaming
         {
             string error;

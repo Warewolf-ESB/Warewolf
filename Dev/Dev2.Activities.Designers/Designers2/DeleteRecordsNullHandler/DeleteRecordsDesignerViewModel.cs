@@ -10,7 +10,7 @@
 
 using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers2.DeleteRecordsNullHandler
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

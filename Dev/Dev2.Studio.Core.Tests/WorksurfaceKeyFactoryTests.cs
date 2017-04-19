@@ -1,6 +1,6 @@
 ﻿using System;
 using Dev2.Factory;
-using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests

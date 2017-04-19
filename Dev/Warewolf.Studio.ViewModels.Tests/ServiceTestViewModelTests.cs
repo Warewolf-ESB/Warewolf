@@ -17,17 +17,16 @@ using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -88,7 +87,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceModel = new Mock<IContextualResourceModel>();
-			var env = new Mock<IEnvironmentModel>();
+			var env = new Mock<IServer>();
 			var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
 			var con = new Mock<IEnvironmentConnection>();
 			resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -109,7 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceModel = new Mock<IContextualResourceModel>();
-			var env = new Mock<IEnvironmentModel>();
+			var env = new Mock<IServer>();
 			var con = new Mock<IEnvironmentConnection>();
 			var debugTreeMock = new Mock<List<IDebugTreeViewItemViewModel>>();
 			resourceModel.Setup(model => model.Environment).Returns(env.Object);
@@ -495,7 +494,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+			var mockEnvironmentModel = new Mock<IServer>();
 			var con = new Mock<IEnvironmentConnection>();
 			con.Setup(connection => connection.IsConnected).Returns(true);
 			con.Setup(model => model.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
@@ -724,7 +723,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+			var mockEnvironmentModel = new Mock<IServer>();
 			var con = new Mock<IEnvironmentConnection>();
 			con.Setup(connection => connection.IsConnected).Returns(true);
 			var mockResourceRepo = new Mock<IResourceRepository>();
@@ -775,7 +774,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 			var modelItem = ModelItemUtils.CreateModelItem(sequenceActivity);
 			var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+			var mockEnvironmentModel = new Mock<IServer>();
 			var con = new Mock<IEnvironmentConnection>();
 			con.Setup(connection => connection.IsConnected).Returns(true);
 			var mockResourceRepo = new Mock<IResourceRepository>();
@@ -810,7 +809,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+			var mockEnvironmentModel = new Mock<IServer>();
 			var mockResourceRepo = new Mock<IResourceRepository>();
 			mockResourceRepo.Setup(repository => repository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>()));
 			mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
@@ -889,7 +888,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		public void TestUpdateHelpDescriptor()
 		{
 			//arrange
-			var mainViewModelMock = new Mock<IMainViewModel>();
+			var mainViewModelMock = new Mock<IShellViewModel>();
 			var helpViewModelMock = new Mock<IHelpWindowViewModel>();
 			mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpViewModelMock.Object);
 			CustomContainer.Register(mainViewModelMock.Object);
@@ -941,7 +940,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironment = new Mock<IEnvironmentModel>();
+			var mockEnvironment = new Mock<IServer>();
 			var mockRepo = new Mock<IResourceRepository>();
 			mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns((List<IServiceTestModelTO>)null);
 			mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
@@ -962,7 +961,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironment = new Mock<IEnvironmentModel>();
+			var mockEnvironment = new Mock<IServer>();
 			var mockRepo = new Mock<IResourceRepository>();
 			mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
 			mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockRepo.Object);
@@ -983,7 +982,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironment = new Mock<IEnvironmentModel>();
+			var mockEnvironment = new Mock<IServer>();
 			mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
 			var mockRepo = new Mock<IResourceRepository>();
 			mockRepo.Setup(repository => repository.LoadResourceTests(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>
@@ -1016,7 +1015,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 		{
 			//------------Setup for test--------------------------
 			var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironment = new Mock<IEnvironmentModel>();
+			var mockEnvironment = new Mock<IServer>();
 			mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
 			var mockRepo = new Mock<IResourceRepository>();
 			var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing", new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
@@ -1062,7 +1061,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//------------Setup for test--------------------------
 			var resourceMock = CreateResourceModelWithSingleScalarOutputMock();
 
-			var mockEnvironment = new Mock<IEnvironmentModel>();
+			var mockEnvironment = new Mock<IServer>();
 			mockEnvironment.Setup(model => model.Connection.IsConnected).Returns(true);
 			mockEnvironment.SetupProperty(model => model.Connection.ReceivedResourceAffectedMessage);
 			var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "Assing", new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
@@ -1211,7 +1210,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			//---------------Set up test pack-------------------
 			// ReSharper disable once NotAccessedVariable
 			var retVal = new StringBuilder();
-			Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+			Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
 			Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
 			conn.Setup(c => c.IsConnected).Returns(true);
 			conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
@@ -1422,7 +1421,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			CustomContainer.Register(popupController.Object);
 
 			var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+			var mockEnvironmentModel = new Mock<IServer>();
 			var con = new Mock<IEnvironmentConnection>();
 			con.Setup(connection => connection.IsConnected).Returns(true);
 			con.Setup(model => model.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
@@ -1458,7 +1457,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			CustomContainer.Register(popupController.Object);
 
 			var resourceModelMock = CreateResourceModelWithSingleScalarOutputMock();
-			var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+			var mockEnvironmentModel = new Mock<IServer>();
 			var con = new Mock<IEnvironmentConnection>();
 			con.Setup(connection => connection.IsConnected).Returns(true);
 			con.Setup(model => model.WebServerUri).Returns(new Uri("http://rsaklf/bob"));

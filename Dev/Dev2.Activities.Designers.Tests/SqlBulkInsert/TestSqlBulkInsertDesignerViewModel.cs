@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.TO;
 
@@ -21,8 +21,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
     internal class TestSqlBulkInsertDesignerViewModel : SqlBulkInsertDesignerViewModel
     {
-        public TestSqlBulkInsertDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
-            : base(modelItem, new SynchronousAsyncWorker(), environmentModel, eventPublisher)
+        public TestSqlBulkInsertDesignerViewModel(ModelItem modelItem, IServer server, IEventAggregator eventPublisher)
+            : base(modelItem, new SynchronousAsyncWorker(), server, eventPublisher)
         {
         }
 

@@ -14,7 +14,7 @@ using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable InconsistentNaming
 

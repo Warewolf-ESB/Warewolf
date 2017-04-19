@@ -11,7 +11,7 @@
 using System;
 using System.Linq;
 using System.Windows;
-using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.ViewModels;
 
 // ReSharper disable CheckNamespace
@@ -82,12 +82,12 @@ namespace Dev2.Studio.Views.Workflow
                 var explorerItemViewModel = objectData as ExplorerItemViewModel;
                 if (explorerItemViewModel != null)
                 {
-                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
+                    if (workflowDesignerViewModel.Server.EnvironmentID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
                     {
                         return true;
                     }
-                    if (workflowDesignerViewModel.EnvironmentModel.ID != explorerItemViewModel.Server.EnvironmentID &&
-                        !workflowDesignerViewModel.EnvironmentModel.IsLocalHostCheck() && explorerItemViewModel.IsService)
+                    if (workflowDesignerViewModel.Server.EnvironmentID != explorerItemViewModel.Server.EnvironmentID &&
+                        !workflowDesignerViewModel.Server.IsLocalHostCheck() && explorerItemViewModel.IsService)
                     {
                         return true;
                     }

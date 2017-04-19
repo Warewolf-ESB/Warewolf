@@ -26,16 +26,15 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
-using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Services;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
 using DelegateCommand = Dev2.Runtime.Configuration.ViewModels.Base.DelegateCommand;
 // ReSharper disable InconsistentNaming
 // ReSharper disable NonLocalizedString
@@ -57,7 +56,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly IDebugOutputFilterStrategy _debugOutputFilterStrategy;
         private readonly IContextualResourceModel _contextualResourceModel;
         readonly SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
-        readonly IEnvironmentRepository _environmentRepository;
+        readonly IServerRepository _serverRepository;
         readonly object _syncContext = new object();
         ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
         readonly IPopupController _popup;
@@ -92,12 +91,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _dispatchLastDebugState;
         private string _addNewTestTooltip;
 
-        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy, IContextualResourceModel contextualResourceModel = null)
+        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IServerRepository serverRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy, IContextualResourceModel contextualResourceModel = null)
         {
             VerifyArgument.IsNotNull("serverEventPublisher", serverEventPublisher);
-            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+            VerifyArgument.IsNotNull("environmentRepository", serverRepository);
             VerifyArgument.IsNotNull("debugOutputFilterStrategy", debugOutputFilterStrategy);
-            _environmentRepository = environmentRepository;
+            _serverRepository = serverRepository;
             _debugOutputFilterStrategy = debugOutputFilterStrategy;
             if (contextualResourceModel != null)
             {
@@ -202,7 +201,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <value>
         ///     The environment repository.
         /// </value>
-        public IEnvironmentRepository EnvironmentRepository => _environmentRepository;
+        public IServerRepository ServerRepository => _serverRepository;
 
         public int DepthMin
         {
@@ -707,7 +706,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var isRemote = environmentId != Guid.Empty;
                 if (isRemote)
                 {
-                    var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
+                    var remoteEnvironmentModel = _serverRepository.FindSingle(model => model.EnvironmentID == environmentId);
                     if (remoteEnvironmentModel != null)
                     {
                         if (content.Server == "localhost")
@@ -860,7 +859,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             IDebugTreeViewItemViewModel parent;
             if (!_contentItemMap.TryGetValue(content.ParentID.GetValueOrDefault(), out parent))
             {
-                parent = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
+                parent = new DebugStateTreeViewItemViewModel(ServerRepository)
                 {
                     ActivityTypeName = content.ActualType
                 };
@@ -884,7 +883,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             else
             {
-                child = new DebugStateTreeViewItemViewModel(EnvironmentRepository)
+                child = new DebugStateTreeViewItemViewModel(ServerRepository)
                 {
                     Content = content,
                     ActivityTypeName = content.ActualType
@@ -914,7 +913,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

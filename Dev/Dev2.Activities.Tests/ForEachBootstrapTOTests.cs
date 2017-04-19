@@ -1,10 +1,10 @@
-﻿using Dev2.Data.Enums;
+﻿using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
-using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities
 {

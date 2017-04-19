@@ -12,12 +12,12 @@ using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Diagnostics.Test;
 using Dev2.Dialogs;
-using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Services.Security;
 using Dev2.Settings.Perfcounters;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests.Settings
     [TestClass]
     public class PerfCounterViewModelTests
     {
-        private Mock<IEnvironmentModel> _mockEnvironment;
+        private Mock<IServer> _mockEnvironment;
         private Mock<IEnvironmentConnection> _mockConnection;
 
         [TestInitialize]
@@ -40,12 +40,12 @@ namespace Dev2.Core.Tests.Settings
         {
 
             AppSettings.LocalHost = "http://localhost:3142";
-            _mockEnvironment = new Mock<IEnvironmentModel>();
+            _mockEnvironment = new Mock<IServer>();
             _mockConnection = new Mock<IEnvironmentConnection>();
             _mockConnection.Setup(connection => connection.ID).Returns(Guid.Empty);
             _mockConnection.Setup(connection => connection.ServerID).Returns(Guid.Empty);
             _mockEnvironment.Setup(model => model.Connection).Returns(_mockConnection.Object);
-            EnvironmentRepository.Instance.ActiveEnvironment = _mockEnvironment.Object;
+            ServerRepository.Instance.ActiveServer = _mockEnvironment.Object;
             CustomContainer.Register(new Mock<IShellViewModel>().Object);
         }
 
@@ -58,8 +58,11 @@ namespace Dev2.Core.Tests.Settings
             var permissions = new List<WindowsGroupPermission> { new WindowsGroupPermission() };
             securityService.Setup(service => service.Permissions).Returns(permissions);
             authorizationService.Setup(service => service.SecurityService).Returns(securityService.Object);
+            _mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            _mockConnection.Setup(connection => connection.DisplayName).Returns("TestServer");
             _mockEnvironment.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
-            EnvironmentRepository.Instance.ActiveEnvironment = _mockEnvironment.Object;
+            var activeServer = new Server(Guid.NewGuid(), _mockConnection.Object);
+            ServerRepository.Instance.ActiveServer = activeServer;
             var counters = new PrivateType(typeof(PerfcounterViewModel));
             //------------Setup for test------------------------
             //------------Execute Test--------------------------
@@ -75,7 +78,7 @@ namespace Dev2.Core.Tests.Settings
             var perfCounterTo = new Mock<IPerformanceCounterTo>();
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
-            var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IEnvironmentModel>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IServer>().Object);
             var counters = new PrivateObject(perfcounterViewModel);
             //------------Setup for test--------------------------
             var ItemServerCounters = perfcounterViewModel.ServerCounters = null;
@@ -92,7 +95,7 @@ namespace Dev2.Core.Tests.Settings
             var perfCounterTo = new Mock<IPerformanceCounterTo>();
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
-            var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IEnvironmentModel>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(perfCounterTo.Object, new Mock<IServer>().Object);
             var counters = new PrivateObject(perfcounterViewModel);
 
             var ItemServerCounters = new List<IPerformanceCountersByMachine>();
@@ -114,7 +117,7 @@ namespace Dev2.Core.Tests.Settings
             
             
             //------------Execute Test---------------------------
-            new PerfcounterViewModel(null, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            new PerfcounterViewModel(null, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Results-------------------------
         }
         
@@ -141,7 +144,7 @@ namespace Dev2.Core.Tests.Settings
             
             
             //------------Execute Test---------------------------
-            var perfcounterViewModel = new TestPerfCounterViewModel(new PerformanceCounterTo(), new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new TestPerfCounterViewModel(new PerformanceCounterTo(), new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(perfcounterViewModel.ResourcePickerDialog);            
         }        
@@ -160,7 +163,7 @@ namespace Dev2.Core.Tests.Settings
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
 
             //------------Execute Test---------------------------
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(perfcounterViewModel.ServerCounters);
             Assert.IsNotNull(perfcounterViewModel.ResourceCounters);
@@ -197,7 +200,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Preconditions-------------------
             Assert.IsNotNull(perfcounterViewModel.ServerCounters);
             Assert.IsNotNull(perfcounterViewModel.ResourceCounters);
@@ -233,7 +236,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Preconditions-------------------
             Assert.IsNotNull(perfcounterViewModel.ServerCounters);
             Assert.IsNotNull(perfcounterViewModel.ResourceCounters);
@@ -264,7 +267,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Preconditions-------------------
             Assert.IsNotNull(perfcounterViewModel.ServerCounters);
             Assert.IsNotNull(perfcounterViewModel.ResourceCounters);
@@ -295,7 +298,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Preconditions-------------------
             Assert.IsNotNull(perfcounterViewModel.ServerCounters);
             Assert.IsNotNull(perfcounterViewModel.ResourceCounters);
@@ -332,7 +335,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Preconditions-------------------
             var serverCounter = perfcounterViewModel.ServerCounters[0];
             var newResourceCounter = perfcounterViewModel.ResourceCounters[1];
@@ -388,7 +391,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             //------------Assert Preconditions-------------------
             Assert.IsNotNull(perfcounterViewModel.ServerCounters);
             Assert.IsNotNull(perfcounterViewModel.ResourceCounters);
@@ -424,7 +427,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var mockCommsController = new Mock<ICommunicationController>();
             mockCommsController.SetupAllProperties();
             var executeMessage = new ExecuteMessage { HasError = false };
@@ -453,7 +456,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
             var mockCommsController = new Mock<ICommunicationController>();
             mockCommsController.SetupAllProperties();
             var executeMessage = new ExecuteMessage { HasError = true,Message=new StringBuilder("Error") };
@@ -479,7 +482,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);            
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);            
             //------------Execute Test---------------------------
             perfcounterViewModel.PickResourceCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -498,7 +501,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);            
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);            
             //------------Execute Test---------------------------
             perfcounterViewModel.PickResourceCommand.Execute(new object());
             //------------Assert Results-------------------------
@@ -517,9 +520,9 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourcePicker = new Mock<IResourcePickerDialog>();
-            mockResourcePicker.Setup(dialog => dialog.ShowDialog(It.IsAny<IEnvironmentModel>())).Returns(true);
+            mockResourcePicker.Setup(dialog => dialog.ShowDialog(It.IsAny<IServer>())).Returns(true);
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
             Guid newGuid = Guid.NewGuid();
             mockExplorerTreeItem.Setup(item => item.ResourceId).Returns(newGuid);
@@ -547,9 +550,9 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockResourcePicker = new Mock<IResourcePickerDialog>();
-            mockResourcePicker.Setup(dialog => dialog.ShowDialog(It.IsAny<IEnvironmentModel>())).Returns(false);
+            mockResourcePicker.Setup(dialog => dialog.ShowDialog(It.IsAny<IServer>())).Returns(false);
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
             Guid newGuid = Guid.NewGuid();
             mockExplorerTreeItem.Setup(item => item.ResourceId).Returns(newGuid);
@@ -570,7 +573,7 @@ namespace Dev2.Core.Tests.Settings
         public void PerfcounterViewModel_UpdateHelpDescriptor_HelpText_ShouldCallUpdateHelpText()
         {
             //------------Setup for test--------------------------
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpWindowViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpWindowViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpWindowViewModel.Object);
@@ -581,7 +584,7 @@ namespace Dev2.Core.Tests.Settings
             var resourceId = Guid.NewGuid();
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.AverageExecutionTime, resourceId));
             performanceCounterTo.ResourceCounters.Add(new TestResourceCounter(WarewolfPerfCounterType.RequestsPerSecond, resourceId));
-            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);            
+            var perfcounterViewModel = new PerfcounterViewModel(performanceCounterTo, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);            
             //------------Execute Test---------------------------
             perfcounterViewModel.UpdateHelpDescriptor("Help");
             //------------Assert Results-------------------------
@@ -591,7 +594,7 @@ namespace Dev2.Core.Tests.Settings
 
     public class TestPerfCounterViewModel:PerfcounterViewModel
     {
-        public TestPerfCounterViewModel(IPerformanceCounterTo counters, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
+        public TestPerfCounterViewModel(IPerformanceCounterTo counters, IServer environment, Func<IResourcePickerDialog> createfunc = null)
             : base(counters, environment, createfunc)
         {
         }

@@ -22,6 +22,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
+using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -30,6 +31,7 @@ using Dev2.Interfaces;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
 // ReSharper disable CheckNamespace
