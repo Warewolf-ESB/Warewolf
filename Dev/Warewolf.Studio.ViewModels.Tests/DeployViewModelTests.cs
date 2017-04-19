@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dev2;
-using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Explorer;
 using Dev2.Services.Security;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -42,11 +42,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var deployViewModel = new SingleExplorerDeployViewModel(new Mock<IDeployDestinationExplorerViewModel>().Object, null, new List<IExplorerTreeItem>(), new Mock<IDeployStatsViewerViewModel>().Object, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object);
-
             //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeployViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
@@ -54,11 +53,10 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var deployViewModel = new SingleExplorerDeployViewModel(new Mock<IDeployDestinationExplorerViewModel>().Object, new Mock<IDeploySourceExplorerViewModel>().Object, null, new Mock<IDeployStatsViewerViewModel>().Object, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object);
-
             //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeployViewModel_Ctor"), ExpectedException(typeof(ArgumentNullException))]
@@ -67,11 +65,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             var deployViewModel = new SingleExplorerDeployViewModel(new Mock<IDeployDestinationExplorerViewModel>().Object, new Mock<IDeploySourceExplorerViewModel>().Object, new List<IExplorerTreeItem>(), null, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object);
             //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
         }
-
-    
     
         private Mock<IConnectControlViewModel> _sourceConnectControl;
         private Mock<IConnectControlViewModel> _destConnectControl;
@@ -85,12 +80,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(null, new Mock<IEventAggregator>().Object, new Mock<IDeployStatsViewerViewModel>().Object);
-
             //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -99,20 +91,18 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            server.Setup(a => a.DisplayName).Returns("LocalHost");
             var shell = new Mock<IShellViewModel>();
+            shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             CustomContainer.Register<IShellViewModel>(shell.Object);
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
-            server.Setup(a => a.GetServerConnections()).Returns(new List<IServer>());
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(shell.Object, new Mock<IEventAggregator>().Object, new Mock<IDeployStatsViewerViewModel>().Object);
-
             //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
         }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -121,12 +111,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var server = new Mock<IServer>();
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            server.Setup(a => a.DisplayName).Returns("LocalHost");
             var shell = new Mock<IShellViewModel>();
+            shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             CustomContainer.Register<IShellViewModel>(shell.Object);
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
-            server.Setup(a => a.GetServerConnections()).Returns(new List<IServer>());
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(shell.Object, new Mock<IEventAggregator>().Object, new Mock<IDeployStatsViewerViewModel>().Object);
             //------------Execute Test---------------------------
@@ -138,7 +129,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DeployViewModel_Version_Mistmatch()
         {
             SetupDeployViewModelMock();
-            var deployViewModel = new Mock<IDeployViewModel>();//SingleExplorerDeployViewModel(_deployDestinationExplorerViewModel.Object, _deploySourceExplorerViewModel.Object, _explorerTreeItems.Object, _deployStatsViewerViewModel.Object, _shellViewModel.Object, _popupController.Object);
+            var deployViewModel = new Mock<IDeployViewModel>();
             var sourceVersion = new Version("0.1.5050.0001");
             var destVersion = new Version("0.0.6087.8873");
             _deploySourceExplorerViewModel.SetupGet(model => model.ServerVersion).Returns(sourceVersion);
@@ -154,6 +145,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var shellViewModel = new Mock<IShellViewModel>();
+            shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var eventAggregator = new Mock<IEventAggregator>();
             var destPermissions = new List<IWindowsGroupPermission>();
             destPermissions.Add(new WindowsGroupPermission
@@ -161,7 +154,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Administrator = true
             });
             var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.ResourceName).Returns("Localhost");
+            localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.Permissions).Returns(destPermissions);
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
@@ -199,16 +192,18 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var shellViewModel = new Mock<IShellViewModel>();
+            shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var eventAggregator = new Mock<IEventAggregator>();
                         
             var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.ResourceName).Returns("Localhost");
+            localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             localhost.SetupGet(server => server.IsConnected).Returns(true);
 
             var otherServer = new Mock<IServer>();
             otherServer.Setup(server => server.IsConnected).Returns(true);
-            otherServer.Setup(a => a.ResourceName).Returns("OtherServer");
+            otherServer.Setup(a => a.DisplayName).Returns("OtherServer");
             otherServer.SetupGet(server => server.CanDeployFrom).Returns(true);
 
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
@@ -247,13 +242,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         [Owner("Sanele Mthembu")]
         public void Given_TheSameServer_CheckDestinationPersmisions_ShouldBeTrue()
         {
-
             //------------Setup for test--------------------------
             var shellViewModel = new Mock<IShellViewModel>();
+            shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var eventAggregator = new Mock<IEventAggregator>();
 
             var localhost = new Mock<IServer>();
-            localhost.Setup(a => a.ResourceName).Returns("Localhost");
+            localhost.Setup(a => a.DisplayName).Returns("Localhost");
             localhost.SetupGet(server => server.CanDeployTo).Returns(true);
             localhost.SetupGet(server => server.CanDeployFrom).Returns(true);
           
@@ -310,6 +306,5 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         #endregion
-
     }
 }

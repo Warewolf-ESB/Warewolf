@@ -2,9 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.Deploy.DeployUIMapClasses;
 using Warewolf.UITests.DialogsUIMapClasses;
-using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 
 namespace Warewolf.UITests.Workflow
 {

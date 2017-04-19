@@ -12,9 +12,8 @@ using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.Views.ResourceManagement;
 
 namespace Dev2.Utils

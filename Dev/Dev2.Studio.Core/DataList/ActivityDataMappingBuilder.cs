@@ -15,12 +15,13 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.DataList

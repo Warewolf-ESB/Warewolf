@@ -7,6 +7,8 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Explorer;
+using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
@@ -14,8 +16,7 @@ namespace Warewolf.Studio.ServerProxyLayer
     {
         #region Implementation of IExplorerUpdateManager
 
-        public ExplorerUpdateManagerProxy(ICommunicationControllerFactory communicationControllerFactory, Dev2.Studio.Core.Interfaces.IEnvironmentConnection connection)
-            :base(communicationControllerFactory,connection)
+        public ExplorerUpdateManagerProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection):base(communicationControllerFactory,connection)
         {
 
         }

@@ -58,12 +58,12 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
                 UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
-                ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-                ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
+                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton);
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
                 UIMap.Click_Deploy_Ribbon_Button();
-                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
                 DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton.Selected, "Windows Radio Button not selected.");
             }
@@ -74,12 +74,12 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
                 UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Playback.Wait(1000);
                 Click_Close_Server_Source_Wizard_Tab_Button();
-                ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-                ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
+                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.EditSourceButton);
                 Playback.Wait(1000);
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
                 UIMap.Click_Deploy_Ribbon_Button();
-                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+                DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
                 DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton.Selected, "Public Radio Button not selected.");
             }
@@ -90,7 +90,8 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
         [Then(@"I set AuthenticationType to Public")]
         public void ChangeServerAuthenticationTypeToPublic()
         {
-            ExplorerUIMap.Click_Explorer_RemoteServer_Edit_Button();
+            ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
+            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
             var publicRadioButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
             if (!publicRadioButton.Selected)
             {
@@ -98,10 +99,14 @@ namespace Warewolf.UITests.ServerSource.ServerSourceUIMapClasses
                 Click_Server_Source_Wizard_Test_Connection_Button();
                 UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 Click_Close_Server_Source_Wizard_Tab_Button();
+                UIMap.Click_Deploy_Ribbon_Button();
+                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             }
             else
             {
                 Click_Close_Server_Source_Wizard_Tab_Button();
+                UIMap.Click_Deploy_Ribbon_Button();
+                DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
             }
         }
 

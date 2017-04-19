@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming

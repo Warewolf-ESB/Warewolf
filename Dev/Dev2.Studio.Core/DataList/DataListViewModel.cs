@@ -18,14 +18,11 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
@@ -39,6 +36,8 @@ using System.Text;
 using System.Windows.Input;
 using System.Xml;
 using Dev2.Data.TO;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 // ReSharper disable MemberCanBePrivate.Global
@@ -269,7 +268,6 @@ namespace Dev2.Studio.ViewModels.DataList
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
 
         #endregion Properties
-
         #region Ctor
 
         public DataListViewModel()
@@ -332,7 +330,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public RelayCommand FindUnusedAndMissingCommand
+        public IRelayCommand FindUnusedAndMissingCommand
         {
             get
             {
@@ -847,7 +845,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

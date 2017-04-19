@@ -277,6 +277,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a connection to a new server..
+        /// </summary>
+        public static string ConnectControlNewConnectionHelp {
+            get {
+                return ResourceManager.GetString("ConnectControlNewConnectionHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change the connection properties of the selected Warewolf Server.&lt;br&gt;	&lt;br/&gt;	Allows you to change remote server URL, Port and Authentication.&lt;br&gt;	&lt;br/&gt;	&lt;b&gt;localhost&lt;/b&gt; cannot be edited in this way..
         /// </summary>
         public static string ConnectControlViewEditHelp {

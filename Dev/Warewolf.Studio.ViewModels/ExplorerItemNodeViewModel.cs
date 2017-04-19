@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {

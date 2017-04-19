@@ -25,7 +25,8 @@ using Dev2.Interfaces;
 using Microsoft.VisualBasic.Activities;
 using Newtonsoft.Json;
 using Warewolf.Resource.Errors;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable MemberCanBePrivate.Global

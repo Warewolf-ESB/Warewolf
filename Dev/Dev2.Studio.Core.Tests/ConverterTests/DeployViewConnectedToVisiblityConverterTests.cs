@@ -12,8 +12,8 @@ using System;
 using System.Windows;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Studio.Core.AppResources.Converters;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -33,10 +33,10 @@ namespace Dev2.Core.Tests.ConverterTests
             Mock<IEnvironmentConnection> mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(m => m.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockEnvironmentConnection.Setup(m => m.IsConnected).Returns(false);
-            IEnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), mockEnvironmentConnection.Object);
+            IServer server = new Server(Guid.NewGuid(), mockEnvironmentConnection.Object);
 
             //Act
-            var actual = (Visibility)converter.Convert(environmentModel, typeof(bool), null, null);
+            var actual = (Visibility)converter.Convert(server, typeof(bool), null, null);
             //Assert
             Assert.AreEqual(Visibility.Collapsed, actual);
         }
@@ -51,10 +51,10 @@ namespace Dev2.Core.Tests.ConverterTests
             Mock<IEnvironmentConnection> mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(m => m.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockEnvironmentConnection.Setup(m => m.IsConnected).Returns(true);
-            IEnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), mockEnvironmentConnection.Object);
+            IServer server = new Server(Guid.NewGuid(), mockEnvironmentConnection.Object);
 
             //Act
-            var actual = (Visibility)converter.Convert(environmentModel, typeof(bool), null, null);
+            var actual = (Visibility)converter.Convert(server, typeof(bool), null, null);
             //Assert
             Assert.AreEqual(Visibility.Visible, actual);
         }

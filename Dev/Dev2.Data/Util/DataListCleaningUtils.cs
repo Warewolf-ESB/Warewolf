@@ -11,8 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
-using Dev2.Data.TO;
 using Dev2.Data.Util;
 
 // ReSharper disable CheckNamespace
@@ -33,7 +33,7 @@ namespace Dev2.DataList.Contract
                 {
                     var allRegions = new List<string>();
                     Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-                    IList<ParseTO> makeParts = parser.MakeParts(result);
+                    IList<IParseTO> makeParts = parser.MakeParts(result);
                     foreach(var makePart in makeParts.Where(c => !c.HangingOpen))
                     {
                         if(makePart.Child != null)
@@ -58,7 +58,7 @@ namespace Dev2.DataList.Contract
             return new List<string> { null };
         }
 
-        private static IEnumerable<string> AddChildrenPart(ParseTO child)
+        private static IEnumerable<string> AddChildrenPart(IParseTO child)
         {
             List<string> results = new List<string>();
             if(child != null)
@@ -80,7 +80,7 @@ namespace Dev2.DataList.Contract
                 {
                     var allRegions = new List<string>();
                     Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-                    IList<ParseTO> makeParts = parser.MakeParts(result);
+                    IList<IParseTO> makeParts = parser.MakeParts(result);
                     foreach(var makePart in makeParts.Where(c => !c.HangingOpen))
                     {
                         allRegions.Add(DataListUtil.AddBracketsToValueIfNotExist(makePart.Payload));
@@ -97,7 +97,7 @@ namespace Dev2.DataList.Contract
 
         }
 
-        private static IEnumerable<string> AddChildrenPartForFindMissing(ParseTO child)
+        private static IEnumerable<string> AddChildrenPartForFindMissing(IParseTO child)
         {
             List<string> results = new List<string>();
             if(child != null)

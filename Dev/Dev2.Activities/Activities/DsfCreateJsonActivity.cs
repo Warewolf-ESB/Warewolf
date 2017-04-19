@@ -28,7 +28,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable CheckNamespace
 

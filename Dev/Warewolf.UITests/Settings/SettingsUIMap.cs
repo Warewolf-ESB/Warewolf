@@ -379,6 +379,15 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
             var deleteFirstResourceButton = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1.RemovePermissionButton;
             if (deleteFirstResourceButton.Enabled)
             {
+                var selectedResource = FindSelectedResourceText(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).DisplayText;
+                if(!selectedResource.EndsWith(resource))
+                {
+                    Mouse.Click(deleteFirstResourceButton);
+                    UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                }
+            }
+            if (deleteFirstResourceButton.Enabled)
+            {
                 var isViewChecked = FindViewPermissionsCheckbox(
                     MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext
                         .SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Checked;
@@ -513,10 +522,10 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.CloseButton, new Point(16, 6));
         }
 
-        [Given(@"I change Server Authentication type")]
-        [When(@"I change Server Authentication type")]
-        [Then(@"I change Server Authentication type")]
-        public void ChangeServerAuthenticationType()
+        [Given(@"I change Server Authentication type and validate")]
+        [When(@"I change Server Authentication type and validate")]
+        [Then(@"I change Server Authentication type and validate")]
+        public void ChangeServerAuthenticationTypeAndValidate()
         {
             var publicRadioButton = ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
             var windowsRadioButton = ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
@@ -543,6 +552,31 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
                 Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration);
                 DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
                 Assert.IsTrue(publicRadioButton.Selected);
+            }
+        }
+
+        [Given(@"I change Server Authentication type")]
+        [When(@"I change Server Authentication type")]
+        [Then(@"I change Server Authentication type")]
+        public void ChangeServerAuthenticationType()
+        {
+            var publicRadioButton = ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+            var windowsRadioButton = ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.WindowsRadioButton;
+            if (publicRadioButton.Selected)
+            {
+                windowsRadioButton.Selected = true;
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
+                ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+            }
+            else
+            {
+                publicRadioButton.Selected = true;
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                Playback.Wait(1000);
+                ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             }
         }
     }

@@ -5,10 +5,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -149,9 +150,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
+            _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
@@ -176,7 +179,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.IsConnected).Returns(false);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -206,7 +209,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.IsConnected).Returns(true);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -245,7 +248,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.IsConnected).Returns(true);
             _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -289,7 +292,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
             _serverMock.Setup(server => server.CanDeployFrom).Returns(false);
             _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -340,7 +343,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
             _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
             _differentServerMock.Setup(server => server.CanDeployTo).Returns(false);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -391,7 +394,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
             _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
             _differentServerMock.Setup(server => server.CanDeployTo).Returns(false);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -443,7 +446,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
             _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
             _differentServerMock.Setup(server => server.CanDeployTo).Returns(true);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -490,7 +493,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
             _serverMock.SetupGet(it => it.IsConnected).Returns(false);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -524,11 +527,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             connectControl.SetupAllProperties();
@@ -557,11 +562,13 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             var differentConnectControl = new Mock<IConnectControlViewModel>();
@@ -594,7 +601,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -623,7 +630,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -667,7 +674,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -703,7 +710,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock = new Mock<IServer>();
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -742,7 +749,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock = new Mock<IServer>();
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -781,7 +788,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock = new Mock<IServer>();
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -821,7 +828,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock = new Mock<IServer>();
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -860,7 +867,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _serverMock.Setup(server => server.IsConnected).Returns(true);
@@ -889,7 +896,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -914,7 +921,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -940,7 +947,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -963,7 +970,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -992,7 +999,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _statsView.Setup(model => model.NewResources).Returns(5);
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1015,10 +1022,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             connectControl.SetupAllProperties();
@@ -1041,7 +1050,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------            
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1068,7 +1077,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------            
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1094,7 +1103,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------            
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1122,7 +1131,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------            
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1150,7 +1159,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------            
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1195,7 +1204,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------            
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1248,7 +1257,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------            
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1291,7 +1300,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------            
             _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1337,7 +1346,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
             _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
             _differentServerMock.Setup(server => server.CanDeployTo).Returns(true);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1401,7 +1410,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
             _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
             _differentServerMock.Setup(server => server.CanDeployTo).Returns(true);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
@@ -1468,7 +1477,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _differentServerMock.SetupGet(it => it.IsConnected).Returns(true);
             _differentServerMock.Setup(server => server.Permissions).Returns(new Mock<List<IWindowsGroupPermission>>().Object);
             _differentServerMock.Setup(server => server.CanDeployTo).Returns(true);
-            _serverMock.SetupGet(it => it.ResourceName).Returns("some text");
+            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
             _serverEnvironmentId = Guid.NewGuid();
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);

@@ -5,6 +5,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +14,6 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 // ReSharper disable RedundantAssignment
@@ -32,7 +33,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             var mockStudioUpdateManager = new Mock<ISharePointSourceModel>();
             var mockRequestServiceNameViewModel = new Mock<IRequestServiceNameViewModel>();
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var mockEnvironmentModel = new Mock<Dev2.Studio.Core.Interfaces.IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var manageSharepointServerSourceViewModel = new SharepointServerSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockEnvironmentModel.Object);
@@ -51,7 +52,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
             ScenarioContext.Current.Add(Utils.ViewNameKey, FeatureContext.Current.Get<SharepointServerSource>(Utils.ViewNameKey));
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<ISharePointSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
-            ScenarioContext.Current.Add("mockEnvironmentModel", FeatureContext.Current.Get<Mock<Dev2.Studio.Core.Interfaces.IEnvironmentModel>>("mockEnvironmentModel"));
+            ScenarioContext.Current.Add("mockEnvironmentModel", FeatureContext.Current.Get<Mock<IServer>>("mockEnvironmentModel"));
             ScenarioContext.Current.Add(Utils.ViewModelNameKey, FeatureContext.Current.Get<SharepointServerSourceViewModel>(Utils.ViewModelNameKey));
         }
 
@@ -289,7 +290,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
 
             mockStudioUpdateManager.Setup(model => model.ServerName).Returns("localhost");
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var mockExecutor = new Mock<Dev2.Studio.Core.Interfaces.IEnvironmentModel>();
+            var mockExecutor = new Mock<IServer>();
 
             var sharePointServiceSourceDefinition = new SharePointServiceSourceDefinition
             {
@@ -326,7 +327,7 @@ namespace Warewolf.UIBindingTests.SharepointSource
         [AfterScenario("SharepointSource")]
         public void Cleanup()
         {
-            var mockExecutor = new Mock<Dev2.Studio.Core.Interfaces.IEnvironmentModel>();
+            var mockExecutor = new Mock<IServer>();
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<ISharePointSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();

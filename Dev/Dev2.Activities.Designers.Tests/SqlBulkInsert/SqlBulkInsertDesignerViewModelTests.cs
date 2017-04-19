@@ -19,15 +19,13 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.TO;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -80,7 +78,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         {
             //------------Setup for test--------------------------      
             AppSettings.LocalHost = "http://localhost:1245";
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
@@ -124,7 +122,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
+            new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -1155,7 +1153,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         {
             var sourceDefs = sources?.Select(s => s.Key.ToXml().ToString());
 
-            var envModel = new Mock<IEnvironmentModel>();
+            var envModel = new Mock<IServer>();
             envModel.Setup(e => e.Connection.WorkspaceID).Returns(Guid.NewGuid());
 
             var resourceRepo = new Mock<IResourceRepository>();
@@ -1170,7 +1168,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             if (sources != null)
             {
                 var dbs = sources.Keys.ToList();
-                resourceRepo.Setup(r => r.FindSourcesByType<DbSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SqlDatabase)).Returns(dbs);
+                resourceRepo.Setup(r => r.FindSourcesByType<DbSource>(It.IsAny<IServer>(), enSourceType.SqlDatabase)).Returns(dbs);
             }
 
             var tableJson = new DbTableList();

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.SaveDialog;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
@@ -30,7 +29,7 @@ namespace Warewolf.UIBindingTests.WcfSource
             var mockExecutor = new Mock<IExternalProcessExecutor>();
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
-            var manageWcfSourceViewModel = new ManageWcfSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            var manageWcfSourceViewModel = new ManageWcfSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), new Mock<IServer>().Object);
             manageWcfSourceControl.DataContext = manageWcfSourceViewModel;
             Utils.ShowTheViewForTesting(manageWcfSourceControl);
             FeatureContext.Current.Add(Utils.ViewNameKey, manageWcfSourceControl);

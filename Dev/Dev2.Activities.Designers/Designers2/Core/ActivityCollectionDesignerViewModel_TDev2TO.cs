@@ -19,7 +19,7 @@ using System.Windows.Data;
 using Dev2.Activities.Designers2.DataMerge;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Interfaces;
+using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable MemberCanBeProtected.Global

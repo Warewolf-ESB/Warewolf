@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Security;
-using Dev2.Services.Security;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -17,7 +17,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IMainViewModel> _mainViewModelMock;
+        private Mock<IShellViewModel> _mainViewModelMock;
         private AuthorizeCommand<string> _newCommand;
         private Mock<ICommand> _deployCommandMock;
         private AuthorizeCommand _saveCommand;
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            _mainViewModelMock = new Mock<IMainViewModel>();
+            _mainViewModelMock = new Mock<IShellViewModel>();
             _deployCommandMock = new Mock<ICommand>();
             _newCommand = new AuthorizeCommand<string>(new AuthorizationContext(), str => { }, str => true);
             _saveCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);

@@ -12,15 +12,15 @@ using System.Activities.Presentation.Model;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 
 namespace Dev2.Activities.Designers.Tests.Email
 {
     public class TestEmailDesignerViewModel : EmailDesignerViewModel
     {
-        public TestEmailDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
-            : base(modelItem, new SynchronousAsyncWorker(), environmentModel, eventPublisher)
+        public TestEmailDesignerViewModel(ModelItem modelItem, IServer server, IEventAggregator eventPublisher)
+            : base(modelItem, new SynchronousAsyncWorker(), server, eventPublisher)
         {
         }
 

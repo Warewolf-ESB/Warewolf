@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract;
 
 // ReSharper disable once CheckNamespace

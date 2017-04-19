@@ -375,6 +375,9 @@
   <data name="ConnectControlViewToggleConnectionHelp" xml:space="preserve">
     <value>Disconnects or Connects to the selected remote Warewolf Server. &lt;br/&gt;	&lt;br/&gt;	Connected Servers will be Disconnected and vice versa. &lt;br/&gt;	&lt;br/&gt;	&lt;b&gt;localhost&lt;/b&gt; cannot be disconnected and should always be connected. If it is not connected, try restarting the Warewolf Server service in Task Manager.</value>
   </data>
+  <data name="ConnectControlNewConnectionHelp" xml:space="preserve">
+    <value>Create a connection to a new server.</value>
+  </data>
   <data name="CopyHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.	Put the full path of the destination you are copying to here.	You can use File System, URI, SFTP, FTP or FTPS format.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>

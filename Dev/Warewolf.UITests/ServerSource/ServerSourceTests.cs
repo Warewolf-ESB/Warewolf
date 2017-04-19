@@ -1,7 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.ServerSource.ServerSourceUIMapClasses;
+using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UITests.ServerSource
 {
@@ -71,7 +73,21 @@ namespace Warewolf.UITests.ServerSource
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
             Assert.AreEqual("IntegrationTester", ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.UsernameTextBox.Text, "The user name Texbox value is not set to Intergration Testet.");
         }
-        
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void DuplicateServerSource_AddsToConnectControl()
+        {
+            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu(SourceName);
+            const string newName = "DuplicatedCodedUITestServerSource";
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
+            DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
+            ExplorerUIMap.WaitForExplorerFirstRemoteServerSpinner();
+            ExplorerUIMap.Filter_Explorer(newName);
+            Assert.AreEqual(newName, ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
+            ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsDuplicatedConnection.Exists);
+        }
 
         #region Additional test attributes
 
@@ -126,6 +142,35 @@ namespace Warewolf.UITests.ServerSource
         }
 
         private ServerSourceUIMap _ServerSourceUIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

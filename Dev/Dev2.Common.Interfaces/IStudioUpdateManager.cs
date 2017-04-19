@@ -20,10 +20,7 @@ namespace Dev2.Common.Interfaces
         void Save(IExchangeSource emailServiceSource);
         void Save(ISharepointServerSource sharePointServiceSource);
         void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
-        void Save(IWcfServerSource wcfSource);
-        void Save(IPluginService toDbSource);
-        void Save(IWcfService toSource);
-        
+        void Save(IWcfServerSource wcfSource);        
         void Save(IOAuthSource sharePointServiceSource);
     }
 
@@ -46,8 +43,8 @@ namespace Dev2.Common.Interfaces
     public interface IStudioUpdateManager : IStudioUpdateManagerSave, IStudioUpdateManagerTest
     {
         string TestConnection(IWcfServerSource wcfServerSource);
-        Action<Guid> ServerSaved { get; set; }
-        void FireServerSaved(Guid savedServerID);
+        Action<Guid, bool> ServerSaved { get; set; }
+        void FireServerSaved(Guid savedServerID, bool isDeleted = false);
 
         List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment);
     }

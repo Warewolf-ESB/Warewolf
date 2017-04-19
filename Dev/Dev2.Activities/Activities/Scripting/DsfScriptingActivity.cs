@@ -27,7 +27,7 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Activities

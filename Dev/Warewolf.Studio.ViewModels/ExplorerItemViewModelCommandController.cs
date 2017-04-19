@@ -2,10 +2,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable NonLocalizedString
 // ReSharper disable InconsistentNaming
 
@@ -166,8 +166,7 @@ namespace Warewolf.Studio.ViewModels
 
         private static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {
-            shellViewModel.SetActiveEnvironment(server.EnvironmentID);
-            shellViewModel.SetActiveServer(server);
+            shellViewModel.SetActiveServer(server.EnvironmentID);
         }
 
         public void ShowDependenciesCommand(Guid resourceId, IServer server,bool isSource)
@@ -201,7 +200,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.DuplicateResource(explorerItemViewModel);
         }
 
-        public void DeleteCommand(IEnvironmentModel environmentModel, IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController, IServer server)
+        public void DeleteCommand(IExplorerTreeItem parent, IExplorerRepository explorerRepository, ExplorerItemViewModel explorerItemViewModel, IPopupController popupController, IServer server)
         {
             try
             {
@@ -212,15 +211,15 @@ namespace Warewolf.Studio.ViewModels
                 else
                 {
                     var messageBoxResult = popupController.Show(popupController.GetDeleteConfirmation(explorerItemViewModel.ResourceName));
-                    if (environmentModel != null && messageBoxResult == MessageBoxResult.Yes)
+                    if (server != null && messageBoxResult == MessageBoxResult.Yes)
                     {
-                        _shellViewModel.CloseResource(explorerItemViewModel.ResourceId, environmentModel.ID);
+                        _shellViewModel.CloseResource(explorerItemViewModel.ResourceId, server.EnvironmentID);
                         var deletedFileMetadata = explorerRepository.Delete(explorerItemViewModel);
                         if (deletedFileMetadata.IsDeleted)
                         {
                             if (explorerItemViewModel.ResourceType == @"ServerSource" || explorerItemViewModel.IsServer)
                             {
-                                server.UpdateRepository.FireServerSaved(explorerItemViewModel.ResourceId);
+                                server.UpdateRepository.FireServerSaved(explorerItemViewModel.ResourceId, true);
                             }
                             parent?.RemoveChild(explorerItemViewModel);
                         }                        

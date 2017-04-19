@@ -18,12 +18,14 @@ using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable CheckNamespace
 
 namespace Dev2.Network
@@ -272,5 +274,26 @@ namespace Dev2.Network
             handler?.Invoke(this, e);
         }
         #endregion
+
+        public bool Equals(IEnvironmentConnection other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            var isEqual = other.ID == ID && other.AuthenticationType == AuthenticationType &&
+                          other.AppServerUri.Equals(AppServerUri) && other.WebServerUri.Equals(WebServerUri);
+            return isEqual;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as IEnvironmentConnection);
+        }
+
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode();
+        }
     }
 }

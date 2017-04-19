@@ -10,9 +10,9 @@
 
 using System;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
-using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Interfaces.DataList;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Factories

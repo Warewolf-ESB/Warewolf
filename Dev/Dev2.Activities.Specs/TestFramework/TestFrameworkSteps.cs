@@ -18,19 +18,17 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Decisions.Operations;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Dev2.Utilities;
@@ -39,8 +37,8 @@ using Moq;
 using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
+using Dev2.Studio.Interfaces.Enums;
 // ReSharper disable UnusedParameter.Global
 // ReSharper disable InconsistentNaming
 
@@ -66,7 +64,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenTestFolderIsCleaned()
         {
             DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
@@ -75,7 +73,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"I reload tests")]
         public void WhenIReloadTests()
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
@@ -85,7 +83,8 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"test folder is cleaned")]
         public void ThenTestFolderIsCleaned()
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            //DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
         }
@@ -94,7 +93,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public static void ScenarioCleaning()
         {
 
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
         }
@@ -115,7 +114,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var resourceModel = BuildResourceModel(workflowName, environmentModel);
             MyContext.Add(workflowName + "Resourceid", resourceModel.ID);
@@ -153,10 +152,10 @@ namespace Dev2.Activities.Specs.TestFramework
             MyContext["shellViewModel"] = shellViewModel;
         }
 
-        private static ResourceModel BuildResourceModel(string workflowName, IEnvironmentModel environmentModel)
+        private static ResourceModel BuildResourceModel(string workflowName, IServer server)
         {
             var newGuid = Guid.NewGuid();
-            var resourceModel = new ResourceModel(environmentModel)
+            var resourceModel = new ResourceModel(server)
             {
                 ResourceName = workflowName,
                 DisplayName = workflowName,
@@ -176,7 +175,7 @@ namespace Dev2.Activities.Specs.TestFramework
             _resourceForTests = resourceName;
             var resourceId = Guid.NewGuid();
             // ReSharper disable once UnusedVariable
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ResourceName = resourceName,
@@ -198,7 +197,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenIAddAsTests(string p0)
         {
 
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.ForceLoad();
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
@@ -234,7 +233,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"""(.*)"" has (.*) tests")]
         public void ThenHasTests(string resourceName, int numberOdTests)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             var resourceID = MyContext.Get<Guid>(resourceName + "id");
             var serviceTestModelTos = environmentModel.ResourceRepository.LoadResourceTests(resourceID);
             Assert.AreEqual(numberOdTests, serviceTestModelTos.Count);
@@ -243,7 +242,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"I delete resource ""(.*)""")]
         public void WhenIDeleteResource(string resourceName)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             MyContext.Get<Guid>(resourceName + "id");
             // ReSharper disable once UnusedVariable
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
@@ -290,7 +289,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var resourceIdKey = workFlowName + "Resourceid";
             var resourceID = MyContext.Get<Guid>(resourceIdKey);
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             foreach (var tableRow in table.Rows)
             {
@@ -388,7 +387,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         AddVariables(variablesRow["Ouput Var Name"], dataListViewModel, enDev2ColumnArgumentDirection.Output);
                     }
                     dataListViewModel.WriteToResourceModel();
-                    var environmentModel = EnvironmentRepository.Instance.Source;
+                    var environmentModel = ServerRepository.Instance.Source;
                     environmentModel.ResourceRepository.SaveToServer(resourceModel);
                 }
                 else
@@ -425,7 +424,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 return;
             }
             var resourceId = ConfigurationManager.AppSettings[workflowName].ToGuid();
-            var sourceResourceRepository = EnvironmentRepository.Instance.Source.ResourceRepository;
+            var sourceResourceRepository = ServerRepository.Instance.Source.ResourceRepository;
             var loadContextualResourceModel = sourceResourceRepository.LoadContextualResourceModel(resourceId);
             var msg = sourceResourceRepository.FetchResourceDefinition(loadContextualResourceModel.Environment, GlobalConstants.ServerWorkspaceID, resourceId, false);
             loadContextualResourceModel.WorkflowXaml = msg.Message;
@@ -667,7 +666,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIRemoveInputFromWorkflow(string input, string workflow)
         {
             var resourceIdKey = workflow + "Resourceid";
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             var resourceId = MyContext.Get<Guid>(resourceIdKey);
             var resourceToChange = environmentModel.ResourceRepository.FindResourcesByID(environmentModel, new[] { resourceId.ToString() }, ResourceType.WorkflowService).Single();
             var newDatalist = resourceToChange.DataList.Replace(input, input + "Newname");
@@ -680,7 +679,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"I save Workflow\t""(.*)""")]
         public void WhenISaveWorkflow(string workflow)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.ResourceRepository.SaveToServer(_resourceModelWithDifInputs);
         }
 
@@ -985,7 +984,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
-                var env = EnvironmentRepository.Instance.Source;
+                var env = ServerRepository.Instance.Source;
                 env.ResourceRepository.DeleteResource(resourceModel);
             }
         }
@@ -996,7 +995,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ResourceModel resourceModel;
             if (MyContext.TryGetValue(workflowName, out resourceModel))
             {
-                var env = EnvironmentRepository.Instance.Source;
+                var env = ServerRepository.Instance.Source;
                 resourceModel.Category = "bob\\" + workflowName;
                 env.ResourceRepository.SaveToServer(resourceModel);
             }
@@ -1494,7 +1493,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenIHaveAResouceWorkflowInsideHome(string resourceName)
         {
             var path = MyContext.Get<string>("folderPath");
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
 
 
             var resourceId = Guid.NewGuid();
@@ -1519,7 +1518,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             string path;
             MyContext.TryGetValue("folderPath", out path);
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.ForceLoad();
             if (!string.IsNullOrEmpty(path))
@@ -1590,7 +1589,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIDeleteFolder(string folderName)
         {
             var path = MyContext.Get<string>("folderPath");
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
 
             var controller = new CommunicationController { ServiceName = "DeleteItemService" };
             controller.AddPayloadArgument("folderToDelete", path);
@@ -1605,7 +1604,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"the test builder is open with existing service ""(.*)""")]
         public void GivenTheTestBuilderIsOpenWithExistingService(string workflowName)
         {
-            var env = EnvironmentRepository.Instance.Source;
+            var env = ServerRepository.Instance.Source;
             env.ForceLoadResources();
             var sourceResourceRepository = env.ResourceRepository;
             var res = sourceResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);

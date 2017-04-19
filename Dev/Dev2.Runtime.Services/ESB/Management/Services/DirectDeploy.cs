@@ -22,11 +22,11 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.AspNet.SignalR.Client;
 using Dev2.Runtime.Interfaces;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {

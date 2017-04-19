@@ -22,6 +22,7 @@ using Dev2.Collections;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.Collections;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
@@ -29,9 +30,9 @@ using Dev2.Communication;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
@@ -47,7 +48,7 @@ namespace Dev2.Studio.Core.Models
         private string _dataList;
         private string _dataTags;
         private string _displayName = string.Empty;
-        private IEnvironmentModel _environment;
+        private IServer _environment;
         private string _helpLink;
         private bool _isDatabaseService;
         private bool _isDebugMode;
@@ -73,12 +74,12 @@ namespace Dev2.Studio.Core.Models
 
         #region Constructors
 
-        public ResourceModel(IEnvironmentModel environment)
+        public ResourceModel(IServer environment)
             : this(environment, EventPublishers.Aggregator)
         {
         }
 
-        public ResourceModel(IEnvironmentModel environment, IEventAggregator eventPublisher)
+        public ResourceModel(IServer environment, IEventAggregator eventPublisher)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 
@@ -129,7 +130,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public IEnvironmentModel Environment
+        public IServer Environment
         {
             get { return _environment; }
             private set
@@ -139,7 +140,7 @@ namespace Dev2.Studio.Core.Models
                 {
                     _validationService = new DesignValidationService(_environment.Connection.ServerEvents);
 
-                    _validationService.Subscribe(_environment.ID, ReceiveEnvironmentValidation);
+                    _validationService.Subscribe(_environment.EnvironmentID, ReceiveEnvironmentValidation);
                 }
                 NotifyOfPropertyChange(nameof(Environment));
                 // ReSharper disable NotResolvedInText

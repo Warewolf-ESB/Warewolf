@@ -45,32 +45,12 @@ using Dev2.Workspaces;
 using log4net.Config;
 using WarewolfCOMIPC.Client;
 
-// ReSharper disable AssignNullToNotNullAttribute
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable NonLocalizedString
-// ReSharper disable CatchAllClause
-// ReSharper disable CatchAllClause
-// ReSharper disable ThrowFromCatchWithNoInnerException
-// ReSharper disable ThrowingSystemException
-
-// ReSharper disable InconsistentNaming
 namespace Dev2
 {
-    /// <summary>
-    /// PBI 5278
-    /// Application Server Life-cycle Manager
-    /// Facilitates start-up, execution and tear-down of the application server.
-    /// </summary>
     sealed class ServerLifecycleManager : IDisposable
     {
-
         static ServerLifecycleManager _singleton;
-
-        /// <summary>
-        /// Entry Point for application server.
-        /// </summary>
-        /// <param name="arguments">Command line arguments passed to executable.</param>
+        
         static int Main(string[] arguments)
         {
             try
@@ -89,7 +69,7 @@ namespace Dev2
 
         static int RunMain(string[] arguments)
         {
-            const int result = 0;
+            const int Result = 0;
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
                 Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
@@ -112,9 +92,10 @@ namespace Dev2
                     ServiceBase.Run(service);
                 }
             }
-            return result;
+            return Result;
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         public class ServerLifecycleManagerService : ServiceBase
         {
             public ServerLifecycleManagerService()
@@ -148,26 +129,8 @@ namespace Dev2
         private int _daysToKeepTempFiles;
         private readonly PulseTracker _pulseTracker;
         private IpcClient _ipcIpcClient;
-
-        /// <summary>
-        /// Get a value indicating if the lifecycle manager has been disposed.
-        /// </summary>
-        public bool IsDisposed => _isDisposed;
-
-        /// <summary>
-        /// Gets a value indicating if the webserver is enabled.
-        /// </summary>
-        public bool IsWebServerEnabled => _isWebServerEnabled;
-
-        /// <summary>
-        /// Gets a Guid that represents the ID of the current server.
-        /// </summary>
-        public Guid ServerID => HostSecurityProvider.Instance.ServerID;
-
-        /// <summary>
-        /// Constructors an instance of the ServerLifecycleManager class, ServerLifecycleManager is essentially a singleton but implemented as an instance type
-        /// to ensure proper finalization occurs.
-        /// </summary>
+        
+        // ReSharper disable once UnusedParameter.Local
         ServerLifecycleManager(string[] arguments)
         {
             _pulseLogger = new PulseLogger(60000);
@@ -232,12 +195,7 @@ namespace Dev2
                 }
             }
         }
-
-        /// <summary>
-        /// Runs the application server, and handles all initialization, execution and cleanup logic required.
-        /// </summary>
-        /// <exception cref="Exception"></exception>
-        /// <returns></returns>
+        
         void Run(bool interactiveMode)
         {
             Tracker.StartServer();
@@ -297,12 +255,7 @@ namespace Dev2
                 DeleteTempFiles();
             }
         }
-
-        /// <summary>
-        /// Ensures all external dependencies have been loaded, then loads all referenced assemblies by the 
-        /// currently executing assembly, and recursively loads each of the referenced assemblies of the 
-        /// initial dependency set until all dependencies have been loaded.
-        /// </summary>
+        
         static void PreloadReferences()
         {
             Write("Preloading assemblies...  ");
@@ -311,11 +264,7 @@ namespace Dev2
             LoadReferences(currentAsm, inspected);
             WriteLine("done.");
         }
-
-        /// <summary>
-        /// Loads the assemblies that are referenced by the input assembly, but only if that assembly has not
-        /// already been inspected.
-        /// </summary>
+        
         static void LoadReferences(Assembly asm, HashSet<string> inspected)
         {
             var allReferences = asm.GetReferencedAssemblies();
@@ -395,6 +344,7 @@ namespace Dev2
         {
             try
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             }
             catch (Exception e)
@@ -402,49 +352,16 @@ namespace Dev2
                 Fail("Unable to set working directory.", e);
             }
         }
-
-        internal void ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
-        {
-            if (string.Equals(section.Name, sectionName, StringComparison.OrdinalIgnoreCase))
-            {
-                if (!string.IsNullOrEmpty(section.InnerText))
-                {
-                    if (string.Equals(section.InnerText, "true", StringComparison.OrdinalIgnoreCase))
-                    {
-                        setter = true;
-                    }
-                    else if (string.Equals(section.InnerText, "false", StringComparison.OrdinalIgnoreCase))
-                    {
-                        setter = false;
-                    }
-                    else
-                    {
-                        Fail("Configuration error, " + sectionName);
-                        result = false;
-                    }
-                }
-                else
-                {
-                    Fail("Configuration error, " + sectionName);
-                    result = false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Performs all necessary initialization such that the server is in a state that allows
-        /// workflow execution.
-        /// </summary>
-        /// <returns>false if the initialization failed, otherwise true</returns>
+        
         void InitializeServer()
         {
             try
             {
-                string webServerSslPort = null;
-                string webServerPort = null;
+                string webServerSslPort;
+                string webServerPort;
 
-                GlobalConstants.WebServerPort = webServerPort = !string.IsNullOrEmpty(webServerPort) ? webServerPort : ConfigurationManager.AppSettings["webServerPort"];
-                GlobalConstants.WebServerSslPort = webServerSslPort = !string.IsNullOrEmpty(webServerSslPort) ? webServerSslPort : ConfigurationManager.AppSettings["webServerSslPort"];
+                GlobalConstants.WebServerPort = webServerPort = ConfigurationManager.AppSettings["webServerPort"];
+                GlobalConstants.WebServerSslPort = webServerSslPort = ConfigurationManager.AppSettings["webServerSslPort"];
 
                 _isWebServerEnabled = false;
 
@@ -484,6 +401,7 @@ namespace Dev2
             }
         }
 
+        // ReSharper disable once InconsistentNaming
         private void EnableSSLForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
         {
             if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
@@ -510,12 +428,8 @@ namespace Dev2
                 }
             }
         }
-
-        /// <summary>
-        /// Performs all necessary cleanup such that the server is gracefully moved to a state that does not allow
-        /// workflow execution.
-        /// </summary>
-        /// <returns>false if the cleanup failed, otherwise true</returns>
+        
+        // ReSharper disable once MemberCanBePrivate.Global
         internal void CleanupServer()
         {
             try
@@ -554,33 +468,12 @@ namespace Dev2
 
             WriteLine("");
         }
-
-        static void Fail(string message, string details = "")
-        {
-            WriteLine("Critical Failure: " + message);
-
-            if (!string.IsNullOrEmpty(details))
-            {
-                WriteLine("Details");
-                WriteLine("--");
-                WriteLine(details);
-            }
-
-            WriteLine("");
-
-        }
-
-        /// <summary>
-        /// Finalizer for ServerLifecycleManager called when garbage collected.
-        /// </summary>
+        
         ~ServerLifecycleManager()
         {
             Dispose(false);
         }
-
-        /// <summary>
-        /// Public facing implementation of the Dispose interface
-        /// </summary>
+        
         public void Dispose()
         {
             if (_isDisposed)
@@ -589,11 +482,7 @@ namespace Dev2
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        /// <summary>
-        ///  Proper dispose pattern implementation to ensure Application Server is terminated correctly, even from finalizer.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed, otherwise false.</param>
+        
         void Dispose(bool disposing)
         {
 
@@ -778,6 +667,7 @@ namespace Dev2
             }
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         internal static void WriteLine(string message)
         {
             if (Environment.UserInteractive)
@@ -792,6 +682,7 @@ namespace Dev2
 
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         internal static void Write(string message)
         {
             if (Environment.UserInteractive)

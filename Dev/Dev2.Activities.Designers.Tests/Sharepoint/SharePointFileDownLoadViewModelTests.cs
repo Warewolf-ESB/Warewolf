@@ -5,10 +5,9 @@ using Dev2.Activities.Designers2.SharePointFileDownload;
 using Dev2.Activities.Sharepoint;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -53,7 +52,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
             //------------Execute Test---------------------------
             // ReSharper disable once ObjectCreationAsStatement
-            new SharePointFileDownLoadDesignerViewModel(CreateModelItem(), null, new Mock<IEnvironmentModel>().Object);
+            new SharePointFileDownLoadDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object);
             //------------Assert Results-------------------------
         }
 
@@ -81,7 +80,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            var sharepointFileDownLoadDesignerViewModel = new SharePointFileDownLoadDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            var sharepointFileDownLoadDesignerViewModel = new SharePointFileDownLoadDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), new Mock<IServer>().Object);
 
             sharepointFileDownLoadDesignerViewModel.UpdateHelpDescriptor("Test");
 
@@ -101,13 +100,13 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             modelItem.SetProperty("LocalInputPath", "TestFolder");
             modelItem.SetProperty("SharepointServerResourceId", Guid.NewGuid());
             //------------Execute Test---------------------------
-            var sharepointReadFolderDesignerViewModel = new SharePointFileDownLoadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            var sharepointReadFolderDesignerViewModel = new SharePointFileDownLoadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IServer>().Object);
             sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointReadFolderDesignerViewModel.Validate();
             var inputPath = modelItem.GetProperty<string>("LocalInputPath");
             var sourceId = modelItem.GetProperty<Guid>("SharepointServerResourceId");
 
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpWindowViewModel = new Mock<IHelpWindowViewModel>();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpWindowViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
@@ -129,7 +128,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             var modelItem = CreateModelItem();
             modelItem.SetProperty("LocalInputPath", "TestFolder");
             //------------Execute Test---------------------------
-            var sharepointReadFolderDesignerViewModel = new SharePointFileDownLoadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            var sharepointReadFolderDesignerViewModel = new SharePointFileDownLoadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IServer>().Object);
             sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointReadFolderDesignerViewModel.Validate();
             var inputPath = modelItem.GetProperty<string>("LocalInputPath");
@@ -151,7 +150,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             modelItem.SetProperty("SharepointServerResourceId", Guid.NewGuid());
 
             //------------Execute Test---------------------------
-            var sharepointReadFolderDesignerViewModel = new SharePointFileDownLoadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IEnvironmentModel>().Object);
+            var sharepointReadFolderDesignerViewModel = new SharePointFileDownLoadDesignerViewModel(modelItem, new SynchronousAsyncWorker(), new Mock<IServer>().Object);
             sharepointReadFolderDesignerViewModel.Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo() { Message = "Please Select a SharePoint Server" } };
             sharepointReadFolderDesignerViewModel.Validate();
 

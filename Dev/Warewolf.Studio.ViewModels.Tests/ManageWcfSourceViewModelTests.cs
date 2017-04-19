@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using System.Windows;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -36,7 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                                                     var wcfSource = func.Invoke();
                                                     action(wcfSource);
                                                 });
-            var manageWcfSourceViewModel = new ManageWcfSourceViewModel(updateManager.Object, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), sourceModel, asyncWorker.Object, new Mock<IEnvironmentModel>().Object);
+            var manageWcfSourceViewModel = new ManageWcfSourceViewModel(updateManager.Object, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), sourceModel, asyncWorker.Object, new Mock<IServer>().Object);
             return manageWcfSourceViewModel;
         }
 
@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             task.Start();
 
-            return new ManageWcfSourceViewModel(new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, new Mock<IQueryManager>().Object),task, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object);
+            return new ManageWcfSourceViewModel(new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, new Mock<IQueryManager>().Object),task, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object);
         }
 
         [TestMethod]

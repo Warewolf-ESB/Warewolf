@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Core;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -45,17 +45,17 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
 
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
 
             _outputMapping = new Mock<IServiceOutputMapping>();
             
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
             _sqlSource = new DbSourceDefinition
             {
@@ -288,17 +288,17 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
 
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
 
             _outputMapping = new Mock<IServiceOutputMapping>();
 
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
             _sqlSource = new DbSourceDefinition
             {

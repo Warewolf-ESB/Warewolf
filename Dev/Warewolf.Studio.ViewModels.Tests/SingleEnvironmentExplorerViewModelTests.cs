@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces;
 using Moq;
 
 namespace Warewolf.Studio.ViewModels.Tests

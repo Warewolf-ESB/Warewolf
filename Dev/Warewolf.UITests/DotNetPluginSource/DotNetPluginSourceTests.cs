@@ -59,27 +59,37 @@ namespace Warewolf.UITests
         [TestCategory("Plugin Sources")]
         public void Select_AssemblyAndConfigFile_Then_Validate_Clear_On_GACSelection_UITests()
         {
-            string filePath = @"C:\UITestAssembly.dll";
-            var fileStream = File.Create(filePath);
-            fileStream.Close();
+            string fakeDllPath = @"C:\UITestAssembly.dll";
+            File.Create(fakeDllPath).Close();
+            string fakeConfigPath = @"C:\UITestAssembly.dll.config";
+            File.Create(fakeConfigPath).Close();
 
-            ExplorerUIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
-            DotNetPluginSourceUIMap.Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab();
-            Assert.IsTrue(DialogsUIMap.ChooseDLLWindow.Exists, "Choose DLL Window does not exist.");
-            DialogsUIMap.Select_DLLAssemblyFile_From_ChooseDLLWindow(filePath);
-            Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File ComboBox is not enabled");
-            Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton.Enabled, "Config File Directory button is not enabled");
-            DotNetPluginSourceUIMap.Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab();
-            DialogsUIMap.Enter_ConfigFile_In_SelectFilesWindow();
-            Assert.IsFalse(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
-            Mouse.Click(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton);
-            DialogsUIMap.Select_GACAssemblyFile_From_ChooseDLLWindow("Microsoft");
-            Assert.IsFalse(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File Combobox is enabled.");
-            Assert.IsTrue(string.IsNullOrEmpty(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox did not clear text.");
-
-            if (File.Exists(filePath))
+            try
             {
-                File.Delete(filePath);
+                ExplorerUIMap.Click_NewDotNetPluginSource_From_ExplorerContextMenu();
+                DotNetPluginSourceUIMap.Click_AssemblyDirectoryButton_On_DotnetPluginSourceTab();
+                Assert.IsTrue(DialogsUIMap.ChooseDLLWindow.Exists, "Choose DLL Window does not exist.");
+                DialogsUIMap.Select_DLLAssemblyFile_From_ChooseDLLWindow(fakeDllPath);
+                Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File ComboBox is not enabled");
+                Assert.IsTrue(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileDirectoryButton.Enabled, "Config File Directory button is not enabled");
+                DotNetPluginSourceUIMap.Click_ConfigFileDirectoryButton_On_DotnetPluginSourceTab();
+                DialogsUIMap.Enter_ConfigFile_In_SelectFilesWindow(fakeConfigPath);
+                Assert.IsFalse(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyComboBox.Enabled, "GAC Assembly Combobox is enabled");
+                Mouse.Click(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.GACAssemblyDirectoryButton);
+                DialogsUIMap.Select_GACAssemblyFile_From_ChooseDLLWindow("Microsoft");
+                Assert.IsFalse(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.ConfigFileComboBox.Enabled, "Config File Combobox is enabled.");
+                Assert.IsTrue(string.IsNullOrEmpty(DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text), "Assembly Combobox did not clear text.");
+            }
+            finally
+            {
+                while (File.Exists(fakeDllPath))
+                {
+                    File.Delete(fakeDllPath);
+                }
+                while (File.Exists(fakeConfigPath))
+                {
+                    File.Delete(fakeConfigPath);
+                }
             }
         }
 

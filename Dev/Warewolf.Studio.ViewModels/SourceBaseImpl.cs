@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Interfaces;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.ViewModels
@@ -82,11 +82,11 @@ namespace Warewolf.Studio.ViewModels
 
         public void AfterSave(Guid environmentId, Guid resourceId)
         {
-            var explorerViewModel = CustomContainer.Get<IMainViewModel>().ExplorerViewModel;
+            var explorerViewModel = CustomContainer.Get<IShellViewModel>().ExplorerViewModel;
             var environmentViewModel = explorerViewModel.Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                var env = EnvironmentRepository.Instance.Get(environmentId);
+                var env = ServerRepository.Instance.Get(environmentId);
                 var resource = env.ResourceRepository.LoadContextualResourceModel(resourceId);
                 var item = environmentViewModel.FindByPath(resource.GetSavePath());
                 var viewModel = environmentViewModel as EnvironmentViewModel;

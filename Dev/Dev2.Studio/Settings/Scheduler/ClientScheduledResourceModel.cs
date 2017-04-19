@@ -17,18 +17,18 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Scheduler;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Settings.Scheduler
 {
     public class ClientScheduledResourceModel : IScheduledResourceModel
     {
-        private readonly IEnvironmentModel _model;
+        private readonly IServer _model;
         readonly Action _createNewTask;
         ObservableCollection<IScheduledResource> _scheduledResources;
        
-        public ClientScheduledResourceModel([Annotations.NotNull] IEnvironmentModel model, Action createNewTask)
+        public ClientScheduledResourceModel([Annotations.NotNull] IServer model, Action createNewTask)
         {
             if(model == null)
             {

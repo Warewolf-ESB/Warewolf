@@ -11,7 +11,7 @@
 using System;
 using System.Threading;
 using Dev2.Network;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests

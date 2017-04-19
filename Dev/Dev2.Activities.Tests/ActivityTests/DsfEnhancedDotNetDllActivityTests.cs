@@ -19,6 +19,7 @@ using Moq;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable InconsistentNaming
 

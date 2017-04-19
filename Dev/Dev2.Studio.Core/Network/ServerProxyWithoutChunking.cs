@@ -26,6 +26,7 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
@@ -38,10 +39,11 @@ using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.SignalR.Wrappers.New;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
+using Warewolf.Resource.Errors;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
@@ -308,6 +310,9 @@ namespace Dev2.Network
                             ConnectionRetry();
                         }
                     }
+                    IPopupController popup = CustomContainer.Get<IPopupController>();
+                    popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
             catch (AggregateException aex)
@@ -338,6 +343,9 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
+                IPopupController popup = CustomContainer.Get<IPopupController>();
+                popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 HandleConnectError(e);
                 return false;
             }
@@ -679,7 +687,26 @@ namespace Dev2.Network
         // ReSharper disable InconsistentNaming
         public Guid ID { get; private set; }
         // ReSharper restore InconsistentNaming
+        public bool Equals(IEnvironmentConnection other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            var isEqual = other.ID == ID && other.AuthenticationType == AuthenticationType &&
+                          other.AppServerUri.Equals(AppServerUri) && other.WebServerUri.Equals(WebServerUri);
+            return isEqual;
+        }
 
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as IEnvironmentConnection);
+        }
+
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode();
+        }
     }
 
     public class FallbackException : Exception

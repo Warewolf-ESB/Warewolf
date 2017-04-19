@@ -30,6 +30,7 @@ using Dev2.Interfaces;
 using Dev2.Validation;
 using Warewolf.Core;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 // ReSharper disable GenericEnumeratorNotDisposed
 // ReSharper disable MemberCanBePrivate.Global

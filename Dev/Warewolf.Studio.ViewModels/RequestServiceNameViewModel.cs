@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,14 +14,14 @@ using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Controller;
-using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
+using Dev2.ConnectionHelpers;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -60,6 +61,13 @@ namespace Warewolf.Studio.ViewModels
             CancelCommand = new DelegateCommand(CloseView, CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
+
+            if (ServerRepository.Instance.ActiveServer == null)
+            {
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                ServerRepository.Instance.ActiveServer = shellViewModel?.ActiveServer;
+            }
+
             return this;
         }
 
@@ -78,11 +86,12 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        readonly IEnvironmentConnection _lazyCon = EnvironmentRepository.Instance.ActiveEnvironment?.Connection;
+        readonly IEnvironmentConnection _lazyCon = ServerRepository.Instance.ActiveServer?.Connection;
         ICommunicationController _lazyComs = new CommunicationController { ServiceName = "DuplicateResourceService" };
 
         private void CallDuplicateService()
         {
+            ObservableCollection<IExplorerItemViewModel> childItems = null;
             try
             {
                 IsDuplicating = true;
@@ -102,7 +111,7 @@ namespace Warewolf.Studio.ViewModels
                 _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
                 _lazyComs.AddPayloadArgument("destinationPath", Path);
 
-                var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? EnvironmentRepository.Instance.ActiveEnvironment?.Connection, GlobalConstants.ServerWorkspaceID);
+                var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? ServerRepository.Instance.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
                 if (executeCommand == null)
                 {
                     var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
@@ -117,7 +126,7 @@ namespace Warewolf.Studio.ViewModels
                         var duplicatedItems = executeCommand.DuplicatedItems;
                         var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                         var parentItem = SelectedItem ?? _explorerItemViewModel.Parent;
-                        var childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
+                        childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
                         var explorerItemViewModels = parentItem.Children;
                         explorerItemViewModels.AddRange(childItems);
                         parentItem.Children = explorerItemViewModels;
@@ -136,7 +145,26 @@ namespace Warewolf.Studio.ViewModels
             }
             finally
             {
+                ConnectControlSingleton.Instance.ReloadServer();
+
+                if (childItems != null)
+                {
+                    foreach (var childItem in childItems.Where(model => model.ResourceType == "Dev2Server"))
+                    {
+                        FireServerSaved(childItem.ResourceId);
+                    }
+                }
+
                 IsDuplicating = false;
+            }
+        }
+
+        private void FireServerSaved(Guid savedServerId, bool isDeleted = false)
+        {
+            if (_environmentViewModel.Server.UpdateRepository.ServerSaved != null)
+            {
+                var handler = _environmentViewModel.Server.UpdateRepository.ServerSaved;
+                handler.Invoke(savedServerId, isDeleted);
             }
         }
 
@@ -330,11 +358,11 @@ namespace Warewolf.Studio.ViewModels
                 if (_environmentViewModel.Children != null)
                     foreach (var explorerItemViewModel in _environmentViewModel.Children.Flatten(model => model.Children))
                     {
-                        explorerItemViewModel.SetPermissions((Permissions) permissions);
+                        explorerItemViewModel.SetPermissions((Permissions)permissions);
                     }
             }
 
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel?.ExplorerViewModel != null)
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
             return ViewResult;

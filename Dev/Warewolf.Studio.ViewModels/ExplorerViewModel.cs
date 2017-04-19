@@ -18,8 +18,8 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Interfaces;
 using Dev2.Services.Security;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
 // ReSharper disable MemberCanBeProtected.Global
@@ -164,7 +164,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                
+
                 await RefreshEnvironment(environmentViewModel, true);
             }
         }
@@ -180,15 +180,15 @@ namespace Warewolf.Studio.ViewModels
         {
             IsRefreshing = true;
             var environmentId = ConnectControlViewModel?.SelectedConnection.EnvironmentID;
-            var resourceName = ConnectControlViewModel?.SelectedConnection.ResourceName.Replace("(Connected)", "").Trim();
-            var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.ResourceName.Replace("(Connected)", "").Trim() == resourceName);
+            var resourceName = ConnectControlViewModel?.SelectedConnection.DisplayName.Replace("(Connected)", "").Trim();
+            var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.DisplayName.Replace("(Connected)", "").Trim() == resourceName);
             foreach (var environmentViewModel in environmentViewModels)
             {
                 await RefreshEnvironment(environmentViewModel, refresh);
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
-            //ConnectControlViewModel?.LoadServers();
+
         }
 
         private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
@@ -225,7 +225,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (Environments != null)
             {
-                var env = Environments.FirstOrDefault(a => a.Server == item.Server);
+                var env = Environments.FirstOrDefault(a => Equals(a.Server, item.Server));
 
                 if (env != null)
                 {
@@ -239,12 +239,12 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Environments);
             }
         }
-        
+
         public event SelectedExplorerItemChanged SelectedItemChanged;
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
@@ -307,7 +307,7 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _isLoading;
 
-        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator,bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction = null, bool loadLocalHost = true)
+        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment, Action<IExplorerItemViewModel> selectAction = null, bool loadLocalHost = true)
         {
             if (shellViewModel == null)
             {
@@ -317,6 +317,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             _selectAction = selectAction;
             localhostEnvironment.SelectAction = selectAction ?? (a => { });
+            localhostEnvironment.IsSelected = true;
             // ReSharper disable VirtualMemberCallInContructor
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             if (loadLocalHost)
@@ -331,6 +332,42 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             ConnectControlViewModel.ServerHasDisconnected += ServerDisconnectDetected;
             ConnectControlViewModel.ServerReConnected += ServerReConnected;
+            ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
+        }
+
+        private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
+        {
+            var environmentViewModel = CreateEnvironmentViewModel(sender, environmentId, true);
+            SelectedEnvironment = await environmentViewModel;
+        }
+
+        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModel(object sender, Guid environmentId, bool shouldLoad = false)
+        {
+            var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
+            if (environmentViewModel == null)
+            {
+                var connectControlViewModel = sender as ConnectControlViewModel;
+                var selectedConnection = connectControlViewModel?.SelectedConnection;
+                var environmentConnection = selectedConnection?.Connection;
+                if (environmentConnection != null)
+                {
+                    if (!environmentConnection.IsConnected)
+                    {
+                        environmentConnection.Connect(environmentId);
+                    }
+                    else
+                    {
+                        var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
+                        _environments.Add(environmentModel);
+                        if (shouldLoad)
+                        {
+                            await environmentModel.Load(true, true);
+                        }
+                        environmentViewModel = environmentModel;
+                    }
+                }
+            }
+            return environmentViewModel;
         }
 
         async void ServerConnected(object _, IServer server)
@@ -338,6 +375,7 @@ namespace Warewolf.Studio.ViewModels
             SearchText = string.Empty;
             IsLoading = true;
             var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
+            environmentModel.IsSelected = true;
             _environments.Add(environmentModel);
             Environments = _environments;
             var result = await LoadEnvironment(environmentModel, IsDeploy);
@@ -437,7 +475,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 //
             }
-            
+
         }
 
         protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)

@@ -27,14 +27,12 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.SystemTemplates.Models;
-using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -1585,7 +1583,7 @@ namespace Warewolf.Studio.ViewModels
                     SelectedServiceTest = dummyTest;
                     Tests = models;
                     SelectedServiceTest = _tests.FirstOrDefault(model => model.TestName == testName);
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var mainViewModel = CustomContainer.Get<IShellViewModel>();
                     WorkflowDesignerViewModel = mainViewModel?.CreateNewDesigner(ResourceModel);
                     if (WorkflowDesignerViewModel != null)
                     {
@@ -1868,7 +1866,7 @@ namespace Warewolf.Studio.ViewModels
                     break;
                 case SaveResult.ResourceDeleted:
                     PopupController?.Show(Resources.Languages.Core.ServiceTestResourceDeletedMessage, Resources.Languages.Core.ServiceTestResourceDeletedHeader, MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
-                    _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.ID);
+                    _shellViewModel.CloseResourceTestView(ResourceModel.ID, ResourceModel.ServerID, ResourceModel.Environment.EnvironmentID);
                     break;
                 case SaveResult.ResourceUpdated:
                     UpdateTestsFromResourceUpdate();
@@ -2435,8 +2433,8 @@ namespace Warewolf.Studio.ViewModels
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Dev2.Data.TO
         /// Merges the errors.
         /// </summary>
         /// <param name="toMerge">To merge.</param>
-        public void MergeErrors(ErrorResultTO toMerge)
+        public void MergeErrors(IErrorResultTO toMerge)
         {
             if (toMerge != null && toMerge.HasErrors())
             {

@@ -10,7 +10,7 @@
 
 using System.Threading;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

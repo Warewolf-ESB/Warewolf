@@ -14,10 +14,8 @@ using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
-using Dev2.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
-
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,7 +31,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private Mock<ISharePointSourceModel> _updateManagerMock;
         private Mock<IEventAggregator> _aggregatorMock;
         private Mock<IAsyncWorker> _asyncWorkerMock;
-        private Mock<IEnvironmentModel> _environmentMock;
+        private Mock<IServer> _environmentMock;
         private Mock<ISharepointServerSource> _sharepointServerSourceMock;
         private Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
         private Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
@@ -57,7 +55,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _updateManagerMock = new Mock<ISharePointSourceModel>();
             _aggregatorMock = new Mock<IEventAggregator>();
             _asyncWorkerMock = new Mock<IAsyncWorker>();
-            _environmentMock = new Mock<IEnvironmentModel>();
+            _environmentMock = new Mock<IServer>();
             
             _asyncWorkerMock.Setup(
                 it =>
@@ -872,7 +870,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestUpdateHelpDescriptor()
         {
             //arrange
-            var mainViewModelMock = new Mock<IMainViewModel>();
+            var mainViewModelMock = new Mock<IShellViewModel>();
             var helpViewModelMock = new Mock<IHelpWindowViewModel>();
             mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpViewModelMock.Object);
             CustomContainer.Register(mainViewModelMock.Object);

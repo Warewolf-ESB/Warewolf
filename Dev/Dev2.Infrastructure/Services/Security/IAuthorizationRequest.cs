@@ -10,6 +10,7 @@
 
 using System;
 using System.Security.Principal;
+using Dev2.Common.Interfaces.Enums;
 using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Services.Security

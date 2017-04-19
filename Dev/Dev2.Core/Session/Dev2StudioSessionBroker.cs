@@ -16,6 +16,8 @@ using System.Linq;
 using System.Xml.Serialization;
 using Dev2.Common;
 using Dev2.Data;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.PathOperations;
 
 namespace Dev2.Session

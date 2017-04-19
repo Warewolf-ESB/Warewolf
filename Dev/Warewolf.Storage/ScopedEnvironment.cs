@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
+using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
 namespace Warewolf.Storage

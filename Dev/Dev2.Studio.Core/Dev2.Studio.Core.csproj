@@ -189,15 +189,14 @@
     <Compile Include="Activities\Interegators\WorkerServicePropertyInterigator.cs" />
     <Compile Include="Activities\Interegators\WorkflowPropertyInterigator.cs" />
     <Compile Include="Activities\Services\DesignerManagementService.cs" />
-    <Compile Include="Activities\Services\IDesignerManagementService.cs" />
     <Compile Include="Activities\Utils\ModelItemUtils.cs" />
+    <Compile Include="AdminManagerProxy.cs" />
     <Compile Include="AppResources\Behaviors\PreventHorizontalScrollWhenFocusedTreeViewItemBehavior.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerAbstract.cs" />
     <Compile Include="AppResources\Browsers\ExternalBrowserPopupController.cs" />
     <Compile Include="AppResources\Browsers\IBrowserPopupController.cs" />
     <Compile Include="AppResources\Converters\AllBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
-    <Compile Include="AppResources\Attributes\TreeCategory.cs" />
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
@@ -242,9 +241,6 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ContextualResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\EnvironmentModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
-    <Compile Include="AppResources\Enums\NavigationViewContextType.cs" />
-    <Compile Include="AppResources\Enums\ResourceType.cs" />
-    <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
@@ -276,21 +272,8 @@
     <Compile Include="Diagnostics\DebugStringTreeViewItemViewModel.cs" />
     <Compile Include="Diagnostics\DebugTreeViewItemViewModel.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
-    <Compile Include="Interfaces\DataList\IMissingDataList.cs" />
-    <Compile Include="Interfaces\DataList\IComplexObjectItemModel.cs" />
-    <Compile Include="Interfaces\DataList\IRecordSetFieldItemModel.cs" />
-    <Compile Include="Interfaces\DataList\IRecordSetItemModel.cs" />
-    <Compile Include="Interfaces\DataList\IScalarItemModel.cs" />
-    <Compile Include="Interfaces\IComplexObjectHandler.cs" />
-    <Compile Include="Interfaces\IDataListViewModelHelper.cs" />
-    <Compile Include="Interfaces\IDebugTreeViewItemViewModel.cs" />
-    <Compile Include="Interfaces\IFilePersistenceProvider.cs" />
-    <Compile Include="Interfaces\IMainViewModel.cs" />
-    <Compile Include="Interfaces\IPartIsUsed.cs" />
-    <Compile Include="Interfaces\IRecordsetHandler.cs" />
-    <Compile Include="Interfaces\IScalarHandler.cs" />
-    <Compile Include="Interfaces\IServiceTestCommandHandler.cs" />
-    <Compile Include="Interfaces\IServiceTestViewModel.cs" />
+    <Compile Include="ExplorerDeleteProvider.cs" />
+    <Compile Include="ExplorerUpdateManagerProxy.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\NewTestFromDebugMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
@@ -298,6 +281,7 @@
     <Compile Include="Models\DataList\RecordSetFieldItemModel.cs" />
     <Compile Include="Models\DataList\RecordSetItemModel.cs" />
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
+    <Compile Include="NetworkStateChangedEventArgs.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomControls\CachingContentHost.cs" />
@@ -314,35 +298,13 @@
     <Compile Include="DataList\DataListSingleton.cs" />
     <Compile Include="InterfaceImplementors\DeployDTO.cs" />
     <Compile Include="InterfaceImplementors\DeployService.cs" />
-    <Compile Include="Interfaces\DataList\IDataListItemModel.cs" />
-    <Compile Include="Interfaces\IDataMappingViewModelFactory.cs" />
-    <Compile Include="Interfaces\IDataMappingViewModel.cs" />
     <Compile Include="InterfaceImplementors\ServerProvider.cs" />
-    <Compile Include="Interfaces\IDeployService.cs" />
-    <Compile Include="Interfaces\IDeployDTO.cs" />
-    <Compile Include="Interfaces\IContextualResourceModel.cs" />
     <Compile Include="Factories\ServiceDebugInfoModelFactory.cs" />
     <Compile Include="Factories\WebActivityFactory.cs" />
     <Compile Include="InterfaceImplementors\WebActivity.cs" />
-    <Compile Include="Interfaces\DataList\IDataListViewModel.cs" />
-    <Compile Include="Interfaces\IEnvironmentConnection.cs" />
-    <Compile Include="Interfaces\IEnvironmentRepository.cs" />
-    <Compile Include="Interfaces\IIntellisenseProvider.cs" />
-    <Compile Include="Interfaces\IOperatorType.cs" />
-    <Compile Include="AppResources\Repositories\EnvironmentRepository.cs" />
+    <Compile Include="AppResources\Repositories\ServerRepository.cs" />
     <Compile Include="AppResources\Repositories\ResourceRepository.cs" />
     <Compile Include="Factories\ResourceModelFactory.cs" />
-    <Compile Include="Interfaces\IEnvironmentModel.cs" />
-    <Compile Include="Interfaces\ILayoutObjectViewModel.cs" />
-    <Compile Include="Interfaces\IResourceModel.cs" />
-    <Compile Include="Interfaces\IResourceRepository.cs" />
-    <Compile Include="Interfaces\IServerProvider.cs" />
-    <Compile Include="Interfaces\IServiceDebugInfoModel.cs" />
-    <Compile Include="Interfaces\IStudioTab.cs" />
-    <Compile Include="Interfaces\IUserMessageProvider.cs" />
-    <Compile Include="Interfaces\IWebActivity.cs" />
-    <Compile Include="Interfaces\IPropertyEditorWizard.cs" />
-    <Compile Include="Interfaces\IWorkflowDesignerViewModel.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
     <Compile Include="Messages\AddWorkSurfaceMessage.cs" />
@@ -371,15 +333,15 @@
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
-    <Compile Include="Models\EnvironmentModel.cs" />
-    <Compile Include="Models\IWorkSurfaceObject.cs" />
+    <Compile Include="Models\Server.cs" />
     <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
-    <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
+    <Compile Include="ProxyBase.cs" />
+    <Compile Include="QueryManagerProxy.cs" />
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
@@ -404,10 +366,14 @@
     </Compile>
     <Compile Include="AppResources\Converters\InverseBooleanConverter.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
+    <Compile Include="StudioResourceUpdateManager.cs" />
+    <Compile Include="StudioServerProxy.cs" />
+    <Compile Include="UpdateProxy.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="Utils\StudioCompileMessageRepo.cs" />
     <Compile Include="Utils\WorkflowDesignerUtils.cs" />
+    <Compile Include="VersionManagerProxy.cs" />
     <Compile Include="ViewModels\Base\BaseConductor.cs" />
     <Compile Include="ViewModels\Base\ValidationController.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
@@ -417,7 +383,6 @@
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModelFactory.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
-    <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
     <Compile Include="ViewModelUtils.cs" />
     <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />
@@ -452,6 +417,10 @@
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
@@ -489,6 +458,10 @@
       <Project>{95E8977A-0C2F-4D90-BD27-A5E8E33D1DF9}</Project>
       <Name>Dev2.SignalR.Wrappers.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149e8e-fef2-47c0-8391-80dcce86d26d}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
@@ -505,6 +478,10 @@
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+      <Project>{61a15557-1d18-4c69-88eb-31bf49b7fb50}</Project>
+      <Name>Warewolf.Storage.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
@@ -513,12 +490,18 @@
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
       <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
       <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AppResources\Enums\" />
+    <Folder Include="Interfaces\" />
     <Folder Include="Validation\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

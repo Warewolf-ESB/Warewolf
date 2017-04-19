@@ -4,9 +4,10 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ServerProxyLayer.Test
 {

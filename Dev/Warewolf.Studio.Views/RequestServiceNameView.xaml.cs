@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 

@@ -704,7 +704,7 @@ Returns the output of the script, if any.</value>
     <value>Run all tests in browser for this resource</value>
   </data>
   <data name="RollbackTooltip" xml:space="preserve">
-    <value>Rool back to this version</value>
+    <value>Roll back to this version</value>
   </data>
   <data name="ReplaceToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -1837,11 +1837,14 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="ConnectControlToggleConnectionToolTip" xml:space="preserve">
     <value>Connect / disconnect the selected server</value>
   </data>
+  <data name="ConnectControlNewConnectionToolTip" xml:space="preserve">
+    <value>Create a new server source</value>
+  </data>
   <data name="ConnectControlEditConnectionToolTip" xml:space="preserve">
     <value>Edit the selected server</value>
   </data>
   <data name="ConnectControlConnectionsToolTip" xml:space="preserve">
-    <value>Select the Warewolf server you want to use or click New Remote Server...</value>
+    <value>Select the Warewolf server you want to use</value>
   </data>
   <data name="CommentToolTipComment" xml:space="preserve">
     <value>Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.

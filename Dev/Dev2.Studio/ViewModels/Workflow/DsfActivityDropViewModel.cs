@@ -10,13 +10,12 @@
 
 using System;
 using System.Windows.Input;
-using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 
 // ReSharper disable CheckNamespace
@@ -149,7 +148,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Methods
 
-        public Func<IEnvironmentRepository> GetEnvironmentRepository = () => EnvironmentRepository.Instance;
+        public Func<IServerRepository> GetEnvironmentRepository = () => ServerRepository.Instance;
 
         /// <summary>
         /// Used for saving the data input by the user to the file system and pushing the data back at the workflow
@@ -165,7 +164,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
 
-            var environment = GetEnvironmentRepository().FindSingle(ev => ev.ID == selectedItem.Server.EnvironmentID);
+            var environment = GetEnvironmentRepository().FindSingle(ev => ev.EnvironmentID == selectedItem.Server.EnvironmentID);
 
             if(environment == null)
             {
