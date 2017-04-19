@@ -689,6 +689,57 @@ Scenario: Run a test expecting error
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 
+Scenario: Run a test expecting no error as an unknown user
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And test AuthenticationType as "User"
+	And username is "WrongUser"
+	And password is "badPassword"
+	And I update inputs as
+	| Variable Name | Value | EmptyIsNull |
+	| Name          |       | true        |
+	And save is enabled
+	And test status is pending
+	And test is enabled	
+	And I remove all Test Steps
+	And I save
+	When I run the test
+	Then the service debug assert Aggregate message contains "Failed: Expected Error containing '' but got 'Unauthorized to execute this resource.'"	
+	Then test result is Failed	
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
+Scenario: Run a test expecting an error as an unknown user
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"	
+	And test AuthenticationType as "User"
+	And username is "WrongUser"
+	And password is "badPassword"
+	And I update inputs as
+	| Variable Name | Value | EmptyIsNull |
+	| Name          | Bob   | true        |
+	And save is enabled
+	And test status is pending
+	And test is enabled	
+	And I remove all Test Steps
+	And I save
+	And I expect Error ""
+	When I run the test
+	Then the service debug assert Aggregate message contains "Failed: Expected Error containing '' but got 'Unauthorized to execute this resource.'"	
+	Then test result is Failed	
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
 Scenario: Run a test with invalid inputs and pending results
     Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"

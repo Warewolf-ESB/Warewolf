@@ -376,6 +376,15 @@ namespace Warewolf.Resource.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed: Expected no error but got &apos;{0}&apos;.
+        /// </summary>
+        public static string Test_FailureMessage_NoErrorExpected {
+            get {
+                return ResourceManager.GetString("Test_FailureMessage_NoErrorExpected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed: Assert Is Between. Expected &apos;{1}&apos; Not to be Between &apos;{0}&apos; and &apos;{3}&apos; but got {2}.
         /// </summary>
         public static string Test_FailureMessage_NotBetween {

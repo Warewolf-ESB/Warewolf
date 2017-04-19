@@ -288,7 +288,7 @@ namespace Dev2.Runtime.ESB.Execution
                         wfappUtils.WriteDebug(DataObject, debugState);
                     }
                     var testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
-                    AggregateTestResult(resourceId, test);
+                    AggregateTestResult(resourceId, test, DataObject);
 
                     DebugItem itemToAdd = new DebugItem();
                     if (test != null)
@@ -312,7 +312,7 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    AggregateTestResult(resourceId, test);
+                    AggregateTestResult(resourceId, test, DataObject);
                     if (test != null)
                     {
                         _request.ExecuteResult = serializer.SerializeToBuilder(test);
@@ -482,13 +482,13 @@ namespace Dev2.Runtime.ESB.Execution
             throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceId}");
         }
 
-        private static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test)
+        private static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test, IDSFDataObject dataObject = null)
         {
-            UpdateTestWithStepValues(test);
+            UpdateTestWithStepValues(test, dataObject);
             UpdateTestWithFinalResult(resourceId, test);
         }
 
-        private static void UpdateTestWithStepValues(IServiceTestModelTO test)
+        private static void UpdateTestWithStepValues(IServiceTestModelTO test, IDSFDataObject dataObject = null)
         {
             var testPassed = test.TestPassed;
 
@@ -514,10 +514,40 @@ namespace Dev2.Runtime.ESB.Execution
             var hasPendingOutputs = pendingTestOutputs?.Any() ?? false;
             var hasInvalidOutputs = invalidTestOutputs?.Any() ?? false;
             var testStepPassed = TestPassedBasedOnSteps(hasPendingSteps, hasInvalidSteps, hasFailingSteps) && TestPassedBasedOnOutputs(hasPendingOutputs, hasInvalidOutputs, hasFailingOutputs);
+            StringBuilder failureMessage = new StringBuilder();
+            var errPass = true;
+            if (dataObject != null)
+            {
+                var hasErrors = dataObject.Environment.HasErrors();
+                var errorMatch = hasErrors && test.ErrorExpected;
+                var noErrorMatch = !hasErrors && test.NoErrorExpected;
+                if (!errorMatch)
+                {
+                    var errors = dataObject.Environment.FetchErrors();
+                    var testErrorContainsText = test.ErrorContainsText ?? "";
+                    var format = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, testErrorContainsText, errors);
+                    failureMessage.AppendLine(format);
+                   dataObject.Environment.Errors.Clear();
+                   dataObject.Environment.AllErrors.Clear();
+                }
+                if (!noErrorMatch)
+                {
+                    var errors = dataObject.Environment.FetchErrors();
+                    var format = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_NoErrorExpected, errors);
+                    failureMessage.AppendLine(format);
+                    dataObject.Environment.Errors.Clear();
+                    dataObject.Environment.AllErrors.Clear();
+                }
+                errPass = errorMatch && noErrorMatch;
+            }
 
-            testPassed = testPassed && testStepPassed;
 
-            var failureMessage = UpdateFailureMessage(hasPendingSteps, pendingTestSteps, hasInvalidSteps, invalidTestSteps, hasFailingSteps, failingTestSteps, hasPendingOutputs, pendingTestOutputs, hasInvalidOutputs, invalidTestOutputs, hasFailingOutputs, failingTestOutputs, serviceTestSteps);
+
+            testPassed = testPassed && testStepPassed && errPass;
+
+
+            var allFailureMessages = UpdateFailureMessage(hasPendingSteps, pendingTestSteps, hasInvalidSteps, invalidTestSteps, hasFailingSteps, failingTestSteps, hasPendingOutputs, pendingTestOutputs, hasInvalidOutputs, invalidTestOutputs, hasFailingOutputs, failingTestOutputs, serviceTestSteps);
+            failureMessage.AppendLine(allFailureMessages.ToString());
             test.FailureMessage = failureMessage.ToString();
             test.TestFailing = !testPassed;
             test.TestPassed = testPassed;

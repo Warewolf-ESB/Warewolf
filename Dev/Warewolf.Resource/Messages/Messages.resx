@@ -258,4 +258,7 @@
   <data name="Test_ResourcpathUpdatedResult" xml:space="preserve">
     <value>ResourcpathUpdated</value>
   </data>
+  <data name="Test_FailureMessage_NoErrorExpected" xml:space="preserve">
+    <value>Failed: Expected no error but got '{0}'</value>
+  </data>
 </root>
