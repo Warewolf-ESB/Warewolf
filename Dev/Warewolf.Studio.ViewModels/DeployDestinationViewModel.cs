@@ -18,10 +18,6 @@ namespace Warewolf.Studio.ViewModels
             : base(shellViewModel, aggregator,false)
         {
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
-            ConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
-            {
-                await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id);
-            };
             ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
@@ -44,18 +40,6 @@ namespace Warewolf.Studio.ViewModels
             SelectedEnvironment = environmentViewModel;
             StatsArea?.ReCalculate();
             if (environmentViewModel != null)
-            {
-                AfterLoad(environmentViewModel.ResourceId);
-            }
-            return environmentViewModel;
-        }
-
-        private async Task<IEnvironmentViewModel> DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentid)
-        {
-            var environmentViewModel = await CreateEnvironmentViewModel(sender, environmentid);
-            SelectedEnvironment = environmentViewModel;
-            StatsArea?.ReCalculate();
-            if (environmentViewModel != null && environmentViewModel.Children.Count <= 0)
             {
                 AfterLoad(environmentViewModel.ResourceId);
             }
