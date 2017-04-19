@@ -6382,6 +6382,18 @@ namespace Warewolf.UITests.DialogsUIMapClasses
                 return this.mFileNameTextBox;
             }
         }
+        
+        public DriveNameIntellisensComboBox DriveNameIntellisensComboBox
+        {
+            get
+            {
+                if ((this.mDriveNameIntellisensComboBox == null))
+                {
+                    this.mDriveNameIntellisensComboBox = new DriveNameIntellisensComboBox(this);
+                }
+                return this.mDriveNameIntellisensComboBox;
+            }
+        }
         #endregion
         
         #region Fields
@@ -6392,6 +6404,8 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         private WpfButton mCancelButton;
         
         private WpfEdit mFileNameTextBox;
+        
+        private DriveNameIntellisensComboBox mDriveNameIntellisensComboBox;
         #endregion
     }
     
@@ -6440,6 +6454,23 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         }
         
         #region Properties
+        public WpfTreeItem FirstItem
+        {
+            get
+            {
+                if ((this.mFirstItem == null))
+                {
+                    this.mFirstItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mFirstItem.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "1";
+                    this.mFirstItem.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mFirstItem.WindowTitles.Add("Choose DLL");
+                    #endregion
+                }
+                return this.mFirstItem;
+            }
+        }
+        
         public bootmgrFile bootmgrFile
         {
             get
@@ -6495,6 +6526,8 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfTreeItem mFirstItem;
+        
         private bootmgrFile mbootmgrFile;
         
         private BOOTNXTFile mBOOTNXTFile;
@@ -6701,6 +6734,42 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         
         #region Fields
         private WpfCheckBox mCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DriveNameIntellisensComboBox : WpfComboBox
+    {
+        
+        public DriveNameIntellisensComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "DriveNameIntellisenseTextBox";
+            this.WindowTitles.Add("Select File(s)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Select File(s)");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
         #endregion
     }
 }
