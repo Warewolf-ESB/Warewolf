@@ -8,12 +8,13 @@ using System.Windows;
 using Dev2;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Explorer;
 using Dev2.Services.Security;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -26,33 +27,40 @@ namespace Warewolf.UIBindingTests.Deploy
     [Binding]
     public class DeployTabSteps
     {
+        static string destinationString = "Destination";
+        static string localhostString = "localhost";
+        static string destinationServerString = "DestinationServer";
+        static string connectControlString = "ConnectControl";
+        static string statsString = "stats";
+        static string viewModelString = "viewModel";
+
         [BeforeScenario(@"DeployTab")]
         public static void SetupForSystem()
         {
             Core.Utils.SetupResourceDictionary();
-            var shell = GetMockShellVm(true, "localhost");
-            var shellViewModel = GetMockShellVm(false, "DestinationServer");
+            var shell = GetMockShellVm(true, localhostString);
+            var shellViewModel = GetMockShellVm(false, destinationServerString);
             // ReSharper disable once UseObjectOrCollectionInitializer
             var dest = new DeployDestinationViewModelForTesting(shellViewModel, GetMockAggegator());
             dest.ConnectControlViewModel.SelectedConnection = shellViewModel.ActiveServer;
-            ScenarioContext.Current.Add("ConnectControl", dest.ConnectControlViewModel.SelectedConnection);
-            
-            ScenarioContext.Current["Destination"] = dest;
+            ScenarioContext.Current.Add(connectControlString, dest.ConnectControlViewModel.SelectedConnection);
+
+            ScenarioContext.Current[destinationString] = dest;
             var stats = new DeployStatsViewerViewModel(dest);
             var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest)) { Children = new List<IExplorerItemViewModel> { CreateExplorerVms() } };
             ScenarioContext.Current["Src"] = src;
             var popupController = GetPopup().Object;
             var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, popupController);
-            ScenarioContext.Current["vm"] = vm;
-            ScenarioContext.Current["stats"] = stats;
+            ScenarioContext.Current[viewModelString] = vm;
+            ScenarioContext.Current[statsString] = stats;
         }
 
         [AfterScenario(@"DeployTab")]
         public void Cleanup()
         {
-            var shell = GetMockShellVm(true, "localhost");
-            var dest = new DeployDestinationViewModelForTesting(GetMockShellVm(false, "DestinationServer"), GetMockAggegator());
-            ScenarioContext.Current["Destination"] = dest;
+            var shell = GetMockShellVm(true, localhostString);
+            var dest = new DeployDestinationViewModelForTesting(GetMockShellVm(false, destinationServerString), GetMockAggegator());
+            ScenarioContext.Current[destinationString] = dest;
             var stats = new DeployStatsViewerViewModel(dest);
             var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest))
             {
@@ -61,7 +69,7 @@ namespace Warewolf.UIBindingTests.Deploy
             ScenarioContext.Current["Src"] = src;
             var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, GetPopup().Object);
             vm.Destination.SelectedEnvironment.Children = new ObservableCollection<IExplorerItemViewModel>();
-            ScenarioContext.Current["vm"] = vm;
+            ScenarioContext.Current[viewModelString] = vm;
             GetPopup().Setup(a => a.ShowDeployConflict(It.IsAny<int>()));
             GetPopup().Setup(a => a.ShowDeployNameConflict(It.IsAny<string>()));
             vm.PopupController = GetPopup().Object;
@@ -96,30 +104,32 @@ namespace Warewolf.UIBindingTests.Deploy
         static IShellViewModel GetMockShellVm(bool setContext = false, string name = "")
         {
             var shell = new Mock<IShellViewModel>();
-            var containsKey = ScenarioContext.Current.ContainsKey("localhost");
+            shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
+            shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var containsKey = ScenarioContext.Current.ContainsKey(localhostString);
             if (!containsKey)
             {
-                if (name.Equals("LocalHost", StringComparison.CurrentCultureIgnoreCase))
+                if (name.Equals(localhostString, StringComparison.CurrentCultureIgnoreCase))
                 {
                     shell.Setup(a => a.LocalhostServer).Returns(GetMockServer(name));
                 }
             }
             else
             {
-                var server = ScenarioContext.Current.Get<Mock<IServer>>("localhost");
+                var server = ScenarioContext.Current.Get<Mock<IServer>>(localhostString);
                 var mock = new Mock<IServer>();
                 mock.SetupGet(p => p.DisplayName).Returns(name);
-                mock.SetupGet(p => p.ResourceName).Returns(name);
-                mock.SetupGet(p => p.ResourceID).Returns(Guid.NewGuid);
                 mock.SetupGet(p => p.EnvironmentID).Returns(Guid.NewGuid);
                 mock.SetupGet(p => p.IsConnected).Returns(true);
                 mock.SetupGet(p => p.Permissions).Returns(new List<IWindowsGroupPermission>());
                 mock.SetupGet(p => p.CanDeployTo).Returns(true);
                 mock.SetupGet(p => p.CanDeployFrom).Returns(true);
+                mock.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+                mock.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
                 shell.Setup(a => a.LocalhostServer).Returns(server.Object);
                 shell.Setup(a => a.ActiveServer).Returns(mock.Object);
-                if (!ScenarioContext.Current.ContainsKey("mockDestServer"))
-                    ScenarioContext.Current.Add("mockDestServer", mock);
+                if (!ScenarioContext.Current.ContainsKey(destinationServerString))
+                    ScenarioContext.Current.Add(destinationServerString, mock);
             }
 
             shell.Setup(a => a.DeployResources(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IList<Guid>>(), It.IsAny<bool>())).Callback(() =>
@@ -140,7 +150,6 @@ namespace Warewolf.UIBindingTests.Deploy
             var qp = new Mock<IQueryManager>();
             qp.Setup(a => a.FetchDependenciesOnList(It.IsAny<IEnumerable<Guid>>())).Returns(new List<Guid> { Guid.Parse("5C8B5660-CE6E-4D22-84D8-5B77DC749F70") });
             server.Setup(a => a.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(CreateExplorerSourceItems()));
-            server.Setup(a => a.GetServerConnections()).Returns(GetServers());
             server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission>
             {
                 new WindowsGroupPermission
@@ -152,19 +161,16 @@ namespace Warewolf.UIBindingTests.Deploy
             });
 
             server.Setup(a => a.ConnectAsync()).Returns(Task.FromResult(true));
-            server.Setup(a => a.DisplayName).Returns("LocalHost");
-            server.Setup(a => a.ResourceName).Returns("LocalHost");
+            server.Setup(a => a.DisplayName).Returns(localhostString);
             server.Setup(a => a.IsConnected).Returns(true);
-            server.Setup(a => a.ResourceID).Returns(Guid.NewGuid());
             server.Setup(a => a.EnvironmentID).Returns(Guid.Empty);
             server.Setup(a => a.QueryProxy).Returns(qp.Object);
             server.Setup(a => a.CanDeployFrom).Returns(true);
             server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
-            if (!name.Equals("LocalHost", StringComparison.InvariantCultureIgnoreCase))
+            if (!name.Equals(localhostString, StringComparison.InvariantCultureIgnoreCase))
             {
                 server.Setup(a => a.DisplayName).Returns(name);
-                server.Setup(a => a.ResourceName).Returns(name);
                 Func<Guid> valueFunction = Guid.NewGuid;
                 server.Setup(a => a.EnvironmentID).Returns(valueFunction);
             }
@@ -183,7 +189,6 @@ namespace Warewolf.UIBindingTests.Deploy
             var server = new Mock<IServer>();
             server.Setup(a => a.LoadExplorer(It.IsAny<bool>())).Returns(Task.FromResult(CreateExplorerSourceItems()));
             server.Setup(a => a.DisplayName).Returns("Remote");
-            server.Setup(a => a.ResourceName).Returns("Remote");
             server.Setup(a => a.CanDeployTo).Returns(true);
             server.Setup(a => a.CanDeployFrom).Returns(true);
             server.Setup(a => a.Permissions).Returns(new List<IWindowsGroupPermission>
@@ -200,7 +205,7 @@ namespace Warewolf.UIBindingTests.Deploy
             server.Setup(a => a.ConnectAsync()).Returns(Task.FromResult(true));
             server.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
             server.Setup(a => a.GetMinSupportedVersion()).Returns("1.0.0.0");
-            ScenarioContext.Current["DestinationServer"] = server;
+            ScenarioContext.Current[destinationServerString] = server;
             return new List<IServer>
             {
                 server.Object
@@ -216,12 +221,11 @@ namespace Warewolf.UIBindingTests.Deploy
                 {
                     new ServerExplorerItem
                     {
-                        DisplayName = "Utility - Date and Time"
-                    , ResourcePath = "Examples\\Utility - Date and Time",
+                        DisplayName = "Utility - Date and Time",
+                        ResourcePath = "Examples\\Utility - Date and Time",
                         ResourceType = "WorkflowService"
                     }
                 }
-
             };
         }
 
@@ -240,7 +244,9 @@ namespace Warewolf.UIBindingTests.Deploy
                     , new Mock<IShellViewModel>().Object
                     , new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
                     {
-                        ResourceName = "Utility - Date and Time", ResourcePath = "Examples\\Utility - Date and Time", ResourceType = "WorkflowService"
+                        ResourceName = "Utility - Date and Time",
+                        ResourcePath = "Examples\\Utility - Date and Time",
+                        ResourceType = "WorkflowService"
                     }
                 }
             };
@@ -256,7 +262,7 @@ namespace Warewolf.UIBindingTests.Deploy
 
         SingleExplorerDeployViewModel GetViewModel()
         {
-            var view = (SingleExplorerDeployViewModel)ScenarioContext.Current["vm"];
+            var view = (SingleExplorerDeployViewModel)ScenarioContext.Current[viewModelString];
             return view;
         }
 
@@ -268,7 +274,6 @@ namespace Warewolf.UIBindingTests.Deploy
             var dest = GetDestinationServer();
             dest.Setup(server => server.GetMinSupportedVersion()).Returns(destinationServer);
             dest.Setup(server => server.GetServerVersion()).Returns(destinationServer);
-            
         }
 
         Mock<IServer> GetDestinationServer(string destname = "DestinationServer")
@@ -287,21 +292,19 @@ namespace Warewolf.UIBindingTests.Deploy
         [Then(@"I select Destination Server as ""(.*)""")]
         [When(@"I select Destination Server as ""(.*)""")]
         [Given(@"I select Destination Server as ""(.*)""")]
-        public void ThenISelectDestinationServerAs(string p0)
+        public void ThenISelectDestinationServerAs(string selectedServer)
         {
-            if (p0.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
+            if (selectedServer.Equals(localhostString, StringComparison.InvariantCultureIgnoreCase))
             {
-                var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(p0);
-
+                var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedServer);
                 var deployDestinationExplorerViewModel = GetViewModel().Destination;
                 deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection = mockServer.Object;
                 Assert.IsNotNull(deployDestinationExplorerViewModel.SelectedEnvironment);
             }
             else
             {
-                var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(p0);
-                mockServer.SetupGet(server => server.DisplayName).Returns(p0);
-                mockServer.SetupGet(server => server.ResourceName).Returns(p0);
+                var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedServer);
+                mockServer.SetupGet(server => server.DisplayName).Returns(selectedServer);
                 var envMock = new Mock<IEnvironmentViewModel>();
                 envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
                 envMock.Setup(model => model.AsList()).Returns(new List<IExplorerItemViewModel>());
@@ -309,10 +312,8 @@ namespace Warewolf.UIBindingTests.Deploy
                 envMock.SetupGet(model => model.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
                 var deployDestinationExplorerViewModel = GetViewModel().Destination;
                 deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
-                deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection.EnvironmentID = Guid.NewGuid();
                 Assert.IsNotNull(deployDestinationExplorerViewModel.SelectedEnvironment);
             }
-
         }
 
         [Then(@"I select Destination Server as ""(.*)"" with items")]
@@ -320,10 +321,9 @@ namespace Warewolf.UIBindingTests.Deploy
         [Given(@"I select Destination Server as ""(.*)"" with items")]
         public void ThenISelectDestinationServerAsWithItems(string selectedDestinationServer)
         {
-            if (selectedDestinationServer.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
+            if (selectedDestinationServer.Equals(localhostString, StringComparison.InvariantCultureIgnoreCase))
             {
                 var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedDestinationServer);
-
                 var deployDestinationExplorerViewModel = GetViewModel().Destination;
                 deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection = mockServer.Object;
                 Assert.IsNotNull(deployDestinationExplorerViewModel.SelectedEnvironment);
@@ -332,7 +332,6 @@ namespace Warewolf.UIBindingTests.Deploy
             {
                 var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedDestinationServer);
                 mockServer.SetupGet(server => server.DisplayName).Returns(selectedDestinationServer);
-                mockServer.SetupGet(server => server.ResourceName).Returns(selectedDestinationServer);
                 var deployDestinationExplorerViewModel = GetViewModel().Destination;
                 var envMock = new Mock<IEnvironmentViewModel>();
                 envMock.SetupGet(model => model.Server).Returns(mockServer.Object);
@@ -341,21 +340,18 @@ namespace Warewolf.UIBindingTests.Deploy
                 envMock.Setup(model => model.UnfilteredChildren).Returns(deployDestinationExplorerViewModel.Environments[0].AsList().ToObservableCollection());
                 envMock.SetupGet(model => model.Children).Returns(deployDestinationExplorerViewModel.Environments[0].Children);
                 deployDestinationExplorerViewModel.SelectedEnvironment = envMock.Object;
-                deployDestinationExplorerViewModel.ConnectControlViewModel.SelectedConnection.EnvironmentID = Guid.NewGuid();
                 Assert.IsNotNull(deployDestinationExplorerViewModel.SelectedEnvironment);
             }
-
         }
 
         [Then(@"I select Destination Server as ""(.*)"" with SameName confilcts")]
         [When(@"I select Destination Server as ""(.*)"" with SameName confilcts")]
         public void ThenISelectDestinationServerAsWithSameNameConfilcts(string selectedDestinationServer)
         {
-            var deployViewModel = (IDeployViewModel)ScenarioContext.Current["vm"];
+            var deployViewModel = (IDeployViewModel)ScenarioContext.Current[viewModelString];
             var explorerItemViewModel = deployViewModel.Source.SelectedEnvironment.AsList();
             var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedDestinationServer);
             mockServer.SetupGet(server => server.DisplayName).Returns(selectedDestinationServer);
-            mockServer.SetupGet(server => server.ResourceName).Returns(selectedDestinationServer);
             var itemViewModel = explorerItemViewModel.First(model => model.ResourceName.Equals("Control Flow - Sequence", StringComparison.InvariantCultureIgnoreCase));
             var envMock = new Mock<IEnvironmentViewModel>();
             var item = new Mock<IExplorerItemViewModel>();
@@ -379,11 +375,10 @@ namespace Warewolf.UIBindingTests.Deploy
         [When(@"I select Destination Server as ""(.*)"" with SameName different ID confilcts")]
         public void ThenISelectDestinationServerAsWithSameNameDifferentIDConfilcts(string selectedDestinationServer)
         {
-            var deployViewModel = (IDeployViewModel)ScenarioContext.Current["vm"];
+            var deployViewModel = (IDeployViewModel)ScenarioContext.Current[viewModelString];
             var explorerItemViewModel = deployViewModel.Source.SelectedEnvironment.AsList();
             var mockServer = ScenarioContext.Current.Get<Mock<IServer>>(selectedDestinationServer);
             mockServer.SetupGet(server => server.DisplayName).Returns(selectedDestinationServer);
-            mockServer.SetupGet(server => server.ResourceName).Returns(selectedDestinationServer);
             var itemViewModel = explorerItemViewModel.First(model => model.ResourceName.Equals("Control Flow - Sequence", StringComparison.InvariantCultureIgnoreCase));
             var envMock = new Mock<IEnvironmentViewModel>();
             var item = new Mock<IExplorerItemViewModel>();
@@ -415,7 +410,6 @@ namespace Warewolf.UIBindingTests.Deploy
         public void ThenTheDeployValidationMessageIs(string message)
         {
             var deployViewModel = GetViewModel();
-
             var errorMsg = deployViewModel.DeploySuccessMessage;
             var contains = errorMsg.Contains("Deployed Successfully.");
             Assert.IsTrue(contains);
@@ -427,7 +421,6 @@ namespace Warewolf.UIBindingTests.Deploy
             var singleExplorerDeployViewModel = GetViewModel();
             var CanDeploy = singleExplorerDeployViewModel.DeployCommand.CanExecute(null) ? "Enabled" : "Disabled";
             Assert.AreEqual(expectedValue, CanDeploy);
-
         }
 
         [When(@"I Select All Dependecies")]
@@ -458,9 +451,9 @@ namespace Warewolf.UIBindingTests.Deploy
         public void ThenDestinationIsConnected(string selectedServer)
         {
             var server = ScenarioContext.Current.Get<Mock<IServer>>(selectedServer);
-            ScenarioContext.Current["ConnectControl"] = server.Object;
+            ScenarioContext.Current[connectControlString] = server.Object;
         }
-        
+
         [Given(@"I deploy")]
         [When(@"I deploy")]
         [Then(@"I deploy")]
@@ -482,11 +475,9 @@ namespace Warewolf.UIBindingTests.Deploy
         public void WhenISelectFromSourceServer(string resourceName)
         {
             var viewModel = GetViewModel();
-            var explorerItemViewModels = viewModel.Source
-                .SelectedEnvironment.Children[0].Children;
-            var explorerItemViewModel = explorerItemViewModels
-                                                 .FirstOrDefault(model => model.ResourceName.Contains(resourceName));
-            if(explorerItemViewModel != null)
+            var explorerItemViewModels = viewModel.Source.SelectedEnvironment.Children[0].Children;
+            var explorerItemViewModel = explorerItemViewModels.FirstOrDefault(model => model.ResourceName.Contains(resourceName));
+            if (explorerItemViewModel != null)
             {
                 explorerItemViewModel.CanDeploy = true;
                 explorerItemViewModel.IsResourceChecked = true;
@@ -495,7 +486,6 @@ namespace Warewolf.UIBindingTests.Deploy
                     explorerItemViewModel
                 });
             }
-
             ThenCalculationIsInvoked();
         }
 
@@ -538,8 +528,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             const bool deployFrom = true;
             const bool deployTo = false;
-            //ConnectControl
-            var destinationServer = GetDestinationServer("mockDestServer");
+            var destinationServer = GetDestinationServer();
             SetDestPermisions(deployFrom, deployTo, destinationServer);
         }
 
@@ -582,7 +571,6 @@ namespace Warewolf.UIBindingTests.Deploy
         [When(@"I click Cancel on Resource exists in the destination server popup")]
         public void WhenIClickCancelOnResourceExistsInTheDestinationServerPopup()
         {
-
             GetPopup().Setup(a => a.ShowDeployConflict(It.IsAny<int>())).Returns(MessageBoxResult.Cancel);
             GetPopup().Setup(a => a.ShowDeployResourceNameConflict(It.IsAny<string>())).Returns(MessageBoxResult.Cancel);
             GetViewModel().PopupController = GetPopup().Object;
@@ -606,7 +594,7 @@ namespace Warewolf.UIBindingTests.Deploy
         [Then(@"Services is ""(.*)""")]
         public void ThenServicesIs(string expectedServicesCount)
         {
-            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>("stats");
+            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
             var services = deployStatsViewerViewModel.Services.ToString();
             Assert.AreEqual(services, expectedServicesCount);
         }
@@ -614,7 +602,7 @@ namespace Warewolf.UIBindingTests.Deploy
         [Then(@"Sources is ""(.*)""")]
         public void ThenSourcesIs(string expectedSourcesCount)
         {
-            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>("stats");
+            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
             var sources = deployStatsViewerViewModel.Sources.ToString();
             Assert.AreEqual(sources, expectedSourcesCount);
         }
@@ -624,14 +612,14 @@ namespace Warewolf.UIBindingTests.Deploy
         public void ThenCalculationIsInvoked()
         {
             var viewModel = GetViewModel();
-            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>("stats");
+            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
             deployStatsViewerViewModel.Calculate(new List<IExplorerTreeItem>(viewModel.Source.SelectedItems));
         }
 
         [Then(@"New Resource is ""(.*)""")]
         public void ThenNewResourceIs(string expectedCount)
         {
-            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>("stats");
+            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
             var actualCount = deployStatsViewerViewModel.New.Count.ToString();
             Assert.AreEqual(expectedCount, actualCount);
         }
@@ -641,7 +629,7 @@ namespace Warewolf.UIBindingTests.Deploy
         [Then(@"Override is ""(.*)""")]
         public void ThenOverrideIs(string expectedNumberOfOverrides)
         {
-            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>("stats");
+            var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
             var overrides = deployStatsViewerViewModel.Overrides.ToString();
             Assert.AreEqual(expectedNumberOfOverrides, overrides);
         }

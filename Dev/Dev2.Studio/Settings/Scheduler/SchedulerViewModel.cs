@@ -23,7 +23,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -34,19 +33,17 @@ using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Dialogs;
-using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
-using Warewolf.Studio.AntiCorruptionLayer;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable NonLocalizedString
@@ -74,9 +71,9 @@ namespace Dev2.Settings.Scheduler
         private bool _isLoading;
         private string _connectionError;
         private bool _hasConnectionError;
-        private IEnvironmentModel _currentEnvironment;
+        private IServer _currentEnvironment;
         private IScheduledResourceModel _scheduledResourceModel;
-        private Func<IServer, IEnvironmentModel> _toEnvironmentModel;
+        private Func<IServer, IServer> _toEnvironmentModel;
         private bool _errorShown;
         private DebugOutputViewModel _debugOutputViewModel;
         private string _displayName;
@@ -87,12 +84,12 @@ namespace Dev2.Settings.Scheduler
         {
         }
 
-        public SchedulerViewModel(Func<IServer, IEnvironmentModel> toEnvironmentModel)
+        public SchedulerViewModel(Func<IServer, IServer> toEnvironmentModel)
             : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, toEnvironmentModel)
         {
         }
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IEnvironmentModel> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker = null)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker = null)
             : base(eventPublisher)
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
@@ -116,7 +113,7 @@ namespace Dev2.Settings.Scheduler
             directoryObjectPicker1.ShowAdvancedView = false;
 
             InitializeHelp();
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), ServerRepository.Instance, new DebugOutputFilterStrategy());
 
             Server = server;
             SetupServer(server);
@@ -139,7 +136,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public Func<IServer, IEnvironmentModel> ToEnvironmentModel
+        public Func<IServer, IServer> ToEnvironmentModel
         {
             private get
             {
@@ -526,7 +523,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public IEnvironmentModel CurrentEnvironment
+        public IServer CurrentEnvironment
         {
             get
             {
@@ -677,13 +674,12 @@ namespace Dev2.Settings.Scheduler
             if (CurrentEnvironment?.AuthorizationService != null && CurrentEnvironment.IsConnected && tmpEnv.Permissions.Any(a => a.Administrator))
             {
                 ClearConnectionError();
-                var environment = CurrentEnvironment ?? EnvironmentRepository.Instance.ActiveEnvironment;
+                var server = CurrentEnvironment ?? ServerRepository.Instance.ActiveServer;
 
-                IServer server = new Server(environment);
                 if (server.Permissions == null)
                 {
                     server.Permissions = new List<IWindowsGroupPermission>();
-                    server.Permissions.AddRange(environment.AuthorizationService.SecurityService.Permissions);
+                    server.Permissions.AddRange(server.AuthorizationService.SecurityService.Permissions);
                 }
                 SchedulerTaskManager.Source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
 
@@ -795,7 +791,7 @@ namespace Dev2.Settings.Scheduler
             string baseName = "Scheduler";
             if (Server != null)
             {
-                baseName = baseName + " - " + Server.ResourceName;
+                baseName = baseName + " - " + Server.DisplayName;
             }
             if (dirty)
             {
@@ -887,12 +883,12 @@ namespace Dev2.Settings.Scheduler
 
     public static class SchedulerServerExtensions
     {
-        public static IEnvironmentModel ToEnvironmentModel(this IServer server)
+        public static IServer ToEnvironmentModel(this IServer server)
         {
             var resource = server as Server;
             if (resource != null)
             {
-                return new EnvironmentModel(server.EnvironmentID, resource.EnvironmentConnection);
+                return resource;
             }
             throw new Exception();
         }

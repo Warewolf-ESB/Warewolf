@@ -5,8 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2;
-using Dev2.Common.Interfaces;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.ViewModels;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -190,7 +189,7 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                if (itemToMove.Server != dropOntoItem.Server)
+                if (!Equals(itemToMove.Server, dropOntoItem.Server))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
@@ -336,7 +335,8 @@ namespace Warewolf.Studio.Views
                 if(explorerItemViewModel != null)
                 {
                     explorerItemViewModel.IsSelected = true;
-                    if(explorerViewModel?.ConnectControlViewModel != null)
+                    SetActiveServer(explorerItemViewModel.Server);
+                    if (explorerViewModel?.ConnectControlViewModel != null)
                         explorerViewModel.ConnectControlViewModel.SelectedConnection = explorerItemViewModel.Server;
                 }
                 else
@@ -344,12 +344,18 @@ namespace Warewolf.Studio.Views
                     var environmentViewModel = item as IEnvironmentViewModel;
                     if(environmentViewModel != null)
                     {
-                        environmentViewModel.IsSelected = true;
+                        SetActiveServer(environmentViewModel.Server);
                         if(explorerViewModel?.ConnectControlViewModel != null)
                             explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
                     }
                 }
             }
+        }
+
+        private static void SetActiveServer(IServer server)
+        {
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            shellViewModel.SetActiveServer(server.EnvironmentID);
         }
 
         private void ExplorerTree_OnKeyUp(object sender, KeyEventArgs e)
@@ -434,7 +440,7 @@ namespace Warewolf.Studio.Views
             {
                 if (e.Key == Key.W && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                 {
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var mainViewModel = CustomContainer.Get<IShellViewModel>();
                     mainViewModel?.NewServiceCommand.Execute(null);
                 }
             }

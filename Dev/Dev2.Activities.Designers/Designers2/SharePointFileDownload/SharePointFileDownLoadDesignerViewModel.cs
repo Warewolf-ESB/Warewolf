@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using Dev2.Activities.Designers2.SharepointListRead;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
 
@@ -19,11 +18,11 @@ namespace Dev2.Activities.Designers2.SharePointFileDownload
     public class SharePointFileDownLoadDesignerViewModel : SharepointListDesignerViewModelBase
     {
         public SharePointFileDownLoadDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment)
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer)
         {
         }
 
-        public SharePointFileDownLoadDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel envModel)
+        public SharePointFileDownLoadDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer envModel)
             : base(modelItem, asyncWorker, envModel, EventPublishers.Aggregator, false)
         {
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_SharePoint_Download_File;
@@ -33,7 +32,7 @@ namespace Dev2.Activities.Designers2.SharePointFileDownload
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
         public string LocalInputPath => GetProperty<string>();

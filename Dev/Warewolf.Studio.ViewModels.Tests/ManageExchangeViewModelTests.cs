@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.SaveDialog;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -122,6 +122,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(viewModel.AutoDiscoverLabel);
             Assert.IsNotNull(viewModel.EmailTo);
             Assert.IsNotNull(viewModel.EmailFromLabel);
+            Assert.IsNotNull(viewModel.TestLabel);
             Assert.IsNotNull(viewModel.EmailToLabel);
             Assert.IsNotNull(viewModel.Password);
             Assert.IsNotNull(viewModel.PasswordLabel);

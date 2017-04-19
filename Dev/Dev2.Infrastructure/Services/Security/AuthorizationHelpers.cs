@@ -9,6 +9,8 @@
 */
 
 using System;
+using Dev2.Common.Interfaces.Attribute;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Services.Security

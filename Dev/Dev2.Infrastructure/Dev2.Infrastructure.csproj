@@ -167,7 +167,6 @@
     <Compile Include="Services\ISubscriptionService.cs" />
     <Compile Include="Communication\DesignValidationMemo.cs" />
     <Compile Include="DisposableObject.cs" />
-    <Compile Include="Services\Security\AuthorizationContext.cs" />
     <Compile Include="Services\Security\AuthorizationHelpers.cs" />
     <Compile Include="Services\Security\AuthorizationServiceBase.cs" />
     <Compile Include="Services\Security\IAuthorizationRequest.cs" />
@@ -179,7 +178,6 @@
     <Compile Include="Services\Security\MoqInstallerActions\WarewolfSecurityOperationsImpl.cs" />
     <Compile Include="Services\Security\IAuthorizationService.cs" />
     <Compile Include="Services\Security\ISecurityService.cs" />
-    <Compile Include="Services\Security\ReasonAttribute.cs" />
     <Compile Include="Services\Security\SecurityServiceBase.cs" />
     <Compile Include="Services\Security\SecuritySettingsTO.cs" />
     <Compile Include="Services\Security\WebServerRequestType.cs" />

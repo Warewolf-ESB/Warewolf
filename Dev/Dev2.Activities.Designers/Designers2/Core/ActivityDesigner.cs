@@ -29,7 +29,8 @@ using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Studio.Core.Activities.Services;
+using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Dev2.Utilities;
 using FontAwesome.WPF;
 
@@ -235,6 +236,12 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual TViewModel CreateViewModel()
         {
+            if (ServerRepository.Instance.ActiveServer == null)
+            {
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                ServerRepository.Instance.ActiveServer = shellViewModel?.ActiveServer;
+            }
+
             return (TViewModel)Activator.CreateInstance(typeof(TViewModel), ModelItem);
         }
 
@@ -331,7 +338,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void UpdateHelpDescriptor(string helpText)
         {
-            ViewModel.UpdateHelpDescriptor(helpText);
+            ViewModel?.UpdateHelpDescriptor(helpText);
         }
 
         void OnRoutedEventHandler(object sender, RoutedEventArgs args)

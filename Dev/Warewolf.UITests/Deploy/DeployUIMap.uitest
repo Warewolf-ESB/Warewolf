@@ -292,19 +292,6 @@
                                                     </UIObject>
                                                   </Descendants>
                                                 </UIObject>
-                                                <UIObject ControlType="Button" Id="ConnectDestinationButton" FriendlyName="UI_DestinationServerConnectbtn_AutoID" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">UI_DestinationServerConnectbtn_AutoID</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
-                                                </UIObject>
                                                 <UIObject ControlType="Custom" Id="Spinner" FriendlyName="UI_IndicatorConnecting_AutoID" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
@@ -451,19 +438,6 @@
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
                                             </UIObject>
-                                            <UIObject ControlType="Button" Id="SourceConnectButton" FriendlyName="UI_SourceConnectServerbtn_AutoID" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf</WindowTitle>
-                                              </WindowTitles>
-                                              <AndCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">UI_SourceConnectServerbtn_AutoID</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants />
-                                            </UIObject>
                                             <UIObject ControlType="Text" Id="SourceCountText" FriendlyName="0" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
@@ -573,19 +547,6 @@
                                                       </Descendants>
                                                     </UIObject>
                                                   </Descendants>
-                                                </UIObject>
-                                                <UIObject ControlType="Button" Id="ConnectSourceButton" FriendlyName="UI_SourceServerConnectbtn_AutoID" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">UI_SourceConnectServerbtn_AutoID</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
                                                 </UIObject>
                                                 <UIObject ControlType="Custom" Id="Spinner" FriendlyName="UI_IndicatorConnecting_AutoID" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
@@ -878,6 +839,34 @@
                       </Descendants>
                     </UIObject>
                   </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+            <UIObject ControlType="Custom" Id="DeployDestinationRemoteConnection" FriendlyName="Remote Connection Integration (Connected)" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
+                <PropertyCondition Name="Name">Remote Connection Integration (Connected)</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Text" Id="ConnectedRemoteServer" FriendlyName="Remote Connection Integration (Connected)" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                    <PropertyCondition Name="Name">Remote Connection Integration (Connected)</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants />
                 </UIObject>
               </Descendants>
             </UIObject>

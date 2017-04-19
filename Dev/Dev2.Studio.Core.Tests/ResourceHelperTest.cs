@@ -10,7 +10,7 @@
 
 using System;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -99,7 +99,7 @@ namespace Dev2.Core.Tests
         public void ResourceHelperReturnsResourceDisplayNameForLocalHost()
         {
             //Setup
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.IsLocalHost).Returns(true);
 
             var model = new Mock<IContextualResourceModel>();
@@ -118,7 +118,7 @@ namespace Dev2.Core.Tests
         public void ResourceHelper_WhenLocalhostResourceIsWorkflowSavedFalse_ExpectResourceDisplayNameForLocalHostWithStar()
         {
             //Setup
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.IsLocalHost).Returns(true);
 
             var model = new Mock<IContextualResourceModel>();
@@ -137,7 +137,7 @@ namespace Dev2.Core.Tests
         public void ResourceHelperReturnsResourceAndEnvironmentDisplayNameForNonLocalEnvironments()
         {
             //Setup
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.IsLocalHost).Returns(false);
             env.Setup(e => e.Name).Returns("HostName");
 
@@ -158,7 +158,7 @@ namespace Dev2.Core.Tests
         public void ResourceHelper_UnitTest_WhenResourceIsWorkflowSavedFalseAndEnvironmentDisplayNameForNonLocalEnvironments_ReturnsStarInText()
         {
             //Setup
-            var env = new Mock<IEnvironmentModel>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.IsLocalHost).Returns(false);
             env.Setup(e => e.Name).Returns("HostName");
 

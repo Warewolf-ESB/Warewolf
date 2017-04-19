@@ -7,7 +7,7 @@ using ActivityUnitTests;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.DataList.Contract;
+using Dev2.Data.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Resource.Errors;

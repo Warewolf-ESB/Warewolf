@@ -8,14 +8,15 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Controller;
+using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
 namespace Warewolf.Studio.ServerProxyLayer
 {
     public class VersionManagerProxy : Dev2.Common.Interfaces.ServerProxyLayer.IVersionManager {
-        readonly Dev2.Studio.Core.Interfaces.IEnvironmentConnection _connection;
+        readonly IEnvironmentConnection _connection;
 
-        public VersionManagerProxy(ICommunicationControllerFactory communicationControllerFactory, Dev2.Studio.Core.Interfaces.IEnvironmentConnection connection)
+        public VersionManagerProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection)
         {
             CommunicationControllerFactory = communicationControllerFactory;
             _connection = connection;

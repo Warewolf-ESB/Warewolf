@@ -6,6 +6,7 @@ using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using Warewolf.Storage.Interfaces;
 
 namespace Warewolf.Storage.Tests
 {

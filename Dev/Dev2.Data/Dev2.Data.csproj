@@ -145,27 +145,16 @@
     <Compile Include="Decisions\Operations\NotRegex.cs" />
     <Compile Include="Decisions\Operations\NotStartsWith.cs" />
     <Compile Include="Dev2Column.cs" />
-    <Compile Include="enDev2ColumnArgumentDirection.cs" />
-    <Compile Include="Enums\enForEachType.cs" />
-    <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="IComplexObject.cs" />
     <Compile Include="IDataListModel.cs" />
     <Compile Include="IIndexIterator.cs" />
     <Compile Include="IndexIterator.cs" />
     <Compile Include="IndexList.cs" />
-    <Compile Include="Interfaces\ICommon.cs" />
-    <Compile Include="Interfaces\ICommonRecordSetUtil.cs" />
-    <Compile Include="Interfaces\ICommonScalarUtil.cs" />
-    <Compile Include="Interfaces\IDataListItem.cs" />
-    <Compile Include="Interfaces\IParserHelper.cs" />
     <Compile Include="ListIndexIterator.cs" />
     <Compile Include="ListOfIndex.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
-    <Compile Include="PathOperations\Enums\WriteType.cs" />
-    <Compile Include="PathOperations\Enums\ReadTypes.cs" />
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
-    <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
     <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
     <Compile Include="PulseLogger.cs" />
     <Compile Include="RecordSet.cs" />
@@ -234,21 +223,6 @@
     <Compile Include="PathOperations\Dev2ActivityIOPathUtils.cs" />
     <Compile Include="PathOperations\Dev2FileSystemProvider.cs" />
     <Compile Include="PathOperations\Dev2FTPProvider.cs" />
-    <Compile Include="PathOperations\enActivityPathType.cs" />
-    <Compile Include="PathOperations\Enums\enPathType.cs" />
-    <Compile Include="PathOperations\Interfaces\IActivityIOOperationsEndPoint.cs" />
-    <Compile Include="PathOperations\Interfaces\IActivityIOPath.cs" />
-    <Compile Include="PathOperations\Interfaces\IActivityOperationsBroker.cs" />
-    <Compile Include="PathOperations\Interfaces\IFileWrite.cs" />
-    <Compile Include="PathOperations\Interfaces\IPathAuth.cs" />
-    <Compile Include="PathOperations\Interfaces\IPathCertVerify.cs" />
-    <Compile Include="PathOperations\Interfaces\IPathInput.cs" />
-    <Compile Include="PathOperations\Interfaces\IPathOutput.cs" />
-    <Compile Include="PathOperations\Interfaces\IPathOverwrite.cs" />
-    <Compile Include="PathOperations\Interfaces\IRepository.cs" />
-    <Compile Include="PathOperations\Interfaces\IRepositoryItem.cs" />
-    <Compile Include="PathOperations\Interfaces\IUnZip.cs" />
-    <Compile Include="PathOperations\Interfaces\IZip.cs" />
     <Compile Include="PathOperations\TO\Dev2CRUDOperationTO.cs" />
     <Compile Include="PathOperations\TO\Dev2PutOperationTO.cs" />
     <Compile Include="PathOperations\TO\Dev2PutRawOperationTO.cs" />
@@ -257,45 +231,10 @@
     <Compile Include="SystemTemplates\Models\Dev2DecisionMode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Enums\DataListMergeFrequency.cs" />
-    <Compile Include="Enums\Dev2ArgumentType.cs" />
-    <Compile Include="Enums\enActionType.cs" />
-    <Compile Include="Enums\enDataListMergeTypes.cs" />
-    <Compile Include="Enums\enForEachExecutionType.cs" />
-    <Compile Include="Enums\enIndexFinderDirection.cs" />
-    <Compile Include="Enums\enIndexFinderOccurrence.cs" />
-    <Compile Include="Enums\enIntellisenseErrorCode.cs" />
-    <Compile Include="Enums\enIntellisenseResultType.cs" />
-    <Compile Include="Enums\enMergeAlignment.cs" />
-    <Compile Include="Enums\enMergeType.cs" />
-    <Compile Include="Enums\enRecordsetIndexType.cs" />
-    <Compile Include="Enums\enRoundingType.cs" />
-    <Compile Include="Enums\enSystemTags.cs" />
-    <Compile Include="Enums\enTranslationDepth.cs" />
-    <Compile Include="Enums\enTranslationTypes.cs" />
     <Compile Include="Exceptions\Dev2DataLanguageParseError.cs" />
     <Compile Include="Factories\DataListFactory.cs" />
     <Compile Include="Factories\Dev2OperationsFactory.cs" />
     <Compile Include="Factories\IntellisenseFactory.cs" />
-    <Compile Include="Interfaces\IDataListCompiler.cs" />
-    <Compile Include="Interfaces\IDataListVerifyPart.cs" />
-    <Compile Include="Interfaces\IDataListVerifyPartDuplicationParser.cs" />
-    <Compile Include="Interfaces\IDev2DataLangaugeParseError.cs" />
-    <Compile Include="Interfaces\IDev2DataLanguageIntellisensePart.cs" />
-    <Compile Include="Interfaces\IDev2DataLanguageParser.cs" />
-    <Compile Include="Interfaces\IDev2IndexFinder.cs" />
-    <Compile Include="Interfaces\IDev2LanguageParser.cs" />
-    <Compile Include="Interfaces\IDev2NumberFormatter.cs" />
-    <Compile Include="Interfaces\IDev2ReplaceOperation.cs" />
-    <Compile Include="Interfaces\IDev2StudioDataLanguageParser.cs" />
-    <Compile Include="Interfaces\IInputLanguageDefinition.cs" />
-    <Compile Include="Interfaces\IIntellisenseFilterOpsTO.cs" />
-    <Compile Include="Interfaces\IIntellisenseResult.cs" />
-    <Compile Include="Interfaces\IRecordSetCollection.cs" />
-    <Compile Include="Interfaces\IRecordSetDefinition.cs" />
-    <Compile Include="Interfaces\IRecordsetScopingObject.cs" />
-    <Compile Include="Interfaces\IRecsetSearch.cs" />
-    <Compile Include="Interfaces\ISystemTag.cs" />
     <Compile Include="MathOperations\EvaluationFunctionTO.cs" />
     <Compile Include="MathOperations\Function.cs" />
     <Compile Include="MathOperations\FunctionEvaluator.cs" />
@@ -306,7 +245,6 @@
     <Compile Include="MathOperations\MathOpsFactory.cs" />
     <Compile Include="Operations\Dev2IndexFinder.cs" />
     <Compile Include="Operations\Dev2MergeOperations.cs" />
-    <Compile Include="Interfaces\IDev2MergeOperations.cs" />
     <Compile Include="Operations\Dev2NumberFormatter.cs" />
     <Compile Include="Operations\Dev2ReplaceOperation.cs" />
     <Compile Include="Parsers\DataListDuplicationParser.cs" />
@@ -356,6 +294,10 @@
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
       <Name>Dev2.Diagnostics</Name>
@@ -384,6 +326,10 @@
       <Project>{d7a04a3f-ddbd-497c-a311-efd2016830df}</Project>
       <Name>Warewolf.Sharepoint</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+      <Project>{61a15557-1d18-4c69-88eb-31bf49b7fb50}</Project>
+      <Name>Warewolf.Storage.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
@@ -400,7 +346,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="PathOperations\Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

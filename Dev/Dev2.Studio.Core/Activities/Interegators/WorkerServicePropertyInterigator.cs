@@ -11,7 +11,7 @@
 using System;
 using System.Xml;
 using Dev2.Common.Common;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable once CheckNamespace

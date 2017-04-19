@@ -26,8 +26,8 @@ using Dev2.Common.Wrappers;
 using Dev2.Dialogs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
+using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Resources.Languages;
@@ -41,7 +41,7 @@ namespace Dev2.Settings.Security
         IResourcePickerDialog _resourcePicker;
         readonly DirectoryObjectPickerDialog _directoryObjectPicker;
         readonly IWin32Window _parentWindow;
-        readonly IEnvironmentModel _environment;
+        readonly IServer _environment;
         bool _isUpdatingHelpText;
         private static IDomain _domain;
 
@@ -51,7 +51,7 @@ namespace Dev2.Settings.Security
             
         }
 
-        internal SecurityViewModel(SecuritySettingsTO securitySettings, IWin32Window parentWindow, IEnvironmentModel environment)
+        internal SecurityViewModel(SecuritySettingsTO securitySettings, IWin32Window parentWindow, IServer environment)
             : this(securitySettings, new DirectoryObjectPickerDialog(), parentWindow, environment)
         {
         }
@@ -71,7 +71,7 @@ namespace Dev2.Settings.Security
             return env;
         }
 
-        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment, Func<IResourcePickerDialog> createfunc = null)
+        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment, Func<IResourcePickerDialog> createfunc = null)
         {
 
             VerifyArgument.IsNotNull(@"directoryObjectPicker", directoryObjectPicker);

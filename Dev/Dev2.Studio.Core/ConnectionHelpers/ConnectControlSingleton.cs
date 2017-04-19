@@ -14,8 +14,8 @@ using System.Linq;
 using Dev2.Network;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.ConnectionHelpers
@@ -24,21 +24,21 @@ namespace Dev2.ConnectionHelpers
     {
         readonly IEnvironmentModelProvider _serverProvider;
         static IConnectControlSingleton _instance;
-        readonly IEnvironmentRepository _environmentRepository;
+        readonly IServerRepository _serverRepository;
         public const string NewServerText = "New Remote Server...";
         public event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
         public event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
         public event EventHandler<ConnectedServerChangedEvent> AfterReload; 
         public static IConnectControlSingleton Instance => _instance ?? (_instance = new ConnectControlSingleton(ServerProvider.Instance,
-            EnvironmentRepository.Instance));
+            ServerRepository.Instance));
 
         public ConnectControlSingleton(IEnvironmentModelProvider serverProvider,
-                                         IEnvironmentRepository environmentRepository)
+                                         IServerRepository serverRepository)
         {
             VerifyArgument.IsNotNull("serverProvider", serverProvider);
-            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+            VerifyArgument.IsNotNull("environmentRepository", serverRepository);
             _serverProvider = serverProvider;
-            _environmentRepository = environmentRepository;
+            _serverRepository = serverRepository;
             Servers = new ObservableCollection<IConnectControlEnvironment>();
             LoadServers();
         }
@@ -47,21 +47,21 @@ namespace Dev2.ConnectionHelpers
 
         public void Remove(Guid environmentId)
         {
-            var index = Servers.IndexOf(Servers.FirstOrDefault(s => s.EnvironmentModel.ID == environmentId));
+            var index = Servers.IndexOf(Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId));
 
             if(index != -1)
             {
                 var selectedServer = Servers[index];
                 if(selectedServer.IsConnected)
                 {
-                    Disconnect(selectedServer.EnvironmentModel);
+                    Disconnect(selectedServer.Server);
                 }
 
 
                 if(ConnectedServerChanged != null)
                 {
-                    var localhost = Servers.FirstOrDefault(s => s.EnvironmentModel.IsLocalHost);
-                    Guid localhostId = localhost?.EnvironmentModel.ID ?? Guid.Empty;
+                    var localhost = Servers.FirstOrDefault(s => s.Server.IsLocalHost);
+                    Guid localhostId = localhost?.Server.EnvironmentID ?? Guid.Empty;
                     ConnectedServerChanged(this, new ConnectedServerChangedEvent(localhostId));
                 }
             }
@@ -73,18 +73,18 @@ namespace Dev2.ConnectionHelpers
             if (selectedIndex != -1 && selectedIndex <= Servers.Count)
             {
                 var selectedServer = Servers[selectedIndex];
-                var environmentModel = selectedServer.EnvironmentModel;
+                var environmentModel = selectedServer.Server;
                 if (environmentModel?.Connection != null)
                 {
                     var serverUri = environmentModel.Connection.AppServerUri;
                     var auth = environmentModel.Connection.AuthenticationType;
                     openWizard(selectedIndex);
-                    var updatedServer = _environmentRepository.All().FirstOrDefault(e => e.ID == environmentModel.ID);
+                    var updatedServer = _serverRepository.All().FirstOrDefault(e => e.EnvironmentID == environmentModel.EnvironmentID);
                     if (updatedServer != null && (!serverUri.Equals(updatedServer.Connection.AppServerUri) || auth != updatedServer.Connection.AuthenticationType))
                     {
-                        ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentModel.ID, false));
+                        ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentModel.EnvironmentID, false));
 
-                        selectedServer.EnvironmentModel = updatedServer;
+                        selectedServer.Server = updatedServer;
                     }
                 }
             }
@@ -92,7 +92,7 @@ namespace Dev2.ConnectionHelpers
 
         public void Refresh(Guid environmentId)
         {
-            var selectedEnvironment = Servers.FirstOrDefault(s => s.EnvironmentModel.ID == environmentId);
+            var selectedEnvironment = Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId);
             if(selectedEnvironment != null)
             {
                 var index = Servers.IndexOf(selectedEnvironment);
@@ -110,7 +110,7 @@ namespace Dev2.ConnectionHelpers
                 var selectedServer = Servers[selectedIndex];
                 if(selectedServer != null)
                 {
-                    var environment = selectedServer.EnvironmentModel;
+                    var environment = selectedServer.Server;
                     if(selectedServer.IsConnected)
                     {
                         Disconnect(environment);
@@ -125,7 +125,7 @@ namespace Dev2.ConnectionHelpers
 
         public void ToggleConnection(Guid environmentId)
         {
-            var connectControlEnvironment = Servers.FirstOrDefault(s => s.EnvironmentModel.ID == environmentId);
+            var connectControlEnvironment = Servers.FirstOrDefault(s => s.Server.EnvironmentID == environmentId);
             var index = Servers.IndexOf(connectControlEnvironment);
 
             if(index != -1)
@@ -139,15 +139,15 @@ namespace Dev2.ConnectionHelpers
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(connectedState, environmentId, false));
         }
 
-        private void Disconnect(IEnvironmentModel environment)
+        private void Disconnect(IServer environment)
         {
-            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environment.ID, false));
-            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environment.ID, true));
+            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environment.EnvironmentID, false));
+            ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environment.EnvironmentID, true));
         }
 
         private void Connect(IConnectControlEnvironment selectedServer)
         {
-            var environmentId = selectedServer.EnvironmentModel.ID;
+            var environmentId = selectedServer.Server.EnvironmentID;
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentId, false));
         }
 
@@ -155,7 +155,7 @@ namespace Dev2.ConnectionHelpers
         {
             return new ConnectControlEnvironment
             {
-                EnvironmentModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(new Uri("http://localhost:3142"))) { Name = NewServerText }
+                Server = new Server(Guid.NewGuid(), new ServerProxy(new Uri("http://localhost:3142"))) { Name = NewServerText }
             };
         }
 
@@ -169,7 +169,7 @@ namespace Dev2.ConnectionHelpers
             {
                 Servers.Add(new ConnectControlEnvironment
                 {
-                    EnvironmentModel = server,
+                    Server = server,
                     IsConnected = server.IsConnected,
                     AllowEdit = !server.IsLocalHost
                 });
@@ -185,7 +185,7 @@ namespace Dev2.ConnectionHelpers
             {
                 Servers.Add(new ConnectControlEnvironment
                 {
-                    EnvironmentModel = server,
+                    Server = server,
                     IsConnected = server.IsConnected,
                     AllowEdit = !server.IsLocalHost
                 });

@@ -7,6 +7,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -19,6 +20,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Sharepoint
 {

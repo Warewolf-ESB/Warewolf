@@ -24,7 +24,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ESB.Control

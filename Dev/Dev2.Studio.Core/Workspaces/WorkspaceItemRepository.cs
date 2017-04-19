@@ -15,10 +15,11 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
+
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -170,14 +171,14 @@ namespace Dev2.Workspaces
             {
                 throw new ArgumentNullException("model");
             }
-            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == model.ID && wi.EnvironmentID == model.Environment.ID);
+            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == model.ID && wi.EnvironmentID == model.Environment.EnvironmentID);
             if(workspaceItem != null)
             {
                 return;
             }
 
             var context = model.Environment.Connection;
-            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID, model.Environment.ID, model.ID)
+            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID, model.Environment.EnvironmentID, model.ID)
             {
                 ServiceName = model.ResourceName,
                 IsWorkflowSaved = model.IsWorkflowSaved,
@@ -200,7 +201,7 @@ namespace Dev2.Workspaces
             {
                 throw new ArgumentNullException("resourceModel");
             }
-            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == resourceModel.ID && wi.EnvironmentID == resourceModel.Environment.ID);
+            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == resourceModel.ID && wi.EnvironmentID == resourceModel.Environment.EnvironmentID);
 
             if(workspaceItem == null)
             {
@@ -215,7 +216,7 @@ namespace Dev2.Workspaces
             {
                 throw new ArgumentNullException("resource");
             }
-            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == resource.ID && wi.EnvironmentID == resource.Environment.ID);
+            var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == resource.ID && wi.EnvironmentID == resource.Environment.EnvironmentID);
 
             if(workspaceItem == null)
             {

@@ -23,25 +23,24 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Utils;
 using Dev2.Communication;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Views;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Common.Common;
 // ReSharper disable NonLocalizedString
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable MemberCanBePrivate.Global
@@ -60,17 +59,17 @@ namespace Dev2.Activities.Designers2.Service
 
 		[ExcludeFromCodeCoverage]
 		public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-			: this(modelItem, rootModel, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker())
+			: this(modelItem, rootModel, ServerRepository.Instance, EventPublishers.Aggregator, new AsyncWorker())
 		{
 		}
 
 		public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel,
-										IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher)
-			: this(modelItem, rootModel, environmentRepository, eventPublisher, new AsyncWorker())
+										IServerRepository serverRepository, IEventAggregator eventPublisher)
+			: this(modelItem, rootModel, serverRepository, eventPublisher, new AsyncWorker())
 		{
 		}
 
-		public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker)
+		public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel, IServerRepository serverRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker)
 			: base(modelItem)
 		{
 			ValidationMemoManager = new ValidationMemoManager(this);
@@ -82,7 +81,7 @@ namespace Dev2.Activities.Designers2.Service
 			AddTitleBarMappingToggle();
 
 			VerifyArgument.IsNotNull("rootModel", rootModel);
-			VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+			VerifyArgument.IsNotNull("environmentRepository", serverRepository);
 			VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
 			VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
 
@@ -109,18 +108,18 @@ namespace Dev2.Activities.Designers2.Service
 			IsAsyncVisible = ActivityTypeToActionTypeConverter.ConvertToActionType(Type) == Common.Interfaces.Core.DynamicServices.enActionType.Workflow;
 			OutputMappingEnabled = !RunWorkflowAsync;
 
-			var activeEnvironment = environmentRepository.ActiveEnvironment;
+			var activeEnvironment = serverRepository.ActiveServer;
 			if (EnvironmentID == Guid.Empty && !activeEnvironment.IsLocalHostCheck())
 			{
 				_environment = activeEnvironment;
 			}
 			else
 			{
-				var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
+				var environment = serverRepository.FindSingle(c => c.EnvironmentID == EnvironmentID);
 				if (environment == null)
 				{
-					IList<IEnvironmentModel> environments = EnvironmentRepository.Instance.LookupEnvironments(activeEnvironment);
-					environment = environments.FirstOrDefault(model => model.ID == EnvironmentID);
+					IList<IServer> environments = ServerRepository.Instance.LookupEnvironments(activeEnvironment);
+					environment = environments.FirstOrDefault(model => model.EnvironmentID == EnvironmentID);
 				}
 				_environment = environment;
 			}
@@ -131,7 +130,7 @@ namespace Dev2.Activities.Designers2.Service
 			  {
 				  if (b)
 				  {
-					  UpdateDesignerAfterResourceLoad(environmentRepository);
+					  UpdateDesignerAfterResourceLoad(serverRepository);
 				  }
 			  });
 
@@ -141,7 +140,7 @@ namespace Dev2.Activities.Designers2.Service
 			}, CanViewComplexObjects);
 		}
 
-		private void UpdateDesignerAfterResourceLoad(IEnvironmentRepository environmentRepository)
+		private void UpdateDesignerAfterResourceLoad(IServerRepository serverRepository)
 		{
 			
 			if (!IsDeleted)
@@ -154,10 +153,10 @@ namespace Dev2.Activities.Designers2.Service
 					IsItemDragged.Instance.IsDragged = false;
 				}
 			}
-			var environmentModel = environmentRepository.Get(EnvironmentID);
+			var environmentModel = serverRepository.Get(EnvironmentID);
 			if (EnvironmentID == Guid.Empty)
 			{
-				environmentModel = environmentRepository.ActiveEnvironment;
+				environmentModel = serverRepository.ActiveServer;
 			}
 			if(environmentModel?.Connection?.WebServerUri != null)
 			{
@@ -451,7 +450,7 @@ namespace Dev2.Activities.Designers2.Service
 		}
 
 		public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
-		readonly IEnvironmentModel _environment;
+		readonly IServer _environment;
 		bool _runWorkflowAsync;
 		private readonly IAsyncWorker _worker;
 		private bool _isLoading;
@@ -484,28 +483,28 @@ namespace Dev2.Activities.Designers2.Service
 			}
 		}
 
-		bool InitializeResourceModel(IEnvironmentModel environmentModel)
+		bool InitializeResourceModel(IServer server)
 		{
-			if (environmentModel != null)
+			if (server != null)
 			{
-				if (!environmentModel.IsLocalHost && environmentModel.IsConnected)
+				if (!server.IsLocalHost && server.IsConnected)
 				{
-					var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(ResourceID);
+					var contextualResourceModel = server.ResourceRepository.LoadContextualResourceModel(ResourceID);
 					if (contextualResourceModel != null)
 					{
 						ResourceModel = contextualResourceModel;
 					}
 					else
 					{
-						ResourceModel = ResourceModelFactory.CreateResourceModel(environmentModel);
+						ResourceModel = ResourceModelFactory.CreateResourceModel(server);
 						ResourceModel.Inputs = InputMapping;
 						ResourceModel.Outputs = OutputMapping;
-						environmentModel.Connection.Verify(ValidationMemoManager.UpdateLastValidationMemoWithOfflineError, false);
-						environmentModel.ResourcesLoaded += OnEnvironmentModel_ResourcesLoaded;
+						server.Connection.Verify(ValidationMemoManager.UpdateLastValidationMemoWithOfflineError, false);
+						server.ResourcesLoaded += OnEnvironmentModel_ResourcesLoaded;
 					}
 					return true;
 				}
-				var init = InitializeResourceModelFromRemoteServer(environmentModel);
+				var init = InitializeResourceModelFromRemoteServer(server);
 				return init;
 
 			}
@@ -520,31 +519,31 @@ namespace Dev2.Activities.Designers2.Service
 			e.Model.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
 		}
 
-		private void GetResourceModel(IEnvironmentModel environmentModel)
+		private void GetResourceModel(IServer server)
 		{
 			var resourceId = ResourceID;
 
 			if (resourceId != Guid.Empty)
 			{
-				NewModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
+				NewModel = server.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
 
 			}
 		}
 
 		public IContextualResourceModel NewModel { get; set; }
 
-		private bool InitializeResourceModelFromRemoteServer(IEnvironmentModel environmentModel)
+		private bool InitializeResourceModelFromRemoteServer(IServer server)
 		{
 			var resourceId = ResourceID;
-			if (!environmentModel.IsConnected)
+			if (!server.IsConnected)
 			{
-				environmentModel.Connection.Verify(ValidationMemoManager.UpdateLastValidationMemoWithOfflineError);
+				server.Connection.Verify(ValidationMemoManager.UpdateLastValidationMemoWithOfflineError);
 			}
-			if (environmentModel.IsConnected)
+			if (server.IsConnected)
 			{
 				if (resourceId != Guid.Empty)
 				{
-					ResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+					ResourceModel = server.ResourceRepository.LoadContextualResourceModel(resourceId);
 
 				}
 			}
@@ -722,7 +721,7 @@ namespace Dev2.Activities.Designers2.Service
 		}
 		public override void UpdateHelpDescriptor(string helpText)
 		{
-			var mainViewModel = CustomContainer.Get<IMainViewModel>();
+			var mainViewModel = CustomContainer.Get<IShellViewModel>();
 			mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
 		}
 	}

@@ -7,24 +7,22 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Source;
 using Dev2.Common.Exchange;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.Validation;
 using Warewolf.Resource.Errors;
+using Dev2.Studio.Interfaces;
 // ReSharper disable UnusedMember.Global
 
 // ReSharper disable NotAccessedField.Local
@@ -40,7 +38,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
     {
 
         readonly IEventAggregator _eventPublisher;
-        readonly IEnvironmentModel _environmentModel;
+        readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
         private ISourceToolRegion<IExchangeSource> _sourceRegion;
 
@@ -49,7 +47,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
         public ExchangeEmailDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator)
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator)
         {
         }
 
@@ -63,14 +61,13 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             SetupCommonProperties();
         }
 
-        public ExchangeEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
+        public ExchangeEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            VerifyArgument.IsNotNull("environmentModel", environmentModel);
             _asyncWorker = asyncWorker;
-            _environmentModel = environmentModel;
+            _server = server;
             _eventPublisher = eventPublisher;
             _eventPublisher.Subscribe(this);
 
@@ -80,7 +77,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
-            var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IExchangeServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
             Model = model;
             SetupCommonProperties();
@@ -405,7 +401,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
 
             if (mainViewModel != null)
             {
@@ -413,7 +409,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        private void SetHelpModelHelpText(string helpText, IMainViewModel mainViewModel)
+        private void SetHelpModelHelpText(string helpText, IShellViewModel mainViewModel)
         {
             mainViewModel.HelpViewModel.UpdateHelpText(helpText);
         }

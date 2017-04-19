@@ -25,9 +25,9 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Data.PathOperations.Enums;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.PathOperations;
@@ -36,7 +36,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 
 namespace Dev2.Activities.Specs.BaseTypes

@@ -12,7 +12,7 @@ using System;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Messages;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Utils;
 
 namespace Dev2.Webs.Callbacks
@@ -26,8 +26,8 @@ namespace Dev2.Webs.Callbacks
         public bool AddToTabManager { private set; get; }
 
         #endregion
-        public SaveNewWorkflowCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel, bool addToTabManager)
-            : base(eventPublisher, currentEnvironmentRepository)
+        public SaveNewWorkflowCallbackHandler(IEventAggregator eventPublisher, IServerRepository currentServerRepository, IContextualResourceModel resourceModel, bool addToTabManager)
+            : base(eventPublisher, currentServerRepository)
         {
             AddToTabManager = addToTabManager;
             _resourceModel = resourceModel;
@@ -36,7 +36,7 @@ namespace Dev2.Webs.Callbacks
 
         #region Overrides of WebsiteCallbackHandler
 
-        protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
+        protected override void Save(IServer server, dynamic jsonObj)
         {
             try
             {

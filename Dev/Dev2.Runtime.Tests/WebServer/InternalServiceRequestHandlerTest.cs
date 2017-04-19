@@ -14,6 +14,7 @@ using System.Collections.Specialized;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.WebServer;

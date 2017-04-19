@@ -11,13 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.InterfaceImplementors
 {
     /// <summary>
-    /// A provider responsible for providing an aggregated list of <see cref="IEnvironmentModel"/>'s.
+    /// A provider responsible for providing an aggregated list of <see cref="IServer"/>'s.
     /// </summary>
     public class ServerProvider : IEnvironmentModelProvider
     {
@@ -60,42 +60,42 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
         #region Load
 
-        public List<IEnvironmentModel> Load()
+        public List<IServer> Load()
         {
-            return Load(EnvironmentRepository.Instance);
+            return Load(ServerRepository.Instance);
         }
 
-        public List<IEnvironmentModel> Load(IEnvironmentRepository environmentRepository)
+        public List<IServer> Load(IServerRepository serverRepository)
         {
             // PBI 6597 : TWR
             // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
-            if(environmentRepository == null)
+            if(serverRepository == null)
             {
-                throw new ArgumentNullException("environmentRepository");
+                throw new ArgumentNullException("serverRepository");
             }
 
-            var environments = environmentRepository.All();
+            var environments = serverRepository.All();
 
             return environments.ToList();
         }
 
-        public List<IEnvironmentModel> ReloadServers()
+        public List<IServer> ReloadServers()
         {
-            return ReloadServers(EnvironmentRepository.Instance);
+            return ReloadServers(ServerRepository.Instance);
         }
 
-        public List<IEnvironmentModel> ReloadServers(IEnvironmentRepository environmentRepository)
+        public List<IServer> ReloadServers(IServerRepository serverRepository)
         {
             // PBI 6597 : TWR
             // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
-            if (environmentRepository == null)
+            if (serverRepository == null)
             {
-                throw new ArgumentNullException("environmentRepository");
+                throw new ArgumentNullException("serverRepository");
             }
 
-            var environments = environmentRepository.ReloadServers();
+            var environments = serverRepository.ReloadServers();
 
             return environments.ToList();
         }

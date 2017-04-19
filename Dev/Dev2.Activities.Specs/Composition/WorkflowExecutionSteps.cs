@@ -42,7 +42,6 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Messages;
@@ -52,9 +51,7 @@ using Dev2.Services;
 using Dev2.Services.Security;
 using Dev2.Session;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.ViewModels.DataList;
@@ -83,11 +80,12 @@ using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Execution;
 using Dev2.Studio.Core.Factories;
 using Dev2.Workspaces;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Core;
-using Warewolf.Studio.AntiCorruptionLayer;
-using Warewolf.Studio.ServerProxyLayer;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.Data.Interfaces.Enums;
 // ReSharper disable NonLocalizedString
 
 // ReSharper disable UnusedMember.Global
@@ -281,7 +279,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenIHaveAWorkflowOnServer(string serverName, string workflow)
         {
             AppSettings.LocalHost = "http://localhost:3142";
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.ResourceRepository.ForceLoad();
 
@@ -306,7 +304,7 @@ namespace Dev2.Activities.Specs.Composition
                         connection = new ServerProxy(remoteServer.WebAddress, remoteServer.UserName, remoteServer.Password);
                     }
 
-                    var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName };
+                    var newEnvironment = new Server(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName };
                     EnsureEnvironmentConnected(newEnvironment, EnvironmentConnectionTimeout);
                     newEnvironment.ForceLoadResources();
 
@@ -329,12 +327,12 @@ namespace Dev2.Activities.Specs.Composition
         [BeforeFeature()]
         private static void SetUpLocalHost()
         {
-            LocalEnvModel = EnvironmentRepository.Instance.Source;
+            LocalEnvModel = ServerRepository.Instance.Source;
             LocalEnvModel.Connect();
             LocalEnvModel.ForceLoadResources();
         }
 
-        private static IEnvironmentModel LocalEnvModel { get; set; }
+        private static IServer LocalEnvModel { get; set; }
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -412,20 +410,20 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        void EnsureEnvironmentConnected(IEnvironmentModel environmentModel, int timeout)
+        void EnsureEnvironmentConnected(IServer server, int timeout)
         {
             if (timeout <= 0)
             {
                 _scenarioContext.Add("ConnectTimeoutCountdown", 3000);
-                throw new TimeoutException("Connection to Warewolf server \"" + environmentModel.Name + "\" timed out.");
+                throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
             }
-            if (!environmentModel.IsConnected)
-                environmentModel.Connect();
-            if (!environmentModel.IsConnected)
+            if (!server.IsConnected)
+                server.Connect();
+            if (!server.IsConnected)
             {
                 timeout--;
                 Thread.Sleep(100);
-                EnsureEnvironmentConnected(environmentModel, timeout);
+                EnsureEnvironmentConnected(server, timeout);
             }
         }
 
@@ -439,17 +437,17 @@ namespace Dev2.Activities.Specs.Composition
             List<IDebugState> debugStates;
             List<IDebugState> debugStatesDuration;
             string workflowName;
-            IEnvironmentModel environmentModel;
+            IServer server;
             TryGetValue("debugStates", out debugStates);
             TryGetValue("debugStatesDuration", out debugStatesDuration);
             TryGetValue("parentWorkflowName", out workflowName);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             if (debugStatesDuration == null)
             {
                 debugStatesDuration = new List<IDebugState>();
                 Add("debugStatesDuration", debugStatesDuration);
             }
-            if (debugState.WorkspaceID == environmentModel.Connection.WorkspaceID)
+            if (debugState.WorkspaceID == server.Connection.WorkspaceID)
             {
                 if (debugState.StateType != StateType.Duration)
                     debugStates.Add(debugState);
@@ -709,7 +707,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a ""(.*)"" service ""(.*)"" with mappings")]
         public void GivenContainsADatabaseServiceWithMappings(string wf, string serviceType, string serviceName, Table table)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             var repository = new ResourceRepository(environmentModel);
             repository.Load();
             var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName), true, true);
@@ -786,10 +784,10 @@ namespace Dev2.Activities.Specs.Composition
 
             EnsureEnvironmentConnected(localHostEnv, EnvironmentConnectionTimeout);
 
-            var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
+            var remoteEnvironment = ServerRepository.Instance.FindSingle(model => model.Name == server);
             if (remoteEnvironment == null)
             {
-                var environments = EnvironmentRepository.Instance.LookupEnvironments(localHostEnv);
+                var environments = ServerRepository.Instance.LookupEnvironments(localHostEnv);
                 remoteEnvironment = environments.FirstOrDefault(model => model.Name == server);
             }
             if (remoteEnvironment != null)
@@ -820,7 +818,7 @@ namespace Dev2.Activities.Specs.Composition
 
                     remoteResourceModel.Outputs = outputMapping;
                     remoteResourceModel.Inputs = inputMapping;
-                    var remoteServerId = remoteEnvironment.ID;
+                    var remoteServerId = remoteEnvironment.EnvironmentID;
                     activity.ServiceServer = remoteServerId;
                     activity.EnvironmentID = remoteServerId;
 
@@ -1108,12 +1106,12 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is the active environment used to execute ""(.*)""")]
         public void WhenIsTheActiveEnvironmentUsedToExecute(string connectionName, string workflowName)
         {
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
             IContextualResourceModel resourceModel;
 
             TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
 
             ExecuteWorkflow(resourceModel);
@@ -1149,10 +1147,10 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             IContextualResourceModel resourceModel;
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
             TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
 
             var currentDl = CurrentDl;
@@ -1453,7 +1451,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" for testing as")]
         public void GivenContainsAnSQLBulkInsertUsingDatabaseAndTableAndKeepIdentitySetAndResultSetForTestingAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -1657,7 +1655,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointMoveFile ""(.*)"" as")]
         public void GivenContainsSharepointMoveFileAs(string parentName, string activityName, Table table)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
 
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
@@ -1686,7 +1684,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointCopyFile ""(.*)"" as")]
         public void GivenContainsSharepointCopyFileAs(string parentName, string activityName, Table table)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
 
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
@@ -1717,7 +1715,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsSharepointReadListItemAs(string parentName, string activityName, Table table)
         {
             //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
 
             var sharepointList = table.Rows[0]["List"];
@@ -1817,7 +1815,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointDeleteSingle ""(.*)"" as")]
         public void GivenContainsSharepointDeleteListItemAs(string parentName, string activityName, Table table)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
 
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
@@ -1844,7 +1842,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsUpdateListItemsAs(string parentName, string activityName, Table table)
         {
             //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
 
             var sharepointList = table.Rows[0]["List"];
@@ -1927,7 +1925,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsCreateListItemsAs(string parentName, string activityName, Table table)
         {
             //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
 
             var sharepointList = table.Rows[0]["List"];
@@ -2023,15 +2021,15 @@ namespace Dev2.Activities.Specs.Composition
             return fixedName;
         }
 
-        List<ISharepointFieldTo> GetListFields(IEnvironmentModel environmentModel, ISharepointSource source, SharepointListTo list)
+        List<ISharepointFieldTo> GetListFields(IServer server, ISharepointSource source, SharepointListTo list)
         {
-            var columns = environmentModel.ResourceRepository.GetSharepointListFields(source, list, true);
+            var columns = server.ResourceRepository.GetSharepointListFields(source, list, true);
             return columns ?? new List<ISharepointFieldTo>();
         }
         [Given(@"""(.*)"" contains SharepointDeleteFile ""(.*)"" as")]
         public void GivenContainsSharepointDeleteFileAs(string parentName, string activityName, Table table)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
 
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
@@ -2066,7 +2064,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains SharepointUploadFile ""(.*)"" as")]
         public void GivenContainsSharepointUploadFileAs(string parentName, string activityName, Table table)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
 
             var sources = environmentModel.ResourceRepository.FindSourcesByType<SharepointSource>(environmentModel, enSourceType.SharepointServerSource) ?? new List<SharepointSource>();
@@ -2114,7 +2112,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Web Delete ""(.*)"" result as ""(.*)""")]
         public void GivenContainsAWebDeleteResultAs(string parentName, string activityName, string result)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -2124,7 +2122,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
-                                                                                    , new Server(environmentModel));
+                                                                                    , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "3032b7fd-f12a-4ab8-be7d-2f4705c31317".ToGuid());
             var webServiceDefinition = new WebServiceDefinition("Delete", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
@@ -2171,7 +2169,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Web Post ""(.*)"" result as ""(.*)""")]
         public void GivenContainsAWebPostResultAs(string parentName, string activityName, string result)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -2181,7 +2179,7 @@ namespace Dev2.Activities.Specs.Composition
                   new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                   , _proxyLayer.QueryManagerProxy
                   , mock.Object
-                  , new Server(environmentModel));
+                  , environmentModel);
 
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "ab4d5ab5-ad44-421d-8125-adfcc3aa655b".ToGuid());
@@ -2234,7 +2232,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Web Get ""(.*)"" result as ""(.*)""")]
         public void GivenContainsAWebGetResultAs(string parentName, string activityName, string result)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -2244,7 +2242,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
-                                                                                    , new Server(environmentModel));
+                                                                                    , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "e541d860-cd10-4aec-b2fe-79eca3c62c25".ToGuid());
             var webServiceDefinition = new WebServiceDefinition("Get", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
@@ -2293,7 +2291,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Web Put ""(.*)"" result as ""(.*)""")]
         public void GivenContainsAWebPutResultAs(string parentName, string activityName, string result)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -2303,7 +2301,7 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
-                                                                                    , new Server(environmentModel));
+                                                                                    , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "0fb49fec-e454-4357-a06f-08f329558b18".ToGuid());
             var webServiceDefinition = new WebServiceDefinition("Put", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
@@ -2424,7 +2422,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 ServiceName = resource.Category,
                 ResourceID = resource.ID,
-                EnvironmentID = environmentModel.ID,
+                EnvironmentID = environmentModel.EnvironmentID,
                 UniqueID = resource.ID.ToString(),
                 InputMapping = inputMapping,
                 OutputMapping = outputMapping
@@ -2486,9 +2484,9 @@ namespace Dev2.Activities.Specs.Composition
                 }
             }
 
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
 
             var currentDl = CurrentDl;
@@ -2518,7 +2516,7 @@ namespace Dev2.Activities.Specs.Composition
                         var dataList = XElement.Parse(debugTo.XmlData);
                         dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
                         dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
-                        dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
+                        dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.EnvironmentID));
                         WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
                         _resetEvt.WaitOne(1000);
                     }
@@ -2541,7 +2539,7 @@ namespace Dev2.Activities.Specs.Composition
                 var dataList = XElement.Parse(debugTo.XmlData);
                 dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
                 dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
-                dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
+                dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.EnvironmentID));
                 WebServer.Send(resourceModel, dataList.ToString(), new SynchronousAsyncWorker());
                 _resetEvt.WaitOne(1000);
             }
@@ -2590,10 +2588,10 @@ namespace Dev2.Activities.Specs.Composition
                 }
 
             IContextualResourceModel resourceModel;
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
             TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
 
             var currentDl = CurrentDl;
@@ -2640,10 +2638,10 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             IContextualResourceModel resourceModel;
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
             TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
 
             var currentDl = CurrentDl;
@@ -2659,10 +2657,10 @@ namespace Dev2.Activities.Specs.Composition
         public void ThenWorkflowIsDeletedAsCleanup(string workflowName)
         {
             IContextualResourceModel resourceModel;
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
             TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
 
             repository.DeleteResourceFromWorkspace(resourceModel);
@@ -2675,12 +2673,12 @@ namespace Dev2.Activities.Specs.Composition
             Guid id;
             TryGetValue("SavedId", out id);
             IContextualResourceModel resourceModel;
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
             TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
-            var rep = new VersionManagerProxy(new CommunicationControllerFactory(), environmentModel.Connection);
+            var rep = new Studio.Core.VersionManagerProxy(new CommunicationControllerFactory(), server.Connection);
             var versions = rep.GetVersions(id);
             _scenarioContext["Versions"] = versions;
             Assert.AreEqual(numberOfVersions, versions.Count);
@@ -2831,9 +2829,15 @@ namespace Dev2.Activities.Specs.Composition
             var loadSubFolders = table.Rows[0]["LoadSubFolders"];
             switch (read)
             {
-                case "Files":                    listActivity.IsFilesSelected = true;                    break;
-                case "Folders":                    listActivity.IsFoldersSelected = true;                    break;
-                case "All":                    listActivity.IsFilesAndFoldersSelected = true;                    break;
+                case "Files":
+                    listActivity.IsFilesSelected = true;
+                    break;
+                case "Folders":
+                    listActivity.IsFoldersSelected = true;
+                    break;
+                case "All":
+                    listActivity.IsFilesAndFoldersSelected = true;
+                    break;
             }
             var b = bool.Parse(loadSubFolders);
             listActivity.IsRecursive = b;
@@ -2911,7 +2915,7 @@ namespace Dev2.Activities.Specs.Composition
             ManageComPluginServiceModel dbServiceModel = new ManageComPluginServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                    , proxy.QueryManagerProxy
                                                                                    , mock.Object
-                                                                                   , new Server(LocalEnvModel));
+                                                                                   , new Server(Guid.NewGuid(), environmentConnection));
             var namespaceItems = dbServiceModel.GetNameSpaces(pluginSource);
             var namespaceItem = namespaceItems.Single(item => item?.FullName?.Equals(namespaceSelected, StringComparison.CurrentCultureIgnoreCase) ?? false);
             var pluginActions = dbServiceModel.GetActions(pluginSource, namespaceItem);
@@ -3035,12 +3039,12 @@ namespace Dev2.Activities.Specs.Composition
             Guid id;
             TryGetValue("SavedId", out id);
             IContextualResourceModel resourceModel;
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
             TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
-            var rep = new VersionManagerProxy(new CommunicationControllerFactory(), environmentModel.Connection);
+            var rep = new VersionManagerProxy(new CommunicationControllerFactory(), server.Connection);
             rep.RollbackTo(id, version);
         }
 
@@ -3071,10 +3075,10 @@ namespace Dev2.Activities.Specs.Composition
         public void WhenIsExecutedWithoutSaving(string workflowName)
         {
             IContextualResourceModel resourceModel;
-            IEnvironmentModel environmentModel;
+            IServer server;
             IResourceRepository repository;
             TryGetValue(workflowName, out resourceModel);
-            TryGetValue("environment", out environmentModel);
+            TryGetValue("environment", out server);
             TryGetValue("resourceRepo", out repository);
 
 
@@ -3109,9 +3113,9 @@ namespace Dev2.Activities.Specs.Composition
             var controller = new CommunicationControllerFactory().CreateController("LoggingSettingsWriteService");
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("LoggingSettings", serializer.SerializeToBuilder(loggingSettingsTo).ToString());
-            IEnvironmentModel environmentModel;
-            TryGetValue("environment", out environmentModel);
-            controller.ExecuteCommand<StringBuilder>(environmentModel.Connection, Guid.Empty);
+            IServer server;
+            TryGetValue("environment", out server);
+            controller.ExecuteCommand<StringBuilder>(server.Connection, Guid.Empty);
         }
 
         [When(@"""(.*)"" is executed ""(.*)""")]
@@ -3834,7 +3838,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             var inputs = GetServiceInputs(table);
             //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -3843,7 +3847,7 @@ namespace Dev2.Activities.Specs.Composition
             ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
-                                                                                    , new Server(environmentModel));
+                                                                                    , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             IDbSource dbSource = dbSources.Single(source => source.Id == "f8b1a579-2394-489e-835e-21b42e304e09".ToGuid());
 
@@ -3935,7 +3939,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAMysqlDatabaseServiceWithMappingsfortesting(string parentName, string serviceName, Table table)
         {
             //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -3944,7 +3948,7 @@ namespace Dev2.Activities.Specs.Composition
             ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
-                                                                                    , new Server(environmentModel));
+                                                                                    ,environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == "97d6272e-15a1-483f-afdb-a076f602604f".ToGuid());
 
@@ -4033,7 +4037,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             var inputs = GetServiceInputs(table);
             //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -4042,7 +4046,7 @@ namespace Dev2.Activities.Specs.Composition
             ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
-                                                                                    , new Server(environmentModel));
+                                                                                    , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == "b1c12282-1712-419c-9929-5dfe42c90210".ToGuid());
 
@@ -4111,7 +4115,7 @@ namespace Dev2.Activities.Specs.Composition
             var inputs = GetServiceInputs(table);
             var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
             //Load Source based on the name
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             var environmentConnection = environmentModel.Connection;
             var controllerFactory = new CommunicationControllerFactory();
@@ -4120,7 +4124,7 @@ namespace Dev2.Activities.Specs.Composition
             ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
-                                                                                    , new Server(environmentModel));
+                                                                                    , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == resourceId);
 
@@ -4217,7 +4221,7 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"I create a new unsaved workflow with name ""(.*)""")]
         public void GivenICreateANewUnsavedWorkflowWithName(string serviceName)
         {
-            var environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(environmentModel, @"WorkflowService",
                 serviceName);
             tempResource.Category = @"Unassigned\" + serviceName;

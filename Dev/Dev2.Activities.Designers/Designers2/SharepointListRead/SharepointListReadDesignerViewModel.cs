@@ -11,10 +11,9 @@
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.TO;
 
@@ -23,11 +22,11 @@ namespace Dev2.Activities.Designers2.SharepointListRead
     public class SharepointListReadDesignerViewModel : SharepointListDesignerViewModelBase
     {
         public SharepointListReadDesignerViewModel(ModelItem modelItem)
-            : this(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment)
+            : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer)
         {
         }
 
-        public SharepointListReadDesignerViewModel(ModelItem modelItem,IAsyncWorker asyncWorker,IEnvironmentModel envModel)
+        public SharepointListReadDesignerViewModel(ModelItem modelItem,IAsyncWorker asyncWorker,IServer envModel)
             : base(modelItem, asyncWorker, envModel, EventPublishers.Aggregator, false)
         {
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
@@ -46,7 +45,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

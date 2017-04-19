@@ -9,8 +9,9 @@
 */
 
 using Caliburn.Micro;
-using Dev2.Data.Binary_Objects;
-using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Data.Interfaces.Enums;
+using Dev2.Studio.Interfaces.DataList;
+
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable CheckNamespace

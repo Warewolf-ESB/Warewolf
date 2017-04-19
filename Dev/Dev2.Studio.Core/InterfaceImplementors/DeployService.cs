@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.InterfaceImplementors
@@ -25,30 +25,30 @@ namespace Dev2.Studio.Core.InterfaceImplementors
         /// </summary>
         /// <param name="deployDto">The DTO to be deployed.</param>
         /// <param name="sourceEnviroment"></param>
-        /// <param name="environmentModel">The environment model to be queried.</param>
-        public void Deploy(IDeployDto deployDto, IEnvironmentModel sourceEnviroment, IEnvironmentModel environmentModel)
+        /// <param name="server">The environment model to be queried.</param>
+        public void Deploy(IDeployDto deployDto, IServer sourceEnviroment, IServer server)
         {
 
-            if (deployDto?.ResourceModels == null || environmentModel?.ResourceRepository == null)
+            if (deployDto?.ResourceModels == null || server?.ResourceRepository == null)
             {
                 return;
             }
 
-            if (!environmentModel.IsConnected)
+            if (!server.IsConnected)
             {
-                environmentModel.Connect();
+                server.Connect();
             }
 
-            if (environmentModel.IsConnected)
+            if (server.IsConnected)
             {
                 foreach (var resourceModel in deployDto.ResourceModels)
                 {
                     var savePath = resourceModel.GetSavePath();
-                    environmentModel.ResourceRepository.DeployResource(resourceModel, savePath);
+                    server.ResourceRepository.DeployResource(resourceModel, savePath);
                     if (deployDto.DeployTests)
                     {
                         var models = sourceEnviroment.ResourceRepository.LoadResourceTestsForDeploy(resourceModel.ID);
-                        environmentModel.ResourceRepository.SaveTests(resourceModel, models);
+                        server.ResourceRepository.SaveTests(resourceModel, models);
                     }
                 }
             }

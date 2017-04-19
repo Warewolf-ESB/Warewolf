@@ -1,6 +1,6 @@
 ﻿using Dev2.Data.TO;
 using Dev2.Interfaces;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Runtime.ESB.Control
 {

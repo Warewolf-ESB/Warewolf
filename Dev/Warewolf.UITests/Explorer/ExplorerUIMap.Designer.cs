@@ -29,6 +29,23 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
     public partial class ExplorerUIMap
     {
         
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void RecordedMethod1()
+        {
+            #region Variable Declarations
+            WpfButton uIToggleButtonButton = this.UIWarewolfDEV2PIETERTEWindow.UIConnectControlCustom.UITheServerComboBoxCustom.UIToggleButtonButton;
+            WpfText remoteConnectionItemText = this.MainStudioWindow.RemoteConnectionItem.RemoteConnectionItemText;
+            #endregion
+
+            // Click 'ToggleButton' button
+            Mouse.Click(uIToggleButtonButton, new Point(155, 9));
+
+            // Click 'Remote Connection Integration' label
+            Mouse.Click(remoteConnectionItemText, new Point(172, 18));
+        }
+        
         #region Properties
         public MainStudioWindow MainStudioWindow
         {
@@ -41,10 +58,24 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
+        
+        public UIWarewolfDEV2PIETERTEWindow UIWarewolfDEV2PIETERTEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2PIETERTEWindow == null))
+                {
+                    this.mUIWarewolfDEV2PIETERTEWindow = new UIWarewolfDEV2PIETERTEWindow();
+                }
+                return this.mUIWarewolfDEV2PIETERTEWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private MainStudioWindow mMainStudioWindow;
+        
+        private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
         #endregion
     }
     
@@ -74,10 +105,24 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
                 return this.mDockManager;
             }
         }
+        
+        public RemoteConnectionItem RemoteConnectionItem
+        {
+            get
+            {
+                if ((this.mRemoteConnectionItem == null))
+                {
+                    this.mRemoteConnectionItem = new RemoteConnectionItem(this);
+                }
+                return this.mRemoteConnectionItem;
+            }
+        }
         #endregion
         
         #region Fields
         private DockManager mDockManager;
+        
+        private RemoteConnectionItem mRemoteConnectionItem;
         #endregion
     }
     
@@ -305,19 +350,19 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             }
         }
         
-        public WpfButton ConnectServerButton
+        public WpfButton NewServerButton
         {
             get
             {
-                if ((this.mConnectServerButton == null))
+                if ((this.mNewServerButton == null))
                 {
-                    this.mConnectServerButton = new WpfButton(this);
+                    this.mNewServerButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mConnectServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_ConnectServerBtn_AutoID";
-                    this.mConnectServerButton.WindowTitles.Add("Warewolf");
+                    this.mNewServerButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "NewServerButton";
+                    this.mNewServerButton.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
                     #endregion
                 }
-                return this.mConnectServerButton;
+                return this.mNewServerButton;
             }
         }
         #endregion
@@ -327,7 +372,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         
         private WpfButton mEditServerButton;
         
-        private WpfButton mConnectServerButton;
+        private WpfButton mNewServerButton;
         #endregion
     }
     
@@ -2238,6 +2283,197 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         private WpfButton mExecuteIcon;
         
         private WpfEdit mItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class RemoteConnectionItem : WpfCustom
+    {
+        
+        public RemoteConnectionItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText RemoteConnectionItemText
+        {
+            get
+            {
+                if ((this.mRemoteConnectionItemText == null))
+                {
+                    this.mRemoteConnectionItemText = new WpfText(this);
+                    #region Search Criteria
+                    this.mRemoteConnectionItemText.SearchProperties[WpfText.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mRemoteConnectionItemText.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mRemoteConnectionItemText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mRemoteConnectionItemText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2PIETERTEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2PIETERTEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\PIETER.TERBLANCHE)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_ExplorerControl_ACustom UIUI_ExplorerControl_ACustom
+        {
+            get
+            {
+                if ((this.mUIUI_ExplorerControl_ACustom == null))
+                {
+                    this.mUIUI_ExplorerControl_ACustom = new UIUI_ExplorerControl_ACustom(this);
+                }
+                return this.mUIUI_ExplorerControl_ACustom;
+            }
+        }
+        
+        public UIConnectControlCustom UIConnectControlCustom
+        {
+            get
+            {
+                if ((this.mUIConnectControlCustom == null))
+                {
+                    this.mUIConnectControlCustom = new UIConnectControlCustom(this);
+                }
+                return this.mUIConnectControlCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_ExplorerControl_ACustom mUIUI_ExplorerControl_ACustom;
+        
+        private UIConnectControlCustom mUIConnectControlCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIUI_ExplorerControl_ACustom : WpfCustom
+    {
+        
+        public UIUI_ExplorerControl_ACustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExplorerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ExplorerControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIConnectControlCustom
+        {
+            get
+            {
+                if ((this.mUIConnectControlCustom == null))
+                {
+                    this.mUIConnectControlCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIConnectControlCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+                    this.mUIConnectControlCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ConnectControl";
+                    this.mUIConnectControlCustom.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mUIConnectControlCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIConnectControlCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIConnectControlCustom : WpfCustom
+    {
+        
+        public UIConnectControlCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ConnectControl";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public UITheServerComboBoxCustom UITheServerComboBoxCustom
+        {
+            get
+            {
+                if ((this.mUITheServerComboBoxCustom == null))
+                {
+                    this.mUITheServerComboBoxCustom = new UITheServerComboBoxCustom(this);
+                }
+                return this.mUITheServerComboBoxCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UITheServerComboBoxCustom mUITheServerComboBoxCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UITheServerComboBoxCustom : WpfCustom
+    {
+        
+        public UITheServerComboBoxCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton UIToggleButtonButton
+        {
+            get
+            {
+                if ((this.mUIToggleButtonButton == null))
+                {
+                    this.mUIToggleButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mUIToggleButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
+                    this.mUIToggleButtonButton.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mUIToggleButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mUIToggleButtonButton;
         #endregion
     }
 }

@@ -11,11 +11,11 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -232,7 +232,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockSelectedServiceTestModelTO.Setup(a => a.TestSteps).Returns(new List<IServiceTestStep>());
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
@@ -267,7 +267,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
             mockSelectedServiceTestModelTO.Setup(a => a.TestSteps).Returns(new List<IServiceTestStep>());
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
@@ -301,7 +301,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
             mockSelectedServiceTestModelTO.Setup(a => a.TestSteps).Returns(new List<IServiceTestStep>());
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
@@ -334,7 +334,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
             mockSelectedServiceTestModelTO.Setup(a => a.TestSteps).Returns(new List<IServiceTestStep>());
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
@@ -364,7 +364,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
             var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             mockResourceRepo.Setup(repository => repository.ExecuteTest(mockResourceModel.Object, It.IsAny<string>())).Returns(mockSelectedServiceTestModelTO.Object);
             mockEnvironment.Setup(model => model.ResourceRepository).Returns(mockResourceRepo.Object);
@@ -392,7 +392,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var selectedServiceTest = new ServiceTestModel(Guid.NewGuid());
             var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
             var testRunResult = new TestRunResult();
             testRunResult.DebugForTest = new List<IDebugState>();
@@ -423,7 +423,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockSelectedServiceTestModelTO = new Mock<IServiceTestModelTO>();
             mockSelectedServiceTestModelTO.Setup(a => a.Result).Returns(testRunResult);
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             var mockPopupController = new Mock<IPopupController>();
@@ -688,7 +688,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             var mockPopupController = new Mock<IPopupController>();
@@ -751,7 +751,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             });
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironment = new Mock<IEnvironmentModel>();
+            var mockEnvironment = new Mock<IServer>();
             var mockResourceRepo = new Mock<IResourceRepository>();
 
             var mockPopupController = new Mock<IPopupController>();
@@ -799,7 +799,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
             var mock = new Mock<IContextualResourceModel>();
             var repo = new Mock<IResourceRepository>();
-            var environmentalModel = new Mock<IEnvironmentModel>();
+            var environmentalModel = new Mock<IServer>();
             environmentalModel.SetupGet(model => model.ResourceRepository).Returns(repo.Object);
             mock.SetupGet(model => model.Environment).Returns(environmentalModel.Object);
             mock.Setup(model => model.Environment.ResourceRepository.StopExecution(It.IsAny<IContextualResourceModel>()));

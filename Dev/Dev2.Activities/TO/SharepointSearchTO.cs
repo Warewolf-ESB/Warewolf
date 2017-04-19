@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Interfaces;
+using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Utilities;

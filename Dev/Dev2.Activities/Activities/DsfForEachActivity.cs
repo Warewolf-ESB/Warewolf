@@ -22,7 +22,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Enums;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
@@ -34,6 +34,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities

@@ -7,9 +7,8 @@ using Caliburn.Micro;
 using Dev2.Common.DependencyVisualization;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
-using Dev2.Interfaces;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -186,7 +185,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -231,7 +230,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -271,7 +270,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -306,7 +305,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -342,7 +341,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -377,7 +376,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);
@@ -407,8 +406,7 @@ namespace Dev2.Core.Tests
             var resourceId = Guid.NewGuid();
             var resourceId1 = Guid.NewGuid();
             var server = new Mock<IServer>();
-            var mVm = new Mock<IMainViewModel>();
-            var shell = new Mock<IShellViewModel>();
+            var mVm = new Mock<IShellViewModel>();
             var env = new Mock<IEnvironmentViewModel>();
             var exploreItm = new Mock<IExplorerItemViewModel>();
             exploreItm.SetupGet(model => model.ResourceName).Returns("a");
@@ -425,12 +423,12 @@ namespace Dev2.Core.Tests
             {
                 exploreItm.Object,exploreItm1.Object
             });
+            mVm.SetupGet(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             mVm.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new BindableCollection<IEnvironmentViewModel>()
             {
                 env.Object
             });
             CustomContainer.Register(mVm.Object);
-            CustomContainer.Register(shell.Object);
             var value = new Graph("a");
 
             value.Nodes.Add(new DependencyVisualizationNode(resourceId.ToString(), 2, 2, true, false));
@@ -438,7 +436,7 @@ namespace Dev2.Core.Tests
             depGrap.Setup(generator => generator.BuildGraph(It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<int>()))
                 .Returns(value);
             resourceModel.SetupGet(model => model.ResourceName).Returns("a");
-            var envMock = new Mock<IEnvironmentModel>();
+            var envMock = new Mock<IServer>();
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(repository => repository.GetDependenciesXmlAsync(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>()))
                 .Returns(ValueFunction);

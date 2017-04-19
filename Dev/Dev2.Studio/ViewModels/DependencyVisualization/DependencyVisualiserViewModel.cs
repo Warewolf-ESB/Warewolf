@@ -17,10 +17,9 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.DependencyVisualization;
 using Microsoft.Practices.Prism.Mvvm;
@@ -230,9 +229,9 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             {
                 if (!seenResource.Contains(Guid.Parse(node.ID)))
                 {
-                    var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var mainViewModel = CustomContainer.Get<IShellViewModel>();
                     var env = mainViewModel?
-                        .ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId == ResourceModel.Environment.ID);
+                        .ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId == ResourceModel.Environment.EnvironmentID);
                     var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == Guid.Parse(node.ID));
                     if (exploreritem != null)
                     {

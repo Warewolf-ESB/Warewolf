@@ -20,7 +20,7 @@ using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ValueParameterNotUsed
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels
 
             ViewApisJsonCommand = new DelegateCommand(() =>
             {
-                var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
+                var environmentModel = ServerRepository.Instance.FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
                 shellViewModel.ViewApisJson(ResourcePath, environmentModel.Connection.WebServerUri);
             });
 
@@ -194,7 +194,7 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.AddDeploySurface(AsList().Union<IExplorerTreeItem>(new [] { this }));
             });
 
-            DisplayName = server.ResourceName;
+            DisplayName = server.DisplayName;
             RefreshCommand = new DelegateCommand(async () =>
             {
                 await Refresh();
@@ -260,8 +260,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void UpdateActiveEnvironment(IShellViewModel shellViewModel)
         {
-            shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-            shellViewModel.SetActiveServer(Server);
+            shellViewModel.SetActiveServer(Server.EnvironmentID);
         }
 
         public IShellViewModel ShellViewModel => _shellViewModel;
@@ -871,11 +870,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isSelected = value;
                 OnPropertyChanged(() => IsSelected);
-                if (_isSelected)
-                {
-                    _shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-                    _shellViewModel.SetActiveServer(Server);
-                }
             }
         }
 
@@ -974,7 +968,6 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
-        #region COMMANDS
 
         public ICommand NewServiceCommand { get; set; }
         public ICommand NewServerCommand { get; set; }
@@ -1004,8 +997,6 @@ namespace Warewolf.Studio.ViewModels
         public ICommand Expand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
-
-        #endregion
 
         public string DisplayName
         {
@@ -1280,7 +1271,6 @@ namespace Warewolf.Studio.ViewModels
             return itemCreated;
         }
 
-
         public ExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem)
         {
             var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
@@ -1292,9 +1282,9 @@ namespace Warewolf.Studio.ViewModels
                 AllowResourceCheck = isDeploy,
                 ShowContextMenu = !isDeploy,
                 IsFolder = false,
-                IsService = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.WorkflowService,
-                IsSource = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Source,
-                IsServer = explorerItem.ResourceType == Dev2.Studio.Core.AppResources.Enums.ResourceType.Server
+                IsService = explorerItem.ResourceType == Dev2.Studio.Interfaces.Enums.ResourceType.WorkflowService,
+                IsSource = explorerItem.ResourceType == Dev2.Studio.Interfaces.Enums.ResourceType.Source,
+                IsServer = explorerItem.ResourceType == Dev2.Studio.Interfaces.Enums.ResourceType.Server
             };
 
             if (string.IsNullOrWhiteSpace(itemCreated.ResourcePath))
@@ -1342,7 +1332,6 @@ namespace Warewolf.Studio.ViewModels
                     explorerItemViewModel?.Dispose();
                 }
         }
-
         
         public bool Equals(IExplorerTreeItem x, IExplorerTreeItem y)
         {

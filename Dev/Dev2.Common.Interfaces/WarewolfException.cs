@@ -1,6 +1,6 @@
 ﻿    using System;
 
-namespace Dev2.Common.Interfaces.ErrorHandling
+namespace Dev2.Common.Interfaces
 {
     public class WarewolfException:Exception
     {

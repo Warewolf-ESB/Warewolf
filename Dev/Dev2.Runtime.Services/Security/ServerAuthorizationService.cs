@@ -16,6 +16,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
+using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.Security
 {

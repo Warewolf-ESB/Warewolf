@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Data.ServiceModel;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
