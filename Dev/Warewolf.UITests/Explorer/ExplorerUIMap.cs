@@ -429,6 +429,14 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(167, 10));
         }
 
+        [Given(@"I Select Explorer Remote Server Dropdown List")]
+        [When(@"I Select Explorer Remote Server Dropdown List")]
+        [Then(@"I Select Explorer Remote Server Dropdown List")]
+        public void Select_Explorer_Remote_Server_Dropdown_List()
+        {            
+            Mouse.Click(MainStudioWindow.RemoteConnectionItem);
+        }
+
         [Given(@"I Click Explorer ServerCombobox ToggleButton")]
         [When(@"I Click Explorer ServerCombobox ToggleButton")]
         [Then(@"I Click Explorer ServerCombobox ToggleButton")]

@@ -355,13 +355,16 @@ namespace Warewolf.Studio.ViewModels
                     {
                         environmentConnection.Connect(environmentId);
                     }
-                    var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
-                    _environments.Add(environmentModel);
-                    if (shouldLoad)
+                    else
                     {
-                        await environmentModel.Load(true, true);
+                        var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
+                        _environments.Add(environmentModel);
+                        if (shouldLoad)
+                        {
+                            await environmentModel.Load(true, true);
+                        }
+                        environmentViewModel = environmentModel;
                     }
-                    environmentViewModel = environmentModel;
                 }
             }
             return environmentViewModel;
