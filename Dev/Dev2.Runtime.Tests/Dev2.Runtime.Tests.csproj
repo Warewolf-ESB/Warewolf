@@ -535,6 +535,7 @@
     <EmbeddedResource Include="Json\PrimitivePluginReturningJsonString.json" />
     <EmbeddedResource Include="Json\ComPrimitivePluginReturningJsonString.json" />
     <EmbeddedResource Include="Json\Sequence.json" />
+    <EmbeddedResource Include="Json\UnAuthorizedHelloWorld.json" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Security\secure.config" />
     <None Include="XML\ReadMe.txt" />
