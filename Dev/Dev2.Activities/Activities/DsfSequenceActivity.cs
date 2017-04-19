@@ -23,7 +23,8 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Messages;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable MemberCanBePrivate.Global

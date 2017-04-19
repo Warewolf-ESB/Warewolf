@@ -16,6 +16,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Security;
 using Warewolf.Resource.Errors;
 

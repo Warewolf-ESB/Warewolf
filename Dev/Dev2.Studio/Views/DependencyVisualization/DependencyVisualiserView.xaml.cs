@@ -11,8 +11,8 @@
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Common.Interfaces;
 using Dev2.Services.Events;
+using Dev2.Studio.Interfaces;
 using Infragistics.Controls.Maps;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;

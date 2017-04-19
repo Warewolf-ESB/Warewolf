@@ -18,7 +18,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Communication;
-using Dev2.Data.Enums;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,6 +25,7 @@ using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence

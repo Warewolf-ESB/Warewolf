@@ -10,7 +10,7 @@
 
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;

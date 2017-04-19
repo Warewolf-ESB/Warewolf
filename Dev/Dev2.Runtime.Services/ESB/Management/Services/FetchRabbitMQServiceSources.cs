@@ -23,8 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using Dev2.Services.Security;
-
+using Dev2.Common.Interfaces.Enums;
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Runtime.ESB.Management.Services

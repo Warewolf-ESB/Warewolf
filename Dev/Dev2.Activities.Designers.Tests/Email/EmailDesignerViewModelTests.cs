@@ -22,12 +22,11 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Communication;
-using Dev2.Interfaces;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -88,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
+            new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -146,7 +145,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var modelItem = CreateModelItem();
             modelItem.SetProperty("SelectedEmailSource", selectedEmailSource);
 
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
@@ -1324,8 +1323,8 @@ namespace Dev2.Activities.Designers.Tests.Email
             {
                 CustomContainer.Register(new Mock<IShellViewModel>().Object);
             }
-            var environment = new Mock<IEnvironmentModel>();
-            environment.Setup(e => e.ResourceRepository.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource))
+            var environment = new Mock<IServer>();
+            environment.Setup(e => e.ResourceRepository.FindSourcesByType<EmailSource>(It.IsAny<IServer>(), enSourceType.EmailSource))
                 .Returns(sources);
             environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false))
                 .Returns(resourceModel);

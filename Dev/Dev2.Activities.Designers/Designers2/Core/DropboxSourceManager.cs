@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.Core
 {
     public class DropboxSourceManager : IDropboxSourceManager
     {
-        private readonly IEnvironmentModel _targetEnvironment;
+        private readonly IServer _targetEnvironment;
 
-        public DropboxSourceManager(IEnvironmentModel targetEnvironment)
+        public DropboxSourceManager(IServer targetEnvironment)
         {
             _targetEnvironment = targetEnvironment;
         }
 
         public DropboxSourceManager()
-            : this(EnvironmentRepository.Instance.ActiveEnvironment)
+            : this(ServerRepository.Instance.ActiveServer)
         {
 
         }

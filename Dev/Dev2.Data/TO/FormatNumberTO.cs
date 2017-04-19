@@ -9,13 +9,15 @@
 */
 
 using Dev2.Common.Interfaces.Enums.Enums;
-using Dev2.DataList.Contract;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Data.TO
 {
     // ReSharper disable InconsistentNaming
-    public class FormatNumberTO
+    public class FormatNumberTO : IFormatNumberTO
     // ReSharper restore InconsistentNaming
+
     {
         #region Properties
 

@@ -473,7 +473,7 @@
     <Compile Include="Model\ExceptionUIModel.cs" />
     <Compile Include="ViewModels\Diagnostics\ExceptionViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\IExceptionViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerViewModel.cs" />
     <Compile Include="Views\DataList\DataListView.xaml.cs">
       <DependentUpon>DataListView.xaml</DependentUpon>
@@ -509,8 +509,8 @@
     <Compile Include="Views\Global\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
+    <Compile Include="Views\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ResourceManagement\DeleteResourceDialog.xaml.cs">
       <DependentUpon>DeleteResourceDialog.xaml</DependentUpon>
@@ -692,7 +692,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MainView.xaml">
+    <Page Include="Views\ShellView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -811,6 +811,10 @@
       <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
       <Name>Dev2.CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>
       <Name>Dev2.Data</Name>
@@ -863,6 +867,10 @@
       <Project>{a58b157b-960b-4e84-8957-24e4884c5c77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj">
       <Project>{1B229665-1631-4275-AFBD-CB5B7775E4CA}</Project>
       <Name>Dev2.TaskScheduler.Wrappers</Name>
@@ -906,10 +914,6 @@
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{CB565C94-8833-4911-B20F-0921EE3C286C}</Project>
       <Name>Warewolf.Studio.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
-      <Project>{C35C7C88-1EAE-4421-AC03-CEFA26461D6C}</Project>
-      <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.CustomControls\Warewolf.Studio.CustomControls.csproj">
       <Project>{1bd5cc42-66c7-4a1b-af1f-e6f2d4372b44}</Project>

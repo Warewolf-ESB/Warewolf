@@ -9,15 +9,14 @@
 */
 
 using System;
-using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Dialogs
 {
     public interface IResourcePickerDialog
     {
         IExplorerTreeItem SelectedResource { get; set; }
-        bool ShowDialog(IEnvironmentModel environmentModel = null);
+        bool ShowDialog(IServer server = null);
 
         void SelectResource(Guid id);
     }

@@ -11,10 +11,10 @@
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Lookups;
-using Dev2.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Models;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers.Tests.Zip
         public void ZipDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);

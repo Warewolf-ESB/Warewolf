@@ -4,11 +4,11 @@ using System.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
-using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Services;
-using Dev2.Studio.Core.Interfaces;
 using Warewolf.Resource.Errors;
+using Dev2.Common.Interfaces.Studio.Core;
+using Dev2.Studio.Interfaces;
 // ReSharper disable ParameterTypeCanBeEnumerable.Global
 
 namespace Dev2.Activities.Designers2.Service
@@ -67,7 +67,7 @@ namespace Dev2.Activities.Designers2.Service
             RemoveErrors(errorInfos.ToList());
         }
 
-        public void InitializeLastValidationMemo(IEnvironmentModel environmentModel)
+        public void InitializeLastValidationMemo(IServer server)
         {
             var uniqueId = _serviceDesignerViewModel.UniqueID;
             var designValidationMemo = new DesignValidationMemo
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers2.Service
             };
             designValidationMemo.Errors.AddRange(_serviceDesignerViewModel.RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
 
-            if (environmentModel == null)
+            if (server == null)
             {
                 designValidationMemo.IsValid = false;
                 designValidationMemo.Errors.Add(new ErrorInfo
@@ -110,11 +110,11 @@ namespace Dev2.Activities.Designers2.Service
             _serviceDesignerViewModel.MappingManager.UpdateLastValidationMemo(memo, false);
         }
 
-        public void InitializeValidationService(IEnvironmentModel environmentModel)
+        public void InitializeValidationService(IServer server)
         {
-            if (environmentModel?.Connection?.ServerEvents != null)
+            if (server?.Connection?.ServerEvents != null)
             {
-                _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
+                _validationService = new DesignValidationService(server.Connection.ServerEvents);
                 _validationService.Subscribe(_serviceDesignerViewModel.UniqueID, a => _serviceDesignerViewModel.MappingManager.UpdateLastValidationMemo(a));
             }
         }

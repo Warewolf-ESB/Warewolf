@@ -14,8 +14,8 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.CustomControls.Progress;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
+using Dev2.Studio.Interfaces;
 using Dev2.Utils;
 using Newtonsoft.Json;
 
@@ -34,7 +34,7 @@ namespace Dev2.Settings.Logging
     }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
-        public IEnvironmentModel CurrentEnvironment
+        public IServer CurrentEnvironment
         {
             private get
             {
@@ -55,7 +55,7 @@ namespace Dev2.Settings.Logging
         private LogLevel _studioEventLogLevel;
         private ProgressDialogViewModel _progressDialogViewModel;
         private string _serverLogFile;
-        private IEnvironmentModel _currentEnvironment;
+        private IServer _currentEnvironment;
         private LogLevel _serverFileLogLevel;
         private LogLevel _studioFileLogLevel;
         private LogSettingsViewModel _item;
@@ -66,7 +66,7 @@ namespace Dev2.Settings.Logging
 
         }
 
-        public LogSettingsViewModel(LoggingSettingsTo logging, IEnvironmentModel currentEnvironment)
+        public LogSettingsViewModel(LoggingSettingsTo logging, IServer currentEnvironment)
         {
             if (logging == null) throw new ArgumentNullException(nameof(logging));
             if (currentEnvironment == null) throw new ArgumentNullException(nameof(currentEnvironment));

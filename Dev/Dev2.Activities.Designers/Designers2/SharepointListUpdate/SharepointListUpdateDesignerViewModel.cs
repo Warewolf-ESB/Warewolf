@@ -11,9 +11,9 @@
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using Dev2.Activities.Designers2.SharepointListRead;
-using Dev2.Interfaces;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.TO;
 
@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.SharepointListUpdate
     public class SharepointListUpdateDesignerViewModel : SharepointListDesignerViewModelBase
     {
         public SharepointListUpdateDesignerViewModel(ModelItem modelItem)
-            : base(modelItem, new AsyncWorker(), EnvironmentRepository.Instance.ActiveEnvironment, EventPublishers.Aggregator,true)
+            : base(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator,true)
         {
             WhereOptions = new ObservableCollection<string>(SharepointSearchOptions.SearchOptions());
             dynamic mi = ModelItem;
@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.SharepointListUpdate
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

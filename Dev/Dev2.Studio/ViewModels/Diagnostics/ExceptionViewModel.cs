@@ -28,9 +28,8 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Interfaces;
 using Dev2.Studio.Controller;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -292,7 +291,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public static async Task<string> GetServerLogFile()
         {
-            var activeEnvironment = CustomContainer.Get<IMainViewModel>().ActiveEnvironment;
+            var activeEnvironment = CustomContainer.Get<IShellViewModel>().ActiveServer;
             WebClient client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile?numLines=10", activeEnvironment.Connection);
             var serverLogFile = await client.DownloadStringTaskAsync(managementServiceUri);

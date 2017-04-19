@@ -17,7 +17,7 @@ using Moq;
 using TechTalk.SpecFlow;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.Core;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using static System.String;
 
 namespace Warewolf.UIBindingTests.ComDll

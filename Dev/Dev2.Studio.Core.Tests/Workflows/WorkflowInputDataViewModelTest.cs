@@ -17,16 +17,15 @@ using System.Xml.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
-using Dev2.DataList.Contract;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -636,8 +635,8 @@ namespace Dev2.Core.Tests.Workflows
             rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            var mockEnvironmentModel = new Mock<IServer>();
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
@@ -685,8 +684,8 @@ namespace Dev2.Core.Tests.Workflows
             rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(datalist);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            var mockEnvironmentModel = new Mock<IServer>();
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
@@ -727,8 +726,8 @@ namespace Dev2.Core.Tests.Workflows
             rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(datalist);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            var mockEnvironmentModel = new Mock<IServer>();
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
             rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
@@ -850,11 +849,11 @@ namespace Dev2.Core.Tests.Workflows
 
         static DebugOutputViewModel CreateDebugOutputViewModel()
         {
-            var models = new List<IEnvironmentModel>();
-            var envRepo = new Mock<IEnvironmentRepository>();
+            var models = new List<IServer>();
+            var envRepo = new Mock<IServerRepository>();
             envRepo.Setup(s => s.All()).Returns(models);
             envRepo.Setup(s => s.IsLoaded).Returns(true);
-            envRepo.Setup(repository => repository.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            envRepo.Setup(repository => repository.Source).Returns(new Mock<IServer>().Object);
 
             return new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object);
         }

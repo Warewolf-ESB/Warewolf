@@ -19,7 +19,7 @@ using Dev2.Settings;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Perfcounters;
 using Dev2.Settings.Security;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Moq;
 
 namespace Dev2.Core.Tests.Settings
@@ -33,8 +33,8 @@ namespace Dev2.Core.Tests.Settings
         {
         }
 
-        public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow,Mock<IEnvironmentModel> env)
-            : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<Dev2.Common.Interfaces.IServer>().Object, a => env.Object)
+        public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow,Mock<IServer> env)
+            : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IServer>().Object, a => env.Object)
         {
             
         }
@@ -63,12 +63,12 @@ namespace Dev2.Core.Tests.Settings
         public LogSettingsViewModel TheLogSettingsViewModel { get; set; }
         protected override SecurityViewModel CreateSecurityViewModel()
         {
-            return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object, ()=> new Mock<IResourcePickerDialog>().Object);
+            return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, ()=> new Mock<IResourcePickerDialog>().Object);
         }
 
         protected override PerfcounterViewModel CreatePerfmonViewModel()
         {
-            return ThePerfcounterViewModel ?? new PerfcounterViewModel(Settings.PerfCounters, new Mock<IEnvironmentModel>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            return ThePerfcounterViewModel ?? new PerfcounterViewModel(Settings.PerfCounters, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
         }
 
         public PerfcounterViewModel ThePerfcounterViewModel
@@ -85,7 +85,7 @@ namespace Dev2.Core.Tests.Settings
 
         protected override LogSettingsViewModel CreateLoggingViewModel()
         {
-            return TheLogSettingsViewModel ?? new LogSettingsViewModel(new LoggingSettingsTo(), new Mock<IEnvironmentModel>().Object);
+            return TheLogSettingsViewModel ?? new LogSettingsViewModel(new LoggingSettingsTo(), new Mock<IServer>().Object);
         }
 
         public void CallDeactivate()

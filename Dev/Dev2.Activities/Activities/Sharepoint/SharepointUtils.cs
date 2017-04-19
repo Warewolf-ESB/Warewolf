@@ -7,7 +7,7 @@ using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data;
 using Dev2.TO;
 using Microsoft.SharePoint.Client;
-using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Sharepoint
 {

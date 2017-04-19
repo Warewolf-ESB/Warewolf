@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
+using Dev2.Studio.Interfaces;
 using Moq;
 using Newtonsoft.Json;
 
@@ -289,6 +290,66 @@ namespace Warewolf.Testing
         public IServer FetchServer(Guid savedServerID)
         {
             throw new NotImplementedException();
+        }
+
+        #region Implementation of IEquatable<IServer>
+
+        public bool Equals(IServer other)
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region Implementation of IServer
+        
+        public IAuthorizationService AuthorizationService { get; }
+        public string Name { get; set; }
+        public bool CanStudioExecute { get; set; }
+        public bool IsAuthorized { get; }
+        public bool IsAuthorizedDeployFrom { get; }
+        public bool IsAuthorizedDeployTo { get; }
+        public bool IsLocalHost { get; }
+        public bool HasLoadedResources { get; }
+        public IEnvironmentConnection Connection { get; set; }
+        public IResourceRepository ResourceRepository { get; }
+
+        public void ForceLoadResources()
+        {
+        }
+
+        public void LoadResources()
+        {
+        }
+
+        public bool IsLocalHostCheck()
+        {
+            return false;
+        }
+
+        #region Implementation of IServer
+
+        public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
+        public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
+        public event EventHandler AuthorizationServiceSet;
+
+        #endregion
+
+        #endregion
+
+        protected virtual void OnIsConnectedChanged(ConnectedEventArgs e)
+        {
+            IsConnectedChanged?.Invoke(this, e);
+        }
+
+        protected virtual void OnResourcesLoaded(ResourcesLoadedEventArgs e)
+        {
+            ResourcesLoaded?.Invoke(this, e);
+        }
+
+        protected virtual void OnAuthorizationServiceSet()
+        {
+            AuthorizationServiceSet?.Invoke(this, EventArgs.Empty);
         }
     }
 }

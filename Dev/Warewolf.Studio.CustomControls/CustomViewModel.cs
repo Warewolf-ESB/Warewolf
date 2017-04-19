@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.CustomControls
 {
@@ -19,11 +19,11 @@ namespace Warewolf.Studio.CustomControls
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class CustomViewModel : INotifyPropertyChanged
     {
-        readonly IEnvironmentModel _environmentModel;
+        readonly IServer _server;
 
-        public CustomViewModel(IEnvironmentModel environmentModel)
+        public CustomViewModel(IServer server)
         {
-            _environmentModel = environmentModel;
+            _server = server;
 
             Sources = new List<string>(new[] { "Item One", "Item Two", "Item Three" });
             SelectedSource = Sources.FirstOrDefault();

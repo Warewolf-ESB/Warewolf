@@ -5,16 +5,15 @@ using System.Linq;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
-using Dev2.Data.PathOperations.Enums;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Dev2.DataList.Contract;
-using Dev2.PathOperations;
 using Ionic.Zip;
 using Ionic.Zlib;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
 namespace Dev2.Data.Util
@@ -22,7 +21,7 @@ namespace Dev2.Data.Util
     
     public class CommonDataUtils : ICommon
     {
-        public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, Dev2CRUDOperationTO args)
+        public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, IDev2CRUDOperationTO args)
         {
             if (endPoint.IOPath?.Path.Trim().Length == 0)
             {
@@ -35,7 +34,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public void ExtractFile(Dev2UnZipOperationTO args, ZipFile zip, string extractFromPath)
+        public void ExtractFile(IDev2UnZipOperationTO args, ZipFile zip, string extractFromPath)
         {
             if (zip != null)
             {
@@ -233,7 +232,7 @@ namespace Dev2.Data.Util
 
         }
 
-        public void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, ExecutionEnvironment env, int update)
+        public void CreateObjectInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputObjectList, IExecutionEnvironment env, int update)
         {
             foreach (var dev2Definition in inputObjectList)
             {
@@ -269,7 +268,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputScalarList, ExecutionEnvironment env, int update)
+        public void CreateScalarInputs(IExecutionEnvironment outerEnvironment, IEnumerable<IDev2Definition> inputScalarList, IExecutionEnvironment env, int update)
         {
             foreach (var dev2Definition in inputScalarList)
             {
@@ -295,7 +294,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, ExecutionEnvironment env, int update)
+        public void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, IExecutionEnvironment env, int update)
         {
             foreach (var recordSetDefinition in inputRecSets.RecordSets)
             {
@@ -464,7 +463,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        private void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, ExecutionEnvironment env)
+        private void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {
             var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             DataListUtil.GetRecordsetIndexType(dev2ColumnDefinition.Value);
@@ -476,7 +475,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        private void ScalarAtomList(CommonFunctions.WarewolfEvalResult warewolfEvalResult, ExecutionEnvironment env, IDev2Definition dev2Definition)
+        private void ScalarAtomList(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IExecutionEnvironment env, IDev2Definition dev2Definition)
         {
             var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             if (data != null && data.Item.Any())
@@ -484,7 +483,7 @@ namespace Dev2.Data.Util
                 env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
             }
         }
-        private void ScalarAtom(CommonFunctions.WarewolfEvalResult warewolfEvalResult, ExecutionEnvironment env, IDev2Definition dev2Definition)
+        private void ScalarAtom(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IExecutionEnvironment env, IDev2Definition dev2Definition)
         {
             var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             if (data != null)
@@ -493,7 +492,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        private void AtomInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, ExecutionEnvironment env)
+        private void AtomInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {
             var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             if (dev2ColumnDefinition.IsRecordSet)

@@ -17,15 +17,14 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
-using Dev2.Interfaces;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.DataList;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -584,7 +583,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------  
             Setup();
-            var mockMainViewModel = new Mock<IMainViewModel>();
+            var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);

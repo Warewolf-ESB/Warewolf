@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -91,14 +91,14 @@ namespace Dev2.Core.Tests.Utils
         {
 
             var x = new Mock<IContextualResourceModel>();
-            var mockEnv = new Mock<IEnvironmentModel>();
+            var mockEnv = new Mock<IServer>();
             var mockCon = new Mock<IEnvironmentConnection>();
             mockEnv.Setup(a => a.Connection).Returns(mockCon.Object);
             mockCon.Setup(a => a.WebServerUri).Returns(new Uri("http://rsaklf/bob"));
             var envGuid = Guid.NewGuid();
 
             x.Setup(a => a.Environment).Returns(mockEnv.Object);
-            mockEnv.Setup(a => a.ID).Returns(envGuid);
+            mockEnv.Setup(a => a.EnvironmentID).Returns(envGuid);
             x.Setup(a => a.Environment).Returns(mockEnv.Object);
             var act = new DsfActivity("a", "b", "c", "d", "e", "f");
             //------------Execute Test---------------------------
@@ -118,8 +118,8 @@ namespace Dev2.Core.Tests.Utils
         {
 
             var x = new Mock<IContextualResourceModel>();
-            var mockEnv = new Mock<IEnvironmentModel>();
-            var mockEnvRes = new Mock<IEnvironmentModel>();
+            var mockEnv = new Mock<IServer>();
+            var mockEnvRes = new Mock<IServer>();
             var mockCon = new Mock<IEnvironmentConnection>();
             var mockConRes = new Mock<IEnvironmentConnection>();
             mockEnv.Setup(a => a.Connection).Returns(mockCon.Object);
@@ -128,8 +128,8 @@ namespace Dev2.Core.Tests.Utils
             var envGuid = Guid.NewGuid();
             var envGuidRes = Guid.NewGuid();
             x.Setup(a => a.Environment).Returns(mockEnvRes.Object);
-            mockEnv.Setup(a => a.ID).Returns(envGuid);
-            mockEnv.Setup(a => a.ID).Returns(envGuidRes);
+            mockEnv.Setup(a => a.EnvironmentID).Returns(envGuid);
+            mockEnv.Setup(a => a.EnvironmentID).Returns(envGuidRes);
             x.Setup(a => a.Environment).Returns(mockEnv.Object);
             var act = new DsfActivity("a", "b", "c", "d", "e", "f");
             //------------Execute Test---------------------------

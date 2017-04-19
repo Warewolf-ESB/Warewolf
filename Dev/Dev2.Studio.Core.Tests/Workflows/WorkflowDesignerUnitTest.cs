@@ -29,13 +29,12 @@ using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Core.Tests.Environments;
 using Dev2.Data;
-using Dev2.Data.Binary_Objects;
-using Dev2.Data.Interfaces;
 using Dev2.Diagnostics.Debug;
 using Dev2.Factory;
 using Dev2.Messages;
@@ -43,10 +42,7 @@ using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
@@ -59,6 +55,11 @@ using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Data.Interfaces.Enums;
+using Dev2.Data.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Workflows
@@ -1139,7 +1140,7 @@ namespace Dev2.Core.Tests.Workflows
 
             //------------Setup for test--------------------------
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage { Message = null });
+            repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage { Message = null });
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1187,7 +1188,7 @@ namespace Dev2.Core.Tests.Workflows
 
                     ExecuteMessage exeMsg = null;
                     // ReSharper disable ExpressionIsAlwaysNull
-                    resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
+                    resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
                     // ReSharper restore ExpressionIsAlwaysNull
 
                     var resourceModel = new Mock<IContextualResourceModel>();
@@ -1270,7 +1271,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInitializesFramework45Properties()
         {
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var crm = new Mock<IContextualResourceModel>();
@@ -1312,7 +1313,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInvokesWorkflowHelper()
         {
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1363,7 +1364,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModelServiceDefinitionExpectedInvokesWorkflowHelperSerializeWorkflow()
         {
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1400,15 +1401,15 @@ namespace Dev2.Core.Tests.Workflows
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
             var testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository, true);
             var mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv.Object);
             Assert.IsTrue(testAct.ServiceUri == null);
             Assert.IsTrue(testAct.ServiceServer == Guid.Empty);
 
-            var contextEnvironment = new Mock<IEnvironmentModel>();
-            contextEnvironment.Setup(e => e.ID).Returns(resourceEnvironmentID);
+            var contextEnvironment = new Mock<IServer>();
+            contextEnvironment.Setup(e => e.EnvironmentID).Returns(resourceEnvironmentID);
 
             var activity = new DsfActivity();
             var workflow = new ActivityBuilder { Implementation = activity };
@@ -1426,7 +1427,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
-            resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
+            resourceModel.Setup(m => m.Environment.EnvironmentID).Returns(resourceEnvironmentID);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 1");
             #endregion
 
@@ -1454,14 +1455,14 @@ namespace Dev2.Core.Tests.Workflows
         {
             const string ServiceUri = "http://localhost:1234/";
             var resourceEnvironmentID = Guid.NewGuid();
-            var contextEnvironment = new Mock<IEnvironmentModel>();
-            contextEnvironment.Setup(e => e.ID).Returns(Guid.NewGuid());
+            var contextEnvironment = new Mock<IServer>();
+            contextEnvironment.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             Guid envId2 = Guid.NewGuid();
-            Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
+            Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
             DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository, true);
@@ -1489,7 +1490,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name");
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
-            resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
+            resourceModel.Setup(m => m.Environment.EnvironmentID).Returns(resourceEnvironmentID);
 
             #endregion
 
@@ -1514,14 +1515,14 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         public void CheckIfRemoteWorkflowAndSetPropertiesExpectedResourceTypeToBeUnknown()
         {
-            var contextEnvironment = new Mock<IEnvironmentModel>();
-            contextEnvironment.Setup(e => e.ID).Returns(Guid.NewGuid());
+            var contextEnvironment = new Mock<IServer>();
+            contextEnvironment.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             Guid envId2 = Guid.NewGuid();
-            Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
+            Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
             DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository, true);
@@ -1635,16 +1636,16 @@ namespace Dev2.Core.Tests.Workflows
             var repo = new Mock<IResourceRepository>();
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(Guid.NewGuid());
-            var mockRemoteEnvironment = new Mock<IEnvironmentModel>();
+            var mockRemoteEnvironment = new Mock<IServer>();
             var remoteServerID = Guid.NewGuid();
-            mockRemoteEnvironment.Setup(model => model.ID).Returns(remoteServerID);
+            mockRemoteEnvironment.Setup(model => model.EnvironmentID).Returns(remoteServerID);
             var mockRemoteConnection = new Mock<IEnvironmentConnection>();
             mockRemoteConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://remoteserver:3142/"));
             mockRemoteEnvironment.Setup(model => model.Connection).Returns(mockRemoteConnection.Object);
             mockResourceModel.Setup(model => model.Environment).Returns(mockRemoteEnvironment.Object);
             repo.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(mockResourceModel.Object);
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            env.Setup(model => model.ID).Returns(Guid.Empty);
+            env.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
             var crm = new Mock<IContextualResourceModel>();
@@ -2870,7 +2871,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -2993,7 +2994,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3128,7 +3129,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3191,17 +3192,17 @@ namespace Dev2.Core.Tests.Workflows
 
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             Guid envId2 = Guid.NewGuid();
-            Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
+            Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
 
             #region Setup viewModel
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3277,17 +3278,17 @@ namespace Dev2.Core.Tests.Workflows
 
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             Guid envId2 = Guid.NewGuid();
-            Mock<IEnvironmentModel> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            mockEnv.Setup(c => c.ID).Returns(envId2);
+            Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
 
             #region Setup viewModel
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3365,7 +3366,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3414,7 +3415,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3460,7 +3461,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3507,7 +3508,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3555,7 +3556,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3603,7 +3604,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
 
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3651,10 +3652,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -3707,10 +3708,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -3777,10 +3778,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -3836,10 +3837,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -3899,7 +3900,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             var envConn = new Mock<IEnvironmentConnection>();
@@ -3926,22 +3927,22 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsNull(resourceModel.Object.WorkflowXaml);
         }
 
-        static IEnvironmentRepository SetupEnvironmentRepo(Guid environmentId)
+        static IServerRepository SetupEnvironmentRepo(Guid environmentId)
         {
             var mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-            mockEnvironment.Setup(model => model.ID).Returns(environmentId);
+            Mock<IServer> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.EnvironmentID).Returns(environmentId);
             return GetEnvironmentRepository(mockEnvironment);
         }
 
-        private static IEnvironmentRepository GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
+        private static IServerRepository GetEnvironmentRepository(Mock<IServer> mockEnvironment)
         {
 
-            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };
+            var repo = new TestLoadServerRespository(mockEnvironment.Object) { IsLoaded = true };
             // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentRepository(repo);
+            new ServerRepository(repo);
             // ReSharper restore ObjectCreationAsStatement
-            repo.ActiveEnvironment = mockEnvironment.Object;
+            repo.ActiveServer = mockEnvironment.Object;
 
             return repo;
         }
@@ -4021,10 +4022,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4080,10 +4081,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4136,10 +4137,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4192,10 +4193,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4248,10 +4249,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4305,10 +4306,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4362,10 +4363,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4419,10 +4420,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4475,10 +4476,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4532,10 +4533,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
@@ -4588,10 +4589,10 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));

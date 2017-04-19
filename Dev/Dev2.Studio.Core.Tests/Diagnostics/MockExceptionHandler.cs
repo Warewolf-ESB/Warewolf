@@ -8,15 +8,15 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Interfaces;
 using Dev2.Studio;
 using Dev2.Studio.Diagnostics;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
     public class MockExceptionHandler : AppExceptionHandler
     {
-        public MockExceptionHandler(IApp current, IMainViewModel mainViewModel)
+        public MockExceptionHandler(IApp current, IShellViewModel mainViewModel)
             : base(current, mainViewModel)
         {
         }

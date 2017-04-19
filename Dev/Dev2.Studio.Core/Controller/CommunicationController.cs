@@ -20,7 +20,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.SignalR.Wrappers;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable UnusedMemberInSuper.Global
@@ -222,8 +222,8 @@ namespace Dev2.Controller
             {
                 if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                 {
-                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + "Please ensure that your server is still running and your network connection is working."
-                        , "Server dropped", MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
             }
         }

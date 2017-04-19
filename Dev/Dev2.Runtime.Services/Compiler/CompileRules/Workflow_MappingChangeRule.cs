@@ -12,7 +12,7 @@ using System;
 using System.Text;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
-using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.Util;

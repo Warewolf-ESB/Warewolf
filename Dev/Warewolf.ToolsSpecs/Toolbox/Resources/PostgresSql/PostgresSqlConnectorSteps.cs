@@ -12,8 +12,8 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -46,15 +46,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
 
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
             _postgresSqlSource = new DbSourceDefinition
             {
@@ -203,14 +203,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var modelItem = ModelItemUtils.CreateModelItem(postgresActivity);
             var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
             var mockDbServiceModel = new Mock<IDbServiceModel>();
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
             _postgresSqlSource = new DbSourceDefinition
             {

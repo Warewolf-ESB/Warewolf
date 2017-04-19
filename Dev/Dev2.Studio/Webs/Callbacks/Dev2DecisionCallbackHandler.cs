@@ -9,8 +9,7 @@
 */
 
 using System.Windows;
-using Dev2.Interfaces;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Webs.Callbacks
 {

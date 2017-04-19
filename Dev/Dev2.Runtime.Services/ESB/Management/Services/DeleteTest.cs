@@ -6,10 +6,10 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Services.Security;
 using Dev2.Workspaces;
 // ReSharper disable MemberCanBeInternal
 

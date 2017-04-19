@@ -5,11 +5,10 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
-using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
@@ -29,7 +28,7 @@ namespace Dev2.ViewModels
             _popupController = popupController;
             ViewModel.PropertyChanged += (sender, args) =>
             {
-                var mainViewModel = CustomContainer.Get<IMainViewModel>();
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 if (mainViewModel != null)
                 {
                     ViewModelUtils.RaiseCanExecuteChanged(mainViewModel.SaveCommand);
@@ -40,7 +39,7 @@ namespace Dev2.ViewModels
                     NotifyOfPropertyChange(() => DisplayName);
                 }
             };
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), ServerRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
         }
 
         public override bool HasVariables => false;

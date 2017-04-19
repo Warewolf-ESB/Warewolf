@@ -5,7 +5,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
-using Dev2.Interfaces;
+using Dev2.Studio.Interfaces;
 using Dev2.Utilities;
 
 namespace Dev2.Activities.Designers2.Switch
@@ -170,7 +170,7 @@ namespace Dev2.Activities.Designers2.Switch
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

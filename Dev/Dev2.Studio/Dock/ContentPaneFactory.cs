@@ -18,9 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Interfaces;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -167,7 +165,7 @@ namespace Dev2.Studio.Dock
 
         private void PaneOnPreviewMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
+            var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
             if (mvm?.ActiveItem != null)
             {
                 var item = sender as ContentPane;
@@ -198,7 +196,7 @@ namespace Dev2.Studio.Dock
                             {
                                 if (Application.Current.MainWindow.DataContext != null)
                                 {
-                                    var mainViewModel = Application.Current.MainWindow.DataContext as MainViewModel;
+                                    var mainViewModel = Application.Current.MainWindow.DataContext as ShellViewModel;
                                     if (mainViewModel != null)
                                     {
                                         paneToolWindow.Title = mainViewModel.DisplayName;
@@ -604,7 +602,7 @@ namespace Dev2.Studio.Dock
         {
             var vm = model;
             vm.TryClose();
-            var mainVm = vm.Parent as MainViewModel;
+            var mainVm = vm.Parent as ShellViewModel;
             if(mainVm != null)
             {
                 if(mainVm.CloseCurrent)

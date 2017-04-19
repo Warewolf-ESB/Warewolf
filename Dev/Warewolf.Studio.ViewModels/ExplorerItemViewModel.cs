@@ -20,13 +20,12 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Core;
@@ -149,7 +148,7 @@ namespace Warewolf.Studio.ViewModels
         bool? _isResource;
         readonly IPopupController _popupController;
         IVersionInfo _versionInfo;
-        private IEnvironmentModel _environmentModel;
+        private IServer _server;
         private readonly ExplorerItemViewModelCommandController _explorerItemViewModelCommandController;
         private bool _forcedRefresh;
         private string _deployResourceCheckboxTooltip;
@@ -276,7 +275,7 @@ namespace Warewolf.Studio.ViewModels
             });
             ViewApisJsonCommand = new DelegateCommand(o =>
             {
-                _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, EnvironmentModel.Connection.WebServerUri);
+                _explorerItemViewModelCommandController.ViewApisJsonCommand(ResourcePath, Server.Connection.WebServerUri);
             });
 
             NewServerCommand = new DelegateCommand(o =>
@@ -659,7 +658,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Delete()
         {
-            _explorerItemViewModelCommandController.DeleteCommand(EnvironmentModel, Parent, _explorerRepository, this, _popupController, Server);
+            _explorerItemViewModelCommandController.DeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
         }
 
 
@@ -687,6 +686,7 @@ namespace Warewolf.Studio.ViewModels
         public void SetPermission(Permissions permission, bool isDeploy = false)
         {
             SetNonePermissions();
+
             if (Server.CanDeployFrom)
             {
                 CanDeploy = true;
@@ -1061,11 +1061,7 @@ namespace Warewolf.Studio.ViewModels
                     _isSelected = value;
 
                     OnPropertyChanged(() => IsSelected);
-                    if (_isSelected && _shellViewModel != null)
-                    {
-                        _shellViewModel.SetActiveEnvironment(Server.EnvironmentID);
-                        _shellViewModel.SetActiveServer(Server);
-                    }
+                    _shellViewModel?.SetActiveServer(Server.EnvironmentID);
                 }
             }
         }
@@ -1206,24 +1202,28 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _canCreateSource = value;
-
-                NewServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewServerSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewSqlServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSqlServerSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewMySqlSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewMySqlSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewPostgreSqlSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPostgreSqlSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewOracleSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewOracleSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewOdbcSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewOdbcSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewWebSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPluginSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewComPluginSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewEmailSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewEmailSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewExchangeSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewExchangeSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewRabbitMqSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewDropboxSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewDropboxSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewSharepointSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSharepointSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-
+                SetSourceTooltips();
                 OnPropertyChanged(() => CanCreateSource);
             }
+        }
+
+        private void SetSourceTooltips()
+        {
+            var noPermissionsToolTip = Resources.Languages.Tooltips.NoPermissionsToolTip;
+            NewServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewServerSourceTooltip : noPermissionsToolTip;
+            NewSqlServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSqlServerSourceTooltip : noPermissionsToolTip;
+            NewMySqlSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewMySqlSourceTooltip : noPermissionsToolTip;
+            NewPostgreSqlSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPostgreSqlSourceTooltip : noPermissionsToolTip;
+            NewOracleSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewOracleSourceTooltip : noPermissionsToolTip;
+            NewOdbcSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewOdbcSourceTooltip : noPermissionsToolTip;
+            NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewWebSourceTooltip : noPermissionsToolTip;
+            NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPluginSourceTooltip : noPermissionsToolTip;
+            NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewComPluginSourceTooltip : noPermissionsToolTip;
+            NewEmailSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewEmailSourceTooltip : noPermissionsToolTip;
+            NewExchangeSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewExchangeSourceTooltip : noPermissionsToolTip;
+            NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewRabbitMqSourceTooltip : noPermissionsToolTip;
+            NewDropboxSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewDropboxSourceTooltip : noPermissionsToolTip;
+            NewSharepointSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSharepointSourceTooltip : noPermissionsToolTip;
         }
 
         public bool CanViewSwagger
@@ -1448,11 +1448,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public IServer Server
-        {
-            get;
-            set;
-        }
         public ICommand LostFocus { get; set; }
         public bool CanExecute
         {
@@ -1868,15 +1863,15 @@ namespace Warewolf.Studio.ViewModels
         public string ExecuteToolTip => Resources.Languages.Tooltips.ExplorerItemExecuteToolTip;
         public string EditToolTip => Resources.Languages.Tooltips.ExplorerItemEditToolTip;
         public string ResourcePath { get; set; }
-        public IEnvironmentModel EnvironmentModel
+        public IServer Server
         {
-            private get
+            get
             {
-                return _environmentModel ?? EnvironmentRepository.Instance.FindSingle(model => model.ID == Server.EnvironmentID);
+                return _server ?? ServerRepository.Instance.FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
             }
             set
             {
-                _environmentModel = value;
+                _server = value;
             }
         }
 

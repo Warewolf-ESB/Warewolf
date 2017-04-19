@@ -12,7 +12,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
@@ -31,7 +31,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            IEnvironmentModel env = value as IEnvironmentModel;
+            IServer env = value as IServer;
             if(env != null)
             {
                 if(env.IsConnected)

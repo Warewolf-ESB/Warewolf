@@ -15,11 +15,12 @@ using System.IO;
 using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Studio.Core.Interfaces;
 using FontAwesome.WPF;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.Studio.Core;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable PossibleNullReferenceException
 
 // ReSharper disable CheckNamespace

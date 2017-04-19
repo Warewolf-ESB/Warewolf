@@ -105,6 +105,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Weave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -130,12 +134,15 @@
     <Compile Include="Help\HelpDescriptorViewModelTests.cs" />
     <Compile Include="Help\HelpModelTests.cs" />
     <Compile Include="Help\HelpWindowViewModelTests.cs" />
+    <Compile Include="ManageComPluginServiceModelTests.cs" />
     <Compile Include="ManageComPluginSourceModelTests.cs" />
     <Compile Include="ManageComPluginSourceViewModelTests.cs" />
     <Compile Include="DatabaseSourceViewModelBaseTests.cs" />
+    <Compile Include="ManageDbServiceModelTests.cs" />
     <Compile Include="ManageOAuthSourceModelTests.cs" />
     <Compile Include="ManageExchangeSourceModelTests.cs" />
     <Compile Include="ManageOdbcSourceViewModelTests.cs" />
+    <Compile Include="ManagePluginServiceModelTests.cs" />
     <Compile Include="ManagePostgreSqlSourceViewModelTests.cs" />
     <Compile Include="ManageMySqlSourceViewModelTests.cs" />
     <Compile Include="ManageOracleSourceViewModelTests.cs" />
@@ -150,7 +157,9 @@
     <Compile Include="ManagePluginSourceModelTests.cs" />
     <Compile Include="ManagePluginSourceViewModelTests.cs" />
     <Compile Include="ManageRabbitMqSourceModelTests.cs" />
+    <Compile Include="ManageWcfServiceModelTests.cs" />
     <Compile Include="ManageWcfSourceViewModelTests.cs" />
+    <Compile Include="ManageWebServiceModelTests.cs" />
     <Compile Include="ManageWebServiceSourceModelTests.cs" />
     <Compile Include="MenuViewModelTests.cs" />
     <Compile Include="MessageBoxViewModelTests.cs" />
@@ -211,6 +220,10 @@
       <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
       <Name>Dev2.Data</Name>
@@ -235,6 +248,10 @@
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
@@ -242,6 +259,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
+      <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>
+      <Name>Warewolf.Storage.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
@@ -258,10 +279,6 @@
     <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
       <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
       <Name>Warewolf.Studio.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Studio.ServerProxyLayer\Warewolf.Studio.ServerProxyLayer.csproj">
-      <Project>{C35C7C88-1EAE-4421-AC03-CEFA26461D6C}</Project>
-      <Name>Warewolf.Studio.ServerProxyLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>

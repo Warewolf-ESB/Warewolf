@@ -14,6 +14,8 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Common.Interfaces.WebServices;
+using Dev2.Studio.Interfaces;
+// ReSharper disable UnusedMember.Global
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -21,17 +23,7 @@ namespace Warewolf.Studio.ViewModels
     {
         public IStudioUpdateManager UpdateRepository { get; private set; }
         public IQueryManager QueryProxy { get; private set; }
-        public ObservableCollection<IWebServiceSource> Sources
-        {
-            get
-            {
-                if (_sources == null)
-                {
-                    _sources = new ObservableCollection<IWebServiceSource>(QueryProxy.FetchWebServiceSources());
-                }
-                return _sources;
-            }
-        }
+        public ObservableCollection<IWebServiceSource> Sources => _sources ?? (_sources = new ObservableCollection<IWebServiceSource>(QueryProxy.FetchWebServiceSources()));
 
         readonly IShellViewModel _shell;
         ObservableCollection<IWebServiceSource> _sources;
@@ -41,13 +33,11 @@ namespace Warewolf.Studio.ViewModels
             UpdateRepository = updateRepository;
             QueryProxy = queryProxy;
             _shell = shell;
-            shell.SetActiveServer(server);
-            
+            shell.SetActiveServer(server.EnvironmentID);
         }
 
         #region Implementation of IWebServiceModel
 
-        
         public ICollection<IWebServiceSource> RetrieveSources()
         {
             return new List<IWebServiceSource>(QueryProxy.FetchWebServiceSources());
@@ -65,11 +55,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string TestService(IWebService inputValues)
         {
-            if (UpdateRepository != null)
-            {
-                return UpdateRepository.TestWebService(inputValues);
-            }
-            return "Error";
+            return UpdateRepository != null ? UpdateRepository.TestWebService(inputValues) : "Error";
         }
 
         #endregion

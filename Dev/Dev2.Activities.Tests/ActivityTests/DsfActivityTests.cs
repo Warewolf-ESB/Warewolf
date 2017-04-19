@@ -16,6 +16,7 @@ using System.Security.Principal;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.Services.Security;

@@ -1,15 +1,14 @@
 ﻿using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
-using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Data.ServiceModel;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Warewolf.Studio.Core;
 
@@ -342,7 +341,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestUpdateHelpDescriptor()
         {
             //arrange
-            Mock<IMainViewModel> mainViewModelMock = new Mock<IMainViewModel>();
+            Mock<IShellViewModel> mainViewModelMock = new Mock<IShellViewModel>();
             Mock<IHelpWindowViewModel> helpViewModelMock = new Mock<IHelpWindowViewModel>();
             mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpViewModelMock.Object);
             CustomContainer.Register(mainViewModelMock.Object);

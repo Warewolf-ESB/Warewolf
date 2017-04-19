@@ -19,13 +19,11 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Data.ServiceModel;
-using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable VirtualMemberCallInContructor
@@ -38,7 +36,7 @@ namespace Warewolf.Studio.ViewModels
     {
         public IAsyncWorker AsyncWorker { get; set; }
         ISharepointServerSource _sharePointServiceSource;
-        private readonly IEnvironmentModel _environment;
+        private readonly IServer _environment;
         private readonly ISharePointSourceModel _updateManager;
         private string _serverName;
         private bool _isWindows;
@@ -61,7 +59,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isDisposed;
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
-        public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IEnvironmentModel environment)
+        public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
             : base("SharepointServerSource")
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -82,13 +80,13 @@ namespace Warewolf.Studio.ViewModels
             CancelTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
         }
 
-        public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IEnvironmentModel environment)
+        public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
             : this(updateManager, aggregator, asyncWorker, environment)
         {
             VerifyArgument.IsNotNull("requestServiceNameViewModel", requestServiceNameViewModel);
             _requestServiceNameViewModel = requestServiceNameViewModel;
         }
-        public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, IEventAggregator aggregator, ISharepointServerSource sharePointServiceSource, IAsyncWorker asyncWorker, IEnvironmentModel environment)
+        public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, IEventAggregator aggregator, ISharepointServerSource sharePointServiceSource, IAsyncWorker asyncWorker, IServer environment)
             : this(updateManager, aggregator, asyncWorker, environment)
         {
             VerifyArgument.IsNotNull("sharePointServiceSource", sharePointServiceSource);
@@ -154,7 +152,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 

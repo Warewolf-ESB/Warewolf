@@ -14,6 +14,8 @@ using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Interfaces;
 using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
+
 // ReSharper disable UseObjectOrCollectionInitializer
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles

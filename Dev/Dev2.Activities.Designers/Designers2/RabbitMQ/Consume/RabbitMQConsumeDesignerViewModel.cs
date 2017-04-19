@@ -14,7 +14,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.RabbitMQ;
-using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System;
@@ -24,6 +23,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using Dev2.Studio.Interfaces;
+
 // ReSharper disable ConvertPropertyToExpressionBody
 
 // ReSharper disable InconsistentNaming
@@ -239,7 +240,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 
         public override void UpdateHelpDescriptor(string helpText)
         {
-            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
     }

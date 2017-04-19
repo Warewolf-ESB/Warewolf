@@ -14,7 +14,8 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Factory;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -70,7 +71,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var resource1 = Dev2MockFactory.SetupResourceModelMock();
             resource1.Setup(c => c.ID).Returns(resId);
             resource1.Setup(c => c.ServerID).Returns(serverId);
-            resource1.Setup(c => c.Environment.ID).Returns(enviroId);
+            resource1.Setup(c => c.Environment.EnvironmentID).Returns(enviroId);
 
             var key1 = WorkSurfaceKeyFactory.CreateKey(resource1.Object);
 
@@ -79,7 +80,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var resource2 = Dev2MockFactory.SetupResourceModelMock();
             resource2.Setup(c => c.ID).Returns(resId);
             resource2.Setup(c => c.ServerID).Returns(serverId);
-            resource2.Setup(c => c.Environment.ID).Returns(enviroId2);
+            resource2.Setup(c => c.Environment.EnvironmentID).Returns(enviroId2);
 
             var key2 = WorkSurfaceKeyFactory.CreateKey(resource2.Object);
             if(WorkSurfaceKeyEqualityComparer.Current.Equals(key1, key2))
@@ -95,7 +96,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var serverId = Guid.NewGuid();
             var enviroId = Guid.NewGuid();
 
-            WorkSurfaceKey key1 = WorkSurfaceKeyFactory.CreateKey(Studio.Core.AppResources.Enums.WorkSurfaceContext.DependencyVisualiser) as WorkSurfaceKey;
+            WorkSurfaceKey key1 = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DependencyVisualiser) as WorkSurfaceKey;
             Assert.IsNotNull(key1);
             key1.EnvironmentID = enviroId;
             key1.ResourceID = resId;
@@ -104,7 +105,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var resource2 = Dev2MockFactory.SetupResourceModelMock();
             resource2.Setup(c => c.ID).Returns(resId);
             resource2.Setup(c => c.ServerID).Returns(serverId);
-            resource2.Setup(c => c.Environment.ID).Returns(enviroId);
+            resource2.Setup(c => c.Environment.EnvironmentID).Returns(enviroId);
 
             var key2 = WorkSurfaceKeyFactory.CreateKey(resource2.Object);
             if (WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key1, key2))
@@ -146,23 +147,23 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var enviroId = Guid.NewGuid();
             var enviroId2 = Guid.NewGuid();
 
-            var source = new Mock<IEnvironmentModel>();
+            var source = new Mock<IServer>();
             var sourceConnection = new Mock<IEnvironmentConnection>();
             sourceConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid);
             source.Setup(model => model.Connection).Returns(sourceConnection.Object);
-            var e1 = new Mock<IEnvironmentModel>();
-            e1.Setup(model => model.ID).Returns(Guid.NewGuid);
+            var e1 = new Mock<IServer>();
+            e1.Setup(model => model.EnvironmentID).Returns(Guid.NewGuid);
             var connection1 = new Mock<IEnvironmentConnection>();
             connection1.Setup(connection => connection.WorkspaceID).Returns(enviroId);
             e1.Setup(model => model.Connection).Returns(connection1.Object);
-            var e2 = new Mock<IEnvironmentModel>();
-            e2.Setup(model => model.ID).Returns(Guid.NewGuid);
+            var e2 = new Mock<IServer>();
+            e2.Setup(model => model.EnvironmentID).Returns(Guid.NewGuid);
             var connection2 = new Mock<IEnvironmentConnection>();
             connection2.Setup(connection => connection.WorkspaceID).Returns(enviroId2);
             e2.Setup(model => model.Connection).Returns(connection2.Object);
-            var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var repo = new TestLoadServerRespository(source.Object, e1.Object, e2.Object);
             // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentRepository(repo);
+            new ServerRepository(repo);
             // ReSharper restore ObjectCreationAsStatement
             var debugState = new Mock<IDebugState>();
             debugState.Setup(c => c.OriginatingResourceID).Returns(resId);

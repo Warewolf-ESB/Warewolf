@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.WebServices;
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -43,14 +43,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             var modelItem = ModelItemUtils.CreateModelItem(activity);
             var mockServiceInputViewModel = new Mock<IManageWebServiceInputViewModel>();
             var mockServiceModel = new Mock<IWebServiceModel>();
-            var mockEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
             mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveEnvironment).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
             _webHelooWebSource = new WebServiceSourceDefinition
             {
