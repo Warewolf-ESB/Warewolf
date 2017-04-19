@@ -349,8 +349,12 @@ namespace Warewolf.Studio.ViewModels
                 var connectControlViewModel = sender as ConnectControlViewModel;
                 var selectedConnection = connectControlViewModel?.SelectedConnection;
                 var environmentConnection = selectedConnection?.Connection;
-                if (environmentConnection != null && environmentConnection.IsConnected)
+                if (environmentConnection != null)
                 {
+                    if (!environmentConnection.IsConnected)
+                    {
+                        environmentConnection.Connect(environmentId);
+                    }
                     var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
                     _environments.Add(environmentModel);
                     if (shouldLoad)
