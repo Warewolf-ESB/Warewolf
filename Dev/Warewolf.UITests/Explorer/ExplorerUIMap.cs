@@ -876,7 +876,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Tests.Exists, "View tests does not exist in explorer context menu.");
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Tests);
-            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.RunAllButton.Exists, "Run all button does not exist on tests tab");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Workflow service tests tab is not open after clicking Tests context menu item in the explorer context menu.");
         }
 
         [Given(@"I Open Explorer First Item Version History From Explorer Context Menu")]
