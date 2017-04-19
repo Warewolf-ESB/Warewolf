@@ -118,7 +118,7 @@ namespace Dev2.Studio.Core.DataList
                 var languageExpression = EvaluationFunctions.parseLanguageExpression(a, 0);
                 return languageExpression;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //
             }
@@ -184,7 +184,7 @@ namespace Dev2.Studio.Core.DataList
             PatriciaTrie = new PatriciaTrie<string>();
         }
 
-      
+       
         public IEnumerable<string> GetSuggestions(string orignalText, int caretIndex, bool tokenise, enIntellisensePartType type)
         {
             if (caretIndex < 0) return new List<string>();
