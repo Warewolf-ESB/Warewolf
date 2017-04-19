@@ -131,37 +131,5 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(wasCalled);
         }
         #endregion Test properties
-
-        #region Test methods
-        
-        [TestMethod]
-        public void TestSelectedEnvironmentChanged()
-        {
-            //arrange
-            var environmentViewModelMock = new Mock<IEnvironmentViewModel>();
-            var serverMock = new Mock<IServer>();
-            var serverId = Guid.NewGuid();
-            serverMock.SetupGet(it => it.EnvironmentID).Returns(serverId);
-            serverMock.SetupGet(it => it.DisplayName).Returns("someName");
-            environmentViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
-            environmentViewModelMock.SetupGet(it => it.Server).Returns(serverMock.Object);
-            var env = _target.Environments.First();
-            var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
-            explorerItemViewModelMock.SetupGet(it => it.IsVisible).Returns(true);
-            env.AddChild(explorerItemViewModelMock.Object);
-            var statsAreaMock = new Mock<IDeployStatsViewerViewModel>();
-            _target.StatsArea = statsAreaMock.Object;
-            _target.Environments = new ObservableCollection<IEnvironmentViewModel>(_target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList());
-
-            //act
-            _target.ConnectControlViewModel.SelectedConnection = serverMock.Object;
-
-            //assert
-            Assert.AreSame(environmentViewModelMock.Object, _target.SelectedEnvironment);
-            statsAreaMock.Verify(it=>it.ReCalculate());
-        }
-
-        #endregion Test methods
-
     }
 }

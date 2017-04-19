@@ -90,6 +90,16 @@ namespace Warewolf.UITests
             DeployUIMap.ValidateICanNotDeploy(Source);
         }
 
+        [TestMethod]
+        [TestCategory("Deploy")]
+        public void Deploy_EditingServer_KeepsSelectedServer()
+        {
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.Click_Deploy_Tab_Source_Server_Edit_Button();
+            ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.ConnectedRemoteConnectionText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

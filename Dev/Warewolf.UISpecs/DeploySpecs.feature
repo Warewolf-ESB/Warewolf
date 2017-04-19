@@ -124,7 +124,7 @@ Scenario: Changing Authentication Type of Resource And Save Keeps the Changes
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
 	And I Click Deploy Tab Source Server Edit Button
-	And I change Server Authentication type
+	And I change Server Authentication type and validate
 
 Scenario: Changing Server AuthenticationType from Deploy And Save Edit Server From Explorer Has Changes
 	Given The Warewolf Studio is running
