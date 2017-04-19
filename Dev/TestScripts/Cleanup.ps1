@@ -10,16 +10,16 @@ taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
 
 #Soft Kill
 [int]$i = 0
-[string]$WaitTimeoutMessage = "This command stopped operation because process"
+[string]$WaitTimeoutMessage = "This command stopped operation because process "
 [string]$WaitOutput = $WaitTimeoutMessage
 while (!($Output.ToString().StartsWith("ERROR: ")) -and $WaitOutput.ToString().StartsWith($WaitTimeoutMessage) -and $i -lt $WaitForCloseRetryCount) {
 	$i += 1
 	Write-Host $Output.ToString()
+	Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$WaitForCloseRetryCount))  2>&1 | %{$WaitOutput = $_}
     $FormatWaitForCloseTimeoutMessage = $WaitOutput.ToString().replace($WaitTimeoutMessage, "")
-    if ($FormatWaitForCloseTimeoutMessage -ne "") {
+    if ($FormatWaitForCloseTimeoutMessage -ne "" -and !($FormatWaitForCloseTimeoutMessage.StartsWith("Cannot find a process with the name "))) {
         Write-Host $FormatWaitForCloseTimeoutMessage
     }
-	Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$WaitForCloseRetryCount))  2>&1 | %{$WaitOutput = $_}
 	taskkill /im "Warewolf Studio.exe"  2>&1 |  %{$Output = $_}
 }
 
@@ -30,7 +30,7 @@ taskkill /im "Warewolf Studio.exe" /f  2>&1 | %{if (!($_.ToString().StartsWith("
 $ServiceOutput = ""
 sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
 if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has not been started.`n") {
-    Write-Host $ServiceOutput
+    Write-Host $ServiceOutput.TrimStart("`n")
     Wait-Process "Warewolf Server" -Timeout $WaitForCloseTimeout  2>&1 | out-null
 }
 taskkill /im "Warewolf Server.exe" /f  2>&1 | out-null
