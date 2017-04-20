@@ -119,7 +119,6 @@
     <Compile Include="ISystemTag.cs" />
     <Compile Include="IUnZip.cs" />
     <Compile Include="IZip.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
