@@ -80,7 +80,7 @@ Scenario: Clear filter
 	Given The Warewolf Studio is running	
 	When I Connect To Remote Server
 	And I Double Click Localhost Server
-	And I Select Connected RemoteConnectionIntegration From Explorer
+	And I Select RemoteConnectionIntegration From Explorer
 	And I Refresh Explorer Withpout Waiting For Spinner
 	Then Remote Server Refreshes	
 
