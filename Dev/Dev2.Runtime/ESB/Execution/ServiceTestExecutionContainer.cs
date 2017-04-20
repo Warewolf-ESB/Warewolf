@@ -151,7 +151,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
                 if (!hasImpersonated)
                 {
-                    var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
+                   var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
                     var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
                     DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
                     DataObject.StopExecution = true;
@@ -331,8 +331,6 @@ namespace Dev2.Runtime.ESB.Execution
                                     test.TestFailing = true;
                                     test.TestPassed = false;
                                     test.Result.RunTestResult = RunResult.TestFailed;
-                                    var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, test.ErrorContainsText, test.FailureMessage);
-                                    test.FailureMessage = assertError;
                                 }
                             }
                         }
