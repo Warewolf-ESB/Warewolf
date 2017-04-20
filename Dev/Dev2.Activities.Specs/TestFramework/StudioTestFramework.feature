@@ -1056,7 +1056,7 @@ Scenario: Run a test with Assert step assign
 	| Set the output variable (1) | Message         | hello mock   | Assign        |             |           |
 	And I save
 	When I run the test
-	Then test result is Failed
+	Then test result is Passed
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |		
@@ -1831,7 +1831,7 @@ Scenario: Test WF with RabbitMq Consume
 	  	 | [[result]]    | =         | Failure: Queue Name and Message are required. |
 	When I save
 	And I run the test
-	Then test result is Failed
+	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeTestFailWF" is deleted as cleanup
