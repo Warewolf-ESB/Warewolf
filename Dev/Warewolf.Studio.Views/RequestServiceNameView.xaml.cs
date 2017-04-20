@@ -4,10 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 
@@ -88,6 +86,35 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Escape)
+            {
+                if (IsRenaming)
+                {
+                    IsRenaming = false;
+                    e.Handled = true;
+                    return;
+                }
+                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
+                requestServiceNameViewModel?.CancelCommand.Execute(this);
+            }
+            if (e.Key == Key.Delete && !ExplorerView.SearchTextBox.IsFocused)
+            {
+                var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
+                var explorerItemViewModelSelected = environmentViewModel?.Children.Flatten(model => model.Children)
+                    .FirstOrDefault(model => model.IsSelected);
+                var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
+                .FirstOrDefault(model => model.IsRenaming);
+                if (explorerItemViewModelSelected != null && !explorerItemViewModelSelected.IsRenaming && explorerItemViewModelRename == null)
+                {
+                    explorerItemViewModelSelected.DeleteCommand.Execute(null);
+                }
+            }
+        }
+
+        private bool IsRenaming { get; set; }
+
+        private void ExplorerView_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
             var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
             var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
                 .FirstOrDefault(model => model.IsRenaming);
@@ -98,45 +125,9 @@ namespace Warewolf.Studio.Views
                 {
                     var textBox = e.OriginalSource as TextBox;
                     explorerItemViewModelRename.ResourceName = textBox?.Text;
-
+                    IsRenaming = true;
                     e.Handled = true;
-                    return;
                 }
-                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
-                requestServiceNameViewModel?.CancelCommand.Execute(this);
-            }
-            else if (e.Key == Key.Delete && !ExplorerView.SearchTextBox.IsFocused)
-            {
-                var explorerItemViewModelSelected = environmentViewModel?.Children.Flatten(model => model.Children)
-                .FirstOrDefault(model => model.IsSelected);
-                if (explorerItemViewModelSelected != null && !explorerItemViewModelSelected.IsRenaming && explorerItemViewModelRename == null)
-                {
-                    explorerItemViewModelSelected.DeleteCommand.Execute(null);
-                }
-            }
-        }
-
-        private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
-        {
-            var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
-            var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
-                .FirstOrDefault(model => model.IsRenaming);
-
-            if (e.Key == Key.Escape)
-            {
-                if (explorerItemViewModelRename != null)
-                {
-                    e.Handled = true;
-                    return;
-                }
-                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
-                requestServiceNameViewModel?.CancelCommand.Execute(this);
-            }
-
-            if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
-            {
-                var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                mainViewModel?.ResetMainView();
             }
         }
     }
