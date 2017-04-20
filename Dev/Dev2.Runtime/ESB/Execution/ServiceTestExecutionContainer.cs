@@ -291,7 +291,7 @@ namespace Dev2.Runtime.ESB.Execution
                         wfappUtils.WriteDebug(DataObject, debugState);
                     }
                     DebugState testAggregateDebugState;
-                    if (DataObject.StopExecution)
+                    if (DataObject.StopExecution && DataObject.Environment.HasErrors())
                     {
                         var existingErrors = DataObject.Environment.FetchErrors();
                         DataObject.Environment.AllErrors.Clear();
