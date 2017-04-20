@@ -448,6 +448,15 @@ namespace Warewolf.Resource.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed: The user running the test is not authorized to execute resource {0}..
+        /// </summary>
+        public static string Test_NotAuthorizedMsg {
+            get {
+                return ResourceManager.GetString("Test_NotAuthorizedMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid: Nothing to assert..
         /// </summary>
         public static string Test_NothingToAssert {
