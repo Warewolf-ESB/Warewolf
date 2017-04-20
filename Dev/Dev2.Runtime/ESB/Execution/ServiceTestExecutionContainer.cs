@@ -296,18 +296,44 @@ namespace Dev2.Runtime.ESB.Execution
                         var existingErrors = DataObject.Environment.FetchErrors();
                         DataObject.Environment.AllErrors.Clear();
                         testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, DataObject.Environment.HasErrors(), string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+
                         if (test != null)
                         {
+                            test.Result = new TestRunResult();
                             test.FailureMessage = existingErrors;
-                            if (test.Result == null)
+                            if (test.ErrorExpected)
                             {
-                                test.Result = new TestRunResult
+                                if (test.FailureMessage.Contains(test.ErrorContainsText) && !string.IsNullOrEmpty(test.ErrorContainsText))
                                 {
-                                    DebugForTest = new List<IDebugState>(),
-                                    RunTestResult = RunResult.TestFailed,
-                                };
-
-
+                                    test.TestPassed = true;
+                                    test.TestFailing = false;
+                                    test.Result.RunTestResult = RunResult.TestPassed;
+                                }
+                                else
+                                {
+                                    test.TestFailing = true;
+                                    test.TestPassed = false;
+                                    test.Result.RunTestResult = RunResult.TestFailed;
+                                    var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, test.ErrorContainsText, test.FailureMessage);
+                                    test.FailureMessage = assertError;
+                                }
+                            }
+                            if (test.NoErrorExpected)
+                            {
+                                if (string.IsNullOrEmpty(test.FailureMessage))
+                                {
+                                    test.TestPassed = true;
+                                    test.TestFailing = false;
+                                    test.Result.RunTestResult = RunResult.TestPassed;
+                                }
+                                else
+                                {
+                                    test.TestFailing = true;
+                                    test.TestPassed = false;
+                                    test.Result.RunTestResult = RunResult.TestFailed;
+                                    var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, test.ErrorContainsText, test.FailureMessage);
+                                    test.FailureMessage = assertError;
+                                }
                             }
                         }
 
@@ -712,6 +738,8 @@ namespace Dev2.Runtime.ESB.Execution
             test.TestPassed = testPassed;
             test.TestFailing = !testPassed;
         }
+
+       
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {
