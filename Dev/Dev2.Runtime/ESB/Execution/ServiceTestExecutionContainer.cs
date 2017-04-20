@@ -151,7 +151,9 @@ namespace Dev2.Runtime.ESB.Execution
                 var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
                 if (!hasImpersonated)
                 {
-                    DataObject.Environment.AllErrors.Add("Unauthorized to execute this resource.");
+                    var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
+                    var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
+                    DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
                     DataObject.StopExecution = true;
                 }
             }
@@ -179,6 +181,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             return result;
         }
+
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
         {
@@ -287,8 +290,34 @@ namespace Dev2.Runtime.ESB.Execution
                         debugState.AssertResultList.Add(outputDebugItem);
                         wfappUtils.WriteDebug(DataObject, debugState);
                     }
-                    var testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
-                    AggregateTestResult(resourceId, test, DataObject);
+                    DebugState testAggregateDebugState;
+                    if (DataObject.StopExecution)
+                    {
+                        var existingErrors = DataObject.Environment.FetchErrors();
+                        DataObject.Environment.AllErrors.Clear();
+                        testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, DataObject.Environment.HasErrors(), string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+                        if (test != null)
+                        {
+                            test.FailureMessage = existingErrors;
+                            if (test.Result == null)
+                            {
+                                test.Result = new TestRunResult
+                                {
+                                    DebugForTest = new List<IDebugState>(),
+                                    RunTestResult = RunResult.TestFailed,
+                                };
+
+
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+                        AggregateTestResult(resourceId, test);
+                    }
+
 
                     DebugItem itemToAdd = new DebugItem();
                     if (test != null)
@@ -305,14 +334,14 @@ namespace Dev2.Runtime.ESB.Execution
 
                     if (testRunResult != null)
                     {
-                        if (test != null)
+                        if (test?.Result != null)
                             test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                         _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                     }
                 }
                 else
                 {
-                    AggregateTestResult(resourceId, test, DataObject);
+                    AggregateTestResult(resourceId, test);
                     if (test != null)
                     {
                         _request.ExecuteResult = serializer.SerializeToBuilder(test);
@@ -474,6 +503,8 @@ namespace Dev2.Runtime.ESB.Execution
                             }
                         }
                     }
+
+
                 }
                 ValidateError(test, testPassed, failureMessage);
                 test.FailureMessage = failureMessage.ToString();
@@ -482,13 +513,13 @@ namespace Dev2.Runtime.ESB.Execution
             throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceId}");
         }
 
-        private static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test, IDSFDataObject dataObject = null)
+        private static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test)
         {
-            UpdateTestWithStepValues(test, dataObject);
+            UpdateTestWithStepValues(test);
             UpdateTestWithFinalResult(resourceId, test);
         }
 
-        private static void UpdateTestWithStepValues(IServiceTestModelTO test, IDSFDataObject dataObject = null)
+        private static void UpdateTestWithStepValues(IServiceTestModelTO test)
         {
             var testPassed = test.TestPassed;
 
@@ -514,40 +545,10 @@ namespace Dev2.Runtime.ESB.Execution
             var hasPendingOutputs = pendingTestOutputs?.Any() ?? false;
             var hasInvalidOutputs = invalidTestOutputs?.Any() ?? false;
             var testStepPassed = TestPassedBasedOnSteps(hasPendingSteps, hasInvalidSteps, hasFailingSteps) && TestPassedBasedOnOutputs(hasPendingOutputs, hasInvalidOutputs, hasFailingOutputs);
-            StringBuilder failureMessage = new StringBuilder();
-            var errPass = true;
-            if (dataObject != null)
-            {
-                var hasErrors = dataObject.Environment.HasErrors();
-                var errorMatch = hasErrors && test.ErrorExpected;
-                var noErrorMatch = !hasErrors && test.NoErrorExpected;
-                if (!errorMatch)
-                {
-                    var errors = dataObject.Environment.FetchErrors();
-                    var testErrorContainsText = test.ErrorContainsText ?? "";
-                    var format = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, testErrorContainsText, errors);
-                    failureMessage.AppendLine(format);
-                   dataObject.Environment.Errors.Clear();
-                   dataObject.Environment.AllErrors.Clear();
-                }
-                if (!noErrorMatch)
-                {
-                    var errors = dataObject.Environment.FetchErrors();
-                    var format = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_NoErrorExpected, errors);
-                    failureMessage.AppendLine(format);
-                    dataObject.Environment.Errors.Clear();
-                    dataObject.Environment.AllErrors.Clear();
-                }
-                errPass = errorMatch && noErrorMatch;
-            }
 
+            testPassed = testPassed && testStepPassed;
 
-
-            testPassed = testPassed && testStepPassed && errPass;
-
-
-            var allFailureMessages = UpdateFailureMessage(hasPendingSteps, pendingTestSteps, hasInvalidSteps, invalidTestSteps, hasFailingSteps, failingTestSteps, hasPendingOutputs, pendingTestOutputs, hasInvalidOutputs, invalidTestOutputs, hasFailingOutputs, failingTestOutputs, serviceTestSteps);
-            failureMessage.AppendLine(allFailureMessages.ToString());
+            var failureMessage = UpdateFailureMessage(hasPendingSteps, pendingTestSteps, hasInvalidSteps, invalidTestSteps, hasFailingSteps, failingTestSteps, hasPendingOutputs, pendingTestOutputs, hasInvalidOutputs, invalidTestOutputs, hasFailingOutputs, failingTestOutputs, serviceTestSteps);
             test.FailureMessage = failureMessage.ToString();
             test.TestFailing = !testPassed;
             test.TestPassed = testPassed;
