@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
@@ -163,8 +164,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
             ErrorResultTO errors;
-            Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
-            Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
+            Thread.CurrentPrincipal = null;
+            GenericIdentity identity = new GenericIdentity("User");
+            Thread.CurrentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Common.Utilities.PerformActionInsideImpersonatedContext(null, () =>
             {
                 var execute = serviceTestExecutionContainer.Execute(out errors, 1);
                 Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
