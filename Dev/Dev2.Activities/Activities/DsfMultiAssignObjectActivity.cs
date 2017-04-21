@@ -28,6 +28,8 @@ using System.Linq;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
@@ -43,21 +45,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "A86C4D10-B4D0-4775-AF4D-C66D5A6CE76F", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign_Object")]
     public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>
     {
-        #region Constants
-
         public const string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
         public const string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public const string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
 
-        #endregion Constants
-
-        #region Fields
-
         private IList<AssignObjectDTO> _fieldsCollection;
-
-        #endregion Fields
-
-        #region Properties
 
         // ReSharper disable ConvertToAutoProperty
         public IList<AssignObjectDTO> FieldsCollection
@@ -79,25 +71,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override bool CanInduceIdle => true;
 
-        #endregion Properties
-
         public override List<string> GetOutputs()
         {
             return FieldsCollection.Select(dto => dto.FieldName).ToList();
         }
-
-
-        #region Ctor
 
         public DsfMultiAssignObjectActivity()
             : base("Assign Object")
         {
             _fieldsCollection = new List<AssignObjectDTO>();
         }
-
-        #endregion Ctor
-
-        #region Overridden NativeActivity Methods
 
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -133,34 +116,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             if (!string.IsNullOrEmpty(t.FieldName))
                             {
-                                string cleanExpression;
-                                var assignValue = new AssignValue(t.FieldName, t.FieldValue);
-                                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
-                                if (isCalcEvaluation)
-                                {
-                                    assignValue = new AssignValue(t.FieldName, cleanExpression);
-                                }
-                                DebugItem debugItem = null;
-                                if (dataObject.IsDebugMode())
-                                {
-                                    debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue, update);
-                                }                                
-                                if (isCalcEvaluation)
-                                {
-                                    DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
-                                }
-                                else
-                                {
-                                    dataObject.Environment.AssignJson(assignValue, update);
-                                }
-                                if (debugItem != null)
-                                {
-                                    _debugInputs.Add(debugItem);
-                                }
-                                if (dataObject.IsDebugMode())
-                                {
-                                    AddSingleDebugOutputItem(dataObject.Environment, innerCount, assignValue, update);
-                                }
+                                UpdateField(dataObject, update, t, innerCount);
                             }
                             innerCount++;
                         }
@@ -193,6 +149,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        private void UpdateField(IDSFDataObject dataObject, int update, AssignObjectDTO t, int innerCount)
+        {
+            if(t.FieldValue.IsJSON())
+            {
+                var jContainer = JsonConvert.DeserializeObject(t.FieldValue) as JContainer;
+                dataObject.Environment.AddToJsonObjects(t.FieldName, jContainer);
+            }
+            else
+            {
+                string cleanExpression;
+                var assignValue = new AssignValue(t.FieldName, t.FieldValue);
+                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
+                if(isCalcEvaluation)
+                {
+                    assignValue = new AssignValue(t.FieldName, cleanExpression);
+                }
+                DebugItem debugItem = null;
+                if(dataObject.IsDebugMode())
+                {
+                    debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue, update);
+                }
+                if(isCalcEvaluation)
+                {
+                    DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
+                }
+                else
+                {
+                    dataObject.Environment.AssignJson(assignValue, update);
+                }
+                if(debugItem != null)
+                {
+                    _debugInputs.Add(debugItem);
+                }
+                if(dataObject.IsDebugMode())
+                {
+                    AddSingleDebugOutputItem(dataObject.Environment, innerCount, assignValue, update);
                 }
             }
         }
@@ -307,11 +303,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             AddDebugItem(new DebugItemWarewolfAtomResult(ExecutionEnvironment.WarewolfAtomToString(scalarResult.Item), ExecutionEnvironment.WarewolfAtomToString(valueResult.Item), assignValue.Name, environment.EvalToExpression(assignValue.Value, update), VariableLabelText, NewFieldLabelText, "="), debugItem);
                         }
                     }
-                    else if (newValueResult.IsWarewolfAtomResult && oldValueResult.IsWarewolfAtomListresult)
-                    {
-                        AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
-                    }
-                    else if (oldValueResult.IsWarewolfAtomResult && newValueResult.IsWarewolfAtomListresult)
+                    else if ((newValueResult.IsWarewolfAtomResult && oldValueResult.IsWarewolfAtomListresult) || (oldValueResult.IsWarewolfAtomResult && newValueResult.IsWarewolfAtomListresult))
                     {
                         AddDebugItem(new DebugItemWarewolfAtomListResult(null, newValueResult, environment.EvalToExpression(assignValue.Value, update), assignValue.Name, VariableLabelText, NewFieldLabelText, "="), debugItem);
                     }
@@ -472,10 +464,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion Overridden NativeActivity Methods
-
-        #region Get Debug Inputs/Outputs
-
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
             return _debugInputs;
@@ -485,10 +473,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return _debugOutputs;
         }
-
-        #endregion Get Debug Inputs/Outputs
-
-        #region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
@@ -503,7 +487,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
                     select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
         }
-
-        #endregion GetForEachInputs/Outputs
     }
 }
