@@ -157,6 +157,8 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
+            var mock = new Mock<IImpersonator>();
+            mock.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
             var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object, resourceCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(serviceTestExecutionContainer, "ServiceTestExecutionContainer is Null.");
@@ -230,6 +232,13 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         }
         public ServiceTestExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
+        {
+            TstCatalog = catalog;
+            ResourceCat = resourceCatalog;
+        }
+
+        public ServiceTestExecutionContainerMock(Impersonator imp, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
+            : base(imp,sa, dataObj, theWorkspace, esbChannel, request)
         {
             TstCatalog = catalog;
             ResourceCat = resourceCatalog;

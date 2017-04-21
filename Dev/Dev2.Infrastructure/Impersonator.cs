@@ -19,7 +19,13 @@ using System.Threading;
 
 namespace Dev2
 {
-    public class Impersonator : IDisposable
+    public interface IImpersonator
+    {
+        bool Impersonate(string userName, string domain, string password);
+        void Undo();
+    }
+
+    public class Impersonator : IDisposable, IImpersonator
     {
         // ReSharper disable InconsistentNaming
         const int LOGON32_PROVIDER_DEFAULT = 0;

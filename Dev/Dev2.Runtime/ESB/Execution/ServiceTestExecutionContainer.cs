@@ -44,6 +44,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class ServiceTestExecutionContainer : EsbExecutionContainer
     {
+        private IImpersonator _impersonator;
         private readonly EsbExecuteRequest _request;
 
         public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
@@ -53,6 +54,13 @@ namespace Dev2.Runtime.ESB.Execution
             TstCatalog = TestCatalog.Instance;
             ResourceCat = ResourceCatalog.Instance;
         }
+
+        public ServiceTestExecutionContainer(IImpersonator impersonator, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
+            : this(sa, dataObj, theWorkspace, esbChannel, request)
+        {
+            _impersonator = impersonator;
+        }
+
         protected ITestCatalog TstCatalog { get; set; }
         protected IResourceCatalog ResourceCat { get; set; }
         /// <summary>
@@ -133,7 +141,10 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
             {
-                Impersonator impersonator = new Impersonator();
+                if (_impersonator == null)
+                {
+                    _impersonator = new Impersonator();
+                }
                 var userName = serviceTestModelTo.UserName;
                 var domain = "";
                 if (userName.Contains("\\"))
@@ -148,10 +159,10 @@ namespace Dev2.Runtime.ESB.Execution
                     userName = userName.Substring(0, atIndex);
                     domain = userName.Substring(atIndex + 1);
                 }
-                var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
+                var hasImpersonated = _impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
                 if (!hasImpersonated)
                 {
-                   var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
+                    var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
                     var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
                     DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
                     DataObject.StopExecution = true;
@@ -737,7 +748,7 @@ namespace Dev2.Runtime.ESB.Execution
             test.TestFailing = !testPassed;
         }
 
-       
+
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {
