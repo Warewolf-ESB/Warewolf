@@ -166,12 +166,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             ErrorResultTO errors;
             Thread.CurrentPrincipal = null;
             GenericIdentity identity = new GenericIdentity("User");
-            Thread.CurrentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
-            Common.Utilities.PerformActionInsideImpersonatedContext(null, () =>
-            {
-                var execute = serviceTestExecutionContainer.Execute(out errors, 1);
-                Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
-            });
+            var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
+            Thread.CurrentPrincipal = currentPrincipal;
+            Common.Utilities.ServerUser = currentPrincipal;
+
+            var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+            Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
 
             //---------------Test Result -----------------------
 
