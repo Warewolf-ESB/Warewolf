@@ -87,12 +87,9 @@ namespace Dev2.Activities.Designers2.PostgreSql
         private void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
-
             BuildRegions();
-
             LabelWidth = 46;
             ButtonDisplayValue = DoneText;
-
             ShowLarge = true;
             ThumbVisibility = Visibility.Visible;
             ShowExampleWorkflowLink = Visibility.Collapsed;
