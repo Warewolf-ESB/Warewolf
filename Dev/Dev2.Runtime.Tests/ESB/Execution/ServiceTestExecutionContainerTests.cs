@@ -140,7 +140,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
             dsfObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
-
+            dsfObj.Setup(o => o.IsDebugMode()).Returns(true);
+            dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
+            dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
             Dev2JsonSerializer s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
@@ -169,29 +171,26 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             });
 
             //---------------Test Result -----------------------
-            try
+
+            var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>(new KnownTypesBinder()
             {
-                var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>(new KnownTypesBinder()
-                {
-                    KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
-                        .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
-                });
-                Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
-            }
-            catch (Exception)
-            {
-                var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<TestRunResult>(new KnownTypesBinder()
-                {
-                    KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
-                        .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
-                });
-                Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
-            }
+                KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
+                    .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
+            });
+            Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
+            dsfObj.Verify(o => o.IsDebugMode());
+            dsfObj.Verify(o => o.Environment.HasErrors());
+            dsfObj.Verify(o => o.Environment.FetchErrors());
+            cataLog.Verify(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>()), Times.Never);
+            cataLog.Verify(cat => cat.FetchTest(resourceId, TestName));
+            Assert.AreNotEqual("", serviceTestModelTO.FailureMessage);
+
+
 
             //
         }
 
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
