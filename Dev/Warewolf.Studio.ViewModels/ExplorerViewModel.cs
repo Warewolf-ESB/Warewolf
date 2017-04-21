@@ -325,8 +325,10 @@ namespace Warewolf.Studio.ViewModels
                 LoadEnvironment(localhostEnvironment);
 #pragma warning restore 4014
 
-            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator);
-            ConnectControlViewModel.ShouldUpdateActiveEnvironment = shouldUpdateActiveEnvironment;
+            ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator)
+            {
+                ShouldUpdateActiveEnvironment = shouldUpdateActiveEnvironment
+            };
             ShowConnectControl = true;
             ConnectControlViewModel.ServerConnected += ServerConnected;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
@@ -412,8 +414,7 @@ namespace Warewolf.Studio.ViewModels
             var env = Environments.FirstOrDefault(a => a.ResourceId == environmentId);
             if (env != null && env.IsConnected)
             {
-                var perm = new WindowsGroupPermission();
-                perm.Permissions = env.Server.GetPermissions(Guid.Empty);
+                var perm = new WindowsGroupPermission {Permissions = env.Server.GetPermissions(Guid.Empty)};
                 env.SetPropertiesForDialogFromPermissions(perm);
             }
         }
