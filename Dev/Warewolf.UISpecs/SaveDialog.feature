@@ -110,3 +110,11 @@ Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Cre
 	And I Select New Folder From SaveDialog Context Menu
 	And I Hit Escape Key On The Keyboard
 	And Save Dialog Explorer Contain Item "New Folder"
+	And I Hit Escape Key On The Keyboard
+
+Scenario: Create New Folder In Localhost Server From Save Dialog Then Click Away Creates The Folder
+	Given The Warewolf Studio is running
+	And I Create New Workflow using shortcut
+	And I Make Workflow Savable And Then Save
+	Then I Enter Service Name Into Save Dialog As "RandomText"
+	And I Hit Escape Key On The Keyboard

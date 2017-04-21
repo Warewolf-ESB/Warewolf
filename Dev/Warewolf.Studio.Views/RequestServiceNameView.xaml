@@ -15,6 +15,7 @@
         WindowStartupLocation="CenterScreen"
         ShowInTaskbar="True" 
         MouseDown="RequestServiceNameView_OnMouseDown"
+        KeyUp="RequestServiceNameView_OnKeyUp"
         Title="SaveDialogView"
         mc:Ignorable="d">
     

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 using Warewolf.Studio.ViewModels;
 
@@ -115,19 +116,42 @@ namespace Warewolf.Studio.Views
 
         private void ExplorerView_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
-            var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
-                .FirstOrDefault(model => model.IsRenaming);
+            var explorerItemViewModelRename = ExplorerItemViewModelRename();
 
             if (e.Key == Key.Escape)
             {
-                if (explorerItemViewModelRename != null)
-                {
-                    var textBox = e.OriginalSource as TextBox;
-                    explorerItemViewModelRename.ResourceName = textBox?.Text;
-                    IsRenaming = true;
-                    e.Handled = true;
-                }
+                HandleRenameResource(e, explorerItemViewModelRename);
+            }
+        }
+
+        private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            var explorerItemViewModelRename = ExplorerItemViewModelRename();
+
+            if (e.Key == Key.Escape)
+            {
+                HandleRenameResource(e, explorerItemViewModelRename);
+                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
+                requestServiceNameViewModel?.CancelCommand.Execute(this);
+            }
+        }
+
+        private IExplorerItemViewModel ExplorerItemViewModelRename()
+        {
+            var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
+            var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
+                .FirstOrDefault(model => model.IsRenaming);
+            return explorerItemViewModelRename;
+        }
+
+        private void HandleRenameResource(KeyEventArgs e, IExplorerItemViewModel explorerItemViewModelRename)
+        {
+            if (explorerItemViewModelRename != null)
+            {
+                var textBox = e.OriginalSource as TextBox;
+                explorerItemViewModelRename.ResourceName = textBox?.Text;
+                IsRenaming = true;
+                e.Handled = true;
             }
         }
     }
