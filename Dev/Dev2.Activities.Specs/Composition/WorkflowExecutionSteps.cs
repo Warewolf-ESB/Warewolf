@@ -3700,6 +3700,7 @@ namespace Dev2.Activities.Specs.Composition
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
                 ,
                 Result = variable
+                ,Response = variable
                 ,
                 DisplayName = activityName
             };

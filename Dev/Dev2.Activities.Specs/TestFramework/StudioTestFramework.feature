@@ -1056,7 +1056,7 @@ Scenario: Run a test with Assert step assign
 	| Set the output variable (1) | Message         | hello mock   | Assign        |             |           |
 	And I save
 	When I run the test
-	Then test result is Passed
+	Then test result is Failed
 	Then service debug inputs as
 		| Variable | Value |
 		| [[Name]] | Bob   |		
@@ -1828,7 +1828,7 @@ Scenario: Test WF with RabbitMq Consume
 	And I Add "DsfConsumeRabbitMQActivity" as TestStep
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
-	  	 | [[result]]    | =         | Failure: Queue Name and Message are required. |
+	  	 | [[result]]    | =         | Failure: Queue Name is required. |
 	When I save
 	And I run the test
 	Then test result is Passed

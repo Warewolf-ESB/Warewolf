@@ -2985,7 +2985,7 @@ this.FeatureBackground();
 #line 1058
  testRunner.When("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1059
- testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("test result is Failed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table105 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable",
@@ -5315,7 +5315,7 @@ this.FeatureBackground();
             table183.AddRow(new string[] {
                         "[[result]]",
                         "=",
-                        "Failure: Queue Name and Message are required."});
+                        "Failure: Queue Name is required."});
 #line 1829
  testRunner.And("I add StepOutputs as", ((string)(null)), table183, "And ");
 #line 1832
