@@ -437,17 +437,38 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
+
+
         private static JObject GetPropertiesJObject(Type returnType)
         {
-            var properties = returnType.GetProperties()
-                .Where(propertyInfo => propertyInfo.CanWrite)
-                .ToList();
-            var jObject = new JObject();
-            foreach (var property in properties)
+            try
             {
-                jObject.Add(property.Name, "");
+
+                var properties = returnType.GetProperties()
+                    .Where(propertyInfo => propertyInfo.CanWrite)
+                    .ToList();
+                var jObject = new JObject();
+                foreach (var propertyInfo in properties)
+                {
+                    var jProperty = new JProperty(propertyInfo.Name, "");
+                    try
+                    {
+                        jObject.Add(jProperty);
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
+                }
+
+                return jObject;
             }
-            return jObject;
+            // ReSharper disable once RedundantCatchClause
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e);
+                throw;
+            }
         }
 
         private static JArray GetPropertiesJArray(Type returnType)
