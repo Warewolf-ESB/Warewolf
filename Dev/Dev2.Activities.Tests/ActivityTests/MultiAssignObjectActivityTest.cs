@@ -453,7 +453,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Execute Test---------------------------
 
-            act.UpdateForEachInputs(new List<Tuple<string, string>>
+            act.UpdateForEachOutputs(new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("[[@Pet.Owner(*).Name]]", "[[@Pet.Owner(1).Name]]"),
             });
@@ -465,49 +465,49 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Bob", collection[0].FieldValue);
         }
 
-        //[TestMethod]
-        //[TestCategory("DsfMultiAssignActivity_GetForEachInputs")]
-        //public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
-        //{
-        //    //------------Setup for test--------------------------
-        //    List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
-        //    {
-        //        new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
-        //    };
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_GetForEachInputs")]
+        public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            {
+                new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
+            };
 
-        //    DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+            DsfMultiAssignObjectActivity act = new DsfMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
-        //    //------------Execute Test---------------------------
+            //------------Execute Test---------------------------
 
-        //    var inputs = act.GetForEachInputs();
+            var inputs = act.GetForEachInputs();
 
-        //    //------------Assert Results-------------------------
+            //------------Assert Results-------------------------
 
-        //    Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
-        //    Assert.AreEqual("[[result]]", inputs[0].Value);
-        //}
+            Assert.AreEqual("[[@Pet.Name]]", inputs[0].Name);
+            Assert.AreEqual("[[result]]", inputs[0].Value);
+        }
 
-        //[TestMethod]
-        //[TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
-        //public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
-        //{
-        //    //------------Setup for test--------------------------
-        //    List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
-        //    {
-        //        new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
-        //    };
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
+        public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            {
+                new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
+            };
 
-        //    DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+            DsfMultiAssignObjectActivity act = new DsfMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
-        //    //------------Execute Test---------------------------
+            //------------Execute Test---------------------------
 
-        //    var inputs = act.GetForEachOutputs();
+            var inputs = act.GetForEachOutputs();
 
-        //    //------------Assert Results-------------------------
+            //------------Assert Results-------------------------
 
-        //    Assert.AreEqual("[[rs(*).val]]", inputs[0].Value);
-        //    Assert.AreEqual("[[result]]", inputs[0].Name);
-        //}
+            Assert.AreEqual("[[@Pet.Name]]", inputs[0].Value);
+            Assert.AreEqual("[[result]]", inputs[0].Name);
+        }
     }
 
 }
