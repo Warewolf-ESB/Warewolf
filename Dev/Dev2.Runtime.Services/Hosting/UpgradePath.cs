@@ -25,8 +25,6 @@ namespace Dev2.Runtime.Hosting
             UpgradesFrom = upgradesFrom;
         }
 
-        #region Implementation of IUpgradePath
-
         public Version UpgradesFrom { get; }
         public Version UpgradesTo { get; }
 
@@ -44,6 +42,5 @@ namespace Dev2.Runtime.Hosting
         }
         public IResourceUpgrade Upgrade { get; }
 
-        #endregion
     }
 }
