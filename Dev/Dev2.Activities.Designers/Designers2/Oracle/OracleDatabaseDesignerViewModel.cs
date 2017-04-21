@@ -235,8 +235,9 @@ namespace Dev2.Activities.Designers2.Oracle
             }
         }
 
+        // ReSharper disable once UnusedMember.Local
         public int LabelWidth { get; set; }
-
+        
         public List<KeyValuePair<string, string>> Properties { get; private set; }
         void InitializeProperties()
         {
@@ -296,7 +297,7 @@ namespace Dev2.Activities.Designers2.Oracle
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(OracleDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private IAsyncWorker _worker;
+        private readonly IAsyncWorker _worker;
 
         public ICommand TestInputCommand { get; set; }
 
@@ -470,7 +471,7 @@ namespace Dev2.Activities.Designers2.Oracle
             }
         }
 
-        private IDbServiceModel Model { get; set; }
+        private IDbServiceModel Model { get; }
 
         void SetRegionVisibility(bool value)
         {
