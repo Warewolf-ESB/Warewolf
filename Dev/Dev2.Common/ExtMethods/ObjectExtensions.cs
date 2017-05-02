@@ -110,13 +110,6 @@ namespace Dev2.Common.ExtMethods
             return deserializeObject;
         }
 
-        public static object DeserializeToObject(this string objectToSerialize, SerializationBinder binder) 
-        {
-            DeSerializerSettings.Binder = binder;
-            var deserializeObject = JsonConvert.DeserializeObject(objectToSerialize, DeSerializerSettings);
-            return deserializeObject;
-        }
-
         public static JContainer DeserializeToObject(this string objectToSerialize) 
         {
             var deserializeObject = JsonConvert.DeserializeObject(objectToSerialize, DeSerializerSettings) as JContainer;
