@@ -593,9 +593,13 @@
             <Trigger Property="Button.IsPressed" Value="True">
                 <Setter Property="Control.Foreground" Value="White" />
             </Trigger>
-            <!--<Trigger Property="Control.IsFocused" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackgroundBrush}" />
-            </Trigger>-->
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SchedulesDeleteSelectedScheduleDisabledTooltip}" />
+                <Setter Property="Foreground" Value="{StaticResource WareWolfHeaderButtonBrush}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SchedulerDeleteTooltipTrigger}" />
+            </Trigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="ButtonDeleteActionTransparentStyle" TargetType="{x:Type Button}">
