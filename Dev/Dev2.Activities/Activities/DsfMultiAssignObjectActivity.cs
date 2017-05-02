@@ -23,6 +23,7 @@ using Dev2.TO;
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Data.Interfaces.Enums;
@@ -64,11 +65,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _fieldsCollection = value;
             }
         }
-
+        
         public bool UpdateAllOccurrences { get; set; }
         public bool CreateBookmark { get; set; }
         public string ServiceHost { get; set; }
 
+        [ExcludeFromCodeCoverage]
         protected override bool CanInduceIdle => true;
 
         public override List<string> GetOutputs()
@@ -89,7 +91,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         // ReSharper restore RedundantOverridenMember
-
+        [ExcludeFromCodeCoverage]
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
