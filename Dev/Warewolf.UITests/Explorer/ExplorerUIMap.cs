@@ -480,6 +480,12 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
+        [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
+        public void RefreshExplorerWithpoutWaitingForSpinner()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
+        }
+
         [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
         public void SetupPublicPermissionsForForRemoteServer(string resource)
         {
@@ -702,6 +708,14 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(77, 13));
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewOracleSource);
+        }
+
+        [When(@"I Connect To Remote Server")]
+        public void ConnectToRemoteServer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton, new Point(136, 7));
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists, "Remote Connection Integration option does not exist in Source server combobox.");
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(226, 13));
         }
 
         [When(@"I Select NewODBCSource From Explorer Context Menu")]

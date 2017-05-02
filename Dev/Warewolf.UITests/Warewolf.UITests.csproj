@@ -190,10 +190,10 @@
     <Compile Include="WorkflowTab\Tools\Email\EmailToolsUIMap.Designer.cs">
       <DependentUpon>EmailToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.cs">
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\FileToolsUIMap.cs">
       <DependentUpon>FileToolsUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.Designer.cs">
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\FileToolsUIMap.Designer.cs">
       <DependentUpon>FileToolsUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="WorkflowTab\Tools\HTTP Web Methods\HTTPToolsUIMap.cs">
@@ -356,16 +356,16 @@
     <Compile Include="WorkflowTab\Tools\Data\Data Split.cs" />
     <Compile Include="WorkflowTab\Tools\Data\Data Merge.cs" />
     <Compile Include="WorkflowTab\Tools\Email\SMTP_Send.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Zip.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Write File.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Unzip.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Rename.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Read File.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Read Folder.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Move.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Delete.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Create.cs" />
-    <Compile Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\Copy.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Zip.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Write File.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Unzip.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Rename.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Read File.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Read Folder.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Move.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Delete.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Create.cs" />
+    <Compile Include="WorkflowTab\Tools\File FTP FTPS + SFTP\Copy.cs" />
     <Compile Include="WorkflowTab\Tools\HTTP Web Methods\HttpWebPost.cs" />
     <Compile Include="WorkflowTab\Tools\Recordset\Length.cs" />
     <Compile Include="WorkflowTab\Tools\Recordset\Find Records.cs" />
@@ -443,7 +443,7 @@
     <None Include="WorkflowTab\Tools\Database\DatabaseToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Data\DataToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Email\EmailToolsUIMap.uitest" />
-    <None Include="WorkflowTab\Tools\File, FTP, FTPS + SFTP\FileToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\File FTP FTPS + SFTP\FileToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\HTTP Web Methods\HTTPToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Loop Constructs\LoopConstructToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Recordset\RecordsetToolsUIMap.uitest" />
