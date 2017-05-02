@@ -106,15 +106,15 @@ namespace Dev2.Activities.Designers2.Email
             viewModel.OnSelectedEmailSourceChanged();
         }
 
-        public RelayCommand EditEmailSourceCommand { get; private set; }
-        public RelayCommand TestEmailAccountCommand { get; private set; }
+        public RelayCommand EditEmailSourceCommand { get; }
+        public RelayCommand TestEmailAccountCommand { get; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
         public bool IsEmailSourceSelected => SelectedEmailSource != SelectEmailSource;
 
         public bool CanEditSource { get; set; }
 
-        public ObservableCollection<EmailSource> EmailSources { get; private set; }
+        public ObservableCollection<EmailSource> EmailSources { get; }
         public ObservableCollection<enMailPriorityEnum> Priorities { get; private set; }
 
         public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
@@ -374,8 +374,8 @@ namespace Dev2.Activities.Designers2.Email
 
         void ChooseAttachments()
         {
-            const string separator = @";";
-            var message = new FileChooserMessage { SelectedFiles = Attachments.Split(separator.ToCharArray()) };
+            const string Separator = @";";
+            var message = new FileChooserMessage { SelectedFiles = Attachments.Split(Separator.ToCharArray()) };
             message.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
@@ -388,7 +388,7 @@ namespace Dev2.Activities.Designers2.Email
                     {
                         if (message.SelectedFiles != null)
                         {
-                            Attachments = string.Join(separator, message.SelectedFiles);
+                            Attachments = string.Join(Separator, message.SelectedFiles);
                         }
                     }
                 }

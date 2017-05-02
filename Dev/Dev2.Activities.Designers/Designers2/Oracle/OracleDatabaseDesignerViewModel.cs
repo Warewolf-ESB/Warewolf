@@ -236,7 +236,7 @@ namespace Dev2.Activities.Designers2.Oracle
         }
         // ReSharper disable once UnusedMember.Local
         public int LabelWidth { get; set; }
-
+        
         public List<KeyValuePair<string, string>> Properties { get; private set; }
         void InitializeProperties()
         {
