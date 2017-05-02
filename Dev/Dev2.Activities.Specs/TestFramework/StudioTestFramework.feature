@@ -1819,7 +1819,7 @@ Scenario: Test WF with RabbitMq Publish
 	
 Scenario: Test WF with RabbitMq Consume
 	Given I have a workflow "RabbitMqConsumeTestFailWF"
-	And "RabbitMqConsumeTestPassWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into "[[result]]"
+	And "RabbitMqConsumeTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into "[[result]]"
 	And I save workflow "RabbitMqConsumeTestFailWF"
 	Then the test builder is open with "RabbitMqConsumeTestFailWF"
 	And I click New Test
@@ -1835,6 +1835,27 @@ Scenario: Test WF with RabbitMq Consume
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeTestFailWF" is deleted as cleanup
+	
+	Scenario: Test WF with RabbitMq Consume and count Recordset
+	Given I have a workflow "RabbitMqConsumeAndCountTestFailWF"
+	And "RabbitMqConsumeAndCountTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into "[[msgRec().msgs]]" 
+	And Queue Name as "TestQuestForSpecsEmptyResults"
+	And "RabbitMqConsumeAndCountTestFailWF" contains Count Record "CountRec" on "[[msgRec()]]" into "[[count]]"
+	And I save workflow "RabbitMqConsumeAndCountTestFailWF"
+	Then the test builder is open with "RabbitMqConsumeAndCountTestFailWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+   	And I Add "CountRec" as TestStep
+	And I add StepOutputs as 
+	  	 | Variable Name | Condition | Value |
+	  	 | [[count]]     | =         | 0     |
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "RabbitMqConsumeAndCountTestFailWF" is deleted as cleanup
 
 Scenario: Test WF with Calculate
 	Given I have a workflow "CalculateTestWF"
