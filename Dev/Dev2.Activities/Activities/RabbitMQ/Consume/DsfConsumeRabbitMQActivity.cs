@@ -317,7 +317,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             base.GetDebugOutputs(dataList, update);
-
+            
             if (dataList == null || string.IsNullOrEmpty(Response))
                 return new List<DebugItem>();
 
