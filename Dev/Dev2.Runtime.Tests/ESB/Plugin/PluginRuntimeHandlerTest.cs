@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.OracleClient;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,8 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TestingDotnetDllCascading;
 
 namespace Dev2.Tests.Runtime.ESB.Plugin
@@ -888,6 +891,51 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void GetPropertiesJObject_GivenOracleCommand_ShouldRetunWithTwoProperties()
+        {
+            //---------------Set up test pack-------------------
+            var runtimeHandler = typeof(PluginRuntimeHandler);
+            PrivateType type = new PrivateType(runtimeHandler);
+#pragma warning disable 618
+            var type1 = typeof(OracleCommand);
+#pragma warning restore 618
+            //---------------Assert Precondition----------------
+            var invokeStatic = type.InvokeStatic("GetPropertiesJObject", type1);
+            //---------------Execute Test ----------------------
+            var jObject = invokeStatic as JObject;
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(jObject);
+            var hasValues = jObject.HasValues;
+            Assert.IsTrue(hasValues);
+            Assert.AreEqual(8, jObject.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetPropertiesJObject_GivenOracleCommand_ShouldHaveCorrectShape()
+        {
+            //---------------Set up test pack-------------------
+            var runtimeHandler = typeof(PluginRuntimeHandler);
+            PrivateType type = new PrivateType(runtimeHandler);
+#pragma warning disable 618
+            var type1 = typeof(OracleCommand);
+#pragma warning restore 618
+            //---------------Assert Precondition----------------
+            var invokeStatic = type.InvokeStatic("GetPropertiesJObject", type1);
+            //---------------Execute Test ----------------------
+            var jObject = invokeStatic as JObject;
+            Assert.IsNotNull(jObject);
+            var hasValues = jObject.HasValues;
+            Assert.IsTrue(hasValues);
+            Assert.AreEqual(8, jObject.Count);
+            //---------------Test Result -----------------------
+            const string str = "{\"CommandText\":\"\",\"CommandTimeout\":\"\",\"CommandType\":\"\",\"Connection\":\"\",\"DesignTimeVisible\":\"\",\"Transaction\":\"\",\"UpdatedRowSource\":\"\",\"Site\":\"\"}";
+            var s = jObject.ToString(Formatting.None);
+            Assert.AreEqual(str, s);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         [TestCategory("PluginRuntimeHandler_AdjustPluginResult")]
         public void PluginRuntimeHandler_AdjustPluginResult_WhenClassIsSealed_ExpectRunsCorrectly()
         {
@@ -904,7 +952,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             var resultAdgusted = methodInfo.Invoke(runtimeHandler, new[] { result, memberInfo });
             Assert.AreEqual("<PrimitiveReturnValue>string</PrimitiveReturnValue>", resultAdgusted);
         }
-        
+
 
         #region Helper Methods
 
