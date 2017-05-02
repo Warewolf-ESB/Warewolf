@@ -157,9 +157,9 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mock = new Mock<IImpersonator>();
-            mock.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object, resourceCat.Object);
+            var mockImpesinator = new Mock<IImpersonator>();
+            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(mockImpesinator.Object,  serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object, resourceCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(serviceTestExecutionContainer, "ServiceTestExecutionContainer is Null.");
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
@@ -237,7 +237,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             ResourceCat = resourceCatalog;
         }
 
-        public ServiceTestExecutionContainerMock(Impersonator imp, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
+        public ServiceTestExecutionContainerMock(IImpersonator imp, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
             : base(imp,sa, dataObj, theWorkspace, esbChannel, request)
         {
             TstCatalog = catalog;

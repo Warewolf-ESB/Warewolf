@@ -16,15 +16,10 @@ using System.Security;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
+using Dev2.Common.Interfaces;
 
 namespace Dev2
 {
-    public interface IImpersonator
-    {
-        bool Impersonate(string userName, string domain, string password);
-        void Undo();
-    }
-
     public class Impersonator : IDisposable, IImpersonator
     {
         // ReSharper disable InconsistentNaming

@@ -262,6 +262,7 @@
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="IGraph.cs" />
     <Compile Include="IHelpView.cs" />
+    <Compile Include="IImpersonator.cs" />
     <Compile Include="IIntellisenseStringResult.cs" />
     <Compile Include="IIntellisenseStringResultBuilder.cs" />
     <Compile Include="IJsonObjectsView.cs" />
