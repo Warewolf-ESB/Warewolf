@@ -32,7 +32,6 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -159,7 +158,7 @@ namespace Dev2.Runtime.ESB.Execution
                     userName = userName.Substring(0, atIndex);
                     domain = userName.Substring(atIndex + 1);
                 }
-                var hasImpersonated = _impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
+                var hasImpersonated = _impersonator.ImpersonateForceDecrypt(userName, domain, serviceTestModelTo.Password);
                 if (!hasImpersonated)
                 {
                     var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);

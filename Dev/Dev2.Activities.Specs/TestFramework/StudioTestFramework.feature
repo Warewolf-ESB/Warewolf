@@ -2799,22 +2799,22 @@ Then test result is Passed
 When I delete "Test 1"
 
 Scenario: Test Wf With Dropbox List Tool
-Given I have a workflow "TestWFWithDropBoxList"	
-And "TestWFWithDropBoxList" contains a DropboxUpload "UploadTool" Setup as
-| Local File      | OverwriteOrAdd | DropboxFile | Result  |
-| C:\Home.Delete | Overwrite      | Home/Download.xml  | [[res]] |
-And "TestWFWithDropBoxList" contains a DropboxList "ListTool" Setup as
-| Read  | LoadSubFolders | DropboxFile | Result          |
-| Files | true           | Home        | [[res().Files]] |
-And I save workflow "TestWFWithDropBoxList"
-Then the test builder is open with "TestWFWithDropBoxList"
-And I click New Test
-And I Add "UploadTool" as TestStep 
-And I Add "ListTool" as TestStep 
-When I save
-And I run the test
-Then test result is Passed
-When I delete "Test 1"
+	Given I have a workflow "TestWFWithDropBoxList"	
+	And "TestWFWithDropBoxList" contains a DropboxUpload "UploadTool" Setup as
+	| Local File      | OverwriteOrAdd | DropboxFile | Result  |
+	| C:\Home.Delete | Overwrite      | Home/Download.xml  | [[res]] |
+	And "TestWFWithDropBoxList" contains a DropboxList "ListTool" Setup as
+	| Read  | LoadSubFolders | DropboxFile | Result          |
+	| Files | true           | Home        | [[res().Files]] |
+	And I save workflow "TestWFWithDropBoxList"
+	Then the test builder is open with "TestWFWithDropBoxList"
+	And I click New Test
+	And I Add "UploadTool" as TestStep 
+	And I Add "ListTool" as TestStep 
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
 
 Scenario:Test Workflow which contains COM DLL
 	 Given I have a workflow "TestWFCOMDLL"
