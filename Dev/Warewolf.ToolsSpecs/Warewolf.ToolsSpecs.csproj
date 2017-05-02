@@ -140,11 +140,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Data\AssignObject\AssignObjectSteps.cs" />
-    <Compile Include="Toolbox\Data\AssignObject\SpecFlowFeature1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SpecFlowFeature1.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\Data\Assign\Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -528,10 +523,6 @@
     <None Include="Toolbox\Data\AssignObject\AssignObject.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AssignObject.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Data\AssignObject\SpecFlowFeature1.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SpecFlowFeature1.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Data\Assign\Assign.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
