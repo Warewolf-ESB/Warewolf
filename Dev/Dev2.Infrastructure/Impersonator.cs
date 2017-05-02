@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 using Dev2.Common.Interfaces;
+using Warewolf.Security.Encryption;
 
 namespace Dev2
 {
@@ -96,6 +97,11 @@ namespace Dev2
                 _impersonationContext.Undo();
                 _impersonationContext.Dispose();
             }
+        }
+
+        public bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted)
+        {
+            return Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(decryptIfEncrypted));
         }
 
         #endregion
