@@ -177,18 +177,41 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
             //---------------Test Result -----------------------
 
-            var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>(new KnownTypesBinder()
+           
+            try
             {
-                KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
-                    .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
-            });
-            Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
-            dsfObj.Verify(o => o.IsDebugMode());
-            dsfObj.Verify(o => o.Environment.HasErrors());
-            dsfObj.Verify(o => o.Environment.FetchErrors());
-            cataLog.Verify(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>()), Times.Never);
-            cataLog.Verify(cat => cat.FetchTest(resourceId, TestName));
-            Assert.AreNotEqual("", serviceTestModelTO.FailureMessage);
+                var serviceTestModelTO = esbExecuteRequest.ExecuteResult.DeserializeToObject<ServiceTestModelTO>(new KnownTypesBinder()
+                {
+                    KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
+                        .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
+                });
+                Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
+                Assert.IsNotNull(serviceTestModelTO, "Execute results Deserialize returned Null.");
+                dsfObj.Verify(o => o.IsDebugMode());
+                dsfObj.Verify(o => o.Environment.HasErrors());
+                dsfObj.Verify(o => o.Environment.FetchErrors());
+                cataLog.Verify(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>()), Times.Never);
+                cataLog.Verify(cat => cat.FetchTest(resourceId, TestName));
+                Assert.AreNotEqual("", serviceTestModelTO.FailureMessage);
+            }
+            catch (Exception)
+            {
+                var testRunResult = esbExecuteRequest.ExecuteResult.DeserializeToObject<TestRunResult>(new KnownTypesBinder()
+                {
+                    KnownTypes = typeof(ServiceTestModelTO).Assembly.GetExportedTypes()
+                        .Union(typeof(TestRunResult).Assembly.GetExportedTypes()).ToList()
+                });
+                Assert.IsNotNull(testRunResult, "Execute results Deserialize returned Null.");
+                Assert.IsNotNull(testRunResult, "Execute results Deserialize returned Null.");
+                dsfObj.Verify(o => o.IsDebugMode());
+                dsfObj.Verify(o => o.Environment.HasErrors());
+                dsfObj.Verify(o => o.Environment.FetchErrors());
+                cataLog.Verify(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>()), Times.Never);
+                cataLog.Verify(cat => cat.FetchTest(resourceId, TestName));
+                Assert.AreNotEqual("", testRunResult.Message);
+            }
+          
+           
 
 
 
