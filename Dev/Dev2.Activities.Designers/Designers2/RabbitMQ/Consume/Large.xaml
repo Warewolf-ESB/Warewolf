@@ -14,9 +14,9 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="340"
                                MinWidth="340"
-                               Height="340"
-                               MinHeight="340"
-                               MaxHeight="340"
+                               Height="365"
+                               MinHeight="365"
+                               MaxHeight="365"
                                mc:Ignorable="d"
                                d:DesignWidth="340"
                                d:DataContext="{d:DesignInstance local:RabbitMQConsumeDesignerViewModel}">
