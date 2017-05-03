@@ -482,7 +482,22 @@ namespace Dev2.Activities.Specs.TestFramework
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
         }
 
-       
+
+        [Then(@"the service debug assert Aggregate message contains ""(.*)""")]
+        [Given(@"the service debug assert Aggregate message contains ""(.*)""")]
+        [When(@"the service debug assert Aggregate message contains ""(.*)""")]
+        public void ThenTheServiceDebugAssertAggregateMessageContains(string assertString)
+        {
+            var serviceTestViewModel = GetTestFrameworkFromContext();
+            var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
+            // ReSharper disable once PossibleNullReferenceException
+            var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
+
+            var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
+            StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
+        }
+
+
 
         [Then(@"the service debug assert Json message contains ""(.*)""")]
         [When(@"the service debug assert Json message contains ""(.*)""")]
@@ -863,6 +878,30 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             Assert.AreEqual(null, serviceTest.SelectedServiceTest.UserName);
         }
+
+        [Then(@"test AuthenticationType as ""(.*)""")]
+        public void ThenTestAuthenticationTypeAs(string AuthType)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            AuthenticationType auth;
+            Enum.TryParse(AuthType, true, out auth);
+            serviceTest.SelectedServiceTest.AuthenticationType = auth;
+        }
+
+        [Then(@"username is ""(.*)""")]
+        public void ThenUsernameIs(string p0)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            serviceTest.SelectedServiceTest.UserName = p0;
+        }
+
+        [Then(@"password is ""(.*)""")]
+        public void ThenPasswordIs(string p0)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            serviceTest.SelectedServiceTest.Password = p0;
+        }
+
 
         [Then(@"password is blank")]
         public void ThenPasswordIsBlank()
