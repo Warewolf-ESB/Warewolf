@@ -255,7 +255,7 @@ namespace Warewolf.Studio.Views
         {
             var textBox = sender as TextBox;
             var explorerItemViewModel = textBox?.DataContext as ExplorerItemViewModel;
-            if (explorerItemViewModel != null && explorerItemViewModel.IsRenaming && !explorerItemViewModel.IsSaveDialog)
+            if (explorerItemViewModel != null && explorerItemViewModel.IsRenaming)
             {
                 explorerItemViewModel.ResourceName = textBox.Text;
             }

@@ -291,7 +291,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(PostgreSqlDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private IAsyncWorker _worker;
+        private readonly IAsyncWorker _worker;
 
         public DelegateCommand TestInputCommand { get; set; }
 
@@ -470,7 +470,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
             }
         }
 
-        private IDbServiceModel Model { get; set; }
+        private IDbServiceModel Model { get; }
 
         void SetRegionVisibility(bool value)
         {
