@@ -297,6 +297,46 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
+                                            <UIObject ControlType="ListItem" Id="NewTask1ResourceListItem" FriendlyName="Name:New Task1 ResourceId:99c1d2b9-11c3-45b1-abb5-..." SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="Name" Operator="Contains">Name:New Task1 ResourceId</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="HelpText">Delete this scheduled task</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="CheckBox" Id="EnableorDisablethescCheckBox" FriendlyName="Enable or Disable the schedule" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                    <PropertyCondition Name="HelpText">Enable or Disable the schedule</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
                                             <UIObject ControlType="ListItem" Id="ScheduleNewTaskListItem" FriendlyName="Dev2.Scheduler.DummyResource" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
