@@ -86,6 +86,8 @@ using Warewolf.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
+using TestingDotnetDllCascading;
+
 // ReSharper disable NonLocalizedString
 
 // ReSharper disable UnusedMember.Global
@@ -2736,6 +2738,24 @@ namespace Dev2.Activities.Specs.Composition
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+        }
+
+        [Given(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [Then(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [When(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        public void GivenContainsARabbitMQPublishInto(string parentName, string rabbitMqname, string result)
+        {
+            var jsonMsg = new Human().SerializeToJsonStringBuilder().ToString();
+            var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
+              ,
+                Result = result
+              ,
+                DisplayName = rabbitMqname,
+                Message = jsonMsg
+            };
+            _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
         }
 
 
