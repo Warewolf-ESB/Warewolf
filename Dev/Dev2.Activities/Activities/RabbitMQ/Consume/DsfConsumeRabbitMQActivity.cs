@@ -51,6 +51,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public int _timeOut;
 
         public DsfConsumeRabbitMQActivity()
+            : this(new ResponseManager())
         {
             DisplayName = "RabbitMQ Consume";
             _messages = new List<string>();
@@ -61,6 +62,11 @@ namespace Dev2.Activities.RabbitMQ.Consume
             DisplayName = "RabbitMQ Consume";
             _messages = new List<string>();
             ResourceCatalog = resourceCatalog;
+        }
+
+        public DsfConsumeRabbitMQActivity(IResponseManager responseManager)
+        {
+            ResponseManager = responseManager;
         }
 
 
@@ -317,7 +323,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             base.GetDebugOutputs(dataList, update);
-            
+
             if (dataList == null || string.IsNullOrEmpty(Response))
                 return new List<DebugItem>();
 
@@ -331,8 +337,26 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         protected override void AssignResult(IDSFDataObject dataObject, int update)
         {
+            if (IsObject)
+            {
+                ResponseManager.IsObject = IsObject;
+                ResponseManager.ObjectName = ObjectName;
+            }
             base.AssignResult(dataObject, update);
-            if (!string.IsNullOrEmpty(Response))
+            if (!string.IsNullOrEmpty(ObjectName))
+            {
+                if (IsObject)
+                {
+                    if (_messages?.Any() ?? false)
+                    {
+                        foreach (var message in _messages)
+                        {
+                            ResponseManager.PushResponseIntoEnvironment(message, update, dataObject);
+                        }
+                    }
+                }
+            }
+            else if (!string.IsNullOrEmpty(Response))
             {
                 if (DataListUtil.IsValueScalar(Response))
                 {
@@ -346,8 +370,6 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     }
                 }
             }
-
         }
-
     }
 }
