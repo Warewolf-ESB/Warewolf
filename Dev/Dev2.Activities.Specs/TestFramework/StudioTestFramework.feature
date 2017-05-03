@@ -1760,12 +1760,12 @@ Scenario: Test WF with RabbitMq Consume
 	Then workflow "RabbitMqConsumeTestFailWF" is deleted as cleanup
 
 Scenario: Test WF with RabbitMq Consume object result
-	Given I have a workflow "RabbitMqConsumeTestFailWF"
-	And "RabbitMqConsumeTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into ""
-	And "RabbitMqConsumeTestFailWF" is object is set to "true"
-	And "RabbitMqConsumeTestFailWF" objectname as "[[@result]]"
-	And I save workflow "RabbitMqConsumeTestFailWF"
-	Then the test builder is open with "RabbitMqConsumeTestFailWF"
+	Given I have a workflow "RabbitMqConsumeObjectTestFailWF"
+	And "RabbitMqConsumeObjectTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into ""
+	And "RabbitMqConsumeObjectTestFailWF" is object is set to "true"
+	And "RabbitMqConsumeObjectTestFailWF" objectname as "[[@result]]"
+	And I save workflow "RabbitMqConsumeObjectTestFailWF"
+	Then the test builder is open with "RabbitMqConsumeObjectTestFailWF"
 	And I click New Test
 	And a new test is added	
     And test name starts with "Test 1"
@@ -1778,7 +1778,30 @@ Scenario: Test WF with RabbitMq Consume object result
 	Then test result is Failed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
-	Then workflow "RabbitMqConsumeTestFailWF" is deleted as cleanup
+	Then workflow "RabbitMqConsumeObjectTestFailWF" is deleted as cleanup
+	
+Scenario: Test WF with RabbitMq Consume object Array result 
+	Given I have a workflow "RabbitMqConsumeObjectResultTestFailWF"
+	And "RabbitMqConsumeObjectResultTestFailWF" contains a Foreach "ForEachTest" as "NumOfExecution" executions "3"		
+    And "ForEachTest" contains a RabbitMQPublish "DsfPublishRabbitMQActivity" into "[[publishResult]]" 
+	And "RabbitMqConsumeObjectResultTestFailWF" contains RabbitMQConsume "DsfConsumeRabbitMQActivity" into ""
+	And "RabbitMqConsumeObjectResultTestFailWF" is object is set to "true"
+	And "RabbitMqConsumeObjectResultTestFailWF" objectname as "[[@result()]]"
+	And I save workflow "RabbitMqConsumeObjectResultTestFailWF"
+	Then the test builder is open with "RabbitMqConsumeObjectResultTestFailWF"
+	And I click New Test
+	And a new test is added	
+    And test name starts with "Test 1"
+	And I Add "DsfConsumeRabbitMQActivity" as TestStep
+	And I add StepOutputs as 
+	  	 | Variable Name | Condition | Value                                         |
+	  	 | [[@result()]]   | =         | Failure: Queue Name and Message are required. |
+	When I save
+	And I run the test
+	Then test result is Failed
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	Then workflow "RabbitMqConsumeObjectResultTestFailWF" is deleted as cleanup
 	
 	Scenario: Test WF with RabbitMq Consume and count Recordset
 	Given I have a workflow "RabbitMqConsumeAndCountTestFailWF"
