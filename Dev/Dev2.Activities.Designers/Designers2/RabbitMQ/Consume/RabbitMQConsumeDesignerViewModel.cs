@@ -23,7 +23,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using Dev2.Data.Util;
+using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
+using Warewolf.Storage;
 
 // ReSharper disable ConvertPropertyToExpressionBody
 
@@ -34,15 +37,15 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
     public class RabbitMQConsumeDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
         private readonly IRabbitMQSourceModel _model;
-
+        private IShellViewModel _shellViewModel;
         public RabbitMQConsumeDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
 
-            IShellViewModel shellViewModel = CustomContainer.Get<IShellViewModel>();
-            IServer server = shellViewModel.ActiveServer;
-            _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel);
+            _shellViewModel = CustomContainer.Get<IShellViewModel>();
+            IServer server = _shellViewModel.ActiveServer;
+            _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, _shellViewModel);
             SetupCommonViewModelProperties();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Consume;
         }
@@ -160,6 +163,64 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
         {
             get { return GetProperty<bool>(); }
             set { SetProperty(value); }
+        }
+
+        public bool IsObject
+        {
+            get
+            {
+                var isObject = ModelItem.GetProperty<bool>("IsObject");
+                return isObject;
+            }
+            set
+            {
+                ModelItem.SetProperty("IsObject", value);
+                OnPropertyChanged();
+            }
+        }
+
+        public string ObjectName
+        {
+            get
+            {
+                var objectName = ModelItem.GetProperty<string>("ObjectName");
+                return objectName;
+            }
+            set
+            {
+
+                if (IsObject)
+                {
+                    try
+                    {
+                        if (value != null)
+                        {
+                            OnPropertyChanged();
+                            var newValues = DataListUtil.AddBracketsToValueIfNotExist(value);
+                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(newValues);
+                            if (language.IsJsonIdentifierExpression)
+                            {
+                                if (_shellViewModel == null)
+                                {
+                                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
+                                }
+                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(newValues), "");
+                            }
+                            ModelItem.SetProperty("ObjectName", newValues);
+                        }
+                        else
+                        {
+                            ModelItem.SetProperty("ObjectName", string.Empty);
+                            OnPropertyChanged();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //Is not an object identifier
+                    }
+
+                }
+            }
         }
 
         public string Result
