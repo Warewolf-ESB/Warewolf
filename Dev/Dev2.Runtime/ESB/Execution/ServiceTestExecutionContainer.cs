@@ -375,11 +375,60 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    AggregateTestResult(resourceId, test);
-                    if (test != null)
+                    if (DataObject.StopExecution && DataObject.Environment.HasErrors())
                     {
-                        _request.ExecuteResult = serializer.SerializeToBuilder(test);
+                        var existingErrors = DataObject.Environment.FetchErrors();
+                        DataObject.Environment.AllErrors.Clear();
+
+                        if (test != null)
+                        {
+                            test.Result = new TestRunResult();
+                            test.FailureMessage = existingErrors;
+                            if (test.ErrorExpected)
+                            {
+                                if (test.FailureMessage.Contains(test.ErrorContainsText) && !string.IsNullOrEmpty(test.ErrorContainsText))
+                                {
+                                    test.TestPassed = true;
+                                    test.TestFailing = false;
+                                    test.Result.RunTestResult = RunResult.TestPassed;
+                                }
+                                else
+                                {
+                                    test.TestFailing = true;
+                                    test.TestPassed = false;
+                                    test.Result.RunTestResult = RunResult.TestFailed;
+                                    var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, test.ErrorContainsText, test.FailureMessage);
+                                    test.FailureMessage = assertError;
+                                }
+                            }
+                            if (test.NoErrorExpected)
+                            {
+                                if (string.IsNullOrEmpty(test.FailureMessage))
+                                {
+                                    test.TestPassed = true;
+                                    test.TestFailing = false;
+                                    test.Result.RunTestResult = RunResult.TestPassed;
+                                }
+                                else
+                                {
+                                    test.TestFailing = true;
+                                    test.TestPassed = false;
+                                    test.Result.RunTestResult = RunResult.TestFailed;
+                                }
+                            }
+                            _request.ExecuteResult = serializer.SerializeToBuilder(test);
+                        }
+
                     }
+                    else
+                    {
+                        AggregateTestResult(resourceId, test);
+                        if (test != null)
+                        {
+                            _request.ExecuteResult = serializer.SerializeToBuilder(test);
+                        }
+                    }
+                   
                 }
                 result = DataObject.DataListID;
             }
