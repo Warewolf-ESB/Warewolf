@@ -24,6 +24,30 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             this.scenarioContext = scenarioContext;
         }
 
+        [Given(@"I assign the string ""(.*)"" to a json object ""(.*)""")]
+        public void GivenIAssignTheStringAToAJsonObject(string value, string variable)
+        {
+            List<Tuple<string, string>> variableList;
+            scenarioContext.TryGetValue("variableList", out variableList);
+
+            List<AssignObjectDTO> fieldCollection;
+            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                scenarioContext.Add("variableList", variableList);
+            }
+
+            if (fieldCollection == null)
+            {
+                fieldCollection = new List<AssignObjectDTO>();
+                scenarioContext.Add("fieldCollection", fieldCollection);
+            }
+
+            fieldCollection.Add(new AssignObjectDTO(variable, value, 1, true));
+        }
+
         [Given(@"I assign the value ""(.*)"" to a json object ""(.*)""")]
         public void GivenIAssignTheValueToAJsonObject(string value, string variable)
         {
