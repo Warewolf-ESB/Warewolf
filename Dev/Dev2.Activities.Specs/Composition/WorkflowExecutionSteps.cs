@@ -3698,7 +3698,8 @@ namespace Dev2.Activities.Specs.Composition
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-                , Response = variable
+                
+                ,Response = variable
                 ,
                 DisplayName = activityName
             };
@@ -3722,7 +3723,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
                 ,
-                Result = variable
+                Response = variable
                 ,
                 DisplayName = activityName,
                 TimeOut = timeout == -1 ? "" : timeout.ToString(),
@@ -3738,7 +3739,7 @@ namespace Dev2.Activities.Specs.Composition
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid(),
-                Result = resultVariable,
+                Response = resultVariable,
                 QueueName = queueName,
                 DisplayName = activityName
             };

@@ -39,8 +39,47 @@ namespace Warewolf.UITests.Scheduler
             SchedulerUIMap.Click_HelloWorldSchedule_EnableOrDisableCheckbox();
             SchedulerUIMap.Click_HelloWorldSchedule_EraseSchedulerButton();
             DialogsUIMap.Click_MessageBox_Yes();
-            Assert.IsFalse(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.Exists, "Generic Resource schedule did not delete.");
             SchedulerUIMap.Click_SchedulerTab_CloseButton();
+        }
+
+        [TestMethod]
+        [TestCategory("Scheduler")]
+        public void Delete_SchedulerTask_Button_Enables_When_Task_IsDisabled_UITests()
+        {
+            var schedules = SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.Items.Count;
+            if (schedules > 1)
+            {
+                if (UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem))
+                {
+                    if (SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EnableOrDisableCheckBox.Checked)
+                    {
+                        Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EraseScheduleButton));
+                        Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EnableOrDisableCheckBox);
+                        Assert.IsTrue(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EraseScheduleButton));
+                        Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EnableOrDisableCheckBox);
+                        Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.HelloWorldListItem.EraseScheduleButton));
+                    }
+                }
+                else if (UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem))
+                {
+                    if (SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EnableOrDisableCheckBox.Checked)
+                    {
+                        Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton));
+                        Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EnableOrDisableCheckBox);
+                        Assert.IsTrue(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton));
+                        Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EnableOrDisableCheckBox);
+                        Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.EraseScheduleButton));
+                    }
+                }
+            }
+            else
+            {
+                Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.ScheduleNewTaskListItem.SchedulerNewTaskButton);
+                Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.EnableorDisablethescCheckBox);
+                Assert.IsTrue(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton));
+                Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.EnableorDisablethescCheckBox);
+                Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton));
+            }
         }
 
         #region Additional test attributes

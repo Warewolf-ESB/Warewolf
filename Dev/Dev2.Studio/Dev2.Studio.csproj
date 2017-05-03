@@ -314,6 +314,7 @@
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerWithContextKey.cs" />
     <Compile Include="AppResources\Converters\ExplorerItemModelToIconConverter.cs" />
+    <Compile Include="AppResources\Converters\InverseScheduleStatusConverter.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelPermissionToBooleanConverter.cs" />
     <Compile Include="AppResources\Converters\CustomIcons.cs" />
     <Compile Include="AppResources\Converters\EmailSourceToDisplayTextConverter.cs" />

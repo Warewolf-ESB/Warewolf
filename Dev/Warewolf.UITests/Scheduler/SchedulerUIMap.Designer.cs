@@ -578,6 +578,18 @@ namespace Warewolf.UITests.Scheduler.SchedulerUIMapClasses
         }
         
         #region Properties
+        public NewTask1ResourceListItem NewTask1ResourceListItem
+        {
+            get
+            {
+                if ((this.mNewTask1ResourceListItem == null))
+                {
+                    this.mNewTask1ResourceListItem = new NewTask1ResourceListItem(this);
+                }
+                return this.mNewTask1ResourceListItem;
+            }
+        }
+        
         public ScheduleNewTaskListItem ScheduleNewTaskListItem
         {
             get
@@ -616,11 +628,67 @@ namespace Warewolf.UITests.Scheduler.SchedulerUIMapClasses
         #endregion
         
         #region Fields
+        private NewTask1ResourceListItem mNewTask1ResourceListItem;
+        
         private ScheduleNewTaskListItem mScheduleNewTaskListItem;
         
         private HelloWorldListItem mHelloWorldListItem;
         
         private GenericResourceListItem mGenericResourceListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class NewTask1ResourceListItem : WpfListItem
+    {
+        
+        public NewTask1ResourceListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties.Add(new PropertyExpression(WpfListItem.PropertyNames.Name, "Name:New Task1 ResourceId", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Delete this scheduled task";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        
+        public WpfCheckBox EnableorDisablethescCheckBox
+        {
+            get
+            {
+                if ((this.mEnableorDisablethescCheckBox == null))
+                {
+                    this.mEnableorDisablethescCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mEnableorDisablethescCheckBox.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Disable the schedule";
+                    this.mEnableorDisablethescCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEnableorDisablethescCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteButton;
+        
+        private WpfCheckBox mEnableorDisablethescCheckBox;
         #endregion
     }
     

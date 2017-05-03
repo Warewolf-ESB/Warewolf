@@ -35,23 +35,16 @@ namespace Dev2.Studio.Dock
     /// </summary>
     public class ContentPaneFactory : ContainerFactory
     {
-        #region Member Variables
 
         private DependencyObject _target;
 
-        #endregion //Member Variables
 
-        #region Constructor
         static ContentPaneFactory()
         {
             ContainerTypeProperty.OverrideMetadata(typeof(ContentPaneFactory), new FrameworkPropertyMetadata(typeof(ContentPane)));
         }
 
-        #endregion
 
-        #region Base class overrides
-
-        #region ClearContainerForItem
         /// <summary>
         /// Used to clear any settings applied to a container in the <see cref="PrepareContainerForItem"/>
         /// </summary>
@@ -69,9 +62,6 @@ namespace Dev2.Studio.Dock
             base.ClearContainerForItem(container, item);
         }
 
-        #endregion //ClearContainerForItem
-
-        #region OnItemInserted
         /// <summary>
         /// Invoked when an element for an item has been generated.
         /// </summary>
@@ -82,9 +72,7 @@ namespace Dev2.Studio.Dock
         {
             AddPane((ContentPane)container);
         }
-        #endregion //OnItemInserted
 
-        #region OnItemMoved
         /// <summary>
         /// Invoked when an item has been moved in the source collection.
         /// </summary>
@@ -96,9 +84,7 @@ namespace Dev2.Studio.Dock
         {
         }
 
-        #endregion //OnItemMoved
 
-        #region OnItemRemoved
         /// <summary>
         /// Invoked when an element created for an item has been removed
         /// </summary>
@@ -108,9 +94,7 @@ namespace Dev2.Studio.Dock
         {
             RemovePane((ContentPane)container);
         }
-        #endregion //OnItemRemoved
 
-        #region PrepareContainerForItem
         /// <summary>
         /// Used to initialize a container for a given item.
         /// </summary>
@@ -249,9 +233,6 @@ namespace Dev2.Studio.Dock
             else pane.Name = item.ToString();
         }
 
-        #endregion //PrepareContainerForItem
-
-        #region ValidateContainerType
         /// <summary>
         /// Invoked when the <see cref="ContainerFactory.ContainerType"/> is about to be changed to determine if the specified type is allowed.
         /// </summary>
@@ -264,13 +245,6 @@ namespace Dev2.Studio.Dock
             }
             base.ValidateContainerType(elementType);
         }
-        #endregion //ValidateContainerType
-
-        #endregion //Base class overrides
-
-        #region Properties
-
-        #region ContentPath
 
         /// <summary>
         /// Identifies the <see cref="ContentPath"/> dependency property
@@ -297,10 +271,6 @@ namespace Dev2.Studio.Dock
             }
         }
 
-        #endregion //ContentPath
-
-        #region HeaderPath
-
         /// <summary>
         /// Identifies the <see cref="HeaderPath"/> dependency property
         /// </summary>
@@ -325,10 +295,6 @@ namespace Dev2.Studio.Dock
                 SetValue(HeaderPathProperty, value);
             }
         }
-
-        #endregion //HeaderPath
-
-        #region PaneFactory
 
         /// <summary>
         /// PaneFactory Attached Dependency Property
@@ -393,10 +359,6 @@ namespace Dev2.Studio.Dock
             }
         }
 
-        #endregion //PaneFactory
-
-        #region RemoveItemOnClose
-
         /// <summary>
         /// Identifies the <see cref="RemoveItemOnClose"/> dependency property
         /// </summary>
@@ -422,10 +384,6 @@ namespace Dev2.Studio.Dock
             }
         }
 
-        #endregion //RemoveItemOnClose
-
-        #region TabHeaderPath
-
         /// <summary>
         /// Identifies the <see cref="TabHeaderPath"/> dependency property
         /// </summary>
@@ -450,14 +408,7 @@ namespace Dev2.Studio.Dock
                 SetValue(TabHeaderPathProperty, value);
             }
         }
-
-        #endregion //TabHeaderPath
-
-        #endregion //Properties
-
-        #region Methods
-
-        #region AddPane
+        
         /// <summary>
         /// Invoked when a new <see cref="ContentPane"/> has been created and needs to be added to the appropriate target collection.
         /// </summary>
@@ -518,9 +469,7 @@ namespace Dev2.Studio.Dock
             }
         }
 
-        #endregion //AddPane
 
-        #region GetSiblingDocument
         private ContentPane GetSiblingDocument()
         {
             DocumentContentHost dch = _target as DocumentContentHost;
@@ -566,9 +515,7 @@ namespace Dev2.Studio.Dock
 
             return firstDocument;
         }
-        #endregion //GetSiblingDocument
 
-        #region OnPaneClosing
         public void OnPaneClosing(object sender, PaneClosingEventArgs e)
         {
             ContentPane contentPane = sender as ContentPane;
@@ -616,9 +563,7 @@ namespace Dev2.Studio.Dock
             }
         }
 
-        #endregion
 
-        #region OnPaneClosed
         private void OnPaneClosed(object sender, PaneClosedEventArgs e)
         {
             var pane = sender as ContentPane;
@@ -644,9 +589,7 @@ namespace Dev2.Studio.Dock
                 }
             }
         }
-        #endregion //OnPaneClosed
 
-        #region RaiseInitializeContentPane
         private void RaiseInitializeContentPane(ContentPane pane)
         {
             if(null == _target)
@@ -657,9 +600,7 @@ namespace Dev2.Studio.Dock
             var args = new InitializeContentPaneEventArgs(pane) { RoutedEvent = InitializeContentPaneEvent };
             UiElementHelper.RaiseEvent(_target, args);
         }
-        #endregion //RaiseInitializeContentPane
 
-        #region RemovePane
         /// <summary>
         /// Invoked when a ContentPane for a given item is being removed.
         /// </summary>
@@ -693,13 +634,8 @@ namespace Dev2.Studio.Dock
             }
             cp.PreviewMouseDown -= PaneOnPreviewMouseDown;
         }
-        #endregion //RemovePane
 
-        #endregion //Methods
 
-        #region Events
-
-        #region InitializeContentPane
 
         /// <summary>
         /// InitializeContentPane Attached Routed Event
@@ -707,9 +643,7 @@ namespace Dev2.Studio.Dock
         public static readonly RoutedEvent InitializeContentPaneEvent = EventManager.RegisterRoutedEvent("InitializeContentPane",
             RoutingStrategy.Direct, typeof(EventHandler<InitializeContentPaneEventArgs>), typeof(ContentPaneFactory));
 
-        #endregion //InitializeContentPane
 
-        #endregion //Events
     }
 
     /// <summary>
@@ -717,13 +651,9 @@ namespace Dev2.Studio.Dock
     /// </summary>
     public class InitializeContentPaneEventArgs : RoutedEventArgs
     {
-        #region Member Variables
 
         readonly ContentPane _pane;
 
-        #endregion //Member Variables
-
-        #region Constructor
         /// <summary>
         /// Initializes a new <see cref="InitializeContentPaneEventArgs"/>
         /// </summary>
@@ -732,19 +662,17 @@ namespace Dev2.Studio.Dock
         {
             if (pane == null)
             {
-                throw new ArgumentNullException("pane");
+                throw new ArgumentNullException(nameof(pane));
             }
 
             _pane = pane;
         }
-        #endregion //Constructor
 
-        #region Properties
         /// <summary>
         /// Returns the pane being initialized
         /// </summary>
+        // ReSharper disable once ConvertToAutoProperty
         public ContentPane Pane => _pane;
 
-        #endregion //Properties
     }
 }
