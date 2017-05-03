@@ -15,8 +15,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Interfaces;
-using Dev2.Services.Security;
-using Dev2.Tests.Runtime.JSON;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
