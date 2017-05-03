@@ -3706,6 +3706,22 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Add("RabbitMqTool", dsfConsumeRabbitMqActivity);
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
+        [Given(@"""(.*)"" is object is set to ""(.*)""")]
+        public void GivenIsObjectIsSetTo(string toolName, string isObjectString)
+        {
+            var isObject = bool.Parse(isObjectString);
+            var dsfConsumeRabbitMqActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("RabbitMqTool");
+            dsfConsumeRabbitMqActivity.IsObject = isObject;
+        }
+
+        [Given(@"""(.*)"" objectname as ""(.*)""")]
+        public void GivenObjectnameAs(string toolName, string Objectname)
+        {
+            var dsfConsumeRabbitMqActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("RabbitMqTool");
+            dsfConsumeRabbitMqActivity.ObjectName = Objectname;
+        }
+
+
 
         [Given(@"Queue Name as ""(.*)""")]
         public void GivenQueueNameAs(string queueName)

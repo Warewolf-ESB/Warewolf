@@ -7,8 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Activities;
 using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using RabbitMQ.Client.Framing;
 using Warewolf.Storage;
@@ -40,6 +42,235 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             Assert.IsTrue(string.IsNullOrEmpty(dsfConsumeRabbitMQActivity.QueueName));
             Assert.AreEqual(Guid.Empty, dsfConsumeRabbitMQActivity.RabbitMQSourceResourceId);
             Assert.IsNull(dsfConsumeRabbitMQActivity.Prefetch);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
+        public void DsfConsumeRabbitMQActivity_ConstructorRC_Should_SetsDefaultPropertyValuesIsObject()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var mock = new Mock<IResourceCatalog>();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null
+            };
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfConsumeRabbitMQActivity);
+            Assert.IsFalse(dsfConsumeRabbitMQActivity.IsObject);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
+        public void DsfConsumeRabbitMQActivity_ConstructorRM_Should_SetsDefaultPropertyValuesIsObject()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var mock = new Mock<IResponseManager>();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null
+            };
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfConsumeRabbitMQActivity);
+            Assert.IsFalse(dsfConsumeRabbitMQActivity.IsObject);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void AssignResult_GivenIsObject_ShouldSetResponsemanagerIsObject()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IResponseManager>();
+            mock.SetupProperty(manager => manager.IsObject);
+            var dstaObj = new Mock<IDSFDataObject>();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null,
+                IsObject = true
+            };
+            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
+            //---------------Execute Test ----------------------
+            privateObject.Invoke("AssignResult", dstaObj.Object, 1);
+            //---------------Test Result -----------------------
+            mock.VerifySet(manager => manager.IsObject = true, Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void AssignResult_GivenIsObject_ShouldSetResponsemanagerObjectName()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IResponseManager>();
+            mock.SetupProperty(manager => manager.ObjectName);
+            var dstaObj = new Mock<IDSFDataObject>();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null,
+                IsObject = true,
+                ObjectName = "a"
+            };
+            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
+            //---------------Execute Test ----------------------
+            privateObject.Invoke("AssignResult", dstaObj.Object, 1);
+            //---------------Test Result -----------------------
+            mock.VerifySet(manager => manager.ObjectName = "a", Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void AssignResult_GivenIsObjectNoMessages_ShouldNotSetResponsemanagerPushResponeToEnvironment()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IResponseManager>();
+            mock.SetupProperty(manager => manager.ObjectName);
+
+            var dstaObj = new Mock<IDSFDataObject>();
+            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>())).Verifiable();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null,
+                IsObject = true,
+                ObjectName = "a"
+            };
+            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
+            //---------------Execute Test ----------------------
+            privateObject.Invoke("AssignResult", dstaObj.Object, 1);
+            //---------------Test Result -----------------------
+            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>()), Times.Never);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void AssignResult_GivenIsObjectOneMessages_ShouldSetResponsemanagerPushResponeToEnvironment()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IResponseManager>();
+            mock.SetupProperty(manager => manager.ObjectName);
+
+            var dstaObj = new Mock<IDSFDataObject>();
+            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>())).Verifiable();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null,
+                IsObject = true,
+                ObjectName = "a",
+                _messages = new List<string>(new[] { "a" })
+            };
+            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
+            //---------------Execute Test ----------------------
+            privateObject.Invoke("AssignResult", dstaObj.Object, 1);
+            //---------------Test Result -----------------------
+            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>()), Times.Once);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void AssignResult_GivenIsObjectManyMessages_ShouldSetResponsemanagerPushResponeToEnvironment()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IResponseManager>();
+            mock.SetupProperty(manager => manager.ObjectName);
+
+            var dstaObj = new Mock<IDSFDataObject>();
+            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>())).Verifiable();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null,
+                IsObject = true,
+                ObjectName = "a",
+                _messages = new List<string>(new[] { "a","b" })
+            };
+            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
+            //---------------Execute Test ----------------------
+            privateObject.Invoke("AssignResult", dstaObj.Object, 1);
+            //---------------Test Result -----------------------
+            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>()), Times.Exactly(2));
+        }
+
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
+        public void DsfConsumeRabbitMQActivity_ConstructorRC_Should_SetsDefaultPropertyValuesObjectName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var mock = new Mock<IResponseManager>();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null
+            };
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfConsumeRabbitMQActivity);
+            Assert.AreEqual(null, dsfConsumeRabbitMQActivity.ObjectName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
+        public void DsfConsumeRabbitMQActivity_ConstructorRM_Should_SetsDefaultPropertyValuesObjectName()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var mock = new Mock<IResponseManager>();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null
+            };
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfConsumeRabbitMQActivity);
+            Assert.AreEqual(null, dsfConsumeRabbitMQActivity.ObjectName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Construct")]
+        public void DsfConsumeRabbitMQActivity_Constructor_Should_SetsInitialiseResponseManager()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var mock = new Mock<IResponseManager>();
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
+            {
+                RabbitMQSourceResourceId = Guid.Empty,
+                QueueName = string.Empty,
+                Prefetch = null
+            };
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dsfConsumeRabbitMQActivity.ResponseManager);
+            Assert.IsTrue(ReferenceEquals(mock.Object, dsfConsumeRabbitMQActivity.ResponseManager));
         }
 
         [TestMethod]
@@ -230,7 +461,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         public void DsfConsumeRabbitMQActivity_Execute_Empty_Queue_Exception()
         {
             //------------Setup for test--------------------------
-            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity() {TimeOut = "0"};
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity() { TimeOut = "0" };
 
             const string queueName = "Q1";
             var resourceCatalog = new Mock<IResourceCatalog>();
@@ -267,7 +498,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         public void DsfConsumeRabbitMQActivity_Execute_Empty_Queue_Exception_NoTimeout()
         {
             //------------Setup for test--------------------------
-            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity() {TimeOut = "0"};
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity() { TimeOut = "0" };
 
             const string queueName = "Q1";
             var resourceCatalog = new Mock<IResourceCatalog>();
@@ -289,14 +520,14 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Execute Test---------------------------
             try
             {
-           privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
+                privateObject.Invoke("PerformExecution", new Dictionary<string, string> { { "QueueName", queueName } });
             }
             catch (Exception ex)
             {
                 Assert.AreEqual(ex.Message, string.Format("Nothing in the Queue : {0}", queueName));
             }
             //------------Assert Results-------------------------            
-            
+
         }
 
         [TestMethod]
@@ -465,7 +696,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             //------------Assert Results-------------------------            
         }
 
-       
+
         [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]

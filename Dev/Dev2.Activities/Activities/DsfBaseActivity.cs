@@ -22,7 +22,9 @@ namespace Dev2.Activities
     public abstract class DsfBaseActivity : DsfActivityAbstract<string>
     {
         private List<string> _executionResult;
-
+        public bool IsObject { get; set; }
+        public string ObjectName { get; set; }
+        public IResponseManager ResponseManager { get; set; }
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
@@ -57,7 +59,7 @@ namespace Dev2.Activities
 
         public override List<string> GetOutputs()
         {
-            return new List<string> {Result};
+            return new List<string> { Result };
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
@@ -92,7 +94,7 @@ namespace Dev2.Activities
                 }
                 if (colItr.FieldCount <= 0)
                 {
-                    var evaluatedValues = new Dictionary<string, string>();                    
+                    var evaluatedValues = new Dictionary<string, string>();
                     _executionResult = PerformExecution(evaluatedValues);
                     AssignResult(dataObject, update);
                 }
@@ -112,11 +114,11 @@ namespace Dev2.Activities
                 }
 
                 if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrWhiteSpace(Result))
-                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                {
+                    if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                    {
                         if (!string.IsNullOrEmpty(Result))
                             AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                }
+                    }
                 allErrors.MergeErrors(errors);
             }
             catch (Exception ex)
@@ -151,11 +153,10 @@ namespace Dev2.Activities
                 {
                     dataObject.Environment.Assign(Result, _executionResult.Last(), update);
                 }
-                foreach(var res in _executionResult)
+                foreach (var res in _executionResult)
                 {
-                    dataObject.Environment.Assign(Result,res, update);
+                    dataObject.Environment.Assign(Result, res, update);
                 }
-                
             }
         }
 
@@ -166,10 +167,7 @@ namespace Dev2.Activities
             foreach (var update in updates)
             {
                 var propertyInfo = GetType().GetProperty(update.Item1);
-                if (propertyInfo != null)
-                {
-                    propertyInfo.SetValue(this, update.Item2);
-                }
+                propertyInfo?.SetValue(this, update.Item2);
             }
         }
 
