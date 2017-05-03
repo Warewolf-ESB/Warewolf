@@ -40,7 +40,6 @@ namespace Warewolf.UITests.Scheduler
             SchedulerUIMap.Click_HelloWorldSchedule_EnableOrDisableCheckbox();
             SchedulerUIMap.Click_HelloWorldSchedule_EraseSchedulerButton();
             DialogsUIMap.Click_MessageBox_Yes();
-            Assert.IsFalse(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.Exists, "Generic Resource schedule did not delete.");
             SchedulerUIMap.Click_SchedulerTab_CloseButton();
         }
 

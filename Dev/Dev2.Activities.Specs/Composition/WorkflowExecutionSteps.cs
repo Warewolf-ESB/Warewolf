@@ -3698,13 +3698,22 @@ namespace Dev2.Activities.Specs.Composition
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-                ,
-                Result = variable
+                , Response = variable
                 ,
                 DisplayName = activityName
             };
+
+            ScenarioContext.Current.Add("RabbitMqTool", dsfConsumeRabbitMqActivity);
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
+
+        [Given(@"Queue Name as ""(.*)""")]
+        public void GivenQueueNameAs(string queueName)
+        {
+            var dsfConsumeRabbitMqActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("RabbitMqTool");
+            dsfConsumeRabbitMqActivity.QueueName = queueName;
+        }
+
 
         [Given(@"""(.*)"" contains RabbitMQConsume ""(.*)"" with timeout (.*) seconds into ""(.*)""")]
         public void GivenContainsRabbitMQConsumeWithTimeoutSecondsInto(string parentName, string activityName, int timeout, string variable)
@@ -3948,7 +3957,7 @@ namespace Dev2.Activities.Specs.Composition
             ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
-                                                                                    ,environmentModel);
+                                                                                    , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
             var dbSource = dbSources.Single(source => source.Id == "97d6272e-15a1-483f-afdb-a076f602604f".ToGuid());
 

@@ -73,8 +73,7 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.ExecutionOrigin = ExecutionOrigin.External;
             }
             var userPrinciple = Thread.CurrentPrincipal;
-            ErrorResultTO to = errors;
-            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(to); });
+            Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(); });
             foreach(var err in DataObject.Environment.Errors)
             {
                 errors.AddError(err, true);
@@ -88,7 +87,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        Guid ExecuteWf(ErrorResultTO to)
+        Guid ExecuteWf()
         {
             Guid result = new Guid();
             DataObject.StartTime = DateTime.Now;
