@@ -32,7 +32,6 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -44,6 +43,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class ServiceTestExecutionContainer : EsbExecutionContainer
     {
+        private IImpersonator _impersonator;
         private readonly EsbExecuteRequest _request;
 
         public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
@@ -53,6 +53,13 @@ namespace Dev2.Runtime.ESB.Execution
             TstCatalog = TestCatalog.Instance;
             ResourceCat = ResourceCatalog.Instance;
         }
+
+        public ServiceTestExecutionContainer(IImpersonator impersonator, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
+            : this(sa, dataObj, theWorkspace, esbChannel, request)
+        {
+            _impersonator = impersonator;
+        }
+
         protected ITestCatalog TstCatalog { get; set; }
         protected IResourceCatalog ResourceCat { get; set; }
         /// <summary>
@@ -133,7 +140,10 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
             {
-                Impersonator impersonator = new Impersonator();
+                if (_impersonator == null)
+                {
+                    _impersonator = new Impersonator();
+                }
                 var userName = serviceTestModelTo.UserName;
                 var domain = "";
                 if (userName.Contains("\\"))
@@ -148,10 +158,12 @@ namespace Dev2.Runtime.ESB.Execution
                     userName = userName.Substring(0, atIndex);
                     domain = userName.Substring(atIndex + 1);
                 }
-                var hasImpersonated = impersonator.Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(serviceTestModelTo.Password));
+                var hasImpersonated = _impersonator.ImpersonateForceDecrypt(userName, domain, serviceTestModelTo.Password);
                 if (!hasImpersonated)
                 {
-                    DataObject.Environment.AllErrors.Add("Unauthorized to execute this resource.");
+                    var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
+                    var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
+                    DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
                     DataObject.StopExecution = true;
                 }
             }
@@ -179,6 +191,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             return result;
         }
+
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
         {
@@ -287,8 +300,58 @@ namespace Dev2.Runtime.ESB.Execution
                         debugState.AssertResultList.Add(outputDebugItem);
                         wfappUtils.WriteDebug(DataObject, debugState);
                     }
-                    var testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
-                    AggregateTestResult(resourceId, test);
+                    DebugState testAggregateDebugState;
+                    if (DataObject.StopExecution && DataObject.Environment.HasErrors())
+                    {
+                        var existingErrors = DataObject.Environment.FetchErrors();
+                        DataObject.Environment.AllErrors.Clear();
+                        testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, DataObject.Environment.HasErrors(), string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+
+                        if (test != null)
+                        {
+                            test.Result = new TestRunResult();
+                            test.FailureMessage = existingErrors;
+                            if (test.ErrorExpected)
+                            {
+                                if (test.FailureMessage.Contains(test.ErrorContainsText) && !string.IsNullOrEmpty(test.ErrorContainsText))
+                                {
+                                    test.TestPassed = true;
+                                    test.TestFailing = false;
+                                    test.Result.RunTestResult = RunResult.TestPassed;
+                                }
+                                else
+                                {
+                                    test.TestFailing = true;
+                                    test.TestPassed = false;
+                                    test.Result.RunTestResult = RunResult.TestFailed;
+                                    var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, test.ErrorContainsText, test.FailureMessage);
+                                    test.FailureMessage = assertError;
+                                }
+                            }
+                            if (test.NoErrorExpected)
+                            {
+                                if (string.IsNullOrEmpty(test.FailureMessage))
+                                {
+                                    test.TestPassed = true;
+                                    test.TestFailing = false;
+                                    test.Result.RunTestResult = RunResult.TestPassed;
+                                }
+                                else
+                                {
+                                    test.TestFailing = true;
+                                    test.TestPassed = false;
+                                    test.Result.RunTestResult = RunResult.TestFailed;
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+                        AggregateTestResult(resourceId, test);
+                    }
+
 
                     DebugItem itemToAdd = new DebugItem();
                     if (test != null)
@@ -305,7 +368,7 @@ namespace Dev2.Runtime.ESB.Execution
 
                     if (testRunResult != null)
                     {
-                        if (test != null)
+                        if (test?.Result != null)
                             test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                         _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                     }
@@ -474,6 +537,8 @@ namespace Dev2.Runtime.ESB.Execution
                             }
                         }
                     }
+
+
                 }
                 ValidateError(test, testPassed, failureMessage);
                 test.FailureMessage = failureMessage.ToString();
@@ -681,6 +746,8 @@ namespace Dev2.Runtime.ESB.Execution
             test.TestPassed = testPassed;
             test.TestFailing = !testPassed;
         }
+
+
 
         private IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory)
         {

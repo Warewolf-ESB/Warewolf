@@ -41,19 +41,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("Data-Assign", "Assign", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign")]
     public class DsfMultiAssignActivity : DsfActivityAbstract<string>
     {
-        #region Constants
+        
         public const string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
         public const string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public const string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
-        #endregion
-
-        #region Fields
-
-        private IList<ActivityDTO> _fieldsCollection;
-
-        #endregion
-
-        #region Properties
+        
+        private IList<ActivityDTO> _fieldsCollection;        
 
         // ReSharper disable ConvertToAutoProperty
         public IList<ActivityDTO> FieldsCollection
@@ -74,25 +67,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ServiceHost { get; set; }
 
         protected override bool CanInduceIdle => true;
-
-        #endregion
-
-        #region Ctor
-
+        
         public DsfMultiAssignActivity()
             : base("Assign")
         {
             _fieldsCollection = new List<ActivityDTO>();
         }
-
-        #endregion
-
+        
         public override List<string> GetOutputs()
         {
             return FieldsCollection.Select(dto => dto.FieldName).ToList();
         }
-
-        #region Overridden NativeActivity Methods
 
         // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -106,21 +91,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
-
-        #region Overrides of DsfNativeActivity<string>
-
-        //public override IDev2Activity Execute(IDSFDataObject data)
-        //{
-        //    ExecuteTool(data);
-        //    if(NextNodes != null && NextNodes.Count()>0)
-        //    {
-        //        NextNodes.First().Execute(data);
-        //        return NextNodes.First();
-        //    }
-        //    return null;
-        //}
-
-        #endregion
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -483,10 +453,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-
-        #endregion
-
-        #region Get Debug Inputs/Outputs
+        
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
@@ -498,10 +465,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
         
-        #endregion Get Inputs/Outputs
-
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return (from item in FieldsCollection
@@ -515,10 +478,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
                     select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
         }
-
-        #endregion
-
-       
+      
     }
 
 }
