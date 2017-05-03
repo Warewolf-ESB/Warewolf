@@ -16,6 +16,8 @@ using System.Activities.Statements;
 using System.Collections.ObjectModel;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System.Collections.Generic;
+using System;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -23,8 +25,6 @@ namespace Dev2.Tests.Activities.ActivityTests
     // ReSharper disable InconsistentNaming
     public class MultiAssignObjectActivityTest : BaseActivityUnitTest
     {
-        #region MultiAssignObject Functionality Tests
-
         [TestMethod]
         [Owner("Clint Stedman")]
         [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
@@ -61,6 +61,31 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[@test.value1]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignObjectActivity_FunctionalityTests")]
+        public void MultiAssignObjectTopLevelJSONAssign()
+        {
+            var fieldCollection = new ObservableCollection<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[@test]]", "{\"Name\":\"Iris\",\"Age\":30}", fieldCollection.Count));
+
+            SetupArguments(
+                           ActivityStrings.scalarShape
+                         , ActivityStrings.scalarShape
+                         , fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            string expected1 = "Iris";
+            string expected2 = "30";
+            string actual1;
+            string actual2;
+            string error;
+            GetScalarValueFromEnvironment(result.Environment, "@test.Name", out actual1, out error);
+            GetScalarValueFromEnvironment(result.Environment, "@test.Age", out actual2, out error);
+
+            Assert.AreEqual(expected1, actual1);
+            Assert.AreEqual(expected2, actual2);
         }
 
         [TestMethod]
@@ -368,10 +393,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
-        #endregion MultiAssignObject Functionality Tests
-
-        #region Private Test Methods
-
         private void SetupArguments(string currentDL, string testData, ObservableCollection<AssignObjectDTO> fieldCollection, string outputMapping = null)
         {
             if (outputMapping == null)
@@ -392,6 +413,101 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = currentDL;
         }
 
-        #endregion Private Test Methods
+        [TestMethod]
+        [TestCategory("DsfMultiAssignObjectActivity_UpdateForEachInputs")]
+        public void DsfMultiAssignObjectActivity_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            {
+                new AssignObjectDTO("[[@Pet.Owner(1).Name]]", "Bob", 1),
+            };
+
+            DsfMultiAssignObjectActivity act = new DsfMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            act.UpdateForEachInputs(new List<Tuple<string, string>>
+            {
+                new Tuple<string, string>("[[@Pet.Owner(*).Name]]", "[[@Pet.Owner(1).Name]]"),
+            });
+
+            //------------Assert Results-------------------------
+
+            var collection = act.FieldsCollection;
+
+            Assert.AreEqual("Bob", collection[0].FieldValue);
+        }
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignObjectActivity_UpdateForEachOutputs")]
+        public void DsfMultiAssignObjectActivity_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            {
+                new AssignObjectDTO("[[@Pet.Owner(1).Name]]", "Bob", 1),
+            };
+
+            DsfMultiAssignObjectActivity act = new DsfMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            act.UpdateForEachOutputs(new List<Tuple<string, string>>
+            {
+                new Tuple<string, string>("[[@Pet.Owner(*).Name]]", "[[@Pet.Owner(1).Name]]"),
+            });
+
+            //------------Assert Results-------------------------
+
+            var collection = act.FieldsCollection;
+
+            Assert.AreEqual("Bob", collection[0].FieldValue);
+        }
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_GetForEachInputs")]
+        public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            {
+                new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
+            };
+
+            DsfMultiAssignObjectActivity act = new DsfMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            var inputs = act.GetForEachInputs();
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("[[@Pet.Name]]", inputs[0].Name);
+            Assert.AreEqual("[[result]]", inputs[0].Value);
+        }
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_GetForEachOutputs")]
+        public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
+        {
+            //------------Setup for test--------------------------
+            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            {
+                new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
+            };
+
+            DsfMultiAssignObjectActivity act = new DsfMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+
+            //------------Execute Test---------------------------
+
+            var inputs = act.GetForEachOutputs();
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("[[@Pet.Name]]", inputs[0].Value);
+            Assert.AreEqual("[[result]]", inputs[0].Name);
+        }
     }
+
 }
