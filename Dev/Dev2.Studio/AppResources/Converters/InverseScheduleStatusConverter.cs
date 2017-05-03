@@ -22,9 +22,9 @@ namespace Dev2.Studio.Core.AppResources.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            SchedulerStatus schedulerStatus = (SchedulerStatus)value;
+            SchedulerStatus? schedulerStatus = (SchedulerStatus?)value;
 
-            if (schedulerStatus == SchedulerStatus.Enabled)
+            if (schedulerStatus != null && schedulerStatus == SchedulerStatus.Enabled)
             {
                 return false;
             }
@@ -33,9 +33,9 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            SchedulerStatus schedulerStatus = (SchedulerStatus)value;
+            SchedulerStatus? schedulerStatus = (SchedulerStatus?)value;
 
-            if (schedulerStatus == SchedulerStatus.Enabled)
+            if (schedulerStatus != null && schedulerStatus == SchedulerStatus.Enabled)
             {
                 return false;
             }
