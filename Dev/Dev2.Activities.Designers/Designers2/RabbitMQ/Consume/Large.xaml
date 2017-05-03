@@ -53,6 +53,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="SourceTextBlock" Grid.Column="0" Grid.Row="0" Text="RabbitMQ Source" />
@@ -122,15 +123,28 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Response" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
+        <CheckBox x:Name="IsObjectCheckBox" 
+                  Grid.Column="1"
+                  Grid.Row="2"
+                  IsChecked="{Binding IsObject}" 
+                  IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
+                  Content="Output to Object"
+                  Margin="-6,0,0,0"
+                  HorizontalAlignment="Left">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Response" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
                                 DefaultText="Response "
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="True"
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipResponse}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsResponseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
@@ -143,8 +157,8 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Prefetch" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="4"
                                 DefaultText="Prefetch Count"
                                 AllowUserInsertLine="False"
                                 Text="{Binding Prefetch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -162,8 +176,9 @@
                                             Target="{Binding}" />
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="TimeOut" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="4"
+        
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="TimeOut" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="5"
                                 DefaultText="TimeOut in seconds"
                                 AllowUserInsertLine="False"
                                 Text="{Binding TimeOut, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -182,10 +197,10 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="Acknowledge" Margin="{StaticResource ControlBorderTop}" />
-        <CheckBox Grid.Column="1" Grid.Row="5"
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="Acknowledge" Margin="{StaticResource ControlBorderTop}" />
+        <CheckBox Grid.Column="1" Grid.Row="6"
                   Margin="-6,0,0,0"
-                      Content="Acknowledge"
+                  Content="Acknowledge"
                   IsChecked="{Binding Acknowledge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipAcknowledge}">
@@ -197,8 +212,9 @@
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
-        <TextBlock Grid.Column="0" Grid.Row="6" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
-        <CheckBox Grid.Column="1" Grid.Row="6"
+        
+        <TextBlock Grid.Column="0" Grid.Row="7" Text="ReQueue" Margin="{StaticResource ControlBorderTop}" />
+        <CheckBox Grid.Column="1" Grid.Row="7"
                   Margin="-6,0,0,0"
                       Content="ReQueue"
                   IsChecked="{Binding ReQueue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -213,8 +229,8 @@
             </i:Interaction.Behaviors>
         </CheckBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="7" Text="Result" Margin="0,-1,0,0" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="7"
+        <TextBlock Grid.Column="0" Grid.Row="8" Text="Result" Margin="0,-1,0,0" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="8"
                                 DefaultText="[[Result]]"
                                 WrapInBrackets="True"
                                 AllowUserInsertLine="False"
@@ -233,6 +249,6 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <errors:OnError Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" />
+        <errors:OnError Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" />
     </Grid>
 </core:ActivityDesignerTemplate>
