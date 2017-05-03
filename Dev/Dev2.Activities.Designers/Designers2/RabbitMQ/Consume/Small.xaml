@@ -36,6 +36,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="RabbitMQ Source" />
@@ -105,15 +106,28 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="Response" Margin="{StaticResource ControlBorderTop}" />
-        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="2"
+        <CheckBox x:Name="IsObjectCheckBox" 
+                  Grid.Column="1"
+                  Grid.Row="2"
+                  IsChecked="{Binding IsObject}" 
+                  IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  ToolTip="{x:Static languages:Tooltips.MappingsObjectOutputTooltip}"
+                  Content="Output to Object"
+                  Margin="-6,0,0,0"
+                  HorizontalAlignment="Left">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.MappingsObjectOutputHelp}" DataContext="{Binding}" />
+            </i:Interaction.Behaviors>
+        </CheckBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Response" Margin="{StaticResource ControlBorderTop}" />
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
                                 DefaultText="Response "
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="True"
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipResponse}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                Margin="{StaticResource ControlBorderTop}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsResponseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
