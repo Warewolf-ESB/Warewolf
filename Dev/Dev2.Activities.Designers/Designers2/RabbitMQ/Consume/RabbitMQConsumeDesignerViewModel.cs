@@ -196,17 +196,16 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
                         if (value != null)
                         {
                             OnPropertyChanged();
-                            var newValues = DataListUtil.AddBracketsToValueIfNotExist(value);
-                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(newValues);
+                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
                             if (language.IsJsonIdentifierExpression)
                             {
                                 if (_shellViewModel == null)
                                 {
                                     _shellViewModel = CustomContainer.Get<IShellViewModel>();
                                 }
-                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(newValues), "");
+                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), "");
                             }
-                            ModelItem.SetProperty("ObjectName", newValues);
+                            ModelItem.SetProperty("ObjectName", value);
                         }
                         else
                         {
