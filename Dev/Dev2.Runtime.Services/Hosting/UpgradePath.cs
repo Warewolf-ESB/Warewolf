@@ -25,10 +25,8 @@ namespace Dev2.Runtime.Hosting
             UpgradesFrom = upgradesFrom;
         }
 
-        #region Implementation of IUpgradePath
-
-        public Version UpgradesFrom { get; private set; }
-        public Version UpgradesTo { get; private set; }
+        public Version UpgradesFrom { get; }
+        public Version UpgradesTo { get; }
 
         public bool CanUpgrade(XElement sourceVersion)
         {
@@ -42,8 +40,7 @@ namespace Dev2.Runtime.Hosting
             // ReSharper disable once PossibleNullReferenceException
             return Version.Parse(resource.Attribute("ServerVersion").Value);
         }
-        public IResourceUpgrade Upgrade { get; private set; }
+        public IResourceUpgrade Upgrade { get; }
 
-        #endregion
     }
 }
