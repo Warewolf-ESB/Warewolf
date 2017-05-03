@@ -1466,26 +1466,151 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
         }
         
+        public virtual void InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for Json FilterType and Default Provider Case Insensitive", exampleTags);
+#line 142
+ this.ScenarioSetup(scenarioInfo);
+#line 143
+ testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 144
+ testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 145
+ testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 146
+ testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 147
+ testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 148
+ testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 149
+ testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 150
+ testRunner.Then(string.Format("the result text should be \"{0}\" with caret position will be \'{1}\'", result, caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for Json FilterType and Default Provider Case Insensitive: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@P")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]],[[@Person]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
+        public virtual void InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive_1()
+        {
+            this.InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive("1", "[[@Person]],[[@Person.name]]", "JsonObject", "@P", "2", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for Json FilterType and Default Provider Case Insensitive: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]],[[@Person]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
+        public virtual void InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive_2()
+        {
+            this.InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive("2", "[[@Person]],[[@Person.name]]", "JsonObject", "[[", "3", "[[@Person.name]],[[@Person]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for Json FilterType and Default Provider Case Insensitive: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "@PERSON.")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
+        public virtual void InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive_3()
+        {
+            this.InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive("3", "[[@Person]],[[@Person.name]]", "JsonObject", "@PERSON.", "8", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for Json FilterType and Default Provider Case Insensitive: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@PERSON.")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@Person.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
+        public virtual void InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive_4()
+        {
+            this.InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive("4", "[[@Person]],[[@Person.name]]", "JsonObject", "[[@PERSON.", "10", "[[@Person.name]]", "[[@Person.name]]", "[[@Person.name]]", "Default", "16", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for Json FilterType and Default Provider Case Insensitive: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[@Person]],[[@PERSON.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "JsonObject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[@person")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[@PERSON.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@PERSON.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[@PERSON.name]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "16")]
+        public virtual void InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive_5()
+        {
+            this.InsertForJsonFilterTypeAndDefaultProviderCaseInsensitive("5", "[[@Person]],[[@PERSON.name]]", "JsonObject", "[[@person", "9", "[[@PERSON.name]]", "[[@PERSON.name]]", "[[@PERSON.name]]", "Default", "16", ((string[])(null)));
+#line hidden
+        }
+        
         public virtual void InsertForJsonFilterTypeAndDefaultProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for Json FilterType and Default Provider", exampleTags);
-#line 143
+#line 159
 this.ScenarioSetup(scenarioInfo);
-#line 144
+#line 160
  testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 145
+#line 161
   testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
+#line 162
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 163
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 164
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 165
  testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 150
+#line 166
  testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 151
+#line 167
  testRunner.Then(string.Format("the result text should be \"{0}\" with caret position will be \'{1}\'", result, caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -2174,23 +2299,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for RecordsetFields FilterType and Default Provider", exampleTags);
-#line 191
+#line 207
 this.ScenarioSetup(scenarioInfo);
-#line 192
+#line 208
  testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 193
+#line 209
   testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
+#line 210
  testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 195
+#line 211
  testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 196
+#line 212
  testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 197
+#line 213
  testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 214
  testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 199
+#line 215
  testRunner.Then(string.Format("the result text should be \"{0}\" with caret position will be \'{1}\'", result, caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -2433,13 +2558,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidationMessagesWhenInvalidVariables(string no, string variable, string error, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validation messages when Invalid Variables", exampleTags);
-#line 215
+#line 231
 this.ScenarioSetup(scenarioInfo);
-#line 216
+#line 232
  testRunner.Given(string.Format("the current text in the textbox is \'{0}\'", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 217
+#line 233
  testRunner.And("the provider used is \'Default\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 218
+#line 234
  testRunner.Then(string.Format("the result has the error \'{0}\'", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -2580,6 +2705,397 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ValidationMessagesWhenInvalidVariables_10()
         {
             this.ValidationMessagesWhenInvalidVariables("10", "[[var]]00[[", "Invalid region detected: An open [[ without a related close ]]", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive(string testName, string varlist, string filterType, string input, string index, string dropDownList, string option, string result, string provider, string caretposition, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Insert for All FilterType and Default Provider Case Insensitive", exampleTags);
+#line 248
+this.ScenarioSetup(scenarioInfo);
+#line 249
+ testRunner.Given(string.Format("I have the following intellisense options \'{0}\'", varlist), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 250
+ testRunner.And(string.Format("the filter type is \'{0}\'", filterType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 251
+ testRunner.And(string.Format("the current text in the textbox is \'{0}\'", input), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 252
+ testRunner.And(string.Format("the cursor is at index \'{0}\'", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 253
+ testRunner.And(string.Format("the provider used is \'{0}\'", provider), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 254
+ testRunner.And(string.Format("the suggestion list as \'{0}\'", dropDownList), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 255
+ testRunner.When(string.Format("I select the following string option \'{0}\'", option), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 256
+ testRunner.Then(string.Format("the result text should be \"{0}\" with caret position will be \'{1}\'", result, caretposition), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[Var]],[[VAR2]],[[Rec()]],[[rEc().var]],[[rec().VAR2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text var")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[Var]],[[VAR2]],[[rEc().var]],[[rec().VAR2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[Var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text [[Var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_1()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("1", "[[Var]],[[VAR2]],[[Rec()]],[[rEc().var]],[[rec().VAR2]]", "All", "text var", "8", "[[Var]],[[VAR2]],[[rEc().var]],[[rec().VAR2]]", "[[Var]]", "text [[Var]]", "Default", "12", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[Var2]],[[rec()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[var")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[Var2]],[[rec().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[Var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[Var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_2()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("2", "[[var]],[[Var2]],[[rec()]],[[rec().var2]],[[rec().var]]", "All", "text[[var", "9", "[[var]],[[Var2]],[[rec().var]],[[rec().var2]]", "[[Var2]]", "text[[Var2]]", "Default", "12", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().VAR2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[REC().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[rec().var]],[[rec().VAR2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().VAR2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().VAR2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "18")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_3()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("3", "[[var]],[[var2]],[[REC()]],[[rec().VAR2]],[[rec().var]]", "All", "text[[REC().var]]", "15", "[[rec().var]],[[rec().VAR2]]", "[[rec().VAR2]]", "text[[rec().VAR2]]", "Default", "18", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "8")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_4()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("4", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "[[", "2", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]", "[[var2]]", "[[var2]]", "Default", "8", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[REC().[[var")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[REC().[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_5()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("5", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "text[[REC().[[var", "17", "[[var]],[[var2]]", "[[var2]]", "text[[REC().[[var2]]", "Default", "20", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_6()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("6", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "text[[rec().[[var]]", "17", "[[var]],[[var2]]", "[[var2]]", "text[[rec().[[var2]]", "Default", "20", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[rec().[[var]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().[[var2]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_7()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("7", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "text[[rec().[[var]]]]", "17", "[[var]],[[var2]]", "[[var2]]", "text[[rec().[[var2]]]]", "Default", "20", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec(*).var2]],[[rec().var]],[[rec(*)." +
+            "var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]]v")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "21")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_8()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("8", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec(*).var2]],[[rec().var]],[[rec(*)." +
+                    "var]]", "All", "[[var]]v", "8", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(*).var]]", "[[var]][[rec(*).var]]", "Default", "21", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "20")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_9()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("9", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "[[var]][[", "9", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]", "[[rec().var]]", "[[var]][[rec().var]]", "Default", "20", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[VAR2]],[[REC()]],[[rec().var2]],[[rec(*).var2]],[[rec().var]],[[REC(*)." +
+            "var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[VAR")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[VAR2]],[[rec(*).var2]],[[rec().var2]],[[REC(*).var]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "22")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_10()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("10", "[[var]],[[VAR2]],[[REC()]],[[rec().var2]],[[rec(*).var2]],[[rec().var]],[[REC(*)." +
+                    "var]]", "All", "[[var]][[VAR", "12", "[[var]],[[VAR2]],[[rec(*).var2]],[[rec().var2]],[[REC(*).var]],[[rec().var]]", "[[rec(*).var2]]", "[[var]][[rec(*).var2]]", "Default", "22", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec(*).var2]],[[rec().var]],[[rec(*)." +
+            "var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]][[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]][[rec(*).var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "22")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_11()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("11", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec(*).var2]],[[rec().var]],[[rec(*)." +
+                    "var]]", "All", "[[var]][[var]]", "12", "[[var]],[[var2]],[[rec().var]],[[rec(*).var]],[[rec().var2]],[[rec(*).var2]]", "[[rec(*).var2]]", "[[var]][[rec(*).var2]]", "Default", "22", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_12()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("12", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "[[var]]", "7", "", "", "[[var]]", "Default", "7", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[var]] text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]] text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_13()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("13", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "[[var]] text", "13", "", "", "[[var]] text", "Default", "13", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "text[[var2]]text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var2]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "text[[rec().var2]]text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "18")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_14()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("14", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "text[[var2]]text", "10", "[[var2]],[[rec().var2]]", "[[rec().var2]]", "text[[rec().var2]]text", "Default", "18", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "r")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "14")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_15()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("15", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "r", "1", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]", "[[rec().var2]]", "[[rec().var2]]", "Default", "14", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[rec([[va]]).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec([[var]]).var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "13")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_16()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("16", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "[[rec([[va]]).var]]", "10", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]", "[[var]]", "[[rec([[var]]).var]]", "Default", "13", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[[[a]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_17()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("17", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[rec().var]]", "All", "[[[[a]]]]", "5", "[[var]],[[var2]],[[rec().var]],[[rec().var2]]", "[[var]]", "[[var]]]]", "Default", "7", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Insert for All FilterType and Default Provider Case Insensitive: 18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DefaultIntellisense")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:testName", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:varlist", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[REc().var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:filterType", "All")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:input", "[[")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:index", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:dropDownList", "[[var]],[[var2]],[[REc().var]],[[rec().var2]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "7")]
+        public virtual void InsertForAllFilterTypeAndDefaultProviderCaseInsensitive_18()
+        {
+            this.InsertForAllFilterTypeAndDefaultProviderCaseInsensitive("18", "[[var]],[[var2]],[[REC()]],[[rec().var2]],[[REc().var]]", "All", "[[", "2", "[[var]],[[var2]],[[REc().var]],[[rec().var2]]", "[[var]]", "[[var]]", "Default", "7", ((string[])(null)));
 #line hidden
         }
     }

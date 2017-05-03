@@ -689,6 +689,83 @@ Scenario: Run a test expecting error
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 
+Scenario: Run a test expecting no error as an unknown user
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And test AuthenticationType as "User"
+	And username is "WrongUser"
+	And password is "badPassword"
+	And I update inputs as
+	| Variable Name | Value | EmptyIsNull |
+	| Name          |       | true        |
+	And save is enabled
+	And test status is pending
+	And test is enabled	
+	And I remove all Test Steps
+	And I save
+	When I run the test
+	Then the service debug assert Aggregate message contains "Failed: The user running the test is not authorized to execute resource Hello World"	
+	Then test result is Failed	
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
+Scenario: Run a test expecting an error as an unknown user
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"	
+	And test AuthenticationType as "User"
+	And username is "WrongUser"
+	And password is "badPassword"
+	And I update inputs as
+	| Variable Name | Value | EmptyIsNull |
+	| Name          | Bob   | true        |
+	And save is enabled
+	And test status is pending
+	And test is enabled	
+	And I remove all Test Steps
+	And I save
+	And I expect Error "The user"
+	When I run the test
+	Then the service debug assert Aggregate message contains "Passed"	
+	Then test result is Passed	
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+	
+Scenario: Run a test expecting a wrong error as an unknown user
+	Given the test builder is open with existing service "Hello World"	
+	And Tab Header is "Hello World - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"	
+	And test AuthenticationType as "User"
+	And username is "WrongUser"
+	And password is "badPassword"
+	And I update inputs as
+	| Variable Name | Value | EmptyIsNull |
+	| Name          | Bob   | true        |
+	And save is enabled
+	And test status is pending
+	And test is enabled	
+	And I remove all Test Steps
+	And I save
+	And I expect Error "Stackoverflow"
+	When I run the test
+	Then the service debug assert Aggregate message contains "Failed: expected error containing 'stackoverflow' but got 'Failed: the user running the test is not authorized to execute resource hello world.'"	
+	Then test result is Failed	
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
+
 Scenario: Run a test with invalid inputs and pending results
     Given the test builder is open with existing service "Hello World"	
 	And Tab Header is "Hello World - Tests"
@@ -1751,10 +1828,10 @@ Scenario: Test WF with RabbitMq Consume
 	And I Add "DsfConsumeRabbitMQActivity" as TestStep
 	And I add StepOutputs as 
 	  	 | Variable Name | Condition | Value                                         |
-	  	 | [[result]]    | =         | Failure: Queue Name and Message are required. |
+	  	 | [[result]]    | =         | Failure: Queue Name is required. |
 	When I save
 	And I run the test
-	Then test result is Failed
+	Then test result is Passed
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeTestFailWF" is deleted as cleanup
@@ -2722,22 +2799,22 @@ Then test result is Passed
 When I delete "Test 1"
 
 Scenario: Test Wf With Dropbox List Tool
-Given I have a workflow "TestWFWithDropBoxList"	
-And "TestWFWithDropBoxList" contains a DropboxUpload "UploadTool" Setup as
-| Local File      | OverwriteOrAdd | DropboxFile | Result  |
-| C:\Home.Delete | Overwrite      | Home/Download.xml  | [[res]] |
-And "TestWFWithDropBoxList" contains a DropboxList "ListTool" Setup as
-| Read  | LoadSubFolders | DropboxFile | Result          |
-| Files | true           | Home        | [[res().Files]] |
-And I save workflow "TestWFWithDropBoxList"
-Then the test builder is open with "TestWFWithDropBoxList"
-And I click New Test
-And I Add "UploadTool" as TestStep 
-And I Add "ListTool" as TestStep 
-When I save
-And I run the test
-Then test result is Passed
-When I delete "Test 1"
+	Given I have a workflow "TestWFWithDropBoxList"	
+	And "TestWFWithDropBoxList" contains a DropboxUpload "UploadTool" Setup as
+	| Local File      | OverwriteOrAdd | DropboxFile | Result  |
+	| C:\Home.Delete | Overwrite      | Home/Download.xml  | [[res]] |
+	And "TestWFWithDropBoxList" contains a DropboxList "ListTool" Setup as
+	| Read  | LoadSubFolders | DropboxFile | Result          |
+	| Files | true           | Home        | [[res().Files]] |
+	And I save workflow "TestWFWithDropBoxList"
+	Then the test builder is open with "TestWFWithDropBoxList"
+	And I click New Test
+	And I Add "UploadTool" as TestStep 
+	And I Add "ListTool" as TestStep 
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
 
 Scenario:Test Workflow which contains COM DLL
 	 Given I have a workflow "TestWFCOMDLL"
