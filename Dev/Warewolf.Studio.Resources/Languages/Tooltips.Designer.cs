@@ -3550,6 +3550,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot delete an enabled schedule.
+        /// </summary>
+        public static string SchedulesDeleteSelectedScheduleDisabledTooltip {
+            get {
+                return ResourceManager.GetString("SchedulesDeleteSelectedScheduleDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Schedule a service to run.
         /// </summary>
         public static string ScheduleToolTip {
