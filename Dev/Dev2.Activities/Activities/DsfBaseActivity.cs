@@ -22,9 +22,7 @@ namespace Dev2.Activities
     public abstract class DsfBaseActivity : DsfActivityAbstract<string>
     {
         private List<string> _executionResult;
-        public bool IsObject { get; set; }
-        public string ObjectName { get; set; }
-        public IResponseManager ResponseManager { get; set; }
+       public IResponseManager ResponseManager { get; set; }
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)

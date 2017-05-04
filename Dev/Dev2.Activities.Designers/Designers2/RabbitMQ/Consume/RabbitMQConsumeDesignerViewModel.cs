@@ -23,10 +23,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using Dev2.Data.Util;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
-using Warewolf.Storage;
 
 // ReSharper disable ConvertPropertyToExpressionBody
 
@@ -191,33 +189,17 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 
                 if (IsObject)
                 {
-                    try
-                    {
-                        if (value != null)
-                        {
-                            OnPropertyChanged();
-                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
-                            if (language.IsJsonIdentifierExpression)
-                            {
-                                if (_shellViewModel == null)
-                                {
-                                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
-                                }
-                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), "");
-                            }
-                            ModelItem.SetProperty("ObjectName", value);
-                        }
-                        else
-                        {
-                            ModelItem.SetProperty("ObjectName", string.Empty);
-                            OnPropertyChanged();
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        //Is not an object identifier
-                    }
 
+                    if (value != null)
+                    {
+                        ModelItem.SetProperty("ObjectName", value);
+                        OnPropertyChanged();
+                    }
+                    else
+                    {
+                        ModelItem.SetProperty("ObjectName", string.Empty);
+                        OnPropertyChanged();
+                    }
                 }
             }
         }

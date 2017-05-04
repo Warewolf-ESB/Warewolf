@@ -49,7 +49,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public string _result = "Success";
         public ushort _prefetch;
         public int _timeOut;
-
+        public bool IsObject { get; set; }
+        [FindMissing]
+        public string ObjectName { get; set; }
         public DsfConsumeRabbitMQActivity()
             : this(new ResponseManager())
         {
@@ -358,18 +360,20 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     }
                 }
             }
-            else if (!string.IsNullOrEmpty(Response))
+            if (!string.IsNullOrEmpty(Response) && !IsObject)
             {
                 if (DataListUtil.IsValueScalar(Response))
                 {
-                    dataObject.Environment.Assign(Response, _messages.Last(), update);
+                    if (_messages != null)
+                        dataObject.Environment.Assign(Response, _messages.Last(), update);
                 }
                 else
                 {
-                    foreach (var message in _messages)
-                    {
-                        dataObject.Environment.Assign(Response, message, update);
-                    }
+                    if (_messages != null)
+                        foreach (var message in _messages)
+                        {
+                            dataObject.Environment.Assign(Response, message, update);
+                        }
                 }
             }
         }

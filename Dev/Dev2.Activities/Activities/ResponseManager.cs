@@ -27,7 +27,7 @@ namespace Dev2.Activities
         public IOutputDescription OutputDescription { get; set; }
         public ICollection<IServiceOutputMapping> Outputs { get; set; }
 
-        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj,bool formatResult = true)
+        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj, bool formatResult = true)
         {
             if (dataObj == null)
             {
@@ -38,12 +38,30 @@ namespace Dev2.Activities
             {
                 if (IsObject)
                 {
-                    var jContainer = JsonConvert.DeserializeObject(input) as JContainer;
-                    dataObj.Environment.AddToJsonObjects(ObjectName, jContainer);
+                    try
+                    {
+                        var jContainer = JsonConvert.DeserializeObject(input) as JContainer;
+                        dataObj.Environment.AddToJsonObjects(ObjectName, jContainer);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Error(ex);
+                        //This is a scalar scenario and the Top level assign is invalid at this level.
+                        try
+                        {
+                            dataObj.Environment.AssignJson(new AssignValue(ObjectName, input), update);
+                        }
+                        catch (Exception ex1)
+                        {
+                            Dev2Logger.Error(ex1);
+                            var obj = new JObject(input);
+                            dataObj.Environment.AddToJsonObjects(ObjectName, obj);
+                        }
+                    }
                 }
                 else
                 {
-                    if(Outputs==null || Outputs.Count == 0)
+                    if (Outputs == null || Outputs.Count == 0)
                     {
                         return;
                     }
@@ -84,7 +102,7 @@ namespace Dev2.Activities
         private void FormatForOutput(string input, int update, IDSFDataObject dataObj, bool formatResult, IOutputFormatter formater)
         {
             var formattedInput = input;
-            if(formater != null && formatResult)
+            if (formater != null && formatResult)
             {
                 formattedInput = formater.Format(input).ToString();
             }
@@ -93,7 +111,7 @@ namespace Dev2.Activities
             formattedInput = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), formattedInput);
             xDoc.LoadXml(formattedInput);
 
-            if(xDoc.DocumentElement != null)
+            if (xDoc.DocumentElement != null)
             {
                 XmlNodeList children = xDoc.DocumentElement.ChildNodes;
                 IDictionary<string, int> indexCache = new Dictionary<string, int>();
@@ -164,7 +182,7 @@ namespace Dev2.Activities
         private void MapScalarValue(IList<IDev2Definition> outputDefs, int update, IDSFDataObject dataObj, XmlNode c1)
         {
             var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
-            if(scalarName != null)
+            if (scalarName != null)
             {
                 dataObj.Environment.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml(c1.InnerXml)), update);
             }
