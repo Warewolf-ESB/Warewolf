@@ -14,21 +14,6 @@ namespace Warewolf.UITests.DependencyGraph
     [CodedUITest]
     public class ShowDependencyTests
     {
-        //WOLF-2474
-        [TestMethod]
-        [TestCategory("Dependency Graph")]
-        [Owner("Nkosinathi Sangweni")]
-        public void Explorer_GivenSources_ShouldHaveShowDependencyMenuItem()
-        {
-            //---------------Set up test pack-------------------
-            const string Source = "DotNetPluginSource";
-            ExplorerUIMap.Filter_Explorer(Source);
-            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
-            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies, new Point(50, 15));
-            var displayText = DependencyGraphUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DependencyGraphTab.WorksurfaceContext.DependencyView.ScrollViewer.NodesCustom.DotnetWorkflowForTesText.DisplayText;
-            Assert.AreEqual("DotnetWorkflowForTesting", displayText);
-        }
-
         [TestMethod]
         [TestCategory("Dependency Graph")]
         [Owner("Nkosinathi Sangweni")]
