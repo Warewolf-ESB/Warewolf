@@ -16,10 +16,12 @@ using System.Security;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
+using Dev2.Common.Interfaces;
+using Warewolf.Security.Encryption;
 
 namespace Dev2
 {
-    public class Impersonator : IDisposable
+    public class Impersonator : IDisposable, IImpersonator
     {
         // ReSharper disable InconsistentNaming
         const int LOGON32_PROVIDER_DEFAULT = 0;
@@ -95,6 +97,11 @@ namespace Dev2
                 _impersonationContext.Undo();
                 _impersonationContext.Dispose();
             }
+        }
+
+        public bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted)
+        {
+            return Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(decryptIfEncrypted));
         }
 
         #endregion
