@@ -96,7 +96,7 @@
                                     <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding NextRunDate}" FontSize="11" Margin="0,-4,0,0" ></TextBlock>
                                     <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Right" 
                                             Command="{Binding ElementName=Schedules, Path=DataContext.DeleteCommand }" CommandParameter="{Binding .}" 
-                                            ToolTip="{x:Static languages:Tooltips.SchedulerDeleteTooltipTrigger}"
+                                            IsEnabled="{Binding StatusAlt, Converter={StaticResource InverseScheduleStatusConverter}}"
                                             Style="{StaticResource ButtonSchedulerDeleteTransparentStyle}" >
                                         <Button.Content>
                                             <fa:FontAwesome Icon="Trash" FontSize="18"></fa:FontAwesome>

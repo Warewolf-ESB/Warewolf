@@ -28,15 +28,9 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DynamicServices
 {
-
-    #region Using Directives
-
-    #endregion
-
-    #region Dynamic Service Class - Represents a service with all its actions
-
     /// <summary>
     ///     Provides an representation of a service
     ///     A service can contain actions that define what the service can do
@@ -44,38 +38,15 @@ namespace Dev2.DynamicServices
     /// </summary>
     public class DynamicService : DynamicServiceObjectBase
     {
-        private readonly List<string> _currentDebuggers = new List<string>();
-
-        #region Public Properties
-
         /// <summary>
         ///     The actions that this service runs
         /// </summary>
         public List<ServiceAction> Actions { get; set; }
-
-        /// <summary>
-        ///     Defines the mode that the service is currently executing in
-        ///     These could be
-        ///     1. Normal - No Debug messages
-        ///     2. ValidationOnly - Service logic will not execute - only input parameters will be validated then service execution
-        ///     will halt and return to caller
-        ///     3. Debug - Will embed debug messages into results
-        /// </summary>
-        public enDynamicServiceMode Mode { get; set; }
-
-        public List<DynamicService> UnitTests { get; set; }
-
-        public string UnitTestTargetWorkflowService { get; set; }
-
-        public List<string> Debuggers => _currentDebuggers;
-
-        #endregion
-
+        
         public Guid ID { get; set; }
 
         public Guid ServiceId { get; set; }
 
-        #region Constructors
 
         /// <summary>
         ///     Initializes the Dynamic Service
@@ -85,11 +56,8 @@ namespace Dev2.DynamicServices
         {
             //Initialize the Actions Property
             Actions = new List<ServiceAction>();
-            Mode = enDynamicServiceMode.Normal;
-            UnitTests = new List<DynamicService>();
         }
 
-        #endregion
 
         /// <summary>
         ///     Compiles this object
@@ -115,5 +83,4 @@ namespace Dev2.DynamicServices
         }
     }
 
-    #endregion
 }

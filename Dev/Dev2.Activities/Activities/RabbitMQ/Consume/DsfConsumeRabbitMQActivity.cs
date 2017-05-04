@@ -147,13 +147,15 @@ namespace Dev2.Activities.RabbitMQ.Consume
                 RabbitSource = ResourceCatalog.GetResource<RabbitMQSource>(GlobalConstants.ServerWorkspaceID, RabbitMQSourceResourceId);
                 if (RabbitSource == null || RabbitSource.ResourceType != enSourceType.RabbitMQSource.ToString())
                 {
-                    return new List<string> { ErrorResource.RabbitSourceHasBeenDeleted };
+                    _messages.Add(ErrorResource.RabbitSourceHasBeenDeleted);
+                    return _messages;
                 }
 
                 string queueName;
                 if (!evaluatedValues.TryGetValue("QueueName", out queueName))
                 {
-                    return new List<string> { ErrorResource.RabbitQueueNameRequired };
+                    _messages.Add(ErrorResource.RabbitQueueNameRequired);
+                    return _messages;
                 }
                 string prefetch;
                 if (!evaluatedValues.TryGetValue("Prefetch", out prefetch))
