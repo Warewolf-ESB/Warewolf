@@ -38,26 +38,7 @@ namespace Dev2.Activities
             {
                 if (IsObject)
                 {
-                    try
-                    {
-                        var jContainer = JsonConvert.DeserializeObject(input) as JContainer;
-                        dataObj.Environment.AddToJsonObjects(ObjectName, jContainer);
-                    }
-                    catch (Exception ex)
-                    {
-                        Dev2Logger.Error(ex);
-                        //This is a scalar scenario and the Top level assign is invalid at this level.
-                        try
-                        {
-                            dataObj.Environment.AssignJson(new AssignValue(ObjectName, input), update);
-                        }
-                        catch (Exception ex1)
-                        {
-                            Dev2Logger.Error(ex1);
-                            var obj = new JObject(input);
-                            dataObj.Environment.AddToJsonObjects(ObjectName, obj);
-                        }
-                    }
+                    AssignObject(input, update, dataObj);
                 }
                 else
                 {
@@ -96,6 +77,30 @@ namespace Dev2.Activities
             {
                 dataObj.Environment.AddError(e.Message);
                 Dev2Logger.Error(e.Message, e);
+            }
+        }
+
+        private void AssignObject(string input, int update, IDSFDataObject dataObj)
+        {
+            try
+            {
+                var jContainer = JsonConvert.DeserializeObject(input) as JContainer;
+                dataObj.Environment.AddToJsonObjects(ObjectName, jContainer);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex);
+                //This is a scalar scenario and the Top level assign is invalid at this level.
+                try
+                {
+                    dataObj.Environment.AssignJson(new AssignValue(ObjectName, input), update);
+                }
+                catch (Exception ex1)
+                {
+                    Dev2Logger.Error(ex1);
+                    var obj = new JObject(input);
+                    dataObj.Environment.AddToJsonObjects(ObjectName, obj);
+                }
             }
         }
 
