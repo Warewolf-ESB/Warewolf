@@ -192,6 +192,44 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             }
             //---------------Test Result -----------------------
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PushResponseIntoEnvironment_GivenScalaResponseAndIsJosn_ShouldAssignJsonObjects()
+        {
+            //---------------Set up test pack-------------------
+
+            const string response = "Hello There";
+            var environment = new ExecutionEnvironment();
+
+            var responseManager = new ResponseManager()
+            {
+                IsObject = true,
+                ObjectName = "[[@weather.Greeting]]"
+            };
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(responseManager);
+            //---------------Execute Test ----------------------
+            try
+            {
+                responseManager.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
+                var evalRes = environment.Eval("[[@weather.Greeting]]", 0);
+                Assert.IsNotNull(evalRes);
+                var stringResult = CommonFunctions.evalResultToString(evalRes);
+                Assert.AreEqual(response.Replace(" ", ""), stringResult.Replace(Environment.NewLine, "").Replace(" ", ""));
+                var propRes = environment.Eval("[[@weather.Greeting]]", 0);
+                Assert.IsNotNull(propRes);
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            //---------------Test Result -----------------------
+        }
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

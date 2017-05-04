@@ -98,8 +98,6 @@ namespace Dev2.Activities
                 catch (Exception ex1)
                 {
                     Dev2Logger.Error(ex1);
-                    var obj = new JObject(input);
-                    dataObj.Environment.AddToJsonObjects(ObjectName, obj);
                 }
             }
         }
