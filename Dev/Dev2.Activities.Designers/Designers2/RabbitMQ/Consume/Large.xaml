@@ -14,9 +14,9 @@
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                Width="340"
                                MinWidth="340"
-                               Height="340"
-                               MinHeight="340"
-                               MaxHeight="340"
+                               Height="365"
+                               MinHeight="365"
+                               MaxHeight="365"
                                mc:Ignorable="d"
                                d:DesignWidth="340"
                                d:DataContext="{d:DesignInstance local:RabbitMQConsumeDesignerViewModel}">
@@ -142,9 +142,30 @@
                                 DefaultText="Response "
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="True"
+                                FilterType="JsonObject"
+                                Text="{Binding ObjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipResponse}"
+                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                attachedProperties:FocusSetter.IsFocused="{Binding IsResponseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.RabbitMQHelpResponse}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
+                                            SourcePropertyName="Response"
+                                            SourcePropertyValue="{Binding Response, UpdateSourceTrigger=PropertyChanged}"
+                                            Target="{Binding}" />
+            </i:Interaction.Behaviors>
+        </ui:IntellisenseTextBox>
+        <ui:IntellisenseTextBox Grid.Column="1" Grid.Row="3"
+                                DefaultText="Response "
+                                AllowUserInsertLine="False"
+                                WrapInBrackets="True"
                                 Text="{Binding Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Tooltips.RabbitMQToolTipResponse}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                Visibility="{Binding IsObject, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 IsEnabled="{Binding IsRabbitMQSourceSelected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsResponseFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_tostxt_AutoID}">
