@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.RabbitMQSource.RabbitMQSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
@@ -9,7 +10,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Utility
     [CodedUITest]
     public class RabbitMQConsume
     {
-        const string SourceName = "RabbitMQSourceFromTool";
+        const string SourceName = "RabbitMQSourceForOutputTest";
 
         [TestMethod]
 		[TestCategory("Utility Tools")]
@@ -58,6 +59,21 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Utility
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.EditSourceButton.Enabled, "Edit Source Button is not enabled after selecting source.");
             UtilityToolsUIMap.Click_EditSourceButton_On_RabbitMQConsumeTool();
             Assert.IsTrue(RabbitMQSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.RabbitMqSourceTab.Exists, "RabbitMQ Source Tab does not exist");
+        }
+
+        [TestMethod]
+		[TestCategory("Utility Tools")]
+        public void RabbitMQConsumeTool_IsObject_Selected_Output_Takes_Object_Variable_UITest()
+        {
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.Exists, "RabbitMQ Consume Tool does not exist on the design surface.");
+            //Large View
+            UtilityToolsUIMap.Open_RabbitMqConsume_LargeView();
+            UtilityToolsUIMap.Select_Source_From_RabbitMQConsumeTool();
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.OutputToObjectCheckBox.Enabled, "Output to Object Checkbox is not enabled after selecting source.");
+            UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.OutputToObjectCheckBox.Checked = true;
+            UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ResponseComboBox.TextEdit.Text = "objectName";
+            Keyboard.SendKeys(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ResponseComboBox.TextEdit, "{Tab}", ModifierKeys.None);
+            Assert.AreEqual("[[@objectName]]", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume.LargeViewContentCustom.ObjectNameComboBox.TextEdit.Text);
         }
 
         #region Additional test attributes
