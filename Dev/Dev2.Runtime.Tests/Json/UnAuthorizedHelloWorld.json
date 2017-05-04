@@ -1,0 +1,139 @@
+﻿{
+  "$id": "1",
+  "$type": "Dev2.Data.ServiceTestModelTO, Dev2.Data",
+  "OldTestName": "Test 1",
+  "TestName": "Test 1",
+  "UserName": "nn",
+  "Password": "AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAIbmenKwvtUG7zzD0ZEE38QQAAAACAAAAAAADZgAAwAAAABAAAABwY88Zqvx62mXgkxJZEqTdAAAAAASAAACgAAAAEAAAACM16FMA/UPinpNO+KRi8lwIAAAAlaimYoUqToEUAAAAAfkBlIJdO7d90KSyMjA8w9WfO2Y=",
+  "LastRunDate": "2017-04-18T14:15:14.7651862+02:00",
+  "Inputs": [
+    {
+      "$id": "2",
+      "$type": "Dev2.Data.ServiceTestInputTO, Dev2.Data",
+      "Variable": "Name",
+      "Value": "",
+      "EmptyIsNull": false
+    }
+  ],
+  "Outputs": [
+    {
+      "$id": "3",
+      "$type": "Dev2.Data.ServiceTestOutputTO, Dev2.Data",
+      "Variable": "Message",
+      "Value": "Hello World.",
+      "From": "",
+      "To": "",
+      "AssertOp": "=",
+      "HasOptionsForValue": false,
+      "OptionsForValue": null,
+      "Result": {
+        "$id": "4",
+        "$type": "Dev2.Common.Interfaces.TestRunResult, Dev2.Common.Interfaces",
+        "TestName": null,
+        "RunTestResult": 2,
+        "Message": "Failed: Assert Equal. Expected Equal To 'Hello World.' for 'Message' but got ''\r\n",
+        "DebugForTest": null
+      }
+    }
+  ],
+  "NoErrorExpected": false,
+  "ErrorExpected": true,
+  "ErrorContainsText": "",
+  "Result": {
+    "$id": "5",
+    "$type": "Dev2.Common.Interfaces.TestRunResult, Dev2.Common.Interfaces",
+    "TestName": "Test 1",
+    "RunTestResult": 2,
+    "Message": "Failed Output For Variable: Message \r\nMessage: Failed: Assert Equal. Expected Equal To 'Hello World.' for 'Message' but got ''\r\n\r\n\r\n",
+    "DebugForTest": null
+  },
+  "TestPassed": false,
+  "TestFailing": true,
+  "TestInvalid": false,
+  "TestPending": false,
+  "Enabled": true,
+  "IsDirty": true,
+  "AuthenticationType": 1,
+  "ResourceId": "acb75027-ddeb-47d7-814e-a54c37247ec1",
+  "TestSteps": [
+    {
+      "$id": "6",
+      "$type": "Dev2.Data.ServiceTestStepTO, Dev2.Data",
+      "UniqueId": "a03172cf-7f8f-417e-be86-8821d696ca40",
+      "ActivityType": "DsfDecision",
+      "Type": 1,
+      "StepOutputs": [
+        {
+          "$id": "7",
+          "$type": "Dev2.Data.ServiceTestOutputTO, Dev2.Data",
+          "Variable": "Flow Arm",
+          "Value": "Blank Input",
+          "From": "",
+          "To": "",
+          "AssertOp": "=",
+          "HasOptionsForValue": true,
+          "OptionsForValue": [
+            "Name Input",
+            "Blank Input"
+          ],
+          "Result": null
+        }
+      ],
+      "Parent": null,
+      "Children": [],
+      "StepDescription": "If [[Name]] <> (Not Equal) ",
+      "Result": null
+    },
+    {
+      "$id": "8",
+      "$type": "Dev2.Data.ServiceTestStepTO, Dev2.Data",
+      "UniqueId": "bd557ca7-113b-4197-afc3-de5d086dfc69",
+      "ActivityType": "DsfMultiAssignActivity",
+      "Type": 1,
+      "StepOutputs": [
+        {
+          "$id": "9",
+          "$type": "Dev2.Data.ServiceTestOutputTO, Dev2.Data",
+          "Variable": "[[Name]]",
+          "Value": "World",
+          "From": "",
+          "To": "",
+          "AssertOp": "=",
+          "HasOptionsForValue": false,
+          "OptionsForValue": [],
+          "Result": null
+        }
+      ],
+      "Parent": null,
+      "Children": [],
+      "StepDescription": "Assign a value to Name if blank (1)",
+      "Result": null
+    },
+    {
+      "$id": "10",
+      "$type": "Dev2.Data.ServiceTestStepTO, Dev2.Data",
+      "UniqueId": "670132e7-80d4-4e41-94af-ba4a71b28118",
+      "ActivityType": "DsfMultiAssignActivity",
+      "Type": 1,
+      "StepOutputs": [
+        {
+          "$id": "11",
+          "$type": "Dev2.Data.ServiceTestOutputTO, Dev2.Data",
+          "Variable": "[[Message]]",
+          "Value": "Hello World.",
+          "From": "",
+          "To": "",
+          "AssertOp": "=",
+          "HasOptionsForValue": false,
+          "OptionsForValue": [],
+          "Result": null
+        }
+      ],
+      "Parent": null,
+      "Children": [],
+      "StepDescription": "Set the output variable (1)",
+      "Result": null
+    }
+  ],
+  "FailureMessage": "Failed Output For Variable: Message \r\nMessage: Failed: Assert Equal. Expected Equal To 'Hello World.' for 'Message' but got ''\r\n\r\n\r\n"
+}

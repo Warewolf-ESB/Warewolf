@@ -23,7 +23,6 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.ViewModels;
-using Dev2.Views;
 using FontAwesome.WPF;
 using Infragistics.Windows.DockManager.Events;
 using WinInterop = System.Windows.Interop;
@@ -199,19 +198,6 @@ namespace Dev2.Studio.Views
             {
                 ResetToStartupView();
             }
-            if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-                var imageWindow = new ImageWindow();
-                imageWindow.Show();
-            }
-            if (e.Key == Key.G && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-
-            }
-            if (e.Key == Key.I && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-            {
-
-            }
             if (e.Key == Key.F1)
             {
                 Process.Start(Warewolf.Studio.Resources.Languages.HelpText.WarewolfHelpURL);
@@ -235,9 +221,72 @@ namespace Dev2.Studio.Views
 
         public void ResetToStartupView()
         {
-            var windowCollection = System.Windows.Application.Current.Windows;
             var mainViewModel = DataContext as ShellViewModel;
+            if (mainViewModel != null)
+            {
+                ClearWindowCollection(mainViewModel);
+                ClearTabItems(mainViewModel);
 
+                var localhostServer = mainViewModel.LocalhostServer;
+                if (localhostServer.IsConnected)
+                {
+                    if (!Equals(mainViewModel.ActiveServer, localhostServer))
+                    {
+                        mainViewModel.SetActiveServer(localhostServer.EnvironmentID);
+                        mainViewModel.SetActiveServer(localhostServer);
+                    }
+
+                    var explorerViewModel = mainViewModel.ExplorerViewModel;
+
+                    if (explorerViewModel != null)
+                    {
+                        explorerViewModel.SearchText = string.Empty;
+
+                        if (explorerViewModel.ConnectControlViewModel != null)
+                        {
+                            foreach (var server in explorerViewModel.ConnectControlViewModel.Servers)
+                            {
+                                if (server != null && server.DisplayName != localhostServer.DisplayName && server.IsConnected)
+                                {
+                                    server.Disconnect();
+                                }
+                            }
+                        }
+
+                        var environmentViewModels = explorerViewModel.Environments;
+                        if (environmentViewModels?.Count > 1)
+                        {
+                            for (var i = 0; i < environmentViewModels.Count - 1; i++)
+                            {
+                                var remoteEnvironment = environmentViewModels.FirstOrDefault(model => model.ResourceId != Guid.Empty);
+                                environmentViewModels.Remove(remoteEnvironment);
+                            }
+                        }
+                    }
+                }
+                if (mainViewModel.ToolboxViewModel != null)
+                {
+                    mainViewModel.ToolboxViewModel.SearchTerm = string.Empty;
+                    Toolbox.Activate();
+                    Toolboxcontrol.Focus();
+                }
+            }
+        }
+
+        private void ClearTabItems(ShellViewModel mainViewModel)
+        {
+            for (int i = TabManager.Items.Count - 1; i >= 0; i--)
+            {
+                var item = TabManager.Items[i];
+                var contentPane = item as ContentPane;
+                RemoveWorkspaceItems(contentPane, mainViewModel);
+            }
+            TabManager.Items.Clear();
+        }
+
+        private static void ClearWindowCollection(ShellViewModel mainViewModel)
+        {
+            var windowCollection = System.Windows.Application.Current.Windows;
             foreach (var window in windowCollection)
             {
                 var window1 = window as Window;
@@ -247,55 +296,18 @@ namespace Dev2.Studio.Views
                     if (window1.GetType().Name == "ToolWindowHostWindow")
                     {
                         var contentPane = window1.Content as PaneToolWindow;
-
                         var splitPane = contentPane?.Pane;
 
                         if (splitPane != null)
+                        {
                             foreach (var item in splitPane.Panes)
                             {
                                 var pane = item as ContentPane;
-
                                 RemoveWorkspaceItems(pane, mainViewModel);
                             }
-                    }
-                    window1.Close();
-                }
-            }
-
-            for (int i = TabManager.Items.Count - 1; i>= 0; i--)
-            {
-                var item = TabManager.Items[i];
-                var contentPane = item as ContentPane;
-                RemoveWorkspaceItems(contentPane, mainViewModel);
-            }
-            
-            TabManager.Items.Clear();
-            
-            if (mainViewModel != null)
-            {
-                mainViewModel.ExplorerViewModel.SearchText = string.Empty;
-                mainViewModel.ToolboxViewModel.SearchTerm = string.Empty;
-
-                if(mainViewModel.LocalhostServer.IsConnected)
-                {
-                    if (!Equals(mainViewModel.ActiveServer, mainViewModel.LocalhostServer)) {
-                        mainViewModel.SetActiveServer(mainViewModel.LocalhostServer.EnvironmentID);
-                        mainViewModel.SetActiveServer(mainViewModel.LocalhostServer);
-                    }
-
-                    foreach (var server in mainViewModel.ExplorerViewModel.ConnectControlViewModel.Servers)
-                    {
-                        if (server.DisplayName != mainViewModel.LocalhostServer.DisplayName && server.IsConnected)
-                        {
-                            server.Disconnect();
                         }
                     }
-
-                    for (var i = 0;  i < mainViewModel.ExplorerViewModel.Environments.Count-1; i++)
-                    {
-                        var remoteEnvironment = mainViewModel.ExplorerViewModel.Environments.FirstOrDefault(model => model.ResourceId != Guid.Empty);
-                        mainViewModel.ExplorerViewModel.Environments.Remove(remoteEnvironment);
-                    }
+                    window1.Close();
                 }
             }
         }
@@ -304,7 +316,9 @@ namespace Dev2.Studio.Views
         {
             var item1 = pane?.Content as WorkflowDesignerViewModel;
             if (item1?.ResourceModel != null)
+            {
                 WorkspaceItemRepository.Instance.ClearWorkspaceItems(item1.ResourceModel);
+            }
             item1?.RemoveAllWorkflowName(item1.DisplayName);
 
             var workSurfaceContextViewModel = pane?.DataContext as WorkSurfaceContextViewModel;
@@ -312,7 +326,7 @@ namespace Dev2.Studio.Views
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)
-         {
+        {
             var xmlDocument = new XmlDocument();
             if (_savedLayout != null)
             {
@@ -326,23 +340,26 @@ namespace Dev2.Studio.Views
                 SetMenuPanelLockedOpen(xmlDocument, shellViewModel);
             }
             Toolbox.Activate();
+            Toolboxcontrol.Focus();
         }
 
         private static void SetMenuExpanded(XmlDocument xmlDocument, ShellViewModel shellViewModel)
         {
             var elementsByTagNameMenuExpanded = xmlDocument.GetElementsByTagName("MenuExpanded");
-            if(elementsByTagNameMenuExpanded.Count > 0)
+            if (elementsByTagNameMenuExpanded.Count > 0)
             {
                 var menuExpandedString = elementsByTagNameMenuExpanded[0].InnerXml;
 
                 bool menuExpanded;
-                if(bool.TryParse(menuExpandedString, out menuExpanded))
+                if (bool.TryParse(menuExpandedString, out menuExpanded))
                 {
                     shellViewModel.MenuExpanded = menuExpanded;
                 }
             }
             else
+            {
                 shellViewModel.MenuExpanded = true;
+            }
         }
 
         private static void SetMenuPanelOpen(XmlDocument xmlDocument, ShellViewModel shellViewModel)
@@ -374,7 +391,9 @@ namespace Dev2.Studio.Views
                 }
             }
             else
+            {
                 shellViewModel.MenuViewModel.IsPanelLockedOpen = false;
+            }
         }
 
         #region Implementation of IWin32Window
@@ -455,10 +474,8 @@ namespace Dev2.Studio.Views
                 var style = resourceDictionary["WarewolfToolWindow"] as Style;
                 if (style != null)
                 {
-                    
                     window.UseOSNonClientArea = false;
                     window.Style = style;
-
                     window.PreviewMouseLeftButtonUp += WindowOnPreviewMouseDown;
                 }
 
@@ -481,50 +498,11 @@ namespace Dev2.Studio.Views
                         }
                         else
                         {
-                            var dockManager = sender as XamDockManager;
-                            if (dockManager?.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
-                            {
-                                var workflowDesignerViewModel = dockManager?.DataContext as WorkflowDesignerViewModel;
-                                var title = PaneToolWindow.Title;
-                                var newTitle = " - " + workflowDesignerViewModel?.DisplayName.Replace("*", "").TrimEnd();
-                                if (!title.Contains(newTitle))
-                                {
-                                    if (!string.IsNullOrWhiteSpace(workflowDesignerViewModel?.DisplayName))
-                                    {
-                                        PaneToolWindow.Title = PaneToolWindow.Title + " - " + workflowDesignerViewModel?.DisplayName;
-                                    }
-                                }
-                            }
-                            else if (dockManager?.DataContext.GetType() == typeof(StudioTestViewModel))
-                            {
-                                var studioTestViewModel = dockManager?.DataContext as StudioTestViewModel;
-                                var title = PaneToolWindow.Title;
-                                var newTitle = " - " + studioTestViewModel?.DisplayName.Replace("*", "").TrimEnd();
-                                if (!title.Contains(newTitle))
-                                {
-                                    if (!string.IsNullOrWhiteSpace(studioTestViewModel?.DisplayName))
-                                    {
-                                        PaneToolWindow.Title = PaneToolWindow.Title + " - " + studioTestViewModel?.DisplayName;
-                                    }
-                                }
-                            }
-                            else if (dockManager?.DataContext.GetType() == typeof(SchedulerViewModel))
-                            {
-                                var schedulerViewModel = dockManager?.DataContext as SchedulerViewModel;
-                                var title = PaneToolWindow.Title;
-                                var newTitle = " - " + schedulerViewModel?.DisplayName.Replace("*", "").TrimEnd();
-                                if (!title.Contains(newTitle))
-                                {
-                                    if (!string.IsNullOrWhiteSpace(schedulerViewModel?.DisplayName))
-                                    {
-                                        PaneToolWindow.Title = PaneToolWindow.Title + " - " + schedulerViewModel?.DisplayName;
-                                    }
-                                }
-                            }
+                            UpdatePaneToolWindow(sender);
                         }
                         if (workSurfaceContextViewModel?.ContextualResourceModel != null)
                         {
-                            PaneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel?.ContextualResourceModel.DisplayName;
+                            PaneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel.ContextualResourceModel.DisplayName;
                         }
                     }
                 }
@@ -532,6 +510,41 @@ namespace Dev2.Studio.Views
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex);
+            }
+        }
+
+        private void UpdatePaneToolWindow(object sender)
+        {
+            var dockManager = sender as XamDockManager;
+            string displayName = string.Empty;
+            if (dockManager?.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
+            {
+                var workflowDesignerViewModel = dockManager.DataContext as WorkflowDesignerViewModel;
+                displayName = workflowDesignerViewModel?.DisplayName;
+            }
+            else if (dockManager?.DataContext.GetType() == typeof (StudioTestViewModel))
+            {
+                var studioTestViewModel = dockManager.DataContext as StudioTestViewModel;
+                displayName = studioTestViewModel?.DisplayName;
+            }
+            else if (dockManager?.DataContext.GetType() == typeof (SchedulerViewModel))
+            {
+                var schedulerViewModel = dockManager.DataContext as SchedulerViewModel;
+                displayName = schedulerViewModel?.DisplayName;
+            }
+            SetPaneToolWindowTitle(displayName);
+        }
+
+        private void SetPaneToolWindowTitle(string displayName)
+        {
+            var title = PaneToolWindow.Title;
+            var newTitle = " - " + displayName?.Replace("*", "").TrimEnd();
+            if (!title.Contains(newTitle))
+            {
+                if (!string.IsNullOrWhiteSpace(displayName))
+                {
+                    PaneToolWindow.Title = PaneToolWindow.Title + " - " + displayName;
+                }
             }
         }
 
@@ -806,9 +819,7 @@ namespace Dev2.Studio.Views
                         paneToolWindow.Title = Title;
                     }
                 }
-                
             }
         }
-        
     }
 }
