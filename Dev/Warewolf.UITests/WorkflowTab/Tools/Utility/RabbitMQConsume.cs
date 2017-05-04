@@ -10,7 +10,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Utility
     [CodedUITest]
     public class RabbitMQConsume
     {
-        const string SourceName = "RabbitMQSourceForOutputTest";
+        const string SourceName = "RabbitMQSourceFromTool";
 
         [TestMethod]
 		[TestCategory("Utility Tools")]
