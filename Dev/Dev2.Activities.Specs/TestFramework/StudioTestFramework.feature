@@ -1133,6 +1133,32 @@ Scenario: Run Selected Test in Web
 	| Test 1    | Failed | Failed Output For Variable: Message Message: Failed: Assert Equal. Expected Equal To '' for 'Message' but got 'Hello World.' |
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
+	
+	Scenario: Run Selected Test in Web with wrong credentials
+	Given the test builder is open with "Hello World"
+	And Tab Header is "Hello World - Tests"
+	And there are no tests
+	And I click New Test
+	And test AuthenticationType as "User"
+	And username is "WrongUser"
+	And password is "badPassword"
+	Then a new test is added
+	And Tab Header is "Hello World - Tests *"
+	And test name starts with "Test 1"
+	And inputs are
+	| Variable Name | Value |
+	| Name          |       |
+	And outputs as
+	| Variable Name | Value |
+	| Message       |       |
+	And save is enabled
+	When I save	
+	When I run selected test in Web
+	Then The WebResponse as
+	| Test Name | Result | Message                                                                                                                     |
+	| Test 1    | Failed | Failed: The user running the test is not authorized to execute resource Hello World. |
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
 
 Scenario: Run Selected Test in Web with input variable value
 	Given the test builder is open with "Hello World"
