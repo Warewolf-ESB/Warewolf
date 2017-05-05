@@ -329,14 +329,25 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             base.GetDebugOutputs(dataList, update);
 
-            if (dataList == null || string.IsNullOrEmpty(Response))
-                return new List<DebugItem>();
-
-            DebugItem debugItem = new DebugItem();
-            AddDebugItem(new DebugEvalResult(Response, "", dataList, update), debugItem);
-            _debugOutputs.Add(debugItem);
-
-            return _debugOutputs;
+            if (dataList != null && !string.IsNullOrEmpty(Response))
+            {
+                if (!IsObject)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(Response, "", dataList, update), debugItem);
+                    _debugOutputs.Add(debugItem);
+                }
+            }
+            if (dataList != null && !string.IsNullOrEmpty(ObjectName))
+            {
+                if (IsObject)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(ObjectName, "", dataList, update), debugItem);
+                    _debugOutputs.Add(debugItem);
+                }
+            }
+            return _debugOutputs?.Any() ?? false ? _debugOutputs : new List<DebugItem>();
         }
 
 
