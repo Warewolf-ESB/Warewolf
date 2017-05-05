@@ -64,13 +64,10 @@ namespace Dev2.Activities.Designers2.Core
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
-            if (keyEventArgs.Key == Key.Delete)
+            if (keyEventArgs.OriginalSource.GetType() == typeof (ComboBox) ||
+                keyEventArgs.OriginalSource.GetType() == typeof (ComboBoxItem))
             {
-                if (keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) ||
-                    keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem))
-                {
-                    keyEventArgs.Handled = true;
-                }
+                keyEventArgs.Handled = true;
             }
         }
 
