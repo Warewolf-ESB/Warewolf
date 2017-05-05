@@ -3113,6 +3113,71 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("WorkflowDesignerViewModel_InitializeViewModel")]
+        public void WorkflowDesignerViewModel_InitializeViewModel()
+        {
+            var eventAggregator = new EventAggregator();
+
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
+
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
+            var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+
+            dataListItems.Add(dataListItem);
+            dataListItems.Add(secondDataListItem);
+            DataListSingleton.SetDataList(dataListViewModel);
+            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+
+            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListViewModel.RecsetCollection.Clear();
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
+            workflowDesigner.PopUp = mockPopUp.Object;
+
+            Assert.IsFalse(workflowDesigner.CanCopyUrl);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.CopyUrlTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanViewSwagger);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ViewSwaggerTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanShowDependencies);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ShowDependenciesTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanDeploy);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DeployTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanDuplicate);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DuplicateTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanRunAllTests);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.RunAllTestsTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanCreateTest);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.CreateTestTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanCreateSchedule);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.ScheduleTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanDebugBrowser);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugBrowserTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanDebugStudio);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugStudioTooltip);
+
+            Assert.IsFalse(workflowDesigner.CanDebugInputs);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DebugInputsTooltip);
+            
+            Assert.IsTrue(dataListViewModel.ScalarCollection[0].IsUsed);
+            Assert.IsTrue(dataListViewModel.ScalarCollection[1].IsUsed);
+
+            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            workflowDesigner.Dispose();
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("WorkflowDesignerViewModel_HandleMessage")]
         public void WorkflowDesignerViewModel_HandleMessage_EditActivity_NotNull()
         {
