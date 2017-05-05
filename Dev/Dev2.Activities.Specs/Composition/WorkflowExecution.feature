@@ -1277,6 +1277,22 @@ Scenario: Workflow with Assign and Calculate
 	  |                 |
 	  | [[result]] = 33 |
 
+Scenario: Workflow with Assign and AssignObject
+     Given I have a workflow "WFWithAssignForAssignObject"	 
+	 And "WFWithAssignForAssignObject" contains an Assign for Json "JSonToVar" as
+	  | variable  |
+	  | [[Human]] | 
+     And "WFWithAssignForAssignObject" contains an Assign Object "AssignPerson" as
+	 | variable    | value     |
+	 | [[@Person]] | [[Human]] |
+	 When "WFWithAssignForAssignObject" is executed
+	 Then the workflow execution has "NO" error
+	  And the "JSonToVar" in Workflow "WFWithAssignForAssignObject" debug outputs as 
+	  | # |                            |
+	  | 1 | [[Human]] = {"Name":"Bob"} |
+	  And the "AssignPerson" in Workflow "WFWithAssignForAssignObject" debug output contains as
+	  | # |                              |
+	   
 Scenario: Workflow with Assign and ForEach
      Given I have a workflow "WFWithAssignForEach"
 	 And "WFWithAssignForEach" contains an Assign "Rec To Convert" as
