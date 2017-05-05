@@ -85,7 +85,7 @@ namespace Dev2.Activities
             try
             {
                 var jContainer = JsonConvert.DeserializeObject(input) as JContainer;
-                dataObj.Environment.AddToJsonObjects(ObjectName, jContainer);
+                dataObj.Environment.Assign(ObjectName, jContainer?.ToString(), update);
             }
             catch (Exception ex)
             {

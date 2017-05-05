@@ -617,6 +617,54 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
+        public void DsfConsumeRabbitMQActivity_ExecuteIsObject_DsfBaseActivity_MethodsGivenOjectOutput()
+        {
+            //------------Setup for test--------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
+
+            const string queueName = "Q1";
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var rabbitMQSource = new Mock<RabbitMQSource>();
+            var connectionFactory = new Mock<ConnectionFactory>();
+            var connection = new Mock<IConnection>();
+            var channel = new Mock<IModel>();
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(rabbitMQSource.Object);
+            connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
+            connection.Setup(c => c.CreateModel()).Returns(channel.Object);
+            channel.Setup(c => c.BasicQos(0, 1, false));
+            channel.Setup(c => c.BasicConsume(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<QueueingBasicConsumer>()));
+            channel.Setup(c => c.BasicAck(It.IsAny<ulong>(), It.IsAny<bool>()));
+
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            privateObject.SetProperty("ConnectionFactory", connectionFactory.Object);
+            privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
+            privateObject.SetProperty("Channel", channel.Object);
+
+            var dataList = new ExecutionEnvironment();
+            dataList.AllErrors.Add("Some Error");
+
+            var dataObj = new DsfDataObject(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<string>());
+
+            dsfConsumeRabbitMQActivity.QueueName = queueName;
+            dsfConsumeRabbitMQActivity.ReQueue = true;
+            dsfConsumeRabbitMQActivity.Prefetch = "2";
+
+            dsfConsumeRabbitMQActivity.Response = "[[response]]";
+            dsfConsumeRabbitMQActivity._messages = new List<string> { "Message" };
+            dsfConsumeRabbitMQActivity.IsObject = true;
+            dsfConsumeRabbitMQActivity.ObjectName = "[[@Human]]";
+
+            var debugOutputs = dsfConsumeRabbitMQActivity.GetDebugOutputs(dataList, It.IsAny<int>());
+            privateObject.Invoke("AssignResult", dataObj, It.IsAny<int>());
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsTrue(debugOutputs.Count > 0);
+        }
+
+        [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("DsfConsumeRabbitMQActivity_Execute")]
         public void PerformExecution_Given_UnExisting_Queue_Returns_QeueuNotFoundException_NoTimeout()
