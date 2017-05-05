@@ -48,6 +48,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ITrie.cs" />
     <Compile Include="_PatriciaTrie\MatchKind.cs" />
+    <Compile Include="_Trie\StringComparer.cs" />
     <Compile Include="_Trie\SuffixTrie.cs" />
     <Compile Include="_Trie\ConcurrentTrie.cs" />
     <Compile Include="_Trie\ConcurrentTrieNode.cs" />
