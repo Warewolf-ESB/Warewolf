@@ -307,43 +307,7 @@ namespace Dev2.Runtime.ESB.Execution
                         DataObject.Environment.AllErrors.Clear();
                         testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, DataObject.Environment.HasErrors(), string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
 
-                        if (test != null)
-                        {
-                            test.Result = new TestRunResult();
-                            test.FailureMessage = existingErrors;
-                            if (test.ErrorExpected)
-                            {
-                                if (test.FailureMessage.Contains(test.ErrorContainsText) && !string.IsNullOrEmpty(test.ErrorContainsText))
-                                {
-                                    test.TestPassed = true;
-                                    test.TestFailing = false;
-                                    test.Result.RunTestResult = RunResult.TestPassed;
-                                }
-                                else
-                                {
-                                    test.TestFailing = true;
-                                    test.TestPassed = false;
-                                    test.Result.RunTestResult = RunResult.TestFailed;
-                                    var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error, test.ErrorContainsText, test.FailureMessage);
-                                    test.FailureMessage = assertError;
-                                }
-                            }
-                            if (test.NoErrorExpected)
-                            {
-                                if (string.IsNullOrEmpty(test.FailureMessage))
-                                {
-                                    test.TestPassed = true;
-                                    test.TestFailing = false;
-                                    test.Result.RunTestResult = RunResult.TestPassed;
-                                }
-                                else
-                                {
-                                    test.TestFailing = true;
-                                    test.TestPassed = false;
-                                    test.Result.RunTestResult = RunResult.TestFailed;
-                                }
-                            }
-                        }
+                        SetTestFailureBasedOnExpectedError(test, existingErrors);
 
                     }
                     else
@@ -375,11 +339,23 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else
                 {
-                    AggregateTestResult(resourceId, test);
-                    if (test != null)
+                    if (DataObject.StopExecution && DataObject.Environment.HasErrors())
                     {
+                        var existingErrors = DataObject.Environment.FetchErrors();
+                        DataObject.Environment.AllErrors.Clear();
+                        SetTestFailureBasedOnExpectedError(test, existingErrors);
                         _request.ExecuteResult = serializer.SerializeToBuilder(test);
+
                     }
+                    else
+                    {
+                        AggregateTestResult(resourceId, test);
+                        if (test != null)
+                        {
+                            _request.ExecuteResult = serializer.SerializeToBuilder(test);
+                        }
+                    }
+
                 }
                 result = DataObject.DataListID;
             }
@@ -441,6 +417,48 @@ namespace Dev2.Runtime.ESB.Execution
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
             }
             return result;
+        }
+
+        private static void SetTestFailureBasedOnExpectedError(IServiceTestModelTO test, string existingErrors)
+        {
+            if (test != null)
+            {
+                test.Result = new TestRunResult();
+                test.FailureMessage = existingErrors;
+                if (test.ErrorExpected)
+                {
+                    if (test.FailureMessage.Contains(test.ErrorContainsText) && !string.IsNullOrEmpty(test.ErrorContainsText))
+                    {
+                        test.TestPassed = true;
+                        test.TestFailing = false;
+                        test.Result.RunTestResult = RunResult.TestPassed;
+                    }
+                    else
+                    {
+                        test.TestFailing = true;
+                        test.TestPassed = false;
+                        test.Result.RunTestResult = RunResult.TestFailed;
+                        var assertError = string.Format(Warewolf.Resource.Messages.Messages.Test_FailureMessage_Error,
+                            test.ErrorContainsText, test.FailureMessage);
+                        test.FailureMessage = assertError;
+                    }
+                }
+                if (test.NoErrorExpected)
+                {
+                    if (string.IsNullOrEmpty(test.FailureMessage))
+                    {
+                        test.TestPassed = true;
+                        test.TestFailing = false;
+                        test.Result.RunTestResult = RunResult.TestPassed;
+                    }
+                    else
+                    {
+                        test.TestFailing = true;
+                        test.TestPassed = false;
+                        test.Result.RunTestResult = RunResult.TestFailed;
+                    }
+                }
+            }
         }
 
         private void UpdateToPending(IList<IServiceTestStep> testSteps)
