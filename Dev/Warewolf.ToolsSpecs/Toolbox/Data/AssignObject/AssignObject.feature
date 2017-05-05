@@ -444,7 +444,16 @@ Scenario: Assign a variable equal to a group calculation with scalar and records
 	| 4 | [[@rec(1).b]] = 2 |
 	| 5 | [[@Result.a]] = 3 |  
 
-	 
+Scenario: Assign a json string to json object variable
+	Given I assign the string "{"Five":"5"}" to a json object "[[@Numbers]]"
+	When the assign object tool is executed
+	Then the value of "[[@Numbers.Five]]" equals "5"
+
+Scenario: Assign a json string to json object variable has two records
+	Given I assign the string "{"Five":"5", "Ten":"10"}" to a json object "[[@Numbers]]"
+	When the assign object tool is executed
+	Then the value of "[[@Numbers.Five]]" equals "5"
+	Then the value of "[[@Numbers.Ten]]" equals "10"
 
 Scenario: Evaluating recursive recordset variable in a group calculation
 	Given I assign the value 1 to a json object "[[@rec(1).a]]"
@@ -459,7 +468,7 @@ Scenario: Evaluating recursive recordset variable in a group calculation
 	| 2 | [[@rec(1).b]]   = | rec(1).a  |
 	| 3 | [[@Result.a]] =   | sum(1+1)  |  
 	And the debug output as
-	| # |                         |
+	| # |                          |
 	| 1 | [[@rec(1).a]] = 1        |
 	| 2 | [[@rec(1).b]] = rec(1).a |
 	| 3 | [[@Result.a]] =  2       |
