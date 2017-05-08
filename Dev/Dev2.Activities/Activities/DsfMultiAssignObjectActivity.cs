@@ -157,25 +157,56 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void UpdateField(IDSFDataObject dataObject, int update, AssignObjectDTO t, int innerCount)
         {
-            var fieldValue = t.FieldValue;
+            string fieldValue;
             string cleanExpression;
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
-            if (!isCalcEvaluation && DataListUtil.IsEvaluated(t.FieldValue))
+            var doEvaluation = !isCalcEvaluation && DataListUtil.IsEvaluated(t.FieldValue);
+            var warewolfEvalResult = dataObject.Environment.Eval(t.FieldValue, update);
+            var valueResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            if (doEvaluation && valueResult != null)//Willl Work for scalar Values
             {
-                var warewolfEvalResult = dataObject.Environment.Eval(t.FieldValue, update);
-                var valueResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
                 var atomToString = ExecutionEnvironment.WarewolfAtomToString(valueResult?.Item);
                 fieldValue = atomToString;
+                AssignJsonObject(dataObject, update, t, innerCount, fieldValue);
+
             }
+            else if (doEvaluation && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)// Handle Arrays
+            {
+                var warewolfListEvalResult = dataObject.Environment.EvalAsList(t.FieldValue, update);
+                if (warewolfListEvalResult != null)
+                    foreach (DataStorage.WarewolfAtom warewolfAtomResult in warewolfListEvalResult)
+                    {
+                        var valueResultFromList = warewolfAtomResult;
+                        var atomToString = ExecutionEnvironment.WarewolfAtomToString(valueResultFromList);
+                        fieldValue = atomToString;
+                        AssignJsonObject(dataObject, update, t, innerCount, fieldValue);
+                    }
+            }
+
+        }
+
+        private void AssignJsonObject(IDSFDataObject dataObject, int update, AssignObjectDTO t, int innerCount,
+            string fieldValue)
+        {
+            string cleanExpression;
             var isJson = fieldValue.IsJSON();
             if (isJson)
             {
                 var jContainer = JsonConvert.DeserializeObject(fieldValue) as JContainer;
+                try
+                {
+                    dataObject.Environment.Assign(t.FieldName, jContainer?.ToString(), update);
+                }
+                catch (Exception)
+                {
+                    // 
+                }
+
                 dataObject.Environment.AddToJsonObjects(t.FieldName, jContainer);
             }
 
             var assignValue = new AssignValue(t.FieldName, fieldValue);
-            isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
+            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
             if (isCalcEvaluation)
             {
                 assignValue = new AssignValue(t.FieldName, cleanExpression);
@@ -189,7 +220,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 DoCalculation(dataObject.Environment, t.FieldName, fieldValue, update);
             }
-            else if(!isJson)
+            else if (!isJson)
             {
                 dataObject.Environment.AssignJson(assignValue, update);
             }
