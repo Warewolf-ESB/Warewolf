@@ -662,6 +662,39 @@ Scenario: Run a passing switch test and change step type
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
+	
+Scenario: Run a passing Test with RabbitMq Object return
+	Given the test builder is open with existing service "RabbitTestWf"	
+	And Tab Header is "RabbitTestWf - Tests"
+	When I click New Test
+	Then a new test is added
+	And Tab Header is "RabbitTestWf - Tests *"
+	And test name starts with "Test 1"
+	And username is blank
+	And password is blank	
+	And I Add "RabbitMQ Consume" as TestStep
+	And I Clear existing StepOutputs
+	And I add StepOutputs item as 
+	| Variable Name      | Condition | Value                |
+	| [[@AllMessages()]] | Contains  | "PolicyNo": "A0003", |
+    And I add StepOutputs item as 
+    | Variable Name      | Condition | Value            |
+    | [[@AllMessages()]] | Contains  | "SomeVal": "Bob" |
+	And I add StepOutputs item as 
+	| Variable Name      | Condition | Value         |
+	| [[@AllMessages()]] | Contains  | "DateId": 32, |
+	And I Add outputs as
+	| Variable Name  | Condition | Value         |
+	| @AllMessages() | Contains  | "DateId": 32, |
+	And save is enabled
+	And test status is pending	
+	And test is enabled	
+	And I save
+	When I run the test
+	Then test result is Passed		
+	When I delete "Test 1"
+	Then The "DeleteConfirmation" popup is shown I click Ok
+	And test folder is cleaned
 
 @TestFramework
 Scenario: Run a test expecting error 
@@ -1882,6 +1915,8 @@ Scenario: Test WF with RabbitMq Consume object result
 	When I delete "Test 1"
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	Then workflow "RabbitMqConsumeObjectTestFailWF" is deleted as cleanup
+
+
 	
 Scenario: Test WF with RabbitMq Consume object Array result 
 	Given I have a workflow "RabbitMqConsumeObjectResultTestFailWF"
