@@ -163,14 +163,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var doEvaluation = !isCalcEvaluation && DataListUtil.IsEvaluated(t.FieldValue);
             var warewolfEvalResult = dataObject.Environment.Eval(t.FieldValue, update);
             var valueResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            if (doEvaluation && valueResult != null)//Willl Work for scalar Values
+            if (valueResult != null)//Willl Work for scalar Values
             {
                 var atomToString = ExecutionEnvironment.WarewolfAtomToString(valueResult?.Item);
                 fieldValue = atomToString;
                 AssignJsonObject(dataObject, update, t, innerCount, fieldValue);
 
             }
-            else if (doEvaluation && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)// Handle Arrays
+            else if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)// Handle Arrays
             {
                 var warewolfListEvalResult = dataObject.Environment.EvalAsList(t.FieldValue, update);
                 if (warewolfListEvalResult != null)
