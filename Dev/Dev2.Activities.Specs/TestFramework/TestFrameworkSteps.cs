@@ -880,6 +880,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"test AuthenticationType as ""(.*)""")]
+        [When(@"test AuthenticationType as ""(.*)""")]
+        [Given(@"test AuthenticationType as ""(.*)""")]
         public void ThenTestAuthenticationTypeAs(string AuthType)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -889,6 +891,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"username is ""(.*)""")]
+        [When(@"username is ""(.*)""")]
+        [Given(@"username is ""(.*)""")]
         public void ThenUsernameIs(string p0)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -896,6 +900,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"password is ""(.*)""")]
+        [When(@"password is ""(.*)""")]
+        [Given(@"password is ""(.*)""")]
         public void ThenPasswordIs(string p0)
         {
             var serviceTest = GetTestFrameworkFromContext();
