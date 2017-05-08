@@ -93,14 +93,16 @@ namespace Dev2
 
         public static bool IsJSON(this string payload)
         {
-            if ((payload.StartsWith("{") && payload.EndsWith("}")) || //For object
-                (payload.StartsWith("[") && payload.EndsWith("]"))) //For array
+            var value = payload.TrimStart();
+            value = value.TrimEnd();
+            if ((value.StartsWith("{") && value.EndsWith("}")) || //For object
+                (value.StartsWith("[") && value.EndsWith("]"))) //For array
             {
                 try
                 {
 
 
-                    JsonConvert.DeserializeObject(payload);
+                    JsonConvert.DeserializeObject(value);
                     return true;
                 }
 
