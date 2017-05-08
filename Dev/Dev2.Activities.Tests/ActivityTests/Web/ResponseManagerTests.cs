@@ -162,15 +162,14 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                                  "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
                                  "\"Status\": \"Success\"" +
                                  "}";
-            var environment = new ExecutionEnvironment();
-
+            var environment = new Mock<IExecutionEnvironment>();
             var responseManager = new ResponseManager()
             {
                 IsObject = true,
                 ObjectName = "[[@weather]]"
             };
             var dataObjectMock = new Mock<IDSFDataObject>();
-            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            dataObjectMock.Setup(o => o.Environment).Returns(environment.Object);
             dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
 
             //---------------Assert Precondition----------------
@@ -179,12 +178,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             try
             {
                 responseManager.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
-                var evalRes = environment.Eval("[[@weather]]", 0);
-                Assert.IsNotNull(evalRes);
-                var stringResult = CommonFunctions.evalResultToString(evalRes);
-                Assert.AreEqual(response.Replace(" ", ""), stringResult.Replace(Environment.NewLine, "").Replace(" ", ""));
-                var propRes = environment.Eval("[[@weather.RelativeHumidity]]", 0);
-                Assert.IsNotNull(propRes);
+                environment.Verify(executionEnvironment => executionEnvironment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()));
             }
             catch (Exception e)
             {
@@ -230,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             }
             //---------------Test Result -----------------------
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PushXmlIntoEnvironment_GivenNull_ShouldLoggError()
@@ -341,7 +335,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var responseManager = new ResponseManager()
             {
                 OutputDescription = mockoutPutDesc.Object,
-                Outputs = new List<IServiceOutputMapping> {  }
+                Outputs = new List<IServiceOutputMapping> { }
             };
             var env = new Mock<IExecutionEnvironment>();
             env.Setup(environment => environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()));
