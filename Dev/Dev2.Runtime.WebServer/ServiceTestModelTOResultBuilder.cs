@@ -16,7 +16,8 @@ namespace Dev2.Runtime.WebServer
             else if (result.Result.RunTestResult == RunResult.TestFailed)
             {
                 resObj.Add("Result", Warewolf.Resource.Messages.Messages.Test_FailureResult);
-                resObj.Add("Message", result.Result.Message.Replace(Environment.NewLine, ""));
+                var message = result.Result.Message ?? result.FailureMessage;
+                resObj.Add("Message", message.Replace(Environment.NewLine, ""));
             }
             else if (result.Result.RunTestResult == RunResult.TestInvalid)
             {
