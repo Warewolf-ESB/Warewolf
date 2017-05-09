@@ -2818,6 +2818,24 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
+        [Given(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [Then(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [When(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        public void GivenContainsARabbitMQPublishInto(string parentName, string rabbitMqname, string result)
+        {
+            var jsonMsg = new Human().SerializeToJsonStringBuilder().ToString();
+            var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
+              ,
+                Result = result
+              ,
+                DisplayName = rabbitMqname,
+                Message = jsonMsg
+            };
+            _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
+        }
+
 
 
 
@@ -3788,6 +3806,22 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Add("RabbitMqTool", dsfConsumeRabbitMqActivity);
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
+        [Given(@"""(.*)"" is object is set to ""(.*)""")]
+        public void GivenIsObjectIsSetTo(string toolName, string isObjectString)
+        {
+            var isObject = bool.Parse(isObjectString);
+            var dsfConsumeRabbitMqActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("RabbitMqTool");
+            dsfConsumeRabbitMqActivity.IsObject = isObject;
+        }
+
+        [Given(@"""(.*)"" objectname as ""(.*)""")]
+        public void GivenObjectnameAs(string toolName, string Objectname)
+        {
+            var dsfConsumeRabbitMqActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("RabbitMqTool");
+            dsfConsumeRabbitMqActivity.ObjectName = Objectname;
+        }
+
+
 
         [Given(@"Queue Name as ""(.*)""")]
         public void GivenQueueNameAs(string queueName)

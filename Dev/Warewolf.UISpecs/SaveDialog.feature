@@ -99,7 +99,7 @@ Scenario: Delete Resource From Save Dialog
 	And I Click MessageBox Yes
 	And I Click SaveDialog CancelButton
 	And I Filter the Explorer with "ResourceToDelete"
-	Then Explorer Does Not Contain Item "ResourceToDelete"
+	Then Explorer Does Not Contain First Item First Sub Item
 
 Scenario: Create New Folder In Localhost Server From Save Dialog Then Escape Creates The Folder
 	Given The Warewolf Studio is running

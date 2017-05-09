@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Activities;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Interfaces;
@@ -162,12 +163,44 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                                  "\"Pressure\": \"29.65 in. Hg (1004 hPa)\"," +
                                  "\"Status\": \"Success\"" +
                                  "}";
+            var environment = new Mock<IExecutionEnvironment>();
+            var responseManager = new ResponseManager()
+            {
+                IsObject = true,
+                ObjectName = "[[@weather]]"
+            };
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment.Object);
+            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(responseManager);
+            //---------------Execute Test ----------------------
+            try
+            {
+                responseManager.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
+                environment.Verify(executionEnvironment => executionEnvironment.AssignJson(It.IsAny<IAssignValue>(), It.IsAny<int>()));
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void PushResponseIntoEnvironment_GivenScalaResponseAndIsJosn_ShouldAssignJsonObjects()
+        {
+            //---------------Set up test pack-------------------
+
+            const string response = "Hello There";
             var environment = new ExecutionEnvironment();
 
             var responseManager = new ResponseManager()
             {
                 IsObject = true,
-                ObjectName = "[[@weather]]"
+                ObjectName = "[[@weather.Greeting]]"
             };
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.Environment).Returns(environment);
@@ -179,11 +212,11 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             try
             {
                 responseManager.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
-                var evalRes = environment.Eval("[[@weather]]", 0);
+                var evalRes = environment.Eval("[[@weather.Greeting]]", 0);
                 Assert.IsNotNull(evalRes);
                 var stringResult = CommonFunctions.evalResultToString(evalRes);
                 Assert.AreEqual(response.Replace(" ", ""), stringResult.Replace(Environment.NewLine, "").Replace(" ", ""));
-                var propRes = environment.Eval("[[@weather.RelativeHumidity]]", 0);
+                var propRes = environment.Eval("[[@weather.Greeting]]", 0);
                 Assert.IsNotNull(propRes);
             }
             catch (Exception e)
@@ -192,7 +225,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             }
             //---------------Test Result -----------------------
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PushXmlIntoEnvironment_GivenNull_ShouldLoggError()
@@ -303,7 +336,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var responseManager = new ResponseManager()
             {
                 OutputDescription = mockoutPutDesc.Object,
-                Outputs = new List<IServiceOutputMapping> {  }
+                Outputs = new List<IServiceOutputMapping> { }
             };
             var env = new Mock<IExecutionEnvironment>();
             env.Setup(environment => environment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()));

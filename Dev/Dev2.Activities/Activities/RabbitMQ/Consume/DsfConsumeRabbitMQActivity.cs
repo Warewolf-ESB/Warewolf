@@ -49,8 +49,12 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public string _result = "Success";
         public ushort _prefetch;
         public int _timeOut;
-
+        public bool IsObject { get; set; }
+        [FindMissing]
+        [Outputs("ObjectName")]
+        public string ObjectName { get; set; }
         public DsfConsumeRabbitMQActivity()
+            : this(new ResponseManager())
         {
             DisplayName = "RabbitMQ Consume";
             _messages = new List<string>();
@@ -61,6 +65,11 @@ namespace Dev2.Activities.RabbitMQ.Consume
             DisplayName = "RabbitMQ Consume";
             _messages = new List<string>();
             ResourceCatalog = resourceCatalog;
+        }
+
+        public DsfConsumeRabbitMQActivity(IResponseManager responseManager)
+        {
+            ResponseManager = responseManager;
         }
 
 
@@ -320,36 +329,65 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             base.GetDebugOutputs(dataList, update);
 
-            if (dataList == null || string.IsNullOrEmpty(Response))
-                return new List<DebugItem>();
-
-            DebugItem debugItem = new DebugItem();
-            AddDebugItem(new DebugEvalResult(Response, "", dataList, update), debugItem);
-            _debugOutputs.Add(debugItem);
-
-            return _debugOutputs;
+            if (dataList != null && !string.IsNullOrEmpty(Response))
+            {
+                if (!IsObject)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(Response, "", dataList, update), debugItem);
+                    _debugOutputs.Add(debugItem);
+                }
+            }
+            if (dataList != null && !string.IsNullOrEmpty(ObjectName))
+            {
+                if (IsObject)
+                {
+                    DebugItem debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(ObjectName, "", dataList, update), debugItem);
+                    _debugOutputs.Add(debugItem);
+                }
+            }
+            return _debugOutputs?.Any() ?? false ? _debugOutputs : new List<DebugItem>();
         }
 
 
         protected override void AssignResult(IDSFDataObject dataObject, int update)
         {
-            base.AssignResult(dataObject, update);
-            if (!string.IsNullOrEmpty(Response))
+            if (IsObject)
             {
-                if (DataListUtil.IsValueScalar(Response))
+                ResponseManager.IsObject = IsObject;
+                ResponseManager.ObjectName = ObjectName;
+            }
+            base.AssignResult(dataObject, update);
+            if (!string.IsNullOrEmpty(ObjectName))
+            {
+                if (IsObject)
                 {
-                    dataObject.Environment.Assign(Response, _messages.Last(), update);
-                }
-                else
-                {
-                    foreach (var message in _messages)
+                    if (_messages?.Any() ?? false)
                     {
-                        dataObject.Environment.Assign(Response, message, update);
+                        foreach (var message in _messages)
+                        {
+                            ResponseManager.PushResponseIntoEnvironment(message, update, dataObject);
+                        }
                     }
                 }
             }
-
+            if (!string.IsNullOrEmpty(Response) && !IsObject)
+            {
+                if (DataListUtil.IsValueScalar(Response))
+                {
+                    if (_messages != null)
+                        dataObject.Environment.Assign(Response, _messages.Last(), update);
+                }
+                else
+                {
+                    if (_messages != null)
+                        foreach (var message in _messages)
+                        {
+                            dataObject.Environment.Assign(Response, message, update);
+                        }
+                }
+            }
         }
-
     }
 }

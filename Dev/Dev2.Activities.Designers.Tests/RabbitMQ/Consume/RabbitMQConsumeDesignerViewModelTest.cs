@@ -31,12 +31,12 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             //------------Execute Test---------------------------
             var vm = new RabbitMQConsumeDesignerViewModel(null, new Mock<IRabbitMQSourceModel>().Object);
             //------------Assert Results-------------------------
-            Assert.IsNull(vm);            
+            Assert.IsNull(vm);
         }
 
         [TestMethod]
         [Owner("Mthembu Sanele")]
-        [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]        
+        [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]
         public void RabbitMQConsumeDesignerViewModel_Constructor_Properties()
         {
             var model = new Mock<IRabbitMQSourceModel>();
@@ -60,9 +60,69 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsFalse(vm.IsRabbitMQSourceSelected);
             Assert.AreEqual((ushort)2, ushort.Parse(vm.Prefetch));
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("RabbitMQConsumeDesignerViewModelTest_IsObject")]
+        public void RabbitMQConsumeDesignerViewModel_IsObject_Default()
+        {
+            var model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+
+            //------------Execute Test---------------------------
+            var modelItem = CreateModelItem();
+            var vm = new RabbitMQConsumeDesignerViewModel(modelItem, model.Object);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(vm.IsObject);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("RabbitMQConsumeDesignerViewModelTest_IsObject")]
+        public void RabbitMQConsumeDesignerViewModel_IsObject_IsChanged()
+        {
+            var shellVm = new Mock<IShellViewModel>();
+            CustomContainer.Register(shellVm.Object);
+            var model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+
+            //------------Execute Test---------------------------
+            var consumeRabbitMqActivity = new DsfConsumeRabbitMQActivity();
+            var modelItem = ModelItemUtils.CreateModelItem(consumeRabbitMqActivity);
+            var vm = new RabbitMQConsumeDesignerViewModel(modelItem, model.Object) { IsObject = true };
+           
+            //------------Assert Results-------------------------
+            Assert.IsTrue(vm.IsObject);
+            Assert.IsTrue(consumeRabbitMqActivity.IsObject);
+        }
+
+     
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("RabbitMQConsumeDesignerViewModelTest_ObjectName")]
+        public void RabbitMQConsumeDesignerViewModel_ObjectName_IsChanged()
+        {
+            var shellVm = new Mock<IShellViewModel>();
+            CustomContainer.Register(shellVm.Object);
+            var model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+
+            //------------Execute Test---------------------------
+            var consumeRabbitMqActivity = new DsfConsumeRabbitMQActivity();
+           
+            var modelItem = ModelItemUtils.CreateModelItem(consumeRabbitMqActivity);
+            var vm = new RabbitMQConsumeDesignerViewModel(modelItem, model.Object) { IsObject = true, ObjectName = "[[@Home]]" };
+           
+            //------------Assert Results-------------------------
+            Assert.IsTrue(vm.IsObject);
+            Assert.IsTrue(consumeRabbitMqActivity.IsObject);
+            Assert.AreEqual("[[@Home]]", consumeRabbitMqActivity.ObjectName);
+        }
+
         [TestMethod]
         [Owner("Mthembu Sanele")]
-        [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]        
+        [TestCategory("RabbitMQConsumeDesignerViewModelTest_Constructor")]
         public void RabbitMQConsumeDesignerViewModel_Create_NewRabbitMQSource()
         {
             var model = new Mock<IRabbitMQSourceModel>();
@@ -72,10 +132,10 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
             var privateObject = new PrivateObject(vm);
             privateObject.Invoke("NewRabbitMQSource");
-    
+
             //------------Assert Results-------------------------
             Assert.IsNotNull(vm);
-          
+
         }
 
         [TestMethod]
@@ -142,7 +202,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             Assert.IsFalse(vm.IsQueueNameFocused);
             Assert.IsFalse(vm.IsPrefetchFocused);
             Assert.IsNull(vm.SelectedRabbitMQSource);
-            Assert.AreEqual(vm.QueueName, "Q1");            
+            Assert.AreEqual(vm.QueueName, "Q1");
             Assert.AreEqual(vm.Result, "Success");
             Assert.AreEqual(vm.IsRabbitMQSourceFocused, false);
             Assert.AreEqual(vm.IsQueueNameFocused, false);

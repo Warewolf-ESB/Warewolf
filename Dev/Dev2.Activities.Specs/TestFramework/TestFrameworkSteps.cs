@@ -880,6 +880,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"test AuthenticationType as ""(.*)""")]
+        [When(@"test AuthenticationType as ""(.*)""")]
+        [Given(@"test AuthenticationType as ""(.*)""")]
         public void ThenTestAuthenticationTypeAs(string AuthType)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -889,6 +891,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"username is ""(.*)""")]
+        [When(@"username is ""(.*)""")]
+        [Given(@"username is ""(.*)""")]
         public void ThenUsernameIs(string p0)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -896,6 +900,8 @@ namespace Dev2.Activities.Specs.TestFramework
         }
 
         [Then(@"password is ""(.*)""")]
+        [When(@"password is ""(.*)""")]
+        [Given(@"password is ""(.*)""")]
         public void ThenPasswordIs(string p0)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -944,6 +950,22 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        [Then(@"I Add outputs as")]
+        public void ThenIAddOutputsAs(Table table)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.Outputs.First();
+
+            foreach (var tableRow in table.Rows)
+            {
+                var varName = tableRow["Variable Name"];
+                var condition = tableRow["Condition"];
+                var value = tableRow["Value"];
+                serviceTestStep.Variable = varName;
+                serviceTestStep.AssertOp = condition;
+                serviceTestStep.Value = value;
+            }
+        }
 
 
         [Then(@"The WebResponse as")]
@@ -2082,6 +2104,15 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+
+        [Then(@"I Clear existing StepOutputs")]
+        public void ThenIClearExistingStepOutputs()
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.First();
+            serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+        }
+
         [Then(@"I add StepOutputs as")]
         public void ThenIAddStepOutputsAs(Table table)
         {
@@ -2103,6 +2134,7 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+
         [Then(@"I add ""(.*)"" StepOutputs as")]
         public void ThenIAddStepOutputsAs(string stepDesc, Table table)
         {
@@ -2123,6 +2155,27 @@ namespace Dev2.Activities.Specs.TestFramework
 
             }
         }
+
+        [Then(@"I add StepOutputs item as")]
+        public void ThenIAddStepOutputsItemAs(Table table)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.First();
+            foreach (var tableRow in table.Rows)
+            {
+                var varName = tableRow["Variable Name"];
+                var condition = tableRow["Condition"];
+                var value = tableRow["Value"];
+
+                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value, "", "")
+                {
+                    AssertOp = condition
+                });
+
+
+            }
+        }
+
 
 
         [Then(@"I add new StepOutputs as")]
