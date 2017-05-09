@@ -12826,7 +12826,7 @@ this.FeatureBackground();
                         ""});
             table672.AddRow(new string[] {
                         "1",
-                        "[[@Food]] = \"{  \"FoodName\" : null}\""});
+                        "[[@Food]] = \"FoodName:null\""});
 #line 3468
    testRunner.And("the \"AssignPerson\" in Workflow \"WFWithAssignForAssignObjectAppendNot\" debug outpu" +
                     "ts as", ((string)(null)), table672, "And ");
