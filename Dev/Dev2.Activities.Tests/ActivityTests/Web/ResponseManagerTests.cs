@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Activities;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Interfaces;
@@ -178,7 +179,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             try
             {
                 responseManager.PushResponseIntoEnvironment(response, 0, dataObjectMock.Object);
-                environment.Verify(executionEnvironment => executionEnvironment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()));
+                environment.Verify(executionEnvironment => executionEnvironment.AssignJson(It.IsAny<IAssignValue>(), It.IsAny<int>()));
             }
             catch (Exception e)
             {
