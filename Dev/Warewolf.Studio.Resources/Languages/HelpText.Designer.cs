@@ -557,7 +557,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When the variable is not used in the service at all, you can select Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	This variable is not being used in the service and can safely be deleted..
+        ///   Looks up a localized string similar to Safely deletes all variables in the variable list that are not being used..
         /// </summary>
         public static string DataListDeleteButtonHelp {
             get {
