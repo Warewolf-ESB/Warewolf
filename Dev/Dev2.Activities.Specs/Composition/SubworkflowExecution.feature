@@ -203,7 +203,7 @@ Scenario: Workflow with Performance counters
 	| Count of Not Authorised errors                    | 0     |
 	| Total Errors                                      | 4     |
 	| Request Per Second                                | x     |
-	| Count of requests for workflows which don’t exist | 9     |
+	| Count of requests for workflows which don't exist | 9     |
 
 Scenario: Sharepoint Acceptance Tests
 	  Given I have a workflow "Sharepoint Acceptance Tests Outer"
