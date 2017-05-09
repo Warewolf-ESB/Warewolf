@@ -126,7 +126,7 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Filter_Save_Dialog_Explorer("ResourceToMove");
             DialogsUIMap.MoveResourceToLocalhost();
             DialogsUIMap.Filter_Save_Dialog_Explorer("FolderToMove");
-            ExplorerUIMap.ExplorerDoesNotContainItem("ResourceToMove");
+            ExplorerUIMap.ExplorerDoesNotContainFirstItemFirstSubItem();
         }
 
         [TestMethod]
