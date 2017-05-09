@@ -157,36 +157,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void UpdateField(IDSFDataObject dataObject, int update, AssignObjectDTO t, int innerCount)
         {
-            string fieldValue;
+            string fieldValue = t.FieldValue;
             string cleanExpression;
             var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out cleanExpression);
-            var doEvaluation = !isCalcEvaluation && DataListUtil.IsEvaluated(t.FieldValue);
             var warewolfEvalResult = dataObject.Environment.Eval(t.FieldValue, update);
             var valueResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            if (valueResult != null)//Willl Work for scalar Values
+            if (valueResult != null)
             {
-                var atomToString = ExecutionEnvironment.WarewolfAtomToString(valueResult?.Item);
-                fieldValue = atomToString;
+                if (!isCalcEvaluation)
+                {
+                    var atomToString = ExecutionEnvironment.WarewolfAtomToString(valueResult.Item);
+                    fieldValue = atomToString;
+                }
+
                 AssignJsonObject(dataObject, update, t, innerCount, fieldValue);
 
             }
             else if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)// Handle Arrays
             {
                 var warewolfListEvalResult = dataObject.Environment.EvalAsList(t.FieldValue, update);
-                if (warewolfListEvalResult != null)
+                if (warewolfListEvalResult != null && !isCalcEvaluation)
+                {
                     foreach (DataStorage.WarewolfAtom warewolfAtomResult in warewolfListEvalResult)
                     {
                         var valueResultFromList = warewolfAtomResult;
+
                         var atomToString = ExecutionEnvironment.WarewolfAtomToString(valueResultFromList);
                         fieldValue = atomToString;
                         AssignJsonObject(dataObject, update, t, innerCount, fieldValue);
                     }
+                }
+                else
+                {
+                    AssignJsonObject(dataObject, update, t, innerCount, fieldValue);
+                }
             }
 
         }
 
-        private void AssignJsonObject(IDSFDataObject dataObject, int update, AssignObjectDTO t, int innerCount,
-            string fieldValue)
+        private void AssignJsonObject(IDSFDataObject dataObject, int update, AssignObjectDTO t, int innerCount, string fieldValue)
         {
             string cleanExpression;
             var isJson = fieldValue.IsJSON();

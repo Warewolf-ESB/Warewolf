@@ -12780,6 +12780,59 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with Assign and AssignObject using append notation")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void WorkflowWithAssignAndAssignObjectUsingAppendNotation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign and AssignObject using append notation", ((string[])(null)));
+#line 3457
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 3458
+     testRunner.Given("I have a workflow \"WFWithAssignForAssignObjectAppendNot\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table670 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table670.AddRow(new string[] {
+                        "[[msgs().val]]",
+                        "{\"PolNo\":\"A001\",\"Age\":23}"});
+            table670.AddRow(new string[] {
+                        "[[msgs().val]]",
+                        "{\"PolNo\":\"A002\",\"Age\":24}"});
+#line 3459
+   testRunner.And("\"WFWithAssignForAssignObjectAppendNot\" contains an Assign \"Data\" as", ((string)(null)), table670, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table671 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table671.AddRow(new string[] {
+                        "[[@Person]]",
+                        "[[msgs().val]]"});
+#line 3463
+     testRunner.And("\"WFWithAssignForAssignObjectAppendNot\" contains an Assign Object \"AssignPerson\" a" +
+                    "s", ((string)(null)), table671, "And ");
+#line 3466
+  testRunner.When("\"WFWithAssignForAssignObjectAppendNot\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 3467
+  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table672 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table672.AddRow(new string[] {
+                        "1",
+                        "[[Human]] = {\"PolNo\":\"A002\",\"Age\":24}"});
+#line 3468
+   testRunner.And("the \"JSonToVar\" in Workflow \"WFWithAssignForAssignObjectAppendNot\" debug outputs " +
+                    "as", ((string)(null)), table672, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

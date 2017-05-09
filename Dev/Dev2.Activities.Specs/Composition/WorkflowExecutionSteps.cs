@@ -2793,7 +2793,6 @@ namespace Dev2.Activities.Specs.Composition
             foreach (var tableRow in table.Rows)
             {
                 var value = "{\"Name\":\"Bob\"}";
-                //var value = "{\"glossary\": {\"title\": \"example glossary\",\"GlossDiv\": }";
                 var variable = tableRow["variable"];
 
                 if (value.StartsWith("="))
