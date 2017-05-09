@@ -3467,7 +3467,7 @@ Scenario: Workflow with Assign and AssignObject using append notation
 	 Then the workflow execution has "NO" error
 	  And the "AssignPerson" in Workflow "WFWithAssignForAssignObjectAppendNot" debug outputs as 
 	  | # |                            |
-	  | 1 | [[@Food]] = "{  "FoodName" : null}" |
+	  | 1 | [[@Food]] = "FoodName:null" |
 
 
 	 
