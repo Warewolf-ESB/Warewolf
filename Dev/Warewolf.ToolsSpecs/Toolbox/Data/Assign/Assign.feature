@@ -358,7 +358,7 @@ Scenario Outline: Assign to an invalid variable
 	| 29 | [[var  ]]                                 | AN    |
 	| 30 | [[rec()                                   | AN    |
 	| 31 | [[rec().2set]]                            | AN    |
-	| 32 | [[@var]]                                  | AN    |
+	| 32 | [[#var]]                                  | AN    |
 	| 33 | [[(rec1)]]                                | AN    |
 	| 34 | rec()                                     | AN    |
 	| 35 | var;iable                                 | AN    |

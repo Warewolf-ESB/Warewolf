@@ -2547,10 +2547,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Data")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "46")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[#var]]")]
         public virtual void DebugOutputValidationErrors_Variant40()
         {
-            this.DebugOutputValidationErrors("46", "[[@var]]", ((string[])(null)));
+            this.DebugOutputValidationErrors("46", "[[#var]]", ((string[])(null)));
 #line hidden
         }
         

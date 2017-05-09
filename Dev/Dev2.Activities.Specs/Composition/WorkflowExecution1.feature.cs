@@ -6662,10 +6662,10 @@ this.FeatureBackground();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[@var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Variable", "[[#var]]")]
         public virtual void TestingLengthWithTwoVariablesInResultField_8()
         {
-            this.TestingLengthWithTwoVariablesInResultField("8", "[[@var]]", ((string[])(null)));
+            this.TestingLengthWithTwoVariablesInResultField("8", "[[#var]]", ((string[])(null)));
 #line hidden
         }
         
