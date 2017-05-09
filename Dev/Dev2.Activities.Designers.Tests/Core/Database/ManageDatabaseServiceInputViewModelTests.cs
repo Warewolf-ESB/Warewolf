@@ -219,6 +219,35 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_MethodName")]
+        public void ManageDatabaseServiceInputViewModel_WithOneColumn_TestActionSetSourceAndTestClickOk()
+        {
+            //------------Setup for test--------------------------
+            var mod = new SqlServerModelWithOneColumnReturn();
+
+            var act = new DsfSqlServerDatabaseActivity();
+
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            inputview.Model = new DatabaseService(){Source = new DbSourceDefinition(), Action = new DbAction(){Inputs = new List<IServiceInput>(),Name ="bob"},};
+            inputview.ExecuteTest();
+            //------------Execute Test---------------------------
+
+            Assert.IsTrue(inputview.TestPassed);
+            Assert.IsFalse(inputview.TestFailed);
+            Assert.AreEqual(string.Empty, inputview.TestMessage);
+            Assert.IsFalse(inputview.ShowTestMessage);
+            inputview.ExecuteOk();
+            //------------Execute Ok---------------------------
+            Assert.IsTrue(sqlServer.SourceRegion.IsEnabled);
+            Assert.IsTrue(sqlServer.InputArea.IsEnabled);
+            Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1,sqlServer.OutputsRegion.Outputs.Count);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SqlServer_MethodName")]
         public void ManageDatabaseServiceInputViewModel_TestActionSetSourceAndTestClickClose()
         {
             //------------Setup for test--------------------------

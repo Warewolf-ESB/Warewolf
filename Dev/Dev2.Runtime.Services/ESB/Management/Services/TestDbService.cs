@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var res = new DbService
                 {
-                    Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), src.Action.Name),
+                    Method = new ServiceMethod(src.Name, src.Name, parameters, new OutputDescription(), new List<MethodOutput>(), src.Action.ExecuteAction),
                     ResourceName = src.Name,
                     ResourceID = src.Id,
                     Source = source
