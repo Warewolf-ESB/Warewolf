@@ -3457,15 +3457,30 @@ Scenario:WF with RabbitMq Consume with no timeout
 Scenario: Workflow with Assign and AssignObject using append notation
      Given I have a workflow "WFWithAssignForAssignObjectAppendNot"	 
 	  And "WFWithAssignForAssignObjectAppendNot" contains an Assign "Data" as
-	  | variable       | value                     |
-	  | [[msgs().val]] | {"PolNo":"A001","Age":23} |
-	  | [[msgs().val]]   | {"PolNo":"A002","Age":24} |
+	  | variable       | value                       |
+	  | [[msgs().val]] | TestingDotnetDllCascading.Food.ToJson |
+	  | [[msgs().val]] | TestingDotnetDllCascading.Food.ToJson |
      And "WFWithAssignForAssignObjectAppendNot" contains an Assign Object "AssignPerson" as
 	 | variable    | value          |
-	 | [[@Person]] | [[msgs().val]] |
+	 | [[@Food]] | [[msgs().val]] |
 	 When "WFWithAssignForAssignObjectAppendNot" is executed
 	 Then the workflow execution has "NO" error
-	  And the "JSonToVar" in Workflow "WFWithAssignForAssignObjectAppendNot" debug outputs as 
+	  And the "AssignPerson" in Workflow "WFWithAssignForAssignObjectAppendNot" debug outputs as 
 	  | # |                            |
-	  | 1 | [[Human]] = {"PolNo":"A002","Age":24} |
+	  | 1 | [[@Food]] = "{  "FoodName" : null}" |
+
+Scenario: Workflow with Assign and AssignObject using append star notation
+     Given I have a workflow "WFWithAssignForAssignObjectAppendStarNot"	 
+	  And "WFWithAssignForAssignObjectAppendStarNot" contains an Assign "Data" as
+	  | variable       | value                     |
+	  | [[msgs().val]] | TestingDotnetDllCascading.Food.ToJson |
+	  | [[msgs().val]] | TestingDotnetDllCascading.Food.ToJson |
+     And "WFWithAssignForAssignObjectAppendStarNot" contains an Assign Object "AssignPerson" as
+	 | variable    | value          |
+	 | [[@Food()]] | [[msgs(*).val]] |
+	 When "WFWithAssignForAssignObjectAppendStarNot" is executed
+	 Then the workflow execution has "NO" error
+	  And the "AssignPerson" in Workflow "WFWithAssignForAssignObjectAppendStarNot" debug outputs as 
+	  | # |                            |
+	  | 1 | [[@Food()]] = [{  "FoodName" : null},{  "FoodName" : null}] |
 	 

@@ -12800,10 +12800,10 @@ this.FeatureBackground();
                         "value"});
             table670.AddRow(new string[] {
                         "[[msgs().val]]",
-                        "{\"PolNo\":\"A001\",\"Age\":23}"});
+                        "TestingDotnetDllCascading.Food.ToJson"});
             table670.AddRow(new string[] {
                         "[[msgs().val]]",
-                        "{\"PolNo\":\"A002\",\"Age\":24}"});
+                        "TestingDotnetDllCascading.Food.ToJson"});
 #line 3459
    testRunner.And("\"WFWithAssignForAssignObjectAppendNot\" contains an Assign \"Data\" as", ((string)(null)), table670, "And ");
 #line hidden
@@ -12811,7 +12811,7 @@ this.FeatureBackground();
                         "variable",
                         "value"});
             table671.AddRow(new string[] {
-                        "[[@Person]]",
+                        "[[@Food]]",
                         "[[msgs().val]]"});
 #line 3463
      testRunner.And("\"WFWithAssignForAssignObjectAppendNot\" contains an Assign Object \"AssignPerson\" a" +
@@ -12826,10 +12826,63 @@ this.FeatureBackground();
                         ""});
             table672.AddRow(new string[] {
                         "1",
-                        "[[Human]] = {\"PolNo\":\"A002\",\"Age\":24}"});
+                        "[[@Food]] = \"{  \"FoodName\" : null}\""});
 #line 3468
-   testRunner.And("the \"JSonToVar\" in Workflow \"WFWithAssignForAssignObjectAppendNot\" debug outputs " +
-                    "as", ((string)(null)), table672, "And ");
+   testRunner.And("the \"AssignPerson\" in Workflow \"WFWithAssignForAssignObjectAppendNot\" debug outpu" +
+                    "ts as", ((string)(null)), table672, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with Assign and AssignObject using append star notation")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void WorkflowWithAssignAndAssignObjectUsingAppendStarNotation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign and AssignObject using append star notation", ((string[])(null)));
+#line 3472
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 3473
+     testRunner.Given("I have a workflow \"WFWithAssignForAssignObjectAppendStarNot\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table673 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table673.AddRow(new string[] {
+                        "[[msgs().val]]",
+                        "TestingDotnetDllCascading.Food.ToJson"});
+            table673.AddRow(new string[] {
+                        "[[msgs().val]]",
+                        "TestingDotnetDllCascading.Food.ToJson"});
+#line 3474
+   testRunner.And("\"WFWithAssignForAssignObjectAppendStarNot\" contains an Assign \"Data\" as", ((string)(null)), table673, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table674 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table674.AddRow(new string[] {
+                        "[[@Food()]]",
+                        "[[msgs(*).val]]"});
+#line 3478
+     testRunner.And("\"WFWithAssignForAssignObjectAppendStarNot\" contains an Assign Object \"AssignPerso" +
+                    "n\" as", ((string)(null)), table674, "And ");
+#line 3481
+  testRunner.When("\"WFWithAssignForAssignObjectAppendStarNot\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 3482
+  testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table675 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table675.AddRow(new string[] {
+                        "1",
+                        "[[@Food()]] = [{  \"FoodName\" : null},{  \"FoodName\" : null}]"});
+#line 3483
+   testRunner.And("the \"AssignPerson\" in Workflow \"WFWithAssignForAssignObjectAppendStarNot\" debug o" +
+                    "utputs as", ((string)(null)), table675, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
