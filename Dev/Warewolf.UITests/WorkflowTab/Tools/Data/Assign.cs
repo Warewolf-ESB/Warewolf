@@ -108,7 +108,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         public void ExpandAndCollapseMultiAssignTool()
         {
             WorkflowTabUIMap.Click_Assign_Tool_ExpandAll();
-            WorkflowTabUIMap.Click_Assign_Tool_CollapseAll();
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.Exists, "Assign tool large view on the design surface does not exist after clicking Expand All.");
+            WorkflowTabUIMap.Click_Assign_Tool_ExpandAll();
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.Exists, "Assign tool small view on the design surface does not exist after clicking Restore.");
         }
 
         #region Additional test attributes

@@ -795,7 +795,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
-            Assert.AreEqual("We’ve got your feedback!", header);
+            Assert.AreEqual("We've got your feedback!", header);
             Assert.AreEqual(expectedDescription, description);
         }
 

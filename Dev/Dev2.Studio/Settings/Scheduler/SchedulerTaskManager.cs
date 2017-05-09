@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
@@ -162,7 +163,7 @@ namespace Dev2.Settings.Scheduler
 
         private bool ValidateSelectedTask()
         {
-            if(!_schedulerViewModel.SelectedTask.IsDirty) return true;
+            if (!_schedulerViewModel.SelectedTask.IsDirty) return true;
             if (_schedulerViewModel.HasErrors && !_schedulerViewModel.Error.StartsWith(Core.SchedulerSaveErrorPrefix))
             {
                 _schedulerViewModel.ShowSaveErrorDialog(_schedulerViewModel.Error);
@@ -170,7 +171,7 @@ namespace Dev2.Settings.Scheduler
             }
 
             var oldName = _schedulerViewModel.SelectedTask?.OldName;
-            if(oldName == null) return true;
+            if (oldName == null) return true;
             if (oldName != _schedulerViewModel.SelectedTask.Name && !oldName.Contains(Core.SchedulerNewTaskName) && !_schedulerViewModel.SelectedTask.IsNew)
             {
                 var showNameChangedConflict = _schedulerViewModel.PopupController.ShowNameChangedConflict(oldName, _schedulerViewModel.SelectedTask.Name);
@@ -239,8 +240,12 @@ namespace Dev2.Settings.Scheduler
                     {
                         if (_schedulerViewModel.PopupController.ShowDeleteConfirmation(_schedulerViewModel.SelectedTask.Name) == MessageBoxResult.Yes)
                         {
-                            int index = _schedulerViewModel.ScheduledResourceModel.ScheduledResources.IndexOf(_schedulerViewModel.SelectedTask);
-                            int indexInFilteredList = _schedulerViewModel.TaskList.IndexOf(_schedulerViewModel.SelectedTask);
+                            int index = _schedulerViewModel.ScheduledResourceModel.ScheduledResources
+                                .ToList()
+                                .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
+                            int indexInFilteredList = _schedulerViewModel.TaskList
+                                .ToList()
+                                .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
                             if (index != -1)
                             {
                                 Dev2Logger.Info($"Delete Schedule Name: {_schedulerViewModel.SelectedTask.Name} Resource:{_schedulerViewModel.SelectedTask.ResourceId} Env:{_schedulerViewModel.CurrentEnvironment.Name}");
