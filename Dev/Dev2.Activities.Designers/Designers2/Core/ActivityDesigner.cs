@@ -64,6 +64,14 @@ namespace Dev2.Activities.Designers2.Core
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
+            if (keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                if (keyEventArgs.OriginalSource.GetType() != typeof (TextBox))
+                {
+                    keyEventArgs.Handled = true;
+                }
+            }
+
             if (keyEventArgs.OriginalSource.GetType() == typeof (ComboBox) ||
                 keyEventArgs.OriginalSource.GetType() == typeof (ComboBoxItem))
             {
