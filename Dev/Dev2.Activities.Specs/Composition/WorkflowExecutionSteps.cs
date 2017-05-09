@@ -86,6 +86,7 @@ using Warewolf.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
+using TestingDotnetDllCascading;
 
 // ReSharper disable NonLocalizedString
 
@@ -2773,6 +2774,12 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     value = value.Replace("=", "");
                     value = $"!~calculation~!{value}!~~calculation~!";
+                }
+                if (value.Equals("TestingDotnetDllCascading.Food.ToJson"))
+                {
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serialize = serializer.Serialize(new Food());
+                    value = serialize;
                 }
 
                 List<ActivityDTO> fieldCollection;
