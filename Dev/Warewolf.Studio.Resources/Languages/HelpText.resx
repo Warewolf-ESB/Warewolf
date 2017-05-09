@@ -457,7 +457,7 @@
     <value>Test the connection to the Database. </value>
   </data>
   <data name="DataListDeleteButtonHelp" xml:space="preserve">
-    <value>When the variable is not used in the service at all, you can select Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	This variable is not being used in the service and can safely be deleted.</value>
+    <value>Safely deletes all variables in the variable list that are not being used.</value>
   </data>
   <data name="DataListInputCheckBoxHelp" xml:space="preserve">
     <value>Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	&lt;a href="http://warewolf.io/knowledge-base/the-variable-list/"  target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
