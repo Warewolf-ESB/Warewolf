@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             // MUST load management services BEFORE server workspace!!
             try
             {
-                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don’t exist");
+                _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
 
             }
             // ReSharper disable once EmptyGeneralCatchClause
