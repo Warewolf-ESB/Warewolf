@@ -3453,3 +3453,19 @@ Scenario:WF with RabbitMq Consume with no timeout
     Then the workflow execution has "No" error
 	And the "RabbitMqConsumeNotimeout" has a start and end duration
 	And "RabbitMqConsumeNotimeout" Duration is less or equal to 2 seconds
+
+Scenario: Workflow with Assign and AssignObject using append notation
+     Given I have a workflow "WFWithAssignForAssignObjectAppendNot"	 
+	  And "WFWithAssignForAssignObjectAppendNot" contains an Assign "Data" as
+	  | variable       | value                     |
+	  | [[msgs().val]] | {"PolNo":"A001","Age":23} |
+	  | [[msgs().val]]   | {"PolNo":"A002","Age":24} |
+     And "WFWithAssignForAssignObjectAppendNot" contains an Assign Object "AssignPerson" as
+	 | variable    | value          |
+	 | [[@Person]] | [[msgs().val]] |
+	 When "WFWithAssignForAssignObjectAppendNot" is executed
+	 Then the workflow execution has "NO" error
+	  And the "JSonToVar" in Workflow "WFWithAssignForAssignObjectAppendNot" debug outputs as 
+	  | # |                            |
+	  | 1 | [[Human]] = {"PolNo":"A002","Age":24} |
+	 
