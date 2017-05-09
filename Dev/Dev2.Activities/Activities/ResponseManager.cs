@@ -11,8 +11,6 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using WarewolfParserInterop;
@@ -82,24 +80,16 @@ namespace Dev2.Activities
 
         private void AssignObject(string input, int update, IDSFDataObject dataObj)
         {
+
             try
             {
-                var jContainer = JsonConvert.DeserializeObject(input) as JContainer;
-                dataObj.Environment.Assign(ObjectName, jContainer?.ToString(), update);
+                dataObj.Environment.AssignJson(new AssignValue(ObjectName, input), update);
             }
-            catch (Exception ex)
+            catch (Exception ex1)
             {
-                Dev2Logger.Error(ex);
-                //This is a scalar scenario and the Top level assign is invalid at this level.
-                try
-                {
-                    dataObj.Environment.AssignJson(new AssignValue(ObjectName, input), update);
-                }
-                catch (Exception ex1)
-                {
-                    Dev2Logger.Error(ex1);
-                }
+                Dev2Logger.Error(ex1);
             }
+
         }
 
         private void FormatForOutput(string input, int update, IDSFDataObject dataObj, bool formatResult, IOutputFormatter formater)
