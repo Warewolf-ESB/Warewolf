@@ -3469,18 +3469,5 @@ Scenario: Workflow with Assign and AssignObject using append notation
 	  | # |                            |
 	  | 1 | [[@Food]] = "{  "FoodName" : null}" |
 
-Scenario: Workflow with Assign and AssignObject using append star notation
-     Given I have a workflow "WFWithAssignForAssignObjectAppendStarNot"	 
-	  And "WFWithAssignForAssignObjectAppendStarNot" contains an Assign "Data" as
-	  | variable       | value                     |
-	  | [[msgs().val]] | TestingDotnetDllCascading.Food.ToJson |
-	  | [[msgs().val]] | TestingDotnetDllCascading.Food.ToJson |
-     And "WFWithAssignForAssignObjectAppendStarNot" contains an Assign Object "AssignPerson" as
-	 | variable    | value          |
-	 | [[@Food()]] | [[msgs(*).val]] |
-	 When "WFWithAssignForAssignObjectAppendStarNot" is executed
-	 Then the workflow execution has "NO" error
-	  And the "AssignPerson" in Workflow "WFWithAssignForAssignObjectAppendStarNot" debug outputs as 
-	  | # |                            |
-	  | 1 | [[@Food()]] = [{  "FoodName" : null},{  "FoodName" : null}] |
+
 	 
