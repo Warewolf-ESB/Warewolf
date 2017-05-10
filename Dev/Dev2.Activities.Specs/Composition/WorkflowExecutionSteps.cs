@@ -3984,7 +3984,8 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = inputs
+                    Inputs = inputs,
+                    ExecuteAction = serviceName
                 },
                 Name = "tab_val_func"
                 ,
@@ -4085,7 +4086,8 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = new List<IServiceInput>()
+                    Inputs = new List<IServiceInput>(),
+                    ExecuteAction = serviceName
                 },
                 Name = serviceName,
                 Id = dbSource.Id,
@@ -4183,7 +4185,8 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = inputs
+                    Inputs = inputs,
+                    ExecuteAction = serviceName
                 },
                 Name = serviceName,
                 Id = dbSource.Id,
@@ -4261,7 +4264,8 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = inputs
+                    Inputs = inputs,
+                    ExecuteAction = serviceName
                 },
                 Name = serviceName,
                 Id = dbSource.Id
