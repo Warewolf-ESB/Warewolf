@@ -940,7 +940,7 @@ this.FeatureBackground();
                         "Request Per Second",
                         "x"});
             table34.AddRow(new string[] {
-                        "Count of requests for workflows which don’t exist",
+                        "Count of requests for workflows which don\'t exist",
                         "9"});
 #line 199
  testRunner.Then("the perfcounter raw values are", ((string)(null)), table34, "Then ");

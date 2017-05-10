@@ -254,7 +254,7 @@ namespace Dev2.Diagnostics.Test
         public void WarewolfServicesNotFound_TestOps_Valid_ExpectValidValues()
         {
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.ServicesNotFound).FromSafe(); ;
-            Assert.AreEqual(counter.Name, "Count of requests for workflows which don’t exist");
+            Assert.AreEqual(counter.Name, "Count of requests for workflows which don't exist");
             Assert.AreEqual(counter.Category, "Warewolf");
             PrivateObject po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);

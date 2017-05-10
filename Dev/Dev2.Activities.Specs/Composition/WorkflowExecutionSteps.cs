@@ -86,6 +86,8 @@ using Warewolf.Core;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
+using TestingDotnetDllCascading;
+
 // ReSharper disable NonLocalizedString
 
 // ReSharper disable UnusedMember.Global
@@ -1448,6 +1450,52 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.ThenTheDebugOutputAs(table, outputState.Outputs
                                                     .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
         }
+
+        [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug output contains as")]
+        public void ThenTheInWorkflowDebugOutputContainsAs(string toolName, string workflowName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            Guid workflowId = Guid.Empty;
+
+            if (parentWorkflowName != workflowName)
+            {
+                if (toolName != null && workflowName != null)
+                {
+                    workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+                }
+                else
+                {
+                    throw new InvalidOperationException("SpecFlow broke.");
+                }
+           }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+            if (!toolSpecificDebug.Any())
+            {
+                toolSpecificDebug =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
+            }
+            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
+            bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            var outputState = toolSpecificDebug.FirstOrDefault();
+            if (toolSpecificDebug.Count > 1)
+            {
+                if (toolSpecificDebug.Any(state => state.StateType == StateType.End))
+                {
+                    outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+                }
+            }
+            var debugItemResults = outputState?.Outputs.SelectMany(s => s.ResultsList).ToList();
+            Assert.IsNotNull(debugItemResults);
+            Assert.IsTrue(debugItemResults.Any(result => result.Value.Contains("{\r\n  \"Name\": \"Bob\"\r\n}")));
+        }
+    
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" for testing as")]
         public void GivenContainsAnSQLBulkInsertUsingDatabaseAndTableAndKeepIdentitySetAndResultSetForTestingAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
         {
@@ -2727,6 +2775,12 @@ namespace Dev2.Activities.Specs.Composition
                     value = value.Replace("=", "");
                     value = $"!~calculation~!{value}!~~calculation~!";
                 }
+                if (value.Equals("TestingDotnetDllCascading.Food.ToJson"))
+                {
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serialize = serializer.Serialize(new Food());
+                    value = serialize;
+                }
 
                 List<ActivityDTO> fieldCollection;
                 _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
@@ -2737,6 +2791,51 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
+
+        [Given(@"""(.*)"" contains an Assign for Json ""(.*)"" as")]
+        [Then(@"""(.*)"" contains an Assign for Json ""(.*)"" as")]
+        public void GivenContainsAnAssignForJsonAs(string parentName, string assignName, Table table)
+        {
+            var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+            foreach (var tableRow in table.Rows)
+            {
+                var value = "{\"Name\":\"Bob\"}";
+                var variable = tableRow["variable"];
+
+                if (value.StartsWith("="))
+                {
+                    value = value.Replace("=", "");
+                    value = $"!~calculation~!{value}!~~calculation~!";
+                }
+
+                List<ActivityDTO> fieldCollection;
+                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+
+                _commonSteps.AddVariableToVariableList(variable);
+
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+            }
+            _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+        }
+
+        [Given(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [Then(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        [When(@"""(.*)"" contains a RabbitMQPublish ""(.*)"" into ""(.*)""")]
+        public void GivenContainsARabbitMQPublishInto(string parentName, string rabbitMqname, string result)
+        {
+            var jsonMsg = new Human().SerializeToJsonStringBuilder().ToString();
+            var dsfPublishRabbitMqActivity = new DsfPublishRabbitMQActivity
+            {
+                RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
+              ,
+                Result = result
+              ,
+                DisplayName = rabbitMqname,
+                Message = jsonMsg
+            };
+            _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
+        }
+
 
 
 
@@ -3707,6 +3806,22 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Add("RabbitMqTool", dsfConsumeRabbitMqActivity);
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfConsumeRabbitMqActivity);
         }
+        [Given(@"""(.*)"" is object is set to ""(.*)""")]
+        public void GivenIsObjectIsSetTo(string toolName, string isObjectString)
+        {
+            var isObject = bool.Parse(isObjectString);
+            var dsfConsumeRabbitMqActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("RabbitMqTool");
+            dsfConsumeRabbitMqActivity.IsObject = isObject;
+        }
+
+        [Given(@"""(.*)"" objectname as ""(.*)""")]
+        public void GivenObjectnameAs(string toolName, string Objectname)
+        {
+            var dsfConsumeRabbitMqActivity = ScenarioContext.Current.Get<DsfConsumeRabbitMQActivity>("RabbitMqTool");
+            dsfConsumeRabbitMqActivity.ObjectName = Objectname;
+        }
+
+
 
         [Given(@"Queue Name as ""(.*)""")]
         public void GivenQueueNameAs(string queueName)
@@ -3869,7 +3984,8 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = inputs
+                    Inputs = inputs,
+                    ExecuteAction = serviceName
                 },
                 Name = "tab_val_func"
                 ,
@@ -3970,7 +4086,8 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = new List<IServiceInput>()
+                    Inputs = new List<IServiceInput>(),
+                    ExecuteAction = serviceName
                 },
                 Name = serviceName,
                 Id = dbSource.Id,
@@ -4068,7 +4185,8 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = inputs
+                    Inputs = inputs,
+                    ExecuteAction = serviceName
                 },
                 Name = serviceName,
                 Id = dbSource.Id,
@@ -4146,7 +4264,8 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     Name = serviceName,
                     SourceId = dbSource.Id,
-                    Inputs = inputs
+                    Inputs = inputs,
+                    ExecuteAction = serviceName
                 },
                 Name = serviceName,
                 Id = dbSource.Id

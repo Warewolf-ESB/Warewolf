@@ -46,18 +46,17 @@ namespace Warewolf.UITests
             ExplorerUIMap.RightClick_Localhost();
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.Exists, "Sources Context menu item does not exist on explorer context menu for workflows.");
         }
-
-        //WOLF-2474
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void Explorer_GivenSources_ShouldHaveShowDependencyMenuItem()
+        public void Explorer_DotNetPluginSource_ContextMenuItems()
         {
             //---------------Set up test pack-------------------
             const string Source = "DotNetPlugInSource";
             ExplorerUIMap.Filter_Explorer(Source);
-            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
-            //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
+            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
+            //---------------Assert ----------------------------
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.ShowDependencies.Exists, "Show Dependencies Context menu item does not exist on explorer context menu for Sources.");
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.DeployItem.Exists);
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");

@@ -22,6 +22,8 @@ namespace Warewolf.Core
         public IList<IServiceInput> Inputs { get; set; }
         public string Name { get; set; }
         public Guid SourceId { get; set; }
+
+        public string ExecuteAction { get; set; }
         #endregion
 
         #region Equality members
