@@ -24,6 +24,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -101,7 +102,6 @@ namespace Dev2.Runtime.ESB
             var time = new Stopwatch();
             time.Start();
             errors = new ErrorResultTO();
-            const int Update = 0;
             if (dataObject.Environment.HasErrors())
             {
                 errors.AddError(dataObject.Environment.FetchErrors());
@@ -175,12 +175,18 @@ namespace Dev2.Runtime.ESB
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container");
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
+
                                 var exeManager = CustomContainer.Get<IExecutionManager>();
-                                exeManager?.AddExecution(container);
-                                ErrorResultTO invokeErrors = exeManager?.PerformExecution(Update);
-                                //result = container.Execute(out invokeErrors, Update);
+                                if (exeManager != null)
+                                {
+                                    exeManager.AddExecution(container);
+                                    while (exeManager.IsRefreshing)
+                                    {
+                                        Thread.Sleep(1000);
+                                    }
+                                    exeManager.PerformExecution();
+                                }
                                 
-                                errors.MergeErrors(invokeErrors);
                             }
                             #endregion
                         }

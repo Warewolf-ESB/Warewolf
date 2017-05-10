@@ -1,6 +1,4 @@
-﻿using Dev2.Data.TO;
-
-namespace Dev2.Runtime
+﻿namespace Dev2.Runtime
 {
     public interface IExecutionManager
     {
@@ -10,8 +8,10 @@ namespace Dev2.Runtime
 
         void AddExecution(IEsbExecutionContainer container);
 
-        ErrorResultTO PerformExecution(int update);
+        void PerformExecution();
 
         void CompleteAllCurrentExecutions();
+
+        bool IsRefreshing { get;}
     }
 }
