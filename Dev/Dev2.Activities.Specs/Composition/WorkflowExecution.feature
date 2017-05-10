@@ -1277,6 +1277,22 @@ Scenario: Workflow with Assign and Calculate
 	  |                 |
 	  | [[result]] = 33 |
 
+Scenario: Workflow with Assign and AssignObject
+     Given I have a workflow "WFWithAssignForAssignObject"	 
+	 And "WFWithAssignForAssignObject" contains an Assign for Json "JSonToVar" as
+	  | variable  |
+	  | [[Human]] | 
+     And "WFWithAssignForAssignObject" contains an Assign Object "AssignPerson" as
+	 | variable    | value     |
+	 | [[@Person]] | [[Human]] |
+	 When "WFWithAssignForAssignObject" is executed
+	 Then the workflow execution has "NO" error
+	  And the "JSonToVar" in Workflow "WFWithAssignForAssignObject" debug outputs as 
+	  | # |                            |
+	  | 1 | [[Human]] = {"Name":"Bob"} |
+	  And the "AssignPerson" in Workflow "WFWithAssignForAssignObject" debug output contains as
+	  | # |                              |
+	   
 Scenario: Workflow with Assign and ForEach
      Given I have a workflow "WFWithAssignForEach"
 	 And "WFWithAssignForEach" contains an Assign "Rec To Convert" as
@@ -3437,3 +3453,21 @@ Scenario:WF with RabbitMq Consume with no timeout
     Then the workflow execution has "No" error
 	And the "RabbitMqConsumeNotimeout" has a start and end duration
 	And "RabbitMqConsumeNotimeout" Duration is less or equal to 2 seconds
+
+Scenario: Workflow with Assign and AssignObject using append notation
+     Given I have a workflow "WFWithAssignForAssignObjectAppendNot"	 
+	  And "WFWithAssignForAssignObjectAppendNot" contains an Assign "Data" as
+	  | variable       | value                       |
+	  | [[msgs().val]] | TestingDotnetDllCascading.Food.ToJson |
+	  | [[msgs().val]] | TestingDotnetDllCascading.Food.ToJson |
+     And "WFWithAssignForAssignObjectAppendNot" contains an Assign Object "AssignPerson" as
+	 | variable    | value          |
+	 | [[@Food]] | [[msgs().val]] |
+	 When "WFWithAssignForAssignObjectAppendNot" is executed
+	 Then the workflow execution has "NO" error
+	  And the "AssignPerson" in Workflow "WFWithAssignForAssignObjectAppendNot" debug outputs as 
+	  | # |                            |
+	  | 1 | [[@Food]] = "FoodName:null" |
+
+
+	 
