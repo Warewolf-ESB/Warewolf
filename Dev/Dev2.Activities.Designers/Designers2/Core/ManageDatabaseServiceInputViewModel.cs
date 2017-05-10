@@ -139,7 +139,7 @@ namespace Dev2.Activities.Designers2.Core
             // ReSharper disable once LoopCanBeConvertedToQuery
             if (testResults != null)
             {
-                if (testResults.Columns.Count > 1)
+                if (testResults.Columns.Count >= 1)
                 {
                     var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? Model.Action.Name.Replace(".", "_") : testResults.TableName;
                     _viewmodel.OutputsRegion.RecordsetName = recordsetName;
@@ -171,7 +171,7 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 if (TestResults != null)
                 {
-                    if (TestResults.Columns.Count > 1)
+                    if (TestResults.Columns.Count >= 1)
                     {
                         TestResultsAvailable = TestResults.Rows.Count != 0;
                         IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
