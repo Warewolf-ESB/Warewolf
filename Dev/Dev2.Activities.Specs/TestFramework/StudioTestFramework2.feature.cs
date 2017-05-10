@@ -1933,7 +1933,7 @@ this.FeatureBackground();
             table65.AddRow(new string[] {
                         "[[@AllMessages()]]",
                         "Contains",
-                        "\"PolicyNo\":\"A0003\","});
+                        "A0003"});
 #line 677
  testRunner.And("I add StepOutputs item as", ((string)(null)), table65, "And ");
 #line hidden
@@ -1944,7 +1944,7 @@ this.FeatureBackground();
             table66.AddRow(new string[] {
                         "[[@AllMessages()]]",
                         "Contains",
-                        "\"SomeVal\":\"Bob\""});
+                        "Bob"});
 #line 680
     testRunner.And("I add StepOutputs item as", ((string)(null)), table66, "And ");
 #line hidden
@@ -1955,7 +1955,7 @@ this.FeatureBackground();
             table67.AddRow(new string[] {
                         "[[@AllMessages()]]",
                         "Contains",
-                        "\"DateId\":32,"});
+                        "32"});
 #line 683
  testRunner.And("I add StepOutputs item as", ((string)(null)), table67, "And ");
 #line hidden
@@ -1966,7 +1966,7 @@ this.FeatureBackground();
             table68.AddRow(new string[] {
                         "@AllMessages()",
                         "Contains",
-                        "\"DateId\":32,"});
+                        "32"});
 #line 686
  testRunner.And("I Add outputs as", ((string)(null)), table68, "And ");
 #line 689
