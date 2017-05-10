@@ -253,6 +253,10 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             {
                 yield return error;
             }
+            foreach (var error in GetRuleSet("Prefetch").ValidateRules("'Prefetch'", () => IsPrefetchFocused = true))
+            {
+                yield return error;
+            }
         }
 
         private IRuleSet GetRuleSet(string propertyName)
@@ -267,6 +271,10 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 
                 case "QueueName":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => QueueName));
+                    break;
+
+                case "Prefetch":
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Prefetch));
                     break;
             }
             return ruleSet;
