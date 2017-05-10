@@ -21,7 +21,7 @@ namespace Warewolf.UIBindingTests.Deploy
 
         #region Overrides of DeploySourceExplorerViewModel
 
-        protected override Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)
+        protected override Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false, bool reloadCatalogue = true)
         {
             localhostEnvironment.Children = new ObservableCollection<IExplorerItemViewModel>(Children ?? new List<IExplorerItemViewModel> { CreateExplorerVMS() });
             PrivateObject p = new PrivateObject(localhostEnvironment);

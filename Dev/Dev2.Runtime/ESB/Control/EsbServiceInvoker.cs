@@ -124,7 +124,7 @@ namespace Dev2.Runtime.ESB
                     {
                         Dev2Logger.Debug("Finding service");
                         var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
-
+                        
                         if (theService == null)
                         {
                             if (!dataObject.IsServiceTestExecution)
@@ -175,8 +175,10 @@ namespace Dev2.Runtime.ESB
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container");
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
-                                ErrorResultTO invokeErrors;
-                                result = container.Execute(out invokeErrors, Update);
+                                var exeManager = CustomContainer.Get<IExecutionManager>();
+                                exeManager?.AddExecution(container);
+                                ErrorResultTO invokeErrors = exeManager?.PerformExecution(Update);
+                                //result = container.Execute(out invokeErrors, Update);
                                 
                                 errors.MergeErrors(invokeErrors);
                             }
