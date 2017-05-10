@@ -457,7 +457,7 @@
     <value>Test the connection to the Database. </value>
   </data>
   <data name="DataListDeleteButtonHelp" xml:space="preserve">
-    <value>When the variable is not used in the service at all, you can select Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	This variable is not being used in the service and can safely be deleted.</value>
+    <value>Safely deletes all variables in the variable list that are not being used.</value>
   </data>
   <data name="DataListInputCheckBoxHelp" xml:space="preserve">
     <value>Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	&lt;a href="http://warewolf.io/knowledge-base/the-variable-list/"  target="_blank"&gt;Read more in the Knowledge Base.&lt;/a&gt;</value>
@@ -1091,7 +1091,7 @@
     <value>This is the actual content you want to add in the Queue	When the Consumer consumes the message, this content will	be returned as the response.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpPrefetch" xml:space="preserve">
-    <value>Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;</value>
+    <value>Provides the number of messages that can be consumed concurrently. Default is 1.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="RabbitMQHelpQueueName" xml:space="preserve">
     <value>Provide a name of the Queue you want to consume from. 	The Queue should already be in the RabbitMQ Source in your server.	Note: The Queue name is case sensitive.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>

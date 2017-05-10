@@ -126,7 +126,8 @@ namespace Warewolf.UITests.SaveDialog
             DialogsUIMap.Filter_Save_Dialog_Explorer("ResourceToMove");
             DialogsUIMap.MoveResourceToLocalhost();
             DialogsUIMap.Filter_Save_Dialog_Explorer("FolderToMove");
-            ExplorerUIMap.ExplorerDoesNotContainItem("ResourceToMove");
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Explorer does not contain a first item after filter.");
+            ExplorerUIMap.ExplorerDoesNotContainFirstItemFirstSubItem();
         }
 
         [TestMethod]

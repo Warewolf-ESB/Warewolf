@@ -80,7 +80,7 @@ namespace Dev2.PerformanceCounters.Counters
 
         public string Category => "Warewolf";
 
-        public string Name => "Count of requests for workflows which don’t exist";
+        public string Name => "Count of requests for workflows which don't exist";
 
         public void Reset()
         {

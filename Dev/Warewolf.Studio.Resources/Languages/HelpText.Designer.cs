@@ -557,7 +557,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When the variable is not used in the service at all, you can select Marks the variable as an input to the service. To pass this variable into the workflow, make this checkbox selected.&lt;br/&gt;	&lt;br/&gt;	This variable is not being used in the service and can safely be deleted..
+        ///   Looks up a localized string similar to Safely deletes all variables in the variable list that are not being used..
         /// </summary>
         public static string DataListDeleteButtonHelp {
             get {
@@ -2315,7 +2315,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provide number of messages that can be consumed concurrently.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to Provides the number of messages that can be consumed concurrently. Default is 1.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpPrefetch {
             get {

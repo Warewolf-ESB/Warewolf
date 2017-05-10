@@ -326,7 +326,58 @@ namespace WarewolfParsingTest
 
             //------------Assert Results-------------------------
         }
-        
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        public void AssignEvaluation_assignObject_ArrayJson_Last()
+        {
+            var env = CreateTestEnvWithData();
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"a\"}"), 0, env);
+
+            Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
+            Assert.AreEqual("[\r\n  {\r\n    \"Name\": \"a\"\r\n  }\r\n]", env2.JsonObjects["Person"].ToString());
+            var nameValue = PublicFunctions.EvalEnvExpression("[[@Person().Name]]", 0, false, env2);
+            Assert.IsNotNull(nameValue);
+            var warewolfAtomResult = nameValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.IsNotNull(warewolfAtomResult);
+            Assert.AreEqual("a",warewolfAtomResult.Item.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        public void AssignEvaluation_assignObject_Json()
+        {
+            var env = CreateTestEnvWithData();
+
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[@Person]]", "{\"Name\":\"a\"}"), 0, env);
+
+            Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
+            var nameValue = PublicFunctions.EvalEnvExpression("[[@Person.Name]]", 0, false, env2);
+            Assert.IsNotNull(nameValue);
+            var warewolfAtomResult = nameValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.IsNotNull(warewolfAtomResult);
+            Assert.AreEqual("a",warewolfAtomResult.Item.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("AssignEvaluation_assignGivenAValue")]
+        public void AssignEvaluation_assignObject_ArrayJson_Last_TwoObjects()
+        {
+            var env = CreateTestEnvWithData();
+            var env2 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"a\"}"), 0, env);
+            var env3 = AssignEvaluation.evalJsonAssign(new AssignValue("[[Person()]]", "{\"Name\":\"h\"}"), 0, env2);
+
+            Assert.IsTrue(env2.JsonObjects.ContainsKey("Person"));
+            var nameValue = PublicFunctions.EvalEnvExpression("[[@Person().Name]]", 0, false, env3);
+            Assert.IsNotNull(nameValue);
+            var warewolfAtomResult = nameValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            Assert.IsNotNull(warewolfAtomResult);
+            Assert.AreEqual("h", warewolfAtomResult.Item.ToString());
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("AssignEvaluation_assignGivenAValue")]

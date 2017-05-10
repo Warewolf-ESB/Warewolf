@@ -3167,7 +3167,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[@var]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[#var]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
@@ -3175,7 +3175,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[@var]] contains invalid character(s)")]
         public virtual void RenameFileValidation_76()
         {
-            this.RenameFileValidation("76", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile73.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/renamed73.txt", "integrationtester", "I73573r0", "True", "[[@var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
+            this.RenameFileValidation("76", "[[sourcePath]]", "\"\"", "\"\"", "C:\\renamefile73.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/renamed73.txt", "integrationtester", "I73573r0", "True", "[[#var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
         
