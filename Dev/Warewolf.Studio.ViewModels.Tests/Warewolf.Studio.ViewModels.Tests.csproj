@@ -190,11 +190,17 @@
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
     </None>
+    <None Include="JsonResources\DotnetllDebugStates.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="JsonResources\DebugStatesWithMockAssign.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="JsonResources\DebugStates.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JsonResources\dotnetDllState.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="JsonResources\sequenceState.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
