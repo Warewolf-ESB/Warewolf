@@ -72,5 +72,15 @@ namespace Warewolf.ResourceManagement
             IDev2Activity act;
             _cache.TryRemove(resourceID, out act);
         }
+
+        public void AddToCache(Guid resourceID, DynamicActivity activity)
+        {
+            IDev2Activity act = _activityParser.Parse(activity);
+            _cache.AddOrUpdate(resourceID, act, (guid, dev2Activity) =>
+            {
+                _cache[resourceID] = act;
+                return act;
+            });
+        }
     }
 }
