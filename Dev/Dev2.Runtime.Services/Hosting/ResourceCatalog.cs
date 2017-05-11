@@ -211,28 +211,31 @@ namespace Dev2.Runtime.Hosting
             }
             foreach (var resource in userServices)
             {
-                IResourceActivityCache parser = null;
-                if (_parsers != null && !_parsers.TryGetValue(GlobalConstants.ServerWorkspaceID, out parser))
-                {
-                    parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
-                    _parsers.Add(GlobalConstants.ServerWorkspaceID, parser);
-                }
-                if (parser != null && !parser.HasActivityInCache(resource.ResourceID))
-                {
-                    var service = GetService(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceName);
-                    if (service != null)
-                    {
-                        var sa = service.Actions.FirstOrDefault();
-                        MapServiceActionDependencies(GlobalConstants.ServerWorkspaceID, sa);
-                        ServiceActionRepo.Instance.AddToCache(resource.ResourceID, service);
-                        var activity = GetActivity(sa);
-                        parser.Parse(activity, resource.ResourceID);
-                    }
-                }
-
+                AddToActivityCache(resource);
             }
         }
 
+        public void AddToActivityCache(IResource resource)
+        {
+            IResourceActivityCache parser = null;
+            if(_parsers != null && !_parsers.TryGetValue(GlobalConstants.ServerWorkspaceID, out parser))
+            {
+                parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
+                _parsers.Add(GlobalConstants.ServerWorkspaceID, parser);
+            }
+            if(parser != null && !parser.HasActivityInCache(resource.ResourceID))
+            {
+                var service = GetService(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceName);
+                if(service != null)
+                {
+                    var sa = service.Actions.FirstOrDefault();
+                    MapServiceActionDependencies(GlobalConstants.ServerWorkspaceID, sa);
+                    ServiceActionRepo.Instance.AddToCache(resource.ResourceID, service);
+                    var activity = GetActivity(sa);
+                    parser.Parse(activity, resource.ResourceID);
+                }
+            }
+        }
 
         public DynamicActivity GetActivity(ServiceAction sa)
         {
