@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public override bool IsReservedService => false;
 
-        public override bool IsServer => ResourceType.Equals(enSourceType.Dev2Server.ToString());
+        public override bool IsServer => !string.IsNullOrEmpty(ResourceType) && ResourceType.Equals(enSourceType.Dev2Server.ToString());
         public override bool IsResourceVersion => false;
     }
 }
