@@ -65,7 +65,7 @@ namespace Dev2.Data
                 xDoc.LoadXml(toLoad);
             }
 
-            if (!String.IsNullOrEmpty(toLoad))
+            if (!string.IsNullOrEmpty(toLoad))
             {
                 if (xDoc.DocumentElement != null)
                 {
@@ -222,24 +222,39 @@ namespace Dev2.Data
                         }
                         else
                         {
-                            if (c.Attributes != null)
+                            var jsonAttribute = false;
+                            var xmlAttribute = c.Attributes?["IsJson"];
+                            if (xmlAttribute != null)
                             {
-                                descAttribute = c.Attributes["Description"];
-                                columnIoDirection = c.Attributes["ColumnIODirection"];
+                                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
                             }
-                            string descriptionValue = "";
-                            columnDirection = enDev2ColumnArgumentDirection.None;
-                            if (descAttribute != null)
+                            if (jsonAttribute)
                             {
-                                descriptionValue = descAttribute.Value;
+                                AddComplexObjectFromXmlNode(c);
                             }
-                            if (columnIoDirection != null)
+                            else
                             {
-                                Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+
+
+                                if (c.Attributes != null)
+                                {
+                                    descAttribute = c.Attributes["Description"];
+                                    columnIoDirection = c.Attributes["ColumnIODirection"];
+                                }
+                                string descriptionValue = "";
+                                columnDirection = enDev2ColumnArgumentDirection.None;
+                                if (descAttribute != null)
+                                {
+                                    descriptionValue = descAttribute.Value;
+                                }
+                                if (columnIoDirection != null)
+                                {
+                                    Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                                }
+                                var scalar = new Scalar { Name = c.Name, Description = descriptionValue, IODirection = columnDirection, IsEditable = true };
+                                Scalars.Add(scalar);
+                                ShapeScalars.Add(scalar);
                             }
-                            var scalar = new Scalar { Name = c.Name, Description = descriptionValue, IODirection = columnDirection, IsEditable = true };
-                            Scalars.Add(scalar);
-                            ShapeScalars.Add(scalar);
                         }
                     }
                 }
