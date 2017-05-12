@@ -166,12 +166,7 @@ namespace Dev2.Data
                     {
                         if (c.HasChildNodes)
                         {
-                            var jsonAttribute = false;
-                            var xmlAttribute = c.Attributes?["IsJson"];
-                            if (xmlAttribute != null)
-                            {
-                                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                            }
+                            var jsonAttribute = IsJsonAttribute(c);
                             if (jsonAttribute)
                             {
                                 AddComplexObjectFromXmlNode(c);
@@ -222,12 +217,7 @@ namespace Dev2.Data
                         }
                         else
                         {
-                            var jsonAttribute = false;
-                            var xmlAttribute = c.Attributes?["IsJson"];
-                            if (xmlAttribute != null)
-                            {
-                                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                            }
+                            var jsonAttribute = IsJsonAttribute(c);
                             if (jsonAttribute)
                             {
                                 AddComplexObjectFromXmlNode(c);
@@ -259,6 +249,17 @@ namespace Dev2.Data
                     }
                 }
             }
+        }
+
+        private static bool IsJsonAttribute(XmlNode c)
+        {
+            var jsonAttribute = false;
+            var xmlAttribute = c.Attributes?["IsJson"];
+            if (xmlAttribute != null)
+            {
+                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
+            }
+            return jsonAttribute;
         }
 
         private void AddComplexObjectFromXmlNode(XmlNode c)
