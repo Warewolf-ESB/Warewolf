@@ -2342,7 +2342,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	This will be the response of what you have Consumed from your Queue&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;          	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to Only variables go in here.	This will be the response of what you have Consumed from your Queue&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;          	&lt;ol&gt;	&lt;li&gt;[[@Scalar]]&lt;/li&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpResponse {
             get {
