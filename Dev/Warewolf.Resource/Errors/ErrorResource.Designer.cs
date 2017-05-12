@@ -2671,6 +2671,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;Prefetch&apos; Cannot be null.
+        /// </summary>
+        public static string RabbitMqPrefetchNotNullErrorTest {
+            get {
+                return ResourceManager.GetString("RabbitMqPrefetchNotNullErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;Queue Name&apos; Cannot be null.
         /// </summary>
         public static string RabbitMqQueueNameNotNullErrorTest {

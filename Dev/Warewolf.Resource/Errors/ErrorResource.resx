@@ -1218,6 +1218,9 @@
   <data name="RabbitMqQueueNameNotNullErrorTest" xml:space="preserve">
     <value>'Queue Name' Cannot be null</value>
   </data>
+  <data name="RabbitMqPrefetchNotNullErrorTest" xml:space="preserve">
+    <value>'Prefetch' Cannot be null</value>
+  </data>
   <data name="RabbitMqSourceNotNullErrorTest" xml:space="preserve">
     <value>'RabbitMQ Source' Cannot be null</value>
   </data>

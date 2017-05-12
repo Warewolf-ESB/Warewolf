@@ -89,8 +89,8 @@ namespace Dev2.Activities.Designers2.Core
             _deleteRowMenuItem.SetValue(AutomationProperties.AutomationIdProperty, "UI_DeleteRowMenuItem_AutoID");
             _deleteRowMenuItem.Click += DeleteDataGridRow;
 
-            ContextMenu.Items.Add(_insertRowMenuItem);
-            ContextMenu.Items.Add(_deleteRowMenuItem);
+            ContextMenu?.Items.Add(_insertRowMenuItem);
+            ContextMenu?.Items.Add(_deleteRowMenuItem);
         }
 
         protected void DeleteDataGridRow(object sender, RoutedEventArgs e)
