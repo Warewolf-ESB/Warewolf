@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Windows.Input;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
@@ -38,6 +39,34 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
             DataToolsUIMap.Scroll_DownThenUp_On_DataMergeTool_SmallView();
             Assert.AreEqual("1", DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row.UsingCell.Row1UsingDComboBox.TextEdit.Text);
             Assert.AreEqual("2", DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row2.UsingCell.Row2UsingComboBox.TextEdit.Text);
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void DataMerge_KeyboardDelete_ShouldNot_DeleteRow()
+        {
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row.Exists);
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row2.Exists);
+            DataToolsUIMap.Click_DataMerge_SmallView_UsingDropdown();
+            Keyboard.SendKeys(DataToolsUIMap.MainStudioWindow, "{Delete}", ModifierKeys.None);
+            DataToolsUIMap.Click_DataMerge_SmallView_UsingDropdown();
+            Keyboard.SendKeys(DataToolsUIMap.MainStudioWindow, "{Delete}", ModifierKeys.None);
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row.Exists);
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row2.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Data Tools")]
+        public void DataMerge_KeyboardAnyKeys_ShouldNot_ChangeAnything()
+        {
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row.Exists);
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row2.Exists);
+            DataToolsUIMap.Click_DataMerge_SmallView_UsingDropdown();
+            Keyboard.SendKeys(DataToolsUIMap.MainStudioWindow, "{Z}", ModifierKeys.Control);
+            DataToolsUIMap.Click_DataMerge_SmallView_UsingDropdown();
+            Keyboard.SendKeys(DataToolsUIMap.MainStudioWindow, "{Z}", ModifierKeys.Control);
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row.Exists);
+            Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DataMerge.SmallView.DataGrid.Row2.Exists);
         }
 
         #region Additional test attributes
