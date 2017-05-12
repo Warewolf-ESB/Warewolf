@@ -36,6 +36,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
@@ -102,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             // No exception it passed ;)
         }
-       
+
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -426,6 +427,248 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.AreEqual(displayName, displayName1);
             //---------------Test Result -----------------------
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void InitializeDisplayName_GivenhasDisplayNameTypeName_ShouldUseServiceName()
+        {
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IServerRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                ServiceName = helloWorld,
+                DisplayName = "DsfActivity"
+            };
+            var modelItem = CreateModelItem(activity);
+            //---------------Precondition------------------------
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+            //---------------Execute Test ----------------------
+            var displayName = activity.DisplayName;
+            Assert.AreEqual(helloWorld, displayName);
+            var displayName1 = viewModel.ModelItem.GetProperty<string>("DisplayName");
+            Assert.AreEqual(displayName, displayName1);
+            //---------------Test Result -----------------------
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CanViewComplexObjects_GivenIsComplexObject_ShouldReturnTrue()
+        {
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IServerRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                ServiceName = helloWorld,
+                DisplayName = "DsfActivity"
+            };
+            var modelItem = CreateModelItem(activity);
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            //---------------Precondition------------------------
+            Assert.IsNotNull(viewModel);
+            //------------Execute Test---------------------------
+            object itemModel = new ComplexObjectItemModel("Home");
+            var invokeStatic = (bool)privateType.InvokeStatic("CanViewComplexObjects", itemModel);
+            //---------------Test Result -----------------------
+            Assert.IsTrue(invokeStatic);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CanViewComplexObjects_GivenIsScalarItemModel_ShouldReturnTrue()
+        {
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IServerRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                ServiceName = helloWorld,
+                DisplayName = "DsfActivity"
+            };
+            var modelItem = CreateModelItem(activity);
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            //---------------Precondition------------------------
+            Assert.IsNotNull(viewModel);
+            //------------Execute Test---------------------------
+            object itemModel = new ScalarItemModel("Home");
+            var invokeStatic = (bool)privateType.InvokeStatic("CanViewComplexObjects", itemModel);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(invokeStatic);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CanViewComplexObjects_GivenIsRecordSet_ShouldReturnTrue()
+        {
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IServerRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                ServiceName = helloWorld,
+                DisplayName = "DsfActivity"
+            };
+            var modelItem = CreateModelItem(activity);
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            //---------------Precondition------------------------
+            Assert.IsNotNull(viewModel);
+            //------------Execute Test---------------------------
+            object itemModel = new RecordSetItemModel("Home");
+            var invokeStatic = (bool)privateType.InvokeStatic("CanViewComplexObjects", itemModel);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(invokeStatic);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ViewJsonObjects_GivenComplexObjectItemModel_ShouldReadJsonFromComplexObject()
+        {
+
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false, null);
+            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IServerRepository>();
+            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
+
+            var resourceType = resourceModel.Object.ResourceType.ToString();
+            const string helloWorld = "Hello World";
+            var activity = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID)
+                ,
+                EnvironmentID = new InArgument<Guid>(Guid.Empty)
+                ,
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                Type = new InArgument<string>(resourceType),
+                ServiceName = helloWorld,
+                DisplayName = "DsfActivity"
+            };
+            var modelItem = CreateModelItem(activity);
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
+            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var mock = new Mock<IComplexObjectItemModel>();
+            mock.Setup(model => model.GetJson()).Returns("");
+            //---------------Precondition------------------------
+            Assert.IsNotNull(viewModel);
+            //------------Execute Test---------------------------
+            var invokeStatic = privateType.InvokeStatic("ViewJsonObjects", mock.Object);
+            //---------------Test Result -----------------------
+            mock.VerifyAll();
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void InitializeDisplayName_GivenEmptyDisplayName_ShouldUseServiceName()
@@ -488,14 +731,14 @@ namespace Dev2.Activities.Designers.Tests.Service
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
-              var envRepository = new Mock<IServerRepository>();
+            var envRepository = new Mock<IServerRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
             var envModel = new Mock<IServer>();
-            envModel.Setup(model => model.Connection.WebServerUri).Returns( new Uri("https://www.youtube.com/watch?v=O_AC6ad7j9o"));
+            envModel.Setup(model => model.Connection.WebServerUri).Returns(new Uri("https://www.youtube.com/watch?v=O_AC6ad7j9o"));
             envRepository.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(envModel.Object);
             var resourceType = resourceModel.Object.ResourceType.ToString();
-            
+
             var activity = new DsfActivity
             {
                 ResourceID = new InArgument<Guid>(resourceID)
@@ -510,11 +753,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             //------------Execute Test---------------------------
-            var serviceDesignerViewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object,new SynchronousAsyncWorker());
+            var serviceDesignerViewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
             var value = serviceDesignerViewModel.ModelItem.GetProperty<string>("FriendlySourceName");
             Assert.IsNotNull(value);
             Assert.AreEqual("helloworld.com", value);
-          
+
         }
 
 
@@ -1263,7 +1506,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
             viewModel.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == "FriendlySourceName")
+                if (args.PropertyName == "FriendlySourceName")
                 {
                     wasSet = true;
                 }
@@ -1343,7 +1586,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
             //------------Execute Test---------------------------
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-           
+
             //------------Assert Results-------------------------
             Assert.AreEqual("www.Dev2.com", viewModel.Properties.FirstOrDefault(a => a.Key == "Source :").Value);
 
