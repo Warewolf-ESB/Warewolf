@@ -42,7 +42,6 @@ namespace Dev2.Activities.Designers2.Core
     {
         bool _isInitialFocusDone;
         readonly AdornerControl _errorsAdorner;
-        IDesignerManagementService _designerManagementService;
         bool _isDisposed;
         DependencyPropertyDescriptor _zIndexProperty;
         // ReSharper disable InconsistentNaming
@@ -60,7 +59,24 @@ namespace Dev2.Activities.Designers2.Core
             Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;
+            PreviewKeyDown += OnPreviewKeyDown;
+        }
 
+        private void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
+        {
+            if (keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                if (keyEventArgs.OriginalSource.GetType() != typeof (TextBox))
+                {
+                    keyEventArgs.Handled = true;
+                }
+            }
+
+            if (keyEventArgs.OriginalSource.GetType() == typeof (ComboBox) ||
+                keyEventArgs.OriginalSource.GetType() == typeof (ComboBoxItem))
+            {
+                keyEventArgs.Handled = true;
+            }
         }
 
         #region Overrides of WorkflowViewElement
@@ -265,11 +281,7 @@ namespace Dev2.Activities.Designers2.Core
             _zIndexProperty = DependencyPropertyDescriptor.FromProperty(ActivityDesignerViewModel.ZIndexPositionProperty, typeof(TViewModel));
             _zIndexProperty.AddValueChanged(viewModel, OnZIndexPositionChanged);
 
-            if (Context != null)
-            {
-                Context.Items.Subscribe<Selection>(OnSelectionChanged);
-                Context.Services.Subscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);
-            }
+            Context?.Items.Subscribe<Selection>(OnSelectionChanged);
         }
 
         void OnZIndexPositionChanged(object sender, EventArgs args)
@@ -283,41 +295,6 @@ namespace Dev2.Activities.Designers2.Core
         void OnSelectionChanged(Selection item)
         {
             ViewModel.IsSelected = item.SelectedObjects.Any(modelItem => modelItem == ModelItem);
-        }
-
-        void OnDesignerManagementServiceChanged(IDesignerManagementService designerManagementService)
-        {
-            if (_designerManagementService != null)
-            {
-                _designerManagementService.CollapseAllRequested -= OnDesignerManagementServiceCollapseAllRequested;
-                _designerManagementService.ExpandAllRequested -= OnDesignerManagementServiceExpandAllRequested;
-                _designerManagementService.RestoreAllRequested -= OnDesignerManagementServiceRestoreAllRequested;
-                _designerManagementService = null;
-            }
-
-            if (designerManagementService != null)
-            {
-                _designerManagementService = designerManagementService;
-
-                _designerManagementService.CollapseAllRequested += OnDesignerManagementServiceCollapseAllRequested;
-                _designerManagementService.ExpandAllRequested += OnDesignerManagementServiceExpandAllRequested;
-                _designerManagementService.RestoreAllRequested += OnDesignerManagementServiceRestoreAllRequested;
-            }
-        }
-
-        protected void OnDesignerManagementServiceRestoreAllRequested(object sender, EventArgs e)
-        {
-            ViewModel.Restore();
-        }
-
-        protected void OnDesignerManagementServiceExpandAllRequested(object sender, EventArgs e)
-        {
-            ViewModel.Expand();
-        }
-
-        protected void OnDesignerManagementServiceCollapseAllRequested(object sender, EventArgs e)
-        {
-            ViewModel.Collapse();
         }
 
         protected override void OnPreviewDragEnter(DragEventArgs e)

@@ -3246,34 +3246,18 @@
                                                                             </UIObject>
                                                                           </Descendants>
                                                                         </UIObject>
-                                                                        <UIObject ControlType="Cell" Id="MergeTypeCell" FriendlyName="Item: Unlimited.Applications.BusinessDesignStudio...." SpecialControlType="None">
+                                                                        <UIObject ControlType="ComboBox" Id="MergeTypeDropdown" FriendlyName="UI__Row1_MergeType_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
                                                                             <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
                                                                           </WindowTitles>
                                                                           <AndCondition>
-                                                                            <PropertyCondition Name="ColumnHeader" />
-                                                                            <PropertyCondition Name="ColumnIndex">2</PropertyCondition>
-                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
-                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI__Row1_MergeType_AutoID</PropertyCondition>
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
-                                                                          <Descendants>
-                                                                            <UIObject ControlType="ComboBox" Id="MergeTypeDropdown" FriendlyName="UI__Row1_MergeType_AutoID" SpecialControlType="None">
-                                                                              <TechnologyName>UIA</TechnologyName>
-                                                                              <WindowTitles>
-                                                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                                                              </WindowTitles>
-                                                                              <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                                <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI__Row1_MergeType_AutoID</PropertyCondition>
-                                                                              </AndCondition>
-                                                                              <SupportLevel>0</SupportLevel>
-                                                                              <Descendants />
-                                                                            </UIObject>
-                                                                          </Descendants>
+                                                                          <Descendants />
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
@@ -5633,7 +5617,23 @@
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
-                                                                      <Descendants />
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Cell" Id="MergeTypeCell" FriendlyName="Item: Unlimited.Applications.BusinessDesignStudio...." SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ColumnHeader" />
+                                                                            <PropertyCondition Name="ColumnIndex">2</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
