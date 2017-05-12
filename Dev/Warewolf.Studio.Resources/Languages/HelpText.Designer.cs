@@ -2315,7 +2315,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provides the number of messages that can be consumed concurrently. Default is 1.    	This will pre-fetch the given number of messages and block further traffic until you 	acknowledge something. This ensures that a maximum of the given number of unacknowledged messages 	are pre-fetched at one time.&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to Provides the number of messages that can be consumed concurrently.  This will pre-fetch the given number of messages and block further traffic until you acknowledge something. This ensures that a maximum of the given number of unacknowledged messages are pre-fetched at one time. Default is 0 (Get all).&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpPrefetch {
             get {
@@ -2342,7 +2342,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.	This will be the response of what you have Consumed from your Queue&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;          	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to Only variables go in here.	This will be the response of what you have Consumed from your Queue&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;          	&lt;ol&gt;	&lt;li&gt;[[@Scalar]]&lt;/li&gt;&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;          	&lt;/ol&gt;.
         /// </summary>
         public static string RabbitMQHelpResponse {
             get {
