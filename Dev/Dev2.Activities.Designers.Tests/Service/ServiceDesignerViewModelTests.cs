@@ -675,8 +675,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 //---------------Test Result -----------------------
              
             }
-          
-          
         }
 
         [TestMethod]
