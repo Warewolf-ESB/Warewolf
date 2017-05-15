@@ -49,7 +49,7 @@
     </Reference>
     <Reference Include="InfragisticsWPF4.DataManager.v15.1, Version=15.1.20151.2055, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Warewolf.UIBindingTests\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
+      <HintPath>..\Binaries\InfragisticsWPF4.DataManager.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
       <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>

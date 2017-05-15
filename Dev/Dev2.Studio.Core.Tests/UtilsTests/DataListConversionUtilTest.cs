@@ -253,5 +253,36 @@ namespace Dev2.Core.Tests.UtilsTests
             Assert.IsTrue(result[1].IsObject);
             Assert.IsFalse(result[1].CanHaveMutipleRows);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DataListModel_Create")]
+        public void DataListModel_Create_PayLoadWithComplexObjectsArray_ShouldHaveComplexObjectItems()
+        {
+            //------------Setup for test--------------------------
+            const string Data = @"<DataList>
+	                                <Food Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Output"" >	
+		                                <FoodName Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" />
+	                                </Food>
+                                </DataList>";
+
+            const string Shape = @"<DataList>
+                                  <Food Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""Output"" >
+                                    <FoodName Description="""" IsEditable=""True"" IsJson=""True"" IsArray=""False"" ColumnIODirection=""None"" />
+                                  </Food>
+                                </DataList>";
+            var dataListModel = new DataListModel();
+            var converter = new DataListConversionUtils();
+            //------------Execute Test---------------------------
+            dataListModel.Create(Data, Shape);
+            var result = converter.GetOutputs(dataListModel);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual("", dataListModel.ComplexObjects[0].Description);
+            Assert.AreEqual("@Food", result[0].DisplayValue);
+            Assert.IsTrue(result[0].IsObject);
+            Assert.IsFalse(result[0].CanHaveMutipleRows);
+        }
     }
 }

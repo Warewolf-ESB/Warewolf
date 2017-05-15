@@ -55,6 +55,23 @@ namespace Warewolf.UITests
             Assert.AreEqual(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
         }
         
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
+        {
+            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingCodedUITestServerSource");
+            const string newName = "CodedUITestServerSourceDuplicated";
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
+            DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
+            Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
+            Assert.IsTrue(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated));
+            ExplorerUIMap.Filter_Explorer(newName);
+            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
+            DialogsUIMap.Click_Yes_On_The_Confirm_Delete();
+            Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
+            Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated));
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
