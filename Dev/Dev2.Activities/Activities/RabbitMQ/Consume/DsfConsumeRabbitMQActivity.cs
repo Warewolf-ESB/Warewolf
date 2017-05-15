@@ -51,7 +51,6 @@ namespace Dev2.Activities.RabbitMQ.Consume
         public int _timeOut;
         public bool IsObject { get; set; }
         [FindMissing]
-        [Outputs("ObjectName")]
         public string ObjectName { get; set; }
         public DsfConsumeRabbitMQActivity()
             : this(new ResponseManager())
