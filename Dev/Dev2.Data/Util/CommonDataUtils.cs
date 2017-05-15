@@ -18,7 +18,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Data.Util
 {
-    
+
     public class CommonDataUtils : ICommon
     {
         public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, IDev2CRUDOperationTO args)
@@ -470,7 +470,16 @@ namespace Dev2.Data.Util
                     else if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
                         // scalar value, make it as such
-                        result.Add(isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "") : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                        IDev2Definition dev2Definition;
+                        if (isObject)
+                        {
+                            dev2Definition = DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray);
+                        }
+                        else
+                        {
+                            dev2Definition = DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
+                        }
+                        result.Add(dev2Definition);
                     }
 
                 }
@@ -479,7 +488,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-       
+
 
         private void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {
