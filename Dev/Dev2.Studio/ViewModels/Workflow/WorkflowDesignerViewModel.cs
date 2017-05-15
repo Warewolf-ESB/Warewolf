@@ -1055,52 +1055,49 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Fixes up items added. Assigns unique Id. Initialises as flow step
         /// </summary>
-        /// <param name="addedItems"></param>
+        /// <param name="addedItem"></param>
         /// <returns></returns>
 
         // ReSharper disable MethodTooLong
         // ReSharper disable ExcessiveIndentation
-        protected List<ModelItem> PerformAddItems(List<ModelItem> addedItems)
+        protected ModelItem PerformAddItems(ModelItem addedItem)
         // ReSharper restore ExcessiveIndentation
         // ReSharper restore MethodTooLong
         {
-            for (int i = 0; i < addedItems.Count; i++)
+            var mi = addedItem;
+            var computedValue = mi.Content?.ComputedValue;
+            if (computedValue == null && (mi.ItemType == typeof (DsfFlowDecisionActivity) ||
+                                          mi.ItemType == typeof (DsfFlowSwitchActivity)))
             {
-                var mi = addedItems.ToList()[i];
-                var computedValue = mi.Content?.ComputedValue;
-                if (computedValue == null && (mi.ItemType == typeof(DsfFlowDecisionActivity) ||mi.ItemType == typeof(DsfFlowSwitchActivity)))
-                {
-                    computedValue = mi.Source?.Value?.Source?.ComputedValue;
-                }
-                if (computedValue is IDev2Activity)
-                {
-                    (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
-                    _modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
-                }
-                if (computedValue is Activity)
-                {
-                    _activityCollection = ModelService.Find(ModelService.Root, typeof(Activity));
-                }
-
-                if (mi.ItemType == typeof(FlowSwitch<string>))
-                {
-                    InitializeFlowSwitch(mi);
-                }
-                else if (mi.ItemType == typeof(FlowDecision))
-                {
-                    InitializeFlowDecision(mi);
-                }
-                else if (mi.ItemType == typeof(FlowStep))
-                {
-                    InitializeFlowStep(mi);
-                }
-                else
-                {
-                    AddSwitch(mi);
-                }
-                
+                computedValue = mi.Source?.Value?.Source?.ComputedValue;
             }
-            return addedItems;
+            if (computedValue is IDev2Activity)
+            {
+                (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
+                _modelItems = ModelService.Find(ModelService.Root, typeof (IDev2Activity));
+            }
+            if (computedValue is Activity)
+            {
+                _activityCollection = ModelService.Find(ModelService.Root, typeof (Activity));
+            }
+
+            if (mi.ItemType == typeof (FlowSwitch<string>))
+            {
+                InitializeFlowSwitch(mi);
+            }
+            else if (mi.ItemType == typeof (FlowDecision))
+            {
+                InitializeFlowDecision(mi);
+            }
+            else if (mi.ItemType == typeof (FlowStep))
+            {
+                InitializeFlowStep(mi);
+            }
+            else
+            {
+                AddSwitch(mi);
+            }
+            return addedItem;
         }
 
         void AddSwitch(ModelItem mi)
@@ -1146,7 +1143,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             ModelProperty modelProperty1 = mi.Properties["Action"];
-            InitialiseWithAction(modelProperty1);
+            InitialiseWithAction(modelProperty1);            
         }
 
         private void InitialiseWithAction(ModelProperty modelProperty1)
@@ -1180,9 +1177,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (theResource != null)
                     {
                         DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, ServerRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
-
-                        d.DisplayName = theResource.DisplayName;
-                        d.ServiceName = theResource.Category;
 
                         UpdateForRemote(d, theResource);
                     }
@@ -2484,14 +2478,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.CollectionItemAdded)
             {
-                PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value });
+                PerformAddItems(e.ModelChangeInfo.Value);
             }
 
             if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged 
                 && (e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowDecisionActivity)
                 || e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowSwitchActivity)))
             {
-                PerformAddItems(new List<ModelItem> { e.ModelChangeInfo.Value });
+                PerformAddItems(e.ModelChangeInfo.Value);
             }
             WorkflowChanged?.Invoke();
         }
