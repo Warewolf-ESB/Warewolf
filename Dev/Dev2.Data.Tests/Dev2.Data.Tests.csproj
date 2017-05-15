@@ -105,6 +105,7 @@
     <Compile Include="BinaryDataList\IndexListTest.cs" />
     <Compile Include="BinaryDataList\DataListUtilTest.cs" />
     <Compile Include="Builders\RecordSetCollectionBuilderTest.cs" />
+    <Compile Include="DataListFactoryTests.cs" />
     <Compile Include="DecisionsTests\DecisionDisplayHelperTests.cs" />
     <Compile Include="DecisionsTests\IsAlphanumericTests.cs" />
     <Compile Include="DecisionsTests\IsBase64Tests.cs" />

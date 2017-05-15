@@ -78,13 +78,13 @@ namespace Dev2.Runtime.ESB.WF
             }
             var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
 
-            
+
             if (stateType == StateType.End)
             {
                 debugState.StartTime = dataObject.StartTime;
                 debugState.EndTime = DateTime.Now;
             }
-            if(interrogateInputs)
+            if (interrogateInputs)
             {
                 ErrorResultTO invokeErrors;
                 var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
@@ -175,7 +175,7 @@ namespace Dev2.Runtime.ESB.WF
 
                 added.Add(defn);
                 var itemToAdd = new DebugItem();
-                _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, 0), itemToAdd); //todo:confirm 0
+                _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, 0,false, false, false, dev2Definition.IsJsonArray), itemToAdd); //todo:confirm 0
                 results.Add(itemToAdd);
             }
 

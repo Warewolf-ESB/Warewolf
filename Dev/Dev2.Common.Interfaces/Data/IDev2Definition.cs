@@ -37,7 +37,7 @@ namespace Dev2.Common.Interfaces.Data
 
         bool IsTextResponse { get; }
         bool IsObject { get; set; }
-        bool IsArray { get; set; }
+        bool IsJsonArray { get; set; }
 
         #endregion
     }
