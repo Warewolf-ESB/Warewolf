@@ -29,23 +29,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
     public partial class ExplorerUIMap
     {
         
-        /// <summary>
-        /// RecordedMethod1
-        /// </summary>
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfButton uIToggleButtonButton = this.UIWarewolfDEV2PIETERTEWindow.UIConnectControlCustom.UITheServerComboBoxCustom.UIToggleButtonButton;
-            WpfText remoteConnectionItemText = this.MainStudioWindow.RemoteConnectionItem.RemoteConnectionItemText;
-            #endregion
-
-            // Click 'ToggleButton' button
-            Mouse.Click(uIToggleButtonButton, new Point(155, 9));
-
-            // Click 'Remote Connection Integration' label
-            Mouse.Click(remoteConnectionItemText, new Point(172, 18));
-        }
-        
         #region Properties
         public MainStudioWindow MainStudioWindow
         {
@@ -117,12 +100,26 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
                 return this.mRemoteConnectionItem;
             }
         }
+        
+        public CodedUITestServerSourceDuplicated CodedUITestServerSourceDuplicated
+        {
+            get
+            {
+                if ((this.mCodedUITestServerSourceDuplicated == null))
+                {
+                    this.mCodedUITestServerSourceDuplicated = new CodedUITestServerSourceDuplicated(this);
+                }
+                return this.mCodedUITestServerSourceDuplicated;
+            }
+        }
         #endregion
         
         #region Fields
         private DockManager mDockManager;
         
         private RemoteConnectionItem mRemoteConnectionItem;
+        
+        private CodedUITestServerSourceDuplicated mCodedUITestServerSourceDuplicated;
         #endregion
     }
     
@@ -2320,6 +2317,43 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         
         #region Fields
         private WpfText mRemoteConnectionItemText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class CodedUITestServerSourceDuplicated : WpfCustom
+    {
+        
+        public CodedUITestServerSourceDuplicated(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "CodedUITestServerSourceDuplicated";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText ServerSourceDuplicatedText
+        {
+            get
+            {
+                if ((this.mServerSourceDuplicatedText == null))
+                {
+                    this.mServerSourceDuplicatedText = new WpfText(this);
+                    #region Search Criteria
+                    this.mServerSourceDuplicatedText.SearchProperties[WpfText.PropertyNames.Name] = "CodedUITestServerSourceDuplicated";
+                    this.mServerSourceDuplicatedText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mServerSourceDuplicatedText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mServerSourceDuplicatedText;
         #endregion
     }
     
