@@ -231,6 +231,27 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("RabbitMQConsumeDesignerViewModelTest_Validate")]
+        public void RabbitMQConsumeDesignerViewModel_Validate_With_No_Prefetch_ShouldBreakRule()
+        {
+            //------------Setup for test--------------------------
+            var model = new Mock<IRabbitMQSourceModel>();
+            model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
+
+            var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
+            vm.Prefetch = "";
+            vm.SelectedRabbitMQSource = new RabbitMQServiceSourceDefinition();
+            //------------Execute Test---------------------------
+            vm.Validate();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(vm);
+            var errors = vm.Errors;
+            Assert.IsNotNull(errors);
+            Assert.IsTrue(errors.Any(info => info.Message == Warewolf.Resource.Errors.ErrorResource.RabbitMqPrefetchNotNullErrorTest));
+        }
+
+        [TestMethod]
         [Owner("Mthembu Sanele")]
         [TestCategory("RabbitMQConsumeDesignerViewModelTest_Validate")]
         public void RabbitMQConsumeDesignerViewModel_Validate_With_No_RabbitMQ_Source_ShouldBreakRule()

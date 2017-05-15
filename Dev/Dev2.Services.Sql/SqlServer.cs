@@ -140,11 +140,7 @@ namespace Dev2.Services.Sql
 
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                var type = row[procedureTypeColumn];
-                if (type.ToString().ToUpperInvariant() == "SQL_TABLE_VALUED_FUNCTION")
-                {
-                    continue;
-                }
+
                 string fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
 
                 using (
@@ -156,19 +152,19 @@ namespace Dev2.Services.Sql
                         List<IDbDataParameter> parameters = GetProcedureParameters(command);
 
                         //string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-                        string helpText = "";
+                        const string HelpText = "";
 
                         if (IsStoredProcedure(row, procedureTypeColumn))
                         {
-                            procedureProcessor(command, parameters, helpText, fullProcedureName);
+                            procedureProcessor(command, parameters, HelpText, fullProcedureName);
                         }
                         else if (IsFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(command, parameters, helpText, fullProcedureName);
+                            functionProcessor(command, parameters, HelpText, fullProcedureName);
                         }
                         else if (IsTableValueFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(command, parameters, helpText,
+                            functionProcessor(command, parameters, HelpText,
                                 CreateTVFCommand(fullProcedureName, parameters));
                         }
                     }

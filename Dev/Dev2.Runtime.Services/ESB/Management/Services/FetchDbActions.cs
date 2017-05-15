@@ -102,6 +102,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return new DbAction
             {
                 Name = a.Name,
+                ExecuteAction = a.ExecuteAction,
                 Inputs = inputs,
                 SourceId = src.ResourceID
             };
