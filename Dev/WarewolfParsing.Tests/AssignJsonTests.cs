@@ -43,6 +43,136 @@ namespace WarewolfParsingTest
                 Assert.Fail("bob");
             }
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("AssignSingleProperty_ValueProperty")]
+        public void AssignJArray_MultipleJValues_EvalCorreclty()
+        {
+            //------------Setup for test--------------------------
+           
+            ExecutionEnvironment environment = new ExecutionEnvironment();
+            var jObject = "{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}";
+            var values = new List<IAssignValue>()
+            {
+                new AssignValue("[[@Person()]]", jObject),
+                new AssignValue("[[@Person()]]", jObject),
+                new AssignValue("[[@Person()]]", jObject),
+                new AssignValue("[[@Person()]]", jObject),
+            };
+           Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            
+            //------------Execute Test---------------------------
+            environment.AssignJson(values, 0);
+            //------------Assert Results-------------------------
+
+            var data = GetFromEnv(environment);
+            var warewolfEvalResult = environment.Eval("[[@Person()]]", 0);
+            var isWarewolfAtomListresult = warewolfEvalResult.IsWarewolfAtomListresult;
+            var isWarewolfAtomresult = warewolfEvalResult.IsWarewolfAtomResult;
+            Assert.IsFalse(isWarewolfAtomListresult);
+            Assert.IsTrue(isWarewolfAtomresult);
+            var container = data.JsonObjects["Person"];
+            var obj = container as JArray;
+            Assert.IsNotNull(obj);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("AssignSingleProperty_ValueProperty")]
+        public void AssignJArray_MultipleJValues_EvalIndexOneCorreclty()
+        {
+            //------------Setup for test--------------------------
+           
+            ExecutionEnvironment environment = new ExecutionEnvironment();
+            var values = new List<IAssignValue>()
+            {
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0001\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0002\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0004\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+            };
+           Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            
+            //------------Execute Test---------------------------
+            environment.AssignJson(values, 0);
+            //------------Assert Results-------------------------
+
+            var data = GetFromEnv(environment);
+            var warewolfEvalResult = environment.Eval("[[@Person(1)]]", 0);
+            var isWarewolfAtomListresult = warewolfEvalResult.IsWarewolfAtomListresult;
+            var isWarewolfAtomresult = warewolfEvalResult.IsWarewolfAtomResult;
+            Assert.IsFalse(isWarewolfAtomListresult);
+            Assert.IsTrue(isWarewolfAtomresult);
+            var evalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+            var contains = evalResultToString.Contains("A0001");
+            Assert.IsTrue(contains);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("AssignSingleProperty_ValueProperty")]
+        public void AssignJArray_MultipleJValues_EvalIndexTwoCorreclty()
+        {
+            //------------Setup for test--------------------------
+           
+            ExecutionEnvironment environment = new ExecutionEnvironment();
+            var values = new List<IAssignValue>()
+            {
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0001\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0002\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0004\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+            };
+           Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            
+            //------------Execute Test---------------------------
+            environment.AssignJson(values, 0);
+            //------------Assert Results-------------------------
+
+            var data = GetFromEnv(environment);
+            var warewolfEvalResult = environment.Eval("[[@Person(2)]]", 0);
+            var isWarewolfAtomListresult = warewolfEvalResult.IsWarewolfAtomListresult;
+            var isWarewolfAtomresult = warewolfEvalResult.IsWarewolfAtomResult;
+            Assert.IsFalse(isWarewolfAtomListresult);
+            Assert.IsTrue(isWarewolfAtomresult);
+            var evalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+            var contains = evalResultToString.Contains("A0002");
+            Assert.IsTrue(contains);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("AssignSingleProperty_ValueProperty")]
+        public void AssignJArray_MultipleJValues_EvalIndexThreeCorreclty()
+        {
+            //------------Setup for test--------------------------
+           
+            ExecutionEnvironment environment = new ExecutionEnvironment();
+            var values = new List<IAssignValue>()
+            {
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0001\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0002\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+                new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0004\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
+            };
+           Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            
+            //------------Execute Test---------------------------
+            environment.AssignJson(values, 0);
+            //------------Assert Results-------------------------
+
+            var data = GetFromEnv(environment);
+            var warewolfEvalResult = environment.Eval("[[@Person(3)]]", 0);
+            var isWarewolfAtomListresult = warewolfEvalResult.IsWarewolfAtomListresult;
+            var isWarewolfAtomresult = warewolfEvalResult.IsWarewolfAtomResult;
+            Assert.IsFalse(isWarewolfAtomListresult);
+            Assert.IsTrue(isWarewolfAtomresult);
+            var evalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(warewolfEvalResult);
+            var contains = evalResultToString.Contains("A0003");
+            Assert.IsTrue(contains);
+        }
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
