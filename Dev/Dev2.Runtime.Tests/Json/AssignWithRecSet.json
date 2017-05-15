@@ -1,0 +1,92 @@
+﻿{
+  "$id": "1",
+  "$type": "Dev2.Data.ServiceTestModelTO, Dev2.Data",
+  "OldTestName": null,
+  "TestName": "Test 1",
+  "UserName": null,
+  "Password": null,
+  "LastRunDate": "0001-01-01T00:00:00",
+  "Inputs": [
+    {
+      "$id": "2",
+      "$type": "Dev2.Data.ServiceTestInputTO, Dev2.Data",
+      "Variable": "Person(1).Name",
+      "Value": "Marry",
+      "EmptyIsNull": false
+    }
+  ],
+  "Outputs": [],
+  "NoErrorExpected": true,
+  "ErrorExpected": false,
+  "ErrorContainsText": "",
+  "Result": null,
+  "TestPassed": false,
+  "TestFailing": false,
+  "TestInvalid": true,
+  "TestPending": false,
+  "Enabled": true,
+  "IsDirty": true,
+  "AuthenticationType": 0,
+  "ResourceId": "97fcf99e-f1f2-4aa4-80af-02365311f682",
+  "TestSteps": [
+    {
+      "$id": "3",
+      "$type": "Dev2.Data.ServiceTestStepTO, Dev2.Data",
+      "UniqueId": "52ac1266-f960-4e4d-a9f9-83c5f38a4613",
+      "ActivityType": "DsfMultiAssignActivity",
+      "Type": 1,
+      "StepOutputs": [
+        {
+          "$id": "4",
+          "$type": "Dev2.Data.ServiceTestOutputTO, Dev2.Data",
+          "Variable": "[[Person(1).Name]]",
+          "Value": "Bob",
+          "From": "",
+          "To": "",
+          "AssertOp": "=",
+          "HasOptionsForValue": false,
+          "OptionsForValue": null,
+          "Result": {
+            "$id": "5",
+            "$type": "Dev2.Common.Interfaces.TestRunResult, Dev2.Common.Interfaces",
+            "TestName": null,
+            "RunTestResult": 3,
+            "Message": null,
+            "DebugForTest": null
+          }
+        },
+        {
+          "$id": "6",
+          "$type": "Dev2.Data.ServiceTestOutputTO, Dev2.Data",
+          "Variable": "",
+          "Value": "",
+          "From": "",
+          "To": "",
+          "AssertOp": "=",
+          "HasOptionsForValue": false,
+          "OptionsForValue": null,
+          "Result": {
+            "$id": "7",
+            "$type": "Dev2.Common.Interfaces.TestRunResult, Dev2.Common.Interfaces",
+            "TestName": null,
+            "RunTestResult": 3,
+            "Message": null,
+            "DebugForTest": null
+          }
+        }
+      ],
+      "Parent": null,
+      "Children": [],
+      "StepDescription": "Assign (1)",
+      "Result": {
+        "$id": "8",
+        "$type": "Dev2.Common.Interfaces.TestRunResult, Dev2.Common.Interfaces",
+        "TestName": null,
+        "RunTestResult": 3,
+        "Message": null,
+        "DebugForTest": null
+      }
+    }
+  ],
+  "FailureMessage": null
+}
