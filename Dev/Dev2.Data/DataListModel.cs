@@ -65,7 +65,7 @@ namespace Dev2.Data
                 xDoc.LoadXml(toLoad);
             }
 
-            if (!String.IsNullOrEmpty(toLoad))
+            if (!string.IsNullOrEmpty(toLoad))
             {
                 if (xDoc.DocumentElement != null)
                 {
@@ -166,12 +166,7 @@ namespace Dev2.Data
                     {
                         if (c.HasChildNodes)
                         {
-                            var jsonAttribute = false;
-                            var xmlAttribute = c.Attributes?["IsJson"];
-                            if (xmlAttribute != null)
-                            {
-                                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                            }
+                            var jsonAttribute = IsJsonAttribute(c);
                             if (jsonAttribute)
                             {
                                 AddComplexObjectFromXmlNode(c);
@@ -222,28 +217,49 @@ namespace Dev2.Data
                         }
                         else
                         {
-                            if (c.Attributes != null)
+                            var jsonAttribute = IsJsonAttribute(c);
+                            if (jsonAttribute)
                             {
-                                descAttribute = c.Attributes["Description"];
-                                columnIoDirection = c.Attributes["ColumnIODirection"];
+                                AddComplexObjectFromXmlNode(c);
                             }
-                            string descriptionValue = "";
-                            columnDirection = enDev2ColumnArgumentDirection.None;
-                            if (descAttribute != null)
+                            else
                             {
-                                descriptionValue = descAttribute.Value;
+
+
+                                if (c.Attributes != null)
+                                {
+                                    descAttribute = c.Attributes["Description"];
+                                    columnIoDirection = c.Attributes["ColumnIODirection"];
+                                }
+                                string descriptionValue = "";
+                                columnDirection = enDev2ColumnArgumentDirection.None;
+                                if (descAttribute != null)
+                                {
+                                    descriptionValue = descAttribute.Value;
+                                }
+                                if (columnIoDirection != null)
+                                {
+                                    Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                                }
+                                var scalar = new Scalar { Name = c.Name, Description = descriptionValue, IODirection = columnDirection, IsEditable = true };
+                                Scalars.Add(scalar);
+                                ShapeScalars.Add(scalar);
                             }
-                            if (columnIoDirection != null)
-                            {
-                                Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
-                            }
-                            var scalar = new Scalar { Name = c.Name, Description = descriptionValue, IODirection = columnDirection, IsEditable = true };
-                            Scalars.Add(scalar);
-                            ShapeScalars.Add(scalar);
                         }
                     }
                 }
             }
+        }
+
+        private static bool IsJsonAttribute(XmlNode c)
+        {
+            var jsonAttribute = false;
+            var xmlAttribute = c.Attributes?["IsJson"];
+            if (xmlAttribute != null)
+            {
+                bool.TryParse(xmlAttribute.Value, out jsonAttribute);
+            }
+            return jsonAttribute;
         }
 
         private void AddComplexObjectFromXmlNode(XmlNode c)
