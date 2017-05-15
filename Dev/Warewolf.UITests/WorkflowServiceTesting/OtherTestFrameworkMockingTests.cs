@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Common;
+using Warewolf.UITests.DialogsUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
 
@@ -12,6 +13,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
     public class OtherTestFrameworkMockingTests
     {
         private const string Resource = "Resource For MockRadioButton";
+        private const string DotnetWfWithObjOutput = "DotnetWfWithObjOutput";
         
         [TestMethod]
         [TestCategory("Workflow Mocking Tests")]
@@ -27,6 +29,20 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
             Point point;
             Assert.IsFalse(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.TryGetClickablePoint(out point), "Passing status icon is still visible on test after running test with mocking enabled.");
+        }
+
+        [TestMethod]
+        [TestCategory("Workflow Mocking Tests")]
+        public void WorkflowWithObjectoutPutTests()
+        {
+            ExplorerUIMap.Filter_Explorer(DotnetWfWithObjOutput);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Press_F6();
+            UIMap.Click_Create_Test_From_Debug();
+            WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);
+            WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true);
+            WorkflowServiceTestingUIMap.Click_Delete_Test_Button();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
         
         #region Additional test attributes
@@ -52,6 +68,21 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         private UIMap _UIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         WorkflowTabUIMap WorkflowTabUIMap
         {
