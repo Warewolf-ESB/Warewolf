@@ -53,6 +53,8 @@ namespace Dev2.DataList.Contract
             return new Dev2Definition(name, mapsTo, value, isEval, defaultValue, isRequired, rawValue);
         }
 
+      
+
         public static IDev2Definition CreateDefinition(string name, string mapsTo, string value, bool isEval, string defaultValue, bool isRequired, string rawValue, bool emptyToNull)
         {
             return new Dev2Definition(name, mapsTo, value, string.Empty, isEval, defaultValue, isRequired, rawValue, emptyToNull);
