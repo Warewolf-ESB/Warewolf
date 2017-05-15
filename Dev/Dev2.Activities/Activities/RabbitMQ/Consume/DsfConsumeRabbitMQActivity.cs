@@ -176,7 +176,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                     {
                         if (!string.IsNullOrEmpty(TimeOut))
                             _timeOut = int.Parse(TimeOut);
-                        _prefetch = string.IsNullOrEmpty(prefetch) ? (ushort)1 : ushort.Parse(prefetch);
+                        _prefetch = string.IsNullOrEmpty(prefetch) ? (ushort)0 : ushort.Parse(prefetch);
                         if (_prefetch == 0)
                         {
                             _prefetch = ushort.MaxValue;
