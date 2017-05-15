@@ -411,6 +411,21 @@ namespace Dev2.Data.Util
             return false;
         }
 
+        private bool IsArray(XmlNode tmpNode)
+        {
+            XmlAttribute isObjectAttribute = tmpNode.Attributes?["IsArray"];
+
+            if (isObjectAttribute != null)
+            {
+                bool isArray;
+                if (bool.TryParse(isObjectAttribute.Value, out isArray))
+                {
+                    return isArray;
+                }
+            }
+            return false;
+        }
+
         public IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
@@ -429,6 +444,7 @@ namespace Dev2.Data.Util
 
                     var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
                     var isObject = IsObject(tmpNode);
+                    var isArray = IsArray(tmpNode);
                     if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes && !isObject)
                     {
                         result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
@@ -462,6 +478,8 @@ namespace Dev2.Data.Util
 
             return result;
         }
+
+       
 
         private void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {

@@ -97,9 +97,9 @@ namespace Dev2.Runtime.ESB.WF
                 ErrorResultTO invokeErrors;
 
                 var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
-                var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
+                var outputs = GetDebugValues(defs, dataObject, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
-                debugState.Outputs.AddRange(inputs);
+                debugState.Outputs.AddRange(outputs);
             }
             if (stateType == StateType.End)
             {

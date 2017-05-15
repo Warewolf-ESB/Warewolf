@@ -140,8 +140,10 @@
     <Compile Include="DecisionsTests\NotRegexTests.cs" />
     <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
     <Compile Include="Dev2ColumnTests.cs" />
+    <Compile Include="Dev2DefinitionTests.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
     <Compile Include="IndexListIndexIteratorTests.cs" />
+    <Compile Include="MethodOutputTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
