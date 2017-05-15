@@ -24,6 +24,7 @@ namespace Dev2.Activities
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
 
+        public string ExecuteActionString { get; set; }
         public DsfSqlServerDatabaseActivity()
         {
             Type = "SQL Server Database";
@@ -82,6 +83,11 @@ namespace Dev2.Activities
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
             databaseServiceExecution.ProcedureName = ProcedureName;
+            if (!string.IsNullOrEmpty(ExecuteActionString))
+            {
+                databaseServiceExecution.ProcedureName = ExecuteActionString;
+            }
+            
             ServiceExecution.GetSource(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);
         }

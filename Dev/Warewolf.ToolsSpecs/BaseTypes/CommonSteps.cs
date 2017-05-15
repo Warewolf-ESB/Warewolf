@@ -483,7 +483,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     else
                     {
-                        Assert.Fail("Expecting value " + expectedValue + " but recordset " + variable+ " has no values.");
+                        Assert.Fail("Expecting value " + expectedValue + " but recordset " + variable + " has no values.");
                     }
                 }
             }
@@ -497,7 +497,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     actualValue = "";
                 }
-                if(actualValue != null)
+                if (actualValue != null)
                 {
                     actualValue = actualValue.Replace('"', ' ').Trim();
                     var type = "";
@@ -892,12 +892,12 @@ namespace Dev2.Activities.Specs.BaseTypes
                 //2016/01/06 08:00:01.68
                 else
                 {
-                    Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i);
+                    Verify(expectedDebugItems[i].Value ?? "", inputDebugItems[i].Value ?? "", "Values", i, inputDebugItems[i].Variable);
                 }
             }
         }
 
-        void Verify(string expectedValue, string actualValue, string name, int index)
+        void Verify(string expectedValue, string actualValue, string name, int index, string variable = "")
         {
             expectedValue = expectedValue.Replace("‡", "=");
             string type = "";
@@ -934,7 +934,13 @@ namespace Dev2.Activities.Specs.BaseTypes
                     actualValue = actualValue.Replace("BC", "B.C.");
                 }
             }
-            if (string.IsNullOrEmpty(type) && actualValue != null)
+            if (!string.IsNullOrEmpty(variable) && variable.Contains("@"))
+            {
+                var actualCleanJson = actualValue.Replace("\\r\\n", "").Replace(Environment.NewLine, "").Replace(" ","");
+                var expetedCleanJson = expectedValue.Replace("\\r\\n", "").Replace(Environment.NewLine, "").Replace(" ", "");
+                StringAssert.Contains(actualCleanJson, expetedCleanJson);
+            }
+            else if (string.IsNullOrEmpty(type) && actualValue != null)
             {
                 actualValue.Replace("\\r\\n", Environment.NewLine).Should().Be(expectedValue, name + " are not equal at index" + index);
             }
@@ -1023,7 +1029,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         [BeforeTestRun]
         public static void CopyEncryptionKey()
         {
-            if (!Directory.Exists(@"C:\Temp")) {
+            if (!Directory.Exists(@"C:\Temp"))
+            {
                 Directory.CreateDirectory(@"C:\Temp");
             }
             if (!File.Exists(@"C:\Temp\key.opk"))

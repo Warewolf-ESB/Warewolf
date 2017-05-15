@@ -408,7 +408,7 @@ namespace Dev2.Sql.Tests
                 };
 
                 sqlServer.FetchStoredProcedures(procProcessor, funcProcessor);
-                Assert.IsFalse(funcAdded);
+                Assert.IsTrue(funcAdded);
                 Assert.IsFalse(somethingAdded);
 
 
@@ -594,9 +594,9 @@ namespace Dev2.Sql.Tests
                 };
 
                 sqlServer.FetchStoredProcedures(procProcessor, funcProcessor);
-                Assert.IsFalse(funcAdded);
+                Assert.IsTrue(funcAdded);
                 Assert.IsFalse(somethingAdded);
-                param.Verify(a=>a.Add(It.IsAny<object>()),Times.Never);
+                param.Verify(a=>a.Add(It.IsAny<object>()),Times.Once);
 
 
                 //------------Assert Results-------------------------
