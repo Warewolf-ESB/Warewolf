@@ -14,6 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
@@ -604,6 +605,45 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("<DataList />", resource.DataList.ToString());
             Assert.IsFalse(String.IsNullOrEmpty(resource.Inputs));
             Assert.IsFalse(String.IsNullOrEmpty(resource.Outputs));
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Resource_Given_ResourceType_Is_Null_Sets_IsServer_To_False()
+        {
+            //------------Setup for test-------------------------
+            var resource = new Resource();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(resource.IsServer);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Resource_Given_ResourceType_Is_Dev2Server_Sets_IsServer_To_True()
+        {
+            //------------Setup for test-------------------------
+            var resource = new Resource
+            {
+                ResourceType = enSourceType.Dev2Server.ToString()
+            };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsTrue(resource.IsServer);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Resource_Given_ResourceType_Is_ComPluginSource_Sets_IsServer_To_False()
+        {
+            //------------Setup for test-------------------------
+            var resource = new Resource
+            {
+                ResourceType = enSourceType.ComPluginSource.ToString()
+            };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(resource.IsServer);
         }
 
         string GetValidXMLString()
