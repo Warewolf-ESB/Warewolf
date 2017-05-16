@@ -173,12 +173,6 @@ namespace Dev2.DataList.Contract
         {
             return new Dev2Column(columnName, columnDescription, isEditable, colIODir);
         }
-
-        public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)
-        {
-            DefinitionBuilder b = new DefinitionBuilder { ArgumentType = typeOf, Definitions = defs };
-
-            return b.Generate();
-        }
+      
     }
 }
