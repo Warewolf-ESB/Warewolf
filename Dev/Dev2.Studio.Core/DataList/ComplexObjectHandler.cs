@@ -24,7 +24,6 @@ namespace Dev2.Studio.Core.DataList
             _vm = vm;
         }
 
-        #region Implementation of IComplexObjectHandler
 
         public void RemoveBlankComplexObjects()
         {
@@ -42,7 +41,7 @@ namespace Dev2.Studio.Core.DataList
             for (var index = 0; index < paths.Length; index++)
             {
                 var path = paths[index];
-                if(string.IsNullOrEmpty(path) || char.IsNumber(path[0]))
+                if (string.IsNullOrEmpty(path) || char.IsNumber(path[0]))
                     return;
                 path = DataListUtil.ReplaceRecordsetIndexWithBlank(path);
                 var pathToMatch = path.Replace("@", "");
@@ -105,7 +104,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 var itemModel = newComplexCollection[i];
                 _vm.ComplexObjectCollection.Move(_vm.ComplexObjectCollection.IndexOf(itemModel), i);
-            }            
+            }
         }
 
         public void GenerateComplexObjectFromJson(string parentObjectName, string json)
@@ -137,14 +136,14 @@ namespace Dev2.Studio.Core.DataList
                 if (arrToProcess != null)
                 {
                     var child = arrToProcess.Children().FirstOrDefault();
-                    ProcessObjectForComplexObjectCollection(parentObj,child as JObject);
+                    ProcessObjectForComplexObjectCollection(parentObj, child as JObject);
                 }
-            }            
+            }
         }
 
         private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
         {
-            if(objToProcess != null)
+            if (objToProcess != null)
             {
                 var properties = objToProcess.Properties();
                 foreach (var property in properties)
@@ -297,6 +296,23 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        #endregion
+        public void ValidateComplexObject()
+        {
+            var itemsToCheck = _vm.ComplexObjectCollection;
+            var arrayGroups = itemsToCheck.Where(model => model.IsArray);
+            var notArrays = itemsToCheck.Where(model => !model.IsArray).ToList();
+
+            foreach (var arrayObj in arrayGroups)
+            {
+                var isDuplicated = notArrays.FirstOrDefault(model => arrayObj.DisplayName.StartsWith(model.DisplayName));
+                if (isDuplicated!=null)
+                {
+                    arrayObj.SetError(StringResources.ErrorMessageDuplicateValue);
+                    isDuplicated.SetError(StringResources.ErrorMessageDuplicateValue);
+                }
+            }
+        }
     }
+
 }
+

@@ -58,15 +58,14 @@ namespace Warewolf.UITests
         
         [TestMethod]
         [TestCategory("Variables")]
-        public void Recordsets_Usage_in_Debug_Input()
+        public void Row1_Variable_Textbox_in_Debug_Input()
         {
             DataToolsUIMap.Open_AssignTool_LargeView();
             DataToolsUIMap.Enter_Recordset_values();
             Mouse.Move(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.RecordsetTreeItem.TreeItem1.InputCheckbox, new Point(10, 10));
             Mouse.Click();
             UIMap.Press_F5_To_Debug();
-            Assert.IsTrue(UIMap.ControlExistsNow(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Variable.Text));
-            UIMap.Enter_Text_Into_Debug_Input_Row1_Value_Textbox("Bob");
+            Assert.IsTrue(UIMap.MainStudioWindow.DebugInputDialog.TabItemsTabList.InputDataTab.InputsTable.Row1.Variable.Text.Exists, "Row 1 variable textbox does not exist.");
         }
 
         [TestMethod]
