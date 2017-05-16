@@ -696,33 +696,6 @@ Scenario: Run a passing Test with RabbitMq Object return
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 
-Scenario: Run a passing Test with RabbitMq Empty prefetch
-	Given the test builder is open with existing service "RabbitMqTestPrefetch"	
-	And Tab Header is "RabbitMqTestPrefetch - Tests"
-	When I click New Test
-	Then a new test is added
-	And Tab Header is "RabbitMqTestPrefetch - Tests *"
-	And test name starts with "Test 1"
-	And username is blank
-	And password is blank	
-	And I Add "RabbitMQ Consume" as TestStep
-	And I Clear existing StepOutputs
-	And I add StepOutputs item as 
-	| Variable Name   | Condition | Value |
-	| [[rec(1).msgs]] | =         | home  |  
-	And I Add outputs as
-	| Variable Name  | Condition | Value |
-	| rec(1).msgs | =  | home    |
-	And save is enabled
-	And test status is pending	
-	And test is enabled	
-	And I save
-	When I run the test
-	Then test result is Passed		
-	When I delete "Test 1"
-	Then The "DeleteConfirmation" popup is shown I click Ok
-	And test folder is cleaned
-
 @TestFramework
 Scenario: Run a test expecting error 
 	Given the test builder is open with existing service "HelloWorldWithError"	
