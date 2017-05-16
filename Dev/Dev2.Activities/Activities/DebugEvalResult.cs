@@ -21,7 +21,7 @@ namespace Dev2.Activities
 
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false, bool mockSelected = false)
         {
-            _inputVariable = inputVariable.Trim();
+            _inputVariable = inputVariable?.Trim();
             LabelText = label;
             _isCalculate = isCalculate;
             MockSelected = mockSelected;
