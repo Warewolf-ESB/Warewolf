@@ -57,6 +57,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             DisplayName = "RabbitMQ Consume";
             _messages = new List<string>();
+            Prefetch = "1";
         }
 
         public DsfConsumeRabbitMQActivity(IResourceCatalog resourceCatalog)
