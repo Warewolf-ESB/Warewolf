@@ -2028,9 +2028,9 @@ this.FeatureBackground();
                         "Condition",
                         "Value"});
             table69.AddRow(new string[] {
-                        "[[ddd(1).msgs]]",
+                        "[[rec(1).msgs]]",
                         "=",
-                        "ssss"});
+                        "home"});
 #line 710
  testRunner.And("I add StepOutputs item as", ((string)(null)), table69, "And ");
 #line hidden
@@ -2039,9 +2039,9 @@ this.FeatureBackground();
                         "Condition",
                         "Value"});
             table70.AddRow(new string[] {
-                        "ddd(1).msgs",
+                        "rec(1).msgs",
                         "=",
-                        "ssss"});
+                        "home"});
 #line 713
  testRunner.And("I Add outputs as", ((string)(null)), table70, "And ");
 #line 716

@@ -709,10 +709,10 @@ Scenario: Run a passing Test with RabbitMq Empty prefetch
 	And I Clear existing StepOutputs
 	And I add StepOutputs item as 
 	| Variable Name   | Condition | Value |
-	| [[ddd(1).msgs]] | =         | ssss  |  
+	| [[rec(1).msgs]] | =         | home  |  
 	And I Add outputs as
 	| Variable Name  | Condition | Value |
-	| ddd(1).msgs | =  | ssss    |
+	| rec(1).msgs | =  | home    |
 	And save is enabled
 	And test status is pending	
 	And test is enabled	
