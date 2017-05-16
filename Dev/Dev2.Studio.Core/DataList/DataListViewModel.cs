@@ -108,7 +108,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             if (_recsetCollection != null && _recsetCollection.Count > 1)
             {
-                for(int index = _recsetCollection.Count-1; index >= 0; index--)
+                for (int index = _recsetCollection.Count - 1; index >= 0; index--)
                 {
                     var recordSetItemModel = _recsetCollection[index];
                     recordSetItemModel.Filter(searchText);
@@ -181,7 +181,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             RemoveItemPropertyChangeEvent(args);
             AddItemPropertyChangeEvent(args);
-        }        
+        }
 
         public ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection
         {
@@ -455,10 +455,10 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void UpdateIntellisenseList()
         {
-            if(_scalarCollection != null && _recsetCollection != null && _complexObjectCollection != null && _complexObjectHandler != null)
+            if (_scalarCollection != null && _recsetCollection != null && _complexObjectCollection != null && _complexObjectHandler != null)
             {
                 var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
-                if(Provider != null)
+                if (Provider != null)
                 {
                     Provider.VariableList = new ObservableCollection<string>(items);
                 }
@@ -483,7 +483,7 @@ namespace Dev2.Studio.ViewModels.DataList
             var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
             Provider.VariableList = new ObservableCollection<string>(items);
         }
-        
+
         private IEnumerable<string> RefreshTries(IEnumerable<IScalarItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
@@ -659,6 +659,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 IRecordSetFieldItemModel rs = (IRecordSetFieldItemModel)item;
                 _recordsetHandler.ValidateRecordsetChildren(rs.Parent);
+            }
+            else if (item is IComplexObjectItemModel)
+            {
+                _complexObjectHandler.ValidateComplexObject();
             }
             else
             {
@@ -1074,7 +1078,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public ISuggestionProvider Provider { get; set; }
-        
+
 
         private static string BuildErrorMessage(IDataListItemModel model)
         {
