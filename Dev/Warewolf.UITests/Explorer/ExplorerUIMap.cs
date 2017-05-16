@@ -141,8 +141,8 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Given(@"Explorer Does Not Contain First Item First Sub Item")]
         [Then(@"Explorer Does Not Contain First Item First Sub Item")]
         public void ExplorerDoesNotContainFirstItemFirstSubItem()
-        {
-            Assert.IsFalse(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem), "Explorer does not contain a first item with one sub item under it.");
+        {            
+            Assert.IsFalse(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem), "Explorer contains a first item with one sub item under it after moving the sub item out.");
         }
 
         [Given(@"Explorer Contain Sub Item ""(.*)""")]

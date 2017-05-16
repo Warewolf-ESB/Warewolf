@@ -676,16 +676,16 @@ Scenario: Run a passing Test with RabbitMq Object return
 	And I Clear existing StepOutputs
 	And I add StepOutputs item as 
 	| Variable Name      | Condition | Value                |
-	| [[@AllMessages()]] | Contains  | "PolicyNo":"A0003", |
+	| [[@AllMessages()]] | Contains  | A0003 |
     And I add StepOutputs item as 
     | Variable Name      | Condition | Value            |
-    | [[@AllMessages()]] | Contains  | "SomeVal":"Bob" |
+    | [[@AllMessages()]] | Contains  | Bob |
 	And I add StepOutputs item as 
 	| Variable Name      | Condition | Value         |
-	| [[@AllMessages()]] | Contains  | "DateId":32, |
+	| [[@AllMessages()]] | Contains  | 32 |
 	And I Add outputs as
 	| Variable Name  | Condition | Value         |
-	| @AllMessages() | Contains  | "DateId":32, |
+	| @AllMessages() | Contains  | 32 |
 	And save is enabled
 	And test status is pending	
 	And test is enabled	

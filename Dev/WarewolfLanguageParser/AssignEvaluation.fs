@@ -142,7 +142,7 @@ and objectFromExpression (exp : JsonIdentifierExpression) (res : WarewolfEvalRes
     | _ -> failwith "top level assign cannot be a nested expresssion"
 
 and assignGivenAValue (env : WarewolfEnvironment) (res : WarewolfEvalResult) (exp : JsonIdentifierExpression) : WarewolfEnvironment = 
-    let evalResult = evalResultToString res
+    let evalResult = ((evalResultToString res).TrimEnd ' ').TrimStart ' '
     match exp with
     | NameExpression a -> 
         if (evalResult.StartsWith "{" && evalResult.EndsWith "}") then
@@ -195,7 +195,7 @@ and languageExpressionToJsonIdentifier (a : LanguageExpression) : JsonIdentifier
 and evalJsonAssign (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     let left = parseLanguageExpression value.Name update
     let jsonId = languageExpressionToJsonIdentifier left
-    let right = evalJson env update false (parseLanguageExpression value.Value update)
+    let right = eval env update false value.Value
     assignGivenAValue env right jsonId
 
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
