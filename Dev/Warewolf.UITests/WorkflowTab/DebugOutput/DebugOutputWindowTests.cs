@@ -5,6 +5,7 @@ using Warewolf.UITests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapC
 using Warewolf.UITests.WorkflowTab.Tools.StorageDropbox.DropboxToolsUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UITests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 
 namespace Warewolf.UITests.DebugOutputTests
 {
@@ -13,6 +14,32 @@ namespace Warewolf.UITests.DebugOutputTests
     {
         const string SelectionHighlightWf = "SelectionHighlightWf";
         const string DropboxSelectionHighlightWf = "DropboxSelectionHighlightWf";
+
+        [TestMethod]
+        [TestCategory("Debug Input")]
+        // ReSharper disable once InconsistentNaming
+        public void HelloWorld_Is_Highlighted_After_Execution_UITest()
+        {
+            UIMap.InitializeABlankWorkflow();
+            ExplorerUIMap.Filter_Explorer("Hello World");
+            WorkflowTabUIMap.Drag_Explorer_workflow_Onto_Workflow_Design_Surface();
+            UIMap.Press_F6();
+            var helloWorldIsHighlighted = WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
+            Assert.IsTrue(helloWorldIsHighlighted);
+        }
+
+        [TestMethod]
+        [TestCategory("Debug Input")]
+        // ReSharper disable once InconsistentNaming
+        public void WebRequestTool_Is_Highlighted_After_Execution_UITest()
+        {
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Web_Request_Onto_DesignSurface();
+            UIMap.Press_F6();
+            var webRequest = UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
+            Assert.IsTrue(webRequest);
+        }
+
         [TestMethod]
         [TestCategory("Debug Input")]
         // ReSharper disable once InconsistentNaming
@@ -159,6 +186,21 @@ namespace Warewolf.UITests.DebugOutputTests
         }
 
         private ExplorerUIMap _ExplorerUIMap;
+
+        UtilityToolsUIMap UtilityToolsUIMap
+        {
+            get
+            {
+                if (_UtilityToolsUIMap == null)
+                {
+                    _UtilityToolsUIMap = new UtilityToolsUIMap();
+                }
+
+                return _UtilityToolsUIMap;
+            }
+        }
+
+        private UtilityToolsUIMap _UtilityToolsUIMap;
 
         DataToolsUIMap DataToolsUIMap
         {

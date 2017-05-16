@@ -75,7 +75,10 @@ namespace Dev2.Activities.Designers2.Core
             if (keyEventArgs.OriginalSource.GetType() == typeof (ComboBox) ||
                 keyEventArgs.OriginalSource.GetType() == typeof (ComboBoxItem))
             {
-                keyEventArgs.Handled = true;
+                if ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete)
+                {
+                    keyEventArgs.Handled = true;
+                }
             }
         }
 
