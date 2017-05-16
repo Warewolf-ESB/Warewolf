@@ -33,7 +33,16 @@ namespace Dev2.DataList.Contract
         {
             return new Dev2DataLanguageParser();
         }
-        
+
+        /// <summary>
+        /// Creates the studio language parser.
+        /// </summary>
+        /// <returns></returns>
+        public static IDev2StudioDataLanguageParser CreateStudioLanguageParser()
+        {
+            return new Dev2DataLanguageParser();
+        }
+
         public static IDev2Definition CreateDefinition(string name, string mapsTo, string value, bool isEval, string defaultValue, bool isRequired, string rawValue)
         {
             return new Dev2Definition(name, mapsTo, value, isEval, defaultValue, isRequired, rawValue);
@@ -157,6 +166,13 @@ namespace Dev2.DataList.Contract
         public static Dev2Column CreateDev2Column(string columnName, string columnDescription, bool isEditable, enDev2ColumnArgumentDirection colIODir)
         {
             return new Dev2Column(columnName, columnDescription, isEditable, colIODir);
+        }
+
+        public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)
+        {
+            DefinitionBuilder b = new DefinitionBuilder { ArgumentType = typeOf, Definitions = defs };
+
+            return b.Generate();
         }
     }
 }
