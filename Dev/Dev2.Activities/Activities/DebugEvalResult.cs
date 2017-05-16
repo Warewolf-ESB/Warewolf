@@ -19,7 +19,7 @@ namespace Dev2.Activities
         CommonFunctions.WarewolfEvalResult _evalResult;
         private readonly bool _isCalculate;
 
-        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment,int update, bool isDataMerge = false,bool isCalculate=false, bool mockSelected = false)
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, bool isDataMerge = false, bool isCalculate = false, bool mockSelected = false, bool isJsonArray = false)
         {
             _inputVariable = inputVariable?.Trim();
             LabelText = label;
@@ -33,7 +33,7 @@ namespace Dev2.Activities
                     {
                         var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
                         _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
-                    }                    
+                    }
                 }
                 if (isDataMerge)
                 {
@@ -43,32 +43,38 @@ namespace Dev2.Activities
                 {
                     RegularItem(environment, update, isCalculate);
                 }
+                if (isJsonArray)
+                {
+                    var noBrackets = DataListUtil.RemoveLanguageBrackets(_inputVariable);
+                    var variableWithBrackets =  DataListUtil.AddBracketsToValueIfNotExist(noBrackets.EndsWith("()")?noBrackets:string.Concat(noBrackets,"()"));
+                    _inputVariable = variableWithBrackets;
+                }
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Dev2Logger.Error(e.Message,e);
+                Dev2Logger.Error(e.Message, e);
                 _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             }
-            
+
         }
 
         private void RegularItem(IExecutionEnvironment environment, int update, bool isCalculate)
         {
             var evalToExpression = environment.EvalToExpression(_inputVariable, update);
-            if(DataListUtil.IsEvaluated(evalToExpression))
+            if (DataListUtil.IsEvaluated(evalToExpression))
             {
                 _inputVariable = evalToExpression;
             }
             _evalResult = environment.Eval(_inputVariable, update);
             string cleanExpression;
             var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out cleanExpression);
-            if(isCalcExpression && !isCalculate)
+            if (isCalcExpression && !isCalculate)
             {
-                if(_evalResult.IsWarewolfAtomResult)
+                if (_evalResult.IsWarewolfAtomResult)
                 {
                     var atomResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                    if(atomResult != null)
+                    if (atomResult != null)
                     {
                         var res = atomResult.Item.ToString();
                         string resValue;
@@ -85,18 +91,18 @@ namespace Dev2.Activities
             var evalForDataMerge = environment.EvalForDataMerge(_inputVariable, update);
             var innerIterator = new WarewolfListIterator();
             var innerListOfIters = new List<WarewolfIterator>();
-            foreach(var listOfIterator in evalForDataMerge)
+            foreach (var listOfIterator in evalForDataMerge)
             {
                 var inIterator = new WarewolfIterator(listOfIterator);
                 innerIterator.AddVariableToIterateOn(inIterator);
                 innerListOfIters.Add(inIterator);
             }
             var atomList = new List<DataStorage.WarewolfAtom>();
-            while(innerIterator.HasMoreData())
+            while (innerIterator.HasMoreData())
             {
                 var stringToUse = "";
                 // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach(var warewolfIterator in innerListOfIters)
+                foreach (var warewolfIterator in innerListOfIters)
                 {
                     stringToUse += warewolfIterator.GetNextValue();
                 }
@@ -104,7 +110,7 @@ namespace Dev2.Activities
             }
             var finalString = string.Join("", atomList);
             _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing, atomList));
-            if(DataListUtil.IsFullyEvaluated(finalString))
+            if (DataListUtil.IsFullyEvaluated(finalString))
             {
                 _inputVariable = finalString;
                 _evalResult = environment.Eval(finalString, update);
@@ -112,7 +118,7 @@ namespace Dev2.Activities
             else
             {
                 var evalToExpression = environment.EvalToExpression(_inputVariable, update);
-                if(DataListUtil.IsEvaluated(evalToExpression))
+                if (DataListUtil.IsEvaluated(evalToExpression))
                 {
                     _inputVariable = evalToExpression;
                 }
@@ -156,11 +162,11 @@ namespace Dev2.Activities
                 var listResult = _evalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
                 if (listResult != null)
                 {
-                    return new DebugItemWarewolfRecordset(listResult.Item, _inputVariable, LabelText,  "=", MockSelected).GetDebugItemResult();
+                    return new DebugItemWarewolfRecordset(listResult.Item, _inputVariable, LabelText, "=", MockSelected).GetDebugItemResult();
                 }
             }
 
-            return new DebugItemStaticDataParams("",_inputVariable,LabelText, MockSelected).GetDebugItemResult();
+            return new DebugItemStaticDataParams("", _inputVariable, LabelText, MockSelected).GetDebugItemResult();
         }
 
         #endregion
