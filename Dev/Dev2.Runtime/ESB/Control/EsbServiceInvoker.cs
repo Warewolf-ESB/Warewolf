@@ -8,23 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-#region Change Log
-
-//  Author:         Sameer Chunilall
-//  Date:           2010-01-24
-//  Log No:         9299
-//  Description:    The data layer of the Dynamic Service Engine
-//                  This is where all actions get executed.
-
-#endregion
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -88,7 +76,6 @@ namespace Dev2.Runtime.ESB
         #endregion
 
         #region Travis New Methods
-
         /// <summary>
         /// Invokes the specified service as per the dataObject against theHost
         /// </summary>
@@ -175,17 +162,7 @@ namespace Dev2.Runtime.ESB
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container");
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
-
-                                var exeManager = CustomContainer.Get<IExecutionManager>();
-                                if (exeManager != null)
-                                {
-                                    exeManager.AddExecution(container);
-                                    while (exeManager.IsRefreshing)
-                                    {
-                                        Thread.Sleep(1000);
-                                    }
-                                    exeManager.PerformExecution();
-                                }
+                                container.Execute(out errors, 0);                                
                                 
                             }
                             #endregion

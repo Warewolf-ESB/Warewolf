@@ -1,4 +1,6 @@
-﻿namespace Dev2.Runtime
+﻿using System.Threading;
+
+namespace Dev2.Runtime
 {
     public interface IExecutionManager
     {
@@ -6,12 +8,12 @@
 
         void StopRefresh();
 
-        void AddExecution(IEsbExecutionContainer container);
-
-        void PerformExecution();
-
-        void CompleteAllCurrentExecutions();
+        void AddExecution();
 
         bool IsRefreshing { get;}
+
+        void CompleteExecution();
+
+        void AddWait(AutoResetEvent eventPulse);
     }
 }
