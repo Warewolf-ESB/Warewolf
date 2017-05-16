@@ -1002,6 +1002,44 @@ namespace Dev2.Core.Tests
             StringAssert.Contains(_dataListViewModel.DataListErrorMessage, _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DataListViewModel_HasErrors")]
+        public void DataListViewModel_HasErrors_ArrayObjAndObjNameIsDuplicated_HasErrorsTrue()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+            _dataListViewModel.ComplexObjectCollection.Clear();
+
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.DisplayValue).Returns("[[@ab()]]");
+            part.Setup(c => c.Description).Returns("");
+            part.Setup(c => c.IsJson).Returns(true);
+            parts.Add(part.Object);
+
+            var part2 = new Mock<IDataListVerifyPart>();
+            part2.Setup(c => c.DisplayValue).Returns("[[@ab]]");
+            part2.Setup(c => c.Description).Returns("");
+            part2.Setup(c => c.IsJson).Returns(true);
+            parts.Add(part2.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts);
+
+            IComplexObjectItemModel item  = new ComplexObjectItemModel("[[@ab()]]");
+
+            _dataListViewModel.ComplexObjectCollection.Insert(1, item);
+
+            _dataListViewModel.RemoveBlankRows(item);
+            _dataListViewModel.AddRecordsetNamesIfMissing();
+            //------------Execute Test---------------------------
+            _dataListViewModel.ValidateNames(item);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_dataListViewModel.HasErrors);
+        }
+
 
         [TestMethod]
         public void AddMissingDataListItemsAndThenAddManualy_IsNotField_AddRecordSetWhenDataListContainsRecordsertWithSameName()
