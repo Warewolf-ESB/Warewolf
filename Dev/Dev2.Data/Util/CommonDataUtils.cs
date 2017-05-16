@@ -18,7 +18,7 @@ using WarewolfParserInterop;
 
 namespace Dev2.Data.Util
 {
-    
+
     public class CommonDataUtils : ICommon
     {
         public void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, IDev2CRUDOperationTO args)
@@ -411,6 +411,21 @@ namespace Dev2.Data.Util
             return false;
         }
 
+        private bool IsArray(XmlNode tmpNode)
+        {
+            XmlAttribute isObjectAttribute = tmpNode.Attributes?["IsArray"];
+
+            if (isObjectAttribute != null)
+            {
+                bool isArray;
+                if (bool.TryParse(isObjectAttribute.Value, out isArray))
+                {
+                    return isArray;
+                }
+            }
+            return false;
+        }
+
         public IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
@@ -429,6 +444,7 @@ namespace Dev2.Data.Util
 
                     var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
                     var isObject = IsObject(tmpNode);
+                    var isArray = IsArray(tmpNode);
                     if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes && !isObject)
                     {
                         result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
@@ -454,7 +470,16 @@ namespace Dev2.Data.Util
                     else if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
                         // scalar value, make it as such
-                        result.Add(isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "") : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                        IDev2Definition dev2Definition;
+                        if (isObject)
+                        {
+                            dev2Definition = DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray);
+                        }
+                        else
+                        {
+                            dev2Definition = DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
+                        }
+                        result.Add(dev2Definition);
                     }
 
                 }
@@ -462,6 +487,8 @@ namespace Dev2.Data.Util
 
             return result;
         }
+
+
 
         private void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {
