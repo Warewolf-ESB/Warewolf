@@ -161,14 +161,17 @@ namespace Dev2.Runtime.ESB.Execution
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var exe = CustomContainer.Get<IExecutionManager>();
-            if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
+            if (exe != null)
             {
-                exe.AddExecution();
-            }
-            else
-            {
-                exe.AddWait(EventPulse);
-                EventPulse.WaitOne();
+                if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
+                {
+                    exe.AddExecution();
+                }
+                else
+                {
+                    exe.AddWait(EventPulse);
+                    EventPulse.WaitOne();
+                }
             }
             if (resource == null)
             {
@@ -195,7 +198,7 @@ namespace Dev2.Runtime.ESB.Execution
                     break;
                 }
             }
-            exe.CompleteExecution();
+            exe?.CompleteExecution();
         }
     }
 }
