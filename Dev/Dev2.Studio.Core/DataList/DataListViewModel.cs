@@ -47,7 +47,6 @@ namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
     {
-        #region Fields
 
         private readonly IComplexObjectHandler _complexObjectHandler;
         private readonly IScalarHandler _scalarHandler;
@@ -66,9 +65,7 @@ namespace Dev2.Studio.ViewModels.DataList
         private readonly IMissingDataList _missingDataList;
         private readonly IPartIsUsed _partIsUsed;
 
-        #endregion Fields
 
-        #region Properties
 
         public bool CanSortItems => HasItems();
 
@@ -201,6 +198,8 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     RemoveItemPropertyChangeEvent(args);
                     AddItemPropertyChangeEvent(args);
+                    _complexObjectHandler.ValidateComplexObject();
+
                 };
                 return _complexObjectCollection;
             }
@@ -267,8 +266,6 @@ namespace Dev2.Studio.ViewModels.DataList
         private bool _toggleSortOrder = true;
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
 
-        #endregion Properties
-        #region Ctor
 
         public DataListViewModel()
             : this(EventPublishers.Aggregator)
@@ -315,9 +312,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return item != null && !item.IsUsed;
         }
 
-        #endregion Ctor
 
-        #region Commands
 
         public ICommand ClearSearchTextCommand { get; private set; }
 
@@ -365,9 +360,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        #endregion Commands
 
-        #region Add/Remove Missing Methods
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
         {
@@ -465,9 +458,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        #endregion Add/Remove Missing Methods
 
-        #region Methods
 
         public void InitializeDataListViewModel(IResourceModel resourceModel)
         {
@@ -660,19 +651,13 @@ namespace Dev2.Studio.ViewModels.DataList
                 IRecordSetFieldItemModel rs = (IRecordSetFieldItemModel)item;
                 _recordsetHandler.ValidateRecordsetChildren(rs.Parent);
             }
-            else if (item is IComplexObjectItemModel)
-            {
-                _complexObjectHandler.ValidateComplexObject();
-            }
             else
             {
                 ValidateScalar();
             }
         }
 
-        #endregion Methods
 
-        #region Private Methods
 
         private void ValidateScalar()
         {
@@ -966,20 +951,12 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
         }
-
-        #endregion Private Methods
-
-        #region Override Methods
-
+        
         protected override void OnDispose()
         {
             ClearCollections();
             Resource = null;
         }
-
-        #endregion Override Methods
-
-        #region Implementation of ShowUnusedDataListVariables
 
         private void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
         {
@@ -998,7 +975,6 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.SetRecordSetItemsAsUsed();
         }
 
-        #endregion Implementation of ShowUnusedDataListVariables
 
         /// <summary>
         /// Finds the missing workflow data regions.
