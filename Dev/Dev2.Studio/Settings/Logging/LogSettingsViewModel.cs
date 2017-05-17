@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
@@ -51,6 +53,7 @@ namespace Dev2.Settings.Logging
         }
         private string _serverLogMaxSize;
         private string _studioLogMaxSize;
+        private string _selectedLoggingType;
         private LogLevel _serverEventLogLevel;
         private LogLevel _studioEventLogLevel;
         private ProgressDialogViewModel _progressDialogViewModel;
@@ -158,7 +161,7 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         public virtual void Save(LoggingSettingsTo logSettings)
         {
-            logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
+            //logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
@@ -225,19 +228,19 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        public LogLevel ServerFileLogLevel
-        {
-            get
-            {
-                return _serverFileLogLevel;
-            }
-            set
-            {
-                _serverFileLogLevel = value;
-                IsDirty = !Equals(Item);
-                OnPropertyChanged();
-            }
-        }
+        //public LogLevel ServerFileLogLevel
+        //{
+        //    get
+        //    {
+        //        return _serverFileLogLevel;
+        //    }
+        //    set
+        //    {
+        //        _serverFileLogLevel = value;
+        //        IsDirty = !Equals(Item);
+        //        OnPropertyChanged();
+        //    }
+        //}
         public LogLevel StudioFileLogLevel
         {
             get
@@ -248,6 +251,38 @@ namespace Dev2.Settings.Logging
             {
                 _studioFileLogLevel = value;
                 IsDirty = !Equals(Item);
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<KeyValuePair<string, LogLevel>> LoggingTypes =>
+            new List<KeyValuePair<string, LogLevel>>
+        {
+            new KeyValuePair<string, LogLevel>("None: No logging", LogLevel.OFF),
+            new KeyValuePair<string, LogLevel>("Debug: Log all system activity including executions. Also logs fatal, error, warning and info events", LogLevel.DEBUG),
+            new KeyValuePair<string, LogLevel>("Fatal: Only log events that are fatal", LogLevel.FATAL),
+            new KeyValuePair<string, LogLevel>("Info: Log system info including pulse data, fatal, error and warning events", LogLevel.INFO),
+            new KeyValuePair<string, LogLevel>("Trace: Log detailed system information. Includes events from all the levels above", LogLevel.TRACE),
+            new KeyValuePair<string, LogLevel>("Warn: Log error, fatal and warning events", LogLevel.WARN)
+        };
+
+        public string SelectedLoggingType
+        {
+            get { return _selectedLoggingType; }
+            set
+            {
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
+                    return;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
+                    _selectedLoggingType = logLevel.Value.ToString();
+                    ServerEventLogLevel = logLevel.Value;
+                }
+                else
+                {
+                    _selectedLoggingType = ServerEventLogLevel.ToString();
+                }                
                 OnPropertyChanged();
             }
         }
@@ -294,7 +329,7 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-              
+
             }
         }
 
@@ -323,6 +358,7 @@ namespace Dev2.Settings.Logging
                             string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
                             string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
                             string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
+                            Equals(_selectedLoggingType, other._selectedLoggingType) &&
                             int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
                             int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
             return equalsSeq;
@@ -339,7 +375,8 @@ namespace Dev2.Settings.Logging
         string ServerLogMaxSize { get; }
         bool CanEditStudioLogSettings { get; }
         bool CanEditLogSettings { get; }
-        LogLevel ServerFileLogLevel { get; }
         LogLevel StudioFileLogLevel { get; }
+        IEnumerable<KeyValuePair<string, LogLevel>> LoggingTypes { get; }
+        string SelectedLoggingType { get; set; }
     }
 }
