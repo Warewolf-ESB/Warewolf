@@ -13,20 +13,20 @@ namespace Dev2.Runtime.ESB.Execution
         }, LazyThreadSafetyMode.PublicationOnly);
 
         private bool _isRefreshing;
-        private int _isExecuting;
+        private int _currentExecutions;
         private readonly List<AutoResetEvent> _waitHandles = new List<AutoResetEvent>();
 
         private ExecutionManager()
         {
             _isRefreshing = false;
-            _isExecuting = 0;          
+            _currentExecutions = 0;          
         }
         public static ExecutionManager Instance => LazyCat.Value;
 
         public void StartRefresh()
         {
             _isRefreshing = true;
-            while (_isExecuting > 0)
+            while (_currentExecutions > 0)
             {
                 Thread.Sleep(10);
             }
@@ -37,11 +37,12 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 autoResetEvent.Set();
             }
+            _waitHandles.Clear();
             _isRefreshing = false;
         }
         public void AddExecution()
         {
-            _isExecuting++;
+            _currentExecutions++;
 
         }
 
@@ -49,9 +50,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void CompleteExecution()
         {
-            if (_isExecuting > 0)
+            if (_currentExecutions > 0)
             {
-                _isExecuting--;
+                _currentExecutions--;
             }
         }
 
