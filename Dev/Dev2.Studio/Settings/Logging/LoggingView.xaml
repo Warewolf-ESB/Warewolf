@@ -63,6 +63,7 @@
                             CustomValueEnteredAction="Allow" 
                             Focusable="False"
                             ItemContainerStyle="{StaticResource ComboEditorItemControlStyle}"
+                            AutomationProperties.AutomationId="UI_LoggingType_AutoID"
                             views:FocusExtension.IsFocused="False">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewSelectHelp}" DataContext="{Binding}" />
