@@ -54,7 +54,6 @@ namespace Dev2.Settings
 
         SecurityViewModel _securityViewModel;
         LogSettingsViewModel _logSettingsViewModel;
-        private bool _showLog;
         private IServer _currentEnvironment;
         private Func<IServer, IServer> _toEnvironmentModel;
         private PerfcounterViewModel _perfmonViewModel;
@@ -95,8 +94,6 @@ namespace Dev2.Settings
             Server.NetworkStateChanged -= ServerNetworkStateChanged;
             base.OnDispose();
         }
-
-
 
         public override string DisplayName
         {
@@ -149,7 +146,6 @@ namespace Dev2.Settings
         }
         public RelayCommand SaveCommand { get; private set; }
 
-
         public IServer CurrentEnvironment
         {
             get
@@ -185,8 +181,6 @@ namespace Dev2.Settings
                 NotifyOfPropertyChange(() => IsErrorsVisible);
             }
         }
-
-    
 
         public string Errors
         {
@@ -286,21 +280,6 @@ namespace Dev2.Settings
                 _showSecurity = value;
                 OnSelectionChanged();
                 NotifyOfPropertyChange(() => ShowSecurity);
-            }
-        }
-        
-        public bool ShowLog
-        {
-            get { return _showLog; }
-            set
-            {
-                if (value.Equals(_showLog))
-                {
-                    return;
-                }
-                _showLog = value;
-                OnSelectionChanged();
-                NotifyOfPropertyChange(() => ShowLog);
             }
         }
 
@@ -453,7 +432,6 @@ namespace Dev2.Settings
             return perfcounterViewModel;
         }
 
-
         protected virtual LogSettingsViewModel CreateLoggingViewModel()
         {
             if(Settings.Logging != null)
@@ -574,7 +552,6 @@ namespace Dev2.Settings
 
         #endregion
 
-
         #endregion
 
         /// <summary>
@@ -591,21 +568,15 @@ namespace Dev2.Settings
                     // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
 
                     ClearErrors();
-                    if(SecurityViewModel.HasDuplicateResourcePermissions())
+                    if (!ValidateDuplicateResourcePermissions())
                     {
-                        IsSaved = false;
-                        IsDirty = true;
-                        ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateResourcePermissions);
+                        return false;
+                    }
+                    if (!ValidateDuplicateServerPermissions())
+                    {
                         return false;
                     }
 
-                    if(SecurityViewModel.HasDuplicateServerPermissions())
-                    {
-                        IsSaved = false;
-                        IsDirty = true;
-                        ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateServerPermissions);
-                        return false;
-                    }
                     SecurityViewModel.Save(Settings.Security);
                     if (LogSettingsViewModel.IsDirty)
                     {
@@ -636,6 +607,30 @@ namespace Dev2.Settings
             }
             ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsNotReachableErrorMsg);
             return false;
+        }
+
+        private bool ValidateDuplicateServerPermissions()
+        {
+            if (SecurityViewModel.HasDuplicateServerPermissions())
+            {
+                IsSaved = false;
+                IsDirty = true;
+                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateServerPermissions);
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateDuplicateResourcePermissions()
+        {
+            if (SecurityViewModel.HasDuplicateResourcePermissions())
+            {
+                IsSaved = false;
+                IsDirty = true;
+                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateResourcePermissions);
+                return false;
+            }
+            return true;
         }
 
         bool WriteSettings()
