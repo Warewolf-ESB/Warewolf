@@ -53,6 +53,7 @@ Scenario: Right click adorner control with error
 	And I Open DeleteWeb Tool Large View
 	And I Click DELETE Web Large View Generate Outputs
 	And I Click DELETE Web Large View Test Inputs Button
+	And I RightClick Ardoner Hyperlink
 
 
 	
