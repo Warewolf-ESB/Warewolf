@@ -13,7 +13,6 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces;
@@ -184,7 +183,7 @@ namespace Dev2.Core.Tests.Workflows
 
         public ModelItem TestPerformAddItems(ModelItem modelItems)
         {
-            return PerformAddItems(new List<ModelItem> { modelItems }).FirstOrDefault();
+            return PerformAddItems(modelItems);
         }
 
         public void FireWorkflowChanged()
