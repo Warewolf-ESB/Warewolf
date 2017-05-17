@@ -579,5 +579,11 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
                 ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             }
         }
+
+        public void Select_Fatal_Event_Log()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.LogSettingsViewConte.LoggingTypesComboBox.ToggleButtonButton);
+            Mouse.Click(MainStudioWindow.FatalOnlylogeventsthCustom);
+        }
     }
 }
