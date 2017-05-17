@@ -74,10 +74,48 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
                 return this.mDockManager;
             }
         }
+        
+        public WpfCustom FatalOnlylogeventsthCustom
+        {
+            get
+            {
+                if ((this.mFatalOnlylogeventsthCustom == null))
+                {
+                    this.mFatalOnlylogeventsthCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mFatalOnlylogeventsthCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mFatalOnlylogeventsthCustom.SearchProperties[WpfControl.PropertyNames.Name] = "Fatal: Only log events that are fatal";
+                    this.mFatalOnlylogeventsthCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFatalOnlylogeventsthCustom;
+            }
+        }
+        
+        public WpfCustom NoneNologgingCustom
+        {
+            get
+            {
+                if ((this.mNoneNologgingCustom == null))
+                {
+                    this.mNoneNologgingCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mNoneNologgingCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mNoneNologgingCustom.SearchProperties[WpfControl.PropertyNames.Name] = "None: No logging";
+                    this.mNoneNologgingCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoneNologgingCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private DockManager mDockManager;
+        
+        private WpfCustom mFatalOnlylogeventsthCustom;
+        
+        private WpfCustom mNoneNologgingCustom;
         #endregion
     }
     
@@ -1432,12 +1470,26 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
                 return this.mServerLogs;
             }
         }
+        
+        public LoggingTypesComboBox LoggingTypesComboBox
+        {
+            get
+            {
+                if ((this.mLoggingTypesComboBox == null))
+                {
+                    this.mLoggingTypesComboBox = new LoggingTypesComboBox(this);
+                }
+                return this.mLoggingTypesComboBox;
+            }
+        }
         #endregion
         
         #region Fields
         private StudioLogs mStudioLogs;
         
         private ServerLogs mServerLogs;
+        
+        private LoggingTypesComboBox mLoggingTypesComboBox;
         #endregion
     }
     
@@ -1575,6 +1627,79 @@ namespace Warewolf.UITests.Settings.SettingsUIMapClasses
         
         #region Fields
         private WpfHyperlink mItemHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class LoggingTypesComboBox : WpfCustom
+    {
+        
+        public LoggingTypesComboBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_LoggingType_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ToggleButtonButton
+        {
+            get
+            {
+                if ((this.mToggleButtonButton == null))
+                {
+                    this.mToggleButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mToggleButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
+                    this.mToggleButtonButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mToggleButtonButton;
+            }
+        }
+        
+        public WpfText NoneNologgingText
+        {
+            get
+            {
+                if ((this.mNoneNologgingText == null))
+                {
+                    this.mNoneNologgingText = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoneNologgingText.SearchProperties[WpfText.PropertyNames.Name] = "None: No logging";
+                    this.mNoneNologgingText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoneNologgingText;
+            }
+        }
+        
+        public WpfText FatalOnlylogeventsthText
+        {
+            get
+            {
+                if ((this.mFatalOnlylogeventsthText == null))
+                {
+                    this.mFatalOnlylogeventsthText = new WpfText(this);
+                    #region Search Criteria
+                    this.mFatalOnlylogeventsthText.SearchProperties[WpfText.PropertyNames.Name] = "Fatal: Only log events that are fatal";
+                    this.mFatalOnlylogeventsthText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mFatalOnlylogeventsthText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mToggleButtonButton;
+        
+        private WpfText mNoneNologgingText;
+        
+        private WpfText mFatalOnlylogeventsthText;
         #endregion
     }
     
