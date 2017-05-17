@@ -46,7 +46,7 @@ namespace Dev2.Activities
                 if (isJsonArray)
                 {
                     var noBrackets = DataListUtil.RemoveLanguageBrackets(_inputVariable);
-                    var variableWithBrackets =  DataListUtil.AddBracketsToValueIfNotExist(noBrackets.EndsWith("()")?noBrackets:string.Concat(noBrackets,"()"));
+                    var variableWithBrackets =  DataListUtil.AddBracketsToValueIfNotExist(noBrackets.EndsWith(")")?noBrackets:string.Concat(noBrackets,"()"));
                     _inputVariable = variableWithBrackets;
                 }
 

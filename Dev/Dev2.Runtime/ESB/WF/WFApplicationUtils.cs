@@ -175,7 +175,9 @@ namespace Dev2.Runtime.ESB.WF
 
                 added.Add(defn);
                 var itemToAdd = new DebugItem();
-                _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, 0,false, false, false, dev2Definition.IsJsonArray), itemToAdd); //todo:confirm 0
+                var replaceRecordBlankWithStar = dev2Definition.IsJsonArray ? defn : DataListUtil.ReplaceRecordBlankWithStar(defn);
+
+                _add(new DebugEvalResult(replaceRecordBlankWithStar, "", dataObject.Environment, 0, false, false, false, dev2Definition.IsJsonArray), itemToAdd); //todo:confirm 0
                 results.Add(itemToAdd);
             }
 
@@ -189,9 +191,21 @@ namespace Dev2.Runtime.ESB.WF
 
         private string GetVariableName(IDev2Definition value)
         {
-            return string.IsNullOrEmpty(value.RecordSetName)
-                  ? $"[[{value.Name}]]"
-                : $"[[{value.RecordSetName}(){(string.IsNullOrEmpty(value.Name) ? string.Empty : "." + value.Name)}]]";
+            string variableName;
+            if (value.IsJsonArray && value.Name.StartsWith("@"))
+            {
+                variableName = $"[[{value.Name}()]]";
+            }
+            else if (string.IsNullOrEmpty(value.RecordSetName))
+            {
+                variableName = $"[[{value.Name}]]";
+            }
+            else
+            {
+                variableName = $"[[{value.RecordSetName}(){(string.IsNullOrEmpty(value.Name) ? string.Empty : "." + value.Name)}]]";
+
+            }
+            return variableName;
         }
 
         private void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
