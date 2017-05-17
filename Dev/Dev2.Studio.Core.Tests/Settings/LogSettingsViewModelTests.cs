@@ -209,36 +209,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioFileLogLevel);
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("LogSettingsViewModel_ServerFileLogLevel")]
-        public void LogSettingsViewModel_ServerFileLogLevel_Construct_IsTrace()
-        {
-            //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
-
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.TRACE, logSettingsViewModel.ServerFileLogLevel);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("LogSettingsViewModel_ServerFileLogLevel")]
-        public void LogSettingsViewModel_ServerFileLogLevel_SetLevel_IsInfo()
-        {
-            //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
-
-            //------------Execute Test---------------------------
-            logSettingsViewModel.ServerFileLogLevel = LogLevel.INFO;
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.ServerFileLogLevel);
-        }
-
+                
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("LogSettingsViewModel_CanEdit")]
