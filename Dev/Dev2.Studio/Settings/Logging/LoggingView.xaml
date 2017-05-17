@@ -49,19 +49,20 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <ig:XamComboEditor x:Name="LoggingTypesComboBox"
-                                            Margin="{StaticResource ControlBorderRight}"
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            ItemsSource="{Binding LoggingTypes}"
-                                            SelectedItem="{Binding SelectedLoggingType}"
-                                            SelectedValue="{Binding SelectedLoggingType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                                            IsEditable="False"
-                                            AllowDrop="False"
-                                            MaxDropDownHeight="200"
-                                            CustomValueEnteredAction="Allow" 
-                                            Focusable="False"
-                                            ItemContainerStyle="{StaticResource ComboEditorItemControlStyle}"
-                                            views:FocusExtension.IsFocused="False">
+                            Margin="{StaticResource ControlBorderRight}"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            ItemsSource="{Binding LoggingTypes}"
+                            SelectedItem="{Binding SelectedLoggingType}"
+                            SelectedValue="{Binding SelectedLoggingType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                            IsEditable="False"
+                            AllowDrop="False"
+                            MaxDropDownHeight="200"
+                            CustomValueEnteredAction="Allow" 
+                            Focusable="False"
+                            ItemContainerStyle="{StaticResource ComboEditorItemControlStyle}"
+                            AutomationProperties.AutomationId="UI_LoggingType_AutoID"
+                            views:FocusExtension.IsFocused="False">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewSelectHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
