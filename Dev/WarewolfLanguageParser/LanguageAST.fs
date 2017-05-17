@@ -43,6 +43,11 @@ and [<ExcludeFromCodeCoverage>] JsonIdentifierExpression =
 and [<ExcludeFromCodeCoverage>] RecordSetName = 
     { Name : string
       Index : Index }
+      ///IndexedObjectNotation [[Object(*).SomethingElse 
+///IndexedObjectNotation [[@Object(*).SomethingElse 
+and [<ExcludeFromCodeCoverage>] JsonObjectName = 
+    { ObjectName : string
+      Index : Index }
 ///Alias for string. identifies a scalar name
 and [<ExcludeFromCodeCoverage>] ScalarIdentifier = string
 ///AlgebraicType that identifies all legal language expressions
@@ -53,6 +58,7 @@ and [<ExcludeFromCodeCoverage>] LanguageExpression =
     | ComplexExpression of LanguageExpression list
     | RecordSetNameExpression of RecordSetName
     | JsonIdentifierExpression of JsonIdentifierExpression
+    |JsonNameExpression of JsonObjectName
 
 let tryParseIndex (x : Index) = 
     match x with

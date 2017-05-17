@@ -175,9 +175,8 @@ namespace Dev2.Runtime.ESB.WF
 
                 added.Add(defn);
                 var itemToAdd = new DebugItem();
-                var replaceRecordBlankWithStar = dev2Definition.IsJsonArray ? defn : DataListUtil.ReplaceRecordBlankWithStar(defn);
 
-                _add(new DebugEvalResult(replaceRecordBlankWithStar, "", dataObject.Environment, 0, false, false, false, dev2Definition.IsJsonArray), itemToAdd); //todo:confirm 0
+                _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, 0), itemToAdd); //todo:confirm 0
                 results.Add(itemToAdd);
             }
 
