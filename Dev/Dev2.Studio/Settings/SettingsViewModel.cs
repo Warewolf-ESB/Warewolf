@@ -19,7 +19,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Communication;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
@@ -58,8 +57,8 @@ namespace Dev2.Settings
         private Func<IServer, IServer> _toEnvironmentModel;
         private PerfcounterViewModel _perfmonViewModel;
         private string _displayName;
-        private Data.Settings.Settings _backedUpSettings;
 
+        // ReSharper disable once MemberCanBeProtected.Global
         public SettingsViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow,CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {
@@ -80,12 +79,10 @@ namespace Dev2.Settings
 
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
 
-            IShellViewModel vm = CustomContainer.Get<IShellViewModel>();
-            CreateEnvironmentFromServer(vm.LocalhostServer);
-
             ToEnvironmentModel = toEnvironmentModel??( a=>a.ToEnvironmentModel());
             CurrentEnvironment= ToEnvironmentModel(server);
             LoadSettings();
+            // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = "Settings - " + Server.DisplayName;
         }
 
@@ -137,13 +134,6 @@ namespace Dev2.Settings
 
         public IServer Server { get; set; }
 
-        void CreateEnvironmentFromServer(IServer server)
-        {
-            if (server?.UpdateRepository != null)
-            {
-                //server.UpdateRepository.ItemSaved += Refresh;
-            }
-        }
         public RelayCommand SaveCommand { get; private set; }
 
         public IServer CurrentEnvironment
@@ -363,8 +353,6 @@ namespace Dev2.Settings
 
         public override bool HasVariables => false;
         public override bool HasDebugOutput => false;
-
-
 
         public Func<IServer, IServer> ToEnvironmentModel
         {
@@ -656,8 +644,6 @@ namespace Dev2.Settings
             {
                 ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "ReadSettings"));
             }
-            var serializer = new Dev2JsonSerializer();
-            _backedUpSettings = serializer.Deserialize<Data.Settings.Settings>(payload?.ToString());
             return payload;
         }
 
