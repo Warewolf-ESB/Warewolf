@@ -470,15 +470,7 @@ namespace Dev2.Data.Util
                     else if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
                         // scalar value, make it as such
-                        IDev2Definition dev2Definition;
-                        if (isObject)
-                        {
-                            dev2Definition = DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray);
-                        }
-                        else
-                        {
-                            dev2Definition = DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
-                        }
+                        var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
                         result.Add(dev2Definition);
                     }
 
