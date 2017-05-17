@@ -211,7 +211,6 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         public virtual void Save(LoggingSettingsTo logSettings)
         {
-            //logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
@@ -303,7 +302,7 @@ namespace Dev2.Settings.Logging
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
                     return;
-                var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
+                var logLevel = LoggingTypes.Single(p => value != null && p.ToString().Contains(value));
                 _selectedLoggingType = logLevel;
 
                 var enumFromDescription = EnumHelper<LogLevel>.GetEnumFromDescription(logLevel);

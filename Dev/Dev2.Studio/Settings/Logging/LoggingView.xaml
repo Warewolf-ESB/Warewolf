@@ -10,7 +10,6 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-             xmlns:editors="http://schemas.infragistics.com/xaml"
              xmlns:views="clr-namespace:Warewolf.Studio.Views;assembly=Warewolf.Studio.Views"
              d:DesignHeight="1000"
              d:DesignWidth="1000"
@@ -23,7 +22,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
             <RowDefinition Height="50*"/>
-            <!--<RowDefinition MaxHeight="275" />-->
             <RowDefinition />
         </Grid.RowDefinitions>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
@@ -51,19 +49,19 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <ig:XamComboEditor x:Name="LoggingTypesComboBox"
-                            Margin="{StaticResource ControlBorderRight}"
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            ItemsSource="{Binding LoggingTypes}"
-                            SelectedItem="{Binding SelectedLoggingType}"
-                            SelectedValue="{Binding SelectedLoggingType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
-                            IsEditable="False"
-                            AllowDrop="False"
-                            MaxDropDownHeight="200"
-                            CustomValueEnteredAction="Allow" 
-                            Focusable="False"
-                            ItemContainerStyle="{StaticResource ComboEditorItemControlStyle}"
-                            views:FocusExtension.IsFocused="False">
+                                            Margin="{StaticResource ControlBorderRight}"
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            ItemsSource="{Binding LoggingTypes}"
+                                            SelectedItem="{Binding SelectedLoggingType}"
+                                            SelectedValue="{Binding SelectedLoggingType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                                            IsEditable="False"
+                                            AllowDrop="False"
+                                            MaxDropDownHeight="200"
+                                            CustomValueEnteredAction="Allow" 
+                                            Focusable="False"
+                                            ItemContainerStyle="{StaticResource ComboEditorItemControlStyle}"
+                                            views:FocusExtension.IsFocused="False">
                             <i:Interaction.Behaviors>
                                 <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewSelectHelp}" DataContext="{Binding}" />
                             </i:Interaction.Behaviors>
