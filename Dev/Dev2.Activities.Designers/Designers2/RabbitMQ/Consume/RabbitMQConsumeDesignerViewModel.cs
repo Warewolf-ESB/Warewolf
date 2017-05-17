@@ -174,6 +174,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             {
                 ModelItem.SetProperty("IsObject", value);
                 OnPropertyChanged();
+                OnPropertyChanged("ObjectName");
             }
         }
 
@@ -186,21 +187,8 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             }
             set
             {
-
-                if (IsObject)
-                {
-
-                    if (value != null)
-                    {
-                        ModelItem.SetProperty("ObjectName", value);
-                        OnPropertyChanged();
-                    }
-                    else
-                    {
-                        ModelItem.SetProperty("ObjectName", string.Empty);
-                        OnPropertyChanged();
-                    }
-                }
+                ModelItem.SetProperty("ObjectName", value);
+                OnPropertyChanged();
             }
         }
 
