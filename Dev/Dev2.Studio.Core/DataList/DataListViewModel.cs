@@ -198,7 +198,6 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     RemoveItemPropertyChangeEvent(args);
                     AddItemPropertyChangeEvent(args);
-                    _complexObjectHandler.ValidateComplexObject();
 
                 };
                 return _complexObjectCollection;
@@ -236,6 +235,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
                 SortCommand.RaiseCanExecuteChanged();
             }
+
             ViewComplexObjectsCommand?.RaiseCanExecuteChanged();
             DeleteCommand?.RaiseCanExecuteChanged();
         }
@@ -906,12 +906,12 @@ namespace Dev2.Studio.ViewModels.DataList
                 foreach (var col in cols)
                 {
                     result.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" {5}=\"{6}\" />", col.ColumnName
-                    , Description
-                    , col.ColumnDescription
-                    , IsEditable
-                    , col.IsEditable
-                    , GlobalConstants.DataListIoColDirection
-                    , col.ColumnIODirection);
+                        , Description
+                        , col.ColumnDescription
+                        , IsEditable
+                        , col.IsEditable
+                        , GlobalConstants.DataListIoColDirection
+                        , col.ColumnIODirection);
                 }
                 result.Append("</");
                 result.Append(recSet.DisplayName);
@@ -951,7 +951,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
         }
-        
+
         protected override void OnDispose()
         {
             ClearCollections();
