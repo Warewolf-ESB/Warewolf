@@ -26,13 +26,63 @@ namespace Dev2.Settings.Logging
     public enum LogLevel
     {
         // ReSharper disable InconsistentNaming
+        [Description("None: No logging")]
         OFF,
+        [Description("Fatal: Only log events that are fatal")]
         FATAL,
+        [Description("Error: Log fatal and error events")]
         ERROR,
+        [Description("Warn: Log error, fatal and warning events")]
         WARN,
+        [Description("Info: Log system info including pulse data, fatal, error and warning events")]
         INFO,
+        [Description("Debug: Log all system activity including executions. Also logs fatal, error, warning and info events")]
         DEBUG,
+        [Description("Trace: Log detailed system information. Includes events from all the levels above")]
         TRACE
+    }
+    public static class EnumHelper<T>
+    {
+        public static string GetEnumDescription(string value)
+        {
+            Type type = typeof(T);
+            var name = Enum.GetNames(type).Where(f => f.Equals(value, StringComparison.CurrentCultureIgnoreCase)).Select(d => d).FirstOrDefault();
+
+            if (name == null)
+            {
+                return string.Empty;
+            }
+            var field = type.GetField(name);
+            var customAttribute = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return customAttribute.Length > 0 ? ((DescriptionAttribute)customAttribute[0]).Description : name;
+        }
+
+        public static LogLevel GetEnumFromDescription(string description)
+        {
+            var type = typeof(T);
+            if (!type.IsEnum) throw new InvalidOperationException();
+            foreach (var field in type.GetFields())
+            {
+                var attribute = Attribute.GetCustomAttribute(field,
+                    typeof(DescriptionAttribute)) as DescriptionAttribute;
+                if (attribute != null)
+                {
+                    if (attribute.Description == description)
+                        return (LogLevel)field.GetValue(null);
+                }
+                else
+                {
+                    if (field.Name == description)
+                        return (LogLevel)field.GetValue(null);
+                }
+            }
+            throw new Exception();
+        }
+
+        public static IEnumerable<string> GetDiscriptionsAsList(Type type)
+        {
+            return type.GetEnumNames().Select(GetEnumDescription).ToList();
+        }
     }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
@@ -227,20 +277,6 @@ namespace Dev2.Settings.Logging
                 OnPropertyChanged();
             }
         }
-
-        //public LogLevel ServerFileLogLevel
-        //{
-        //    get
-        //    {
-        //        return _serverFileLogLevel;
-        //    }
-        //    set
-        //    {
-        //        _serverFileLogLevel = value;
-        //        IsDirty = !Equals(Item);
-        //        OnPropertyChanged();
-        //    }
-        //}
         public LogLevel StudioFileLogLevel
         {
             get
@@ -255,35 +291,23 @@ namespace Dev2.Settings.Logging
             }
         }
 
-        public IEnumerable<KeyValuePair<string, LogLevel>> LoggingTypes =>
-            new List<KeyValuePair<string, LogLevel>>
-        {
-            new KeyValuePair<string, LogLevel>("None: No logging", LogLevel.OFF),
-            new KeyValuePair<string, LogLevel>("Debug: Log all system activity including executions. Also logs fatal, error, warning and info events", LogLevel.DEBUG),
-            new KeyValuePair<string, LogLevel>("Fatal: Only log events that are fatal", LogLevel.FATAL),
-            new KeyValuePair<string, LogLevel>("Info: Log system info including pulse data, fatal, error and warning events", LogLevel.INFO),
-            new KeyValuePair<string, LogLevel>("Trace: Log detailed system information. Includes events from all the levels above", LogLevel.TRACE),
-            new KeyValuePair<string, LogLevel>("Warn: Log error, fatal and warning events", LogLevel.WARN)
-        };
+        public IEnumerable<string> LoggingTypes => EnumHelper<LogLevel>.GetDiscriptionsAsList(typeof(LogLevel)).ToList();
 
         public string SelectedLoggingType
         {
-            get { return _selectedLoggingType; }
+            get
+            {
+                return EnumHelper<LogLevel>.GetEnumDescription(ServerEventLogLevel.ToString());
+            }
             set
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
                     return;
-                if (!string.IsNullOrEmpty(value))
-                {
-                    var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
-                    _selectedLoggingType = logLevel.Value.ToString();
-                    ServerEventLogLevel = logLevel.Value;
-                }
-                else
-                {
-                    _selectedLoggingType = ServerEventLogLevel.ToString();
-                }                
-                OnPropertyChanged();
+                var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
+                _selectedLoggingType = logLevel;
+
+                var enumFromDescription = EnumHelper<LogLevel>.GetEnumFromDescription(logLevel);
+                ServerEventLogLevel = enumFromDescription;
             }
         }
 
@@ -376,7 +400,6 @@ namespace Dev2.Settings.Logging
         bool CanEditStudioLogSettings { get; }
         bool CanEditLogSettings { get; }
         LogLevel StudioFileLogLevel { get; }
-        IEnumerable<KeyValuePair<string, LogLevel>> LoggingTypes { get; }
-        string SelectedLoggingType { get; set; }
+        IEnumerable<string> LoggingTypes { get; }
     }
 }
