@@ -329,7 +329,6 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-
             }
         }
 
@@ -352,7 +351,6 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-
             }
         }
 
