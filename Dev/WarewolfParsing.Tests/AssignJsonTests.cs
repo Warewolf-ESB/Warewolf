@@ -43,7 +43,6 @@ namespace WarewolfParsingTest
                 Assert.Fail("bob");
             }
         }
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("AssignSingleProperty_ValueProperty")]
