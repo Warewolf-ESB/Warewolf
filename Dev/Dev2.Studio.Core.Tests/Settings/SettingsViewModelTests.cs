@@ -695,6 +695,38 @@ You need Administrator permission.", viewModel.Errors);
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SettingsViewModel_HasVariables")]
+        public void SettingsViewModel_HasVariables_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new TestSecurityViewModel();
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.SetupAllProperties();
+            mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.HasVariables);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("SettingsViewModel_HasDebugOutput")]
+        public void SettingsViewModel_HasDebugOutput_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new TestSecurityViewModel();
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.SetupAllProperties();
+            mockPopupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.No);
+            var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.HasDebugOutput);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
         public void SettingsViewModel_OnDeactivate_DirtyFalse_PopResultNo()
@@ -707,6 +739,7 @@ You need Administrator permission.", viewModel.Errors);
             var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "success", securityViewModel);
             //------------Execute Test---------------------------
             viewModel.SecurityViewModel.ResourcePermissions[0].WindowsGroup = "xxx";
+            Assert.AreEqual("Settings", viewModel.ResourceType);
             Assert.IsTrue(viewModel.IsDirty);
             viewModel.CallDeactivate();
             //------------Assert Results-------------------------
