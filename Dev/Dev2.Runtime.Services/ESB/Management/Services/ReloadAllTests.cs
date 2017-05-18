@@ -26,14 +26,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Reload All Tests");
+                Dev2Logger.Info("Reload All Tests", "Warewolf Info");
                 TestCatalog.ReloadAllTests();
                 CompressedExecuteMessage message = new CompressedExecuteMessage { HasError = false };
                 return serializer.SerializeToBuilder(message);
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
                 var res = new CompressedExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }

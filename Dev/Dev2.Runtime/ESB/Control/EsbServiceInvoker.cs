@@ -122,7 +122,7 @@ namespace Dev2.Runtime.ESB
 
                     try
                     {
-                        Dev2Logger.Debug("Finding service");
+                        Dev2Logger.Debug("Finding service", "Warewolf Debug");
                         var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
 
                         if (theService == null)
@@ -166,14 +166,14 @@ namespace Dev2.Runtime.ESB
                             {
                                 throw new Exception(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser);
                             }
-                            Dev2Logger.Debug("Mapping Action Dependencies");
+                            Dev2Logger.Debug("Mapping Action Dependencies", "Warewolf Debug");
                             MapServiceActionDependencies(theStart);
                             
                             if (theStart != null)
                             {
                                 theStart.Service = theService;
                                 theStart.DataListSpecification = theService.DataListSpecification;
-                                Dev2Logger.Debug("Getting container");
+                                Dev2Logger.Debug("Getting container", "Warewolf Debug");
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
                                 result = container.Execute(out invokeErrors, Update);
@@ -204,7 +204,7 @@ namespace Dev2.Runtime.ESB
 
                         if (errors.HasErrors())
                         {
-                            Dev2Logger.Error(errors.MakeDisplayReady());
+                            Dev2Logger.Error(errors.MakeDisplayReady(), "Warewolf Error");
                         }
                     }
                 }
@@ -310,7 +310,7 @@ namespace Dev2.Runtime.ESB
         {
             try
             {
-                Dev2Logger.Debug($"Getting DynamicService: {serviceName}");
+                Dev2Logger.Debug($"Getting DynamicService: {serviceName}", "Warewolf Debug");
                 if (resourceId == Guid.Empty)
                 {
                     return _serviceLocator.FindService(serviceName, _workspace.ID) ?? _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version

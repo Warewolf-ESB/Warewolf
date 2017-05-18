@@ -182,7 +182,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFGatherSystemInformationTool", e);
+                Dev2Logger.Error("DSFGatherSystemInformationTool", e, "Warewolf Error");
                 allErrors.AddError(e.Message);
             }
             finally

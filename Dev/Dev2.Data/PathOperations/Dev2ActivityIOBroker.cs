@@ -545,7 +545,7 @@ namespace Dev2.PathOperations
             {
                 result = PerformTransfer(src, dst, args, origDstPath, p, result);
             }
-            Dev2Logger.Debug($"Transfered: {src.IOPath.Path}");
+            Dev2Logger.Debug($"Transfered: {src.IOPath.Path}", "Warewolf Debug");
             return result;
         }
 
@@ -572,7 +572,7 @@ namespace Dev2.PathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, "Warewolf Error");
             }
             return result;
         }
@@ -700,7 +700,7 @@ namespace Dev2.PathOperations
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
                 throw;
             }
 
@@ -718,7 +718,7 @@ namespace Dev2.PathOperations
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
                 throw;
             }
 
@@ -831,7 +831,7 @@ namespace Dev2.PathOperations
                 {
                     if (eventArgs.CurrentEntry != null)
                     {
-                        Dev2Logger.Debug($"Event Type: {eventArgs.EventType} Total Entries: {eventArgs.EntriesTotal} Entries Saved: {eventArgs.EntriesSaved} Current Entry: {eventArgs.CurrentEntry.FileName}");
+                        Dev2Logger.Debug($"Event Type: {eventArgs.EventType} Total Entries: {eventArgs.EntriesTotal} Entries Saved: {eventArgs.EntriesSaved} Current Entry: {eventArgs.CurrentEntry.FileName}", "Warewolf Debug");
                     }
                 };
                 if (args.ArchivePassword != string.Empty)

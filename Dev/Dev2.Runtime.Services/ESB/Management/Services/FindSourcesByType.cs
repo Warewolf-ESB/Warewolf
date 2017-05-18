@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException("type");
                     // ReSharper restore NotResolvedInText
                 }
-                Dev2Logger.Info("Find Sources By Type. " + type);
+                Dev2Logger.Info("Find Sources By Type. " + type, "Warewolf Info");
                 enSourceType sourceType;
                 if (Enum.TryParse(type, true, out sourceType))
                 {
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
                 throw;
             }
         }

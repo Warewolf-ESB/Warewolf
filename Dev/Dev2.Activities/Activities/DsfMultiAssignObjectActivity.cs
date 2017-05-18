@@ -166,7 +166,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         catch (Exception e)
                         {
-                            Dev2Logger.Error(e);
+                            Dev2Logger.Error(e, "Warewolf Error");
                             allErrors.AddError(e.Message);
                         }
                     }
@@ -176,7 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
                 allErrors.AddError(e.Message);
             }
             finally
@@ -250,7 +250,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception err)
                 {
-                    Dev2Logger.Warn(err);
+                    Dev2Logger.Warn(err, "Warewolf Warn");
                 }
             }
             if (!res)

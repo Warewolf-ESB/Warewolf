@@ -217,7 +217,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFFindActivity", e);
+                Dev2Logger.Error("DSFFindActivity", e, "Warewolf Error");
                 allErrors.AddError(e.Message);
             }
             finally

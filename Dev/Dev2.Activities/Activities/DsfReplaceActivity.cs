@@ -238,7 +238,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // ReSharper disable EmptyGeneralCatchClause
             catch(Exception ex)
             {
-                Dev2Logger.Error("DSFReplace", ex);
+                Dev2Logger.Error("DSFReplace", ex, "Warewolf Error");
                 allErrors.AddError(ex.Message);
             }
             finally

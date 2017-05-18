@@ -5,7 +5,6 @@ using System.Transactions;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
@@ -52,7 +51,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception x)
             {
-                Dev2Logger.Error($"resource{sourcePath} ", x);
+                Dev2Logger.Error($"resource{sourcePath} ", x, "Warewolf Error");
                 return new ResourceCatalogDuplicateResult
                 {
                     Status = ExecStatus.Fail,
@@ -76,7 +75,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception x)
             {
-                Dev2Logger.Error($"resource{resourceId} ", x);
+                Dev2Logger.Error($"resource{resourceId} ", x, "Warewolf Error");
                 return null;
             }
         }
@@ -198,7 +197,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, e);
+                    Dev2Logger.Error(e.Message, e, "Warewolf Error");
                 }
             }
             
