@@ -302,6 +302,18 @@ Version History will also be deleted.</value>
   <data name="ErrorTitle" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsPerformanceCounters" xml:space="preserve">
+    <value>PERFORMANCE COUNTERS</value>
+  </data>
+  <data name="SettingsSecurity" xml:space="preserve">
+    <value>SECURITY</value>
+  </data>
+  <data name="SettingsLogging" xml:space="preserve">
+    <value>LOGGING</value>
+  </data>
   <data name="CritErrorTitle" xml:space="preserve">
     <value>Critical Error</value>
   </data>
@@ -351,6 +363,12 @@ Version History will also be deleted.</value>
   </data>
   <data name="SaveSettingErrorPrefix" xml:space="preserve">
     <value>Error while saving</value>
+  </data>
+  <data name="SaveSettingErrorHeader" xml:space="preserve">
+    <value>Save Error</value>
+  </data>
+  <data name="NetworkSettingErrorPrefix" xml:space="preserve">
+    <value>Network Error</value>
   </data>
   <data name="SaveSettingsNotReachableErrorMsg" xml:space="preserve">
     <value>Error while saving: Server unreachable.</value>

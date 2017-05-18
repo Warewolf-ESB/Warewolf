@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
@@ -24,14 +26,65 @@ namespace Dev2.Settings.Logging
     public enum LogLevel
     {
         // ReSharper disable InconsistentNaming
+        [Description("None: No logging")]
         OFF,
+        [Description("Fatal: Only log events that are fatal")]
         FATAL,
+        [Description("Error: Log fatal and error events")]
         ERROR,
+        [Description("Warn: Log error, fatal and warning events")]
         WARN,
+        [Description("Info: Log system info including pulse data, fatal, error and warning events")]
         INFO,
+        [Description("Debug: Log all system activity including executions. Also logs fatal, error, warning and info events")]
         DEBUG,
+        [Description("Trace: Log detailed system information. Includes events from all the levels above")]
         TRACE
     }
+    public static class EnumHelper<T>
+    {
+        public static string GetEnumDescription(string value)
+        {
+            Type type = typeof(T);
+            var name = Enum.GetNames(type).Where(f => f.Equals(value, StringComparison.CurrentCultureIgnoreCase)).Select(d => d).FirstOrDefault();
+
+            if (name == null)
+            {
+                return string.Empty;
+            }
+            var field = type.GetField(name);
+            var customAttribute = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return customAttribute.Length > 0 ? ((DescriptionAttribute)customAttribute[0]).Description : name;
+        }
+
+        public static LogLevel GetEnumFromDescription(string description)
+        {
+            var type = typeof(T);
+            if (!type.IsEnum) throw new InvalidOperationException();
+            foreach (var field in type.GetFields())
+            {
+                var attribute = Attribute.GetCustomAttribute(field,
+                    typeof(DescriptionAttribute)) as DescriptionAttribute;
+                if (attribute != null)
+                {
+                    if (attribute.Description == description)
+                        return (LogLevel)field.GetValue(null);
+                }
+                else
+                {
+                    if (field.Name == description)
+                        return (LogLevel)field.GetValue(null);
+                }
+            }
+            throw new Exception();
+        }
+
+        public static IEnumerable<string> GetDiscriptionsAsList(Type type)
+        {
+            return type.GetEnumNames().Select(GetEnumDescription).ToList();
+        }
+    }
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IServer CurrentEnvironment
@@ -51,6 +104,7 @@ namespace Dev2.Settings.Logging
         }
         private string _serverLogMaxSize;
         private string _studioLogMaxSize;
+        private string _selectedLoggingType;
         private LogLevel _serverEventLogLevel;
         private LogLevel _studioEventLogLevel;
         private ProgressDialogViewModel _progressDialogViewModel;
@@ -119,7 +173,6 @@ namespace Dev2.Settings.Logging
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
             _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
             client.DownloadFileAsync(managementServiceUri, _serverLogFile);
-
         }
 
         [ExcludeFromCodeCoverage]
@@ -158,7 +211,6 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         public virtual void Save(LoggingSettingsTo logSettings)
         {
-            logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
@@ -224,20 +276,6 @@ namespace Dev2.Settings.Logging
                 OnPropertyChanged();
             }
         }
-
-        public LogLevel ServerFileLogLevel
-        {
-            get
-            {
-                return _serverFileLogLevel;
-            }
-            set
-            {
-                _serverFileLogLevel = value;
-                IsDirty = !Equals(Item);
-                OnPropertyChanged();
-            }
-        }
         public LogLevel StudioFileLogLevel
         {
             get
@@ -249,6 +287,26 @@ namespace Dev2.Settings.Logging
                 _studioFileLogLevel = value;
                 IsDirty = !Equals(Item);
                 OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<string> LoggingTypes => EnumHelper<LogLevel>.GetDiscriptionsAsList(typeof(LogLevel)).ToList();
+
+        public string SelectedLoggingType
+        {
+            get
+            {
+                return EnumHelper<LogLevel>.GetEnumDescription(ServerEventLogLevel.ToString());
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
+                    return;
+                var logLevel = LoggingTypes.Single(p => value != null && p.ToString().Contains(value));
+                _selectedLoggingType = logLevel;
+
+                var enumFromDescription = EnumHelper<LogLevel>.GetEnumFromDescription(logLevel);
+                ServerEventLogLevel = enumFromDescription;
             }
         }
 
@@ -271,7 +329,6 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-
             }
         }
 
@@ -294,7 +351,6 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-              
             }
         }
 
@@ -323,6 +379,7 @@ namespace Dev2.Settings.Logging
                             string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
                             string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
                             string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
+                            Equals(_selectedLoggingType, other._selectedLoggingType) &&
                             int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
                             int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
             return equalsSeq;
@@ -339,7 +396,7 @@ namespace Dev2.Settings.Logging
         string ServerLogMaxSize { get; }
         bool CanEditStudioLogSettings { get; }
         bool CanEditLogSettings { get; }
-        LogLevel ServerFileLogLevel { get; }
         LogLevel StudioFileLogLevel { get; }
+        IEnumerable<string> LoggingTypes { get; }
     }
 }
