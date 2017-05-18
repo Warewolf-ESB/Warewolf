@@ -503,7 +503,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowReverseDependencyVisualizer message)
         {
-            Dev2Logger.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             if (message.Model != null)
             {
                 _worksurfaceContextManager.AddReverseDependencyVisualizerWorkSurface(message.Model);
@@ -512,7 +512,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(SaveAllOpenTabsMessage message)
         {
-            Dev2Logger.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             PersistTabs();
         }
 
@@ -520,7 +520,7 @@ namespace Dev2.Studio.ViewModels
         public void Handle(AddWorkSurfaceMessage message)
         {
             IsNewWorkflowSaved = true;
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             _worksurfaceContextManager.AddWorkSurface(message.WorkSurfaceObject);
             if (message.ShowDebugWindowOnLoad)
             {
@@ -535,13 +535,13 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(DeleteResourcesMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             DeleteResources(message.ResourceModels, message.FolderName, message.ShowDialog, message.ActionToDoOnDelete);
         }
 
         public void Handle(DeleteFolderMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             if (ShowDeleteDialogForFolder(message.FolderName))
             {
                 message.ActionToDoOnDelete?.Invoke();
@@ -552,7 +552,7 @@ namespace Dev2.Studio.ViewModels
        
         public void Handle(ShowDependenciesMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             var model = message.ResourceModel;
             var dependsOnMe = message.ShowDependentOnMe;
             _worksurfaceContextManager.ShowDependencies(dependsOnMe, model, ActiveServer);
@@ -1728,12 +1728,12 @@ namespace Dev2.Studio.ViewModels
                 // Get the environment for the workspace item
                 //
                 IWorkspaceItem item = _getWorkspaceItemRepository().WorkspaceItems[i];
-                Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}");
+                Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}", "Warewolf Info");
                 IServer environment = ServerRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.EnvironmentID == item.EnvironmentID);
 
                 if (environment?.ResourceRepository == null)
                 {
-                    Dev2Logger.Info(@"Environment Not Found");
+                    Dev2Logger.Info(@"Environment Not Found", "Warewolf Info");
                     if (environment != null && item.EnvironmentID == environment.EnvironmentID)
                     {
                         workspaceItemsToRemove.Add(item);
@@ -1741,7 +1741,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 if (environment != null)
                 {
-                    Dev2Logger.Info($"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}");
+                    Dev2Logger.Info($"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}", "Warewolf Info");
                     if (environment.ResourceRepository != null)
                     {
                         environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
@@ -1761,7 +1761,7 @@ namespace Dev2.Studio.ViewModels
                         }
                         else
                         {
-                            Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ");
+                            Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ", "Warewolf Info");
                             var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID, false);
                             resource.WorkflowXaml = fetchResourceDefinition.Message;
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;

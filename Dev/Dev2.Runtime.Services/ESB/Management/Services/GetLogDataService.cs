@@ -32,39 +32,17 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2Logger.Info("Get Log Data Service");
+            Dev2Logger.Info("Get Log Data Service", "Warewolf Info");
 
             var serializer = new Dev2JsonSerializer();
             try
             {
-//                if (values == null)
-//                {
-//                    throw new ArgumentNullException(nameof(values));
-//                }
-//                StringBuilder tmp;
-//                values.TryGetValue("ReloadResourceCatalogue", out tmp);
-//                string reloadResourceCatalogueString = "";
-//                if (tmp != null)
-//                {
-//                    reloadResourceCatalogueString = tmp.ToString();
-//                }
-//                bool reloadResourceCatalogue = false;
-//                if (!string.IsNullOrEmpty(reloadResourceCatalogueString))
-//                {
-//
-//                    if (!bool.TryParse(reloadResourceCatalogueString, out reloadResourceCatalogue))
-//                    {
-//                        reloadResourceCatalogue = false;
-//                    }
-//                }
-//                if (reloadResourceCatalogue)
-//                {
-//                }
+
                 return serializer.SerializeToBuilder("");
             }
             catch (Exception e)
             {
-                Dev2Logger.Info("Get Log Data ServiceError", e);
+                Dev2Logger.Info("Get Log Data ServiceError", e, "Warewolf Info");
             }
             return serializer.SerializeToBuilder("");
         }

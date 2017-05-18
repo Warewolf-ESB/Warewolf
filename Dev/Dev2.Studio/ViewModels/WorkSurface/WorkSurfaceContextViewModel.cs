@@ -237,7 +237,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(DebugResourceMessage message)
         {
-            Dev2Logger.Debug(message.GetType().Name);
+            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             IContextualResourceModel contextualResourceModel = message.Resource;
             if (contextualResourceModel != null && ContextualResourceModel != null && contextualResourceModel.ID == ContextualResourceModel.ID)
             {
@@ -247,13 +247,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(ExecuteResourceMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             Debug(message.Resource, false);
         }
 
         public void Handle(SaveResourceMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             if (ContextualResourceModel != null)
             {
                 if (ContextualResourceModel.ID == message.Resource.ID)
@@ -272,7 +272,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(UpdateWorksurfaceDisplayName message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             if (ContextualResourceModel != null && ContextualResourceModel.ID == message.WorksurfaceResourceID)
             {
                 //tab title
@@ -466,7 +466,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void ViewInBrowser()
         {
             FindMissing();
-            Dev2Logger.Debug("Publish message of type - " + typeof(SaveAllOpenTabsMessage));
+            Dev2Logger.Debug("Publish message of type - " + typeof(SaveAllOpenTabsMessage), "Warewolf Debug");
             EventPublisher.Publish(new SaveAllOpenTabsMessage());
 
             if (ContextualResourceModel?.Environment?.Connection == null)

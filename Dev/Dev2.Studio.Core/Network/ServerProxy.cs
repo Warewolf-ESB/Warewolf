@@ -160,7 +160,7 @@ namespace Dev2.Network
            
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
             }
         }
         
@@ -172,7 +172,7 @@ namespace Dev2.Network
             }
              catch( FallbackException)
             {
-                Dev2Logger.Info("Falling Back to previous signal r client");
+                Dev2Logger.Info("Falling Back to previous signal r client", "Warewolf Info");
                 var name = _wrappedConnection.DisplayName;
                 
                 SetupPassthroughEvents();
@@ -181,7 +181,7 @@ namespace Dev2.Network
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
                 throw;
             }
             return false;
@@ -252,7 +252,7 @@ namespace Dev2.Network
         {
             if (PermissionsModified != null)
             {
-                Dev2Logger.Debug("Permissions Modified: "+args);
+                Dev2Logger.Debug("Permissions Modified: "+args, "Warewolf Debug");
                 PermissionsModified(this, args);
             }
         }

@@ -536,12 +536,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             try
             {
                 var debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
-                Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]");
+                Dev2Logger.Debug($"Debug file path is [{debugItemTempFilePath}]", "Warewolf Debug");
                 Process.Start(new ProcessStartInfo(debugItemTempFilePath));
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, "Warewolf Error");
                 ProcessControllerHasError(ex);
             }
         }
@@ -769,7 +769,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 return;
             }
-            Dev2Logger.Debug(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID.GetValueOrDefault(), content.DisplayName));
+            Dev2Logger.Debug(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID.GetValueOrDefault(), content.DisplayName), "Warewolf Debug");
             if (_lastStep != null && DebugStatus == DebugStatus.Finished && content.StateType == StateType.Message)
             {
                 var lastDebugStateProcessed = _lastStep;

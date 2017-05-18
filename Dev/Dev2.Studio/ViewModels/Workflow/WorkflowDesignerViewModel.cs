@@ -808,7 +808,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         catch (Exception e)
                         {
-                            Dev2Logger.Error("OpenWorkflowLinkCommand", e);
+                            Dev2Logger.Error("OpenWorkflowLinkCommand", e, "Warewolf Error");
                         }
 
                     }
@@ -1211,14 +1211,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void InitializeFlowSwitch(ModelItem mi)
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
-            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage), "Warewolf Info");
             _expressionString = FlowController.ConfigureSwitchExpression(new ConfigureSwitchExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true });
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
         private void InitializeFlowDecision(ModelItem mi)
         {
-            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage), "Warewolf Info");
             ModelProperty modelProperty = mi.Properties["Action"];
 
             InitialiseWithAction(modelProperty);
@@ -1510,7 +1510,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <date>2013/02/06</date>
         public void Handle(AddStringListToDataListMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             IDataListViewModel dlvm = DataListSingleton.ActiveDataList;
             if (dlvm != null)
             {
@@ -1886,7 +1886,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var workspace = GlobalConstants.ServerWorkspaceID;
 
                 // log the trace for fetch ;)
-                Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...");
+                Dev2Logger.Info($"Null Definition For {_resourceModel.ID} :: {_resourceModel.ResourceName}. Fetching...", "Warewolf Info");
 
                 // In the case of null of empty try fetching again ;)
                 var msg = Server.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID, false);
@@ -1902,7 +1902,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
                     // log the trace for fetch ;)
-                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow");
+                    Dev2Logger.Info($"Could not find {_resourceModel.ResourceName}. Creating a new workflow", "Warewolf Info");
                     var activityBuilder = _workflowHelper.CreateWorkflow(_resourceModel.ResourceName);
                     _wd.Load(activityBuilder);
                     BindToModel();
@@ -2707,7 +2707,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(EditActivityMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             EditActivity(message.ModelItem, message.ParentEnvironmentID);
         }
 
@@ -2773,7 +2773,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void PublishMessages(IContextualResourceModel resourceModel)
         {
             UpdateResource(resourceModel);
-            Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage));
+            Dev2Logger.Info("Publish message of type - " + typeof(UpdateResourceMessage), "Warewolf Info");
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
         }
 

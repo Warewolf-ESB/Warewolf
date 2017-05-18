@@ -907,7 +907,7 @@ namespace Warewolf.Studio.ViewModels
                                 }
                                 catch (Exception exception)
                                 {
-                                    Dev2Logger.Error(exception);
+                                    Dev2Logger.Error(exception, "Warewolf Error");
 
                                     _popupController.Show(Resources.Languages.Core.FailedToRenameResource,
                                         Resources.Languages.Core.FailedToRenameResourceHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true,
