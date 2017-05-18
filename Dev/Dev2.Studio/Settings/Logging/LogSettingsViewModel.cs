@@ -23,67 +23,6 @@ using Newtonsoft.Json;
 
 namespace Dev2.Settings.Logging
 {
-    public enum LogLevel
-    {
-        // ReSharper disable InconsistentNaming
-        [Description("None: No logging")]
-        OFF,
-        [Description("Fatal: Only log events that are fatal")]
-        FATAL,
-        [Description("Error: Log fatal and error events")]
-        ERROR,
-        [Description("Warn: Log error, fatal and warning events")]
-        WARN,
-        [Description("Info: Log system info including pulse data, fatal, error and warning events")]
-        INFO,
-        [Description("Debug: Log all system activity including executions. Also logs fatal, error, warning and info events")]
-        DEBUG,
-        [Description("Trace: Log detailed system information. Includes events from all the levels above")]
-        TRACE
-    }
-    public static class EnumHelper<T>
-    {
-        public static string GetEnumDescription(string value)
-        {
-            Type type = typeof(T);
-            var name = Enum.GetNames(type).Where(f => f.Equals(value, StringComparison.CurrentCultureIgnoreCase)).Select(d => d).FirstOrDefault();
-
-            if (name == null)
-            {
-                return string.Empty;
-            }
-            var field = type.GetField(name);
-            var customAttribute = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
-            return customAttribute.Length > 0 ? ((DescriptionAttribute)customAttribute[0]).Description : name;
-        }
-
-        public static LogLevel GetEnumFromDescription(string description)
-        {
-            var type = typeof(T);
-            if (!type.IsEnum) throw new InvalidOperationException();
-            foreach (var field in type.GetFields())
-            {
-                var attribute = Attribute.GetCustomAttribute(field,
-                    typeof(DescriptionAttribute)) as DescriptionAttribute;
-                if (attribute != null)
-                {
-                    if (attribute.Description == description)
-                        return (LogLevel)field.GetValue(null);
-                }
-                else
-                {
-                    if (field.Name == description)
-                        return (LogLevel)field.GetValue(null);
-                }
-            }
-            throw new Exception();
-        }
-
-        public static IEnumerable<string> GetDiscriptionsAsList(Type type)
-        {
-            return type.GetEnumNames().Select(GetEnumDescription).ToList();
-        }
-    }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IServer CurrentEnvironment
@@ -211,6 +150,7 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         public virtual void Save(LoggingSettingsTo logSettings)
         {
+            //logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
@@ -302,7 +242,7 @@ namespace Dev2.Settings.Logging
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
                     return;
-                var logLevel = LoggingTypes.Single(p => value != null && p.ToString().Contains(value));
+                var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
                 _selectedLoggingType = logLevel;
 
                 var enumFromDescription = EnumHelper<LogLevel>.GetEnumFromDescription(logLevel);
@@ -386,19 +326,5 @@ namespace Dev2.Settings.Logging
                             int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
             return equalsSeq;
         }
-    }
-
-    public interface ILogSettings
-    {
-        ICommand GetServerLogFileCommand { get; }
-        ICommand GetStudioLogFileCommand { get; }
-        LogLevel ServerEventLogLevel { get; set; }
-        LogLevel StudioEventLogLevel { get; set; }
-        string StudioLogMaxSize { get; }
-        string ServerLogMaxSize { get; }
-        bool CanEditStudioLogSettings { get; }
-        bool CanEditLogSettings { get; }
-        LogLevel StudioFileLogLevel { get; }
-        IEnumerable<string> LoggingTypes { get; }
     }
 }

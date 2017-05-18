@@ -20,15 +20,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class DeleteAllTests : IEsbManagementEndpoint
     {
-        #region Implementation of ISpookyLoadable<out string>
-
-
-
-        #endregion
-
-        #region Implementation of IEsbManagementEndpoint
-
-        /// <summary>
+       /// <summary>
         /// Executes the service
         /// </summary>
         /// <param name="values">The values.</param>
@@ -73,16 +65,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             StringBuilder tmp;
             requestArgs.TryGetValue("resourceID", out tmp);
-            if (tmp != null)
-            {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
-                {
-                    return resourceId;
-                }
-            }
-
-            return Guid.Empty;
+            if(tmp == null)
+                return Guid.Empty;
+            Guid resourceId;
+            return Guid.TryParse(tmp.ToString(), out resourceId) ? resourceId : Guid.Empty;
         }
 
         public AuthorizationContext GetAuthorizationContextForService()
@@ -106,6 +92,5 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
         private ITestCatalog _testCatalog;
-        #endregion
     }
 }
