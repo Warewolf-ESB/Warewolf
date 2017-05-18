@@ -6,6 +6,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
@@ -89,6 +91,10 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(),null);
             //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.IsNotNull(logEntriesObject);
+
         }
 
         [TestMethod]
@@ -123,4 +129,5 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
     }
+
 }
