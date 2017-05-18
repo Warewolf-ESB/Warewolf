@@ -65,7 +65,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var debugItemResults = debugEvalResult.GetDebugItemResult();
             //---------------Test Result -----------------------
             var variable = debugItemResults[0].Variable;
-            Assert.AreEqual("[[@scalar()]]", variable);
+            Assert.AreEqual("[[@scalar]]", variable);
         }
     }
 }
