@@ -18,6 +18,7 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Core.Tests.Environments;
+using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
@@ -755,6 +756,52 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.Outputs.Count);
             Assert.AreEqual("Hello Nathi.", testFrameworkViewModel.SelectedServiceTest.Outputs.First().Value);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetOutputs_GivenDebugStatesMultipleOutputs_ShouldAddAllTestOutputs()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            var resourceId = Guid.NewGuid();
+            var dsfDecision = new DsfDecision();
+            var decisionUniqueId = Guid.NewGuid();
+            dsfDecision.UniqueID = decisionUniqueId.ToString();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            contextualResourceModel.DataList = "<Datalist/>";
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var newTestFromDebugMessage = new NewTestFromDebugMessage();
+            var readAllText = File.ReadAllText("JsonResources\\DebugStates.json");
+            var serializer = new Dev2JsonSerializer();
+            var debugStates = serializer.Deserialize<List<IDebugState>>(readAllText);
+            var debugState = debugStates.Single(state => state.StateType == StateType.End);
+            var debugItemResult = new DebugItemResult();
+            debugItemResult.Variable = "var";
+            debugItemResult.Value = "var";
+            debugState.Outputs.Single().ResultsList.Add( debugItemResult);
+            newTestFromDebugMessage.ResourceModel = mockResourceModel.Object;
+            newTestFromDebugMessage.RootItems = new List<IDebugTreeViewItemViewModel>();
+
+
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(testFrameworkViewModel);
+            //---------------Execute Test ----------------------
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { debugStates.Last() });
+            //---------------Test Result -----------------------
+            Assert.AreEqual(2, testFrameworkViewModel.SelectedServiceTest.Outputs.Count);
+            Assert.AreEqual("Hello Nathi.", testFrameworkViewModel.SelectedServiceTest.Outputs.First().Value);
+            Assert.AreEqual("Message", testFrameworkViewModel.SelectedServiceTest.Outputs.First().Variable);
+            Assert.AreEqual("var", testFrameworkViewModel.SelectedServiceTest.Outputs.Last().Value);
+            Assert.AreEqual("var", testFrameworkViewModel.SelectedServiceTest.Outputs.Last().Variable);
         }
 
         [TestMethod]

@@ -135,6 +135,21 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateTest_GivenFromDebug_ShouldSetNoOutputs()
+        {
+            //---------------Set up test pack-------------------
+            var testFrameworkViewModel = new ServiceTestCommandHandlerModel();
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var testModel = testFrameworkViewModel.CreateTest(CreateResourceModelWithSingleScalarOutput(), 0, true);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("Test 1", testModel.TestName);
+            Assert.AreEqual(0, testModel.Outputs.Count);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("TestCommandHandlerModelTests_CreateTest")]
         public void TestCommandHandlerModelTests_CreateTest_Execute_ShouldAddInputsFromResourceModel()
@@ -613,7 +628,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 methodInfo.Invoke(testFrameworkViewModel, new object[] { default(IEnumerable<IServiceTestStep>), default(ObservableCollection<IServiceTestStep>) });
             }
-            catch(TargetInvocationException ex)
+            catch (TargetInvocationException ex)
             {
                 // ReSharper disable once PossibleNullReferenceException
                 var b = ex.InnerException.GetType() == typeof(NullReferenceException);
