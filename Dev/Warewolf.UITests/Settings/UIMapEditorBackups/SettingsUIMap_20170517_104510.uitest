@@ -803,60 +803,6 @@
                                                         </UIObject>
                                                       </Descendants>
                                                     </UIObject>
-                                                    <UIObject ControlType="Custom" Id="LoggingTypesComboBox" FriendlyName="LoggingTypesComboBox" SpecialControlType="None">
-                                                      <TechnologyName>UIA</TechnologyName>
-                                                      <WindowTitles>
-                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                      </WindowTitles>
-                                                      <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                                                        <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
-                                                        <PropertyCondition Name="AutomationId">UI_LoggingType_AutoID</PropertyCondition>
-                                                      </AndCondition>
-                                                      <SupportLevel>0</SupportLevel>
-                                                      <Descendants>
-                                                        <UIObject ControlType="Button" Id="ToggleButtonButton" FriendlyName="ToggleButton" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">ToggleButton</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants />
-                                                        </UIObject>
-                                                        <UIObject ControlType="Text" Id="NoneNologgingText" FriendlyName="None: No logging" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                            <PropertyCondition Name="Name">None: No logging</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants />
-                                                        </UIObject>
-                                                        <UIObject ControlType="Text" Id="FatalOnlylogeventsthText" FriendlyName="Fatal: Only log events that are fatal" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                            <PropertyCondition Name="Name">Fatal: Only log events that are fatal</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants />
-                                                        </UIObject>
-                                                      </Descendants>
-                                                    </UIObject>
                                                   </Descendants>
                                                 </UIObject>
                                               </Descendants>
@@ -1306,6 +1252,77 @@
                                             </UIObject>
                                           </Descendants>
                                         </UIObject>
+                                        <UIObject ControlType="TabList" Id="Tabs" FriendlyName="" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="TabPage" Id="LoggingTabPage" FriendlyName="System.Windows.Controls.TabItem Header: Content:" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                                <PropertyCondition Name="Name">System.Windows.Controls.TabItem Header: Content:</PropertyCondition>
+                                                <PropertyCondition Name="Instance">2</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Custom" Id="LogSettingsView" FriendlyName="LogSettingsViewContent" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName">Uia.LoggingView</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">LogSettingsViewContent</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Custom" Id="LoggingTypesComboBox" FriendlyName="LoggingTypesComboBox" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                        <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_LoggingType_AutoID</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Button" Id="ToggleButtonButton" FriendlyName="ToggleButton" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">ToggleButton</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
                                       </Descendants>
                                     </UIObject>
                                   </Descendants>
@@ -1360,6 +1377,108 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="134396">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\SANELE.MTHEMBU)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UIUI_SplitPane_AutoIDCustom" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="TabPage" Id="UIDev2SettingsSettingsTabPage" FriendlyName="Dev2.Settings.SettingsViewModel" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                        <PropertyCondition Name="Name">Dev2.Settings.SettingsViewModel</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants>
+                        <UIObject ControlType="Custom" Id="UIDev2StudioViewModelsCustom" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
+                          <TechnologyName>UIA</TechnologyName>
+                          <WindowTitles>
+                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                          </WindowTitles>
+                          <AndCondition>
+                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                            <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
+                          </AndCondition>
+                          <SupportLevel>0</SupportLevel>
+                          <Descendants>
+                            <UIObject ControlType="Custom" Id="UIContentDockManagerCustom" FriendlyName="ContentDockManager" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">ContentDockManager</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Custom" Id="UIUI_SettingsView_AutoCustom" FriendlyName="UI_SettingsView_AutoID" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.SettingsView</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">UI_SettingsView_AutoID</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                          </Descendants>
+                        </UIObject>
+                      </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
             </UIObject>
           </Descendants>
         </TopLevelWindow>

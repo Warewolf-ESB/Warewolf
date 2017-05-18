@@ -229,6 +229,7 @@
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
     <Compile Include="ESB\Management\Services\GetDllListings.cs" />
     <Compile Include="ESB\Management\Services\GetFiles.cs" />
+    <Compile Include="ESB\Management\Services\GetLogDataService.cs" />
     <Compile Include="ESB\Management\Services\GetServerIformation.cs" />
     <Compile Include="ESB\Management\Services\GetMinSupportedServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetServerInformationalVersion.cs" />
