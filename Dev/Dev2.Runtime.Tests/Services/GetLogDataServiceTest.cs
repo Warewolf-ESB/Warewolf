@@ -61,8 +61,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_ServerLogFilePath_WhenSet_ShouldReturnSetValue()
         {
             //------------Setup for test--------------------------
-            var getLogDataService = new GetLogDataService();
-            getLogDataService.ServerLogFilePath = "MyPath";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = "MyPath" };
             //------------Execute Test---------------------------
             var logFilePath = getLogDataService.ServerLogFilePath;
             //------------Assert Results-------------------------
@@ -76,12 +75,19 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithLogData_ShouldReturnLogDataObject()
         {
             //------------Setup for test--------------------------
+            const string logData = @"2017-05-18 10:41:03,500 [(null)] INFO  - Started Execution for Service Name:tttt Resource Id:a2352f24-fe9f-4e7d-bd0c-f5267b362d0b Mode:Debug
+2017-05-18 10:41:03,519 [(null)] DEBUG - Getting Resource to Execute
+2017-05-18 10:41:03,519 [(null)] DEBUG - Fetching Execution Plan for a2352f24-fe9f-4e7d-bd0c-f5267b362d0b for workspace 00000000-0000-0000-0000-000000000000
+2017-05-18 10:41:03,611 [(null)] DEBUG - Got Resource to Execute
+2017-05-18 10:41:03,625 [(null)] INFO  - Debug Already Started
+2017-05-18 10:41:03,681 [(null)] INFO  - Completed Execution for Service Name:tttt Resource Id: a2352f24-fe9f-4e7d-bd0c-f5267b362d0b Mode:Debug
+";
             var getLogDataService = new GetLogDataService();
             var logFilePath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
             getLogDataService.ServerLogFilePath = logFilePath;
-            File.WriteAllText(logFilePath,"");
+            File.WriteAllText(logFilePath,logData);
             //------------Execute Test---------------------------
-
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(),null);
             //------------Assert Results-------------------------
         }
 
