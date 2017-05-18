@@ -331,7 +331,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to assert is match true false.
+        ///   Looks up a localized string similar to assert is match true false if.
         /// </summary>
         public static string Tool_Flow_Decision {
             get {

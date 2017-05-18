@@ -250,7 +250,7 @@
     <value>consolidate cleanup group nest</value>
   </data>
   <data name="Tool_Flow_Decision" xml:space="preserve">
-    <value>assert is match true false</value>
+    <value>assert is match true false if</value>
   </data>
   <data name="Tool_File_Zip" xml:space="preserve">
     <value>archive directory folder</value>
