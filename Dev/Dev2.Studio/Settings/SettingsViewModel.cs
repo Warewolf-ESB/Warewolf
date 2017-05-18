@@ -19,7 +19,6 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Communication;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
@@ -58,8 +57,8 @@ namespace Dev2.Settings
         private Func<IServer, IServer> _toEnvironmentModel;
         private PerfcounterViewModel _perfmonViewModel;
         private string _displayName;
-        private Data.Settings.Settings _backedUpSettings;
 
+        // ReSharper disable once MemberCanBeProtected.Global
         public SettingsViewModel()
             : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow,CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {
@@ -80,13 +79,11 @@ namespace Dev2.Settings
 
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
 
-            IShellViewModel vm = CustomContainer.Get<IShellViewModel>();
-            CreateEnvironmentFromServer(vm.LocalhostServer);
-
             ToEnvironmentModel = toEnvironmentModel??( a=>a.ToEnvironmentModel());
             CurrentEnvironment= ToEnvironmentModel(server);
             LoadSettings();
-            DisplayName = "Settings - " + Server.DisplayName;
+            // ReSharper disable once VirtualMemberCallInContructor
+            DisplayName = StringResources.SettingsTitle + " - " + Server.DisplayName;
         }
 
         protected override void OnDispose()
@@ -137,13 +134,6 @@ namespace Dev2.Settings
 
         public IServer Server { get; set; }
 
-        void CreateEnvironmentFromServer(IServer server)
-        {
-            if (server?.UpdateRepository != null)
-            {
-                //server.UpdateRepository.ItemSaved += Refresh;
-            }
-        }
         public RelayCommand SaveCommand { get; private set; }
 
         public IServer CurrentEnvironment
@@ -313,9 +303,9 @@ namespace Dev2.Settings
                 NotifyOfPropertyChange(() => HasLogSettings);
             }
         }
-        public string SecurityHeader => SecurityViewModel != null && SecurityViewModel.IsDirty ? "SECURITY *" : "SECURITY";
+        public string SecurityHeader => SecurityViewModel != null && SecurityViewModel.IsDirty ? StringResources.SettingsSecurity + " *" : StringResources.SettingsSecurity;
 
-        public string LogHeader => LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? "LOGGING *" : "LOGGING";
+        public string LogHeader => LogSettingsViewModel != null && LogSettingsViewModel.IsDirty ? StringResources.SettingsLogging + " *" : StringResources.SettingsLogging;
 
         public bool HasLogSettings
         {
@@ -341,16 +331,8 @@ namespace Dev2.Settings
             switch(propertyName)
             {
                 case "ShowLogging":
-                    if (Settings?.Logging == null)
-                    {
-                        ShowLogging = false;
-                        ShowSecurity = true;
-                    }
-                    else
-                    {
-                        ShowLogging = true;
-                        ShowSecurity = !ShowLogging;
-                    }
+                    ShowLogging = Settings?.Logging != null;
+                    ShowSecurity = !ShowLogging;
                     break;
 
                 case "ShowSecurity":
@@ -363,8 +345,6 @@ namespace Dev2.Settings
 
         public override bool HasVariables => false;
         public override bool HasDebugOutput => false;
-
-
 
         public Func<IServer, IServer> ToEnvironmentModel
         {
@@ -638,12 +618,12 @@ namespace Dev2.Settings
             var payload = CurrentEnvironment.ResourceRepository.WriteSettings(CurrentEnvironment, Settings);
             if(payload == null)
             {
-                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "WriteSettings"));
+                ShowError(StringResources.NetworkSettingErrorPrefix, string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "WriteSettings"));
                 return false;
             }
             if(payload.HasError)
             {
-                ShowError("Save Error", payload.Message.ToString());
+                ShowError(StringResources.SaveSettingErrorHeader, payload.Message.ToString());
                 return false;
             }
             return true;
@@ -654,13 +634,10 @@ namespace Dev2.Settings
             var payload = CurrentEnvironment.ResourceRepository.ReadSettings(CurrentEnvironment);
             if(payload == null)
             {
-                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "ReadSettings"));
+                ShowError(StringResources.NetworkSettingErrorPrefix, string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "ReadSettings"));
             }
-            var serializer = new Dev2JsonSerializer();
-            _backedUpSettings = serializer.Deserialize<Data.Settings.Settings>(payload?.ToString());
             return payload;
         }
-
 
         protected void ClearErrors()
         {
@@ -674,8 +651,8 @@ namespace Dev2.Settings
             Errors = description;
         }
 
-        public string ResourceType => "Settings";
-        public string PerfmonHeader => PerfmonViewModel != null && PerfmonViewModel.IsDirty ? "PERFORMANCE COUNTERS *" : "PERFORMANCE COUNTERS";
+        public string ResourceType => StringResources.SettingsTitle;
+        public string PerfmonHeader => PerfmonViewModel != null && PerfmonViewModel.IsDirty ? StringResources.SettingsPerformanceCounters +  " *" : StringResources.SettingsPerformanceCounters;
     }
 }
 

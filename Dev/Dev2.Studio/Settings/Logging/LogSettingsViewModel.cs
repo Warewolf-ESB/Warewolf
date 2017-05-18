@@ -84,6 +84,7 @@ namespace Dev2.Settings.Logging
             return type.GetEnumNames().Select(GetEnumDescription).ToList();
         }
     }
+    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IServer CurrentEnvironment
@@ -172,7 +173,6 @@ namespace Dev2.Settings.Logging
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
             _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
             client.DownloadFileAsync(managementServiceUri, _serverLogFile);
-
         }
 
         [ExcludeFromCodeCoverage]
@@ -329,7 +329,6 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-
             }
         }
 
@@ -352,7 +351,6 @@ namespace Dev2.Settings.Logging
                         OnPropertyChanged();
                     }
                 }
-
             }
         }
 
