@@ -40,15 +40,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Constuctor_GivenNullAction_ShouldThrowArgumentNull()
+        public void Constuctor_GivenNullAction_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
 
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            // ReSharper disable once UnusedVariable
             var dummyServiceTest = new DummyServiceTest(null);
             //---------------Test Result -----------------------
         }
