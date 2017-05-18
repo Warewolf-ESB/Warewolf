@@ -230,6 +230,11 @@ namespace Warewolf.Storage
            return _inner.GetIndexes(exp);
         }
 
+        public int GetObjectLength(string recordSetName)
+        {
+            return _inner.GetObjectLength(recordSetName);
+        }
+
         #endregion
 
         public void SetDataSource(string ds)
