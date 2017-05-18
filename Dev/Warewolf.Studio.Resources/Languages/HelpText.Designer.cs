@@ -2315,7 +2315,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Provides the number of messages that can be consumed concurrently.  This will pre-fetch the given number of messages and block further traffic until you acknowledge something. This ensures that a maximum of the given number of unacknowledged messages are pre-fetched at one time. Default is 0 (Get all).&lt;br /&gt;	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;Integer Value&lt;/li&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;/ol&gt;.
+        ///   Looks up a localized string similar to Provides the number of messages that can be consumed concurrently.  This will pre-fetch the given number of messages and block further traffic until you acknowledge something. This ensures that a maximum of the given number of unacknowledged messages are pre-fetched at one time. 0 or blank will get all messages.&lt;br /&gt;If you are getting more than one message at a time you should use a recordset().value or @ObjectArray()	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;l [rest of string was truncated]&quot;;.
         /// </summary>
         public static string RabbitMQHelpPrefetch {
             get {
