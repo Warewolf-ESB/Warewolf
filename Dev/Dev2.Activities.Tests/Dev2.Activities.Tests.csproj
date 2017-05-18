@@ -173,6 +173,7 @@
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
     <Compile Include="ActivityTests\CountRecordsTest.cs" />
     <Compile Include="ActivityTests\DebugEvalResultTests.cs" />
+    <Compile Include="ActivityTests\DebugItemWarewolfAtomListResultTests.cs" />
     <Compile Include="ActivityTests\DecisionActivityTests.cs" />
     <Compile Include="ActivityTests\DeleteRecordsActivityTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Delete\DropBoxDeleteTests.cs" />
