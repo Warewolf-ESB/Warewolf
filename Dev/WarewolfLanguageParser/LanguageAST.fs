@@ -58,7 +58,6 @@ and [<ExcludeFromCodeCoverage>] LanguageExpression =
     | ComplexExpression of LanguageExpression list
     | RecordSetNameExpression of RecordSetName
     | JsonIdentifierExpression of JsonIdentifierExpression
-    |JsonNameExpression of JsonObjectName
 
 let tryParseIndex (x : Index) = 
     match x with
