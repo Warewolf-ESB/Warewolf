@@ -17,15 +17,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ScrollViewer>
-            <WebBrowser Name="WebBrowserHost"
-                        Margin="3"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Source="http://warewolf.io/knowledge-base/"
-                        LoadCompleted="WebBrowserHost_OnLoadCompleted"
-                        Visibility="Hidden" />
-        </ScrollViewer>
         <ig:HtmlDocumentAdapter x:Name="HtmlDocumentAdapter" IsEnabled="False"
                                 Document="{Binding Path=Document, ElementName=XamRichTextEditor}"
                                 Value="{Binding Path=HelpText, Mode=OneWay, NotifyOnSourceUpdated=True}"
