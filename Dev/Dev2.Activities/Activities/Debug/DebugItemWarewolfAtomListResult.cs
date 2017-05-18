@@ -114,19 +114,27 @@ namespace Dev2.Activities.Debug
             {
                 string displayExpression = _variable;
                 string rawExpression = _variable;
-                if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+                if(displayExpression.Contains("()") || displayExpression.Contains("(*)"))
                 {
                     grpIdx++;
                     groupName = rawExpression;
-                    displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameOnlyFromValue(DataListUtil.AddBracketsToValueIfNotExist(_variable)), grpIdx.ToString()));
+                    if (!rawExpression.StartsWith("[[@"))
+                    {
+                        displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameOnlyFromValue(DataListUtil.AddBracketsToValueIfNotExist(_variable)), grpIdx.ToString()));
 
-                    if(DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Star)
-                    {
-                        displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
+                        if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Star)
+                        {
+                            displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
+                        }
+                        else if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                        {
+                            displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                        }
                     }
-                    else if(DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                    else
                     {
-                        displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                        var varName = DataListUtil.ExtractRecordsetNameFromValue(_variable);
+                        displayExpression = DataListUtil.AddBracketsToValueIfNotExist(string.Concat(varName, "(", grpIdx, ")"));
                     }
                 }
                 else
