@@ -706,7 +706,7 @@ namespace Dev2.Settings.Scheduler
                 {
                     if (!_errorShown)
                     {
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, "Warewolf Error");
                         _errorShown = true;
                     }
                 }
@@ -778,7 +778,7 @@ namespace Dev2.Settings.Scheduler
                     if (!_errorShown)
                     {
                         _popupController.ShowCorruptTaskResult(ex.Message);
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, "Warewolf Error");
                         _errorShown = true;
                     }
                 }
