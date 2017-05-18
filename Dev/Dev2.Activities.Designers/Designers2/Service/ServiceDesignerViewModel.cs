@@ -568,7 +568,7 @@ namespace Dev2.Activities.Designers2.Service
                 }
                 catch (XmlException xe)
                 {
-                    Dev2Logger.Error(xe);
+                    Dev2Logger.Error(xe, "Warewolf Error");
                     srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                 }
 

@@ -212,7 +212,7 @@ namespace Dev2.Studio.Core.Models
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
             }
 
-            Dev2Logger.Debug("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
+            Dev2Logger.Debug("Attempting to connect to [ " + Connection.AppServerUri + " ] ", "Warewolf Debug");
             Connection.Connect(EnvironmentID);
         }
 

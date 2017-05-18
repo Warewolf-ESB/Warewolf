@@ -35,7 +35,7 @@ namespace Dev2.Studio.Diagnostics
             }
             try
             {
-                Dev2Logger.Error("Unhandled Exception" ,e);
+                Dev2Logger.Error("Unhandled Exception" ,e, "Warewolf Error");
                 _exception = e;
                 _busy = true;                
                 var popupController = CreatePopupController();

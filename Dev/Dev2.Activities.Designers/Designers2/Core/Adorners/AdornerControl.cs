@@ -208,7 +208,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error toggling adorner: ",e);
+                Dev2Logger.Error("Error toggling adorner: ",e, "Warewolf Error");
             }
         }
     }

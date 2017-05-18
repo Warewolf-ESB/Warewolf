@@ -239,7 +239,7 @@ namespace Dev2.Activities.Designers2.Service
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                 }
             }
 
@@ -288,7 +288,7 @@ namespace Dev2.Activities.Designers2.Service
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
             }
 
             return new List<IInputOutputViewModel>();

@@ -79,8 +79,8 @@ namespace Dev2.Studio.Views
                     {
                         _savedLayout = null;
                         File.Delete(FilePath);
-                        Dev2Logger.Error("Unable to load layout");
-                        Dev2Logger.Error(err);
+                        Dev2Logger.Error("Unable to load layout", "Warewolf Error");
+                        Dev2Logger.Error(err, "Warewolf Error");
                     }
                 }
             }
@@ -509,7 +509,7 @@ namespace Dev2.Studio.Views
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, "Warewolf Error");
             }
         }
 
@@ -581,7 +581,7 @@ namespace Dev2.Studio.Views
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, "Warewolf Error");
             }
         }
 
