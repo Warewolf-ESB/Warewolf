@@ -84,6 +84,18 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DsfConsumeRabbitMQActivity_Prefetch")]
+        public void DsfConsumeRabbitMQActivity_Prefetch_Should_SetsDefaultPropertyValuesIsObject()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("1", dsfConsumeRabbitMQActivity.Prefetch);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void AssignResult_GivenIsObject_ShouldSetResponsemanagerIsObject()
         {
             //---------------Set up test pack-------------------
@@ -203,7 +215,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 Prefetch = null,
                 IsObject = true,
                 ObjectName = "a",
-                _messages = new List<string>(new[] { "a","b" })
+                _messages = new List<string>(new[] { "a", "b" })
             };
             PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
@@ -828,7 +840,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             IList<string> actualRecset;
             string error;
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out actualRecset, out error);
-            Assert.AreEqual(2, actualRecset.Count);
+            Assert.AreEqual(1, actualRecset.Count);
         }
 
         [TestMethod]
@@ -869,7 +881,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             IList<string> actualRecset;
             string error;
             GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out actualRecset, out error);
-            Assert.AreEqual(2, actualRecset.Count);
+            Assert.AreEqual(1, actualRecset.Count);
         }
 
         [TestMethod]
