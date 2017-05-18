@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Save Tests Service");
+                Dev2Logger.Info("Save Tests Service", "Warewolf Info");
                 StringBuilder testDefinitionMessage;
                 StringBuilder resourceIdString;
                 StringBuilder resourcePathString;
@@ -114,7 +114,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
                 var res = new ExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }

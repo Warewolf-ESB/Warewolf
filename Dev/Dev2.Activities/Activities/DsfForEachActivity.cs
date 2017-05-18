@@ -298,7 +298,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("DSFForEach", e);
+                    Dev2Logger.Error("DSFForEach", e, "Warewolf Error");
                     allErrors.AddError(e.Message);
                 }
                 finally
@@ -864,7 +864,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFForEach", e);
+                Dev2Logger.Error("DSFForEach", e, "Warewolf Error");
                 allErrors.AddError(e.Message);
             }
             finally

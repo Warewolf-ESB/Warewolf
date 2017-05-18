@@ -102,7 +102,7 @@ namespace Dev2.Runtime.WebServer
                 executePayload = SetupErrors(dataObject, allErrors);
             }
 
-            Dev2Logger.Debug("Execution Result [ " + executePayload + " ]");
+            Dev2Logger.Debug("Execution Result [ " + executePayload + " ]", "Warewolf Debug");
             if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {
                 if (executePayload.IsJSON())

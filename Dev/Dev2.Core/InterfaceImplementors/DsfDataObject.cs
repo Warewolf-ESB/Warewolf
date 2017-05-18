@@ -315,6 +315,8 @@ namespace Dev2.DynamicServices
         public bool StopExecution { get; set; }
         public IServiceTestModelTO ServiceTest { get; set; }
 
+        public Guid? ExecutionID { get; set; }
+
         #endregion Properties
 
         #region Methods

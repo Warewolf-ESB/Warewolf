@@ -72,11 +72,11 @@ namespace Dev2
             const int Result = 0;
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
-                Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
+                Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception, "Warewolf Fatal");
             };
             if (Environment.UserInteractive)
             {
-                Dev2Logger.Info("** Starting In Interactive Mode **");
+                Dev2Logger.Info("** Starting In Interactive Mode **", "Warewolf Info");
                 using (_singleton = new ServerLifecycleManager(arguments))
                 {
                     _singleton.Run(true);
@@ -86,7 +86,7 @@ namespace Dev2
             }
             else
             {
-                Dev2Logger.Info("** Starting In Service Mode **");
+                Dev2Logger.Info("** Starting In Service Mode **", "Warewolf Info");
                 using (var service = new ServerLifecycleManagerService())
                 {
                     ServiceBase.Run(service);
@@ -106,14 +106,14 @@ namespace Dev2
 
             protected override void OnStart(string[] args)
             {
-                Dev2Logger.Info("** Service Started **");
+                Dev2Logger.Info("** Service Started **", "Warewolf Info");
                 _singleton = new ServerLifecycleManager(null);
                 _singleton.Run(false);
             }
 
             protected override void OnStop()
             {
-                Dev2Logger.Info("** Service Stopped **");
+                Dev2Logger.Info("** Service Stopped **", "Warewolf Info");
                 _singleton.Stop(false, 0);
                 _singleton = null;
             }
@@ -147,11 +147,12 @@ namespace Dev2
             try
             {
                 Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Server");
+                Dev2Logger.AddCustomThreadProperty(settingsConfigFile);
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("Error in startup.", e);
+                Dev2Logger.Error("Error in startup.", e, "Warewolf Error");
             }
             Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
             SetupTempCleanupSetting();
@@ -235,7 +236,7 @@ namespace Dev2
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                Dev2Logger.Error("Error Starting Server", e);
+                Dev2Logger.Error("Error Starting Server", e, "Warewolf Error");
                 Stop(true, 0);
             }
 
@@ -519,7 +520,7 @@ namespace Dev2
             catch (Exception err)
             {
                 // ignored
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
             }
         }
 
@@ -535,7 +536,6 @@ namespace Dev2
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
-            //ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
             WriteLine("done.");
             return catalog;
         }
@@ -673,11 +673,11 @@ namespace Dev2
             if (Environment.UserInteractive)
             {
                 Console.WriteLine(message);
-                Dev2Logger.Info(message);
+                Dev2Logger.Info(message, "Warewolf Info");
             }
             else
             {
-                Dev2Logger.Info(message);
+                Dev2Logger.Info(message, "Warewolf Info");
             }
 
         }
@@ -688,11 +688,11 @@ namespace Dev2
             if (Environment.UserInteractive)
             {
                 Console.Write(message);
-                Dev2Logger.Info(message);
+                Dev2Logger.Info(message, "Warewolf Info");
             }
             else
             {
-                Dev2Logger.Info(message);
+                Dev2Logger.Info(message, "Warewolf Info");
             }
         }
 
@@ -708,12 +708,12 @@ namespace Dev2
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
             }
         }
         static void LogException(Exception ex)
         {
-            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex);
+            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, "Warewolf Error");
         }
     }
 }

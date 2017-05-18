@@ -168,19 +168,19 @@ namespace Dev2.Services.Security
             if(principal.Identity != null)
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
-                Dev2Logger.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
+                Dev2Logger.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]", "Warewolf Error");
             }
             else
             // ReSharper disable HeuristicUnreachableCode
             {
-                Dev2Logger.Error("PERM DUMP FOR [ NULL USER ]");
+                Dev2Logger.Error("PERM DUMP FOR [ NULL USER ]", "Warewolf Error");
             }
             // ReSharper restore HeuristicUnreachableCode
 
             foreach(var perm in _securityService.Permissions)
             {
-                Dev2Logger.Error("PERM -> " + perm.WindowsGroup);
-                Dev2Logger.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
+                Dev2Logger.Error("PERM -> " + perm.WindowsGroup, "Warewolf Error");
+                Dev2Logger.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]", "Warewolf Error");
             }
         }
 

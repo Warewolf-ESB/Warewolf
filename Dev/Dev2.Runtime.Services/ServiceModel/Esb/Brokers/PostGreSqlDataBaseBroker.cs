@@ -163,7 +163,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex.Message);
+                    Dev2Logger.Error(ex.Message, "Warewolf Error");
                     return new OutputDescription();
                 }
                 finally

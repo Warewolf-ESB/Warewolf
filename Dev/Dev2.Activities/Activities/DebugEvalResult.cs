@@ -47,7 +47,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e.Message,e);
+                Dev2Logger.Error(e.Message,e, "Warewolf Error");
                 _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             }
             

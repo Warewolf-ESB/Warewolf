@@ -49,7 +49,7 @@
                 try
                 {
 
-                    Dev2Logger.Info("Test connection Service");
+                    Dev2Logger.Info("Test connection Service", "Warewolf Info");
                     StringBuilder resourceDefinition;
                     var workspaceIdString = string.Empty;
 
@@ -75,7 +75,7 @@
                 {
                     msg.HasError = true;
                     msg.Message = new StringBuilder(err.Message);
-                    Dev2Logger.Error(err);
+                    Dev2Logger.Error(err, "Warewolf Error");
                   
                 }
 

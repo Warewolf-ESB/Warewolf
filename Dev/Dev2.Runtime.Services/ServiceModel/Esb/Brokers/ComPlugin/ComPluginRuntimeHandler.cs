@@ -98,14 +98,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             catch (COMException e)
             {
-                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, "Warewolf Error");
                 throw;
             }
             catch (Exception e)
             {
                 if (e.InnerException is COMException)
                     throw e.InnerException;
-                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, "Warewolf Error");
                 jsonResult = null;
                 return null;
             }
@@ -192,7 +192,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                         }
                         catch (Exception k)
                         {
-                            Dev2Logger.Error($"Failed to convert {argType?.FullName}", k);
+                            Dev2Logger.Error($"Failed to convert {argType?.FullName}", k, "Warewolf Error");
                         }
                     }
                 }
@@ -233,7 +233,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             catch (BadImageFormatException e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
                 throw;
             }
         }
@@ -254,7 +254,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error("GetType", ex);
+                    Dev2Logger.Error("GetType", ex, "Warewolf Error");
                     type = Type.GetTypeFromCLSID(clasID, true);
 
                 }                

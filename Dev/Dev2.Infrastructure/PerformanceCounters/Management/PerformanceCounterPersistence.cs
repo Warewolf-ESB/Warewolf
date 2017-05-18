@@ -67,7 +67,7 @@ namespace Dev2.PerformanceCounters.Management
                  }
                  catch (Exception e)
                  {
-                     Dev2Logger.Error(e);
+                     Dev2Logger.Error(e, "Warewolf Error");
                      return CreateDefaultPerfCounters();
                  }
              }
@@ -85,7 +85,7 @@ namespace Dev2.PerformanceCounters.Management
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
                 return DefaultResourceCounters;
             }
 

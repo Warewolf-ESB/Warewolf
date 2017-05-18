@@ -87,7 +87,7 @@ namespace Dev2.Data.Util
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Scrubber", ex);
+                Dev2Logger.Error("Scrubber", ex, "Warewolf Error");
             }
 
             return result;

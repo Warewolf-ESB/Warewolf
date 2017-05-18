@@ -294,7 +294,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("ConsumeRabbitMQActivity", ex);
+                Dev2Logger.Error("ConsumeRabbitMQActivity", ex, "Warewolf Error");
                 throw new Exception(ex.GetAllMessages());
             }
         }

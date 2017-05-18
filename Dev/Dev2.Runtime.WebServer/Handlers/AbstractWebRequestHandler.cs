@@ -121,7 +121,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
             }
-            Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + dataObject.RawPayload + " ]");
+            Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + dataObject.RawPayload + " ]", "Warewolf Debug");
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
@@ -248,7 +248,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error("AbstractWebRequestHandler", ex);
+                        Dev2Logger.Error("AbstractWebRequestHandler", ex, "Warewolf Error");
                     }
                 }
             }
