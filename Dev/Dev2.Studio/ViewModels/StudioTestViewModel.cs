@@ -97,7 +97,7 @@ namespace Dev2.ViewModels
 
         public void Handle(DebugOutputMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             DebugOutputViewModel.Clear();
             DebugOutputViewModel.DebugStatus = DebugStatus.Ready;
             foreach (var debugState in message.DebugStates)
