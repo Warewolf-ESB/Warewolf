@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 List<dynamic> tmpObjects = new List<dynamic>();
                 foreach(var singleEntry in logData)
                 {
-                    var matches = Regex.Matches(singleEntry, @"(\d+[-.\/]\d+[-.\/]\d+) (\d+[:]\d+[:]\d+,\d+) (\W)+((\w)+)(\W)+((\w)+)(\W)+((.)+)");
+                    var matches = Regex.Matches(singleEntry, @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s(\w+)\s+[-]\s+");
                     if (matches.Count>0)
                     {
                         var match = matches[0];
