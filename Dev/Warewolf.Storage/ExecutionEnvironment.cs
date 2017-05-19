@@ -135,6 +135,13 @@ namespace Warewolf.Storage
             return _env.RecordSets[recordSetName.Trim()].LastIndex;
         }
 
+        public int GetObjectLength(string recordSetName)
+        {
+            var trimStart = recordSetName.TrimStart('@');
+            var count = _env.JsonObjects[trimStart].Count;
+            return count;
+        }
+
         public int GetCount(string recordSetName)
         {
             return _env.RecordSets[recordSetName.Trim()].Count;

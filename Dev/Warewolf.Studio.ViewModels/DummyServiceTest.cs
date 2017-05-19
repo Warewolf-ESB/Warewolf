@@ -24,12 +24,12 @@ namespace Warewolf.Studio.ViewModels
         private ICommand _newCommand;
 #pragma warning restore 649
 
-        public DummyServiceTest(Action createNewAction)
+        public DummyServiceTest(Action<bool> createNewAction)
         {
             NameForDisplay = "'";
             NeverRunString = "Never run";
             _isNewTest = true;
-            _newCommand = new DelegateCommand(createNewAction);
+            _newCommand = new DelegateCommand(() => createNewAction(false));
             TestSteps = new ObservableCollection<IServiceTestStep>();
         }
 
@@ -72,7 +72,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                
+
             }
         }
         public bool NewTest { get; set; }
@@ -89,7 +89,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void SetItem(IServiceTestModel model)
         {
-            
+
         }
 
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType = StepType.Mock)

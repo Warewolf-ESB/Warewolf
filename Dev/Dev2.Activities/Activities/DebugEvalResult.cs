@@ -19,7 +19,7 @@ namespace Dev2.Activities
         CommonFunctions.WarewolfEvalResult _evalResult;
         private readonly bool _isCalculate;
 
-        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, bool isDataMerge = false, bool isCalculate = false, bool mockSelected = false, bool isJsonArray = false)
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, bool isDataMerge = false, bool isCalculate = false, bool mockSelected = false)
         {
             _inputVariable = inputVariable?.Trim();
             LabelText = label;
@@ -43,12 +43,7 @@ namespace Dev2.Activities
                 {
                     RegularItem(environment, update, isCalculate);
                 }
-                if (isJsonArray)
-                {
-                    var noBrackets = DataListUtil.RemoveLanguageBrackets(_inputVariable);
-                    var variableWithBrackets =  DataListUtil.AddBracketsToValueIfNotExist(noBrackets.EndsWith("()")?noBrackets:string.Concat(noBrackets,"()"));
-                    _inputVariable = variableWithBrackets;
-                }
+               
 
             }
             catch (Exception e)
