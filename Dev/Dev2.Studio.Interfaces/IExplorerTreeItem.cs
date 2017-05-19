@@ -42,8 +42,10 @@ namespace Dev2.Studio.Interfaces
         bool IsServer { get; set; }
         bool IsResourceVersion { get; set; }
         bool CanViewApisJson { get; set; }
+        bool CanViewExecutionLogging { get; set; }
 
         ICommand ViewApisJsonCommand { get; set; }
+        ICommand ViewExecutionLoggingCommand { get; set; }
         ICommand DeployCommand { get; set; }
         ICommand RenameCommand { get; set; }
         ICommand CreateFolderCommand { get; set; }

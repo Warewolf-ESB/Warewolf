@@ -994,7 +994,9 @@ namespace Warewolf.Studio.ViewModels
             set;
         }
         public ICommand ViewSwaggerCommand { get; set; }
+        public bool CanViewExecutionLogging { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
+        public ICommand ViewExecutionLoggingCommand { get; set; }
 
         public ICommand DebugCommand => new DelegateCommand(o =>
         {
