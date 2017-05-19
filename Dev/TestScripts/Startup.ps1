@@ -148,6 +148,13 @@ Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $Reso
 Start-Service "Warewolf Server"
 Write-Host Server has started.
 
+#Check if started
+$Output = @()
+sc.exe interrogate "Warewolf Server" 2>&1 | %{$Output += $_}
+if ($Output.Length -lt 4 -or !($Output[3].EndsWith("RUNNING "))) {
+    sc.exe start "Warewolf Server"
+}
+
 if (!($SkipStudioStartup)) {
 	if ($StudioPath -eq "") {
 		$CurrentDirectory = $PSScriptRoot
