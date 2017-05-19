@@ -73,11 +73,12 @@ namespace Dev2.Runtime.ESB.Execution
 
             errors = new ErrorResultTO();
             ITestCatalog testCatalog = TstCatalog ?? TestCatalog.Instance;
-            
+
             Guid result = GlobalConstants.NullDataListID;
 
 
-            Dev2Logger.Debug("Entered Wf Container", "Warewolf Debug");
+            var warewolfDebug = DataObject.ExecutionID.HasValue ? DataObject.ExecutionID.ToString() : "Warewolf Debug";
+            Dev2Logger.Debug("Entered Wf Container", warewolfDebug);
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
