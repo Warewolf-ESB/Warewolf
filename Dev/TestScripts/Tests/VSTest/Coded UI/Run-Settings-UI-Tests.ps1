@@ -39,7 +39,7 @@ $TestSettingsFile = "$PSScriptRoot\SettingsUITesting.testsettings"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run Settings UI Tests.</Description>
-  <Settingsment enabled=`"false`" />
+  <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
     <Timeouts testTimeout=`"600000`" />
