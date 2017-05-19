@@ -106,5 +106,6 @@ namespace Dev2.Interfaces
         bool StopExecution { get; set; }
         IServiceTestModelTO ServiceTest { get; set; }
         List<Guid> TestsResourceIds { get; set; }
+        bool IsSubExecution { get; set; }
     }
 }

@@ -19,6 +19,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Explorer;
+using Dev2.Runtime;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -111,6 +112,58 @@ namespace Dev2.Tests.Runtime.Services
             repo.Verify(a => a.Load(GlobalConstants.ServerWorkspaceID, false));
             var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
             Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FetchExplorerItems_HandlesType")]
+        public void FetchExplorerItems_ExecuteReloadTrue_ExpectName()
+        {
+            //------------Setup for test--------------------------
+            var fetchExplorerItems = new FetchExplorerItems();
+
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            Assert.IsNotNull(item);
+            var repo = new Mock<IExplorerServerResourceRepository>();
+            var ws = new Mock<IWorkspace>();
+            repo.Setup(a => a.Load(GlobalConstants.ServerWorkspaceID, true))
+                .Returns(item).Verifiable();
+            var serializer = new Dev2JsonSerializer();
+            ws.Setup(a => a.ID).Returns(Guid.Empty);
+            fetchExplorerItems.ServerExplorerRepo = repo.Object;
+            //------------Execute Test---------------------------
+            var execute = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder> { { "ReloadResourceCatalogue",new StringBuilder("true") } }, ws.Object);
+            //------------Assert Results-------------------------
+            repo.Verify(a => a.Load(GlobalConstants.ServerWorkspaceID, true));
+            var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
+            Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("FetchExplorerItems_HandlesType")]
+        public void FetchExplorerItems_ExecuteReloadTrueWithExecutionManager_ExpectCallsStartAndStopRefresh()
+        {
+            //------------Setup for test--------------------------
+            var fetchExplorerItems = new FetchExplorerItems();
+            var exeManager = new Mock<IExecutionManager>();
+            CustomContainer.Register(exeManager.Object);
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            Assert.IsNotNull(item);
+            var repo = new Mock<IExplorerServerResourceRepository>();
+            var ws = new Mock<IWorkspace>();
+            repo.Setup(a => a.Load(GlobalConstants.ServerWorkspaceID, true))
+                .Returns(item).Verifiable();
+            var serializer = new Dev2JsonSerializer();
+            ws.Setup(a => a.ID).Returns(Guid.Empty);
+            fetchExplorerItems.ServerExplorerRepo = repo.Object;
+            //------------Execute Test---------------------------
+            var execute = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder> { { "ReloadResourceCatalogue",new StringBuilder("true") } }, ws.Object);
+            //------------Assert Results-------------------------
+            repo.Verify(a => a.Load(GlobalConstants.ServerWorkspaceID, true));
+            var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
+            Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
+            exeManager.Verify(manager => manager.StartRefresh(),Times.Once);
+            exeManager.Verify(manager => manager.StopRefresh(),Times.Once);
+            CustomContainer.DeRegister<IExecutionManager>();
         }
         
 

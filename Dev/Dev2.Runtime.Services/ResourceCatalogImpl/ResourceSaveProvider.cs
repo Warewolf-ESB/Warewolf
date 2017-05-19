@@ -339,6 +339,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     var updated = AddToCatalog(resource, resources, fileManager, xml);
 
+                    ((ResourceCatalog)_resourceCatalog).AddToActivityCache(resource);
+
                     #endregion
                     Dev2Logger.Debug($"Removing Execution Plan for {resource.ResourceID} for workspace {workspaceID}");
                     ((ResourceCatalog)_resourceCatalog).RemoveFromResourceActivityCache(workspaceID, resource);

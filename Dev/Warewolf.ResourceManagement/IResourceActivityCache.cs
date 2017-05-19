@@ -6,6 +6,8 @@ namespace Warewolf.ResourceManagement
 {
     public interface IResourceActivityCache
     {
+        void AddToCache(Guid resourceID, DynamicActivity activity);
+
         IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid,bool failOnError=false);
 
         void RemoveFromCache(Guid resourceID);
