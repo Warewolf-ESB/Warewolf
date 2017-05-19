@@ -328,7 +328,6 @@ namespace Dev2.DynamicServices
         public IDSFDataObject Clone()
         {
             IDSFDataObject result = new DsfDataObject();
-
             result.BookmarkExecutionCallbackID = BookmarkExecutionCallbackID;
             result.CurrentBookmarkName = CurrentBookmarkName;
             result.DebugSessionID = DebugSessionID;
@@ -386,6 +385,7 @@ namespace Dev2.DynamicServices
             result.SourceResourceID = SourceResourceID;
             result.IsServiceTestExecution = IsServiceTestExecution;
             result.IsDebugFromWeb = IsDebugFromWeb;
+            result.ExecutionID = ExecutionID;
             if (ServiceTest != null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
