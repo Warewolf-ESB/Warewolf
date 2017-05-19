@@ -283,6 +283,7 @@ namespace Dev2.Runtime.ESB
                 // ReSharper restore RedundantIfElseBlock
                 {
                     var resourceId = dataObject.ResourceID;
+                    Dev2Logger.Debug($"Getting DynamicService: {serviceName}", dataObject.ExecutionID.ToString());
                     DynamicService theService = GetService(serviceName, resourceId);
                     IEsbExecutionContainer executionContainer = null;
 
@@ -310,7 +311,7 @@ namespace Dev2.Runtime.ESB
         {
             try
             {
-                Dev2Logger.Debug($"Getting DynamicService: {serviceName}", "Warewolf Debug");
+             
                 if (resourceId == Guid.Empty)
                 {
                     return _serviceLocator.FindService(serviceName, _workspace.ID) ?? _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
