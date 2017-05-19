@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string type = null;
                 string resourceId = null;
                 StringBuilder tmp;
-                values.TryGetValue("ResourceName", out tmp);
+                values.TryGetValue("FindResourceTests", out tmp);
                 if (tmp != null)
                 {
                     resourceName = tmp.ToString();
