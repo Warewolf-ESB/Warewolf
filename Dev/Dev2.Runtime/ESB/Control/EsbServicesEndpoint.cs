@@ -158,6 +158,7 @@ namespace Dev2.Runtime.ESB.Control
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors)
         {
             var wasTestExecution = dataObject.IsServiceTestExecution;
+            dataObject.IsSubExecution = true;
             try
             {
                 dataObject.IsServiceTestExecution = false;
@@ -225,6 +226,7 @@ namespace Dev2.Runtime.ESB.Control
             finally
             {
                 dataObject.IsServiceTestExecution = wasTestExecution;
+                dataObject.IsSubExecution = false;
             }
         }
 
