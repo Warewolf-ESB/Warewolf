@@ -337,6 +337,16 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ExecutionEnvironmentGetObjectLength_Should()
+        {
+            Assert.IsNotNull(_environment);
+            _environment.AssignJson(new AssignValue("[[@Obj()]]", "{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"), 0);
+            var recordSet = _environment.GetObjectLength("Obj");
+            Assert.AreEqual(1, recordSet);
+        }
+
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void ExecutionEnvironmentEvalToExpression_Should()
         {            

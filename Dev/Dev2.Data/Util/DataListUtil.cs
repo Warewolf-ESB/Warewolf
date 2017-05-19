@@ -547,6 +547,7 @@ namespace Dev2.Data.Util
 
 
         public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length) => RecSetCommon.ReplaceRecordsetBlankWithIndex(fullRecSetName, length);
+        public static string ReplaceObjectBlankWithIndex(string objectName, int length) => RecSetCommon.ReplaceObjectBlankWithIndex(objectName, length);
 
         public static string ReplaceRecordsetBlankWithStar(string fullRecSetName) => RecSetCommon.ReplaceRecordsetBlankWithStar(fullRecSetName);
 

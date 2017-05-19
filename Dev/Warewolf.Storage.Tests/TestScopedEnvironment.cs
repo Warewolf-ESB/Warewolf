@@ -206,6 +206,21 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ScopedEnvironment_GetObjectLength")]
+        public void ScopedEnvironment_GetObjectLength_ExpectEquals()
+        {
+            //------------Setup for test--------------------------
+            var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[@Person(*)]]", "[[a]]");
+            _mockEnv.Setup(a => a.GetObjectLength(It.IsAny<string>())).Returns(1);
+
+            //------------Execute Test---------------------------
+            var length = scopedEnvironment.GetObjectLength("[[a]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(length, 1);
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("ScopedEnvironment_GetCount")]
         public void ScopedEnvironment_GetCount_ExpectEquals()
