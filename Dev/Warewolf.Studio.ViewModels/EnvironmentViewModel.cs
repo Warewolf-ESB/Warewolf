@@ -11,6 +11,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,6 +77,8 @@ namespace Warewolf.Studio.ViewModels
         private bool _canDeploy;
         private string _newWcfSourceTooltip;
         private bool _isSaveDialog;
+        private bool _canViewExecutionLogging;
+        private string _viewExecutionLoggingTooltip;
 
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
         {            
@@ -189,6 +192,11 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.ViewApisJson(ResourcePath, environmentModel.Connection.WebServerUri);
             });
 
+            ViewExecutionLoggingCommand = new DelegateCommand(() =>
+            {
+                Process.Start("http://127.0.0.1:8080/edsa-Warewolf/dev2_execution_logging_test.php");
+            });
+
             DeployCommand = new DelegateCommand(() =>
             {
                 shellViewModel.AddDeploySurface(AsList().Union<IExplorerTreeItem>(new [] { this }));
@@ -241,6 +249,7 @@ namespace Warewolf.Studio.ViewModels
             CanDrop = false;
             ResourceId = server.EnvironmentID;
             CanViewApisJson = true;
+            CanViewExecutionLogging = true;
             if (ForcedRefresh)
                 ForcedRefresh = true;
         }
@@ -469,6 +478,16 @@ namespace Warewolf.Studio.ViewModels
                 _canViewApisJson = value;
                 ViewApisJsonTooltip = _canViewApisJson ? Resources.Languages.Tooltips.ViewApisJsonTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanViewApisJson);
+            }
+        }
+        public bool CanViewExecutionLogging
+        {
+            get { return _canViewExecutionLogging; }
+            set
+            {
+                _canViewExecutionLogging = value;
+                ViewExecutionLoggingTooltip = _canViewExecutionLogging ? Resources.Languages.Tooltips.ViewExecutionLoggingTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                OnPropertyChanged(() => CanViewExecutionLogging);
             }
         }
 
@@ -762,6 +781,15 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => ViewApisJsonTooltip);
             }
         }
+        public string ViewExecutionLoggingTooltip
+        {
+            get { return _viewExecutionLoggingTooltip; }
+            set
+            {
+                _viewExecutionLoggingTooltip = value;
+                OnPropertyChanged(() => ViewExecutionLoggingTooltip);
+            }
+        }
 
         public string ResourceName { get; set; }
         public Guid ResourceId { get; set; }
@@ -997,6 +1025,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand Expand { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
+        public ICommand ViewExecutionLoggingCommand { get; set; }
 
         public string DisplayName
         {

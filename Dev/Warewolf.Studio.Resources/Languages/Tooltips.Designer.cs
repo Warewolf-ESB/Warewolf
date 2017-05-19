@@ -5491,6 +5491,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Execution Logging.
+        /// </summary>
+        public static string ViewExecutionLoggingTooltip {
+            get {
+                return ResourceManager.GetString("ViewExecutionLoggingTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click to see the JSON representation of this object..
         /// </summary>
         public static string ViewJsonObjectTooltip {
