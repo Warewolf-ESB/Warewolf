@@ -122,7 +122,7 @@ namespace Dev2.Runtime.ESB
 
                     try
                     {
-                        Dev2Logger.Debug("Finding service", "Warewolf Debug");
+                        Dev2Logger.Debug("Finding service", dataObject.ExecutionID.ToString());
                         var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
 
                         if (theService == null)
@@ -166,14 +166,14 @@ namespace Dev2.Runtime.ESB
                             {
                                 throw new Exception(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser);
                             }
-                            Dev2Logger.Debug("Mapping Action Dependencies", "Warewolf Debug");
+                            Dev2Logger.Debug("Mapping Action Dependencies", dataObject.ExecutionID.ToString());
                             MapServiceActionDependencies(theStart);
                             
                             if (theStart != null)
                             {
                                 theStart.Service = theService;
                                 theStart.DataListSpecification = theService.DataListSpecification;
-                                Dev2Logger.Debug("Getting container", "Warewolf Debug");
+                                Dev2Logger.Debug("Getting container", dataObject.ExecutionID.ToString());
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
                                 ErrorResultTO invokeErrors;
                                 result = container.Execute(out invokeErrors, Update);

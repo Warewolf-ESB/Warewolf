@@ -152,9 +152,9 @@ namespace Dev2.Runtime.ESB.Execution
 
         private void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
-            Dev2Logger.Debug("Getting Resource to Execute", DataObject.ExecutionID.ToString());
+            Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
             IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID);
-            Dev2Logger.Debug("Got Resource to Execute", DataObject.ExecutionID.ToString());
+            Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
 
         }
