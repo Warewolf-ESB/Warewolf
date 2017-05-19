@@ -16,6 +16,27 @@ namespace Dev2.Tests.Runtime.Services
     public class DeleteTestTests
     {
         [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_GivenArgsWithResourceId_ShouldReturnResourceIdFromArgs()
+        {
+            //------------Setup for test--------------------------
+            var deleteTest = new DeleteTest();
+            var resId = Guid.NewGuid();
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(resId);
+            //------------Execute Test---------------------------
+            var requestArgs = new Dictionary<string, StringBuilder>
+            {
+                { "resourceID", stringBuilder }
+            };
+            //------------Execute Test---------------------------
+            var resourceID = deleteTest.GetResourceID(requestArgs);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resId, resourceID);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()

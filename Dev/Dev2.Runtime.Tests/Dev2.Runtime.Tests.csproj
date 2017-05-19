@@ -258,6 +258,8 @@
     <Compile Include="ServiceModel\Data\WcfSourceTests.cs" />
     <Compile Include="ServiceModel\OauthSourceTest.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
+    <Compile Include="Services\FindResourceTestsS.cs" />
+    <Compile Include="Services\FetchServerPermissionsTests.cs" />
     <Compile Include="Services\DeleteAllTestsTests.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />

@@ -59,6 +59,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Dev2LoggerTests.cs" />
     <Compile Include="DebugMessageRepoTests.cs" />
     <Compile Include="WebDebugMessageRepoTests.cs" />
     <None Include="..\TestScripts\**\*.*">
