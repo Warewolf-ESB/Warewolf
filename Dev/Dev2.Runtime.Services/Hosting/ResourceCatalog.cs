@@ -69,7 +69,7 @@ namespace Dev2.Runtime.Hosting
         /// </summary>
         /// <param name="managementServices">The management services to be loaded.</param>
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
-        {            
+        {
             InitializeWorkspaceResources();
             // MUST load management services BEFORE server workspace!!
             IServerVersionRepository versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
@@ -80,7 +80,7 @@ namespace Dev2.Runtime.Hosting
         }
         [ExcludeFromCodeCoverage]//Used by tests only
         public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
-        {            
+        {
             InitializeWorkspaceResources();
             // MUST load management services BEFORE server workspace!!
             var versioningRepository = serverVersionRepository;
@@ -137,7 +137,7 @@ namespace Dev2.Runtime.Hosting
         public IList<IResource> GetResourceList<T>(Guid workspaceId) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResourceList<T>(workspaceId);
         public List<IResource> GetResourcesBasedOnType(string type, List<IResource> workspaceResources, Func<IResource, bool> func) => _catalogPluginContainer.LoadProvider.GetResourcesBasedOnType(type, workspaceResources, func);
 
-        
+
 
         public List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources) => _catalogPluginContainer.LoadProvider.GetDynamicObjects(resources);
         #endregion
@@ -161,7 +161,7 @@ namespace Dev2.Runtime.Hosting
                         id => LoadWorkspaceImpl(workspaceID),
                         (id, resources) => LoadWorkspaceImpl(workspaceID));
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -287,10 +287,10 @@ namespace Dev2.Runtime.Hosting
 
         public IList<DuplicateResource> GetDuplicateResources()
         {
-            
+
             return DuplicateResources;
         }
-        
+
 
         #endregion
 
@@ -306,7 +306,7 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, user);
         public string SetResourceFilePath(Guid workspaceID, IResource resource, ref string savedPath) => _catalogPluginContainer.SaveProvider.SetResourceFilePath(workspaceID, resource, ref savedPath);
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, savedPath, reason, user);
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource,contents,savedPath, reason, user);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, contents, savedPath, reason, user);
 
         public Action<IResource> ResourceSaved
         {
@@ -408,10 +408,10 @@ namespace Dev2.Runtime.Hosting
         private static Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
         bool _loading;
 
-        public IDev2Activity Parse(Guid workspaceID, Guid resourceID)
+        public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId = "")
         {
             IResourceActivityCache parser = null;
-            Dev2Logger.Debug($"Fetching Execution Plan for {resourceID} for workspace {workspaceID}", "Warewolf Debug");
+            Dev2Logger.Debug($"Fetching Execution Plan for {resourceID} for workspace {workspaceID}", string.IsNullOrEmpty(executionId) ? "Warewolf Debug" : executionId);
             if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
@@ -424,7 +424,7 @@ namespace Dev2.Runtime.Hosting
                 {
                     return dev2Activity;
                 }
-                
+
             }
             var resource = GetResource(workspaceID, resourceID);
             var service = GetService(workspaceID, resourceID, resource.ResourceName);
@@ -447,12 +447,12 @@ namespace Dev2.Runtime.Hosting
             LoadWorkspace(GlobalConstants.ServerWorkspaceID);
         }
 
-        
+
 
         public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);
 
         public ResourceCatalogDuplicateResult DuplicateFolder(string sourcePath, string destinationPath, string newName, bool fixRefences) => _catalogPluginContainer.DuplicateProvider.DuplicateFolder(sourcePath, destinationPath, newName, fixRefences);
-        
+
 
     }
 }
