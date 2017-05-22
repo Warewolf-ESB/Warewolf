@@ -62,24 +62,19 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(resourceID);
             Assert.AreEqual(Guid.Empty, resourceID);
         }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetResourceID_GivenSomeArgs_Returns_Id()
         {
             //------------Setup for test-------------------------
             FetchServerPermissions fetchServerPermissions = new FetchServerPermissions();
-            var resId = Guid.NewGuid();
-            var stringBuilder = new StringBuilder();
-            stringBuilder.Append(resId);
             //------------Execute Test---------------------------
-            var requestArgs = new Dictionary<string, StringBuilder>
-            {
-                { "resourceID", stringBuilder }
-            };
+            var requestArgs = new Dictionary<string, StringBuilder>();
             var resourceID = fetchServerPermissions.GetResourceID(requestArgs);
             //------------Assert Results-------------------------
             Assert.IsNotNull(resourceID);
-            Assert.AreEqual(resId, resourceID);
+            Assert.AreEqual(Guid.Empty, resourceID);
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
