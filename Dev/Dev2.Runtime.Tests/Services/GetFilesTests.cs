@@ -15,9 +15,7 @@ using System.Text;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
