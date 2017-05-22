@@ -109,8 +109,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UnitTestUtils", "Dev2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement", "Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj", "{F36B2034-94BF-485C-B584-4E590CCC6DD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfParsing.Tests", "WarewolfParsing.Tests\WarewolfParsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.Views", "Warewolf.Studio.Views\Warewolf.Studio.Views.csproj", "{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C52B12C2-6A1D-4C4F-A878-CF283662A226} = {C52B12C2-6A1D-4C4F-A878-CF283662A226}
@@ -288,6 +286,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Interfaces", "Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj", "{61A15557-1D18-4C69-88EB-31BF49B7FB50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Debug", "Dev2.Debug\Dev2.Debug.csproj", "{705D3D56-1551-4EE1-89A0-6CFEF2642508}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Parsing.Tests", "Warewolf.Parsing.Tests\Warewolf.Parsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -633,13 +633,6 @@ Global
 		{F36B2034-94BF-485C-B584-4E590CCC6DD3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F36B2034-94BF-485C-B584-4E590CCC6DD3}.Release|x86.ActiveCfg = Release|Any CPU
 		{F36B2034-94BF-485C-B584-4E590CCC6DD3}.Release|x86.Build.0 = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x86.Build.0 = Debug|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x86.ActiveCfg = Release|Any CPU
-		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x86.Build.0 = Release|Any CPU
 		{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1076,6 +1069,14 @@ Global
 		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|Any CPU.Build.0 = Release|Any CPU
 		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|x86.ActiveCfg = Release|Any CPU
 		{705D3D56-1551-4EE1-89A0-6CFEF2642508}.Release|x86.Build.0 = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Debug|x86.Build.0 = Debug|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x86.ActiveCfg = Release|Any CPU
+		{2A765154-2288-4FD3-A008-F0B7173F4074}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
