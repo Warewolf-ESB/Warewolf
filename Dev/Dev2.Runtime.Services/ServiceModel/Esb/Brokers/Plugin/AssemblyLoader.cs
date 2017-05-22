@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                             loadedAssembly = _assemblyWrapper.Load(correctAssemblyName);
 
                         }
-                        Dev2Logger.Error(e);
+                        Dev2Logger.Error(e, "Warewolf Error");
                     }
 
                     LoadDepencencies(loadedAssembly, assemblyLocation);
@@ -64,13 +64,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                     throw;
 
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message);
+                    Dev2Logger.Error(e.Message, "Warewolf Error");
                 }
             }
             else
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                     throw;
                 }
                 catch
@@ -102,7 +102,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Error(e);
+                        Dev2Logger.Error(e, "Warewolf Error");
                     }
                 }
                 try
@@ -118,12 +118,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                     throw;
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                 }
             }
             return false;

@@ -137,7 +137,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorGettingResources, e);
+                Dev2Logger.Error(ErrorResource.ErrorGettingResources, e, "Warewolf Error");
                 throw;
             }
         }
@@ -209,7 +209,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 throw new ArgumentNullException(nameof(resourceName));
             }
-            Dev2Logger.Debug("Getting Dynamic Objects");
+            Dev2Logger.Debug("Getting Dynamic Objects", "Warewolf Debug");
             List<DynamicServiceObjectBase> results;
 
             if (useContains)
@@ -408,7 +408,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorGettingResources, e);
+                Dev2Logger.Error(ErrorResource.ErrorGettingResources, e, "Warewolf Error");
             }
             if (foundResource == null)
             {
@@ -541,7 +541,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 else
                 {
-                    Dev2Logger.Debug($"{resource.ResourceName} -> Resource Catalog Cache HIT");
+                    Dev2Logger.Debug($"{resource.ResourceName} -> Resource Catalog Cache HIT", "Warewolf Debug");
                 }
                 if (objects != null)
                 {

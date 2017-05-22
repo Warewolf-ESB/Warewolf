@@ -264,7 +264,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFDataMerge", e);
+                Dev2Logger.Error("DSFDataMerge", e, "Warewolf Error");
                 allErrors.AddError(e.Message);
             }
             finally

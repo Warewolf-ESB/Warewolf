@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 resourceType = tmp.ToString();
             }
-            Dev2Logger.Info($"Reload Resource. Id:{resourceID} Type:{resourceType}");
+            Dev2Logger.Info($"Reload Resource. Id:{resourceID} Type:{resourceType}", "Warewolf Info");
             try
             {
                 // 2012.10.01: TWR - 5392 - Server does not dynamically reload resources 
@@ -129,7 +129,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch(Exception ex)
             {
                 result.SetMessage(string.Concat("Error reloading '", resourceID, "'..."));
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, "Warewolf Error");
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

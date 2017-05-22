@@ -208,6 +208,15 @@
                                         </MenuItem.Icon>
                                     </MenuItem>
 
+                                    <MenuItem Name="ViewExecutionLogging"
+                                              Command="{Binding ViewExecutionLoggingCommand}"
+                                              Header="Execution Logging"
+                                              Style="{StaticResource MenuItemStyle}"
+                                              IsEnabled="{Binding CanViewExecutionLogging}" 
+                                              ToolTip="{Binding ViewExecutionLoggingTooltip}"
+                                              Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                    </MenuItem>
+
                                     <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                                     <MenuItem Header="Sources" Style="{StaticResource MenuItemStyle}" Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">

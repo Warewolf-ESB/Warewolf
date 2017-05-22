@@ -127,7 +127,7 @@ namespace Dev2.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, "Warewolf Error");
                     throw new Exception(ex.Message, ex);
                 }
 
@@ -254,7 +254,7 @@ namespace Dev2.PathOperations
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error("Error getting file: "+src.Path,ex);
+                Dev2Logger.Error("Error getting file: "+src.Path,ex, "Warewolf Error");
                 result = false;
             }
             return result;
@@ -311,7 +311,7 @@ namespace Dev2.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, "Warewolf Error");
                     throw;
                 }
             }
@@ -377,7 +377,7 @@ namespace Dev2.PathOperations
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, "Warewolf Error");
                         throw;
                     }
                 }
@@ -425,7 +425,7 @@ namespace Dev2.PathOperations
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, "Warewolf Error");
                         throw;
                     }
                 }
@@ -681,7 +681,7 @@ namespace Dev2.PathOperations
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, "Warewolf Error");
                     throw;
                 }
 

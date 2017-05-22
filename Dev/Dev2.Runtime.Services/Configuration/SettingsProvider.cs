@@ -147,7 +147,7 @@ namespace Dev2.Runtime.Configuration
                 // ReSharper restore EmptyGeneralCatchClause
                 {
                     // error occurred so ignore and load empty
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, "Warewolf Error");
                 }
             }
             return new Settings.Configuration(WebServerUri);

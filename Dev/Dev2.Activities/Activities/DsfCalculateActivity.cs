@@ -121,7 +121,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Calculate Exception", ex);
+                Dev2Logger.Error("Calculate Exception", ex, "Warewolf Error");
                 allErrors.AddError(ex.Message);
             }
             finally

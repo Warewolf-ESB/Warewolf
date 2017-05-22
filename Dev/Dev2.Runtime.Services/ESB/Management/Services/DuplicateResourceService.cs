@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                         catch (Exception x)
                         {
-                            Dev2Logger.Error(x.Message + " DuplicateResourceService", x);
+                            Dev2Logger.Error(x.Message + " DuplicateResourceService", x, "Warewolf Error");
                             var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
                             return serializer.SerializeToBuilder(result);
                         }

@@ -73,11 +73,11 @@ namespace Dev2.Runtime.ESB.Execution
 
             errors = new ErrorResultTO();
             ITestCatalog testCatalog = TstCatalog ?? TestCatalog.Instance;
-            // WorkflowApplicationFactory wfFactor = new WorkflowApplicationFactory();
+
             Guid result = GlobalConstants.NullDataListID;
 
 
-            Dev2Logger.Debug("Entered Wf Container");
+            Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
@@ -96,7 +96,7 @@ namespace Dev2.Runtime.ESB.Execution
             // Set original instance ID, only if not set yet - original resource;
             if (DataObject.OriginalInstanceID == Guid.Empty)
                 DataObject.OriginalInstanceID = DataObject.DataListID;
-            Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
             //Set execution origin
             if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
@@ -133,7 +133,7 @@ namespace Dev2.Runtime.ESB.Execution
                         Message = $"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted."
                     }
                 };
-                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted.");
+                Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID}, has been deleted.", DataObject.ExecutionID.ToString());
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
                 return Guid.NewGuid();
             }
@@ -187,7 +187,7 @@ namespace Dev2.Runtime.ESB.Execution
                     errors.AddError(err, true);
                 }
 
-            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
 
             return result;
         }
@@ -361,7 +361,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (InvalidWorkflowException iwe)
             {
-                Dev2Logger.Error(iwe);
+                Dev2Logger.Error(iwe, DataObject.ExecutionID.ToString());
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
@@ -384,7 +384,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testRunResult.RunTestResult = RunResult.TestInvalid;
                     testRunResult.Message = failureMessage;
-                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception for no start node");
+                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in exception for no start node", DataObject.ExecutionID.ToString());
                 }
                 testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                 if (_request != null)
@@ -392,7 +392,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, "Warewolf Error");
                 to.AddError(ex.Message);
                 var failureMessage = DataObject.Environment.FetchErrors();
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), failureMessage, out invokeErrors, DataObject.StartTime, false, true);
@@ -411,7 +411,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     testRunResult.RunTestResult = RunResult.TestInvalid;
                     testRunResult.Message = ex.Message;
-                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception");
+                    Dev2Logger.Error($"Test {DataObject.TestName} for Resource {DataObject.ServiceName} ID {DataObject.ResourceID} marked invalid in general exception", "Warewolf Error");
                 }
                 testRunResult.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
                 _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
@@ -513,13 +513,13 @@ namespace Dev2.Runtime.ESB.Execution
 
         private IServiceTestModelTO Eval(Guid resourceId, IDSFDataObject dataObject, IServiceTestModelTO test)
         {
-            Dev2Logger.Debug("Getting Resource to Execute");
+            Dev2Logger.Debug("Getting Resource to Execute", "Warewolf Debug");
             var resourceCatalog = ResourceCat ?? ResourceCatalog.Instance;
             IDev2Activity resource = resourceCatalog.Parse(TheWorkspace.ID, resourceId);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var execPlan = serializer.SerializeToBuilder(resource);
             var clonedExecPlan = serializer.Deserialize<IDev2Activity>(execPlan);
-            Dev2Logger.Debug("Got Resource to Execute");
+            Dev2Logger.Debug("Got Resource to Execute", "Warewolf Debug");
 
             if (test != null)
             {

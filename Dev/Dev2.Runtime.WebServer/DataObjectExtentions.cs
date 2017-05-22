@@ -112,7 +112,7 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetupForRemoteInvoke(this IDSFDataObject dataObject, NameValueCollection headers)
         {
-            Dev2Logger.Debug("Remote Invoke");
+            Dev2Logger.Debug("Remote Invoke", dataObject.ExecutionID.ToString());
             if (headers != null)
             {
                 var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());

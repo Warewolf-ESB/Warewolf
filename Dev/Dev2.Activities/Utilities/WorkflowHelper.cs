@@ -70,7 +70,7 @@ namespace Dev2.Utilities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error loading XAML: ",e);
+                Dev2Logger.Error("Error loading XAML: ",e, "Warewolf Error");
             }
             return text;
         }
@@ -92,7 +92,7 @@ namespace Dev2.Utilities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error loading XAML: ",e);
+                Dev2Logger.Error("Error loading XAML: ",e, "Warewolf Error");
             }
             return null;
         }
