@@ -82,16 +82,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(string.IsNullOrEmpty(database))
             {
                 var res = new DbColumnList("No database set.");
-                Dev2Logger.Debug("No database set.");
+                Dev2Logger.Debug("No database set.", "Warewolf Debug");
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(tableName))
             {
                 var res = new DbColumnList("No table name set.");
-                Dev2Logger.Debug("No table name set.");
+                Dev2Logger.Debug("No table name set.", "Warewolf Debug");
                 return serializer.SerializeToBuilder(res);
             }
-            Dev2Logger.Info($"Get Database Columns For Table. Database:{database} Schema:{schema} Table{tableName}");
+            Dev2Logger.Info($"Get Database Columns For Table. Database:{database} Schema:{schema} Table{tableName}", "Warewolf Info");
             try
             {
                 var dbSource = serializer.Deserialize<DbSource>(database);
@@ -211,7 +211,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, "Warewolf Error");
                 var res = new DbColumnList(ex);
                 return serializer.SerializeToBuilder(res);
             }

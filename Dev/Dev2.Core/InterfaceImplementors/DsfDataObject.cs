@@ -315,6 +315,8 @@ namespace Dev2.DynamicServices
         public bool StopExecution { get; set; }
         public IServiceTestModelTO ServiceTest { get; set; }
 
+        public Guid? ExecutionID { get; set; }
+
         #endregion Properties
 
         #region Methods
@@ -326,7 +328,6 @@ namespace Dev2.DynamicServices
         public IDSFDataObject Clone()
         {
             IDSFDataObject result = new DsfDataObject();
-
             result.BookmarkExecutionCallbackID = BookmarkExecutionCallbackID;
             result.CurrentBookmarkName = CurrentBookmarkName;
             result.DebugSessionID = DebugSessionID;
@@ -384,6 +385,7 @@ namespace Dev2.DynamicServices
             result.SourceResourceID = SourceResourceID;
             result.IsServiceTestExecution = IsServiceTestExecution;
             result.IsDebugFromWeb = IsDebugFromWeb;
+            result.ExecutionID = ExecutionID;
             if (ServiceTest != null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();

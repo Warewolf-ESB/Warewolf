@@ -77,14 +77,14 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, dataObject.ExecutionID.ToString());
                     errors.AddError(string.Format(ErrorResource.ServiceNotFound, dataObject.ServiceName));
                     return resultID;
                 }
 
                 if (resource?.DataList != null)
                 {
-                    Dev2Logger.Debug("Mapping Inputs from Environment");
+                    Dev2Logger.Debug("Mapping Inputs from Environment", dataObject.ExecutionID.ToString());
                     ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
                 }
                 dataObject.RawPayload = new StringBuilder();
@@ -97,7 +97,7 @@ namespace Dev2.Runtime.ESB.Control
             try
             {
                 // Setup the invoker endpoint ;)
-                Dev2Logger.Debug("Creating Invoker");
+                Dev2Logger.Debug("Creating Invoker", dataObject.ExecutionID.ToString());
                 using (var invoker = new EsbServiceInvoker(this,theWorkspace, request))
                 {
                     // Should return the top level DLID
@@ -171,7 +171,7 @@ namespace Dev2.Runtime.ESB.Control
                 var isLocal = !dataObject.IsRemoteWorkflow();
 
                 var principle = Thread.CurrentPrincipal;
-                Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
+                Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]", dataObject.ExecutionID.ToString());
                 var oldStartTime = dataObject.StartTime;
                 dataObject.StartTime = DateTime.Now;
                 if (dataObject.RunWorkflowAsync)
@@ -287,7 +287,7 @@ namespace Dev2.Runtime.ESB.Control
                     var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);
                     Task.Factory.StartNew(() =>
                     {
-                        Dev2Logger.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
+                        Dev2Logger.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]", dataObject.ExecutionID.ToString());
                         ErrorResultTO error;
                         clonedDataObject.Environment = shapeDefinitionsToEnvironment;
                         executionContainer.Execute(out error, update);

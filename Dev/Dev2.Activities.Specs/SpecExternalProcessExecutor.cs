@@ -28,7 +28,7 @@ namespace Dev2.Activities.Specs
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
             }
 
         }

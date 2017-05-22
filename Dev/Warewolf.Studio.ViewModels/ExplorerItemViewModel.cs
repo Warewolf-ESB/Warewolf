@@ -907,7 +907,7 @@ namespace Warewolf.Studio.ViewModels
                                 }
                                 catch (Exception exception)
                                 {
-                                    Dev2Logger.Error(exception);
+                                    Dev2Logger.Error(exception, "Warewolf Error");
 
                                     _popupController.Show(Resources.Languages.Core.FailedToRenameResource,
                                         Resources.Languages.Core.FailedToRenameResourceHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true,
@@ -994,7 +994,9 @@ namespace Warewolf.Studio.ViewModels
             set;
         }
         public ICommand ViewSwaggerCommand { get; set; }
+        public bool CanViewExecutionLogging { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
+        public ICommand ViewExecutionLoggingCommand { get; set; }
 
         public ICommand DebugCommand => new DelegateCommand(o =>
         {

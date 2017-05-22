@@ -125,13 +125,13 @@ namespace Dev2.Runtime.Hosting
                                         }
                                         else
                                         {
-                                            Dev2Logger.Error("Failed to parse message ID");
+                                            Dev2Logger.Error("Failed to parse message ID", "Warewolf Error");
                                         }
                                     }
                                 }
                                 catch(Exception e)
                                 {
-                                    Dev2Logger.Error(e);
+                                    Dev2Logger.Error(e, "Warewolf Error");
                                 }
                             }
                         }
@@ -139,7 +139,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                 }
             }
         }
@@ -195,7 +195,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Error(e);
+                        Dev2Logger.Error(e, "Warewolf Error");
                     }
                 }
             }
@@ -304,7 +304,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                 }
             }
         }

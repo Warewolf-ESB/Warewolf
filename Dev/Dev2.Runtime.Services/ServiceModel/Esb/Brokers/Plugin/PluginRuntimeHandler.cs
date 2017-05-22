@@ -121,13 +121,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     dev2MethodInfo.HasError = true;
                     dev2MethodInfo.ErrorMessage = e.InnerException.Message;
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                     objectString = dto.ObjectString;
                     return dev2MethodInfo;
                 }
                 dev2MethodInfo.HasError = true;
                 dev2MethodInfo.ErrorMessage = e.Message;
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
                 throw;
             }
         }
@@ -466,7 +466,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             // ReSharper disable once RedundantCatchClause
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
                 throw;
             }
         }

@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ErrorResource.ErrorWritingSettings, ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingSettings, ex, "Warewolf Error");
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingSettings);
             }
@@ -79,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex, "Warewolf Error");
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingLoggingConfiguration);
             }
@@ -97,7 +97,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex, "Warewolf Error");
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingLoggingConfiguration);
             }
@@ -115,7 +115,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(ErrorResource.ErrorWritingSettingsConfiguration, ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingSettingsConfiguration, ex, "Warewolf Error");
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingSettingsConfiguration);
             }

@@ -30,56 +30,71 @@ namespace Dev2.Common
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static void Debug(object message)
+        public static void Debug(object message, string executionId)
         {
+            UpdateCustomFields(executionId);
             _log.Debug(message);
         }
-        
-        public static void Debug(object message,Exception exception)
+
+        public static void Debug(object message, Exception exception, string executionId)
         {
-            _log.Debug(message,exception);
+            UpdateCustomFields(executionId);
+            _log.Debug(message, exception);
         }
-        
-        public static void Error(object message)
+
+        public static void Error(object message, string executionId)
         {
+            UpdateCustomFields(executionId);
             _log.Error(message);
         }
 
-        public static void Error(object message, Exception exception)
+        public static void Error(object message, Exception exception, string executionId)
         {
+            UpdateCustomFields(executionId);
             _log.Error(message, exception);
 
         }
 
-        public static void Warn(object message)
+        public static void Warn(object message, string executionId)
         {
+            UpdateCustomFields(executionId);
             _log.Warn(message);
         }
 
-        public static void Warn(object message, Exception exception)
+        public static void Warn(object message, Exception exception, string executionId)
         {
+            UpdateCustomFields(executionId);
             _log.Warn(message, exception);
 
         }
 
-        public static void Fatal(object message)
+        public static void Fatal(object message, string executionId)
         {
+            UpdateCustomFields(executionId);
             _log.Fatal(message);
         }
 
-        public static void Fatal(object message, Exception exception)
+        public static void Fatal(object message, Exception exception, string executionId)
         {
+            UpdateCustomFields(executionId);
             _log.Fatal(message, exception);
         }
 
-        public static void Info(object message)
+        public static void Info(object message, string executionId)
         {
+            UpdateCustomFields(executionId);
             _log.Info(message);
         }
 
-        public static void Info(object message, Exception exception)
+        public static void Info(object message, Exception exception, string executionId)
         {
+           UpdateCustomFields(executionId);
             _log.Info(message, exception);
+        }
+
+        private static void UpdateCustomFields(string executionId)
+        {
+            GlobalContext.Properties["eid"] = executionId;
         }
 
         public static void UpdateLoggingConfig(string level)
@@ -110,7 +125,7 @@ namespace Dev2.Common
             var rootLogger = h.Root;
 
             var appender = rootLogger?.GetAppender("EventLogLogger") as EventLogAppender;
-            if(appender != null && appender.Threshold != null)
+            if (appender != null && appender.Threshold != null)
             {
                 return appender.Threshold.DisplayName;
             }
@@ -125,13 +140,13 @@ namespace Dev2.Common
             if (appender != null)
             {
                 var logSize = appender.MaxFileSize / 1024 / 1024;
-                return (int)Math.Round((decimal)logSize,0);
+                return (int)Math.Round((decimal)logSize, 0);
             }
             return 0;
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile,string applicationNameForEventLog)
+        public static void WriteLogSettings(string maxLogSize, string fileLogLevel, string eventLogLevel, string settingsConfigFile, string applicationNameForEventLog)
         {
             var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
@@ -143,9 +158,9 @@ namespace Dev2.Common
                 // ReSharper disable once PossibleNullReferenceException
                 var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
                 var rootElement = log4netElement.Element("root");
-                if(eventAppender == null)
+                if (eventAppender == null)
                 {
-                    ConfigureEventLoggerAppender(applicationNameForEventLog,eventLogLevel, rootElement);
+                    ConfigureEventLoggerAppender(applicationNameForEventLog, eventLogLevel, rootElement);
                 }
 
                 SetupLogLevels(fileLogLevel, eventLogLevel, rootElement, eventAppender);
@@ -154,11 +169,11 @@ namespace Dev2.Common
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public static void AddEventLogging(string settingsConfigFile,string applicationNameForEventLog)
+        public static void AddEventLogging(string settingsConfigFile, string applicationNameForEventLog)
         {
-             var settingsDocument = XDocument.Load(settingsConfigFile);
+            var settingsDocument = XDocument.Load(settingsConfigFile);
             var log4netElement = settingsDocument.Element("log4net");
-            if(log4netElement != null)
+            if (log4netElement != null)
             {
                 var appenderElements = log4netElement.Elements("appender");
                 var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
@@ -168,7 +183,7 @@ namespace Dev2.Common
                 {
                     // ReSharper disable once PossibleNullReferenceException
                     var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
-                    ConfigureEventLoggerAppender(applicationNameForEventLog,"ERROR", fileAppender);
+                    ConfigureEventLoggerAppender(applicationNameForEventLog, "ERROR", fileAppender);
                     var rootElement = log4netElement.Element("root");
                     AddEventLogLogger(rootElement);
                     settingsDocument.Save(settingsConfigFile);
@@ -184,7 +199,7 @@ namespace Dev2.Common
             var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
             var maxFileSizeElement = fileAppender?.Element("maximumFileSize");
             var maxFileSizeElementValueAttrib = maxFileSizeElement?.Attribute("value");
-            if(maxFileSizeElementValueAttrib != null)
+            if (maxFileSizeElementValueAttrib != null)
             {
                 maxFileSizeElementValueAttrib.Value = maxLogSize + "MB";
             }
@@ -192,12 +207,12 @@ namespace Dev2.Common
 
         private static void SetupLogLevels(string fileLogLevel, string eventLogLevel, XElement rootElement, XElement log4netElement)
         {
-            if(rootElement != null)
+            if (rootElement != null)
             {
                 SetLogLogLevel(fileLogLevel, rootElement);
             }
             var eventLogElement = log4netElement.Element("threshold");
-            if(eventLogElement != null)
+            if (eventLogElement != null)
             {
                 SetEventLogLogLevel(eventLogLevel, eventLogElement);
             }
@@ -209,10 +224,10 @@ namespace Dev2.Common
 
         private static void SetLogLogLevel(string eventLogLevel, XElement eventLogElement)
         {
-            
-                var levelElement = eventLogElement.Element("level");
+
+            var levelElement = eventLogElement.Element("level");
             var levelElementValueAttrib = levelElement?.Attribute("value");
-            if(levelElementValueAttrib != null)
+            if (levelElementValueAttrib != null)
             {
                 levelElementValueAttrib.Value = eventLogLevel;
             }
@@ -220,21 +235,21 @@ namespace Dev2.Common
 
         private static void SetEventLogLogLevel(string eventLogLevel, XElement eventLogElement)
         {
-            
-                eventLogElement.SetAttributeValue("value",eventLogLevel);                            
+
+            eventLogElement.SetAttributeValue("value", eventLogLevel);
         }
 
         private static void AddEventLogLogger(XElement rootElement)
         {
-            rootElement.Add(new XElement("appender-ref",new XAttribute("ref","EventLogLogger")));
+            rootElement.Add(new XElement("appender-ref", new XAttribute("ref", "EventLogLogger")));
         }
 
-        private static void ConfigureEventLoggerAppender(string applicationNameForEventLog,string logLevel, XElement element)
+        private static void ConfigureEventLoggerAppender(string applicationNameForEventLog, string logLevel, XElement element)
         {
             var eventAppenderElement = new XElement("appender");
             eventAppenderElement.SetAttributeValue("name", "EventLogLogger");
             eventAppenderElement.SetAttributeValue("type", "log4net.Appender.EventLogAppender");
-            eventAppenderElement.Add(new XElement("threshold",new XAttribute("value",logLevel)));
+            eventAppenderElement.Add(new XElement("threshold", new XAttribute("value", logLevel)));
             eventAppenderElement.Add(GetMappingElement("ERROR", "Error"));
             eventAppenderElement.Add(GetMappingElement("DEBUG", "Information"));
             eventAppenderElement.Add(GetMappingElement("INFO", "Information"));
@@ -261,6 +276,40 @@ namespace Dev2.Common
             errorMappingElement.Add(new XElement("level", new XAttribute("value", levelValue)));
             errorMappingElement.Add(new XElement("eventLogEntryType", new XAttribute("value", eventLogType)));
             return errorMappingElement;
+        }
+
+        public static void AddCustomThreadProperty(string settingsConfigFile)
+        {
+            var settingsDocument = XDocument.Load(settingsConfigFile);
+            var log4netElement = settingsDocument.Element("log4net");
+            if (log4netElement != null)
+            {
+                var appenderElements = log4netElement.Elements("appender");
+                var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
+                var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type")?.Value == "log4net.Appender.EventLogAppender");
+                var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name")?.Value == "LogFileAppender");
+
+                if (eventAppender != null)
+                {
+                    UpdateConversionPattern(eventAppender);
+                }
+
+                if (fileAppender != null)
+                {
+                    UpdateConversionPattern(fileAppender);
+                }
+                settingsDocument.Save(settingsConfigFile);
+            }
+        }
+
+        private static void UpdateConversionPattern(XElement appender)
+        {
+            var conversionPattern = appender.Element("layout")?.Element("conversionPattern");
+            var value = conversionPattern?.Attribute("value");
+            if(value != null)
+            {
+                value.Value = "%date [%property{eid}] %-5level - %message%newline";
+            }
         }
     }
 

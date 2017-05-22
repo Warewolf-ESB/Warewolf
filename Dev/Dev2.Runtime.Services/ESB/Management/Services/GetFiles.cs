@@ -23,7 +23,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            Dev2Logger.Info("Get Files");
+            Dev2Logger.Info("Get Files", "Warewolf Info");
             StringBuilder currentFolder;
 
             values.TryGetValue("fileListing", out currentFolder);
@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, "Warewolf Error");
                     msg.HasError = true;
                     msg.SetMessage(ex.Message);
                 }
@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message);
+                    Dev2Logger.Error(e.Message, "Warewolf Error");
                 }
 
             }
@@ -92,7 +92,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, "Warewolf Error");
             }
             return null;
         }
@@ -107,7 +107,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, "Warewolf Error");
             }
             return dllListing;
         }

@@ -96,7 +96,7 @@ namespace Dev2.Studio
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e.Message,e);
+                Dev2Logger.Error(e.Message,e, "Warewolf Error");
                 AppSettings.LocalHost = "http://localhost:3142";
             }
         }

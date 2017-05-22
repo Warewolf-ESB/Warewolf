@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                Dev2Logger.Info("Save Resource Service");
+                Dev2Logger.Info("Save Resource Service", "Warewolf Info");
                 StringBuilder resourceDefinition;
 
                 values.TryGetValue("ExchangeSource", out resourceDefinition);
@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
             }
 
             return serializer.SerializeToBuilder(msg);

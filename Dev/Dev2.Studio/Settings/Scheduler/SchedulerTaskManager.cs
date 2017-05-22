@@ -136,7 +136,7 @@ namespace Dev2.Settings.Scheduler
                         _schedulerViewModel.ShowError(errorMessage);
                         return false;
                     }
-                    Dev2Logger.Info($"Save Schedule. Environment: {_schedulerViewModel.CurrentEnvironment.Name} Name:{(_schedulerViewModel.SelectedTask != null ? _schedulerViewModel.SelectedTask.Name : string.Empty)} ");
+                    Dev2Logger.Info($"Save Schedule. Environment: {_schedulerViewModel.CurrentEnvironment.Name} Name:{(_schedulerViewModel.SelectedTask != null ? _schedulerViewModel.SelectedTask.Name : string.Empty)} ", "Warewolf Info");
                     if (_schedulerViewModel.SelectedTask != null)
                     {
                         _schedulerViewModel.SelectedTask.Errors.ClearErrors();
@@ -248,7 +248,7 @@ namespace Dev2.Settings.Scheduler
                                 .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
                             if (index != -1)
                             {
-                                Dev2Logger.Info($"Delete Schedule Name: {_schedulerViewModel.SelectedTask.Name} Resource:{_schedulerViewModel.SelectedTask.ResourceId} Env:{_schedulerViewModel.CurrentEnvironment.Name}");
+                                Dev2Logger.Info($"Delete Schedule Name: {_schedulerViewModel.SelectedTask.Name} Resource:{_schedulerViewModel.SelectedTask.ResourceId} Env:{_schedulerViewModel.CurrentEnvironment.Name}", "Warewolf Info");
 
                                 _schedulerViewModel.ScheduledResourceModel.DeleteSchedule(_schedulerViewModel.SelectedTask);
                                 //if delete is successfull then do the code below

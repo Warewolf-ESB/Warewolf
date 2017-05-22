@@ -197,7 +197,7 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFRandomActivity", e);
+                Dev2Logger.Error("DSFRandomActivity", e, "Warewolf Error");
                 allErrors.AddError(e.Message);
             }
             finally

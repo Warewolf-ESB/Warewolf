@@ -50,7 +50,7 @@ namespace Dev2.Runtime.Security
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
             }
         }
 
@@ -207,7 +207,7 @@ namespace Dev2.Runtime.Security
                 }
 
                 // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Error("AUTH ERROR FOR USER : " + user);
+                Dev2Logger.Error("AUTH ERROR FOR USER : " + user, "Warewolf Error");
                 // ReSharper restore InvokeAsExtensionMethod
             }
 
