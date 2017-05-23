@@ -1,5 +1,4 @@
 ﻿using Dev2.Common.Interfaces;
-using Dev2.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using System;
@@ -25,7 +24,6 @@ namespace WarewolfParsingTest
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
             var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John") };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
@@ -60,7 +58,6 @@ namespace WarewolfParsingTest
                 new AssignValue("[[@Person()]]", jObject),
                 new AssignValue("[[@Person()]]", jObject),
             };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
@@ -94,7 +91,6 @@ namespace WarewolfParsingTest
                 new AssignValue("[[@Person(*)]]", jObject),
                 new AssignValue("[[@Person(*)]]", jObject),
             };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
@@ -104,8 +100,8 @@ namespace WarewolfParsingTest
             var warewolfEvalResult = environment.Eval("[[@Person(*)]]", 0);
             var isWarewolfAtomListresult = warewolfEvalResult.IsWarewolfAtomListresult;
             var isWarewolfAtomresult = warewolfEvalResult.IsWarewolfAtomResult;
-            Assert.IsTrue(isWarewolfAtomListresult);
-            Assert.IsFalse(isWarewolfAtomresult);
+            Assert.IsFalse(isWarewolfAtomListresult);
+            Assert.IsTrue(isWarewolfAtomresult);
             var container = data.JsonObjects["Person"];
             var obj = container as JArray;
             Assert.IsNotNull(obj);
@@ -129,11 +125,10 @@ namespace WarewolfParsingTest
                 new AssignValue("[[@Person()]]", jObject),
 
             };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
-            environment.AssignJson(new AssignValue("[[@Person]]", "{\"PolicyNo\":\"NNNN\",\"DateId\":32,\"SomeVal\":\"Bob\"}"), 0);
+            environment.AssignJson(new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"NNNN\",\"DateId\":32,\"SomeVal\":\"Bob\"}"), 0);
             //------------Assert Results-------------------------
 
             var data = GetFromEnv(environment);
@@ -165,11 +160,11 @@ namespace WarewolfParsingTest
                 new AssignValue("[[@Person()]]", jObject),
 
             };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            
 
             //------------Execute Test---------------------------
 
-            environment.AssignJson(new AssignValue("[[@Person]]", "{\"PolicyNo\":\"NNNN\",\"DateId\":32,\"SomeVal\":\"Bob\"}"), 0);
+            environment.AssignJson(new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"NNNN\",\"DateId\":32,\"SomeVal\":\"Bob\"}"), 0);
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
 
@@ -200,13 +195,11 @@ namespace WarewolfParsingTest
                 new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
                 new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0004\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
             };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
 
-            var data = GetFromEnv(environment);
             var warewolfEvalResult = environment.Eval("[[@Person(1)]]", 0);
             var isWarewolfAtomListresult = warewolfEvalResult.IsWarewolfAtomListresult;
             var isWarewolfAtomresult = warewolfEvalResult.IsWarewolfAtomResult;
@@ -232,13 +225,11 @@ namespace WarewolfParsingTest
                 new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
                 new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0004\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
             };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
 
-            var data = GetFromEnv(environment);
             var warewolfEvalResult = environment.Eval("[[@Person(2)]]", 0);
             var isWarewolfAtomListresult = warewolfEvalResult.IsWarewolfAtomListresult;
             var isWarewolfAtomresult = warewolfEvalResult.IsWarewolfAtomResult;
@@ -264,13 +255,11 @@ namespace WarewolfParsingTest
                 new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
                 new AssignValue("[[@Person()]]", "{\"PolicyNo\":\"A0004\",\"DateId\":32,\"SomeVal\":\"Bob\"}"),
             };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
 
-            var data = GetFromEnv(environment);
             var warewolfEvalResult = environment.Eval("[[@Person(3)]]", 0);
             var isWarewolfAtomListresult = warewolfEvalResult.IsWarewolfAtomListresult;
             var isWarewolfAtomresult = warewolfEvalResult.IsWarewolfAtomResult;
@@ -290,10 +279,6 @@ namespace WarewolfParsingTest
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
             var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary") };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
-            //var p = new Person() { Name = "John", Children = new List<Person> { new Person() { Name = "Mary",  }}};
-
-            //var x = ser.Serialize(p);
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
@@ -320,10 +305,7 @@ namespace WarewolfParsingTest
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
             var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe") };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
-            //var p = new Person() { Name = "John", Children = new List<Person> { new Person() { Name = "Mary",  }}};
-
-            //var x = ser.Serialize(p);
+            
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
@@ -349,10 +331,7 @@ namespace WarewolfParsingTest
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
             var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe"), new AssignValue("[[@Person.Children(2).Name]]", "Moe") };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
-            //var p = new Person() { Name = "John", Children = new List<Person> { new Person() { Name = "Mary",  }}};
-
-            //var x = ser.Serialize(p);
+           
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
@@ -379,10 +358,7 @@ namespace WarewolfParsingTest
 
             ExecutionEnvironment environment = new ExecutionEnvironment();
             var values = new List<IAssignValue>() { new AssignValue("[[@Person.Name]]", "John"), new AssignValue("[[@Person.Children(1).Name]]", "Mary"), new AssignValue("[[@Person.Children(2).Name]]", "Joe"), new AssignValue("[[@Person.Children(*).Name]]", "Moe") };
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
-            //var p = new Person() { Name = "John", Children = new List<Person> { new Person() { Name = "Mary",  }}};
-
-            //var x = ser.Serialize(p);
+            
             //------------Execute Test---------------------------
             environment.AssignJson(values, 0);
             //------------Assert Results-------------------------
