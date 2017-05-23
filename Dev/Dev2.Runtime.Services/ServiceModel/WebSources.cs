@@ -185,9 +185,8 @@ namespace Dev2.Runtime.ServiceModel
 
         // ReSharper disable UnusedParameter.Local
         static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, bool throwError, out ErrorResultTO errors)
-        // ReSharper restore UnusedParameter.Local
+            // ReSharper restore UnusedParameter.Local
         {
-            EnsureContentType(client);
             errors = new ErrorResultTO();
             switch (method)
             {
@@ -201,12 +200,11 @@ namespace Dev2.Runtime.ServiceModel
 
         static string Execute(WebClient client, string address, WebRequestMethod method, string data, bool throwError, out ErrorResultTO errors)
         {
-            EnsureContentType(client);
             if (method == WebRequestMethod.Put)
             {
                 if (data != null)
                 {
-                   
+
                     var deserializeObject = JsonConvert.DeserializeObject(data);
                     if (deserializeObject != null)
                     {
@@ -245,15 +243,6 @@ namespace Dev2.Runtime.ServiceModel
             return string.Empty;
         }
 
-        static void EnsureContentType(WebClient client)
-        {
-//            var contentType = client.Headers["Content-Type"];
-//            if (string.IsNullOrEmpty(contentType))
-//            {
-//                contentType = "application/x-www-form-urlencoded";
-//            }
-//            client.Headers["Content-Type"] = contentType;
-        }
 
         #endregion
 
@@ -295,7 +284,8 @@ namespace Dev2.Runtime.ServiceModel
                         }
                     }
                 }
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; }; 
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
             }
         }
 

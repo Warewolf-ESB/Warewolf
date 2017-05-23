@@ -13,14 +13,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
+using Dev2.Data.TO;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    [TestClass]    
+    [TestClass]
     public class WebSourcesTests
     {
         // ReSharper disable InconsistentNaming
@@ -69,7 +72,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var client = source.Client;
             var agent = client.Headers["user-agent"];
             Assert.IsNotNull(agent);
-            Assert.AreEqual(agent,GlobalConstants.UserAgentString);
+            Assert.AreEqual(agent, GlobalConstants.UserAgentString);
         }
         [TestMethod]
         public void WebSourcesAssertUserAgentHeaderSet_SetsOtherHeaders()
@@ -90,14 +93,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSourcesAssertUserAgentHeaderSet_SetsUserNameAndPassword()
 
         {
-            var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.User,UserName = "User",Password = "pwd"};
+            var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.User, UserName = "User", Password = "pwd" };
 
             WebSources.EnsureWebClient(source, new List<string> { "a:x", "b:e" });
 
             var client = source.Client;
             // ReSharper disable PossibleNullReferenceException
             Assert.IsTrue((client.Credentials as NetworkCredential).UserName == "User");
-          
+
             Assert.IsTrue((client.Credentials as NetworkCredential).Password == "pwd");
             // ReSharper restore PossibleNullReferenceException
         }
@@ -124,6 +127,39 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             Assert.IsNotNull(result);
             Assert.AreEqual(Guid.Empty, result.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void GetAddress_Given_Null_Source_And_NoRelativeUri_Should_Return_relativeUri()
+        {
+            //------------Setup for test-------------------------
+            var webSource = new PrivateType(typeof(WebSources));
+            //------------Execute Test---------------------------
+            object[] args = { null, string.Empty };
+            var invokeStaticResults = webSource.InvokeStatic("GetAddress", args);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(invokeStaticResults);
+            var results = invokeStaticResults as string;
+            Assert.IsNotNull(results);
+            Assert.IsTrue(string.IsNullOrEmpty(results));
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void GetAddress_Given_Null_Source_And_relativeUri_Should_Return_relativeUri()
+        {
+            //------------Setup for test-------------------------
+            var webSource = new PrivateType(typeof(WebSources));
+            //------------Execute Test---------------------------
+            object[] args = { null, "some url" };
+            var invokeStaticResults = webSource.InvokeStatic("GetAddress", args);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(invokeStaticResults);
+            var results = invokeStaticResults as string;
+            Assert.IsNotNull(results);
+            Assert.AreEqual("some url", results);
         }
 
         #endregion
