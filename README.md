@@ -39,8 +39,3 @@ Please note that Warewolf is built for Windows 7, Windows 8.1, Windows 10, Windo
 Should you have installed the open source version of the Software that version of the Software is subject to this [EULA](https://warewolf.io/eula.php) as well as the terms of the [GNU Affero General Public License version 3 or later](http://www.gnu.org/licenses/agpl-3.0.html). Please note, however, that as an end user of the Software the provisions of this [EULA](https://warewolf.io/eula.php) shall prevail. Should You wish to change or distribute the Software the provisions of the GNU Affero General Public License shall take precedence.
 
 
-**Developed with the help of ReSharper**
-
-
-[![Resharper Logo](http://warewolf.io/images/NewResharper%20Logo.png)](https://www.jetbrains.com/resharper/)
-
