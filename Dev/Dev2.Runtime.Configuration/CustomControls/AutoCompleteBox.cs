@@ -2242,6 +2242,7 @@ namespace System.Windows.Controls
             _userCalledPopulate = populateReady && userInitiated;
 
             // Update the interface and values only as necessary
+            newText = newText.Replace("\r\n","\n");
             UpdateTextValue(newText, userInitiated);
 
             if(populateReady)
