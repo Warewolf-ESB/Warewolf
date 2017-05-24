@@ -101,7 +101,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Repeat",
                         "RepeatInterval",
                         "ExpireDate",
-                        "ExpireTime"});
+                        "ExpireTime",
+                        "ResourceId"});
             table1.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
@@ -114,7 +115,8 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "hour",
                         "2014/01/02",
-                        "15:40:15"});
+                        "15:40:15",
+                        ""});
 #line 13
    testRunner.And("\"ScheduleWithHistory\" has a Schedule of", ((string)(null)), table1, "And ");
 #line 16
@@ -163,7 +165,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Repeat",
                         "RepeatInterval",
                         "ExpireDate",
-                        "ExpireTime"});
+                        "ExpireTime",
+                        "ResourceId"});
             table2.AddRow(new string[] {
                         "On a schedule",
                         "\"Daily\"",
@@ -176,7 +179,8 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "hour",
                         "2014/01/02",
-                        "15:40:15"});
+                        "15:40:15",
+                        ""});
 #line 28
    testRunner.And("\"Diceroll00\" has a Schedule of", ((string)(null)), table2, "And ");
 #line 31
@@ -216,7 +220,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Repeat",
                         "RepeatInterval",
                         "ExpireDate",
-                        "ExpireTime"});
+                        "ExpireTime",
+                        "ResourceId"});
             table3.AddRow(new string[] {
                         "At log on",
                         "1",
@@ -224,7 +229,8 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "hour",
                         "2014/01/02",
-                        "15:40:15"});
+                        "15:40:15",
+                        ""});
 #line 41
    testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table3, "And ");
 #line 44
@@ -267,7 +273,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Repeat",
                         "RepeatInterval",
                         "ExpireDate",
-                        "ExpireTime"});
+                        "ExpireTime",
+                        "ResourceId"});
             table4.AddRow(new string[] {
                         "At log on",
                         "1",
@@ -275,7 +282,8 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "hour",
                         "2014/01/02",
-                        "15:40:15"});
+                        "15:40:15",
+                        ""});
 #line 57
    testRunner.And("\"Diceroll1\" has a Schedule of", ((string)(null)), table4, "And ");
 #line 60
@@ -318,7 +326,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Repeat",
                         "RepeatInterval",
                         "ExpireDate",
-                        "ExpireTime"});
+                        "ExpireTime",
+                        "ResourceId"});
             table5.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
@@ -331,7 +340,8 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "hour",
                         "2014/01/02",
-                        "15:40:15"});
+                        "15:40:15",
+                        ""});
 #line 69
    testRunner.And("\"LocalUserSchedule\" has a Schedule of", ((string)(null)), table5, "And ");
 #line 72
@@ -380,7 +390,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Repeat",
                         "RepeatInterval",
                         "ExpireDate",
-                        "ExpireTime"});
+                        "ExpireTime",
+                        "ResourceId"});
             table6.AddRow(new string[] {
                         "On a schedule",
                         "Daily",
@@ -393,7 +404,8 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "hour",
                         "2014/01/02",
-                        "15:40:15"});
+                        "15:40:15",
+                        ""});
 #line 84
    testRunner.And("\"ScheduleWithError\" has a Schedule of", ((string)(null)), table6, "And ");
 #line 87
