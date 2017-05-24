@@ -57,7 +57,7 @@ if ($ResourcesType -eq "") {
 }
 
 if (Test-Path "$PSScriptRoot\Cleanup.ps1") {
-    &"$PSScriptRoot\Cleanup.ps1"
+    &"$PSScriptRoot\Cleanup.ps1" -WaitForCloseTimeout 10 -WaitForCloseRetryCount 1
 }
 
 if ($ServerPath -eq "") {
