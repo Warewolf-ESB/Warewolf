@@ -69,6 +69,27 @@ namespace WarewolfParsingTest
             Assert.IsTrue(DataStorage.tryParseAtom("1").IsInt);
         }
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataStorage_AtomEquality")]
+        public void DataStorage_TryParseAtom_LineBreakOne()
+        {
+            Assert.IsFalse(DataStorage.tryParseAtom("1\r").IsInt);
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataStorage_AtomEquality")]
+        public void DataStorage_TryParseAtom_LineBreakTwo()
+        {
+            Assert.IsFalse(DataStorage.tryParseAtom("1\n").IsInt);
+        }
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataStorage_AtomEquality")]
+        public void DataStorage_TryParseAtom_LineBreakThree()
+        {
+            Assert.IsFalse(DataStorage.tryParseAtom("1\r\n").IsInt);
+        }
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DataStorage_AtomEquality")]
         public void DataStorage_TryParseAtomFl()
