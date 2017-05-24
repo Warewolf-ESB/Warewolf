@@ -7,8 +7,6 @@ using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -18,18 +16,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetLogDataService : IEsbManagementEndpoint
     {
-        public IFile FileWrapper { get; set; }
         private string _serverLogFilePath;
 
-        public GetLogDataService()
-        {
-            FileWrapper = new FileWrapper();
-        }
-
-        public GetLogDataService(IFile file)
-        {
-            FileWrapper = file;
-        }
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;
@@ -74,12 +62,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                         if (matches.Length > 1)
                         {
                             var match = matches;
+                            var isUrl = match[4].StartsWith("Request URL", StringComparison.Ordinal);
+                            var cleanUrl = match[4].Replace("Request URL [ ", "").Replace(" ]", "");
                             var tmpObj = new
                             {
                                 ExecutionId = match[2],
                                 LogType = match[3],
                                 DateTime = match[1],
-                                Message = match[4]
+                                Message = isUrl ? "" : match[4],
+                                Url = isUrl ? cleanUrl : "",
+
                             };
                             tmpObjects.Add(tmpObj);
                         }
@@ -96,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             if (s.Message.StartsWith("Started Execution"))
                             {
-                                logEntry.StartDateTime = DateTime.Parse(s.DateTime);
+                                logEntry.StartDateTime = ParseDate(s);
                             }
                             if (s.LogType == "ERROR")
                             {
@@ -104,12 +96,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             if (s.Message.StartsWith("Completed Execution"))
                             {
-                                logEntry.CompletedDateTime = DateTime.Parse(s.DateTime);
+                                logEntry.CompletedDateTime = ParseDate(s);
                             }
                             if (s.Message.StartsWith("About to execute"))
                             {
                                 logEntry.User = GetUser(s.Message);
-                                logEntry.Url = s.Message;
+                            }
+                            if (!string.IsNullOrEmpty(s.Url))
+                            {
+                                logEntry.Url = s.Url;
                             }
                         }
                         logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
@@ -123,6 +118,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Get Log Data ServiceError", e, "Warewolf Info");
             }
             return serializer.SerializeToBuilder("");
+        }
+
+        private static dynamic ParseDate(dynamic s)
+        {
+            return DateTime.ParseExact(s.DateTime, "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture);
         }
 
         private string GetUser(string message)
