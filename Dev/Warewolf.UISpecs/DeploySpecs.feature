@@ -21,19 +21,6 @@ Scenario: Deploy ViewOnlyWorkflow to remoteConnection
 	And I Click Deploy conflicts MessageBox OK
 	And I Click Deploy Successful MessageBox OK
     
-
-Scenario: Deploy From RemoteConnection
-	Given The Warewolf Studio is running
-	When I Click Deploy Ribbon Button
-    And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-    And Resources is visible on the tree
-	And I Select "Hello World" from the source tab 
-	And I Click Deploy button	
-    And I Click Deploy version conflicts MessageBox OK
-	And I Click Deploy conflicts MessageBox OK
-	And I Click Deploy Successful MessageBox OK
-
-
 Scenario: Deploy button is enabling when selecting resource in source side
 	 Given The Warewolf Studio is running
 	 When I Click Deploy Ribbon Button
@@ -42,7 +29,6 @@ Scenario: Deploy button is enabling when selecting resource in source side
 	 And I Select "Hello world" from the source tab 
 	 Then Deploy Button is enabled  "true"	
 	 
-
 Scenario: Filtering and clearing filter on source side
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
@@ -140,3 +126,14 @@ Scenario: Changing Seleced Server On desploy Source While Connected To Remote Se
 	And I Select RemoteConnectionIntegration From Explorer
 	And I Select localhost From Deploy Tab Source Server Combobox
 	And I validate the Resource tree is loaded
+
+Scenario: Deploy From RemoteConnection
+	Given The Warewolf Studio is running
+	When I Click Deploy Ribbon Button
+    And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
+    And Resources is visible on the tree
+	And I Select "Hello World" from the source tab 
+	And I Click Deploy button	
+    And I Click Deploy version conflicts MessageBox OK
+	And I Click Deploy conflicts MessageBox OK
+	And I Click Deploy Successful MessageBox OK
