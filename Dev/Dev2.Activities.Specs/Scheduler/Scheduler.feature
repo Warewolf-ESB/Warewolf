@@ -87,3 +87,17 @@ Scenario: Schedule with ErrorInDebug
 	  When the "ScheduleWithError" is executed "1" times
 	  Then the Schedule task has "An" error
 	  Then the schedule status is "Failure"
+
+@Scheduler
+Scenario: Schedule Workflow with success
+      Given I have a schedule "ScheduleAssignOutput"
+	  And "ScheduleAssignOutput" executes an Workflow "AssignOutput" 
+	  And task history "Number of history records to load" is "2"
+	  And the task status "Status" is "Enabled"
+	  And "ScheduleAssignOutput" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"	
+	  And "ScheduleAssignOutput" has a Schedule of
+	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime | ResourceId                           |
+	  | On a schedule | Daily    | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   | f3232bd9-f491-45f4-b8fa-3a49de174b3e |
+	  When the "ScheduleAssignOutput" is executed "1" times
+	  Then the Schedule task has "No" error
+	  Then the schedule status is "Success"

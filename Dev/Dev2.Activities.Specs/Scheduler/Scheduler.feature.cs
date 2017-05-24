@@ -405,6 +405,68 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule Workflow with success")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Scheduler")]
+        public virtual void ScheduleWorkflowWithSuccess()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule Workflow with success", new string[] {
+                        "Scheduler"});
+#line 92
+this.ScenarioSetup(scenarioInfo);
+#line 93
+      testRunner.Given("I have a schedule \"ScheduleAssignOutput\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 94
+   testRunner.And("\"ScheduleAssignOutput\" executes an Workflow \"AssignOutput\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 95
+   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 96
+   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
+   testRunner.And("\"ScheduleAssignOutput\" has a username of \"dev2\\IntegrationTester\" and a Password " +
+                    "of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ScheduleType",
+                        "Interval",
+                        "StartDate",
+                        "StartTime",
+                        "Recurs",
+                        "RecursInterval",
+                        "Delay",
+                        "DelayInterval",
+                        "Repeat",
+                        "RepeatInterval",
+                        "ExpireDate",
+                        "ExpireTime",
+                        "ResourceId"});
+            table7.AddRow(new string[] {
+                        "On a schedule",
+                        "Daily",
+                        "2014/01/01",
+                        "15:40:44",
+                        "1",
+                        "day",
+                        "1",
+                        "hour",
+                        "1",
+                        "hour",
+                        "2014/01/02",
+                        "15:40:15",
+                        "f3232bd9-f491-45f4-b8fa-3a49de174b3e"});
+#line 98
+   testRunner.And("\"ScheduleAssignOutput\" has a Schedule of", ((string)(null)), table7, "And ");
+#line 101
+   testRunner.When("the \"ScheduleAssignOutput\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 102
+   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 103
+   testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
