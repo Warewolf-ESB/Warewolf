@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var logFilePath = getLogDataService.ServerLogFilePath;
             //------------Assert Results-------------------------
-            Assert.AreEqual(EnvironmentVariables.ServerLogFile,logFilePath);
+            Assert.AreEqual(EnvironmentVariables.ServerLogFile, logFilePath);
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var logFilePath = getLogDataService.ServerLogFilePath;
             //------------Assert Results-------------------------
-            Assert.AreEqual("MyPath",logFilePath);
+            Assert.AreEqual("MyPath", logFilePath);
         }
 
 
@@ -87,13 +87,33 @@ namespace Dev2.Tests.Runtime.Services
             var getLogDataService = new GetLogDataService();
             var logFilePath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
             getLogDataService.ServerLogFilePath = logFilePath;
-            File.WriteAllText(logFilePath,logData);
+            File.WriteAllText(logFilePath, logData);
             //------------Execute Test---------------------------
-            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(),null);
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
             Assert.IsNotNull(logEntriesObject);
+
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithLogDataContainingURl_ShouldReturnLogDataObjectWithUrl()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithUrl.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //------------Execute Test---------------------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.IsNotNull(logEntriesObject);
+            var value = logEntriesObject[0].Url;
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            Assert.AreEqual("http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>&wid=3667c210-7322-441f-b4e5-f465e46ae22d", value);
 
         }
 
@@ -112,7 +132,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("GetLogDataService", getLogDataService.HandlesType());
         }
 
-       
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("GetLogDataService_HandlesType")]

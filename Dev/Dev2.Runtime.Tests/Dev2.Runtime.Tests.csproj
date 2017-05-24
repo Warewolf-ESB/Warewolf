@@ -699,6 +699,9 @@
     <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
     <Content Include="TextFiles\SubFolderB\SubFolderBTextFile1.txt" />
     <Content Include="TextFiles\SubFolderA\SubFolderATextFile1.txt" />
+    <EmbeddedResource Include="TextFiles\LogFileWithUrl.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="TextFiles\TextFile2.txt" />
     <Content Include="TextFiles\TextFile1.txt" />
     <Content Include="XML\GenDev.xml">
