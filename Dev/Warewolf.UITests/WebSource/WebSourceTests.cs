@@ -47,9 +47,12 @@ namespace Warewolf.UITests.WebSource
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Selected);
         }
 
+        /// <summary>
+        /// If this test is failing, check first to see if the Link is still working.
+        /// </summary>
         [TestMethod]
         [TestCategory("Web Sources")]
-        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once InconsistentNaming        
         public void Test_WebServiceSource_DefaulQuery_UITests()
         {
             //Create Source
