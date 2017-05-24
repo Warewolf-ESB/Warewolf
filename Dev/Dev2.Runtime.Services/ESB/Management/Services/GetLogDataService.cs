@@ -40,56 +40,83 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                var logData = File.ReadAllLines(ServerLogFilePath);
                 List<dynamic> tmpObjects = new List<dynamic>();
-                foreach(var singleEntry in logData)
+                var buffor = new Queue<string>();
+                Stream stream = File.Open(ServerLogFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                var file = new StreamReader(stream);
+                while (!file.EndOfStream)
                 {
-                    var matches = Regex.Matches(singleEntry, @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s(\w+)\s+[-]\s+");
-                    if (matches.Count>0)
-                    {
-                        var match = matches[0];
-                        var tmpObj = new
-                        {
-                            ExecutionId = match.Groups[4].Value,
-                            LogType = match.Groups[7].Value,
-                            DateTime = match.Groups[1].Value,
-                            Message = match.Groups[9].Value
-                        };
-                        tmpObjects.Add(tmpObj);
-                    }
+                    string line = file.ReadLine();
+
+                    buffor.Enqueue(line);
                 }
-                var logEntries = new List<LogEntry>();
-                var groupedEntries = tmpObjects.GroupBy(o => o.ExecutionId);
-                foreach(var groupedEntry in groupedEntries)
+
                 {
-                    var logEntry = new LogEntry();
-                    logEntry.ExecutionId = groupedEntry.Key;
-                    logEntry.Status = "Success";
-                    foreach(var s in groupedEntry.Key)
+                    var logData = buffor.AsQueryable();
+
+                    //File.ReadAllLines(ServerLogFilePath);
+
+                    foreach (var singleEntry in logData)
                     {
-                        if(s.Message.StartsWith("Started Execution"))
+                        var matches = Regex.Split(singleEntry, @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s(\w+)\s+[-]\s+");
+                        if (matches.Length > 1)
                         {
-                            logEntry.StartDateTime = DateTime.Parse(s.DateTime);
-                        }
-                        if(s.LogType == "ERROR")
-                        {
-                            logEntry.Result = "ERROR";
-                        }
-                        if(s.Message.StartsWith("Completed Execution"))
-                        {
-                            logEntry.CompletedDateTime = DateTime.Parse(s.DateTime);
+                            var match = matches;
+                            var tmpObj = new
+                            {
+                                ExecutionId = match[2],
+                                LogType = match[3],
+                                DateTime = match[1],
+                                Message = match[4]
+                            };
+                            tmpObjects.Add(tmpObj);
                         }
                     }
-                    logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
-                    logEntries.Add(logEntry);
+
+                    var logEntries = new List<LogEntry>();
+                    var groupedEntries = tmpObjects.GroupBy(o => o.ExecutionId);
+                    foreach (var groupedEntry in groupedEntries)
+                    {
+                        var logEntry = new LogEntry();
+                        logEntry.ExecutionId = groupedEntry.Key;
+                        logEntry.Status = "Success";
+                        foreach (var s in groupedEntry)
+                        {
+                            if (s.Message.StartsWith("Started Execution"))
+                            {
+                                logEntry.StartDateTime = DateTime.Parse(s.DateTime);
+                            }
+                            if (s.LogType == "ERROR")
+                            {
+                                logEntry.Result = "ERROR";
+                            }
+                            if (s.Message.StartsWith("Completed Execution"))
+                            {
+                                logEntry.CompletedDateTime = DateTime.Parse(s.DateTime);
+                            }
+                            if (s.Message.StartsWith("About to execute"))
+                            {
+                                logEntry.User = GetUser(s.Message);
+                                logEntry.Url = s.Message;
+                            }
+                        }
+                        logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
+                        logEntries.Add(logEntry);
+                    }
+                    return serializer.SerializeToBuilder(logEntries);
                 }
-                return serializer.SerializeToBuilder(logEntries);
             }
             catch (Exception e)
             {
                 Dev2Logger.Info("Get Log Data ServiceError", e, "Warewolf Info");
             }
             return serializer.SerializeToBuilder("");
+        }
+
+        private string GetUser(string message)
+        {
+            string toReturn= message.Split('[')[2].Split(':')[0];
+            return toReturn;
         }
 
         public DynamicService CreateServiceEntry()
@@ -102,7 +129,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return findServices;
         }
-        
+
         public string ServerLogFilePath
         {
             get
