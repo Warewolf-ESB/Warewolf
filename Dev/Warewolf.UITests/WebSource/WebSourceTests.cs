@@ -25,9 +25,9 @@ namespace Warewolf.UITests.WebSource
             WebSourceUIMap.Click_UserButton_On_WebServiceSourceTab();
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.UserNameTextBox.Enabled, "Username Textbox not enabled");
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.PasswordTextBox.Enabled, "Password Textbox not enabled");
-            WebSourceUIMap.Enter_TextIntoAddress_On_WebServiceSourceTab();
+            WebSourceUIMap.Enter_TextIntoAddress_On_WebServiceSourceTab("http://RSAKLFSVRTFSBLD:9810");
             WebSourceUIMap.Enter_RunAsUser_On_WebServiceSourceTab();
-            WebSourceUIMap.Enter_DefaultQuery_On_WebServiceSourceTab();
+            WebSourceUIMap.Enter_DefaultQuery_On_WebServiceSourceTab("");
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection button not enabled");
             WebSourceUIMap.Click_NewWebSource_TestConnectionButton();
             //Save Source
@@ -45,6 +45,22 @@ namespace Warewolf.UITests.WebSource
             WebSourceUIMap.Click_Close_Web_Source_Wizard_Tab_Button();
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton.Selected);
+        }
+
+        [TestMethod]
+        [TestCategory("Web Sources")]
+        // ReSharper disable once InconsistentNaming
+        public void Test_WebServiceSource_DefaulQuery_UITests()
+        {
+            //Create Source
+            ExplorerUIMap.Click_NewWebSource_From_ExplorerContextMenu();
+            WebSourceUIMap.Enter_TextIntoAddress_On_WebServiceSourceTab("https://data.gov.in");
+            WebSourceUIMap.Enter_DefaultQuery_On_WebServiceSourceTab("/api/datastore/resource.json?resource_id=0a076478-3fd3-4e2c-b2d2-581876f56d77&api-key=fd6eaccb00617ecf8d225d4573f8f7be");
+            WebSourceUIMap.Click_NewWebSource_TestConnectionButton();
+            //Save Source
+            UIMap.MainStudioWindow.SideMenuBar.SaveButton.WaitForControlEnabled(60000);
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save Ribbon Button is not enabled after clicking new web source test button and waiting one minute (60000ms).");
+            Assert.IsTrue(UIMap.ControlExistsNow(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.TestPassedImage), "Expected Test to Pass, but got different results after clicking test button.");
         }
 
         #region Additional test attributes
