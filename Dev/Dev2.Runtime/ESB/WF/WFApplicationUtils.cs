@@ -127,6 +127,7 @@ namespace Dev2.Runtime.ESB.WF
                     try
                     {
                         var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
+                        
                         var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                         Dev2Logger.Debug("Execution Result :" + Environment.NewLine + executePayload, dataObject.ExecutionID.ToString());
                     }

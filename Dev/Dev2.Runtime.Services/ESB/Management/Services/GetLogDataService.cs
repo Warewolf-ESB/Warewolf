@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -16,8 +18,18 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetLogDataService : IEsbManagementEndpoint
     {
+        public IFile FileWrapper { get; set; }
         private string _serverLogFilePath;
 
+        public GetLogDataService()
+        {
+            FileWrapper = new FileWrapper();
+        }
+
+        public GetLogDataService(IFile file)
+        {
+            FileWrapper = file;
+        }
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;
@@ -40,7 +52,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                var logData = File.ReadAllLines(ServerLogFilePath);
+                var logData = FileWrapper.ReadAllLines(ServerLogFilePath);
                 List<dynamic> tmpObjects = new List<dynamic>();
                 foreach(var singleEntry in logData)
                 {
