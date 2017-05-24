@@ -1,7 +1,9 @@
 ﻿using System;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
+using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -18,7 +20,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
         public void OnConstruction_ShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
-            
+
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -27,11 +29,12 @@ namespace Dev2.Tests.Runtime.ESB.Execution
                 var obj = new Mock<IDSFDataObject>();
                 var workSpace = new Mock<IWorkspace>();
                 var channel = new Mock<IEsbChannel>();
+                var rc = new Mock<IResourceCatalog>();
                 var serviceAction = new ServiceAction();
                 // ReSharper disable once UnusedVariable
-                var wfExecutionContainer = new WfExecutionContainer(serviceAction, obj.Object, workSpace.Object, channel.Object);
+                var wfExecutionContainer = new WfExecutionContainer(rc.Object, serviceAction, obj.Object, workSpace.Object, channel.Object);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Assert.Fail(ex.Message);
             }

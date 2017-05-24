@@ -124,6 +124,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
             }
             Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + dataObject.RawPayload + " ]", dataObject.ExecutionID.ToString());
+            Dev2Logger.Debug("Request URL [ " + webRequest.WebServerUrl + " ]", dataObject.ExecutionID.ToString());
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
