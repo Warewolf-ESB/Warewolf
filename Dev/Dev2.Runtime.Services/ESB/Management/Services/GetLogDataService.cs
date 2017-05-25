@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
@@ -36,30 +37,17 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Info("Get Log Data Service", "Warewolf Info");
-            StringBuilder startTimeKey;
-            DateTime startTime = new DateTime();
-            if (values.TryGetValue("StartDateTime", out startTimeKey))
-            {
-                startTime = ParseDate(startTimeKey.ToString());
-            }
-
-            StringBuilder statusKey;
-            string status = "";
-            if (values.TryGetValue("Status", out statusKey))
-            {
-                status = statusKey.ToString();
-            }
 
             var serializer = new Dev2JsonSerializer();
             try
             {
-                List<dynamic> tmpObjects = new List<dynamic>();
+                var tmpObjects = new List<dynamic>();
                 var buffor = new Queue<string>();
                 Stream stream = File.Open(ServerLogFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 var file = new StreamReader(stream);
                 while (!file.EndOfStream)
                 {
-                    string line = file.ReadLine();
+                    var line = file.ReadLine();
 
                     buffor.Enqueue(line);
                 }
@@ -113,7 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             if (s.Message.StartsWith("About to execute"))
                             {
-                                logEntry.User = GetUser(s.Message);
+                                logEntry.User = GetUser(s.Message)?.TrimStart().TrimEnd() ?? "";
                             }
                             if (!string.IsNullOrEmpty(s.Url))
                             {
@@ -124,10 +112,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         logEntries.Add(logEntry);
                     }
 
-                    var filteredEntries = logEntries.Where(entry => entry.StartDateTime >= startTime)
-                                                    .Where(entry => string.IsNullOrEmpty(status) || entry.Status.Equals(status, StringComparison.CurrentCultureIgnoreCase));
-
-                    return serializer.SerializeToBuilder(filteredEntries);
+                    return FilterResults(values, logEntries, serializer);
                 }
             }
             catch (Exception e)
@@ -137,6 +122,55 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder("");
         }
 
+        private StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
+        {
+            StringBuilder startTimeKey;
+            var startTime = default(DateTime);
+            if (values.TryGetValue("StartDateTime", out startTimeKey))
+            {
+                startTime = ParseDate(startTimeKey.ToString());
+            }
+
+            StringBuilder endTimeKey;
+            var endTime = default(DateTime);
+            if (values.TryGetValue("CompletedDateTime", out endTimeKey))
+            {
+                endTime = ParseDate(endTimeKey.ToString());
+            }
+
+            StringBuilder statusKey;
+            var status = "";
+            if (values.TryGetValue("Status", out statusKey))
+            {
+                status = statusKey.ToString();
+            }
+            StringBuilder userKey;
+            var user = "";
+            if (values.TryGetValue("User", out userKey))
+            {
+                user = userKey.ToString();
+            }
+            StringBuilder executionIdKey;
+            var executionId = "";
+            if (values.TryGetValue("ExecutionId", out executionIdKey))
+            {
+                executionId = executionIdKey.ToString();
+            }
+            StringBuilder executionTimeKey;
+            var executionTime = "";
+            if (values.TryGetValue("ExecutionTime", out executionTimeKey))
+            {
+                executionTime = executionTimeKey.ToString();
+            }
+            var entries = filteredEntries.Where(entry => entry.StartDateTime >= startTime)
+                .Where(entry => endTime == default(DateTime) || entry.CompletedDateTime <= endTime)
+                .Where(entry => string.IsNullOrEmpty(status) || entry.Status.Equals(status, StringComparison.CurrentCultureIgnoreCase))
+                .Where(entry => string.IsNullOrEmpty(executionId) || entry.ExecutionId.Equals(executionId, StringComparison.CurrentCultureIgnoreCase))
+                .Where(entry => string.IsNullOrEmpty(executionTime) || entry.ExecutionTime.Equals(executionTime, StringComparison.CurrentCultureIgnoreCase))
+                .Where(entry => string.IsNullOrEmpty(user) || (entry.User?.Equals(user, StringComparison.CurrentCultureIgnoreCase) ?? false));
+
+            return dev2JsonSerializer.SerializeToBuilder(entries);
+        }
 
 
         private static DateTime ParseDate(string s)
@@ -147,7 +181,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private string GetUser(string message)
         {
-            string toReturn = message.Split('[')[2].Split(':')[0];
+            var toReturn = message.Split('[')[2].Split(':')[0];
             return toReturn;
         }
 
@@ -173,18 +207,5 @@ namespace Dev2.Runtime.ESB.Management.Services
                 _serverLogFilePath = value;
             }
         }
-    }
-
-
-    public class LogEntry
-    {
-        public DateTime StartDateTime { get; set; }
-        public string Status { get; set; }
-        public string Url { get; set; }
-        public string Result { get; set; }
-        public string User { get; set; }
-        public DateTime CompletedDateTime { get; set; }
-        public string ExecutionTime { get; set; }
-        public string ExecutionId { get; set; }
     }
 }
