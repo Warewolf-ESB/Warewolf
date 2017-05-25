@@ -240,6 +240,7 @@
     <Compile Include="ESB\Management\Services\FetchToolsService.cs" />
     <Compile Include="ESB\Management\Services\GetVersion.cs" />
     <Compile Include="ESB\Management\Services\GetVersions.cs" />
+    <Compile Include="ESB\Management\Services\LogDataServiceBase.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="ESB\Management\Services\LoggingSettingsRead.cs" />
     <Compile Include="ESB\Management\Services\LoggingSettingsWrite.cs" />
