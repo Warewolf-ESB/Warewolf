@@ -141,22 +141,31 @@ namespace Dev2.Tests.Runtime.Services
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
             Assert.AreEqual(3, logEntriesObject.Count);
 
-
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void Method_Givenx_Shouldy()
+        [Owner("Sanele Mthembu")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithStatus_ShouldFilterLogData()
         {
-            //---------------Set up test pack-------------------
-
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //---------------Assert Precondition----------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(11, logEntriesObject.Count);
+            //------------Execute Test---------------------------
 
-            //---------------Execute Test ----------------------
+            var stringBuilders = new Dictionary<string, StringBuilder> {{"Status", "Failed".ToStringBuilder()}};
+            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(0, logEntriesObject.Count);
 
-            //---------------Test Result -----------------------
-            Assert.Fail("Test Not Yet Implemented");
         }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
