@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
@@ -51,69 +50,67 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     buffor.Enqueue(line);
                 }
+                var logData = buffor.AsQueryable();
 
+                foreach (var singleEntry in logData)
                 {
-                    var logData = buffor.AsQueryable();
-
-                    foreach (var singleEntry in logData)
+                    var matches = Regex.Split(singleEntry,
+                        @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s(\w+)\s+[-]\s+");
+                    if (matches.Length > 1)
                     {
-                        var matches = Regex.Split(singleEntry, @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s(\w+)\s+[-]\s+");
-                        if (matches.Length > 1)
+                        var match = matches;
+                        var isUrl = match[4].StartsWith("Request URL", StringComparison.Ordinal);
+                        var cleanUrl = match[4].Replace("Request URL [ ", "").Replace(" ]", "");
+                        var tmpObj = new
                         {
-                            var match = matches;
-                            var isUrl = match[4].StartsWith("Request URL", StringComparison.Ordinal);
-                            var cleanUrl = match[4].Replace("Request URL [ ", "").Replace(" ]", "");
-                            var tmpObj = new
-                            {
-                                ExecutionId = match[2],
-                                LogType = match[3],
-                                DateTime = match[1],
-                                Message = isUrl ? "" : match[4],
-                                Url = isUrl ? cleanUrl : "",
-
-                            };
-                            tmpObjects.Add(tmpObj);
-                        }
-                    }
-
-                    var logEntries = new List<LogEntry>();
-                    var groupedEntries = tmpObjects.GroupBy(o => o.ExecutionId);
-                    foreach (var groupedEntry in groupedEntries)
-                    {
-                        var logEntry = new LogEntry
-                        {
-                            ExecutionId = groupedEntry.Key,
-                            Status = "Success"
+                            ExecutionId = match[2],
+                            LogType = match[3],
+                            DateTime = match[1],
+                            Message = isUrl ? "" : match[4],
+                            Url = isUrl ? cleanUrl : "",
                         };
-                        foreach (var s in groupedEntry)
-                        {
-                            if (s.Message.StartsWith("Started Execution"))
-                            {
-                                logEntry.StartDateTime = ParseDate(s.DateTime);
-                            }
-                            if (s.LogType == "ERROR")
-                            {
-                                logEntry.Result = "ERROR";
-                            }
-                            if (s.Message.StartsWith("Completed Execution"))
-                            {
-                                logEntry.CompletedDateTime = ParseDate(s.DateTime);
-                            }
-                            if (s.Message.StartsWith("About to execute"))
-                            {
-                                logEntry.User = GetUser(s.Message)?.TrimStart().TrimEnd() ?? "";
-                            }
-                            if (!string.IsNullOrEmpty(s.Url))
-                            {
-                                logEntry.Url = s.Url;
-                            }
-                        }
-                        logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
-                        logEntries.Add(logEntry);
+                        tmpObjects.Add(tmpObj);
                     }
-
-                    return FilterResults(values, logEntries, serializer);
                 }
+
+                var logEntries = new List<LogEntry>();
+                var groupedEntries = tmpObjects.GroupBy(o => o.ExecutionId);
+                foreach (var groupedEntry in groupedEntries)
+                {
+                    var logEntry = new LogEntry
+                    {
+                        ExecutionId = groupedEntry.Key,
+                        Status = "Success"
+                    };
+                    foreach (var s in groupedEntry)
+                    {
+                        if (s.Message.StartsWith("Started Execution"))
+                        {
+                            logEntry.StartDateTime = ParseDate(s.DateTime);
+                        }
+                        if (s.LogType == "ERROR")
+                        {
+                            logEntry.Result = "ERROR";
+                        }
+                        if (s.Message.StartsWith("Completed Execution"))
+                        {
+                            logEntry.CompletedDateTime = ParseDate(s.DateTime);
+                        }
+                        if (s.Message.StartsWith("About to execute"))
+                        {
+                            logEntry.User = GetUser(s.Message)?.TrimStart().TrimEnd() ?? "";
+                        }
+                        if (!string.IsNullOrEmpty(s.Url))
+                        {
+                            logEntry.Url = s.Url;
+                        }
+                    }
+                    logEntry.ExecutionTime =
+                        (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
+                    logEntries.Add(logEntry);
+                }
+
+                return FilterResults(values, logEntries, serializer);
             }
             catch (Exception e)
             {
