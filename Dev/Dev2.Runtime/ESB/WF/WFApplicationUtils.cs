@@ -24,6 +24,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
+using FluentAssertions.Common;
 
 // ReSharper disable ReturnTypeCanBeEnumerable.Local
 // ReSharper disable ParameterTypeCanBeEnumerable.Local
@@ -129,7 +130,7 @@ namespace Dev2.Runtime.ESB.WF
                         var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
                         
                         var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                        Dev2Logger.Debug("Execution Result :" + Environment.NewLine + executePayload, dataObject.ExecutionID.ToString());
+                        Dev2Logger.Debug("Execution Result :" + Environment.NewLine + executePayload.RemoveNewLines(), dataObject.ExecutionID.ToString());
                     }
                     catch (Exception)
                     {

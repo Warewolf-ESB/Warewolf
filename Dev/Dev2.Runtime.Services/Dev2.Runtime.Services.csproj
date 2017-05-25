@@ -233,6 +233,7 @@
     <Compile Include="ESB\Management\Services\GetServerIformation.cs" />
     <Compile Include="ESB\Management\Services\GetMinSupportedServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetServerInformationalVersion.cs" />
+    <Compile Include="ESB\Management\Services\GetServiceExecutionResult.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListFields.cs" />
     <Compile Include="ESB\Management\Services\GetServerVersion.cs" />
     <Compile Include="ESB\Management\Services\GetSharepointListService.cs" />
