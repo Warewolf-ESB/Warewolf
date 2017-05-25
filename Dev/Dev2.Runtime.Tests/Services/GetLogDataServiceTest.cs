@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -115,6 +116,46 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(string.IsNullOrEmpty(value));
             Assert.AreEqual("http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>&wid=3667c210-7322-441f-b4e5-f465e46ae22d", value);
 
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithStartDate_ShouldFilterLogData()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //---------------Assert Precondition----------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(11, logEntriesObject.Count);
+            //------------Execute Test---------------------------
+
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            var longDateString = DateTime.ParseExact("2017-05-25 08:14:22,519", GlobalConstants.LogFileDateFormat,  System.Globalization.CultureInfo.InvariantCulture);
+            stringBuilders.Add("StartDateTime",longDateString.ToString(GlobalConstants.LogFileDateFormat).ToStringBuilder());
+            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(3, logEntriesObject.Count);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void Method_Givenx_Shouldy()
+        {
+            //---------------Set up test pack-------------------
+
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+
+            //---------------Test Result -----------------------
+            Assert.Fail("Test Not Yet Implemented");
         }
 
         [TestMethod]

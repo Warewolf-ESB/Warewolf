@@ -36,6 +36,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Info("Get Log Data Service", "Warewolf Info");
+            StringBuilder startTimeKey;
+            DateTime startTime = new DateTime();
+            if (values.TryGetValue("StartDateTime", out startTimeKey))
+            {
+                startTime = ParseDate(startTimeKey.ToString());
+            }
 
             var serializer = new Dev2JsonSerializer();
             try
@@ -53,8 +59,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 {
                     var logData = buffor.AsQueryable();
-
-                    //File.ReadAllLines(ServerLogFilePath);
 
                     foreach (var singleEntry in logData)
                     {
@@ -88,7 +92,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             if (s.Message.StartsWith("Started Execution"))
                             {
-                                logEntry.StartDateTime = ParseDate(s);
+                                logEntry.StartDateTime = ParseDate(s.DateTime);
                             }
                             if (s.LogType == "ERROR")
                             {
@@ -96,7 +100,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             if (s.Message.StartsWith("Completed Execution"))
                             {
-                                logEntry.CompletedDateTime = ParseDate(s);
+                                logEntry.CompletedDateTime = ParseDate(s.DateTime);
                             }
                             if (s.Message.StartsWith("About to execute"))
                             {
@@ -110,7 +114,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                         logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
                         logEntries.Add(logEntry);
                     }
-                    return serializer.SerializeToBuilder(logEntries);
+
+                    var filteredEntries = from entry in logEntries
+                                          where entry.StartDateTime >= startTime
+                                          select entry;
+                    return serializer.SerializeToBuilder(filteredEntries);
                 }
             }
             catch (Exception e)
@@ -120,14 +128,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder("");
         }
 
-        private static dynamic ParseDate(dynamic s)
+       
+
+        private static DateTime ParseDate(string s)
         {
-            return DateTime.ParseExact(s.DateTime, "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
         }
+        
 
         private string GetUser(string message)
         {
-            string toReturn= message.Split('[')[2].Split(':')[0];
+            string toReturn = message.Split('[')[2].Split(':')[0];
             return toReturn;
         }
 

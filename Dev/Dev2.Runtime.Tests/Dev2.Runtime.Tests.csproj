@@ -697,6 +697,9 @@
     <EmbeddedResource Include="XML\put.xml" />
     <EmbeddedResource Include="XML\WebPutServiceSource.xml" />
     <EmbeddedResource Include="XML\Big Bulk Testing.xml" />
+    <EmbeddedResource Include="TextFiles\LogFileWithTenRecords.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="TextFiles\SubFolderB\SubFolderBTextFile1.txt" />
     <Content Include="TextFiles\SubFolderA\SubFolderATextFile1.txt" />
     <EmbeddedResource Include="TextFiles\LogFileWithUrl.txt">
