@@ -54,6 +54,7 @@ namespace Dev2.Common
         //Default TimeoutValue
         // ReSharper disable UnusedMember.Global
         public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
+        public static string LogFileDateFormat = "yyyy-MM-dd HH:mm:ss,fff";
 
         // ReSharper restore UnusedMember.Global
 
