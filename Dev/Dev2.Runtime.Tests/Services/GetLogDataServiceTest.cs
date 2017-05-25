@@ -5,6 +5,7 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Runtime;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -144,6 +145,31 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithEndDate_ShouldFilterLogData()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //---------------Assert Precondition----------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(11, logEntriesObject.Count);
+            //------------Execute Test---------------------------
+
+            var stringBuilders = new Dictionary<string, StringBuilder>();
+            var longDateString = DateTime.ParseExact("2017-05-25 08:14:12,420", GlobalConstants.LogFileDateFormat,  System.Globalization.CultureInfo.InvariantCulture);
+            stringBuilders.Add("CompletedDateTime", longDateString.ToString(GlobalConstants.LogFileDateFormat).ToStringBuilder());
+            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(4, logEntriesObject.Count);
+
+        }
+
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
         public void GetLogDataService_Execute_WithStatus_ShouldFilterLogData()
@@ -164,6 +190,94 @@ namespace Dev2.Tests.Runtime.Services
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
             Assert.AreEqual(0, logEntriesObject.Count);
 
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithUser_ShouldFilterLogData()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //---------------Assert Precondition----------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(11, logEntriesObject.Count);
+            //------------Execute Test---------------------------
+
+            var stringBuilders = new Dictionary<string, StringBuilder> {{ "User", "DEV2\\nkosinathi.sangweni".ToStringBuilder()}};
+            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(10, logEntriesObject.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithExecutionId_ShouldFilterLogData()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //---------------Assert Precondition----------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(11, logEntriesObject.Count);
+            //------------Execute Test---------------------------
+
+            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionId", "163e510e-19e8-4689-8492-2c8dd08d22d7".ToStringBuilder()}};
+            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(1, logEntriesObject.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithExecutionTime_ShouldFilterLogData()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //---------------Assert Precondition----------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(11, logEntriesObject.Count);
+            //------------Execute Test---------------------------
+
+            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionTime", "3".ToStringBuilder()}};
+            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(1, logEntriesObject.Count);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithBadUser_ShouldFilterLogData()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //---------------Assert Precondition----------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(11, logEntriesObject.Count);
+            //------------Execute Test---------------------------
+
+            var stringBuilders = new Dictionary<string, StringBuilder> {{ "User", "BadUser".ToStringBuilder()}};
+            logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+            //------------Assert Results-------------------------
+            logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.AreEqual(0, logEntriesObject.Count);
         }
 
 
