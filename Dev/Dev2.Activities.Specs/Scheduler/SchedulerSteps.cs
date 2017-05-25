@@ -76,7 +76,7 @@ namespace Dev2.Activities.Specs.Scheduler
             _scenarioContext.Add("UserName", userName);
             _scenarioContext.Add("Password", password);
         }
-        
+
 
         [Given(@"""(.*)"" has a Schedule of")]
         public void GivenHasAScheduleOf(string scheduleName, Table table)
@@ -93,6 +93,7 @@ namespace Dev2.Activities.Specs.Scheduler
             mockPopupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
             IServer server = ServerRepository.Instance.Source;
+            var resourceId = table.Rows[0]["ResourceId"];
 
             server.Connect();
             scheduler.ScheduledResourceModel = new ClientScheduledResourceModel(server, () => { });
@@ -103,7 +104,7 @@ namespace Dev2.Activities.Specs.Scheduler
             scheduler.SelectedTask.UserName = _scenarioContext["UserName"].ToString();
             scheduler.SelectedTask.Password = _scenarioContext["Password"].ToString();
             scheduler.SelectedTask.WorkflowName = _scenarioContext["WorkFlow"].ToString();
-            scheduler.SelectedTask.ResourceId = new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1");
+            scheduler.SelectedTask.ResourceId = string.IsNullOrEmpty(resourceId) ? new Guid("acb75027-ddeb-47d7-814e-a54c37247ec1") : new Guid(resourceId);
             scheduler.SelectedTask.NumberOfHistoryToKeep = (int)_scenarioContext["HistoryCount"];
             scheduler.SelectedTask.Status = (SchedulerStatus)_scenarioContext["TaskStatus"];
             scheduler.Errors.ClearErrors();
@@ -265,7 +266,7 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             try
             {
-                
+
                 int i = 0;
                 var x = new TaskService();
                 x.GetFolder("Warewolf");

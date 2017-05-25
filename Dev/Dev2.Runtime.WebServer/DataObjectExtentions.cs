@@ -175,14 +175,13 @@ namespace Dev2.Runtime.WebServer
         {
             IResource localResource = null;
             Guid resourceID;
+
             if (Guid.TryParse(serviceName, out resourceID))
             {
                 localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
                 if (localResource != null)
                 {
-                    dataObject.ServiceName = localResource.ResourceName;
-                    dataObject.ResourceID = localResource.ResourceID;
-                    dataObject.SourceResourceID = localResource.ResourceID;
+                    MapServiceToDataObjects(dataObject, localResource);
                 }
             }
             else
@@ -197,7 +196,27 @@ namespace Dev2.Runtime.WebServer
                     }
                 }
             }
+            if (localResource == null)
+            {
+                var stringDynaResourceId = serviceName.Replace(".xml", "").Replace(".json", "");
+                if (Guid.TryParse(stringDynaResourceId, out resourceID))
+                {
+                    localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
+                    if (localResource != null)
+                    {
+                        MapServiceToDataObjects(dataObject, localResource);
+                    }
+                }
+
+            }
             resource = localResource;
+        }
+
+        private static void MapServiceToDataObjects(IDSFDataObject dataObject, IResource localResource)
+        {
+            dataObject.ServiceName = localResource.ResourceName;
+            dataObject.ResourceID = localResource.ResourceID;
+            dataObject.SourceResourceID = localResource.ResourceID;
         }
 
         public static bool CanExecuteCurrentResource(this IDSFDataObject dataObject, IResource resource, IAuthorizationService service)
