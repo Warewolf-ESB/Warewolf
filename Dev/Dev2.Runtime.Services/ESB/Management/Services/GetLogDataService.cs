@@ -43,6 +43,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 startTime = ParseDate(startTimeKey.ToString());
             }
 
+            StringBuilder statusKey;
+            string status = "";
+            if (values.TryGetValue("Status", out statusKey))
+            {
+                status = statusKey.ToString();
+            }
+
             var serializer = new Dev2JsonSerializer();
             try
             {
@@ -85,9 +92,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var groupedEntries = tmpObjects.GroupBy(o => o.ExecutionId);
                     foreach (var groupedEntry in groupedEntries)
                     {
-                        var logEntry = new LogEntry();
-                        logEntry.ExecutionId = groupedEntry.Key;
-                        logEntry.Status = "Success";
+                        var logEntry = new LogEntry
+                        {
+                            ExecutionId = groupedEntry.Key,
+                            Status = "Success"
+                        };
                         foreach (var s in groupedEntry)
                         {
                             if (s.Message.StartsWith("Started Execution"))
@@ -115,9 +124,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         logEntries.Add(logEntry);
                     }
 
-                    var filteredEntries = from entry in logEntries
-                                          where entry.StartDateTime >= startTime
-                                          select entry;
+                    var filteredEntries = logEntries.Where(entry => entry.StartDateTime >= startTime)
+                                                    .Where(entry => string.IsNullOrEmpty(status) || entry.Status.Equals(status, StringComparison.CurrentCultureIgnoreCase));
+
                     return serializer.SerializeToBuilder(filteredEntries);
                 }
             }
@@ -128,13 +137,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder("");
         }
 
-       
+
 
         private static DateTime ParseDate(string s)
         {
             return DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
         }
-        
+
 
         private string GetUser(string message)
         {
