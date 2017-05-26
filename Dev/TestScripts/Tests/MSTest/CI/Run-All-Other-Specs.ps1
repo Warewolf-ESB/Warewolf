@@ -35,7 +35,7 @@ $TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
   <Description>Run example workflow execution specs.</Description>
   <Deployment enabled=`"false`" />
   <Execution>
-    <Timeouts testTimeout=`"250000`" />
+    <Timeouts testTimeout=`"180000`" />
   </Execution>
 </TestSettings>
 "@)
