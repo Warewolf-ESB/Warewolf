@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Collections.Generic;
 using System.IO;
 
 namespace Dev2.Common.Interfaces.Wrappers
@@ -31,6 +30,5 @@ namespace Dev2.Common.Interfaces.Wrappers
         FileAttributes GetAttributes(string path);
 
         void SetAttributes(string path, FileAttributes fileAttributes);
-        IEnumerable<string> ReadAllLines(string filePath);
     }
 }

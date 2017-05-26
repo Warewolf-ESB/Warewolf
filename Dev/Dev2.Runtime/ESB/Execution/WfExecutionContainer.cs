@@ -23,7 +23,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 
@@ -31,20 +30,11 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        private readonly IResourceCatalog _catalog;
-
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
-            _catalog = ResourceCatalog.Instance;
         }
 
-
-        public WfExecutionContainer(IResourceCatalog catalog, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            :this(sa,dataObj,theWorkspace,esbChannel)
-        {
-            _catalog = catalog;
-        }
         /// <summary>
         /// Executes the specified errors.
         /// </summary>
@@ -73,22 +63,15 @@ namespace Dev2.Runtime.ESB.Execution
             if (DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
 
-
+           
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-
-            var resource = _catalog.GetResource(TheWorkspace.ID, DataObject.ResourceID);
-            if (resource != null)
-            {
-                var environment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, resource.DataList.ToString(), update);
-                Dev2Logger.Debug("Studio Debug inputs [ " + environment + " ]", DataObject.ExecutionID.ToString());
-            }
             //Set execution origin
-            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+            if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
                 DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
             }
-            else if (DataObject.IsDebug)
+            else if(DataObject.IsDebug)
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             }
@@ -98,11 +81,11 @@ namespace Dev2.Runtime.ESB.Execution
             }
             var userPrinciple = Thread.CurrentPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(); });
-            foreach (var err in DataObject.Environment.Errors)
+            foreach(var err in DataObject.Environment.Errors)
             {
                 errors.AddError(err, true);
             }
-            foreach (var err in DataObject.Environment.AllErrors)
+            foreach(var err in DataObject.Environment.AllErrors)
             {
                 errors.AddError(err, true);
             }
@@ -176,7 +159,7 @@ namespace Dev2.Runtime.ESB.Execution
         private void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
-            IDev2Activity resource = _catalog.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
+            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
             Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
 
