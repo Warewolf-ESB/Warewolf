@@ -103,6 +103,7 @@ namespace Dev2.Runtime.WebServer
             var contains = webRequest?.Variables?.AllKeys.Contains("IsDebug");
             if (contains != null && contains.Value)
             {
+                dataObject.WebUrl = webRequest.WebServerUrl;
                 dataObject.IsDebug = true;
                 dataObject.IsDebugFromWeb = true;
                 dataObject.ClientID = Guid.NewGuid();

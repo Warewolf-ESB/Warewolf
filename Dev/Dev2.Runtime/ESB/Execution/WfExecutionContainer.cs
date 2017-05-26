@@ -57,13 +57,15 @@ namespace Dev2.Runtime.ESB.Execution
 
             Guid result = GlobalConstants.NullDataListID;
             DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
+            var user = Thread.CurrentPrincipal;
+            Dev2Logger.Debug("About to execute web request [ " + DataObject.ServiceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + DataObject.RawPayload + " ]", DataObject.ExecutionID.ToString());
+            Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl+ " ]", DataObject.ExecutionID.ToString());
 
             Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
 
-            // Set server ID, only if not set yet - original server;
             if (DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
 

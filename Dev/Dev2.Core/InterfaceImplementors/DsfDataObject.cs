@@ -316,6 +316,7 @@ namespace Dev2.DynamicServices
         public IServiceTestModelTO ServiceTest { get; set; }
 
         public Guid? ExecutionID { get; set; }
+        public string WebUrl { get; set; }
 
         #endregion Properties
 
@@ -360,7 +361,7 @@ namespace Dev2.DynamicServices
             result.RemoteDebugItems = RemoteDebugItems;
             result.RemoteInvoke = RemoteInvoke;
             result.RemoteNonDebugInvoke = RemoteNonDebugInvoke;
-            result.IsRemoteInvokeOverridden = result.IsRemoteInvokeOverridden;
+            result.IsRemoteInvokeOverridden = IsRemoteInvokeOverridden;
             result.RemoteInvokeResultShape = RemoteInvokeResultShape;
             result.RemoteInvokerID = RemoteInvokerID;
             result.RemoteServiceType = RemoteServiceType;
@@ -386,6 +387,7 @@ namespace Dev2.DynamicServices
             result.IsServiceTestExecution = IsServiceTestExecution;
             result.IsDebugFromWeb = IsDebugFromWeb;
             result.ExecutionID = ExecutionID;
+            result.WebUrl = WebUrl;
             if (ServiceTest != null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
