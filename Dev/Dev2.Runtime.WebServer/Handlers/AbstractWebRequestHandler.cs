@@ -110,6 +110,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             IResource resource;
             dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
             dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
+            dataObject.WebUrl = webRequest.WebServerUrl;
             var serializer = new Dev2JsonSerializer();
             var esbEndpoint = new EsbServicesEndpoint();
             dataObject.EsbChannel = esbEndpoint;
