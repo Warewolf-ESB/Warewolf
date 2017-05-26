@@ -53,22 +53,24 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}{DataObject.ServiceName}.{DataObject.ReturnType}";
             }
-            Dev2Logger.Debug("About to execute web request [ " + DataObject.ServiceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + DataObject.RawPayload + " ]", DataObject.ExecutionID.ToString());
-            Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl+ " ]", DataObject.ExecutionID.ToString());
-
+            if (!DataObject.IsSubExecution)
+            {
+                Dev2Logger.Debug("About to execute web request [ " + DataObject.ServiceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + DataObject.RawPayload + " ]", DataObject.ExecutionID.ToString());
+                Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl + " ]", DataObject.ExecutionID.ToString());
+            }
             Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
             DataObject.ServiceName = ServiceAction.ServiceName;
 
             if (DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
-           
+
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-            if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
+            if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
                 DataObject.ExecutionOriginDescription = DataObject.ParentServiceName;
             }
-            else if(DataObject.IsDebug)
+            else if (DataObject.IsDebug)
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Debug;
             }
@@ -78,16 +80,22 @@ namespace Dev2.Runtime.ESB.Execution
             }
             var userPrinciple = Thread.CurrentPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { result = ExecuteWf(); });
-            foreach(var err in DataObject.Environment.Errors)
+            foreach (var err in DataObject.Environment.Errors)
             {
                 errors.AddError(err, true);
             }
-            foreach(var err in DataObject.Environment.AllErrors)
+            foreach (var err in DataObject.Environment.AllErrors)
             {
                 errors.AddError(err, true);
             }
-
-            Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
+            if (!DataObject.IsSubExecution)
+            {
+                Dev2Logger.Info($"Completed Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
+            }
+            else
+            {
+                Dev2Logger.Info($"Completed Sub Execution for Service Name:{DataObject.ServiceName} Resource Id: {DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
+            }
             return result;
         }
 
