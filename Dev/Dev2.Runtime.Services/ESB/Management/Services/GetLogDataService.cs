@@ -73,46 +73,31 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder("");
         }
 
-        private StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
+        private string GetValue(string key, Dictionary<string, StringBuilder> values)
         {
-            StringBuilder startTimeKey;
-            var startTime = default(DateTime);
-            if (values.TryGetValue("StartDateTime", out startTimeKey))
+            StringBuilder value;
+            string toReturn = "";
+            if (values.TryGetValue(key, out value))
             {
-                startTime = ParseDate(startTimeKey.ToString());
+                toReturn = value.ToString();
             }
+            return toReturn;
+        }
 
-            StringBuilder endTimeKey;
-            var endTime = default(DateTime);
-            if (values.TryGetValue("CompletedDateTime", out endTimeKey))
-            {
-                endTime = ParseDate(endTimeKey.ToString());
-            }
+        private DateTime GetDate(string key, Dictionary<string, StringBuilder> values)
+        {
+            return ParseDate(GetValue(key, values));
+        }
 
-            StringBuilder statusKey;
-            var status = "";
-            if (values.TryGetValue("Status", out statusKey))
-            {
-                status = statusKey.ToString();
-            }
-            StringBuilder userKey;
-            var user = "";
-            if (values.TryGetValue("User", out userKey))
-            {
-                user = userKey.ToString();
-            }
-            StringBuilder executionIdKey;
-            var executionId = "";
-            if (values.TryGetValue("ExecutionId", out executionIdKey))
-            {
-                executionId = executionIdKey.ToString();
-            }
-            StringBuilder executionTimeKey;
-            var executionTime = "";
-            if (values.TryGetValue("ExecutionTime", out executionTimeKey))
-            {
-                executionTime = executionTimeKey.ToString();
-            }
+        private StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
+        {            
+            var startTime = GetDate("StartDateTime", values);
+            var endTime = GetDate("CompletedDateTime", values);
+            var status = GetValue("Status", values);
+            var user = GetValue("User", values);
+            var executionId = GetValue("ExecutionId", values);
+            var executionTime = GetValue("ExecutionTime", values);
+
             var entries = filteredEntries.Where(entry => entry.StartDateTime >= startTime)
                 .Where(entry => endTime == default(DateTime) || entry.CompletedDateTime <= endTime)
                 .Where(entry => string.IsNullOrEmpty(status) || entry.Status.Equals(status, StringComparison.CurrentCultureIgnoreCase))
@@ -126,7 +111,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private static DateTime ParseDate(string s)
         {
-            return DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            return !string.IsNullOrEmpty(s) ? 
+                DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) : 
+                new DateTime();
         }
 
 
