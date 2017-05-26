@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Execution
             var user = Thread.CurrentPrincipal;
             if (string.IsNullOrEmpty(DataObject.WebUrl))
             {
-                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}\\{DataObject.ServiceName}.{DataObject.ReturnType}";
+                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}{DataObject.ServiceName}.{DataObject.ReturnType}";
             }
             Dev2Logger.Debug("About to execute web request [ " + DataObject.ServiceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + DataObject.RawPayload + " ]", DataObject.ExecutionID.ToString());
             Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl+ " ]", DataObject.ExecutionID.ToString());
