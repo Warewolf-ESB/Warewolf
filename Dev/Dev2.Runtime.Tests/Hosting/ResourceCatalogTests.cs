@@ -821,7 +821,7 @@ namespace Dev2.Tests.Runtime.Hosting
             try
             {
                 var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-                catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
+                catalog.LoadServerActivityCache();
 
             }
             catch (Exception e)
@@ -2879,7 +2879,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //---------------Execute Test ----------------------
             try
             {
-                rc.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
+                rc.LoadServerActivityCache();
             }
             catch (Exception e)
             {
@@ -2912,7 +2912,7 @@ namespace Dev2.Tests.Runtime.Hosting
             fieldInfo?.SetValue(rc, _parsers);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            rc.LoadResourceActivityCache(workspaceID);
+            rc.LoadServerActivityCache();
             //---------------Test Result -----------------------
             var resourceActivityCache = _parsers[GlobalConstants.ServerWorkspaceID];
             var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
@@ -2947,7 +2947,7 @@ namespace Dev2.Tests.Runtime.Hosting
             const string propertyName = "_parsers";
             FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
             fieldInfo?.SetValue(rc, _parsers);
-            rc.LoadResourceActivityCache(workspaceID);
+            rc.LoadServerActivityCache();
             var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -2980,7 +2980,7 @@ namespace Dev2.Tests.Runtime.Hosting
             fieldInfo?.SetValue(rc, _parsers);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            rc.LoadResourceActivityCache(workspaceID);
+            rc.LoadServerActivityCache();
             //---------------Test Result -----------------------
             var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
             var actId2 = Guid.Parse("ec636256-5f11-40ab-a044-10e731d87555");
@@ -3011,7 +3011,7 @@ namespace Dev2.Tests.Runtime.Hosting
             const string propertyName = "_parsers";
             FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
             fieldInfo?.SetValue(rc, _parsers);
-            rc.LoadResourceActivityCache(workspaceID);
+            rc.LoadServerActivityCache();
             var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(ServiceActionRepo.Instance.ReadCache(actId));

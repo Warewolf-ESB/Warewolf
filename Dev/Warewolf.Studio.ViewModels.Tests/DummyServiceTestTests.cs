@@ -15,19 +15,22 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void DummyServiceTest_Constructor_Constructor_NoException()
         {
             //------------Setup for test--------------------------
-            var dummyServiceTest = new DummyServiceTest(() => { });
+            var dummyServiceTest = new DummyServiceTest(b => { });
             //------------Execute Test---------------------------
             Assert.IsNotNull(dummyServiceTest);
             //------------Assert Results-------------------------
             
         }
+
+        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DummyServiceTest_Constructor")]
         public void DummyServiceTest_Constructor_isNew_SetsNeverRunTests()
         {
             //------------Setup for test--------------------------
-            var dummyServiceTest = new DummyServiceTest(() => { });
+            var dummyServiceTest = new DummyServiceTest(b => { });
             //------------Execute Test---------------------------
             Assert.IsNotNull(dummyServiceTest);
             //------------Assert Results-------------------------
@@ -37,15 +40,13 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Constuctor_GivenNullAction_ShouldThrowArgumentNull()
+        public void Constuctor_GivenNullAction_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
 
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            // ReSharper disable once UnusedVariable
             var dummyServiceTest = new DummyServiceTest(null);
             //---------------Test Result -----------------------
         }
@@ -56,7 +57,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
 #pragma warning disable 219
-            var dummyServiceTest = new DummyServiceTest(() => { var a = 2; });
+            var dummyServiceTest =  new DummyServiceTest(b => { });
 #pragma warning restore 219
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dummyServiceTest);
@@ -90,7 +91,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
 #pragma warning disable 219
-            var dummyServiceTest = new DummyServiceTest(()=> { var a = 2; });
+            var dummyServiceTest = new DummyServiceTest(b => { });
 #pragma warning restore 219
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -105,7 +106,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //---------------Set up test pack-------------------
 #pragma warning disable 219
-            var dummyServiceTest = new DummyServiceTest(()=> { var a = 2; });
+            var dummyServiceTest = new DummyServiceTest(b => { });
 #pragma warning restore 219
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dummyServiceTest.CreateTestCommand);

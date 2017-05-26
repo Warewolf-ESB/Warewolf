@@ -13,6 +13,7 @@ using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Dev2.Studio.Interfaces.DataList;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Studio.Core.DataList
 {
@@ -24,7 +25,6 @@ namespace Dev2.Studio.Core.DataList
             _vm = vm;
         }
 
-        #region Implementation of IComplexObjectHandler
 
         public void RemoveBlankComplexObjects()
         {
@@ -42,7 +42,7 @@ namespace Dev2.Studio.Core.DataList
             for (var index = 0; index < paths.Length; index++)
             {
                 var path = paths[index];
-                if(string.IsNullOrEmpty(path) || char.IsNumber(path[0]))
+                if (string.IsNullOrEmpty(path) || char.IsNumber(path[0]))
                     return;
                 path = DataListUtil.ReplaceRecordsetIndexWithBlank(path);
                 var pathToMatch = path.Replace("@", "");
@@ -73,7 +73,9 @@ namespace Dev2.Studio.Core.DataList
                     }
                     itemModel = item;
                 }
+
             }
+            ValidateComplexObject();
         }
 
         public IEnumerable<string> RefreshJsonObjects(IEnumerable<IComplexObjectItemModel> complexObjectItemModels)
@@ -105,7 +107,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 var itemModel = newComplexCollection[i];
                 _vm.ComplexObjectCollection.Move(_vm.ComplexObjectCollection.IndexOf(itemModel), i);
-            }            
+            }
         }
 
         public void GenerateComplexObjectFromJson(string parentObjectName, string json)
@@ -137,14 +139,14 @@ namespace Dev2.Studio.Core.DataList
                 if (arrToProcess != null)
                 {
                     var child = arrToProcess.Children().FirstOrDefault();
-                    ProcessObjectForComplexObjectCollection(parentObj,child as JObject);
+                    ProcessObjectForComplexObjectCollection(parentObj, child as JObject);
                 }
-            }            
+            }
         }
 
         private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
         {
-            if(objToProcess != null)
+            if (objToProcess != null)
             {
                 var properties = objToProcess.Properties();
                 foreach (var property in properties)
@@ -206,6 +208,7 @@ namespace Dev2.Studio.Core.DataList
                     AddComplexObjectFromXmlNode(childNode, complexObjectItemModel);
                 }
             }
+            ValidateComplexObject();
         }
 
         public void AddComplexObjectsToBuilder(StringBuilder result, IComplexObjectItemModel complexObjectItemModel)
@@ -226,7 +229,7 @@ namespace Dev2.Studio.Core.DataList
                 , complexObjectItemModel.IsArray
                 , GlobalConstants.DataListIoColDirection
                 , complexObjectItemModel.ColumnIODirection
-                );
+            );
 
             var complexObjectItemModels = complexObjectItemModel.Children.Where(model => !string.IsNullOrEmpty(model.DisplayName) && !model.HasError);
             foreach (var itemModel in complexObjectItemModels)
@@ -245,8 +248,8 @@ namespace Dev2.Studio.Core.DataList
             var unusedItems =
                 from itemModel in models
                 where !(from part in partsToVerify
-                        select DataListUtil.ReplaceRecordsetIndexWithStar(part.DisplayValue).Replace("*", "")
-                       ).Contains(DataListUtil.ReplaceRecordsetIndexWithStar(itemModel.Name).Replace("*", ""))
+                    select DataListUtil.ReplaceRecordsetIndexWithStar(part.DisplayValue).Replace("*", "")
+                ).Contains(DataListUtil.ReplaceRecordsetIndexWithStar(itemModel.Name).Replace("*", ""))
                 select itemModel;
             foreach (var complexObjectItemModel in unusedItems)
             {
@@ -255,8 +258,8 @@ namespace Dev2.Studio.Core.DataList
             var usedItems =
                 from itemModel in models
                 where (from part in partsToVerify
-                       select DataListUtil.ReplaceRecordsetIndexWithStar(part.DisplayValue).Replace("*", "")
-                      ).Contains(DataListUtil.ReplaceRecordsetIndexWithStar(itemModel.Name).Replace("*", ""))
+                    select DataListUtil.ReplaceRecordsetIndexWithStar(part.DisplayValue).Replace("*", "")
+                ).Contains(DataListUtil.ReplaceRecordsetIndexWithStar(itemModel.Name).Replace("*", ""))
                 select itemModel;
             foreach (var complexObjectItemModel in usedItems)
             {
@@ -295,8 +298,52 @@ namespace Dev2.Studio.Core.DataList
                     _vm.RemoveDataListItem(dataListItemModel);
                 }
             }
+            ValidateComplexObject();
+
+        }
+
+        public void ValidateComplexObject()
+        {
+            var itemsToCheck = _vm.ComplexObjectCollection;
+            var duplicates = itemsToCheck.ToLookup(x => x.DisplayName, new StringCompexObjectEqualityComparer());
+            foreach (var duplicate in duplicates)
+            {
+                if (duplicate.Count() > 1 && !string.IsNullOrEmpty(duplicate.Key))
+                {
+                    duplicate.ForEach(model => model.SetError(StringResources.ErrorMessageDuplicateValue));
+                }
+                else
+                {
+                    duplicate.ForEach(model =>
+                    {
+                        if (model.ErrorMessage != null && model.ErrorMessage.Contains(StringResources.ErrorMessageDuplicateValue))
+                        {
+                            model.RemoveError();
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    internal class StringCompexObjectEqualityComparer : IEqualityComparer<string>
+    {
+        #region Implementation of IEqualityComparer<in string>
+
+        public bool Equals(string x, string y)
+        {
+            var cleanX = x.Replace("()", "");
+            var cleanY = y.Replace("()", "");
+            var equals = string.Equals(cleanX, cleanY);
+            return equals;
+        }
+
+        public int GetHashCode(string obj)
+        {
+            return 1;
         }
 
         #endregion
     }
 }
+

@@ -260,6 +260,17 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual("[[rs(*).val]]", result, "Replaced with invalid index in recordset");
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("DataListUtil,UnitTest")]
+        public void DataListUtil_UnitTest_NotReplaceObjectBlankWithIndex()
+        {
+            const string exp = "[[@rs().val]]";
+            var result = DataListUtil.ReplaceObjectBlankWithIndex(exp, 1);
+
+            Assert.AreEqual("[[@rs(1).val]]", result, "Replaced with invalid index in recordset");
+        }
+
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]

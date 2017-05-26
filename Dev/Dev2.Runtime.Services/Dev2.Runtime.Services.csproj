@@ -320,6 +320,8 @@
     <Compile Include="Hosting\UpgradePath.cs" />
     <Compile Include="Hosting\VersionStrategy.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />
+    <Compile Include="IEsbExecutionContainer.cs" />
+    <Compile Include="IExecutionManager.cs" />
     <Compile Include="Interfaces\IEsbManagementServiceLocator.cs" />
     <Compile Include="Interfaces\IPluginBroker.cs" />
     <Compile Include="Interfaces\IResourceCatalog.cs" />

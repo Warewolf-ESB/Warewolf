@@ -194,8 +194,8 @@ namespace Dev2.Data.Util
             {
                 var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
                 IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
-                IList<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
-                IList<IDev2Definition> inputObjectList = DataListFactory.CreateObjectList(inputs);
+                IEnumerable<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
+                IEnumerable<IDev2Definition> inputObjectList = DataListFactory.CreateObjectList(inputs);
                 Common.CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 Common.CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
                 Common.CreateObjectInputs(outerEnvironment, inputObjectList, env, update);
@@ -547,6 +547,7 @@ namespace Dev2.Data.Util
 
 
         public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length) => RecSetCommon.ReplaceRecordsetBlankWithIndex(fullRecSetName, length);
+        public static string ReplaceObjectBlankWithIndex(string objectName, int length) => RecSetCommon.ReplaceObjectBlankWithIndex(objectName, length);
 
         public static string ReplaceRecordsetBlankWithStar(string fullRecSetName) => RecSetCommon.ReplaceRecordsetBlankWithStar(fullRecSetName);
 

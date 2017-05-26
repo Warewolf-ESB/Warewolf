@@ -507,7 +507,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     if (string.IsNullOrEmpty(type))
                     {
-                        Assert.AreEqual(expectedValue, actualValue, error + result.Environment.AllErrors.FirstOrDefault());
+                        Assert.AreEqual(expectedValue, actualValue, (error==string.Empty?string.Empty:"There was an error getting the result from the datalist: " + error + "\n") + (result.Environment.AllErrors.FirstOrDefault()==null?string.Empty:"The execution environment contains at least one error: " + result.Environment.AllErrors.FirstOrDefault() + ""));
                     }
                     else
                     {

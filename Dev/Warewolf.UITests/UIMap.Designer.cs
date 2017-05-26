@@ -78,6 +78,18 @@ namespace Warewolf.UITests
                 return this.mUIWarewolfDEV2PIETERTEWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -86,6 +98,8 @@ namespace Warewolf.UITests
         private UIWarewolfASHASHWindow mUIWarewolfASHASHWindow;
         
         private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -10867,10 +10881,24 @@ namespace Warewolf.UITests
                 return this.mInputValueCell;
             }
         }
+        
+        public Variable Variable
+        {
+            get
+            {
+                if ((this.mVariable == null))
+                {
+                    this.mVariable = new Variable(this);
+                }
+                return this.mVariable;
+            }
+        }
         #endregion
         
         #region Fields
         private InputValueCell mInputValueCell;
+        
+        private Variable mVariable;
         #endregion
     }
     
@@ -10940,6 +10968,42 @@ namespace Warewolf.UITests
         
         #region Fields
         private WpfEdit mInputValueText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Variable : WpfCell
+    {
+        
+        public Variable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "rec(1).a";
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
         #endregion
     }
     
@@ -19895,5 +19959,105 @@ namespace Warewolf.UITests
             this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
             #endregion
         }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UITabItemsTabList UITabItemsTabList
+        {
+            get
+            {
+                if ((this.mUITabItemsTabList == null))
+                {
+                    this.mUITabItemsTabList = new UITabItemsTabList(this);
+                }
+                return this.mUITabItemsTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UITabItemsTabList mUITabItemsTabList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UITabItemsTabList : WpfTabList
+    {
+        
+        public UITabItemsTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "TabItems";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIInputDataTabPage UIInputDataTabPage
+        {
+            get
+            {
+                if ((this.mUIInputDataTabPage == null))
+                {
+                    this.mUIInputDataTabPage = new UIInputDataTabPage(this);
+                }
+                return this.mUIInputDataTabPage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIInputDataTabPage mUIInputDataTabPage;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class UIInputDataTabPage : WpfTabPage
+    {
+        
+        public UIInputDataTabPage(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.AutomationId] = "UI_InputDataTab_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTable UIDataListInputsTable
+        {
+            get
+            {
+                if ((this.mUIDataListInputsTable == null))
+                {
+                    this.mUIDataListInputsTable = new WpfTable(this);
+                    #region Search Criteria
+                    this.mUIDataListInputsTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "DataListInputs";
+                    this.mUIDataListInputsTable.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDataListInputsTable;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTable mUIDataListInputsTable;
+        #endregion
     }
 }

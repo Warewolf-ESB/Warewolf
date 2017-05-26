@@ -136,7 +136,7 @@
     <Compile Include="ESB\Control\ServiceLocator.cs" />
     <Compile Include="ESB\Execution\DatabaseServiceContainer.cs" />
     <Compile Include="ESB\Execution\EsbExecutionContainer.cs" />
-    <Compile Include="ESB\Execution\IEsbExecutionContainer.cs" />
+    <Compile Include="ESB\Execution\ExecutionManager.cs" />
     <Compile Include="ESB\Execution\InternalServiceContainer.cs" />
     <Compile Include="ESB\Execution\PerfmonExecutionContainer.cs" />
     <Compile Include="ESB\Execution\RemoteDebugItemParser.cs" />

@@ -57,9 +57,9 @@ namespace Warewolf.UITests.WebSource.WebSourceUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AnonymousRadioButton);
         }
 
-        public void Enter_TextIntoAddress_On_WebServiceSourceTab()
+        public void Enter_TextIntoAddress_On_WebServiceSourceTab(string address)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = "http://RSAKLFSVRTFSBLD:9810";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text = address;
         }
 
         public void Enter_RunAsUser_On_WebServiceSourceTab()
@@ -68,9 +68,9 @@ namespace Warewolf.UITests.WebSource.WebSourceUIMapClasses
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.PasswordTextBox.Text = "I73573r0";
         }
 
-        public void Enter_DefaultQuery_On_WebServiceSourceTab()
+        public void Enter_DefaultQuery_On_WebServiceSourceTab(string defaultQuery)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Text = "";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.Text = defaultQuery;
         }
 
         [Given(@"I Click Close Web Source Wizard Tab Button")]

@@ -3213,7 +3213,7 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 And I set logging to "OFF"
 	 	 When "WFWithAsyncLoggingForEach" is executed "second time"
 	 Then the workflow execution has "NO" error
-	 And the delta between "first time" and "second time" is less than "2500" milliseconds
+	 And the delta between "first time" and "second time" is less than "2600" milliseconds
 	  
 #PostgreSQL
 Scenario Outline: Database PostgreSql Database service inputs and outputs

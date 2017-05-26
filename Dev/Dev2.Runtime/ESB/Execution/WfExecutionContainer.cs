@@ -30,6 +30,8 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
+        private static readonly AutoResetEvent EventPulse = new AutoResetEvent(false);
+
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
         {
@@ -44,7 +46,6 @@ namespace Dev2.Runtime.ESB.Execution
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
-
             Guid result = GlobalConstants.NullDataListID;
             DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
             var user = Thread.CurrentPrincipal;
@@ -56,16 +57,12 @@ namespace Dev2.Runtime.ESB.Execution
             Dev2Logger.Debug("Request URL [ " + DataObject.WebUrl+ " ]", DataObject.ExecutionID.ToString());
 
             Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
-
-            // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
 
             if (DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
-
            
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
-            //Set execution origin
             if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
                 DataObject.ExecutionOrigin = ExecutionOrigin.Workflow;
@@ -164,15 +161,26 @@ namespace Dev2.Runtime.ESB.Execution
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
 
         }
-
-
         public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
         {
             return null;
         }
-
+        
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
+            var exe = CustomContainer.Get<IExecutionManager>();
+            if (exe != null)
+            {
+                if (!exe.IsRefreshing || dsfDataObject.IsSubExecution)
+                {
+                    exe.AddExecution();
+                }
+                else
+                {
+                    exe.AddWait(EventPulse);
+                    EventPulse.WaitOne();
+                }
+            }
             if (resource == null)
             {
                 throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
@@ -198,6 +206,7 @@ namespace Dev2.Runtime.ESB.Execution
                     break;
                 }
             }
+            exe?.CompleteExecution();
         }
     }
 }

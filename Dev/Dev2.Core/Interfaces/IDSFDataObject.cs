@@ -107,5 +107,6 @@ namespace Dev2.Interfaces
         List<Guid> TestsResourceIds { get; set; }
         Guid? ExecutionID { get; set; }
         string WebUrl { get; set; }
+        bool IsSubExecution { get; set; }
     }
 }

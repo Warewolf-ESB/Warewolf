@@ -51,6 +51,15 @@ namespace Dev2.Data.Util
             }
             return fullRecSetName;
         }
+        public string ReplaceObjectBlankWithIndex(string fullRecSetName, int length)
+        {
+            var blankIndex = fullRecSetName.IndexOf("()", StringComparison.Ordinal);
+            if (blankIndex != -1)
+            {
+                return fullRecSetName.Replace("()", $"({length})");
+            }
+            return fullRecSetName;
+        }
 
         public string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum)
         {

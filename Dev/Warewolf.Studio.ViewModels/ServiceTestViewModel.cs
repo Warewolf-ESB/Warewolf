@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
 
         private static readonly IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
 
-        
+
         public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel, IMessage msg = null)
         {
 
@@ -91,7 +91,7 @@ namespace Warewolf.Studio.ViewModels
             RunSelectedTestInBrowserCommand = new DelegateCommand(RunSelectedTestInBrowser, () => CanRunSelectedTestInBrowser);
             RunSelectedTestCommand = new DelegateCommand(RunSelectedTest, () => CanRunSelectedTest);
             StopTestCommand = new DelegateCommand(StopTest, () => CanStopTest);
-            CreateTestCommand = new DelegateCommand(CreateTests);
+            CreateTestCommand = new DelegateCommand(() => CreateTests());
             DeleteTestCommand = new DelegateCommand<IServiceTestModel>(DeleteTest, CanDeleteTest);
             DeleteTestStepCommand = new DelegateCommand<IServiceTestStep>(DeleteTestStep);
             DuplicateTestCommand = new DelegateCommand(DuplicateTest, () => CanDuplicateTest);
@@ -143,7 +143,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void PrepopulateTestsUsingDebug(List<IDebugTreeViewItemViewModel> models)
         {
-            CreateTests();
+            CreateTests(true);
             if (_canAddFromDebug)
                 AddFromDebug(models);
         }
@@ -612,16 +612,22 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetOutputs(IDebugState outPutState)
         {
+            var dataList = new DataListModel();
+            dataList.Create(ResourceModel.DataList, ResourceModel.DataList);
             if (outPutState != null)
             {
+                var outPuts = new ObservableCollection<IServiceTestOutput>();
                 foreach (var debugItem in outPutState.Outputs)
                 {
-                    var debugItemResult = debugItem.ResultsList.First();
-                    var variable = debugItemResult.Variable.Replace("[[", "").Replace("]]", "");
-                    var value = debugItemResult.Value;
-                    var serviceTestOutput = SelectedServiceTest.Outputs.FirstOrDefault(input => input.Variable.Equals(variable));
-                    if (serviceTestOutput != null)
+
+                    foreach (var debugItemResult in debugItem.ResultsList)
                     {
+                        var variable = debugItemResult.Variable.Replace("[[", "").Replace("]]", "");
+                        var value = debugItemResult.Value;
+                        ServiceTestOutput serviceTestOutput = new ServiceTestOutput(variable, value, "", "");
+                        var output = serviceTestOutput;
+                        serviceTestOutput.AddNewAction = () => ((ServiceTestModel)SelectedServiceTest).AddRow(output, dataList);
+
                         if (!string.IsNullOrEmpty(debugItemResult.MoreLink))
                         {
                             if (outPutState.ActualType == typeof(DsfEnhancedDotNetDllActivity).Name)
@@ -635,8 +641,10 @@ namespace Warewolf.Studio.ViewModels
                             }
                         }
                         serviceTestOutput.Value = value;
+                        outPuts.Add(serviceTestOutput);
                     }
                 }
+                SelectedServiceTest.Outputs = outPuts;
                 SelectedServiceTest.ErrorExpected = outPutState.HasError;
                 SelectedServiceTest.NoErrorExpected = !outPutState.HasError;
                 SelectedServiceTest.ErrorContainsText = outPutState.ErrorMessage;
@@ -1662,7 +1670,7 @@ namespace Warewolf.Studio.ViewModels
         private IAsyncWorker AsyncWorker { get; }
         private IEventAggregator EventPublisher { get; }
 
-        private void CreateTests()
+        private void CreateTests(bool isFromDebug = false)
         {
             _canAddFromDebug = true;
             SelectedServiceTest = null;
@@ -1674,7 +1682,7 @@ namespace Warewolf.Studio.ViewModels
             }
 
             var testNumber = GetNewTestNumber("Test");
-            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber);
+            var testModel = ServiceTestCommandHandler.CreateTest(ResourceModel, testNumber, isFromDebug);
             AddAndSelectTest(testModel);
 
         }
@@ -2134,7 +2142,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     foreach (var serviceTestOutput in serviceTestSteps.Where(serviceTestStep => serviceTestStep?.StepOutputs != null).SelectMany(serviceTestStep => serviceTestStep.StepOutputs))
                     {
-                        ((ServiceTestOutput) serviceTestOutput).PropertyChanged += OnStepOutputPropertyChanges;
+                        ((ServiceTestOutput)serviceTestOutput).PropertyChanged += OnStepOutputPropertyChanges;
                     }
                 }
                 SetSelectedTestUrl();

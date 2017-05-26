@@ -378,6 +378,7 @@ and languageExpressionToJPath (lang : LanguageExpression) =
         | _ -> failwith "not supported for JSON types"
     | ComplexExpression _ -> failwith "not supported for JSON types"
     | JsonIdentifierExpression a -> jsonIdentifierToJsonPathLevel1 a
+    
 ///Convert a jsonIdentifierExpression to jsonPath
 and jsonIdentifierToJsonPath (a : JsonIdentifierExpression) (accx : string) = 
     let acc = 
@@ -440,6 +441,7 @@ and evalJson (env : WarewolfEnvironment) (update : int) (shouldEscape:bool) (lan
             WarewolfAtomListresult
                 (new WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRecord>(WarewolfAtomRecord.Nothing, data))
         else failwith "non existent object"
+    
     | JsonIdentifierExpression a -> 
         let jPath = "$." + languageExpressionToJPath (lang)
         if env.JsonObjects.ContainsKey(jsonIdentifierToName a) then 

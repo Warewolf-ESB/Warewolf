@@ -1073,13 +1073,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[@Person.Score(3)]] = 33"});
             table26.AddRow(new string[] {
                         "4",
-                        "[[@Person.Score(*)]] = 44"});
+                        "[[@Person.Score(1)]] = 44"});
             table26.AddRow(new string[] {
                         "",
-                        "[[@Person.Score(*)]] = 44"});
+                        "[[@Person.Score(2)]] = 44"});
             table26.AddRow(new string[] {
                         "",
-                        "[[@Person.Score(*)]] = 44"});
+                        "[[@Person.Score(3)]] = 44"});
 #line 248
  testRunner.And("the debug output as", ((string)(null)), table26, "And ");
 #line hidden
@@ -1151,13 +1151,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[@Score(3)]] = 33"});
             table28.AddRow(new string[] {
                         "4",
-                        "[[@Score(*)]] = 44"});
+                        "[[@Score(1)]] = 44"});
             table28.AddRow(new string[] {
                         "",
-                        "[[@Score(*)]] = 44"});
+                        "[[@Score(2)]] = 44"});
             table28.AddRow(new string[] {
                         "",
-                        "[[@Score(*)]] = 44"});
+                        "[[@Score(3)]] = 44"});
 #line 273
  testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden
