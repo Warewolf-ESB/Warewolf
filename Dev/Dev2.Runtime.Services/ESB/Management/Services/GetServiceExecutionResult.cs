@@ -20,9 +20,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var executionId = values["ExecutionId"];
             var serializer = new Dev2JsonSerializer();
-            var tmpObjects = BuildTempObjects();
-            var single = tmpObjects.Single(o => o.Message.StartsWith("Execution Result") && o.ExecutionId?.Equals(executionId.ToString()) ?? false);
-            var replace = single.Message.Replace("Execution Result [ ", "").Replace(" ]", "");
+            var tmpObjects = BuildTempObjects().FirstOrDefault(r => r.ExecutionId == executionId.ToString() && r.Message.StartsWith("Execution Result"));            
+            var replace = tmpObjects.Message.Replace("Execution Result [ ", "").Replace(" ]", "");
             var logEntry = new LogEntry { Result = replace };
             return serializer.SerializeToBuilder(logEntry);
         }
