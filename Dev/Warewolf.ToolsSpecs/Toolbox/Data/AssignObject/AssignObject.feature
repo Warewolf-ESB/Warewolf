@@ -250,9 +250,9 @@ Scenario: Assign a value to all elements of a json object array within a json ob
     | 1 | [[@Person.Score(1)]] = 11	|
     | 2 | [[@Person.Score(2)]] = 22	|
     | 3 | [[@Person.Score(3)]] = 33	|
-	| 4 | [[@Person.Score(*)]] = 44	|
-    |   | [[@Person.Score(*)]] = 44	|
-    |   | [[@Person.Score(*)]] = 44	|
+	| 4 | [[@Person.Score(1)]] = 44	|
+    |   | [[@Person.Score(2)]] = 44	|
+    |   | [[@Person.Score(3)]] = 44	|
 
 Scenario: Assign a value to all elements of a json object array
 	Given I assign the value "11" to a json object "[[@Score(1)]]"
@@ -275,9 +275,9 @@ Scenario: Assign a value to all elements of a json object array
     | 1 | [[@Score(1)]] = 11	|
     | 2 | [[@Score(2)]] = 22	|
     | 3 | [[@Score(3)]] = 33	|
-	| 4 | [[@Score(*)]] = 44	|
-    |   | [[@Score(*)]] = 44	|
-    |   | [[@Score(*)]] = 44	|
+	| 4 | [[@Score(1)]] = 44	|
+    |   | [[@Score(2)]] = 44	|
+    |   | [[@Score(3)]] = 44	|
 
 Scenario: Assign a value to the end of a json object array within a json object
 	Given I assign the value "11" to a json object "[[@Person.Score()]]"

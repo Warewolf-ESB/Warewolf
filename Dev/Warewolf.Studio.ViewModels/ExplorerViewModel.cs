@@ -322,7 +322,7 @@ namespace Warewolf.Studio.ViewModels
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             if (loadLocalHost)
 #pragma warning disable 4014
-                LoadEnvironment(localhostEnvironment);
+                LoadEnvironment(localhostEnvironment,false,false);
 #pragma warning restore 4014
 
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator)
@@ -479,11 +479,11 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false)
+        protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)
         {
             IsLoading = true;
             localhostEnvironment.Connect();
-            var result = await localhostEnvironment.Load(isDeploy, true);
+            var result = await localhostEnvironment.Load(isDeploy,reloadCatalogue);
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
             IsLoading = false;
             return result;

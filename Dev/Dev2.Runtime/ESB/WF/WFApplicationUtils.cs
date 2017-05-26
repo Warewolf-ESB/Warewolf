@@ -99,9 +99,9 @@ namespace Dev2.Runtime.ESB.WF
                 ErrorResultTO invokeErrors;
 
                 var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
-                var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
+                var outputs = GetDebugValues(defs, dataObject, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
-                debugState.Outputs.AddRange(inputs);
+                debugState.Outputs.AddRange(outputs);
             }
             if (stateType == StateType.End)
             {
@@ -189,6 +189,7 @@ namespace Dev2.Runtime.ESB.WF
 
                 added.Add(defn);
                 var itemToAdd = new DebugItem();
+
                 _add(new DebugEvalResult(DataListUtil.ReplaceRecordBlankWithStar(defn), "", dataObject.Environment, 0), itemToAdd); //todo:confirm 0
                 results.Add(itemToAdd);
             }
@@ -203,9 +204,21 @@ namespace Dev2.Runtime.ESB.WF
 
         private string GetVariableName(IDev2Definition value)
         {
-            return string.IsNullOrEmpty(value.RecordSetName)
-                  ? $"[[{value.Name}]]"
-                : $"[[{value.RecordSetName}(){(string.IsNullOrEmpty(value.Name) ? string.Empty : "." + value.Name)}]]";
+            string variableName;
+            if (value.IsJsonArray && value.Name.StartsWith("@"))
+            {
+                variableName = $"[[{value.Name}()]]";
+            }
+            else if (string.IsNullOrEmpty(value.RecordSetName))
+            {
+                variableName = $"[[{value.Name}]]";
+            }
+            else
+            {
+                variableName = $"[[{value.RecordSetName}(){(string.IsNullOrEmpty(value.Name) ? string.Empty : "." + value.Name)}]]";
+
+            }
+            return variableName;
         }
 
         private void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)

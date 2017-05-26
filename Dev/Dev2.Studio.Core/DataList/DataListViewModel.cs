@@ -47,7 +47,6 @@ namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel, IUpdatesHelp
     {
-        #region Fields
 
         private readonly IComplexObjectHandler _complexObjectHandler;
         private readonly IScalarHandler _scalarHandler;
@@ -66,9 +65,7 @@ namespace Dev2.Studio.ViewModels.DataList
         private readonly IMissingDataList _missingDataList;
         private readonly IPartIsUsed _partIsUsed;
 
-        #endregion Fields
 
-        #region Properties
 
         public bool CanSortItems => HasItems();
 
@@ -108,7 +105,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             if (_recsetCollection != null && _recsetCollection.Count > 1)
             {
-                for(int index = _recsetCollection.Count-1; index >= 0; index--)
+                for (int index = _recsetCollection.Count - 1; index >= 0; index--)
                 {
                     var recordSetItemModel = _recsetCollection[index];
                     recordSetItemModel.Filter(searchText);
@@ -181,7 +178,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             RemoveItemPropertyChangeEvent(args);
             AddItemPropertyChangeEvent(args);
-        }        
+        }
 
         public ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection
         {
@@ -201,6 +198,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 {
                     RemoveItemPropertyChangeEvent(args);
                     AddItemPropertyChangeEvent(args);
+
                 };
                 return _complexObjectCollection;
             }
@@ -237,6 +235,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
                 SortCommand.RaiseCanExecuteChanged();
             }
+
             ViewComplexObjectsCommand?.RaiseCanExecuteChanged();
             DeleteCommand?.RaiseCanExecuteChanged();
         }
@@ -267,8 +266,6 @@ namespace Dev2.Studio.ViewModels.DataList
         private bool _toggleSortOrder = true;
         private ObservableCollection<IComplexObjectItemModel> _complexObjectCollection;
 
-        #endregion Properties
-        #region Ctor
 
         public DataListViewModel()
             : this(EventPublishers.Aggregator)
@@ -315,9 +312,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return item != null && !item.IsUsed;
         }
 
-        #endregion Ctor
 
-        #region Commands
 
         public ICommand ClearSearchTextCommand { get; private set; }
 
@@ -365,9 +360,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        #endregion Commands
 
-        #region Add/Remove Missing Methods
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
         {
@@ -455,19 +448,17 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void UpdateIntellisenseList()
         {
-            if(_scalarCollection != null && _recsetCollection != null && _complexObjectCollection != null && _complexObjectHandler != null)
+            if (_scalarCollection != null && _recsetCollection != null && _complexObjectCollection != null && _complexObjectHandler != null)
             {
                 var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
-                if(Provider != null)
+                if (Provider != null)
                 {
                     Provider.VariableList = new ObservableCollection<string>(items);
                 }
             }
         }
 
-        #endregion Add/Remove Missing Methods
 
-        #region Methods
 
         public void InitializeDataListViewModel(IResourceModel resourceModel)
         {
@@ -483,7 +474,7 @@ namespace Dev2.Studio.ViewModels.DataList
             var items = RefreshTries(_scalarCollection.ToList(), new List<string>()).Union(RefreshRecordSets(_recsetCollection.ToList(), new List<string>())).Union(_complexObjectHandler.RefreshJsonObjects(_complexObjectCollection.ToList()));
             Provider.VariableList = new ObservableCollection<string>(items);
         }
-        
+
         private IEnumerable<string> RefreshTries(IEnumerable<IScalarItemModel> toList, IList<string> accList)
         {
             foreach (var dataListItemModel in toList)
@@ -666,9 +657,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        #endregion Methods
 
-        #region Private Methods
 
         private void ValidateScalar()
         {
@@ -917,12 +906,12 @@ namespace Dev2.Studio.ViewModels.DataList
                 foreach (var col in cols)
                 {
                     result.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" {5}=\"{6}\" />", col.ColumnName
-                    , Description
-                    , col.ColumnDescription
-                    , IsEditable
-                    , col.IsEditable
-                    , GlobalConstants.DataListIoColDirection
-                    , col.ColumnIODirection);
+                        , Description
+                        , col.ColumnDescription
+                        , IsEditable
+                        , col.IsEditable
+                        , GlobalConstants.DataListIoColDirection
+                        , col.ColumnIODirection);
                 }
                 result.Append("</");
                 result.Append(recSet.DisplayName);
@@ -963,19 +952,11 @@ namespace Dev2.Studio.ViewModels.DataList
             return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
         }
 
-        #endregion Private Methods
-
-        #region Override Methods
-
         protected override void OnDispose()
         {
             ClearCollections();
             Resource = null;
         }
-
-        #endregion Override Methods
-
-        #region Implementation of ShowUnusedDataListVariables
 
         private void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
         {
@@ -994,7 +975,6 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.SetRecordSetItemsAsUsed();
         }
 
-        #endregion Implementation of ShowUnusedDataListVariables
 
         /// <summary>
         /// Finds the missing workflow data regions.
@@ -1074,7 +1054,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public ISuggestionProvider Provider { get; set; }
-        
+
 
         private static string BuildErrorMessage(IDataListItemModel model)
         {

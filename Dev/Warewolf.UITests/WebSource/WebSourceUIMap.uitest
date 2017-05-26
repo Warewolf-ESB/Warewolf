@@ -235,7 +235,23 @@
                                         <PropertyCondition Name="AutomationId">DefaultQueryTextBox</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
-                                      <Descendants />
+                                      <Descendants>
+                                        <UIObject ControlType="Image" Id="TestPassedImage" FriendlyName="" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>NextTo</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Image</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
                                     </UIObject>
                                     <UIObject ControlType="Button" Id="CancelTestButton" FriendlyName="Cancel Test" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>

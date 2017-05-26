@@ -73,5 +73,6 @@ namespace Warewolf.Storage.Interfaces
         JContainer EvalJContainer(string exp);
 
         List<string> GetIndexes(string exp);
+        int GetObjectLength(string recordSetName);
     }
 }

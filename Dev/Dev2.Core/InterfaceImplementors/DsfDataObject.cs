@@ -27,6 +27,7 @@ using Dev2.Interfaces;
 using Dev2.Web;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+// ReSharper disable FunctionComplexityOverflow
 
 // ReSharper disable CheckNamespace
 
@@ -188,7 +189,6 @@ namespace Dev2.DynamicServices
         #region Properties
 
         private StringBuilder _rawPayload;
-        private string _parentInstanceID;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
@@ -196,6 +196,7 @@ namespace Dev2.DynamicServices
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
         public List<Guid> TestsResourceIds { get; set; }
+        public bool IsSubExecution { get; set; }
         public bool IsRemoteInvoke => EnvironmentID != Guid.Empty;
 
         public bool IsRemoteInvokeOverridden { get; set; }
@@ -237,11 +238,7 @@ namespace Dev2.DynamicServices
 
         public Guid EnvironmentID { get; set; }
 
-        public string ParentInstanceID
-        {
-            get { return _parentInstanceID; }
-            set { _parentInstanceID = value; }
-        }
+        public string ParentInstanceID { get; set; }
         public Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
         public string CurrentBookmarkName { get; set; }
         public string ServiceName { get; set; }
@@ -388,6 +385,7 @@ namespace Dev2.DynamicServices
             result.IsDebugFromWeb = IsDebugFromWeb;
             result.ExecutionID = ExecutionID;
             result.WebUrl = WebUrl;
+            result.IsSubExecution = IsSubExecution;
             if (ServiceTest != null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();

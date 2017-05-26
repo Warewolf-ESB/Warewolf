@@ -28,7 +28,7 @@ namespace Warewolf.Studio.ViewModels
 
         private DataListModel DataList { get; set; }
 
-        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber)
+        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber, bool isFromDebug = false)
         {
             var testModel = new ServiceTestModel(resourceModel.ID)
             {
@@ -54,13 +54,15 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestInput.AddNewAction = () => testModel.AddRow(serviceTestInput, DataList);
                         return (IServiceTestInput)serviceTestInput;
                     }).ToObservableCollection();
-
-                testModel.Outputs = outputList.Select(sca =>
+                if (!isFromDebug)
                 {
-                    var serviceTestOutput = new ServiceTestOutput(sca.DisplayValue, "", "", "");
-                    serviceTestOutput.AddNewAction = () => testModel.AddRow(serviceTestOutput, DataList);
-                    return (IServiceTestOutput)serviceTestOutput;
-                }).ToObservableCollection();
+                    testModel.Outputs = outputList.Select(sca =>
+                    {
+                        var serviceTestOutput = new ServiceTestOutput(sca.DisplayValue, "", "", "");
+                        serviceTestOutput.AddNewAction = () => testModel.AddRow(serviceTestOutput, DataList);
+                        return (IServiceTestOutput)serviceTestOutput;
+                    }).ToObservableCollection();
+                }
             }
             testModel.Item = (ServiceTestModel)testModel.Clone();
             return testModel;
@@ -139,7 +141,7 @@ namespace Warewolf.Studio.ViewModels
                             return serviceTestOutput;
                         }).ToObservableCollection();
 
-                        if (selectedServiceTest.TestSteps != null && res.TestSteps!=null)
+                        if (selectedServiceTest.TestSteps != null && res.TestSteps != null)
                         {
                             foreach (var resTestStep in res.TestSteps)
                             {
@@ -241,10 +243,10 @@ namespace Warewolf.Studio.ViewModels
                     AssertOp = serviceTestOutput?.AssertOp ?? "=",
                     HasOptionsForValue = serviceTestOutput?.HasOptionsForValue ?? false,
                     OptionsForValue = serviceTestOutput?.OptionsForValue ?? new List<string>(),
-                    Result = serviceTestOutput?.Result ?? new TestRunResult { RunTestResult = RunResult.TestPending}
+                    Result = serviceTestOutput?.Result ?? new TestRunResult { RunTestResult = RunResult.TestPending }
                 };
 
-                
+
 
                 if (testStep.MockSelected)
                 {
@@ -259,7 +261,7 @@ namespace Warewolf.Studio.ViewModels
                         testOutput.TestFailing = false;
                         testOutput.TestInvalid = true;
                     }
-                }               
+                }
 
                 stepOutputs.Add(testOutput);
             }

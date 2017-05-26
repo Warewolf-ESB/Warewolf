@@ -243,6 +243,7 @@ namespace Dev2.Tests
             dataObject.TestName = "Test 1";
             dataObject.IsDebugFromWeb = true;
             dataObject.SourceResourceID = Guid.NewGuid();
+            dataObject.IsSubExecution = true;
             dataObject.ServiceTest = new ServiceTestModelTO {TestName = "Test Mock"};
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
@@ -316,6 +317,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsDebugFromWeb, clonedObject.IsDebugFromWeb);
             Assert.AreNotEqual(dataObject.ServiceTest, clonedObject.ServiceTest);
             Assert.AreEqual(dataObject.ServiceTest.TestName, clonedObject.ServiceTest.TestName);
+            Assert.AreEqual(dataObject.IsSubExecution,clonedObject.IsSubExecution);
         }
 
         #region Debug Mode Test

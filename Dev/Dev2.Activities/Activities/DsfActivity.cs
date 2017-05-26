@@ -468,7 +468,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var oldResourceId = dataObject.ResourceID;
-            var wasTestExecution = dataObject.IsServiceTestExecution;
             InitializeDebug(dataObject);
 
             try

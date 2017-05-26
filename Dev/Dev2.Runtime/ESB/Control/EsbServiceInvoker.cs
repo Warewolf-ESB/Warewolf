@@ -8,17 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-#region Change Log
-
-//  Author:         Sameer Chunilall
-//  Date:           2010-01-24
-//  Log No:         9299
-//  Description:    The data layer of the Dynamic Service Engine
-//                  This is where all actions get executed.
-
-#endregion
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -87,7 +76,6 @@ namespace Dev2.Runtime.ESB
         #endregion
 
         #region Travis New Methods
-
         /// <summary>
         /// Invokes the specified service as per the dataObject against theHost
         /// </summary>
@@ -101,7 +89,6 @@ namespace Dev2.Runtime.ESB
             var time = new Stopwatch();
             time.Start();
             errors = new ErrorResultTO();
-            const int Update = 0;
             if (dataObject.Environment.HasErrors())
             {
                 errors.AddError(dataObject.Environment.FetchErrors());
@@ -124,7 +111,7 @@ namespace Dev2.Runtime.ESB
                     {
                         Dev2Logger.Debug("Finding service", dataObject.ExecutionID.ToString());
                         var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
-
+                        
                         if (theService == null)
                         {
                             if (!dataObject.IsServiceTestExecution)
@@ -175,10 +162,8 @@ namespace Dev2.Runtime.ESB
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container", dataObject.ExecutionID.ToString());
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
-                                ErrorResultTO invokeErrors;
-                                result = container.Execute(out invokeErrors, Update);
+                                container.Execute(out errors, 0);                                
                                 
-                                errors.MergeErrors(invokeErrors);
                             }
                             #endregion
                         }

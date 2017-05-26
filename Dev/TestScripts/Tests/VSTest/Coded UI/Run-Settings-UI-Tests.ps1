@@ -39,7 +39,7 @@ $TestSettingsFile = "$PSScriptRoot\SettingsUITesting.testsettings"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run Settings UI Tests.</Description>
-  <Settingsment enabled=`"false`" />
+  <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
     <Timeouts testTimeout=`"600000`" />
@@ -99,4 +99,4 @@ if ($TestList -eq "") {
 Write-Host $WorkingDir> `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
 
 # Write full command including full argument string.
-Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList
+Out-File -LiteralPath $PSScriptRoot\RunTests.bat -Encoding default -InputObject `"$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe`"$FullArgsList -Append

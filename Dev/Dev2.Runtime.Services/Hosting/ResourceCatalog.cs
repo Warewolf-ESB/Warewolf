@@ -195,26 +195,47 @@ namespace Dev2.Runtime.Hosting
             return resources;
         }
 
-        public void LoadResourceActivityCache(Guid workspaceID)
+        public void LoadServerActivityCache()
         {
-            if (!_parsers.ContainsKey(workspaceID) && workspaceID == GlobalConstants.ServerWorkspaceID)
+            if (!_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
             {
-                BuildResourceActivityCache(workspaceID, GetResources(workspaceID));
+                BuildResourceActivityCache(GetResources(GlobalConstants.ServerWorkspaceID));
             }
         }
 
-        private void BuildResourceActivityCache(Guid workspaceID, IEnumerable<IResource> userServices)
+        private void BuildResourceActivityCache(IEnumerable<IResource> userServices)
         {
-            if (_parsers.ContainsKey(workspaceID))
+            if (_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
             {
                 return;
             }
             foreach (var resource in userServices)
             {
-                Parse(workspaceID, resource.ResourceID);
+                AddToActivityCache(resource);
             }
         }
 
+        public void AddToActivityCache(IResource resource)
+        {
+            IResourceActivityCache parser = null;
+            if(_parsers != null && !_parsers.TryGetValue(GlobalConstants.ServerWorkspaceID, out parser))
+            {
+                parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
+                _parsers.Add(GlobalConstants.ServerWorkspaceID, parser);
+            }
+            if(parser != null && !parser.HasActivityInCache(resource.ResourceID))
+            {
+                var service = GetService(GlobalConstants.ServerWorkspaceID, resource.ResourceID, resource.ResourceName);
+                if(service != null)
+                {
+                    var sa = service.Actions.FirstOrDefault();
+                    MapServiceActionDependencies(GlobalConstants.ServerWorkspaceID, sa);
+                    ServiceActionRepo.Instance.AddToCache(resource.ResourceID, service);
+                    var activity = GetActivity(sa);
+                    parser.Parse(activity, resource.ResourceID);
+                }
+            }
+        }
 
         public DynamicActivity GetActivity(ServiceAction sa)
         {
@@ -426,17 +447,20 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            var resource = GetResource(workspaceID, resourceID);
-            var service = GetService(workspaceID, resourceID, resource.ResourceName);
-            if (service != null)
+            if (workspaceID != Guid.Empty)
             {
-                var sa = service.Actions.FirstOrDefault();
-                MapServiceActionDependencies(workspaceID, sa);
-                ServiceActionRepo.Instance.AddToCache(resourceID, service);
-                var activity = GetActivity(sa);
-                if (parser != null)
+                var resource = GetResource(workspaceID, resourceID);
+                var service = GetService(workspaceID, resourceID, resource.ResourceName);
+                if (service != null)
                 {
-                    return parser.Parse(activity, resourceID);
+                    var sa = service.Actions.FirstOrDefault();
+                    MapServiceActionDependencies(workspaceID, sa);
+                    ServiceActionRepo.Instance.AddToCache(resourceID, service);
+                    var activity = GetActivity(sa);
+                    if (parser != null)
+                    {
+                        return parser.Parse(activity, resourceID);
+                    }
                 }
             }
             return null;
@@ -445,6 +469,8 @@ namespace Dev2.Runtime.Hosting
         public void Reload()
         {
             LoadWorkspace(GlobalConstants.ServerWorkspaceID);
+            _parsers.Remove(GlobalConstants.ServerWorkspaceID);
+            LoadServerActivityCache();
         }
 
 

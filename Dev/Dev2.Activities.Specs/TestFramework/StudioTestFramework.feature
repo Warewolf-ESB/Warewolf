@@ -663,6 +663,36 @@ Scenario: Run a passing switch test and change step type
 	Then The "DeleteConfirmation" popup is shown I click Ok
 	And test folder is cleaned
 	
+Scenario: Test Wf With AssignObject And ObjectOutput
+	    Given the test builder is open with existing service "TestWfWithAssignObjectAndObjectOutput"	
+		And Tab Header is "TestWfWithAssignObjectAndObjectOutput - Tests"
+		When I click New Test
+		Then a new test is added
+		And Tab Header is "TestWfWithAssignObjectAndObjectOutput - Tests *"
+		And test name starts with "Test 1"
+		And username is blank
+		And password is blank	
+		And I Add "Assign Object (3)" as TestStep		
+		And I Clear existing StepOutputs
+		And I add StepOutputs item as 
+		| Variable Name | Condition | Value |
+		| [[@aaa.a]]    | =         | ff    |
+		And I add StepOutputs item as 
+		| Variable Name | Condition | Value |
+		| [[@aaa.a]]    | =         | ff    |
+		And I add StepOutputs item as 
+		| Variable Name | Condition | Value |
+		| [[@aaba().a]]    | =         |     |
+		And I Add outputs as
+		| Variable Name  | Condition   | Value |
+		| @aaba() | Is Not NULL |       |
+		 When I save
+		 And I run the test
+		 Then test result is Passed
+		 When I delete "Test 1"
+		 Then The "DeleteConfirmation" popup is shown I click Ok
+		 And test folder is cleaned
+
 Scenario: Run a passing Test with RabbitMq Object return
 	Given the test builder is open with existing service "RabbitTestWf"	
 	And Tab Header is "RabbitTestWf - Tests"
@@ -1360,6 +1390,7 @@ Scenario: Test WF with Assign Object
 		 When I delete "Test 1"
 		 Then The "DeleteConfirmation" popup is shown I click Ok
 		 Then workflow "AssignObjectTestWF" is deleted as cleanup
+		 
 
 Scenario: Test WF with BaseConvert 
 		Given I have a workflow "BaseConvertTestWF"
@@ -2937,3 +2968,4 @@ Scenario:Test Workflow which contains COM DLL
 	  And I run the test
 	  Then test result is Passed
 	  When I delete "Test 1"
+

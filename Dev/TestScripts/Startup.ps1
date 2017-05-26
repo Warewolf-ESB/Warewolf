@@ -57,7 +57,7 @@ if ($ResourcesType -eq "") {
 }
 
 if (Test-Path "$PSScriptRoot\Cleanup.ps1") {
-    &"$PSScriptRoot\Cleanup.ps1"
+    &"$PSScriptRoot\Cleanup.ps1" -WaitForCloseTimeout 10 -WaitForCloseRetryCount 1
 }
 
 if ($ServerPath -eq "") {
@@ -147,6 +147,13 @@ Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $Reso
 # ****************************** Server Start ******************************
 Start-Service "Warewolf Server"
 Write-Host Server has started.
+
+#Check if started
+$Output = @()
+sc.exe interrogate "Warewolf Server" 2>&1 | %{$Output += $_}
+if ($Output.Length -lt 4 -or !($Output[3].EndsWith("RUNNING "))) {
+    sc.exe start "Warewolf Server"
+}
 
 if (!($SkipStudioStartup)) {
 	if ($StudioPath -eq "") {

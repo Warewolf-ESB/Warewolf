@@ -37,6 +37,7 @@ using Dev2.Diagnostics.Logging;
 using Dev2.Instrumentation;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Runtime;
+using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
@@ -553,8 +554,9 @@ namespace Dev2
             PreloadReferences();
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
-            catalog.LoadResourceActivityCache(GlobalConstants.ServerWorkspaceID);
-            WriteLine("done.");
+            catalog.LoadServerActivityCache();
+            CustomContainer.Register<IExecutionManager>(ExecutionManager.Instance);
+            WriteLine("done.");            
             SetStarted();
         }
 
