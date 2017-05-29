@@ -728,7 +728,7 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savable was unsucessful.");
             Keyboard.SendKeys(startNode, "S", (ModifierKeys.Control));
             Point point;
-            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => { return control.TryGetClickablePoint(out point)});
+            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => { return control.TryGetClickablePoint(out point); }, 60000);
         }
 
         [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
