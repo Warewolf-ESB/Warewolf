@@ -727,6 +727,8 @@ namespace Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Make Workflow Savable was unsucessful.");
             Keyboard.SendKeys(startNode, "S", (ModifierKeys.Control));
+            Point point;
+            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => { return control.TryGetClickablePoint(out point)});
         }
 
         [When(@"I Drag Toolbox MySql Database Onto DesignSurface")]
