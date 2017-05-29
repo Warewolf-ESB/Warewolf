@@ -1,6 +1,6 @@
 using System;
 
-namespace Dev2.Runtime
+namespace Dev2.Common
 {
     public class LogEntry
     {
