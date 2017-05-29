@@ -503,6 +503,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         {
             var searchTextBox = SaveDialogWindow.ExplorerView.SearchTextBox;
             searchTextBox.Text = FilterText;
+            Playback.Wait(1000);
         }
 
         [When(@"I Click UpdateDuplicateRelationships")]
