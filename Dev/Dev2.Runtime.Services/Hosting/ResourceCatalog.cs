@@ -429,7 +429,13 @@ namespace Dev2.Runtime.Hosting
         private static Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
         bool _loading;
 
-        public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId = "")
+        public IDev2Activity Parse(Guid workspaceID, Guid resourceID)
+        {
+            return Parse(workspaceID, resourceID, "");
+
+        }
+
+        public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId)
         {
             IResourceActivityCache parser = null;
             Dev2Logger.Debug($"Fetching Execution Plan for {resourceID} for workspace {workspaceID}", string.IsNullOrEmpty(executionId) ? "Warewolf Debug" : executionId);
