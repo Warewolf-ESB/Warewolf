@@ -30,6 +30,7 @@ Scenario: Create New Folder In Localhost Then Open Context Menu Server From Save
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut
 	And I Make Workflow Savable And Then Save
+	And I Filter Save Dialog Explorer with "Created Another Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New Folder From SaveDialog Context Menu
 	And I Enter New Folder Name as "Created Another Folder"
