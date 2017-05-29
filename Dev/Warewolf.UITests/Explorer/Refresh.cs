@@ -30,6 +30,28 @@ namespace Warewolf.UITests
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Exists, "Explorer tree is blocked.");
         }
 
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void RefreshExplorerAfterConnectingToRemoteRefreshesTheRemoteUITest()
+        {
+            ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
+            ExplorerUIMap.Collapse_Localhost();
+            ExplorerUIMap.RefreshExplorerWithoutWaitingForSpinner();
+            Point point;
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner.TryGetClickablePoint(out point), "Remote spinner is not showing after clicking refresh on remote server.");
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void RefreshExplorerAfterConnectingToRemoteDoesNotRefreshLocalhost()
+        {
+            ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
+            ExplorerUIMap.Collapse_Localhost();
+            ExplorerUIMap.RefreshExplorerWithoutWaitingForSpinner();
+            Point point;
+            Assert.IsFalse(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner.TryGetClickablePoint(out point), "Localhost spinner is showing while refreshing remote.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

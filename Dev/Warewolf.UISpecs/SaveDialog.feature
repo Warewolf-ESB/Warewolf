@@ -61,7 +61,7 @@ Scenario: Create New Folder In Localhost Server From Save Dialog
 	And I Select New Folder From SaveDialog Context Menu
 	And I Name New Folder as "New Created Folder"
 	And I Click SaveDialog CancelButton
-	And I Refresh Explorer
+	When I Refresh Explorer
 	And I Filter the Explorer with "New Created Folder"
 	Then Explorer Contain Item "New Created Folder"
 

@@ -1,4 +1,9 @@
-﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System;
@@ -100,7 +105,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem);
         }
-        
+
         [When(@"I DoubleClick Explorer Localhost First Item First SubItem")]
         public void DoubleClick_Explorer_Localhost_First_Item_First_SubItem_Item()
         {
@@ -141,7 +146,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Given(@"Explorer Does Not Contain First Item First Sub Item")]
         [Then(@"Explorer Does Not Contain First Item First Sub Item")]
         public void ExplorerDoesNotContainFirstItemFirstSubItem()
-        {            
+        {
             Assert.IsFalse(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem), "Explorer contains a first item with one sub item under it after moving the sub item out.");
         }
 
@@ -177,15 +182,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         public void ThenFilterTextboxHas(string filterText)
         {
             Assert.AreEqual(filterText, MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text);
-        }
-
-        [Then(@"Remote Server Refreshes")]
-        public void ThenRemoteServerRefreshes()
-        {
-            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner));
-            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner));
-            Point point;
-            Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Spinner.TryGetClickablePoint(out point));
         }
 
         [Given(@"I Create New Workflow using shortcut")]
@@ -236,10 +232,14 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
             Mouse.Click(toggleButton, new Point(136, 7));
             Playback.Wait(1000);
-            if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration))
+            if (UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists)
+            {
                 Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
+            }
             else if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
+            {
                 Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
+            }
         }
 
         [Then(@"Remote ""(.*)"" is open")]
@@ -305,7 +305,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
-        
+
         [When(@"I RightClick Explorer Localhost First Item First SubItem")]
         public void RightClick_Explorer_Localhost_First_Item_First_SubItem()
         {
@@ -432,7 +432,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [When(@"I Select Explorer Remote Server Dropdown List")]
         [Then(@"I Select Explorer Remote Server Dropdown List")]
         public void Select_Explorer_Remote_Server_Dropdown_List()
-        {            
+        {
             Mouse.Click(MainStudioWindow.RemoteConnectionItem);
         }
 
@@ -470,17 +470,15 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab was not open.");
         }
 
-        [Given(@"I Refresh Explorer")]
         [When(@"I Refresh Explorer")]
-        [Then(@"I Refresh Explorer")]
         public void Click_Explorer_Refresh_Button()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
 
-        [When(@"I Refresh Explorer Withpout Waiting For Spinner")]
-        public void RefreshExplorerWithpoutWaitingForSpinner()
+        [When(@"I Refresh Explorer Without Waiting For Spinner")]
+        public void RefreshExplorerWithoutWaitingForSpinner()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
         }
@@ -651,7 +649,7 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             }
         }
 
-       public void TryClearExplorerFilter()
+        public void TryClearExplorerFilter()
         {
             if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != string.Empty)
             {
@@ -1118,6 +1116,19 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(61, 15));
             Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(7, 12));
         }
+        
+        [When(@"I Collapse Localhost")]
+        public void Collapse_Localhost()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Expanded = false;
+        }
+
+        [When(@"I Expand Localhost")]
+        public void Expand_Localhost()
+        {
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Expanded = true;
+        }
+
         #region UIMaps
         WorkflowTabUIMap WorkflowTabUIMap
         {
