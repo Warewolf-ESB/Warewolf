@@ -335,7 +335,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (!string.IsNullOrEmpty(findRecordsTo.SearchCriteria))
                     {
-                        AddDebugItem(new DebugEvalResult(findRecordsTo.SearchCriteria, "", environment, update), debugItem);
+                        AddDebugItem(new DebugEvalResult(findRecordsTo.SearchCriteria, "", environment, update, ""), debugItem);
                     }
 
                     if (findRecordsTo.SearchType == "Is Between" || findRecordsTo.SearchType == "Not Between")
@@ -349,7 +349,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     indexCount++;
                 }
             }
-        }
+        } 
 
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
