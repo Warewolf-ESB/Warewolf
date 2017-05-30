@@ -360,7 +360,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 103
  testRunner.And("I Click Deploy Successful MessageBox OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
- testRunner.And("I Select RemoteConnectionIntegration From Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Remote Connection Integration From Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
  testRunner.And("I Filter the Explorer with \"ResourceToDeployInADifferentPath\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
@@ -435,7 +435,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 125
  testRunner.And("I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
- testRunner.And("I Select RemoteConnectionIntegration From Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Remote Connection Integration From Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 127
  testRunner.And("I Select localhost From Deploy Tab Source Server Combobox", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
