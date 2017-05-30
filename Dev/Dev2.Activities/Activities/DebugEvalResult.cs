@@ -125,9 +125,7 @@ namespace Dev2.Activities
                 }
             }
         }
-
-        #region Overrides of DebugOutputBase
-
+        
         public override string LabelText { get; }
         public bool MockSelected { get; }
 
