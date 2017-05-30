@@ -1,22 +1,24 @@
 Param(
-  [string]$MSBuildPath,
-  [string]$Solution,
-  [string]$Config="Debug"
+  [string]$MSBuildPath="%programfiles(x86)%\MSBuild\14.0\bin\MSBuild.exe",
+  [string]$Config="Debug",
+  [string]$Target="",
+  [switch]$ProjectSpecificOutputs,
+  [switch]$AcceptanceTesting,
+  [switch]$UITesting,
+  [switch]$Server,
+  [switch]$Studio,
+  [switch]$Release
 )
-
-if ($Solution -ne "" -and $Solution -ne "AcceptanceTesting" -and $Solution -ne "UITesting" -and $Solution -ne "Server" -and $Solution -ne "Studio" -and $Solution -ne "Release") {
-    Write-Host "-Solution must either be left blank to compile all solutions or AcceptanceTesting, UITesting, Server, Studio or Release to compile just one solution."
-    sleep 10
-    exit 1
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent)
+if ($Target -ne "") {
+	$Target = "/t:" + $Target
 }
 
 #Find Compiler
-if ("$MSBuildPath" -eq "") {
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     $GetMSBuildCommand = Get-Command MSBuild -ErrorAction SilentlyContinue
     if ($GetMSBuildCommand) {
         $MSBuildPath = $GetMSBuildCommand.Path
-    } else {
-        $MSBuildPath = &"%programfiles(x86)%\MSBuild\14.0\bin\MSBuild.exe"
     }
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
@@ -27,40 +29,65 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 
 #Compile Solutions
 $LASTEXITCODE = 0
-if ($Solution -ne "UITesting" -and $Solution -ne "Server" -and $Solution -ne "Studio" -and $Solution -ne "Release") {
-    &"$MSBuildPath" "$PSScriptRoot\Dev\AcceptanceTesting.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/property:OutDir=$PSScriptRoot\Bin\AcceptanceTesting"
+if ($AcceptanceTesting.IsPresent -or $NoSolutionParametersPresent) {
+    if ($ProjectSpecificOutputs.IsPresent) {
+        $OutputProperty = ""
+    } else {
+        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\AcceptanceTesting"
+    }
+    &"$MSBuildPath" "$PSScriptRoot\Dev\AcceptanceTesting.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
 }
 if ($LASTEXITCODE -ne 0) {
     sleep 10
     exit 1
 }
 
-if ($Solution -ne "AcceptanceTesting" -and $Solution -ne "Server" -and $Solution -ne "Studio" -and $Solution -ne "Release") {
-    &"$MSBuildPath" "$PSScriptRoot\Dev\UITesting.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/property:OutDir=$PSScriptRoot\Bin\UITesting"
+if ($UITesting.IsPresent -or $NoSolutionParametersPresent) {
+    if ($ProjectSpecificOutputs.IsPresent) {
+        $OutputProperty = ""
+    } else {
+        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\UITesting"
+    }
+    &"$MSBuildPath" "$PSScriptRoot\Dev\UITesting.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
 }
 if ($LASTEXITCODE -ne 0) {
     sleep 10
     exit 1
 }
 
-if ($Solution -ne "AcceptanceTesting" -and $Solution -ne "UITesting" -and $Solution -ne "Studio" -and $Solution -ne "Release") {
-    &"$MSBuildPath" "$PSScriptRoot\Dev\Server.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/property:OutDir=$PSScriptRoot\Bin\Server"
+if ($Server.IsPresent -or $NoSolutionParametersPresent) {
+    if ($ProjectSpecificOutputs.IsPresent) {
+        $OutputProperty = ""
+    } else {
+        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\Server"
+    }
+    &"$MSBuildPath" "$PSScriptRoot\Dev\Server.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
 }
 if ($LASTEXITCODE -ne 0) {
     sleep 10
     exit 1
 }
 
-if ($Solution -ne "AcceptanceTesting" -and $Solution -ne "UITesting" -and $Solution -ne "Server" -and $Solution -ne "Release") {
-    &"$MSBuildPath" "$PSScriptRoot\Dev\Studio.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/property:OutDir=$PSScriptRoot\Bin\Studio"
+if ($Studio.IsPresent -or $NoSolutionParametersPresent) {
+    if ($ProjectSpecificOutputs.IsPresent) {
+        $OutputProperty = ""
+    } else {
+        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\Studio"
+    }
+    &"$MSBuildPath" "$PSScriptRoot\Dev\Studio.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
 }
 if ($LASTEXITCODE -ne 0) {
     sleep 10
     exit 1
 }
 
-if ($Solution -ne "AcceptanceTesting" -and $Solution -ne "UITesting" -and $Solution -ne "Server" -and $Solution -ne "Studio") {
-    &"$MSBuildPath" "$PSScriptRoot\Dev\Release.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/property:OutDir=$PSScriptRoot\Bin\Release"
+if ($Release.IsPresent -or $NoSolutionParametersPresent) {
+    if ($ProjectSpecificOutputs.IsPresent) {
+        $OutputProperty = ""
+    } else {
+        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\Release"
+    }
+    &"$MSBuildPath" "$PSScriptRoot\Dev\Release.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
 }
 if ($LASTEXITCODE -ne 0) {
     sleep 10
