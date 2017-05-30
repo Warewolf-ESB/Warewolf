@@ -23,23 +23,6 @@ if ($TestList.StartsWith(",")) {
 	$TestList = $TestList -replace "^.", " /test:"
 }
 
-# Create test settings.
-$TestSettingsFile = "$PSScriptRoot\LocalAcceptanceTesting.testsettings"
-[system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding="UTF-8"?>
-<TestSettings
-  id=`"3264dd0f-6fc1-4cb9-b44f-c649fef29609`"
-  name=`"ExampleWorkflowExecutionSpecs`"
-  enableDefaultDataCollectors=`"false`"
-  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run example workflow execution specs.</Description>
-  <Deployment enabled=`"false`" />
-  <Execution>
-    <Timeouts testTimeout=`"180000`" />
-  </Execution>
-</TestSettings>
-"@)
-
 # Find test assemblies
 $TestAssemblyPath = ""
 if (Test-Path "$PSScriptRoot\Warewolf.Specs\Dev2.*.Specs.dll") {
@@ -83,10 +66,10 @@ foreach ($file in Get-ChildItem $TestAssemblyPath -Include Dev2.*.Specs.dll, War
 
 if ($TestList -eq "") {
 	# Create full MSTest argument string.
-	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!ExampleWorkflowExecution&!WorkflowExecution&!SubworkflowExecution&!ServerRefresh`""
+	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx" + " /category:`"ServerRefresh`""
 } else {
 	# Create full MSTest argument string.
-	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx" + $TestList
 }
 
 # Write full command including full argument string.
