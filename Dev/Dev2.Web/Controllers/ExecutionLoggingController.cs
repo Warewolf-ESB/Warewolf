@@ -18,7 +18,7 @@ namespace Dev2.Web.Controllers
             var model = new List<LogEntry>();
             using (HttpClient client = new HttpClient())
             {
-                var authToken = HttpContext.Request.Headers["MS-ASPNETCORE-TOKEN"].ToString();
+                var authToken = HttpContext.Request.Headers["Authorization"].ToString();
                 client.DefaultRequestHeaders.Add("Authorization",authToken);
                 var data = client.GetAsync("https://localhost:3143/services/GetLogDataService").Result;
                 var jsonResponse = data.Content.ReadAsStringAsync().Result;

@@ -18,7 +18,7 @@ namespace Dev2.Web
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddEnvironmentVariables();                
             Configuration = builder.Build();
         }
 
@@ -28,6 +28,12 @@ namespace Dev2.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication();
+            
+
+            services.Configure<IISOptions>(options => {
+                options.ForwardWindowsAuthentication = true;
+            });
+
             // Add framework services.
             services.AddMvc();
         }
@@ -37,7 +43,13 @@ namespace Dev2.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "NTLM"
+            });
+
+            app.UseWindowsImpersonation(options => options.Enabled = true);
 
             if (env.IsDevelopment())
             {
