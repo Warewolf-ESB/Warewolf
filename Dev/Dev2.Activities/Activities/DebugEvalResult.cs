@@ -168,8 +168,6 @@ namespace Dev2.Activities
             }
 
             return new DebugItemStaticDataParams("", _inputVariable, LabelText, MockSelected).GetDebugItemResult();
-        }
-
-        #endregion
+        }        
     }
 }
