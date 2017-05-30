@@ -223,23 +223,25 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
         }
-
-        [Given(@"I Select RemoteConnectionIntegration From Explorer")]
-        [When(@"I Select RemoteConnectionIntegration From Explorer")]
-        [Then(@"I Select RemoteConnectionIntegration From Explorer")]
+        
+        [When(@"I Select Remote Connection Integration \(Connected\) From Explorer")]
+        public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
+        {
+            var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
+            Mouse.Click(toggleButton, new Point(136, 7));
+            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(6000);
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
+            Playback.Wait(1000);
+        }
+        
+        [When(@"I Select Remote Connection Integration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
             Mouse.Click(toggleButton, new Point(136, 7));
+            UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.WaitForControlExist(6000);
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
             Playback.Wait(1000);
-            if (UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists)
-            {
-                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Text, new Point(138, 6));
-            }
-            else if (UIMap.ControlExistsNow(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected))
-            {
-                Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
-            }
         }
 
         [Then(@"Remote ""(.*)"" is open")]
@@ -475,12 +477,6 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
-        }
-
-        [When(@"I Refresh Explorer Without Waiting For Spinner")]
-        public void RefreshExplorerWithoutWaitingForSpinner()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
         }
 
         [Given(@"I setup Public Permissions for ""(.*)"" for Remote Server")]
