@@ -98,10 +98,10 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	And I Enter "ResourceToDeployInADifferentPath" Into Deploy Source Filter
 	And I Select Deploy First Source Item
 	And I Click Deploy Tab Deploy Button
-	Then I Click Deploy version conflicts MessageBox OK
+	And I Click Deploy version conflicts MessageBox OK
 	And I Click Deploy conflicts MessageBox OK
 	And I Click Deploy Successful MessageBox OK
-	And I Select Remote Connection Integration From Explorer
+	And I Select Remote Connection Integration (Connected) From Explorer
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
 

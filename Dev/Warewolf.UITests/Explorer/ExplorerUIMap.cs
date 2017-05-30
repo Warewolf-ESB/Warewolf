@@ -223,10 +223,8 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
         }
-
-        [Given(@"I Select Remote Connection Integration (Connected) From Explorer")]
-        [When(@"I Select Remote Connection Integration (Connected) From Explorer")]
-        [Then(@"I Select Remote Connection Integration (Connected) From Explorer")]
+        
+        [When(@"I Select Remote Connection Integration \(Connected\) From Explorer")]
         public void Select_ConnectedRemoteConnectionIntegration_From_Explorer()
         {
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;
@@ -235,10 +233,8 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegrationConnected.Text, new Point(138, 6));
             Playback.Wait(1000);
         }
-
-        [Given(@"I Select Remote Connection Integration From Explorer")]
+        
         [When(@"I Select Remote Connection Integration From Explorer")]
-        [Then(@"I Select Remote Connection Integration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {
             var toggleButton = MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton;

@@ -354,13 +354,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 100
  testRunner.And("I Click Deploy Tab Deploy Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 101
- testRunner.Then("I Click Deploy version conflicts MessageBox OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I Click Deploy version conflicts MessageBox OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 102
  testRunner.And("I Click Deploy conflicts MessageBox OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
  testRunner.And("I Click Deploy Successful MessageBox OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
- testRunner.And("I Select Remote Connection Integration From Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Select Remote Connection Integration (Connected) From Explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
  testRunner.And("I Filter the Explorer with \"ResourceToDeployInADifferentPath\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 106
