@@ -101,7 +101,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	Then I Click Deploy version conflicts MessageBox OK
 	And I Click Deploy conflicts MessageBox OK
 	And I Click Deploy Successful MessageBox OK
-	And I Select RemoteConnectionIntegration From Explorer
+	And I Select Remote Connection Integration From Explorer
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
 
@@ -123,7 +123,7 @@ Scenario: Changing Seleced Server On desploy Source While Connected To Remote Se
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
 	And I Select RemoteConnectionIntegration From Deploy Tab Source Server Combobox
-	And I Select RemoteConnectionIntegration From Explorer
+	And I Select Remote Connection Integration From Explorer
 	And I Select localhost From Deploy Tab Source Server Combobox
 	And I validate the Resource tree is loaded
 
