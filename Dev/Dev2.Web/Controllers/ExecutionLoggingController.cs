@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Dev2.Common;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Security.Authentication;
 
 namespace Dev2.Web.Controllers
 {
@@ -15,8 +16,15 @@ namespace Dev2.Web.Controllers
         // GET: ExecutionLogging
         public ActionResult Index()
         {
+            var clientHandler = new HttpClientHandler();
+            clientHandler.UseDefaultCredentials = true;
+            clientHandler.PreAuthenticate = true;
+            clientHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+            clientHandler.ClientCertificateOptions = ClientCertificateOption.Automatic;
+            clientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
             var model = new List<LogEntry>();
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(clientHandler))
             {
                 var authToken = HttpContext.Request.Headers["Authorization"].ToString();
                 client.DefaultRequestHeaders.Add("Authorization",authToken);
