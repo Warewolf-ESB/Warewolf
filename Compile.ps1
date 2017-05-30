@@ -1,7 +1,7 @@
 Param(
   [string]$MSBuildPath,
   [string]$Solution,
-  [String]$Config="Debug"
+  [string]$Config="Debug"
 )
 
 if ($Solution -ne "" -and $Solution -ne "AcceptanceTesting" -and $Solution -ne "UITesting" -and $Solution -ne "Server" -and $Solution -ne "Studio" -and $Solution -ne "Release") {
@@ -25,7 +25,7 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-#Start Compiling All 4 Solutions
+#Compile Solutions
 $LASTEXITCODE = 0
 if ($Solution -ne "UITesting" -and $Solution -ne "Server" -and $Solution -ne "Studio" -and $Solution -ne "Release") {
     &"$MSBuildPath" "$PSScriptRoot\Dev\AcceptanceTesting.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" "/property:OutDir=$PSScriptRoot\Bin\AcceptanceTesting"

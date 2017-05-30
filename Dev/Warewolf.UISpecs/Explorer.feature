@@ -76,14 +76,6 @@ Scenario: Clear filter
    And I Click Explorer Filter Clear Button
    Then Filter Textbox is cleared
 
-   Scenario: Refresh Remote Server Refreshes Only The Remote Server
-	Given The Warewolf Studio is running	
-	When I Connect To Remote Server
-	And I Double Click Localhost Server
-	And I Select RemoteConnectionIntegration From Explorer
-	And I Refresh Explorer Withpout Waiting For Spinner
-	Then Remote Server Refreshes	
-
 Scenario: Drag on service from Explorer and change input and output
 	Given The Warewolf Studio is running
 	When I Create New Workflow using shortcut

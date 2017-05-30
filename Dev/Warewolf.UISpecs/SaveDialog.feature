@@ -25,18 +25,17 @@ Scenario: Filter Save Dialog Close And ReOpen Clears The Filter
 	Then Explorer Items appear on the Explorer Tree
 	And I Click Save Ribbon Button to Open Save Dialog
 	Then Explorer Items appear on the Save Dialog Explorer Tree
-
-
+	
 Scenario: Create New Folder In Localhost Then Open Context Menu Server From Save Dialog
 	Given The Warewolf Studio is running
-	And I Create New Workflow using shortcut
+	When I Create New Workflow using shortcut
 	And I Make Workflow Savable And Then Save
 	And I Filter Save Dialog Explorer with "Created Another Folder"
 	And I RightClick Save Dialog Localhost
 	And I Select New Folder From SaveDialog Context Menu
 	And I Enter New Folder Name as "Created Another Folder"
 	And I RightClick Save Dialog Localhost First Item
-	And Context Menu Has Two Items
+	Then Context Menu Has Two Items
 
 Scenario: Create New Folder In Localhost From Save Dialog Then Delete In Main Explorer
 	Given The Warewolf Studio is running
@@ -62,7 +61,7 @@ Scenario: Create New Folder In Localhost Server From Save Dialog
 	And I Select New Folder From SaveDialog Context Menu
 	And I Name New Folder as "New Created Folder"
 	And I Click SaveDialog CancelButton
-	And I Refresh Explorer
+	When I Refresh Explorer
 	And I Filter the Explorer with "New Created Folder"
 	Then Explorer Contain Item "New Created Folder"
 
