@@ -35,7 +35,7 @@ namespace Dev2.Web.Controllers
                     model = JsonConvert.DeserializeObject<List<LogEntry>>(jsonResponse);
                 }
             }
-            return View("ExecutionLogging",model);
+            return View(model);
         }
 
         // GET: ExecutionLogging/Details/5
