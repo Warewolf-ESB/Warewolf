@@ -216,6 +216,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     numberOfDependants = compileMessageList.MessageList.Select(to => to.ServiceID.ToString()).Distinct(StringComparer.InvariantCultureIgnoreCase).ToList();
                     showResourceChangedUtil.ShowResourceChanged(ContextualResourceModel, numberOfDependants);
+                    return;
                 });
             }
         }

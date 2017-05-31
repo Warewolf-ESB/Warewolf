@@ -147,13 +147,5 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
         }
 
         public List<IMemo> WriteEventProviderMemos { get; private set; }
-        protected override void WriteEventProviderClientMessage(IMemo memo)
-        {
-            if (WriteEventProviderMemos == null)
-            {
-                WriteEventProviderMemos = new List<IMemo>();
-            }
-            WriteEventProviderMemos.Add(memo);
-        }
     }
 }
