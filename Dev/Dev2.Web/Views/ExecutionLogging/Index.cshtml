@@ -1,10 +1,11 @@
 @model IEnumerable<Dev2.Common.LogEntry>
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
 }
 
-<h2>View</h2>
+<h2>Index</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,7 +14,7 @@
     <thead>
         <tr>
                 <th>
-                    @*@Html.DisplayNameFor(model => model.StartDateTime)*@
+                    @Html.DisplayNameFor(model => model.StartDateTime)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Status)
@@ -28,7 +29,7 @@
                     @Html.DisplayNameFor(model => model.User)
                 </th>
                 <th>
-                    @*@Html.DisplayNameFor(model => model.CompletedDateTime)*@
+                    @Html.DisplayNameFor(model => model.CompletedDateTime)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ExecutionTime)
@@ -43,7 +44,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @*@Html.DisplayFor(modelItem => item.StartDateTime)*@
+                @Html.DisplayFor(modelItem => item.StartDateTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
@@ -58,7 +59,7 @@
                 @Html.DisplayFor(modelItem => item.User)
             </td>
             <td>
-                @*@Html.DisplayFor(modelItem => item.CompletedDateTime)*@
+                @Html.DisplayFor(modelItem => item.CompletedDateTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ExecutionTime)
