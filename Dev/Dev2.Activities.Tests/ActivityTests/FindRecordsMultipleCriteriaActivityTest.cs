@@ -11,10 +11,13 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -348,6 +351,28 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Name);
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void AddResultDebugInputs_Sets_Operand_To_EmptyString()
+        {
+            //------------Setup for test-------------------------
+            DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity();
+            var privateObject = new PrivateObject(activity);
+            IEnumerable<FindRecordsTO> resultsCollection = new List<FindRecordsTO>
+            {
+                new FindRecordsTO {SearchCriteria = "1", IndexNumber = 1, SearchType = "="}
+            };
+            var atomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewInt(1));
+            var environment = new Mock<IExecutionEnvironment>();
+            environment.Setup(executionEnvironment => executionEnvironment.Eval("1", 0, false, false)).Returns(atomResult);
+            var args = new object[] { resultsCollection, environment.Object, 0 };
+            //------------Execute Test---------------------------
+            privateObject.Invoke("AddResultDebugInputs", args);
+            //------------Assert Results-------------------------
+            var debugInputs = activity.GetDebugInputs(environment.Object, 0);
+            Assert.IsTrue(debugInputs.Single().ResultsList.All(p=>p.Operator == ""));
         }
     }
 }
