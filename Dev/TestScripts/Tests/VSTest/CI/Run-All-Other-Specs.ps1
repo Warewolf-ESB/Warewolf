@@ -78,7 +78,7 @@ foreach ($file in Get-ChildItem $TestAssemblyPath -Filter Dev2.*.Specs.dll ) {
 
 if ($TestList -eq "") {
 	# Create full VSTest argument string.
-	$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"(TestCategory!=ExampleWorkflowExecution)&(TestCategory!=WorkflowExecution)&(TestCategory!=SubworkflowExecution)&(TestCategory!=ServerRefresh)`""
+	$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + " /TestCaseFilter:`"(TestCategory!=ExampleWorkflowExecution)&(TestCategory!=WorkflowExecution)&(TestCategory!=SubworkflowExecution)`""
 } else {
 	# Create full VSTest argument string.
 	$FullArgsList = $TestAssembliesList + " /logger:trx /Settings:`"" + $TestSettingsFile + "`"" + $TestList
