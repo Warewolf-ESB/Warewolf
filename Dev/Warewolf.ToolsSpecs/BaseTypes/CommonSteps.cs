@@ -221,7 +221,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 return location.Replace(getExtention, GetGuid + getExtention);
             }
-            return location;
+            return location + GetGuid;
         }
 
         [Given(@"use private public key for source is ""(.*)""")]
