@@ -72,6 +72,8 @@ if ($ServerPath -eq "") {
             $ServerPath = "$CurrentDirectory\DebugServer\Warewolf Server.exe"
         } elseif (Test-Path "$CurrentDirectory\ReleaseServer\Warewolf Server.exe") {
             $ServerPath = "$CurrentDirectory\ReleaseServer\Warewolf Server.exe"
+        } elseif (Test-Path "$CurrentDirectory\Bin\Server\Warewolf Server.exe") {
+            $ServerPath = "$CurrentDirectory\Bin\Server\Warewolf Server.exe"
         } elseif (Test-Path "$CurrentDirectory\Dev2.Server\bin\Debug\Warewolf Server.exe") {
             $ServerPath = "$CurrentDirectory\Dev2.Server\bin\Debug\Warewolf Server.exe"
         } elseif (Test-Path "$CurrentDirectory\Dev2.Server\bin\Release\Warewolf Server.exe") {
@@ -122,6 +124,9 @@ if ($DotCoverPath -eq "") {
 		sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
 	}
 }
+if ($ServerUsername -ne "" -and $ServerPassword -eq "") {
+    sc.exe config "Warewolf Server" obj= "$ServerUsername"
+}
 if ($ServerUsername -ne "" -and $ServerPassword -ne "") {
     sc.exe config "Warewolf Server" obj= "$ServerUsername" password= "$ServerPassword"
 }
@@ -170,6 +175,8 @@ if (!($SkipStudioStartup)) {
 				$StudioPath = "$CurrentDirectory\ReleaseStudio\Warewolf Studio.exe"
 			} elseif (Test-Path "$CurrentDirectory\Dev2.Studio\bin\Debug\Warewolf Studio.exe") {
 				$StudioPath = "$CurrentDirectory\Dev2.Studio\bin\Debug\Warewolf Studio.exe"
+			} elseif (Test-Path "$CurrentDirectory\Bin\Studio\Warewolf Studio.exe") {
+				$StudioPath = "$CurrentDirectory\Bin\Studio\Warewolf Studio.exe"
 			} elseif (Test-Path "$CurrentDirectory\Dev2.Studio\bin\Release\Warewolf Studio.exe") {
 				$StudioPath = "$CurrentDirectory\Dev2.Studio\bin\Release\Warewolf Studio.exe"
 			} elseif (Test-Path "$CurrentDirectory\*Studio.zip") {

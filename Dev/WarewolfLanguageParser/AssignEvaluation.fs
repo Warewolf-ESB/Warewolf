@@ -162,13 +162,18 @@ and assignGivenAValue (env : WarewolfEnvironment) (res : WarewolfEvalResult) (ex
         if b.Next = Terminal then 
             let arr = obj :?> JArray
             let indexes = indexToInt b.Index arr
-            
+            let actualIndexes = 
+                match b.Index with
+                    | IntIndex a -> indexes
+                    | Last -> indexes
+                    | Star -> if indexes.Length = 0 then [1] else indexes
+                    | _ -> failwith "invalid index"
             if (evalResult.StartsWith "{" && evalResult.EndsWith "}") || (evalResult.StartsWith "[{" && evalResult.EndsWith "}]") then
                 let actualValue = JContainer.Parse evalResult
-                List.map (fun a -> addValueToJArray arr a actualValue) indexes |> ignore
+                List.map (fun a -> addValueToJArray arr a actualValue) actualIndexes |> ignore
             else
                 let actualValue = new JValue(evalResultToString res)
-                List.map (fun a -> addValueToJArray arr a actualValue) indexes |> ignore
+                List.map (fun a -> addValueToJArray arr a actualValue) actualIndexes |> ignore
         else objectFromExpression exp res obj |> ignore
         addedenv
     | _ -> failwith "top level assign cannot be a nested expresssion"
