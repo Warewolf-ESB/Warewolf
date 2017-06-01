@@ -55,6 +55,7 @@ namespace Warewolf.UITests
             UIMap.Click_Save_RibbonButton();
             Assert.IsTrue(UIMap.MainStudioWindow.DependenciesOKButton.Exists, "The dependencies error window does not exists.");
             Mouse.Click(UIMap.MainStudioWindow.DependenciesOKButton);
+            Assert.IsFalse(UIMap.MainStudioWindow.DependenciesOKButton.Exists, "The dependencies error window is showing multiple times.");
         }
 
         #region Additional test attributes

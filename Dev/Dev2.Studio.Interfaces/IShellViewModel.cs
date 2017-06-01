@@ -113,6 +113,7 @@ namespace Dev2.Studio.Interfaces
         IAuthorizeCommand<string> NewWcfSourceCommand { get; }
         IExplorerViewModel ExplorerViewModel { get; set; }
         IServer LocalhostServer { get; }
+        bool ResourceCalled { get; set; }
 
         void DisplayDialogForNewVersion();
         Task<bool> CheckForNewVersion();
