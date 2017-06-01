@@ -13,7 +13,7 @@ namespace Warewolf.UITests.ServerSource
         private const string SourceName = "CodedUITestServerSource";
 
         [TestMethod]
-        [TestCategory("Server Source")]
+        [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServer_GivenTabIsOpened_ShouldHaveDefaultControls()
         {
@@ -29,7 +29,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
-        [TestCategory("Server Source")]
+        [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServerSource_GivenTabIsOpenedUserButtonSelected_ShouldHaveCredentialsControls()
         {
@@ -42,7 +42,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
-        [TestCategory("Server Source")]
+        [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void SaveNewServerSource_GivenSourceName()
         {
@@ -61,7 +61,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
-        [TestCategory("Server Source")]
+        [TestCategory("Server Sources")]
         [Owner("Nkosinathi Sangweni")]
         public void EditServerSource_LoadCorrectly()
         {
@@ -79,7 +79,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
-        [TestCategory("Server Source")]
+        [TestCategory("Server Sources")]
         [Owner("Pieter Terblanche")]
         public void DuplicateServerSource_AddsToConnectControl()
         {
@@ -95,7 +95,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
-        [TestCategory("Server Source")]
+        [TestCategory("Server Sources")]
         public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
         {
             ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingCodedUITestServerSource");
