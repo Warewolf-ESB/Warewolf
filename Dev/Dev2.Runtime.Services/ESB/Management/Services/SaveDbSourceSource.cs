@@ -21,6 +21,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -70,8 +71,20 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ResourceType = src.Type.ToString()
                 };
                 var con = new DbSources();
-                var result = con.DoDatabaseValidation(res);
+                DatabaseValidationResult result = null;
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
+                {
+                    result = con.DoDatabaseValidation(new DbSource
+                    {
+                        AuthenticationType = src.AuthenticationType,
+                        Server = src.ServerName,
+                        Password = src.Password,
+                        ServerType = src.Type,
+                        UserID = src.UserName
 
+                    });
+
+                });
                 if (result.IsValid)
                 {
                     ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, res, src.Path);
