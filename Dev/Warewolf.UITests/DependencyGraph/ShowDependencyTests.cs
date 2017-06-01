@@ -47,7 +47,6 @@ namespace Warewolf.UITests.DependencyGraph
 
         [TestMethod]
         [TestCategory("Dependency Graph")]
-        [TestCategory("Explorer")]
         public void ShowDependencies_ExplorerContextMenuItem_UITest()
         {
             ExplorerUIMap.Select_ShowDependencies_In_ExplorerContextMenu("Hello World");

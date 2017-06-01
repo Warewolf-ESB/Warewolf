@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UITests.DialogsUIMapClasses;
+using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.Settings.SettingsUIMapClasses;
 
 namespace Warewolf.UITests
@@ -12,6 +13,7 @@ namespace Warewolf.UITests
         [TestCategory("Settings")]
         public void Check_SettingsView_Then_SetPublicPermissions_And_SaveEnabled()
         {
+            UIMap.Click_Settings_RibbonButton();
             Assert.IsTrue(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.Exists, "Security tab does not exist in the settings window");
             Assert.IsTrue(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab.Exists, "Logging tab does not exist in the settings window");
             Assert.IsTrue(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Exists, "Resource Permissions does not exist in the settings window");
@@ -87,6 +89,19 @@ namespace Warewolf.UITests
             DialogsUIMap.Click_MessageBox_Yes();
         }
 
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void Edit_Server_Removes_Server_From_Explorer()
+        {
+            ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
+            Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsRemoteConnectionIntegration.Exists);
+            ExplorerUIMap.Select_Explorer_Remote_Server_Dropdown_List();
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Exists, "Remote server is not loaded in the Explorer after selecting it from the connect control dropdown list.");
+            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
+            SettingsUIMap.ChangeServerAuthenticationType();
+            Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer), "Remote server is still loaded in the Explorer after clicking edit in the connect control.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -94,7 +109,6 @@ namespace Warewolf.UITests
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.Click_Settings_RibbonButton();
         }
 
         UIMap UIMap
@@ -141,6 +155,21 @@ namespace Warewolf.UITests
         }
 
         private SettingsUIMap _SettingsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }

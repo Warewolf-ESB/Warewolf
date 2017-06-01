@@ -10,7 +10,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
     public class Assign
     {
         [TestMethod]
-        [TestCategory("Data Tools")]
+        [TestCategory("Assign Tool")]
         public void AssignTool_Small_And_LargeView_Resize_UITest()
         {
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.Exists, "Assign Tool does not exist on desing surface.");
@@ -36,7 +36,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Data Tools")]
+        [TestCategory("Assign Tool")]
         public void AssignTool_ClickDoneButton_Then_DeleteTool_UITest()
         {
             DataToolsUIMap.Open_AssignTool_LargeView();
@@ -46,14 +46,14 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Data Tools")]
+        [TestCategory("Assign Tool")]
         public void AssignTool_Url_UITest()
         {
             DialogsUIMap.Click_Assign_Tool_url();
         }
 
         [TestMethod]
-        [TestCategory("Data Tools")]
+        [TestCategory("Assign Tool")]
         public void AssignTool_QuickVariableInput_FromList_UITest()
         {
             DataToolsUIMap.Open_AssignTool_QVIView();
@@ -63,8 +63,9 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
             WorkflowTabUIMap.Click_PrefixContainsInvalidText_Hyperlink();
             Assert.IsTrue(DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.QuickVariableInputContent.PrefixEdit.HasFocus);
         }
+
         [TestMethod]
-        [TestCategory("Data Tools")]
+        [TestCategory("Assign Tool")]
         public void AssignTool_DebugOutput_UITest()
         {
             DataToolsUIMap.Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
@@ -74,7 +75,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Data Tools")]
+        [TestCategory("Assign Tool")]
         public void AssignTool_AddRemoveVariables_UITest()
         {
             const string Variable1Name = "SomeVariable";
@@ -89,7 +90,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Data
         }
 
         [TestMethod]
-        [TestCategory("Data Tools")]
+        [TestCategory("Assign Tool")]
         public void AssignTool_AddVariablesInsertRow_UITest()
         {
             const string Variable1Name = "SomeVariable";
