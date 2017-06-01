@@ -83,7 +83,7 @@ foreach ($file in Get-ChildItem $TestAssemblyPath -Include Dev2.*.Specs.dll, War
 
 if ($TestList -eq "") {
 	# Create full MSTest argument string.
-	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!ExampleWorkflowExecution&!WorkflowExecution&!SubworkflowExecution&!ServerRefresh`""
+	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!ExampleWorkflowExecution&!WorkflowExecution&!SubworkflowExecution`""
 } else {
 	# Create full MSTest argument string.
 	$FullArgsList = $TestAssembliesList + " /resultsfile:TestResults\OtherSpecsResults.trx /testsettings:`"" + $TestSettingsFile + "`"" + $TestList

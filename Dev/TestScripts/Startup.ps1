@@ -124,7 +124,7 @@ if ($DotCoverPath -eq "") {
 		sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
 	}
 }
-if ($ServerUsername -ne "") {
+if ($ServerUsername -ne "" -and $ServerPassword -eq "") {
     sc.exe config "Warewolf Server" obj= "$ServerUsername"
 }
 if ($ServerUsername -ne "" -and $ServerPassword -ne "") {
