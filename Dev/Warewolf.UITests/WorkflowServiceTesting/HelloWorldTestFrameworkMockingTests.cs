@@ -15,7 +15,7 @@ namespace Warewolf.UITests
         private const string Message = "Hello There World";
 
         [TestMethod]
-        [TestCategory("Workflow Mocking Tests")]
+        [TestCategory("Hello World Mocking Tests")]
         public void ClickGenerateTestFromDebugCreatesTestSteps()
         {   
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.RunAllButton.Exists, "Run All Button does not exist on service test tab after openning it by clicking the button in Hello World debug output.");
@@ -31,7 +31,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [TestCategory("Workflow Mocking Tests")]
+        [TestCategory("Hello World Mocking Tests")]
         public void ClickNewTestWithUnsavedExistingTest()
         {
             WorkflowServiceTestingUIMap.Try_Click_Create_New_Tests();
@@ -41,7 +41,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [TestCategory("Workflow Mocking Tests")]
+        [TestCategory("Hello World Mocking Tests")]
         public void ClickRunTestStepAfterCreatingTestHasAllTestsPassing()
         {
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass, 4);
@@ -52,7 +52,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [TestCategory("Workflow Mocking Tests")]
+        [TestCategory("Hello World Mocking Tests")]
         public void ClickDeleteTestStepRemovesTestStepFromTest()
         {
             WorkflowServiceTestingUIMap.Click_Delete_On_AssignValue_TestStep();
@@ -64,7 +64,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Workflow Mocking Tests")]
+        [TestCategory("Hello World Mocking Tests")]
         public void SelectMockForTestStepAssignNameHidesTheTestStatusIcon()
         {
             WorkflowServiceTestingUIMap.Click_MockRadioButton_On_AssignValue_TestStep();
@@ -72,7 +72,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [TestCategory("Workflow Mocking Tests")]
+        [TestCategory("Hello World Mocking Tests")]
         public void ClickAssignNameToolOnDesignSurfaceAddsTestSteps()
         {
             WorkflowServiceTestingUIMap.Click_Delete_On_AssignValue_TestStep();
@@ -82,7 +82,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Workflow Mocking Tests")]
+        [TestCategory("Hello World Mocking Tests")]
         public void ChangingTheOutputMessageShouldFailTestSteps()
         {
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Fail, 4);

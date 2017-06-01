@@ -10,7 +10,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
     public class Decision
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Control Flow Tools")]
         public void DecisionTool_LargeViewResize_UITest()
         {
             //Large View
@@ -28,7 +28,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Control Flow Tools")]
         public void DecisionTool_MatchType_Combobox_ListItems_UITest()
         {
             ControlFlowToolsUIMap.Click_Decision_Large_View_Match_Type_Combobox();
@@ -64,7 +64,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+		[TestCategory("Control Flow Tools")]
         public void CopyDecisions_With_ContextMenu_And_Paste_UITest()
         {
             DialogsUIMap.Click_Decision_Dialog_Done_Button();

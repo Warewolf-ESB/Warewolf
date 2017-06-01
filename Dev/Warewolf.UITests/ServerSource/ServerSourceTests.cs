@@ -13,6 +13,7 @@ namespace Warewolf.UITests.ServerSource
         private const string SourceName = "CodedUITestServerSource";
 
         [TestMethod]
+        [TestCategory("Server Source")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServer_GivenTabIsOpened_ShouldHaveDefaultControls()
         {
@@ -28,6 +29,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
+        [TestCategory("Server Source")]
         [Owner("Nkosinathi Sangweni")]
         public void CreateNewServerSource_GivenTabIsOpenedUserButtonSelected_ShouldHaveCredentialsControls()
         {
@@ -40,6 +42,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
+        [TestCategory("Server Source")]
         [Owner("Nkosinathi Sangweni")]
         public void SaveNewServerSource_GivenSourceName()
         {
@@ -58,6 +61,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
+        [TestCategory("Server Source")]
         [Owner("Nkosinathi Sangweni")]
         public void EditServerSource_LoadCorrectly()
         {
@@ -75,6 +79,7 @@ namespace Warewolf.UITests.ServerSource
         }
 
         [TestMethod]
+        [TestCategory("Server Source")]
         [Owner("Pieter Terblanche")]
         public void DuplicateServerSource_AddsToConnectControl()
         {
@@ -87,6 +92,23 @@ namespace Warewolf.UITests.ServerSource
             Assert.AreEqual(newName, ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             ExplorerUIMap.Click_Explorer_Remote_Server_Dropdown_List();
             Assert.IsTrue(UIMap.MainStudioWindow.ComboboxListItemAsDuplicatedConnection.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Server Source")]
+        public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
+        {
+            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingCodedUITestServerSource");
+            const string newName = "CodedUITestServerSourceDuplicated";
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
+            DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
+            Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated.Exists, "This UI test expects ExistingCodedUITestServerSource to exist in the connect control dropdown list.");
+            ExplorerUIMap.Filter_Explorer(newName);
+            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
+            DialogsUIMap.Click_Yes_On_The_Confirm_Delete();
+            Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
+            Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated), "Server exists in connect control dropdown list after it was deleted from the explorer.");
         }
 
         #region Additional test attributes

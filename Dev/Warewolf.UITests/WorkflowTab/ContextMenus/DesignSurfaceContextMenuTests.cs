@@ -10,7 +10,6 @@ namespace Warewolf.UITests.WindowsDesignSurfaceContextMenu
     public class DesignSurfaceContextMenuTests
     {
         [TestMethod]
-        [TestCategory("WindowsDesignSurfaceContextMenu")]
         public void CopyAndPasteWorkflowToItselfDoesNotCopy()
         {
             UIMap.Click_NewWorkflow_RibbonButton();

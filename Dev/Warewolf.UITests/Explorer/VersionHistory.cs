@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class ResourceVersion
+    public class VersionHistory
     {
         [TestMethod]
         [TestCategory("Explorer")]

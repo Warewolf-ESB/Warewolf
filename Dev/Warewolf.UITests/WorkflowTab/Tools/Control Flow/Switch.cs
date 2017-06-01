@@ -10,7 +10,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
     public class Switch
     {
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragOnWorkflow_UITest()
         {
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.VariableComboBox.Exists, "Varaible Combobox does not exist after dragging switch tool in from the toolbox.");
