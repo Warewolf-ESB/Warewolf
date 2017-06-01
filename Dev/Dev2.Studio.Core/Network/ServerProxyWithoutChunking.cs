@@ -148,6 +148,11 @@ namespace Dev2.Network
                     if (obj != null)
                     {
                         ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
+                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                        if (shellViewModel != null)
+                        {
+                            shellViewModel.ResourceCalled = false;
+                        }
                     }
                 }
             }

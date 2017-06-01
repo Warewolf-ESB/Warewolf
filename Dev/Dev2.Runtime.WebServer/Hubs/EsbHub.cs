@@ -158,17 +158,6 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #endregion
 
-        public void SendMemo(Memo memo)
-        {
-            var serializedMemo = _serializer.Serialize(memo);
-            var hubCallerConnectionContext = Clients;
-
-            hubCallerConnectionContext.All.SendMemo(serializedMemo);
-
-            CompileMessageRepo.Instance.ClearObservable();
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
-        }
-
         void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
             
@@ -258,14 +247,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     memo.WorkspaceID = message.WorkspaceID;
                     coalesceErrors(memo, message);
                 }
-
-                WriteEventProviderClientMessage(memo);
             }
-        }
-
-        protected virtual void WriteEventProviderClientMessage(IMemo memo)
-        {
-            SendMemo(memo as Memo);
         }
 
         public async Task AddDebugWriter(Guid workspaceId)
