@@ -84,7 +84,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [TestCategory("DotNet Plugin Connector")]
+        [TestCategory("DotNet Connector Tool")]
         public void DotNetDLLTool_EditSource_UITest()
         {
             var countBefore = ResourcesToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DotNetDll.LargeView.SourcesComboBox.Items.Count;
@@ -102,7 +102,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
         
         [TestMethod]
-        [TestCategory("DotNet Plugin Connector")]
+        [TestCategory("DotNet Connector Tool")]
         public void GAC_Selecting_Classname_Loads_Class_Constructors_UITests()
         {
             ResourcesToolsUIMap.Select_Second_Item_From_DotNet_DLL_Large_View_Source_Combobox();
@@ -113,7 +113,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [TestCategory("DotNet Plugin Connector")]
+        [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_Loads_Actions_UITests()
         {
             ResourcesToolsUIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
@@ -125,7 +125,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [TestCategory("DotNet Plugin Connector")]
+        [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_AndCtor_With_Parameters_Shows_Inputs_Grid_UITests()
         {
             ResourcesToolsUIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
@@ -140,7 +140,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [TestCategory("DotNet Plugin Connector")]
+        [TestCategory("DotNet Connector Tool")]
         public void Selecting_Action_With_Paramerters_Shows_Inputs_Grid_UITests()
         {
             ResourcesToolsUIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
@@ -155,7 +155,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [TestCategory("DotNet Plugin Connector")]
+        [TestCategory("DotNet Connector Tool")]
         public void Selecting_Action_Then_Clear_Removes_Empty_Actions()
         {
             ResourcesToolsUIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
@@ -172,7 +172,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Resources
         }
 
         [TestMethod]
-        [TestCategory("DotNet Plugin Connector")]
+        [TestCategory("DotNet Connector Tool")]
         public void Selecting_Classname_And_Action_Creates_New_Blank_Action_Dropbox_UITests()
         {
             ResourcesToolsUIMap.Select_First_Item_From_DotNet_DLL_Large_View_Source_Combobox();
