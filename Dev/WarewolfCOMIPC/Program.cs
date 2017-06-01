@@ -68,14 +68,11 @@ namespace WarewolfCOMIPC
                     }
                     catch(Exception e)
                     {
-                        if (pipe.IsConnected)
-                        {
-                            var newException = new Exception("Error executing COM", e);
-                            var sw = new StreamWriter(pipe);
-                            serializer.Serialize(sw, newException);
-                            sw.Flush();
-                            Console.WriteLine("Execution errored " + data.MethodToCall);
-                        }
+                        var newException = new Exception("Error executing COM",e);
+                        var sw = new StreamWriter(pipe);
+                        serializer.Serialize(sw, newException);
+                        sw.Flush();
+                        Console.WriteLine("Execution errored " + data.MethodToCall);
                     }
                     AcceptMessagesFromPipe(pipe);
                 }
