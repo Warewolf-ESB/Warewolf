@@ -54,16 +54,24 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 IDbSource src = serializer.Deserialize<DbSourceDefinition>(resourceDefinition);
                 var con = new DbSources();
-                DatabaseValidationResult result = con.DoDatabaseValidation(new DbSource
+                DatabaseValidationResult result = null;
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
-                    AuthenticationType = src.AuthenticationType,
-                    Server = src.ServerName,
-                    Password = src.Password,
-                    ServerType = src.Type,
-                    UserID = src.UserName
+                    result = con.DoDatabaseValidation(new DbSource
+                    {
+                        AuthenticationType = src.AuthenticationType,
+                        Server = src.ServerName,
+                        Password = src.Password,
+                        ServerType = src.Type,
+                        UserID = src.UserName
+
+                    });
 
                 });
-
+                if (result == null)
+                {
+                    result = new DatabaseValidationResult { ErrorMessage = "Problem testing connection." };
+                }
                 msg.HasError = false;
                 msg.Message = new StringBuilder(result.IsValid ? serializer.Serialize(result.DatabaseList) : result.ErrorMessage);
                 msg.HasError = !result.IsValid;
