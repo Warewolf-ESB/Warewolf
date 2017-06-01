@@ -86,7 +86,24 @@ namespace Warewolf.UITests
             const string Source = "ResourceWithViewAndExecutePerm";
             SettingsUIMap.SetupPublicPermissionsForForLocalhost(Source);
             ExplorerUIMap.SetupPublicPermissionsForForRemoteServer(Source);
-            ServerSourceUIMap.ChangeServerAuthenticationTypeToPublic();
+            ExplorerUIMap.Select_ConnectedRemoteConnectionIntegration_From_Explorer();
+            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
+            var publicRadioButton = ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.PublicRadioButton;
+            if (!publicRadioButton.Selected)
+            {
+                publicRadioButton.Selected = true;
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+                UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+                UIMap.Click_Deploy_Ribbon_Button();
+                DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            }
+            else
+            {
+                ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
+                UIMap.Click_Deploy_Ribbon_Button();
+                DeployUIMap.Select_ConnectedRemoteConnectionIntegration_From_Deploy_Tab_Destination_Server_Combobox();
+            }
             DeployUIMap.ValidateICanNotDeploy(Source);
         }
 

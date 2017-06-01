@@ -378,17 +378,13 @@ namespace Warewolf.UITests.WebSource.WebSourceUIMapClasses
             }
         }
         
-        public WpfEdit DefaultQueryTextBox
+        public DefaultQueryTextBox DefaultQueryTextBox
         {
             get
             {
                 if ((this.mDefaultQueryTextBox == null))
                 {
-                    this.mDefaultQueryTextBox = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mDefaultQueryTextBox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DefaultQueryTextBox";
-                    this.mDefaultQueryTextBox.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
-                    #endregion
+                    this.mDefaultQueryTextBox = new DefaultQueryTextBox(this);
                 }
                 return this.mDefaultQueryTextBox;
             }
@@ -440,11 +436,47 @@ namespace Warewolf.UITests.WebSource.WebSourceUIMapClasses
         
         private WpfEdit mPasswordTextBox;
         
-        private WpfEdit mDefaultQueryTextBox;
+        private DefaultQueryTextBox mDefaultQueryTextBox;
         
         private WpfButton mCancelTestButton;
         
         private WpfRadioButton mAnonymousRadioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class DefaultQueryTextBox : WpfEdit
+    {
+        
+        public DefaultQueryTextBox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "DefaultQueryTextBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage TestPassedImage
+        {
+            get
+            {
+                if ((this.mTestPassedImage == null))
+                {
+                    this.mTestPassedImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mTestPassedImage.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mTestPassedImage.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mTestPassedImage;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mTestPassedImage;
         #endregion
     }
 }

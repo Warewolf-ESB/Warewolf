@@ -29,6 +29,14 @@ namespace Dev2.Activities.Debug
             {
                 _value = variable + " " + _operand + " " + value;
             }
+
+        }
+
+        public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel, string operand, bool mockSelected = false)
+            :this(value, variable, leftLabel, mockSelected)
+        {
+            if(operand != null)
+                _operand = operand;
         }
 
         public DebugItemWarewolfAtomResult(string value, string newValue, string variable, string assignFromVariable, string leftLabel, string rightLabel, string operand, bool mockSelected = false)
