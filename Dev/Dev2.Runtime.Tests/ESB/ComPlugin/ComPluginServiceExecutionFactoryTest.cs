@@ -63,7 +63,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DeploymentItem("WarewolfCOMIPC.exe")]
         public void ListMethods_GivenAdodbConnection_ShouldContainOpen()
         {
             //---------------Set up test pack-------------------
