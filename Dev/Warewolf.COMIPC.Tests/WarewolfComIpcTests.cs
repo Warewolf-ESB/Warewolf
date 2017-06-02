@@ -66,6 +66,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [Ignore]//Test hangs
         public void GetMethods_GivenAcroPDF_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
