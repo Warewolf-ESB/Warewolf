@@ -907,39 +907,6 @@ namespace Dev2.Core.Tests
         #endregion
 
         #region Delete
-        //
-        //        [TestMethod]
-        //        public void DeleteServerResourceOnLocalHostAlsoDeletesFromEnvironmentRepoAndExplorerTree()
-        //        {
-        //            //---------Setup------
-        //            var mock = SetupForDeleteServer();
-        //            EnvironmentModel.Setup(s => s.IsLocalHost).Returns(true);
-        //            //---------Execute------
-        //            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "", false);
-        //            MainViewModel.Handle(msg);
-        //
-        //            //---------Verify------
-        //            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Once());
-        //            EventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Once());
-        //        }
-        //
-        //        [TestMethod]
-        //        public void DeleteServerResourceOnOtherServerDoesntDeleteFromEnvironmentRepoAndExplorerTree()
-        //        {
-        //            //---------Setup------
-        //            var mock = SetupForDeleteServer();
-        //            EnvironmentConnection.Setup(c => c.DisplayName).Returns("NotLocalHost");
-        //            EventAggregator = new Mock<IEventAggregator>();
-        //            EventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>())).Verifiable();
-        //
-        //            //---------Execute------
-        //            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "", false);
-        //            MainViewModel.Handle(msg);
-        //
-        //            //---------Verify------
-        //            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
-        //            EventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
-        //        }
 
         [TestMethod]
         public void DeleteResourceConfirmedExpectContextRemoved()
