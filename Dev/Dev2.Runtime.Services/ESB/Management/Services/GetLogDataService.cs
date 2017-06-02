@@ -8,6 +8,7 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Dev2.Util.ExtensionMethods;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -103,7 +104,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 .Where(entry => string.IsNullOrEmpty(status) || entry.Status.Equals(status, StringComparison.CurrentCultureIgnoreCase))
                 .Where(entry => string.IsNullOrEmpty(executionId) || entry.ExecutionId.Equals(executionId, StringComparison.CurrentCultureIgnoreCase))
                 .Where(entry => string.IsNullOrEmpty(executionTime) || entry.ExecutionTime.Equals(executionTime, StringComparison.CurrentCultureIgnoreCase))
-                .Where(entry => string.IsNullOrEmpty(user) || (entry.User?.Equals(user, StringComparison.CurrentCultureIgnoreCase) ?? false));
+                .Where(entry => string.IsNullOrEmpty(user) || (entry.User?.Contains(user, StringComparison.CurrentCultureIgnoreCase) ?? false));
 
             return dev2JsonSerializer.SerializeToBuilder(entries);
         }

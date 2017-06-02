@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Web2.Models.ExecutionLogging;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
@@ -12,18 +13,53 @@ namespace Dev2.Web2.Controllers
     public class ExecutionLoggingController : Controller
     {
         // GET: ExecutionLogging
-        public ActionResult Index()
+        public ActionResult Index(ExecutionLoggingRequestViewModel Request)
         {
-            var model = new List<LogEntry>();
+            var request = CheckRequest(Request);
 
-            var client = new RestClient("https://localhost:3143");
+            var serverUrl = String.Format("{0}://{1}:{2}", request.Protocol, request.Server, request.Port);
+            var client = new RestClient(serverUrl);
             client.Authenticator = new NtlmAuthenticator();
-            var request = new RestRequest("services/GetLogDataService", Method.GET);
-            request.UseDefaultCredentials = true;
-            var response = client.Execute<List<LogEntry>>(request);
-            model.AddRange(response.Data);
+            var serverRequest = BuildRequest(request);
+            var response = client.Execute<List<LogEntry>>(serverRequest);
+
+            var data = response.Data ?? new List<LogEntry>();
+
+            var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(data, request);
 
             return View(model);
+        }
+
+        private RestRequest BuildRequest(ExecutionLoggingRequestViewModel Request)
+        {
+            var serverRequest = new RestRequest("services/GetLogDataService", Method.GET);
+            serverRequest.UseDefaultCredentials = true;            
+            //serverRequest.AddQueryParameter("StartDateTime", Request.StartDateTime.ToString());
+            //serverRequest.AddQueryParameter("CompletedDateTime", Request.CompletedDateTime.ToString());
+            serverRequest.AddQueryParameter("Status", Request.Status);
+            serverRequest.AddQueryParameter("User", Request.User);
+            serverRequest.AddQueryParameter("Url", Request.Url);
+            serverRequest.AddQueryParameter("ExecutionId", Request.ExecutionId);
+            serverRequest.AddQueryParameter("ExecutionTime", Request.ExecutionTime);
+
+            return serverRequest;
+        }
+
+        private ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
+        {
+            ExecutionLoggingRequestViewModel toReturn;
+            if (Request != null)
+            {
+                toReturn = Request;
+                toReturn.Server = toReturn.Server ?? "localhost";
+                toReturn.Protocol = toReturn.Protocol ?? "https";
+                toReturn.Port = toReturn.Port ?? "3143";
+            }
+            else
+            {
+                toReturn = new ExecutionLoggingRequestViewModel { Protocol = "https", Server = "localhost", Port = "3143" };
+            }
+            return toReturn;
         }
 
         // GET: ExecutionLogging/Details/5

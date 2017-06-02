@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Dev2.Common.LogEntry>
+﻿@model Tuple<List<Dev2.Common.LogEntry>,ExecutionLoggingRequestViewModel>
+@using Dev2.Web2.Models.ExecutionLogging;
+
 
 @{
     ViewBag.Title = "Index";
@@ -6,4 +8,10 @@
 
 <h2>Index</h2>
 
-@{Html.RenderPartial("ExecutionList", Model);}
+<div id="ExecutionFilters" class="well">
+    @{Html.RenderPartial("ExecutionFilters", Model.Item2);}
+</div>
+
+<div id="ExecutionList">
+    @{Html.RenderPartial("ExecutionList", Model.Item1);}
+</div>
