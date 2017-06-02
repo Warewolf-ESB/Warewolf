@@ -287,7 +287,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Debug", "Dev2.Debug\De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Parsing.Tests", "Warewolf.Parsing.Tests\Warewolf.Parsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Tests", "D:\Repos\GENDEV\Warewolf\Dev\Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1074,6 +1074,7 @@ Global
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Debug|x86.ActiveCfg = Debug|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Debug|x86.Build.0 = Debug|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.ActiveCfg = Debug|x86
+		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.Build.0 = Debug|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.ActiveCfg = Debug|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.Build.0 = Debug|x86
 	EndGlobalSection
