@@ -318,8 +318,7 @@ namespace Dev2.Core.Tests
 
 
         #endregion
-
-
+        
         #region AddMode Work Surface
 
 
@@ -720,6 +719,7 @@ namespace Dev2.Core.Tests
         }
 
         #endregion workspaces
+
         #region Commands
 
         [TestMethod]
@@ -917,7 +917,6 @@ namespace Dev2.Core.Tests
             ShellViewModel.Handle(msg);
             ResourceRepo.Verify(s => s.HasDependencies(FirstResource.Object), Times.Once());
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
