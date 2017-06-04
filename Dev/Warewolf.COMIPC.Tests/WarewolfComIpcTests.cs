@@ -13,6 +13,7 @@ namespace WarewolfCOMIPC.Test
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
+        [Ignore]//Verfiy that the ID is actually registered
         public void WarewolfCOMIPCClient_Execute_GetType_ShouldReturnType()
         {
             //------------Setup for test--------------------------
@@ -27,6 +28,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [Ignore]//Verfiy that the ID is actually registered
         public void GetMethods_GivenPersonLib_PersonController_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
