@@ -49,6 +49,7 @@ namespace Warewolf.UITests
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Explorer")]
         public void Explorer_DotNetPluginSource_ContextMenuItems()
         {
             //---------------Set up test pack-------------------

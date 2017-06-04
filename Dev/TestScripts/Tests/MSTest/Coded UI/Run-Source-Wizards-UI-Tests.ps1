@@ -24,17 +24,17 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Create test settings.
-$TestSettingsFile = "$PSScriptRoot\OtherUITests.testsettings"
+$TestSettingsFile = "$PSScriptRoot\SourceWizardsUITesting.testsettings"
 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"
 "@ + [guid]::NewGuid() + @"
 `"
-  name=`"OtherUITests`"
+  name=`"SourceWizardsUITesting`"
   enableDefaultDataCollectors=`"false`"
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
-  <Description>Run Other UI Tests.</Description>
+  <Description>Run Source Wizards UI Testing.</Description>
   <Deployment enabled=`"false`" />
   <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
@@ -80,7 +80,7 @@ if (Test-Path "$PSScriptRoot\Warewolf.UITests\bin\Debug\Warewolf.UITests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UITests.dll"
 }
 if ($TestAssemblyPath -eq ""){
-	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.UITests\bin\Debug
+	Write-Host Cannot find Warewolf.UITests.dll at $PSScriptRoot\Warewolf.UITests\bin\Debug or $PSScriptRoot
 	exit 1
 }
 if (!(Test-Path $PSScriptRoot\TestResults)) {
@@ -89,10 +89,10 @@ if (!(Test-Path $PSScriptRoot\TestResults)) {
 
 if ($TestList -eq "") {
 	# Create full MSTest argument string.
-	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"!Tools&!Data Tools&!Database Tools&!Dropbox Tools&!File Tools&!HTTP Tools&!Recordset Tools&!Sharepoint Tools&!Utility Tools&!Explorer&!Tabs and Panes&!Deploy&!Debug Input&!Workflow Testing&!Default Layout&!Resource Tools&!Save Dialog&!Shortcut Keys&!Settings&!Dependency Graph&!Variables&!Email Tools&!Plugin Sources&!Web Sources&!Database Sources&!Workflow Mocking Tests&!Assign Tool&!Control Flow Tools&!DotNet Connector Mocking Tests&!DotNet Connector Tool&!Hello World Mocking Tests&!Server Sources&!Source Wizards`""
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\SourceWizardsUITestingResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + " /category:`"Source Wizards`""
 } else {
 	# Create full MSTest argument string.
-	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\OtherUITestsResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
+	$FullArgsList = " /testcontainer:`"" + $TestAssemblyPath + "`" /resultsfile:`"" + $PSScriptRoot + "\TestResults\SourceWizardsUITestingResults.trx`" /testsettings:`"" + $TestSettingsFile + "`"" + $TestList
 }
 
 # Write full command including full argument string.

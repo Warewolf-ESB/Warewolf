@@ -56,7 +56,7 @@ if (!(Test-Path $PSScriptRoot\TestResults)) {
 # Create assemblies list.
 $TestAssembliesList = ""
 foreach ($file in Get-ChildItem $TestAssemblyPath -Filter Warewolf.*.Tests.dll ) {
-	if ($file.Name -ne "Warewolf.*.Tests.dll") {
+	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll" -and $file.Name -ne "Warewolf.COMIPC.Test.dll") {
 		$TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
 	}
 }
