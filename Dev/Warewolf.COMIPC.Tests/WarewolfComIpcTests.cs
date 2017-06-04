@@ -12,7 +12,6 @@ namespace WarewolfCOMIPC.Test
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [Ignore]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
         public void WarewolfCOMIPCClient_Execute_GetType_ShouldReturnType()
         {
@@ -21,12 +20,11 @@ namespace WarewolfCOMIPC.Test
             var clsid = new Guid("00000514-0000-0010-8000-00AA006D2EA4");
             //------------Execute Test---------------------------
            
-                var execute = Client.IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
-                Assert.IsNotNull(execute);
+            var execute = IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
+            Assert.IsNotNull(execute);
             //------------Assert Results-------------------------
         }
-        //Ignoring these methods on purpose
-        [Ignore]
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void GetMethods_GivenPersonLib_PersonController_ShouldReturnMethodList()
@@ -37,7 +35,7 @@ namespace WarewolfCOMIPC.Test
 
             //---------------Execute Test ----------------------
             {
-                var execute = Client.IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods,  new ParameterInfoTO[] { });
+                var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods,  new ParameterInfoTO[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -45,9 +43,10 @@ namespace WarewolfCOMIPC.Test
             }
 
         }
-        [Ignore]
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [Ignore]//Test hangs
         public void GetMethods_GivenConnection_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
@@ -56,7 +55,7 @@ namespace WarewolfCOMIPC.Test
 
             //---------------Execute Test ----------------------
             {
-                var execute = Client.IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
+                var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
                 var enumerable = execute as List<MethodInfoTO>;
                 Assert.IsNotNull(enumerable);
                 //---------------Test Result -----------------------
@@ -64,9 +63,10 @@ namespace WarewolfCOMIPC.Test
             }
 
         }
-        [Ignore]
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [Ignore]//Test hangs
         public void GetMethods_GivenAcroPDF_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
@@ -74,19 +74,16 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            {
-                var execute = Client.IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
-                var enumerable = execute as List<MethodInfoTO>;
-                Assert.IsNotNull(enumerable);
-                //---------------Test Result -----------------------
-                Assert.AreNotEqual(33, enumerable.Count);
-            }
-
+            var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
+            var enumerable = execute as List<MethodInfoTO>;
+            Assert.IsNotNull(enumerable);
+            //---------------Test Result -----------------------
+            Assert.AreNotEqual(33, enumerable.Count);
         }
-
-        [Ignore]
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [Ignore]//Test hangs
         public void ExecuteSpecifiedMethod_GivenConnection_ReturnSuccess()
         {
             //---------------Set up test pack-------------------
@@ -94,13 +91,11 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            {
-//                var execute = IpcClient.IpcClient.IPCExecutor.Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod,  new ParameterInfoTO[] { "SQLServer", "testuser", "test123", -1 });
-//                var actual = execute as string;
-//                Assert.IsNotNull(actual);
-                //---------------Test Result -----------------------
-            }
+            var execute = IpcClient.GetIPCExecutor().Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
 
+            //---------------Test Result -----------------------
+            var actual = execute as string;
+            Assert.IsNotNull(actual);
         }
     }
 }

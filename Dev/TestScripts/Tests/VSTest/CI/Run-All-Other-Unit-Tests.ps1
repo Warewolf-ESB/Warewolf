@@ -52,7 +52,7 @@ if ($TestAssemblyPath -eq "") {
 }
 $TestAssembliesList = ''
 foreach ($file in Get-ChildItem $TestAssembliesPath -Filter Warewolf.*.Tests.dll ) {
-	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll") {
+	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll" -and $file.Name -ne "Warewolf.COMIPC.Test.dll") {
 		$TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
 	}
 }
