@@ -25,33 +25,33 @@ if ($TestList.StartsWith(",")) {
 
 # Find test assembly
 $TestAssemblyPath = ""
-if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Test.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.COMIPC.Test.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.COMIPC.Test.dll"
+if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.Tests\Warewolf.COMIPC.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.COMIPC.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.COMIPC.Tests.dll"
 }
 if ($TestAssemblyPath -eq "") {
-	Write-Host Cannot find Warewolf.COMIPC.Test.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.Tests
+	Write-Host Cannot find Warewolf.COMIPC.Tests.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.Tests
 	exit 1
 }
 
