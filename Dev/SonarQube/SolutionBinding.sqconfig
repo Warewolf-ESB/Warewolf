@@ -1,0 +1,11 @@
+{
+  "ServerUri": "http://rsaklfsvrtfsbld:9000",
+  "Organization": null,
+  "ProjectKey": "Warewolf-ESB",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "cs-sonar-way-07953",
+      "ProfileTimestamp": "2017-06-05T10:09:43+02:00"
+    }
+  }
+}
