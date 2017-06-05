@@ -30,8 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>Dev2.Sql.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -40,8 +39,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>Dev2.Sql.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -84,7 +82,6 @@
     <None Include="Deploy\SqlResources\Warewolf\Uninstall.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dev2.Sql.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -97,11 +94,6 @@
     <Content Include="Warewolf.snk">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Dev2.Data.Interfaces.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +29,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Dev2.Data.Interfaces.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs">
@@ -40,8 +38,6 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dev2.Data.Interfaces.ruleset" />
-    <None Include="packages.config" />
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
@@ -136,11 +132,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

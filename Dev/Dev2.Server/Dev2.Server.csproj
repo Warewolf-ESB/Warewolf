@@ -64,22 +64,22 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>Dev2.Server.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <Optimize>false</Optimize>
     <DebugType>full</DebugType>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>Dev2.Server.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -347,7 +347,6 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Dev2.Server.ruleset" />
     <None Include="Dockerfile">
       <Link>Dockerfile</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -493,11 +492,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Main.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

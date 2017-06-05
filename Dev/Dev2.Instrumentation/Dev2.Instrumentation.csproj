@@ -30,8 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>Dev2.Instrumentation.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -40,8 +39,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>1</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>Dev2.Instrumentation.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -81,13 +79,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dev2.Instrumentation.ruleset" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

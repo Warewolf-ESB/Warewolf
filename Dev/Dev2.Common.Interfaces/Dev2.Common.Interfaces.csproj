@@ -30,8 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>Dev2.Common.Interfaces.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -40,8 +39,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>Dev2.Common.Interfaces.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AeroWizard, Version=2.1.7.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
@@ -465,14 +463,9 @@
     <Compile Include="Wrappers\IFile.cs" />
     <Compile Include="Wrappers\IWrappedObject.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.23.0.1828\analyzers\SonarAnalyzer.dll" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Dev2.Common.Interfaces.ruleset" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
