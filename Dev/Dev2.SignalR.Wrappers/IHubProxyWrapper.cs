@@ -30,8 +30,7 @@ namespace Dev2.SignalR.Wrappers
         object Object();
 
         IDisposable On<T>(string eventName, Action<T> onData);
-
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        
         ISubscriptionWrapper Subscribe(string sendmemo);
     }
 
