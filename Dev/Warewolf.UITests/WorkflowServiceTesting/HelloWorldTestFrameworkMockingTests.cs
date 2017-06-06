@@ -78,7 +78,7 @@ namespace Warewolf.UITests
             WorkflowServiceTestingUIMap.Click_Delete_On_AssignValue_TestStep();
             WorkflowServiceTestingUIMap.PinUnpinOutPutButton();
             WorkflowServiceTestingUIMap.Click_Output_Step();
-            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.Exists);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.Exists, "Test assert/mock step not added after clicking activity on design surface.");
         }
 
         [TestMethod]
