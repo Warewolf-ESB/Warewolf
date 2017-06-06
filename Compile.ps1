@@ -11,6 +11,11 @@ Param(
   [switch]$Studio,
   [switch]$Release
 )
+$KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
+                      "$PSScriptRoot\Dev\UITesting.sln",
+                      "$PSScriptRoot\Dev\Server.sln",
+                      "$PSScriptRoot\Dev\Studio.sln",
+                      "$PSScriptRoot\Dev\Release.sln"
 $NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent)
 if ($Target -ne "") {
 	$Target = "/t:" + $Target
@@ -31,12 +36,12 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 
 #Find NuGet
 if ($NuGet.IsPresent -and !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
-    $GetNuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
-    if ($GetNuGetCommand) {
-        $NuGetPath = $GetNuGetCommand.Path
+    $NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
+    if ($NuGetCommand) {
+        $NuGetPath = $NuGetCommand.Path
     }
 }
-if (!(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
+if ($NuGet.IsPresent -and !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
 	Write-Host NuGet not found. Download from: https://dotnet.myget.org/F/nuget-build/api/v2/package/NuGet.CommandLine
     sleep 10
     exit 1
@@ -180,69 +185,25 @@ if ($Version.IsPresent) {
 }
 
 #Compile Solutions
-$LASTEXITCODE = 0
-if ($AcceptanceTesting.IsPresent -or $NoSolutionParametersPresent) {
-    if ($ProjectSpecificOutputs.IsPresent) {
-        $OutputProperty = ""
-    } else {
-        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\AcceptanceTesting"
+foreach ($SolutionFile in $KnownSolutionFiles) {
+    $GetSolutionFileInfo = Get-Item $SolutionFile
+    $SolutionFileName = $GetSolutionFileInfo.Name
+    $SolutionFileExtension = $GetSolutionFileInfo.Extension
+    $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension)
+    if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
+        if ($ProjectSpecificOutputs.IsPresent) {
+            $OutputProperty = ""
+        } else {
+            $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+        }
+        if ($NuGet.IsPresent) {
+            &"$NuGet" "restore" "$SolutionFile"
+        }
+        &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
     }
-    &"$MSBuildPath" "$PSScriptRoot\Dev\AcceptanceTesting.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
-}
-if ($LASTEXITCODE -ne 0) {
-    sleep 10
-    exit 1
-}
-
-if ($UITesting.IsPresent -or $NoSolutionParametersPresent) {
-    if ($ProjectSpecificOutputs.IsPresent) {
-        $OutputProperty = ""
-    } else {
-        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\UITesting"
+    if ($LASTEXITCODE -ne 0) {
+        sleep 10
+        exit 1
     }
-    &"$MSBuildPath" "$PSScriptRoot\Dev\UITesting.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
-}
-if ($LASTEXITCODE -ne 0) {
-    sleep 10
-    exit 1
-}
-
-if ($Server.IsPresent -or $NoSolutionParametersPresent) {
-    if ($ProjectSpecificOutputs.IsPresent) {
-        $OutputProperty = ""
-    } else {
-        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\Server"
-    }
-    &"$MSBuildPath" "$PSScriptRoot\Dev\Server.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
-}
-if ($LASTEXITCODE -ne 0) {
-    sleep 10
-    exit 1
-}
-
-if ($Studio.IsPresent -or $NoSolutionParametersPresent) {
-    if ($ProjectSpecificOutputs.IsPresent) {
-        $OutputProperty = ""
-    } else {
-        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\Studio"
-    }
-    &"$MSBuildPath" "$PSScriptRoot\Dev\Studio.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
-}
-if ($LASTEXITCODE -ne 0) {
-    sleep 10
-    exit 1
-}
-
-if ($Release.IsPresent -or $NoSolutionParametersPresent) {
-    if ($ProjectSpecificOutputs.IsPresent) {
-        $OutputProperty = ""
-    } else {
-        $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\Release"
-    }
-    &"$MSBuildPath" "$PSScriptRoot\Dev\Release.sln" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
-}
-if ($LASTEXITCODE -ne 0) {
-    sleep 10
-    exit 1
 }
 exit 0
