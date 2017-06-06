@@ -1,5 +1,5 @@
 Param(
-  [string]$MSBuildPath="%programfiles(x86)%\MSBuild\14.0\bin\MSBuild.exe",
+  [string]$MSBuildPath="$env:programfiles (x86)\MSBuild\14.0\bin\MSBuild.exe",
   [string]$Target="",
   [string]$CustomVersion="",
   [string]$NuGet="",
