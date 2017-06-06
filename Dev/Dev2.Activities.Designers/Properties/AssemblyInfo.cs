@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dev2.Studio.Core")]
+[assembly: AssemblyTitle("Dev2.Activities.Designers")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
@@ -25,7 +25,5 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 
-[assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
-[assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
-[assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
+[assembly: InternalsVisibleTo("Dev2.Activities.Designers.Tests")]
 

@@ -182,6 +182,9 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <None Include="..\TestScripts\**\*.*">
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -283,7 +286,6 @@
     <Compile Include="Models\DataList\ScalarItemModel.cs" />
     <Compile Include="NetworkStateChangedEventArgs.cs" />
     <Compile Include="Network\ServerProxyWithoutChunking.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />

@@ -42,7 +42,7 @@ if ($NuGet.IsPresent -and !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue
     }
 }
 if ($NuGet.IsPresent -and !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
-	Write-Host NuGet not found. Download from: https://dotnet.myget.org/F/nuget-build/api/v2/package/NuGet.CommandLine
+	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
     sleep 10
     exit 1
 }
@@ -202,7 +202,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
     }
     if ($LASTEXITCODE -ne 0) {
-        sleep 10
+        sleep 30
         exit 1
     }
 }
