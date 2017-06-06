@@ -36,13 +36,13 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 }
 
 #Find NuGet
-if (!(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
+if ("$NuGetPath" -eq "" -or !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
     $NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
     if ($NuGetCommand) {
         $NuGetPath = $NuGetCommand.Path
     }
 }
-if (!(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
+if ("$NuGetPath" -eq "" -or !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
 	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
     sleep 10
     exit 1
