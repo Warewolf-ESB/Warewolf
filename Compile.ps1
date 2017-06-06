@@ -3,6 +3,7 @@ Param(
   [string]$Config="Debug",
   [string]$Target="",
   [string]$Version="",
+  [string]$NuGet="",
   [switch]$ProjectSpecificOutputs,
   [switch]$AcceptanceTesting,
   [switch]$UITesting,
@@ -24,6 +25,19 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 	Write-Host MSBuild not found. Download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe
+    sleep 10
+    exit 1
+}
+
+#Find NuGet
+if ($NuGet.IsPresent -and !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
+    $GetNuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
+    if ($GetNuGetCommand) {
+        $NuGetPath = $GetNuGetCommand.Path
+    }
+}
+if (!(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue)) {
+	Write-Host NuGet not found. Download from: https://dotnet.myget.org/F/nuget-build/api/v2/package/NuGet.CommandLine
     sleep 10
     exit 1
 }
