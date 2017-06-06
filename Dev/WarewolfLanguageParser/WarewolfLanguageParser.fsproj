@@ -78,7 +78,7 @@
   <Import Project="..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.0.1\bin\FsLexYacc.targets')" />
   <Import Project="..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets" Condition="Exists('..\packages\FsLexYacc.6.1.0\build\FsLexYacc.targets')" />
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.fs">
+    <Compile Include="..\AssemblyCommonInfo.fs" Condition="Exists('..\AssemblyCommonInfo.fs')">
       <Link>Properties\AssemblyCommonInfo.fs</Link>
     </Compile>
     <None Include="Script.fsx" />
