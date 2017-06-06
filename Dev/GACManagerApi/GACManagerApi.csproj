@@ -71,7 +71,7 @@
     <Compile Include="Fusion\IAssemblyName.cs" />
     <Compile Include="InstallReferenceEnumerator.cs" />
     <Compile Include="InstallReferenceGuid.cs" />
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <None Include="..\TestScripts\**\*.*">
