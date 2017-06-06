@@ -1,9 +1,10 @@
 Param(
   [string]$MSBuildPath="%programfiles(x86)%\MSBuild\14.0\bin\MSBuild.exe",
-  [string]$Config="Debug",
   [string]$Target="",
-  [string]$Version="",
+  [string]$CustomVersion="",
   [string]$NuGet="",
+  [string]$Config="Debug",
+  [switch]$AutoVersion,
   [switch]$ProjectSpecificOutputs,
   [switch]$AcceptanceTesting,
   [switch]$UITesting,
@@ -48,7 +49,7 @@ if ($NuGet.IsPresent -and !(Test-Path "$NuGetPath" -ErrorAction SilentlyContinue
 }
 
 #Version
-if ($Version.IsPresent) {
+if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Writing C# and F# versioning files...
 
     # Get all the latest version tags from server repo.
@@ -71,16 +72,16 @@ if ($Version.IsPresent) {
         $origin = New-Object -Type DateTime -ArgumentList 1970, 1, 1, 0, 0, 0, 0
         $GitCommitTime = $origin.AddSeconds($GitCommitTimeDouble)
     }
-    $GitBranchName = git rev-parse --abbrev-ref HEAD
-    if (-not "$Version" -eq "") {
-	    $FullVersionString = "$Version"
+    $GitBranchName = git -C "$PSScriptRoot" rev-parse --abbrev-ref HEAD
+    if ($CustomVersion -ne "") {
+	    $FullVersionString = "$CustomVersion"
     } else {
 	    # Check if this version already tagged.
 	    $FullVersionString = git -C "$PSScriptRoot" tag --points-at HEAD
 	    if (-not [string]::IsNullOrEmpty($FullVersionString))  {
 		    $FullVersionString = $FullVersionString.Trim()
 		    if ($FullVersionString -Match " ") {
-			    # This commit has more than on tag, using first tag
+			    # This commit has more than one tag, using first tag
 			    Write-Host This commit has more than one tags as `"$FullVersionString`".
 			    $FullVersionString = $FullVersionString.Split(" ")[0]
 			    Write-Host Using last tag as `"$FullVersionString`".
@@ -131,7 +132,7 @@ if ($Version.IsPresent) {
 	    }
     }
     # Write version files
-    $CSharpVersionFile = "$PSScriptRoot\AssemblyCommonInfo.cs"
+    $CSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.cs"
     Write-Host Writing C Sharp version file to `"$CSharpVersionFile`" as...
     $Line1 = "using System.Reflection;"
     $Line2 = "[assembly: AssemblyCompany(""Warewolf"")]"
@@ -155,7 +156,7 @@ if ($Version.IsPresent) {
     $Line6 | Out-File -LiteralPath $CSharpVersionFile -Encoding utf8 -Append
     Write-Host C Sharp version file written to `"$CSharpVersionFile`".
 
-    $FSharpVersionFile = "$PSScriptRoot\AssemblyCommonInfo.fs"
+    $FSharpVersionFile = "$PSScriptRoot\Dev\AssemblyCommonInfo.fs"
     Write-Host Writing F Sharp version file to `"$FSharpVersionFile`" as...
     $Line1 = "namespace Warewolf.FSharp"
     $Line2 = "open System.Reflection;"
