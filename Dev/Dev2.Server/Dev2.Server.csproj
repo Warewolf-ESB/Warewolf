@@ -500,7 +500,7 @@ if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Res
 if "$(ConfigurationName)"=="Debug" echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - UITests" "$(TargetDir)Resources - UITests"
 taskkill /f /im WarewolfCOMIPC.exe /fi "STATUS eq RUNNING"
 taskkill /f /im WarewolfCOMIPC.vshost.exe /fi "STATUS eq RUNNING"
-xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"
+if exist "$(SolutionDir)WarewolfCOMIPC\bin\x86\$(ConfigurationName)\WarewolfCOMIPC.exe" xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\$(ConfigurationName)\WarewolfCOMIPC.exe" "$(TargetDir)"
 if "$(ConfigurationName)"=="Debug" xcopy /Y "$(SolutionDir)WarewolfCOMIPC\bin\x86\Debug\WarewolfCOMIPC.pdb" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
