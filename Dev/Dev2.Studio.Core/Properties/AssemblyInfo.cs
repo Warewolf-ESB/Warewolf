@@ -24,10 +24,8 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("51977896-f288-4449-8306-d38bd89a8efd")]
-
 
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
+[assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
 
