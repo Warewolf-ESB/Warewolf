@@ -48,7 +48,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Test hangs
+        [Ignore]//Verfiy that the ID is actually registered
         public void GetMethods_GivenConnection_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
@@ -68,7 +68,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Test hangs
+        [Ignore]//Verfiy that the ID is actually registered
         public void GetMethods_GivenAcroPDF_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
@@ -85,7 +85,7 @@ namespace WarewolfCOMIPC.Test
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Test hangs
+        [Ignore]//Verfiy that the ID is actually registered
         public void ExecuteSpecifiedMethod_GivenConnection_ReturnSuccess()
         {
             //---------------Set up test pack-------------------
