@@ -1896,6 +1896,12 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public IWorkflowDesignerViewModel GetWorkflowDesigner()
+        {
+            var workflowDesignerViewModel = ActiveItem?.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+            return workflowDesignerViewModel;
+        }
+
         public bool IsDownloading()
         {
             return false;
