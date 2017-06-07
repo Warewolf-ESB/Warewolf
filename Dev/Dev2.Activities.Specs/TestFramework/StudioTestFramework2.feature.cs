@@ -7507,7 +7507,7 @@ this.FeatureBackground();
             table249.AddRow(new string[] {
                         "SharePoint Test Server",
                         "C:\\ProgramData\\Warewolf\\Resources\\Hello World.xml",
-                        "",
+                        "Hello World.xml",
                         "[[Uploaded]]"});
 #line 2554
  testRunner.And("\"ShapointUploadFileTestWF\" contains SharepointUploadFile \"TestSharePUploadFile\" a" +

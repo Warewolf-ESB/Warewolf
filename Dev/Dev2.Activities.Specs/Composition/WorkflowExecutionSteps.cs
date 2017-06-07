@@ -1682,6 +1682,8 @@ namespace Dev2.Activities.Specs.Composition
             var server = table.Rows[0]["Server"];
             var result = table.Rows[0]["Result"];
             var serverPath = table.Rows[0]["ServerPathFrom"];
+            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
+            serverPath = CommonSteps.AddGuidToPath(serverPath, serverPathUniqueNameGuid);
             var localPath = table.Rows[0]["LocalPathTo"];
             var downLoadActivity = new SharepointFileDownLoadActivity
             {
@@ -1710,6 +1712,8 @@ namespace Dev2.Activities.Specs.Composition
             var result = table.Rows[0]["Result"];
             var name = table.Rows[0]["Server"];
             var serverPathFrom = table.Rows[0]["ServerPathFrom"];
+            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
+            serverPathFrom = CommonSteps.AddGuidToPath(serverPathFrom, serverPathUniqueNameGuid);
             var serverPathTo = table.Rows[0]["ServerPathTo"];
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
@@ -1740,6 +1744,8 @@ namespace Dev2.Activities.Specs.Composition
             var name = table.Rows[0]["Server"];
             var overwrite = table.Rows[0]["Overwrite"];
             var serverPathFrom = table.Rows[0]["ServerPathFrom"];
+            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
+            serverPathFrom = CommonSteps.AddGuidToPath(serverPathFrom, serverPathUniqueNameGuid);
             var serverPathTo = table.Rows[0]["ServerPathTo"];
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
@@ -2120,6 +2126,9 @@ namespace Dev2.Activities.Specs.Composition
             var name = table.Rows[0]["Server"];
             var localPathFrom = table.Rows[0]["LocalPathFrom"];
             var serverPathTo = table.Rows[0]["ServerPathTo"];
+            var serverPathToUniqueNameGuid = CommonSteps.GetGuid();
+            serverPathTo = CommonSteps.AddGuidToPath(serverPathTo, serverPathToUniqueNameGuid);
+            ScenarioContext.Current.Add("serverPathToUniqueNameGuid", serverPathToUniqueNameGuid);
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
             SharepointFileUploadActivity fileUploadActivity = new SharepointFileUploadActivity
