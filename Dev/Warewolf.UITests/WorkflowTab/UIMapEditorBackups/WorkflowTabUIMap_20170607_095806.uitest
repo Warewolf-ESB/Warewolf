@@ -92,7 +92,7 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
-    <AssertAction UIObjectName="WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.FindRecordIndexTreeItem.InputsItem2Text">
+    <AssertAction UIObjectName="WorkflowTabUIMap.UIWarewolfDEV2PIETERTEWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2StudioViewModelsTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIOUTPUTCustom.UIDebugOutputCustom.UIDebugOutputTreeTree.UIFindRecordIndex1TreeItem.InputsItem2Text">
       <ParameterName />
       <PropertyName>ControlType</PropertyName>
       <ExpectedValue>Text</ExpectedValue>
@@ -3920,20 +3920,6 @@
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
                                                         </UIObject>
-                                                        <UIObject ControlType="Text" Id="InputsItem2Text" FriendlyName="1" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">UI_DebugOutputValueTextBlock_AutoID</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">4</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants />
-                                                        </UIObject>
                                                       </Descendants>
                                                     </UIObject>
                                                   </Descendants>
@@ -4637,6 +4623,20 @@
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                     <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                                     <PropertyCondition Name="AutomationId">Expander</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="Text" Id="InputsItem2Text" FriendlyName="1" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_DebugOutputValueTextBlock_AutoID</PropertyCondition>
+                                                    <PropertyCondition Name="Instance">4</PropertyCondition>
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants />
