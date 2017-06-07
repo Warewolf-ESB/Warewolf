@@ -24,46 +24,40 @@ if ($TestList.StartsWith(",")) {
 }
 
 # Find test assemblies
-$TestAssemblyPath = ""
-if (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\.."
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\.."
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\.."
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\.."
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests.*.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\.."
+$SolutionFolderPath = ""
+if ((Test-Path "$PSScriptRoot\Warewolf.UIBindingTests.*")) {
+	$SolutionFolderPath = "$PSScriptRoot"
+} elseif ((Test-Path "$PSScriptRoot\..\Warewolf.UIBindingTests.*")) {
+	$SolutionFolderPath = "$PSScriptRoot\.."
+} elseif ((Test-Path "$PSScriptRoot\..\..\Warewolf.UIBindingTests.*")) {
+	$SolutionFolderPath = "$PSScriptRoot\..\.."
+} elseif ((Test-Path "$PSScriptRoot\..\..\..\Warewolf.UIBindingTests.*")) {
+	$SolutionFolderPath = "$PSScriptRoot\..\..\.."
+} elseif ((Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.UIBindingTests.*")) {
+	$SolutionFolderPath = "$PSScriptRoot\..\..\..\.."
+} elseif ((Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.UIBindingTests.*")) {
+	$SolutionFolderPath = "$PSScriptRoot\..\..\..\..\.."
 }
-if ($TestAssemblyPath -eq "") {
-	Write-Host Cannot find Warewolf.UIBindingTests.*.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.UIBindingTests
+if ($SolutionFolderPath -eq "") {
+	Write-Host Cannot find Warewolf.UIBindingTests.* projects at $PSScriptRoot or parent directories up to 5 levels deep.
 	exit 1
 }
 if (!(Test-Path $PSScriptRoot\TestResults)) {
 	New-Item -ItemType Directory $PSScriptRoot\TestResults
 }
+$TestAssembliesList = ""
+foreach ($file in Get-ChildItem $SolutionFolderPath -Filter Warewolf.UIBindingTests.*.dll ) {
+	$TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
+}
 
-# Create assemblies list.
-$TestAssembliesList = ''
-foreach ($file in Get-ChildItem $TestAssemblyPath -Include Warewolf.UIBindingTests.*.dll -Recurse | Where-Object {-not $_.FullName.Contains("\obj\")} | Sort-Object -Property Name -Unique ) {
-    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
+if ($TestAssembliesList -eq "") {
+    foreach ($folder in Get-ChildItem $SolutionFolderPath -Filter Warewolf.UIBindingTests.* ) {
+	    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $folder.FullName + "\bin\Debug\" + $folder.Name + ".dll`""
+    }
+}
+if ($TestAssembliesList -eq "") {
+	Write-Host Cannot find any Warewolf.UIBindingTests.* project folders at $SolutionFolderPath.
+	exit 1
 }
 
 # Create full MSTest argument string.
