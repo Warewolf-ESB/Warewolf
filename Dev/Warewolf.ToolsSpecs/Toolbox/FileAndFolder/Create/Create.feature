@@ -21,14 +21,14 @@ Scenario Outline: Create file at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		| No | Name       | destination | destinationLocation                                         | selected | username                     | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
-		| 1  | Local      | [[path]]    | c:\myfile.txt                                               | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| No | Name       | destination | destinationLocation                                                                     | selected | username                     | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local      | [[path]]    | c:\myfile.txt                                                                           | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
 		| 2  | UNC        | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileCreateSharedTestingSite\test.txt        | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
 		| 3  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.txt | True     | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | NO           |                           |
-		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORTESTING/test.txt                 | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
-		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORTESTING/test.txt                 | True     | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
-		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
-		| 7  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                               | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
+		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORTESTING/test.txt                                             | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORTESTING/test.txt                                             | True     | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
+		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                                            | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
+		| 7  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                           | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk         |
 
 Scenario Outline: Create file at location Nulls
 	Given I have a destination path "<destination>" with value "<destinationLocation>"
@@ -39,10 +39,10 @@ Scenario Outline: Create file at location Nulls
 	When the create file tool is executed
 	Then the execution has "<errorOccured>" error
 	Examples: 
-		| No | Name       | destination | destinationLocation                                        | selected | username                      | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
-		| 1  | Local      | [[path]]    | NULL                                                       | True     |                               |          | [[result]] | Failure | AN           |                           |
-		| 2  | Local      | [[path]]    | v:\myfile.txt                                              | True     |                               |          | [[result]] | Failure | AN           |                           |
-		| 3  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                              | True     | ""                            | Q/ulw&]  | [[result]] | Failure | AN           | C:\\Temp\                 |
+		| No | Name       | destination | destinationLocation                                                                    | selected | username                      | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
+		| 1  | Local      | [[path]]    | NULL                                                                                   | True     |                               |          | [[result]] | Failure | AN           |                           |
+		| 2  | Local      | [[path]]    | v:\myfile.txt                                                                          | True     |                               |          | [[result]] | Failure | AN           |                           |
+		| 3  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                                                          | True     | ""                            | Q/ulw&]  | [[result]] | Failure | AN           | C:\\Temp\                 |
 		| 5  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileCreateSharedTestingSite\Secure\test.tx | True     | dev2.local\IntegrationTesteru | I73573r0 | [[result]] | Failure | AN           |                           |
 
 
