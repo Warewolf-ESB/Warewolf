@@ -271,7 +271,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -282,7 +282,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_5()
         {
-            this.MoveFileAtLocation("5", "Local to UNC", "[[sourcePath]]", "c:\\movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("5", "Local to UNC", "[[sourcePath]]", "c:\\movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved0.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -294,7 +294,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -309,7 +309,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_6()
         {
-            this.MoveFileAtLocation("6", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("6", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile0.txt", "\"\"", "\"\"", "[[destPath]]", "C:\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -321,7 +321,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -336,7 +336,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_7()
         {
-            this.MoveFileAtLocation("7", "UNC to FTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("7", "UNC to FTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -348,7 +348,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -363,7 +363,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_8()
         {
-            this.MoveFileAtLocation("8", "UNC to FTPS", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/moved1.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("8", "UNC to FTPS", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile2.txt", "\"\"", "\"\"", "[[destPath]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/moved1.txt", "integrationtester", "I73573r0", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -375,7 +375,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -390,7 +390,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_9()
         {
-            this.MoveFileAtLocation("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/moved1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("9", "UNC to SFTP", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile3.txt", "\"\"", "\"\"", "[[destPath]]", "sftp://rsaklfsvrdev/moved1.txt", "dev2", "Q/ulw&]", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -402,11 +402,11 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC TO UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile4.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -417,7 +417,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_10()
         {
-            this.MoveFileAtLocation("10", "UNC TO UNC", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("10", "UNC TO UNC", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile4.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -460,7 +460,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -471,7 +471,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_12()
         {
-            this.MoveFileAtLocation("12", "FTP to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved2.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("12", "FTP to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/movefile1.txt", "\"\"", "\"\"", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved2.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -595,7 +595,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -606,7 +606,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_17()
         {
-            this.MoveFileAtLocation("17", "FTPS to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/movefile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved3.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("17", "FTPS to UNC", "[[sourcePath]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/movefile1.txt", "integrationtester", "I73573r0", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved3.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -730,7 +730,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved4.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved4.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -741,7 +741,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_22()
         {
-            this.MoveFileAtLocation("22", "SFTP to UNC", "[[sourcePath]]", "sftp://rsaklfsvrdev/movefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved4.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
+            this.MoveFileAtLocation("22", "SFTP to UNC", "[[sourcePath]]", "sftp://rsaklfsvrdev/movefile1.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved4.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -865,7 +865,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved41.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved41.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -876,7 +876,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocation_27()
         {
-            this.MoveFileAtLocation("27", "SFTP to UNC  PK", "[[sourcePath]]", "sftp://rsaklfsvrdev/movefile11.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\moved41.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
+            this.MoveFileAtLocation("27", "SFTP to UNC  PK", "[[sourcePath]]", "sftp://rsaklfsvrdev/movefile11.txt", "dev2", "Q/ulw&]", "[[destPath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\moved41.txt", "\"\"", "\"\"", "True", "[[result]]", "Success", "NO", "C:\\Temp\\key.opk", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1069,7 +1069,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile0.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile0.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[destPath]]")]
@@ -1084,7 +1084,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void MoveFileAtLocationNull_3()
         {
-            this.MoveFileAtLocationNull("3", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileMoveSharedTestingSite\\movefile0.txt", "\"\"", "\"\"", "[[destPath]]", "cv:\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Failure", "AN", "", "", ((string[])(null)));
+            this.MoveFileAtLocationNull("3", "UNC to Local", "[[sourcePath]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\movefile0.txt", "\"\"", "\"\"", "[[destPath]]", "cv:\\moved1.txt", "\"\"", "\"\"", "True", "[[result]]", "Failure", "AN", "", "", ((string[])(null)));
 #line hidden
         }
         
