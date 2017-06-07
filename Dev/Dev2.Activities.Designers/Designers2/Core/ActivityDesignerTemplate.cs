@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Activities.Designers2.Core.Controls;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.Core
 {
