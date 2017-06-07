@@ -23,8 +23,8 @@ Scenario Outline: Create file at location
 	Examples: 
 		| No | Name       | destination | destinationLocation                                         | selected | username                     | password | resultVar  | result  | errorOccured | destinationPrivateKeyFile |
 		| 1  | Local      | [[path]]    | c:\myfile.txt                                               | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
-		| 2  | UNC        | [[path]]    | \\\\RSAKLFSVRPDC\FileCreateShareTestingSite\test.txt        | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
-		| 3  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileCreateShareTestingSite\Secure\test.txt | True     | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | NO           |                           |
+		| 2  | UNC        | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\test.txt        | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
+		| 3  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\Secure\test.txt | True     | dev2.local\IntegrationTester | I73573r0 | [[result]] | Success | NO           |                           |
 		| 4  | FTP        | [[path]]    | ftp://rsaklfsvrpdc:1001/FORTESTING/test.txt                 | True     | ""                           | ""       | [[result]] | Success | NO           |                           |
 		| 5  | FTPS       | [[path]]    | ftp://rsaklfsvrpdc:1002/FORTESTING/test.txt                 | True     | IntegrationTester            | I73573r0 | [[result]] | Success | NO           |                           |
 		| 6  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test.txt                                | True     | dev2                         | Q/ulw&]  | [[result]] | Success | NO           |                           |
@@ -43,7 +43,7 @@ Scenario Outline: Create file at location Nulls
 		| 1  | Local      | [[path]]    | NULL                                                       | True     |                               |          | [[result]] | Failure | AN           |                           |
 		| 2  | Local      | [[path]]    | v:\myfile.txt                                              | True     |                               |          | [[result]] | Failure | AN           |                           |
 		| 3  | SFTP       | [[path]]    | sftp://rsaklfsvrdev/test1.txt                              | True     | ""                            | Q/ulw&]  | [[result]] | Failure | AN           | C:\\Temp\                 |
-		| 5  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileCreateShareTestingSite\Secure\test.tx | True     | dev2.local\IntegrationTesteru | I73573r0 | [[result]] | Failure | AN           |                           |
+		| 5  | UNC Secure | [[path]]    | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\Secure\test.tx | True     | dev2.local\IntegrationTesteru | I73573r0 | [[result]] | Failure | AN           |                           |
 
 
 Scenario Outline: Create file at location with invalid directories
