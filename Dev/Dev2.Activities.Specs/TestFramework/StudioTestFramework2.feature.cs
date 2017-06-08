@@ -7889,7 +7889,8 @@ this.FeatureBackground();
                         "[[AccTesting().Loc]]",
                         "True"});
 #line 2665
-    testRunner.And("\"ShapointCreateListItemsTestWF\" contains an Assign \"MyAssign\" as", ((string)(null)), table261, "And ");
+    testRunner.And("\"ShapointCreateListItemsTestWF\" contains a recordset name randomizing Assign \"MyA" +
+                    "ssign\" as", ((string)(null)), table261, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table262 = new TechTalk.SpecFlow.Table(new string[] {
                         "Server",

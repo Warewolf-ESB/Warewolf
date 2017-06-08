@@ -2662,7 +2662,7 @@ Scenario: Test WF with Sharepoint Read List Item
 
 Scenario: Test WF with Sharepoint Update List Item
 	Given I have a workflow "ShapointUpdateListItemTestWF"	
-	   And "ShapointCreateListItemsTestWF" contains an Assign "MyAssign" as
+	   And "ShapointCreateListItemsTestWF" contains a recordset name randomizing Assign "MyAssign" as
 	    | variable                            | value                                                                |
 	    | [[AccTesting().Title]]              | Mrs                                                                  |
 	    | [[AccTesting().Name]]               | Minnie                                                               |
