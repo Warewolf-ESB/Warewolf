@@ -11,7 +11,7 @@ namespace Warewolf.UITests
         const string SourceName = "CodedUITestEmailSource";
 
         [TestMethod]
-        [TestCategory("Email Source")]
+        [TestCategory("Source Wizards")]
         public void Create_Save_And_Edit_EmailSource_From_ExplorerContextMenu_UITests()
         {
             //Create Source

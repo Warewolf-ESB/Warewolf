@@ -139,7 +139,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+            "e.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -148,7 +149,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocation_UNC()
         {
-            this.DeleteFileAtLocation("UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+            this.DeleteFileAtLocation("UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+                    "e.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -159,7 +161,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+            "todelete.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -168,7 +171,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocation_UNCSecure()
         {
-            this.DeleteFileAtLocation("UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+            this.DeleteFileAtLocation("UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+                    "todelete.txt", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -322,7 +326,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Memo.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Memo.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -331,7 +335,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant2()
         {
-            this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Memo.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+            this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Memo.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -342,7 +346,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC Secure")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+            "todelete.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local\\IntegrationTester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "password")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
@@ -351,7 +356,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileAtLocationNull_Variant3()
         {
-            this.DeleteFileAtLocationNull("UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete.txt", "dev2.local\\IntegrationTester", "password", "[[result]]", "\"Failure\"", "NO", "", ((string[])(null)));
+            this.DeleteFileAtLocationNull("UNC Secure", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+                    "todelete.txt", "dev2.local\\IntegrationTester", "password", "[[result]]", "\"Failure\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -505,7 +511,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+            "e1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -516,7 +523,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_2()
         {
-            this.DeleteFileValidation("2", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete1.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
+            this.DeleteFileValidation("2", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+                    "e1.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
         
@@ -529,7 +537,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+            "todelete2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -540,7 +549,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_3()
         {
-            this.DeleteFileValidation("3", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete2.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
+            this.DeleteFileValidation("3", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+                    "todelete2.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
         
@@ -623,9 +633,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]][[b]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "\\filetodelete2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+            "e2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -636,7 +647,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_7()
         {
-            this.DeleteFileValidation("7", "[[a]][[b]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite", "\\filetodelete2.txt", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete2.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
+            this.DeleteFileValidation("7", "[[a]][[b]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite", "\\filetodelete2.txt", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+                    "e2.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
         
@@ -647,9 +659,10 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[a]]\\[[b]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "filetodelete3.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete3.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+            "e3.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
@@ -660,7 +673,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_8()
         {
-            this.DeleteFileValidation("8", "[[a]]\\[[b]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite", "filetodelete3.txt", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete3.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
+            this.DeleteFileValidation("8", "[[a]]\\[[b]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite", "filetodelete3.txt", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+                    "e3.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1057,7 +1071,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+            "e1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[a]]\\[[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
@@ -1068,7 +1083,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_25()
         {
-            this.DeleteFileValidation("25", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete1.txt", "[[a]]\\[[b]]", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]", "", ((string[])(null)));
+            this.DeleteFileValidation("25", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+                    "e1.txt", "[[a]]\\[[b]]", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1081,7 +1097,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+            "todelete2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[rec([[index]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
@@ -1092,7 +1109,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_26()
         {
-            this.DeleteFileValidation("26", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete2.txt", "[[rec([[index]]).a]]", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[index]]", "", ((string[])(null)));
+            this.DeleteFileValidation("26", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+                    "todelete2.txt", "[[rec([[index]]).a]]", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[index]]", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1177,7 +1195,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete1.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+            "e1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[a]]*]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
@@ -1188,7 +1207,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_30()
         {
-            this.DeleteFileValidation("30", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\filetodelete1.txt", "\"\"", "[[a]]*]]", "\"\"", "AN", "True", "Result - The Result field only allows single result", "1.Result - The Result field only allows single result", "", ((string[])(null)));
+            this.DeleteFileValidation("30", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+                    "e1.txt", "\"\"", "[[a]]*]]", "\"\"", "AN", "True", "Result - The Result field only allows single result", "1.Result - The Result field only allows single result", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1201,7 +1221,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+            "todelete2.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[var@]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
@@ -1212,7 +1233,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_31()
         {
-            this.DeleteFileValidation("31", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\Secure\\filetodelete2.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
+            this.DeleteFileValidation("31", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+                    "todelete2.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         

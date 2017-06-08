@@ -6,7 +6,7 @@ using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class SearchExplorerResource
+    public class Filter
     {
         [TestMethod]
         [TestCategory("Explorer")]

@@ -206,9 +206,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
             Mouse.StartDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem, new Point(94, 11));
             Mouse.StopDragging(SaveDialogWindow.ExplorerView.ExplorerTree.localhost, new Point(90, 11));
         }
-
-        [Given(@"Context Menu Has Two Items")]
-        [When(@"Context Menu Has Two Items")]
+        
         [Then(@"Context Menu Has Two Items")]
         public void ThenContextMenuHasTwoItems()
         {
@@ -505,6 +503,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         {
             var searchTextBox = SaveDialogWindow.ExplorerView.SearchTextBox;
             searchTextBox.Text = FilterText;
+            Playback.Wait(1000);
         }
 
         [When(@"I Click UpdateDuplicateRelationships")]

@@ -26,6 +26,7 @@
 *.playlist
 *.sln.DotSettings
 *.sln.DotSettings.user
+*.stackdump
 
 ####################################################################################
 # Visual Studio
@@ -43,28 +44,23 @@ bin
 /Dev/Warewolf.UIBindingTests/**
 
 ####################################################################################
+# SonarQube
+####################################################################################
+Dev/SonarQube/SolutionBinding.sqconfig
+.sonarqube
+
+####################################################################################
 # Build working directories
 ####################################################################################
 /Dev/packages/**
 /Dev/TestResults/**
 /TestResults/**
-.sonarqube
+/Dev/TestScripts/FullVersionString
 *.tmp_proj
-/TestScripts/FullVersionString
-/Dev/AcceptanceTesting.sln.DotSettings
+
+####################################################################################
+# DotCover
+####################################################################################
 /DotCoverOutput/**
-/RunResharper.dotConfig
-/ResharperOutput.xml
 /DotCoverRunner.xml
 /DotCoverOutput.html
-
-####################################################################################
-# Rider
-####################################################################################
-/Dev/.idea*/**
-
-####################################################################################
-# Coded UI
-####################################################################################
-/Dev/Warewolf.UITests/UIMapEditorBackups/**
-/*.stackdump

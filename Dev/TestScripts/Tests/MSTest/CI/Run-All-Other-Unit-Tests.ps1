@@ -21,49 +21,54 @@ if ($Args.Count -gt 0) {
 }
 
 # Find test assemblies
-$TestAssemblyPath = ""
-if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\.."
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\.."
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\.."
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\.."
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\.."
+$SolutionFolderPath = ""
+if ((Test-Path "$PSScriptRoot\Warewolf.*.Tests") -or (Test-Path "$PSScriptRoot\Warewolf.*.Tests.dll") -or (Test-Path "$PSScriptRoot\Dev2.*.Tests") -or (Test-Path "$PSScriptRoot\Dev2.*.Tests.dll")) {
+	$SolutionFolderPath = "$PSScriptRoot"
+} elseif ((Test-Path "$PSScriptRoot\..\Warewolf.*.Tests") -or (Test-Path "$PSScriptRoot\..\Warewolf.*.Tests.dll") -or (Test-Path "$PSScriptRoot\..\Dev2.*.Tests") -or (Test-Path "$PSScriptRoot\..\Dev2.*.Tests.dll")) {
+	$SolutionFolderPath = "$PSScriptRoot\.."
+} elseif ((Test-Path "$PSScriptRoot\..\..\Warewolf.*.Tests") -or (Test-Path "$PSScriptRoot\..\..\Warewolf.*.Tests.dll") -or (Test-Path "$PSScriptRoot\..\..\Dev2.*.Tests") -or (Test-Path "$PSScriptRoot\..\..\Dev2.*.Tests.dll")) {
+	$SolutionFolderPath = "$PSScriptRoot\..\.."
+} elseif ((Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Tests") -or (Test-Path "$PSScriptRoot\..\..\..\Warewolf.*.Tests.dll") -or (Test-Path "$PSScriptRoot\..\..\..\Dev2.*.Tests") -or (Test-Path "$PSScriptRoot\..\..\..\Dev2.*.Tests.dll")) {
+	$SolutionFolderPath = "$PSScriptRoot\..\..\.."
+} elseif ((Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Tests") -or (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.*.Tests.dll") -or (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.*.Tests") -or (Test-Path "$PSScriptRoot\..\..\..\..\Dev2.*.Tests.dll")) {
+	$SolutionFolderPath = "$PSScriptRoot\..\..\..\.."
+} elseif ((Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests") -or (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.*.Tests.dll") -or (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.*.Tests") -or (Test-Path "$PSScriptRoot\..\..\..\..\..\Dev2.*.Tests.dll")) {
+	$SolutionFolderPath = "$PSScriptRoot\..\..\..\..\.."
 }
-if ($TestAssemblyPath -eq "") {
-	Write-Host Cannot find Warewolf.*.Tests.dll at $PSScriptRoot or $PSScriptRoot\Warewolf.Tests
+if ($SolutionFolderPath -eq "") {
+	Write-Host Cannot find Warewolf.*.Tests or Dev2.*.Tests projects at $PSScriptRoot or parent directories up to 5 levels deep.
 	exit 1
 }
 if (!(Test-Path $PSScriptRoot\TestResults)) {
 	New-Item -ItemType Directory $PSScriptRoot\TestResults
 }
-
-# Create assemblies list.
 $TestAssembliesList = ""
-foreach ($file in Get-ChildItem $TestAssemblyPath -Filter Warewolf.*.Tests.dll ) {
-	if ($file.Name -ne "Warewolf.*.Tests.dll") {
+foreach ($file in Get-ChildItem $SolutionFolderPath -Filter Warewolf.*.Tests.dll ) {
+	if ($file.Name -ne "Warewolf.Studio.ViewModels.Tests.dll" -and $file.Name -ne "Warewolf.COMIPC.Tests.dll") {
 		$TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
 	}
 }
-foreach ($file in Get-ChildItem $TestAssemblyPath -Filter Dev2.*.Tests.dll ) {
+foreach ($file in Get-ChildItem $SolutionFolderPath -Filter Dev2.*.Tests.dll ) {
 	if ($file.Name -ne "Dev2.Activities.Designers.Tests.dll" -and $file.Name -ne "Dev2.Activities.Tests.dll") {
 		$TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
 	}
+}
+
+if ($TestAssembliesList -eq "") {
+    foreach ($folder in Get-ChildItem $SolutionFolderPath -Filter Warewolf.*.Tests ) {
+	    if ($folder.Name -ne "Warewolf.Studio.ViewModels.Tests" -and $folder.Name -ne "Warewolf.COMIPC.Tests") {
+		    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $folder.FullName + "\bin\Debug\" + $folder.Name + ".dll`""
+	    }
+    }
+    foreach ($folder in Get-ChildItem $SolutionFolderPath -Filter Dev2.*.Tests ) {
+	    if ($folder.Name -ne "Dev2.Activities.Designers.Tests" -and $folder.Name -ne "Dev2.Activities.Tests") {
+		    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $folder.FullName + "\bin\Debug\" + $folder.Name + ".dll`""
+	    }
+    }
+}
+if ($TestAssembliesList -eq "") {
+	Write-Host Cannot find any Warewolf.*.Tests or Dev2.*.Tests project folders at $SolutionFolderPath.
+	exit 1
 }
 
 # Create full MSTest argument string.

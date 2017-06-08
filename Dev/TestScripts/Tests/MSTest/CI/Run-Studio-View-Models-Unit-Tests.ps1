@@ -22,28 +22,28 @@ if ($Args.Count -gt 0) {
 
 # Find test assemblies
 $TestAssemblyPath = ""
-if (Test-Path "$PSScriptRoot\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
+if (Test-Path "$PSScriptRoot\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\Warewolf.Studio.ViewModels.Tests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\Warewolf.Studio.ViewModels.Tests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\Warewolf.Studio.ViewModels.Tests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\Warewolf.Studio.ViewModels.Tests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll"
-} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll") {
-	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.Tests\Warewolf.Studio.ViewModels.Tests.dll"
+} elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll") {
+	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.Studio.ViewModels.Tests\bin\Debug\Warewolf.Studio.ViewModels.Tests.dll"
 } elseif (Test-Path "$PSScriptRoot\..\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll") {
 	$TestAssemblyPath = "$PSScriptRoot\..\..\..\..\..\Warewolf.Studio.ViewModels.Tests.dll"
 }

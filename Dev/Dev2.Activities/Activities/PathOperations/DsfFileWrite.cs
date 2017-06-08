@@ -137,8 +137,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return WriteType.AppendBottom;
         }
 
-        #region Properties
-
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="DsfFileWrite" /> is append.
         /// </summary>
@@ -200,18 +198,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
-
-        #endregion Properties
-
-        #region Private Methods
-
+        
 
         private string GetMethod()
         {
             return GetCorrectWriteType().GetDescription();
         }
-
-        #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -242,8 +234,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return GetForEachItems(OutputPath, FileContents);
@@ -253,7 +243,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return GetForEachItems(Result);
         }
-
-        #endregion
     }
 }

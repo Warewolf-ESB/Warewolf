@@ -126,7 +126,7 @@
     <Compile Include="Explorer\ExplorerUIMap.Designer.cs">
       <DependentUpon>ExplorerUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="Explorer\Duplicate.cs" />
+    <Compile Include="SaveDialog\DuplicateDialogTests.cs" />
     <Compile Include="DBSource\MySQLSource\MySqlSourceTests.cs" />
     <Compile Include="DBSource\OracleSource\OracleSourceTests.cs" />
     <Compile Include="DBSource\PostgreSQLSource\PostgreSQLSourceTests.cs" />
@@ -272,19 +272,17 @@
     </Compile>
     <Compile Include="WebSource\WebSourceTests.cs" />
     <Compile Include="WorkflowTab\ContextMenus\DesignSurfaceContextMenuTests.cs" />
-    <Compile Include="Explorer\ResourceVersion.cs" />
-    <Compile Include="Explorer\SearchExplorerResource.cs" />
+    <Compile Include="Explorer\VersionHistory.cs" />
+    <Compile Include="Explorer\Filter.cs" />
     <Compile Include="Explorer\DeleteExplorerResource.cs" />
     <Compile Include="SaveDialog\SaveDialogTests.cs" />
     <Compile Include="Default Layout\Default LayoutTests.cs" />
     <Compile Include="WorkflowServiceTesting\DotnetTestingTests.cs" />
-    <Compile Include="WorkflowServiceTesting\OtherTestFrameworkMockingTests.cs" />
     <Compile Include="WorkflowTab\ContextMenus\StartNodeContextMenuTests.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
     <Compile Include="EmailSource\EmailSourceTests.cs" />
     <Compile Include="ExchangeSource\ExchangeSourceTests.cs" />
-    <Compile Include="Explorer\RemoteServers.cs" />
     <Compile Include="Explorer\Folders.cs" />
     <Compile Include="Explorer\Context Menu.cs" />
     <Compile Include="Explorer\Rename.cs" />

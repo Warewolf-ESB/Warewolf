@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class ResourceVersion
+    public class VersionHistory
     {
         [TestMethod]
         [TestCategory("Explorer")]
@@ -41,6 +41,21 @@ namespace Warewolf.UITests
             ExplorerUIMap.Select_Make_Current_Version();
             UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.WaitForControlCondition(control => control is WpfEdit && ((WpfEdit)control).Text != string.Empty, 60000);
             Assert.AreEqual("Trivial workflow for testing make current version in the explorer.", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.CommentComboBox.TextEdit.Text, "Workflow did not roll back to older version.");
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void Updating_Resource_With_Dependencies_Should_Show_Dependency_Popup()
+        {
+            ExplorerUIMap.Filter_Explorer("Main");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            ExplorerUIMap.Filter_Explorer("PerformOperations");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked = !WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.InputCheckbox.Checked;
+            UIMap.Click_Save_RibbonButton();
+            Assert.IsTrue(UIMap.MainStudioWindow.DependenciesOKButton.Exists, "The dependencies error window does not exists.");
+            Mouse.Click(UIMap.MainStudioWindow.DependenciesOKButton);
+            Assert.IsFalse(UIMap.MainStudioWindow.DependenciesOKButton.Exists, "The dependencies error window is showing multiple times.");
         }
 
         #region Additional test attributes

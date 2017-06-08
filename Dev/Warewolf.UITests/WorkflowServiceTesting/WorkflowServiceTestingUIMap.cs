@@ -1,4 +1,11 @@
-﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+﻿using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using MouseButtons = System.Windows.Forms.MouseButtons;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -70,7 +77,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
         {
             Click_Create_New_Tests(true, testIntance);
         }
-        
+
         [Given(@"I Execute Workflow Using DebugRun Button")]
         [When(@"I Execute Workflow Using DebugRun Button")]
         [Then(@"I Execute Workflow Using DebugRun Button")]
@@ -136,7 +143,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
 
         public void Click_Output_Step()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Connector2, new Point(249, 403));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.MultiAssign1.SmallView, new Point(174, 14));
         }
 
         public void Click_Decision_Step()
@@ -165,7 +172,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
         [When(@"I Click AssigName From DesignSurface")]
         public void Click_AssigName_From_DesignSurface()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.MultiAssign);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.MultiAssign1);
         }
 
         public void Click_MockRadioButton_On_Decision_TestStep()
@@ -194,7 +201,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
 
         public void Click_Delete_On_AssignValue_TestStep()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.DeleteAssertButton.DrawHighlight();
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.DeleteAssertButton.WaitForControlExist(60000);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.DeleteAssertButton.Enabled);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.StepTestDataTreeTree.SetOutputTreeItem.OutputMessageAssert.AssertHeader.DeleteAssertButton);
         }
@@ -953,6 +960,16 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision);
         }
 
+        public void PinUnpinOutPutButton()
+        {
+            Mouse.Click(MainStudioWindow.SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIOUTPUTCustom.UIUnpinBtnButton, new Point(12, 14));
+        }
+
+        public void Click_DecisionOn_Service_TestView()
+        {
+            Mouse.Click(MainStudioWindow.SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_ServiceTestView_ACustom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIFlowDecisionCustom);
+        }
+
         #region UIMaps
         UIMap UIMap
         {
@@ -1015,23 +1032,5 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
         private DialogsUIMap _DialogsUIMap;
 
         #endregion
-
-        /// <summary>
-        /// PinUnpinOutPutButton
-        /// </summary>
-        public void PinUnpinOutPutButton()
-        {
-            #region Variable Declarations
-            WpfButton uIUnpinBtnButton = this.MainStudioWindow.SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIOUTPUTCustom.UIUnpinBtnButton;
-            #endregion
-
-            // Click 'unpinBtn' button
-            Mouse.Click(uIUnpinBtnButton, new Point(12, 14));
-        }
-
-        public void Click_DecisionOn_Service_TestView()
-        {
-            Mouse.Click(MainStudioWindow.SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2ViewModelsStudioTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIUI_ServiceTestView_ACustom.UIUserControl_1Custom.UIScrollViewerPane.UIActivityBuilderCustom.UIWorkflowItemPresenteCustom.UIFlowchartCustom.UIFlowDecisionCustom);
-        }
     }
 }
