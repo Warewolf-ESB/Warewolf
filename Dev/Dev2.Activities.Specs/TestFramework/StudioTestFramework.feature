@@ -2451,8 +2451,8 @@ Scenario: Test WF with Ruby
 Scenario: Test WF with Sharepoint Copy File
 	Given I have a workflow "ShapointCopyFileTestWF"	
 	  And "ShapointCopyFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | LocalPathFrom                                      | ServerPathTo | Result     |
-	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | e.xml      | [[Result]] |	  
+	| Server                 | LocalPathFrom                                     | ServerPathTo | Result     |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | e.xml        | [[Result]] |	  
 	And "ShapointCopyFileTestWF" contains SharepointCopyFile "TestSharePCopyFile" as 
 	| Server                 | ServerPathFrom | ServerPathTo | Overwrite | Result         |
 	| SharePoint Test Server | e.xml          | f.xml        | true      | [[copyResult]] |
@@ -2552,8 +2552,8 @@ Scenario: Test WF with Sharepoint Delete File
 Scenario: Test WF with Sharepoint Download File
 	Given I have a workflow "ShapointDownloadFileTestWF"
 	And "ShapointUploadFileTestWF" contains SharepointUploadFile "TestSharePUploadFile" as 
-	| Server                 | LocalPathFrom                                     | ServerPathTo | Result       |
-	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml |              | [[Uploaded]] |
+	| Server                 | LocalPathFrom                                     | ServerPathTo    | Result       |
+	| SharePoint Test Server | C:\ProgramData\Warewolf\Resources\Hello World.xml | Hello World.xml | [[Uploaded]] |
 	And "ShapointDownloadFileTestWF" contains SharepointDownloadFile "TestSharePDownloadFile" as 
 		| Server                 | ServerPathFrom  | LocalPathTo                                                                | Overwrite | Result         |
 		| SharePoint Test Server | Hello World.xml | C:\ProgramData\Warewolf\Resources\DownloadedFromSharepoint\Hello World.xml | True      | [[Downloaded]] |
