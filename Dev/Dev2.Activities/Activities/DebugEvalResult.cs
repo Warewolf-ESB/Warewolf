@@ -16,9 +16,15 @@ namespace Dev2.Activities
     public class DebugEvalResult : DebugOutputBase
     {
         string _inputVariable;
+        private readonly string _operand;
         CommonFunctions.WarewolfEvalResult _evalResult;
         private readonly bool _isCalculate;
 
+        public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, string operand, bool isDataMerge = false, bool isCalculate = false, bool mockSelected = false)
+            : this(inputVariable, label, environment, update, isDataMerge, isCalculate, mockSelected)
+        {
+            _operand = operand;
+        }
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, bool isDataMerge = false, bool isCalculate = false, bool mockSelected = false)
         {
             _inputVariable = inputVariable?.Trim();
@@ -119,9 +125,7 @@ namespace Dev2.Activities
                 }
             }
         }
-
-        #region Overrides of DebugOutputBase
-
+        
         public override string LabelText { get; }
         public bool MockSelected { get; }
 
@@ -141,7 +145,7 @@ namespace Dev2.Activities
                     {
                         _inputVariable = null;
                     }
-                    return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText, MockSelected).GetDebugItemResult();
+                    return new DebugItemWarewolfAtomResult(warewolfAtomToString, _inputVariable, LabelText,_operand, MockSelected).GetDebugItemResult();
                 }
             }
             else if (_evalResult.IsWarewolfAtomListresult)
@@ -162,8 +166,6 @@ namespace Dev2.Activities
             }
 
             return new DebugItemStaticDataParams("", _inputVariable, LabelText, MockSelected).GetDebugItemResult();
-        }
-
-        #endregion
+        }        
     }
 }

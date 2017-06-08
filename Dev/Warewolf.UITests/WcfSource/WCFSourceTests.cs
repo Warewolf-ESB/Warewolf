@@ -9,7 +9,7 @@ namespace Warewolf.UITests
     public class WcfSourceTests
     { 
         [TestMethod]
-        [TestCategory("WCF Source")]
+        [TestCategory("Source Wizards")]
         // ReSharper disable once InconsistentNaming
         public void Create_WcfSource_From_ExplorerContextMenu_UITests()
         {

@@ -13,7 +13,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
     public class ComDllTestingTests
     {
         [TestMethod]
-        [TestCategory("Workflow Select Com Source")]
+        [TestCategory("Source Wizards")]
         public void ChooseComPluginSelection()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
@@ -37,7 +37,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         [TestMethod]
-        [TestCategory("Workflow Select Com Source")]
+        [TestCategory("Source Wizards")]
         public void ChangeComPluginSelection()
         {
             try

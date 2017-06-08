@@ -125,15 +125,14 @@ namespace Dev2.PathOperations
                                     _fileWrapper.WriteAllText(tmp, args.FileContents);
                                     _common.AppendToTemp(s, tmp);
                                     result = MoveTmpFileToDestination(dst, tmp, result);
-                                    RemoveTmpFile(tmp);
                                 }
                                 break;
                             default:
                                 WriteDataToFile(args, tmp);
                                 result = MoveTmpFileToDestination(dst, tmp, result);
-                                RemoveTmpFile(tmp);
                                 break;
                         }
+                        RemoveTmpFile(tmp);
                     }
                     else
                     {

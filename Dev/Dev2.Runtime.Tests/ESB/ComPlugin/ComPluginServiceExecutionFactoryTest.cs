@@ -63,6 +63,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [Ignore]//Verfiy that the ID is actually registered
         public void ListMethods_GivenAdodbConnection_ShouldContainOpen()
         {
             //---------------Set up test pack-------------------

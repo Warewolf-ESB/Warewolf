@@ -20,6 +20,16 @@ namespace Warewolf.UITests
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.SecondSubItem));
         }
 
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void MergeFolders_With_DragAndDrop_UITest()
+        {
+            ExplorerUIMap.Filter_Explorer("DragAndDropMergeFolder");
+            ExplorerUIMap.Drag_Explorer_First_Item_Onto_Second_Item();
+            ExplorerUIMap.Filter_Explorer("DragAndDropMergeResource1");
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.Exists, "Resource did not merge into folder after drag and drop in the explorer UI.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]

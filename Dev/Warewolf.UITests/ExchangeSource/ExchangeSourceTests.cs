@@ -12,7 +12,7 @@ namespace Warewolf.UITests
         const string SourceName = "CodedUITestExchangeSource";
 
         [TestMethod]
-        [TestCategory("Exchange Source")]
+        [TestCategory("Source Wizards")]
         // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_ExchangeSource_From_ExplorerContextMenu_UITests()
         {

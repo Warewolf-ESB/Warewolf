@@ -9,7 +9,7 @@ namespace Warewolf.UITests
     public class DropboxSourceTests
     {
         [TestMethod]
-        [TestCategory("Dropbox Source")]
+        [TestCategory("Source Wizards")]
         // ReSharper disable once InconsistentNaming
         public void Create_DropboxSource_From_ExplorerContextMenu_UITests()
         {

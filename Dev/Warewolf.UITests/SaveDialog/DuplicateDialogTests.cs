@@ -9,10 +9,10 @@ using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class DuplicateExplorerResource
+    public class DuplicateDialogTests
     {
         [TestMethod]
-        [TestCategory("Explorer")]
+        [TestCategory("Save Dialog")]
         public void DuplicateResource_ThenAddsNewItemItem()
         {
             ExplorerUIMap.Filter_Explorer("Hello World");
@@ -22,7 +22,7 @@ namespace Warewolf.UITests
         }
         
         [TestMethod]
-        [TestCategory("Explorer")]
+        [TestCategory("Save Dialog")]
         public void DuplicateFolder_ThenAddsNewFolderItem()
         {
             ExplorerUIMap.Filter_Explorer("Examples");
@@ -32,7 +32,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Explorer")]
+        [TestCategory("Save Dialog")]
         public void DuplicateFolder_And_Use_Same_Name_Shows_Error()
         {
             const string serviceName = "DuplicateFolderNameError";
@@ -42,7 +42,7 @@ namespace Warewolf.UITests
         }
 
         [TestMethod]
-        [TestCategory("Explorer")]
+        [TestCategory("Save Dialog")]
         public void DuplicateWorkflow_Updates_The_Workflow_Display_Name()
         {
             ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("Hello World");
@@ -53,23 +53,6 @@ namespace Warewolf.UITests
             Assert.AreEqual(newName, ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.ItemEdit.Text, "First Item is not the same as Filtered input.");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             Assert.AreEqual(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.BreadcrumbbarList.HelloWorld2ListItem.DisplayText, newName);
-        }
-        
-        [TestMethod]
-        [TestCategory("Explorer")]
-        public void DuplicateServerSource_Then_Delete_Removes_Item_From_Dropdown()
-        {
-            ExplorerUIMap.Click_Duplicate_From_ExplorerContextMenu("ExistingCodedUITestServerSource");
-            const string newName = "CodedUITestServerSourceDuplicated";
-            WorkflowTabUIMap.Enter_Duplicate_workflow_name(newName);
-            DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
-            Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
-            Assert.IsTrue(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated));
-            ExplorerUIMap.Filter_Explorer(newName);
-            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
-            DialogsUIMap.Click_Yes_On_The_Confirm_Delete();
-            Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.ServerComboBox.ToggleButton);
-            Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.CodedUITestServerSourceDuplicated));
         }
 
         #region Additional test attributes

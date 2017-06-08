@@ -59,13 +59,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 src.ReloadActions = dbSource.ReloadActions;
                 if (dbSource.Type == enSourceType.ODBC)
                 {
-                    DbSource db = new DbSource();
-                    db.DatabaseName = dbSource.DbName;
-                    db.ResourceID = dbSource.Id;
-                    db.ServerType = dbSource.Type;
-                    db.ResourceName = dbSource.Name;
+                    DbSource db = new DbSource
+                    {
+                        DatabaseName = dbSource.DbName,
+                        ResourceID = dbSource.Id,
+                        ServerType = dbSource.Type,
+                        ResourceName = dbSource.Name
+                    };
 
-                    var methods = services.FetchMethods(src).Select(method => CreateDbAction(method, src)).OrderBy(a => a.Name);
+                    IOrderedEnumerable<DbAction> methods = null;
+                    Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () => { methods = services.FetchMethods(db).Select(method => CreateDbAction(method, src)).OrderBy(a => a.Name); });
                     return serializer.SerializeToBuilder(new ExecuteMessage
                     {
                         HasError = false,
@@ -74,7 +77,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    var methods = services.FetchMethods(src).Select(method => CreateDbAction(method, src)).OrderBy(a => a.Name);
+                    IOrderedEnumerable<DbAction> methods = null;
+                    Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () => { methods = services.FetchMethods(src).Select(method => CreateDbAction(method, src)).OrderBy(a => a.Name); });
                     return serializer.SerializeToBuilder(new ExecuteMessage
                     {
                         HasError = false,

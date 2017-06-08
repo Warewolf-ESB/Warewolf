@@ -10,7 +10,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
     public class Sequence
     {
         [TestMethod]
-		[TestCategory("Tools")]
+        [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingNonDecision_Allowed_LargeView_UITest()
         {
             Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.Exists, "Sequence on the design surface does not exist");
@@ -21,7 +21,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-        [TestCategory("Tools")]
+        [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingNonDecision_Allowed_SmallView_UITest()
         {
             ControlFlowToolsUIMap.Drag_Toolbox_AssignObject_Onto_Sequence_SmallTool();
@@ -29,7 +29,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+        [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingSwitch_NotAllowed_BothViews_UITest()
         {
             //Large View
@@ -45,7 +45,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
         }
 
         [TestMethod]
-		[TestCategory("Tools")]
+        [TestCategory("Control Flow Tools")]
         public void Sequence_DraggingDecision_NotAllowed_BothViews_UITest()
         {
             //Large View 

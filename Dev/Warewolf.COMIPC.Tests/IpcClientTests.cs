@@ -92,7 +92,8 @@ namespace WarewolfCOMIPC.Test
             var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
             var memoryStream = new MemoryStream();
             var serializeObject = JsonConvert.SerializeObject(GetType());
-            memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
+            var buffer = Encoding.ASCII.GetBytes(serializeObject);
+            memoryStream.Write(buffer,0,buffer.Length);
             pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
             var client = IpcClient.GetIPCExecutor(pipeMock.Object);
             //---------------Assert Precondition----------------
@@ -100,7 +101,7 @@ namespace WarewolfCOMIPC.Test
             //---------------Execute Test ----------------------
             var invoke = client.Invoke(Guid.Parse(adodbConnectionClassId), "ToString", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
             //---------------Test Result -----------------------
-            Assert.IsNull(invoke);
+            Assert.IsNotNull(invoke);
         }
 
         [TestMethod]

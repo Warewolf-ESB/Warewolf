@@ -619,6 +619,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IServer LocalhostServer => ServerRepository.Source;
+        public bool ResourceCalled { get; set; }
 
         public void SetActiveServer(Guid environmentId)
         {
