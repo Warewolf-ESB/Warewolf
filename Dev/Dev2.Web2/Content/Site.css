@@ -20,5 +20,63 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    width: inherit;
 }
+
+.flat-table {
+    display: block;
+    font-family: sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 115%;
+    overflow: auto;
+    width: auto;
+}
+
+th {
+    background-color: rgb(231, 228, 224);
+    color: black;
+    font-weight: normal;
+    font-family: Source Sans Pro;
+    font-size: 16px;
+    padding: 10px 15px;
+    text-align: left;
+}
+
+td {
+    background-color: white;
+    color: black;
+    padding: 10px 15px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#myInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px 5px 5px 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+}
+
+#executionList {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    font-size: 12px;
+}
+    #executionList th {
+        cursor: pointer;
+        border-right: 1px solid #ddd;
+    }
+    #executionList tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+        #executionList tr.header, #executionList tr:hover {
+            background-color: #f1f1f1;
+        }

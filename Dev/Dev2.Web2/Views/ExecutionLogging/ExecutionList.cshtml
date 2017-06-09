@@ -1,69 +1,95 @@
 ﻿@model IEnumerable<Dev2.Common.LogEntry>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<table id="executionList" class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Url)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Result)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CompletedDateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExecutionTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExecutionId)
-        </th>
-        <th></th>
+        <th data-toggle="tooltip" title="Id" data-placement="right" onclick="sortTable(0)">Id</th>
+        <th data-toggle="tooltip" title="Execution Time" data-placement="right" onclick="sortTable(1)">Execution Time</th>
+        <th data-toggle="tooltip" title="Status" data-placement="right" onclick="sortTable(2)">Status</th>
+        <th data-toggle="tooltip" title="Start Time" data-placement="right" onclick="sortTable(3)">Start Time</th>
+        <th data-toggle="tooltip" title="Completed Time" data-placement="right" onclick="sortTable(4)">Completed Time</th>
+        <th data-toggle="tooltip" title="Url" data-placement="right" onclick="sortTable(5)">Url</th>
+        <th data-toggle="tooltip" title="User" data-placement="right" onclick="sortTable(6)">User</th>
+        <th data-toggle="tooltip" title="Result" data-placement="right" onclick="sortTable(7)">Result</th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDateTime)
+        <td width="15%">
+            @Html.DisplayFor(modelItem => item.ExecutionId)
         </td>
-        <td>
+        <td width="15%">
+            @Html.DisplayFor(modelItem => item.ExecutionTime)
+        </td>
+        <td width="5%">
             @Html.DisplayFor(modelItem => item.Status)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Url)
+        <td width="15%">
+            @Html.DisplayFor(modelItem => item.StartDateTime)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Result)
+        <td width="15%">
+            @Html.DisplayFor(modelItem => item.CompletedDateTime)
         </td>
-        <td>
+        <td width="25%">
+            <a href="@Url.Action("OpenUrl", new { id=item.Url})">@Html.DisplayFor(modelItem => item.Url)</a>
+        </td>
+        <td width="10%">
             @Html.DisplayFor(modelItem => item.User)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CompletedDateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExecutionTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExecutionId)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("[...]", "Details", new { /* id=item.PrimaryKey */ })
         </td>
     </tr>
 }
 
 </table>
+
+<script>
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("executionList");
+        switching = true;
+        //Set the sorting direction to ascending:
+        dir = "asc";
+        /*Make a loop that will continue until no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare, one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                /*check if the two rows should switch place, based on the direction, asc or desc:*/
+                if (dir == "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir == "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                //Each time a switch is done, increase this count by 1:
+                switchcount++;
+            } else {
+                /*If no switching has been done AND the direction is "asc", set the direction to "desc" and run the while loop again.*/
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+</script>

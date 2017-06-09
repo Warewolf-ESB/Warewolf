@@ -4,6 +4,7 @@ using RestSharp;
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -72,6 +73,36 @@ namespace Dev2.Web2.Controllers
         public ActionResult Create()
         {
             return View();
+        }
+
+        public ActionResult OpenUrl()
+        {
+            return View();
+        }
+
+        public ActionResult OpenUrl(string url)
+        {
+            OpenInBrowser(new Uri(url));
+            return View();
+        }
+
+        public void OpenInBrowser(Uri url)
+        {
+            Process start = null;
+            try
+            {
+                start = Process.Start(url.ToString());
+            }
+            catch (TimeoutException)
+            {
+                start?.Kill();
+                start?.Dispose();
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                start?.Kill();
+                start?.Dispose();
+            }
         }
 
         // POST: ExecutionLogging/Create

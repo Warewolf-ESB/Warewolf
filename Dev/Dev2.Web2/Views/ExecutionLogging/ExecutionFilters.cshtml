@@ -27,26 +27,12 @@
                             <li><a href="#">http</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#">
-                            ://
-                        </a>
-                    </li>
                 </ul>
-                <div class="navbar-form navbar-left">
+                <div class="navbar-form">
+                    <a>://</a>
                     @Html.EditorFor(model => model.Server, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">
-                            :
-                        </a>
-                    </li>
-                </ul>
-                <div class="navbar-form navbar-left">
+                    <a>:</a>
                     @Html.EditorFor(model => model.Port, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-                <div class="navbar-form navbar-left">
                     <button type="submit" class="btn btn-default">Update</button>
                 </div>
             </div>
@@ -55,58 +41,52 @@
 
     <div class="container-fluid">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="input-group col-md-4" style="float:left">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-hourglass" title="Execution Time"></i>
+                </span>
+                @Html.EditorFor(model => model.ExecutionTime, new { htmlAttributes = new { @class = "form-control", @title = "Filter Execution Time", placeholder = "Filter Execution Time..." } })
+            </div>
+            <div class="input-group col-md-4" style="float:left">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-play" aria-hidden="true" title="Start Time"></span>
+                </span>
+                @Html.EditorFor(model => model.StartDateTime, new { htmlAttributes = new { @class = "form-control", @title = "Filter Start Time", placeholder = "Filter Start Time..." } })
+            </div>
+            <div class="input-group col-md-4" style="float:left">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-stop" aria-hidden="true" title="Completed Time"></span>
+                </span>
+                @Html.EditorFor(model => model.CompletedDateTime, new { htmlAttributes = new { @class = "form-control", @title = "Filter Completed Time", placeholder = "Filter Completed Time..." } })
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-group col-md-4" style="float:left">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-dashboard" aria-hidden="true" title="Status"></span>
+                </span>
+                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @title = "Filter Status", placeholder = "Filter Status..." } })
+            </div>
+            <div class="input-group col-md-4" style="float:left">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true" title="Url"></span>
+                </span>
+                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @title = "Filter Url", placeholder = "Filter Url..." } })
+            </div>
+            <div class="input-group col-md-4" style="float:left">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true" title="User"></span>
+                </span>
+                @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control", @title = "Filter User", placeholder = "Filter User..." } })
+            </div>
+        </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.SortBy, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SortBy, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-offset-2 col-md-0">
+                <input type="submit" value="Filter" class="btn btn-default" width="40" />
             </div>
         </div>
-        <div class="row">
-            <div class="input-group col-md-4" style="float:left">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-hourglass"></i>
-                </span>
-                @Html.EditorFor(model => model.ExecutionTime, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-            <div class="input-group col-md-4" style="float:left">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-                </span>
-                @Html.EditorFor(model => model.StartDateTime, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-            <div class="input-group col-md-4" style="float:left">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-                </span>
-                @Html.EditorFor(model => model.CompletedDateTime, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-group col-md-4" style="float:left">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>
-                </span>
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-            <div class="input-group col-md-4" style="float:left">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                </span>
-                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-            <div class="input-group col-md-4" style="float:left">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                </span>
-                @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
+    </div>
 }
 
 @section Scripts {
