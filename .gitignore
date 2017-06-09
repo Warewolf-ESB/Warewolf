@@ -42,6 +42,7 @@ bin
 /Dev/Warewolf.Tests/**
 /Dev/Warewolf.Specs/**
 /Dev/Warewolf.UIBindingTests/**
+UIMapEditorBackups
 
 ####################################################################################
 # SonarQube
