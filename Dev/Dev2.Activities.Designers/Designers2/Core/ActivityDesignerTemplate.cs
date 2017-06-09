@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Activities.Designers2.Core.Controls;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -47,6 +48,7 @@ namespace Dev2.Activities.Designers2.Core
                     if(_dataGrid != null)
                     {
                         _dataGrid.SelectionChanged -= OnSelectionChanged;
+                        _dataGrid.PreviewTextInput -= DataGridOnPreviewTextInput;
                     }
 
                     _dataGrid = value;
@@ -54,9 +56,15 @@ namespace Dev2.Activities.Designers2.Core
                     if(_dataGrid != null)
                     {
                         _dataGrid.SelectionChanged += OnSelectionChanged;
+                        _dataGrid.PreviewTextInput += DataGridOnPreviewTextInput;
                     }
                 }
             }
+        }
+
+        private void DataGridOnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
+        {
+            CallWorkflowUpdateEvent();
         }
 
         public void SetInitialFocus()
@@ -86,8 +94,16 @@ namespace Dev2.Activities.Designers2.Core
                 if(newItem != null)
                 {
                     viewModel.OnSelectionChanged(oldItem as ModelItem, newItem as ModelItem);
+                    CallWorkflowUpdateEvent();
                 }
             }
+        }
+
+        private static void CallWorkflowUpdateEvent()
+        {
+            var shellViewModel = CustomContainer.Get<IShellViewModel>();
+            var workflowDesignerViewModel = shellViewModel?.GetWorkflowDesigner();
+            workflowDesignerViewModel?.WorkflowChanged?.Invoke();
         }
     }
 }

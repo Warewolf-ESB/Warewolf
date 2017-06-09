@@ -41,7 +41,7 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
-    <AssertAction UIObjectName="WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.FindRecordIndexTreeItem.InputsItem1Text">
+    <AssertAction UIObjectName="WorkflowTabUIMap.UIWarewolfDEV2PIETERTEWindow.UIUI_SplitPane_AutoIDCustom.UIUI_TabManager_AutoIDTabList.UIDev2StudioViewModelsTabPage.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIOUTPUTCustom.UIDebugOutputCustom.UIDebugOutputTreeTree.FindRecordIndexTreeItem.InputsItem1Text">
       <ParameterName />
       <PropertyName>ControlType</PropertyName>
       <ExpectedValue>Text</ExpectedValue>
@@ -74,40 +74,6 @@
       <Disabled>false</Disabled>
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.FindRecordIndexTreeItem.InputsSearchTypeItemText">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>Text</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod2">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.FindRecordIndexTreeItem.InputsItem2Text">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>Text</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod3">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
     </TestStepMarkerAction>
   </ExecuteActions>
   <CleanupActions />
@@ -3877,65 +3843,6 @@
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
                                                     </UIObject>
-                                                    <UIObject ControlType="TreeItem" Id="FindRecordIndexTreeItem" FriendlyName="Find Record Index (1)" SpecialControlType="None">
-                                                      <TechnologyName>UIA</TechnologyName>
-                                                      <WindowTitles>
-                                                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                                      </WindowTitles>
-                                                      <SearchConfigurations>
-                                                        <SearchConfiguration>Expand</SearchConfiguration>
-                                                      </SearchConfigurations>
-                                                      <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                                        <PropertyCondition Name="AutomationId">Step</PropertyCondition>
-                                                      </AndCondition>
-                                                      <SupportLevel>0</SupportLevel>
-                                                      <Descendants>
-                                                        <UIObject ControlType="Text" Id="InputsItem1Text" FriendlyName="1" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">UI_DebugOutputLabelTextBlock_AutoID</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">2</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants />
-                                                        </UIObject>
-                                                        <UIObject ControlType="Text" Id="InputsSearchTypeItemText" FriendlyName="=" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">UI_DebugOutputValueTextBlock_AutoID</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">3</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants />
-                                                        </UIObject>
-                                                        <UIObject ControlType="Text" Id="InputsItem2Text" FriendlyName="1" SpecialControlType="None">
-                                                          <TechnologyName>UIA</TechnologyName>
-                                                          <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                                          </WindowTitles>
-                                                          <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                            <PropertyCondition Name="AutomationId">UI_DebugOutputValueTextBlock_AutoID</PropertyCondition>
-                                                            <PropertyCondition Name="Instance">4</PropertyCondition>
-                                                          </AndCondition>
-                                                          <SupportLevel>0</SupportLevel>
-                                                          <Descendants />
-                                                        </UIObject>
-                                                      </Descendants>
-                                                    </UIObject>
                                                   </Descendants>
                                                 </UIObject>
                                                 <UIObject ControlType="Edit" Id="StatusBar" FriendlyName="Dev2StatusBarAutomationID" SpecialControlType="None">
@@ -4597,6 +4504,37 @@
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
+                                            <UIObject ControlType="TreeItem" Id="FindRecordIndexTreeItem" FriendlyName="Find Record Index (1)" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                              </WindowTitles>
+                                              <SearchConfigurations>
+                                                <SearchConfiguration>Expand</SearchConfiguration>
+                                              </SearchConfigurations>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">Step</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="Text" Id="InputsItem1Text" FriendlyName="1" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_DebugOutputLabelTextBlock_AutoID</PropertyCondition>
+                                                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
                                             <UIObject ControlType="TreeItem" Id="UIUnsaved13TreeItem" FriendlyName="Unsaved 13" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
@@ -4612,36 +4550,6 @@
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
                                               <Descendants />
-                                            </UIObject>
-                                            <UIObject ControlType="TreeItem" Id="UIFindRecordIndex1TreeItem" FriendlyName="Find Record Index (1)" SpecialControlType="None">
-                                              <TechnologyName>UIA</TechnologyName>
-                                              <WindowTitles>
-                                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                              </WindowTitles>
-                                              <SearchConfigurations>
-                                                <SearchConfiguration>Expand</SearchConfiguration>
-                                              </SearchConfigurations>
-                                              <AndCondition>
-                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                                <PropertyCondition Name="AutomationId">Step</PropertyCondition>
-                                              </AndCondition>
-                                              <SupportLevel>0</SupportLevel>
-                                              <Descendants>
-                                                <UIObject ControlType="Button" Id="UIExpanderButton" FriendlyName="Expander" SpecialControlType="None">
-                                                  <TechnologyName>UIA</TechnologyName>
-                                                  <WindowTitles>
-                                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                                  </WindowTitles>
-                                                  <AndCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">Expander</PropertyCondition>
-                                                  </AndCondition>
-                                                  <SupportLevel>0</SupportLevel>
-                                                  <Descendants />
-                                                </UIObject>
-                                              </Descendants>
                                             </UIObject>
                                           </Descendants>
                                         </UIObject>
