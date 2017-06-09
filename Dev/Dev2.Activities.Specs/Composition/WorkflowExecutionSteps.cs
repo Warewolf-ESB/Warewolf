@@ -1900,6 +1900,7 @@ namespace Dev2.Activities.Specs.Composition
             environmentModel.Connect();
 
             var sharepointList = table.Rows[0]["List"];
+            sharepointList += "_" + ScenarioContext.Current.Get<int>("recordsetNameRandomizer").ToString();
             var result = table.Rows[0]["Result"];
             SharepointUpdateListItemActivity createListItemActivity = new SharepointUpdateListItemActivity
             {
@@ -1962,16 +1963,6 @@ namespace Dev2.Activities.Specs.Composition
                 }
             });
 
-            _commonSteps.AddVariableToVariableList("[[AccTesting().Title]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().Name]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().IntField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().CurrencyField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().DateField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().DateTimeField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().BoolField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().MultilineTextField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().Loc]] ");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().RequiredField]]");
             _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
 
         }
@@ -2790,6 +2781,32 @@ namespace Dev2.Activities.Specs.Composition
                     var serialize = serializer.Serialize(new Food());
                     value = serialize;
                 }
+
+                List<ActivityDTO> fieldCollection;
+                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+
+                _commonSteps.AddVariableToVariableList(variable);
+
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+            }
+            _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+        }
+
+        [Given(@"""(.*)"" contains a recordset name randomizing Assign ""(.*)"" as")]
+        [Then(@"""(.*)"" contains a recordset name randomizing Assign ""(.*)"" as")]
+        public void ThenContainsARecordsetNameRandomizingAssignAs(string parentName, string assignName, Table table)
+        {
+            var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+            var recordsetNameRandomizer = new Random().Next(60) + 1;
+            ScenarioContext.Current.Add("recordsetNameRandomizer", recordsetNameRandomizer);
+
+            foreach (var tableRow in table.Rows)
+            {
+                var value = tableRow["value"];
+                var variable = tableRow["variable"];
+
+                var endOfRecordsetName = variable.IndexOf('(');
+                variable = variable.Substring(0, endOfRecordsetName) + "_" + recordsetNameRandomizer.ToString() + variable.Substring(endOfRecordsetName, variable.Length - endOfRecordsetName);
 
                 List<ActivityDTO> fieldCollection;
                 _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
