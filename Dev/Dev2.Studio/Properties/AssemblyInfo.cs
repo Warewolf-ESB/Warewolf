@@ -21,6 +21,7 @@ using log4net.Config;
 [assembly: AssemblyDescription("Warewolf Studio")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCulture("")]
+[assembly: AssemblyVersion("0.0.*")]
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
 [assembly: XmlConfigurator(Watch = false)]
 // Setting ComVisible to false makes the types in this assembly not visible 
