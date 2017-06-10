@@ -2917,15 +2917,22 @@ namespace Dev2.Activities.Specs.Composition
             var localFile = table.Rows[0]["Local File"];
             var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
             var dropboxFile = table.Rows[0]["DropboxFile"];
-            var serverPathToUniqueNameGuid = CommonSteps.GetGuid();
-            dropboxFile = CommonSteps.AddGuidToPath(dropboxFile, serverPathToUniqueNameGuid);
-            ScenarioContext.Current.Add("serverPathToUniqueNameGuid", serverPathToUniqueNameGuid);
             var result = table.Rows[0]["Result"];
             uploadActivity.FromPath = localFile;
             uploadActivity.OverWriteMode = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
             uploadActivity.ToPath = dropboxFile;
 
-            File.Create(localFile);
+            try
+            {
+                using (File.Create(localFile))
+                {
+
+                }
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, uploadActivity);
         }
@@ -2985,8 +2992,7 @@ namespace Dev2.Activities.Specs.Composition
             var dropBoxSource = GetDropBoxSource();
             downloadActivity.SelectedSource = dropBoxSource;
             downloadActivity.FromPath = table.Rows[0]["Local File"];
-            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
-            downloadActivity.ToPath = CommonSteps.AddGuidToPath(table.Rows[0]["DropboxFile"], serverPathUniqueNameGuid);
+            downloadActivity.ToPath = table.Rows[0]["DropboxFile"];
             var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
             downloadActivity.OverwriteFile = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
             var result = table.Rows[0]["Result"];
@@ -3007,8 +3013,6 @@ namespace Dev2.Activities.Specs.Composition
             var dropBoxSource = GetDropBoxSource();
             deleteActivity.SelectedSource = dropBoxSource;
             var dropboxFile = table.Rows[0]["DropboxFile"];
-            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
-            dropboxFile = CommonSteps.AddGuidToPath(dropboxFile, serverPathUniqueNameGuid);
             deleteActivity.DeletePath = dropboxFile;
             var result = table.Rows[0]["Result"];
             _commonSteps.AddVariableToVariableList(result);
