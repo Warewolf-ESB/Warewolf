@@ -705,17 +705,17 @@ Scenario: Run a passing Test with RabbitMq Object return
 	And I Add "RabbitMQ Consume" as TestStep
 	And I Clear existing StepOutputs
 	And I add StepOutputs item as 
-	| Variable Name      | Condition | Value                |
+	| Variable Name      | Condition | Value |
 	| [[@AllMessages()]] | Contains  | A0003 |
     And I add StepOutputs item as 
-    | Variable Name      | Condition | Value            |
-    | [[@AllMessages()]] | Contains  | Bob |
+    | Variable Name      | Condition | Value |
+    | [[@AllMessages()]] | Contains  | Bob   |
 	And I add StepOutputs item as 
-	| Variable Name      | Condition | Value         |
-	| [[@AllMessages()]] | Contains  | 32 |
+	| Variable Name      | Condition | Value |
+	| [[@AllMessages()]] | Contains  | 32    |
 	And I Add outputs as
-	| Variable Name  | Condition | Value         |
-	| @AllMessages() | Contains  | 32 |
+	| Variable Name  | Condition | Value |
+	| @AllMessages() | Contains  | 32    |
 	And save is enabled
 	And test status is pending	
 	And test is enabled	

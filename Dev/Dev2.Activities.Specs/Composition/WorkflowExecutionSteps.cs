@@ -2936,7 +2936,6 @@ namespace Dev2.Activities.Specs.Composition
             var listActivity = new DsfDropboxFileListActivity()
             {
                 DisplayName = dotNetServiceName,
-
             };
             var dropBoxSource = GetDropBoxSource();
             listActivity.SelectedSource = dropBoxSource;
@@ -2961,7 +2960,6 @@ namespace Dev2.Activities.Specs.Composition
             listActivity.IsRecursive = b;
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, listActivity);
-
         }
 
 
