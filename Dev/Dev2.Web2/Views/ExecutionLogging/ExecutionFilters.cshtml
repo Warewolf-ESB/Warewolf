@@ -1,5 +1,8 @@
 ﻿@model Dev2.Web2.Models.ExecutionLogging.ExecutionLoggingRequestViewModel
 
+<link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' />
+<script type='text/javascript' src='~/Scripts/filterScript.js'></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 
 @using (Html.BeginForm())
 {
@@ -50,39 +53,36 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="row" style="margin-bottom: 3px;">
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:15%;">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-hourglass" title="Execution Time"></i>
-                </span>
                 @Html.EditorFor(model => model.ExecutionTime, new { htmlAttributes = new { @class = "form-control", @title = "Filter Execution Time", placeholder = "Filter Execution Time..." } })
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:10%;">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-dashboard" aria-hidden="true" title="Status"></span>
-                </span>
                 @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @title = "Filter Status", placeholder = "Filter Status..." } })
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:15%;">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-play" aria-hidden="true" title="Start Time"></span>
-                </span>
-                @Html.EditorFor(model => model.StartDateTime, new { htmlAttributes = new { @class = "form-control", @title = "Filter Start Time", placeholder = "Filter Start Time..." } })
+                @*<input class="form-control text-box single-line" type="date" data-date="" data-date-format="DD MMMM YYYY" value="2015-08-09" placeholder="Filter Start Time...">*@
+                <div class='input-group date' id='datePicker'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:15%;">
-                <span class="input-group-addon">
+                @*<span class="input-group-addon">
                     <span class="glyphicon glyphicon-stop" aria-hidden="true" title="Completed Time"></span>
                 </span>
-                @Html.EditorFor(model => model.CompletedDateTime, new { htmlAttributes = new { @class = "form-control", @title = "Filter Completed Time", placeholder = "Filter Completed Time..." } })
+                <input class="form-control text-box single-line" type="date" data-date="" data-date-format="DD MMMM YYYY" value="2015-08-09" placeholder="Filter Completed Time...">*@
+                <div class='input-group date' id='datePicker'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:20%;">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-home" aria-hidden="true" title="Url"></span>
-                </span>
                 @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @title = "Filter Url", placeholder = "Filter Url..." } })
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:18%;">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-user" aria-hidden="true" title="User"></span>
-                </span>
                 @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control", @title = "Filter User", placeholder = "Filter User..." } })
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:5%;">
