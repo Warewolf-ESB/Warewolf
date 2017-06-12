@@ -25,6 +25,7 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using WarewolfParserInterop;
+using Dev2.Activities.Specs.BaseTypes;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 {
@@ -47,6 +48,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             scenarioContext.Add("dbSource", dbSource);
             sqlBulkInsert.Database = dbSource;
             sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
+            if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1") {
+                var tableNameUniqueNameNumber = (new Random().Next(10) + 1).ToString();
+                ScenarioContext.Current.Add("tableNameUniqueNameNumber", tableNameUniqueNameNumber);
+                sqlBulkInsert.TableName += "_" + tableNameUniqueNameNumber;
+            }
             var dataColumnMappings = new List<DataColumnMapping>
                 {
                     new DataColumnMapping
@@ -103,10 +109,13 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + " " +
-                                  "set Col2 = 0 " +
-                                  "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
-                using(var cmd = new SqlCommand(q2, connection))
+                var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
+                if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
+                {
+                    q2 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameNumber");
+                }
+                q2 += " set Col2 = 0 where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
+                using (var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -318,9 +327,13 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + " " +
-                                  "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
-                using(var cmd = new SqlCommand(q1, connection))
+                var q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
+                if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
+                {
+                    q1 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameNumber");
+                }
+                q1 += " where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
+                using (var cmd = new SqlCommand(q1, connection))
                 {
                     actualInserts = cmd.ExecuteScalar();
                 }
@@ -330,7 +343,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             {
                 connection.Open();
                 var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
-                using(var cmd = new SqlCommand(q2, connection))
+                if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
+                {
+                    q2 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameNumber");
+                }
+                using (var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
