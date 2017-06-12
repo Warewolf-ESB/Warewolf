@@ -2915,11 +2915,16 @@ namespace Dev2.Activities.Specs.Composition
             var dropBoxSource = GetDropBoxSource();
             uploadActivity.SelectedSource = dropBoxSource;
             var localFile = table.Rows[0]["Local File"];
+            var localFileUniqueNameGuid = CommonSteps.GetGuid();
+            localFile = CommonSteps.AddGuidToPath(localFile, localFileUniqueNameGuid);
+            ScenarioContext.Current.Add("localFileUniqueNameGuid", localFileUniqueNameGuid);
+            Console.WriteLine("Generated new local file path as " + localFileUniqueNameGuid + ".");
             var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
             var dropboxFile = table.Rows[0]["DropboxFile"];
             var serverPathToUniqueNameGuid = CommonSteps.GetGuid();
             dropboxFile = CommonSteps.AddGuidToPath(dropboxFile, serverPathToUniqueNameGuid);
             ScenarioContext.Current.Add("serverPathToUniqueNameGuid", serverPathToUniqueNameGuid);
+            Console.WriteLine("Generated new server path for dropbox server path as " + serverPathToUniqueNameGuid + ".");
             var result = table.Rows[0]["Result"];
             uploadActivity.FromPath = localFile;
             uploadActivity.OverWriteMode = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
