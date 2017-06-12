@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WarewolfCOMIPC.Client;
+using Dev2.Tests.Runtime.ESB.ComPlugin;
 
 // ReSharper disable InconsistentNaming
 
@@ -13,17 +14,16 @@ namespace WarewolfCOMIPC.Test
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void WarewolfCOMIPCClient_Execute_GetType_ShouldReturnType()
         {
             //------------Setup for test--------------------------
+            var clsid = new Guid(ComComPluginRuntimeHandlerTest.adodbConnectionClassId);
 
-            var clsid = new Guid("00000514-0000-0010-8000-00AA006D2EA4");
-            //------------Execute Test---------------------------
-           
+            //------------Execute Test---------------------------           
             var execute = IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
-            Assert.IsNotNull(execute);
+
             //------------Assert Results-------------------------
+            Assert.IsNotNull(execute);
         }
 
         [TestMethod]
@@ -48,11 +48,10 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void GetMethods_GivenConnection_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
-            var classId = new Guid("00000514-0000-0010-8000-00aa006d2ea4");
+            var classId = new Guid(ComComPluginRuntimeHandlerTest.adodbConnectionClassId);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -68,11 +67,10 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void GetMethods_GivenAcroPDF_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
-            var classId = new Guid("CA8A9780-280D-11CF-A24D-444553540000");
+            var classId = new Guid(ComComPluginRuntimeHandlerTest.acropdfConnectionClassId);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -85,11 +83,10 @@ namespace WarewolfCOMIPC.Test
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void ExecuteSpecifiedMethod_GivenConnection_ReturnSuccess()
         {
             //---------------Set up test pack-------------------
-            var classId = new Guid("00000514-0000-0010-8000-00aa006d2ea4");
+            var classId = new Guid(ComComPluginRuntimeHandlerTest.adodbConnectionClassId);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------

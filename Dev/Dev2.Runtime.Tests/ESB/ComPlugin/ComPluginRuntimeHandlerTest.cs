@@ -37,8 +37,9 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class ComComPluginRuntimeHandlerTest
     {
+        public const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
+        public const string acropdfConnectionClassId = "CA8A9780-280D-11CF-A24D-444553540000";
 
-        private const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -113,16 +114,9 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void BuildValuedTypeParams_GivenValid_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
-            var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
-            var memoryStream = new MemoryStream();
-            var serializeObject = JsonConvert.SerializeObject(GetType());
-            memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
-            pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
             var type = typeof(ComPluginRuntimeHandler);
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
             ComPluginInvokeArgs args = new ComPluginInvokeArgs
@@ -139,26 +133,17 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                     }
                 }
             };
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var enumerable = methodInfo.Invoke("BuildValuedTypeParams",new object[] { args }) as IEnumerable<object>;
+            var enumerable = methodInfo.Invoke("BuildValuedTypeParams", new object[] { args }) as IEnumerable<object>;
             //---------------Test Result -----------------------
             Assert.AreEqual(1,enumerable?.Count());
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void BuildValuedTypeParams_GivenValidObjectparam_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
-            var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
-            var memoryStream = new MemoryStream();
-            var serializeObject = JsonConvert.SerializeObject(GetType());
-            memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
-            pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
             var type = typeof(ComPluginRuntimeHandler);
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
             ComPluginInvokeArgs args = new ComPluginInvokeArgs
@@ -176,10 +161,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                     }
                 }
             };
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var enumerable = methodInfo.Invoke("BuildValuedTypeParams",new object[] { args }) as IEnumerable<object>;
+            var enumerable = methodInfo.Invoke("BuildValuedTypeParams", new object[] { args }) as IEnumerable<object>;
             //---------------Test Result -----------------------
             Assert.AreEqual(1,enumerable?.Count());
         }
@@ -267,7 +250,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_ListMethods")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void ComPluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
