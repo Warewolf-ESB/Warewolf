@@ -1,4 +1,13 @@
-﻿body {
+﻿.container {
+    width: 100%;
+}
+
+.well {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -80,3 +89,13 @@ td {
         #executionList tr.header, #executionList tr:hover {
             background-color: #f1f1f1;
         }
+
+
+#filterTable {
+    width: 100%;
+}
+
+#filterTable td {
+    padding: 0;
+    background-color: transparent
+}

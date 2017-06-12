@@ -64,9 +64,27 @@ namespace Dev2.Web2.Controllers
         }
 
         // GET: ExecutionLogging/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string executionId)
         {
-            return View();
+            var serverUrl = String.Format("{0}://{1}:{2}", "https", "localhost", "3143");
+            var client = new RestClient(serverUrl);
+            client.Authenticator = new NtlmAuthenticator();
+
+            var serverRequest = GetResult(executionId);
+
+            var response = client.Execute<LogEntry>(serverRequest);
+            var data = response.Data ?? new LogEntry();
+
+            return PartialView("Details", data);
+        }
+
+        private RestRequest GetResult(string executionId)
+        {
+            var serverRequest = new RestRequest("services/GetServiceExecutionResult", Method.GET);
+            serverRequest.UseDefaultCredentials = true;
+            serverRequest.AddQueryParameter("ExecutionId", executionId);
+
+            return serverRequest;
         }
 
         // GET: ExecutionLogging/Create
