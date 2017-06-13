@@ -44,16 +44,17 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 
         public void SetupScenerio()
         {
-            var sqlBulkInsert = new DsfSqlBulkInsertActivity();
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource,"");
             scenarioContext.Add("dbSource", dbSource);
+
+            var sqlBulkInsert = new DsfSqlBulkInsertActivity();
             sqlBulkInsert.Database = dbSource;
             sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
             if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1") {
                 var tableNameUniqueNameGuid = CommonSteps.GetGuid();
                 CreateIsolatedSQLTable(tableNameUniqueNameGuid);
-                ScenarioContext.Current.Add("tableNameUniqueNameGuid", tableNameUniqueNameGuid);
+                scenarioContext.Add("tableNameUniqueNameGuid", tableNameUniqueNameGuid);
                 sqlBulkInsert.TableName += "_" + tableNameUniqueNameGuid;
             }
             var dataColumnMappings = new List<DataColumnMapping>

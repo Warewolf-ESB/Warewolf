@@ -2930,7 +2930,7 @@ namespace Dev2.Activities.Specs.Composition
             uploadActivity.OverWriteMode = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
             uploadActivity.ToPath = dropboxFile;
 
-            File.Create(localFile);
+            File.Create(localFile).Close();
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, uploadActivity);
         }
