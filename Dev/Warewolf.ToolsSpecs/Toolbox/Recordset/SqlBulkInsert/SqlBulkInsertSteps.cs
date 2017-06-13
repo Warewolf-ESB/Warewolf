@@ -26,6 +26,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using WarewolfParserInterop;
 using Dev2.Activities.Specs.BaseTypes;
+using System.Reflection;
+using System.IO;
 
 namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
 {
@@ -49,9 +51,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             sqlBulkInsert.Database = dbSource;
             sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
             if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1") {
-                var tableNameUniqueNameNumber = (new Random().Next(10) + 1).ToString();
-                ScenarioContext.Current.Add("tableNameUniqueNameNumber", tableNameUniqueNameNumber);
-                sqlBulkInsert.TableName += "_" + tableNameUniqueNameNumber;
+                var tableNameUniqueNameGuid = CommonSteps.GetGuid();
+                CreateIsolatedSQLTable(tableNameUniqueNameGuid);
+                ScenarioContext.Current.Add("tableNameUniqueNameGuid", tableNameUniqueNameGuid);
+                sqlBulkInsert.TableName += "_" + tableNameUniqueNameGuid;
             }
             var dataColumnMappings = new List<DataColumnMapping>
                 {
@@ -95,6 +98,62 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             scenarioContext.Add("activity", sqlBulkInsert);
         }
 
+        private void CreateIsolatedSQLTable(string tableNameUniqueNameGuid)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert." + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + ".sql";
+            string CreateIsolatedSqlTable;
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    CreateIsolatedSqlTable = reader.ReadToEnd().Replace("[[tableNameUniqueNameGuid]]", tableNameUniqueNameGuid);
+                }
+            }
+            var dbSource = scenarioContext.Get<DbSource>("dbSource");
+            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            {
+                connection.Open();
+                foreach (var individualSqlCommand in CreateIsolatedSqlTable.Split(new[] { "\r\nGO" }, StringSplitOptions.None))
+                {
+                    if (string.IsNullOrWhiteSpace(individualSqlCommand))
+                    {
+                        break;
+                    }
+                    using (var cmd = new SqlCommand(individualSqlCommand, connection))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        [AfterScenario("Import data into Table Batch size is 1")]
+        public void DeleteTestItem()
+        {
+            var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+            DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+        }
+
+        private void DeleteIsolatedSQLTable(string tableNameUniqueNameGuid)
+        {
+            var dbSource = scenarioContext.Get<DbSource>("dbSource");
+            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            {
+                connection.Open();
+                var q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
+                using (var cmd = new SqlCommand(q, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
+                using (var cmd = new SqlCommand(q, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         [Given(@"I have this data")]
         public void GivenIHaveThisData(Table table)
         {
@@ -112,7 +171,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
                 {
-                    q2 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameNumber");
+                    q2 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
                 }
                 q2 += " set Col2 = 0 where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using (var cmd = new SqlCommand(q2, connection))
@@ -330,7 +389,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 var q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
                 {
-                    q1 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameNumber");
+                    q1 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
                 }
                 q1 += " where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using (var cmd = new SqlCommand(q1, connection))
@@ -345,7 +404,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 var q2 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
                 if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
                 {
-                    q2 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameNumber");
+                    q2 += "_" + ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
                 }
                 using (var cmd = new SqlCommand(q2, connection))
                 {
