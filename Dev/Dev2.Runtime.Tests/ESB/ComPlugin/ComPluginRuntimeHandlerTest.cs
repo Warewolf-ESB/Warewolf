@@ -35,10 +35,9 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
     /// </summary>
     [TestClass]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class ComComPluginRuntimeHandlerTest
+    public class ComPluginRuntimeHandlerTest
     {
         public const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
-        public const string acropdfConnectionClassId = "CA8A9780-280D-11CF-A24D-444553540000";
 
         /// <summary>
         ///Gets or sets the test context which provides
