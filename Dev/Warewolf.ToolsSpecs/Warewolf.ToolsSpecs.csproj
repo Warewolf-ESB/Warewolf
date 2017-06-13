@@ -773,6 +773,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Toolbox\Recordset\SqlBulkInsert\Import_data_into_Table_Batch_size_is_1.sql" />
     <EmbeddedResource Include="Toolbox\Data\DataMerge\NewLineExample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

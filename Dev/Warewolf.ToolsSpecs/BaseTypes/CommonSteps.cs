@@ -203,7 +203,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public static string GetGuid()
         {
-            return Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 16);
+            return Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 13);
         }
 
         public static string AddGuidToPath(string location, string GetGuid)
