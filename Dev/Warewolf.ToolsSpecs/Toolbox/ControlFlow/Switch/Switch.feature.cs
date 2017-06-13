@@ -85,12 +85,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table292 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Switch on"});
-            table292.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "[[A]] =  30"});
 #line 11
- testRunner.And("the debug inputs as", ((string)(null)), table292, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -128,12 +128,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table293 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Switch on"});
-            table293.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         string.Format("\"{0}\"", @switch)});
 #line 27
- testRunner.And("the debug inputs as", ((string)(null)), table293, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -114,7 +114,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                foreach (var individualSqlCommand in CreateIsolatedSqlTable.Split(new[] { "\r\nGO" }, StringSplitOptions.None))
+                foreach (var individualSqlCommand in CreateIsolatedSqlTable.Split(new[] { "\r\nGO" }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     if (string.IsNullOrWhiteSpace(individualSqlCommand))
                     {
