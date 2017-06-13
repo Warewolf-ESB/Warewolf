@@ -17,7 +17,7 @@ namespace WarewolfCOMIPC.Test
         public void WarewolfCOMIPCClient_Execute_GetType_ShouldReturnType()
         {
             //------------Setup for test--------------------------
-            var clsid = new Guid(ComComPluginRuntimeHandlerTest.adodbConnectionClassId);
+            var clsid = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
 
             //------------Execute Test---------------------------           
             var execute = IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
@@ -51,7 +51,7 @@ namespace WarewolfCOMIPC.Test
         public void GetMethods_GivenConnection_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
-            var classId = new Guid(ComComPluginRuntimeHandlerTest.adodbConnectionClassId);
+            var classId = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -64,29 +64,13 @@ namespace WarewolfCOMIPC.Test
             }
 
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetMethods_GivenAcroPDF_ShouldReturnMethodList()
-        {
-            //---------------Set up test pack-------------------
-            var classId = new Guid(ComComPluginRuntimeHandlerTest.acropdfConnectionClassId);
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
-            var enumerable = execute as List<MethodInfoTO>;
-            Assert.IsNotNull(enumerable);
-            //---------------Test Result -----------------------
-            Assert.AreNotEqual(33, enumerable.Count);
-        }
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ExecuteSpecifiedMethod_GivenConnection_ReturnSuccess()
         {
             //---------------Set up test pack-------------------
-            var classId = new Guid(ComComPluginRuntimeHandlerTest.adodbConnectionClassId);
+            var classId = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------

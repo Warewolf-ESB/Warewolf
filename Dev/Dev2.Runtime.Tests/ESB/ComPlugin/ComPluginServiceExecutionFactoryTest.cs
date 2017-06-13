@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         public void ListMethods_GivenAdodbConnection_ShouldContainOpen()
         {
             //---------------Set up test pack-------------------
-            const string adodbConGuid = ComComPluginRuntimeHandlerTest.adodbConnectionClassId;
+            const string adodbConGuid = ComPluginRuntimeHandlerTest.adodbConnectionClassId;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var ns = ComPluginServiceExecutionFactory.GetNamespaces(new ComPluginSource { ClsId = adodbConGuid });
