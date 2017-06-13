@@ -26,6 +26,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TestingDotnetDllCascading;
 using WarewolfCOMIPC.Client;
+using System.Diagnostics;
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {
@@ -45,6 +46,24 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         ///</summary>
         // ReSharper disable once UnusedMember.Global
         public TestContext TestContext { get; set; }
+
+        [ClassInitialize]
+        public void Add_Component_To_Registry()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var assemblyDirectory = new FileInfo(assembly.Location).Directory.FullName;
+            var resourceName = "Dev2.Tests.Runtime.ESB.ComPlugin.SystemWOW6432NodeCLSIDadodbConnection.reg";
+            var RegistryFilePath = assemblyDirectory + @"\SystemWOW6432NodeCLSIDadodbConnection.reg";
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (var fileStream = File.Create(RegistryFilePath))
+                {
+                    stream.CopyTo(fileStream);
+                }
+            }
+            Process regeditProcess = Process.Start("regedit.exe", "/s " + RegistryFilePath);
+            regeditProcess.WaitForExit();
+        }
 
         #region FetchNamespaceListObject
 
