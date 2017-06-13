@@ -52,38 +52,30 @@
     <div class="container-fluid">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="row" style="margin-bottom: 3px;">
+            <div class="input-group col-md-4" style="float:left; margin-right:3px; width:5%;">
+                @Html.EditorFor(model => model.ExecutionId, new { htmlAttributes = new { @class = "form-control", @title = "Filter Execution ID", placeholder = "Filter..." } })
+            </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:15%;">
-                @Html.EditorFor(model => model.ExecutionTime, new { htmlAttributes = new { @class = "form-control", @title = "Filter Execution Time", placeholder = "Filter Execution Time..." } })
+                @Html.EditorFor(model => model.ExecutionTime, new { htmlAttributes = new { @class = "form-control", @title = "Filter Execution Time", placeholder = "Filter..." } })
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:10%;">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @title = "Filter Status", placeholder = "Filter Status..." } })
+                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @title = "Filter Status", placeholder = "Filter..." } })
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:15%;">
-                @*<input class="form-control text-box single-line" type="date" data-date="" data-date-format="DD MMMM YYYY" value="2015-08-09" placeholder="Filter Start Time...">*@
                 <div class='input-group date' id='datePicker'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+                    <input id="start_dt" class='datepicker' title='D-MMM-YYYY' /> 
                 </div>
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:15%;">
-                @*<span class="input-group-addon">
-                    <span class="glyphicon glyphicon-stop" aria-hidden="true" title="Completed Time"></span>
-                </span>
-                <input class="form-control text-box single-line" type="date" data-date="" data-date-format="DD MMMM YYYY" value="2015-08-09" placeholder="Filter Completed Time...">*@
                 <div class='input-group date' id='datePicker'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+                    <input id="start_dt" class='datepicker' title='D-MMM-YYYY' />
                 </div>
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:20%;">
-                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @title = "Filter Url", placeholder = "Filter Url..." } })
+                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control", @title = "Filter Url", placeholder = "Filter..." } })
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:18%;">
-                @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control", @title = "Filter User", placeholder = "Filter User..." } })
+                @Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "form-control", @title = "Filter User", placeholder = "Filter..." } })
             </div>
             <div class="input-group col-md-4" style="float:left; margin-right:3px; width:5%;">
                 <input type="submit" value="Filter" class="btn btn-default" style="width:auto" />
