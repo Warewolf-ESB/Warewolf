@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         public TestContext TestContext { get; set; }
 
         [ClassInitialize]
-        public void Add_Component_To_Registry()
+        public static void Add_Component_To_Registry(TestContext tstctx)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var assemblyDirectory = new FileInfo(assembly.Location).Directory.FullName;

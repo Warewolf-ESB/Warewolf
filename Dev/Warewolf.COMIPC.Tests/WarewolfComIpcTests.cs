@@ -15,7 +15,7 @@ namespace WarewolfCOMIPC.Test
     public class WarewolfComIpcTests
     {
         [ClassInitialize]
-        public void Add_Component_To_Registry()
+        public static void Add_Component_To_Registry(TestContext tstctx)
         {
             var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
             var runtimeTestsAssembly = Assembly.Load(assemblyDirectory + @"\Dev2.Runtime.Tests.dll");
