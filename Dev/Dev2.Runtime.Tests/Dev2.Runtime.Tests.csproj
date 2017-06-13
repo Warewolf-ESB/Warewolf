@@ -536,7 +536,7 @@
     <EmbeddedResource Include="Json\Sequence.json" />
     <EmbeddedResource Include="Json\UnAuthorizedHelloWorld.json" />
     <EmbeddedResource Include="Json\AssignWithRecSet.json" />
-    <None Include="ESB\ComPlugin\SystemWOW6432NodeCLSIDadodbConnection.reg" />
+    <EmbeddedResource Include="ESB\ComPlugin\SystemWOW6432NodeCLSIDadodbConnection.reg" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Security\secure.config" />
     <None Include="XML\ReadMe.txt" />
