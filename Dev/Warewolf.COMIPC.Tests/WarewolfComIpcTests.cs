@@ -48,41 +48,18 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
-        public void GetMethods_GivenPersonLib_PersonController_ShouldReturnMethodList()
-        {
-            //---------------Set up test pack-------------------
-            var classId = new Guid("2AC49130-C532-4154-B0DC-E930370D36EA");
-            //---------------Assert Precondition----------------
-
-            //---------------Execute Test ----------------------
-            {
-                var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods,  new ParameterInfoTO[] { });
-                var enumerable = execute as List<MethodInfoTO>;
-                Assert.IsNotNull(enumerable);
-                //---------------Test Result -----------------------
-                Assert.AreNotEqual(10, enumerable.Count);
-            }
-
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void GetMethods_GivenConnection_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
             var classId = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
-            //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            {
-                var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
-                var enumerable = execute as List<MethodInfoTO>;
-                Assert.IsNotNull(enumerable);
-                //---------------Test Result -----------------------
-                Assert.AreNotEqual(30, enumerable.Count);
-            }
+            var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
+            var enumerable = execute as List<MethodInfoTO>;
 
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(enumerable);
+            Assert.AreEqual(30, enumerable.Count);
         }
         
         [TestMethod]
