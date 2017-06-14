@@ -17,10 +17,9 @@ namespace WarewolfCOMIPC.Test
         [ClassInitialize]
         public static void Add_Component_To_Registry(TestContext tstctx)
         {
-            var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            var runtimeTestsAssembly = Assembly.Load(assemblyDirectory + @"\Dev2.Runtime.Tests.dll");
+            var runtimeTestsAssembly = Assembly.Load("Dev2.Runtime.Tests");
             var resourceName = "Dev2.Tests.Runtime.ESB.ComPlugin.SystemWOW6432NodeCLSIDadodbConnection.reg";
-            var RegistryFilePath = assemblyDirectory + @"\SystemWOW6432NodeCLSIDadodbConnection.reg";
+            var RegistryFilePath = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName + @"\SystemWOW6432NodeCLSIDadodbConnection.reg";
             using (Stream stream = runtimeTestsAssembly.GetManifestResourceStream(resourceName))
             {
                 using (var fileStream = File.Create(RegistryFilePath))
