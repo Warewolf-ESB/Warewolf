@@ -199,10 +199,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         }
         &"$NuGetPath" "restore" "$SolutionFile"
         &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
-    }
-    if ($LASTEXITCODE -ne 0) {
-        sleep 30
-        exit 1
+        if ($LASTEXITCODE -ne 0) {
+            sleep 30
+            exit 1
+        }
     }
 }
 exit 0

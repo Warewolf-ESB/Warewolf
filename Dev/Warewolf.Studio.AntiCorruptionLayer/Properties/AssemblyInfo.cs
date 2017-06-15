@@ -15,10 +15,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dev2.Runtime.Services")]
+[assembly: AssemblyTitle("Warewolf.Studio.AntiCorruptionLayer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
 [assembly: AssemblyVersion("0.0.*")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
