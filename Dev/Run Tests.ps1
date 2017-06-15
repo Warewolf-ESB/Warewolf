@@ -576,7 +576,7 @@ $DotCoverArgs += @"
                 Rename-Item "$PSScriptRoot\RunTests.bat" "$PSScriptRoot\Run $JobName.bat"
             } else {
                 &"$PSScriptRoot\RunDotCover.bat"
-                Cleanup-ServerStudio 10 1
+                Cleanup-ServerStudio 1800 10
                 Rename-Item "$PSScriptRoot\RunTests.bat" "$PSScriptRoot\Run $JobName.bat"
                 Rename-Item "$PSScriptRoot\RunDotCover.bat" "$PSScriptRoot\Run $JobName DotCover.bat"
                 Rename-Item "$PSScriptRoot\DotCoverRunner.xml" "$PSScriptRoot\$JobName DotCover Runner.xml"
