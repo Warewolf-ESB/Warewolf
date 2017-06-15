@@ -199,19 +199,73 @@ function Cleanup-ServerStudio {
     }
 }
 
+function Copy-On-Write([string]$FilePath) {
+    if (Test-Path $FilePath) {
+        $num = 1
+        while(Test-Path -Path "$FilePath.$num")
+        {
+            $num += 1
+        }
+        $FilePath | Move-Item -Destination "$FilePath.$num"
+    }
+}
+
+function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationFileName) {
+    $DestinationFilePath = "$PSScriptRoot\TestResults\$DestinationFileName"
+    if (Test-Path $DestinationFilePath) {
+        Copy-On-Write $DestinationFilePath
+        Move-Item "$SourceFilePath" "$DestinationFilePath"    }
+}
+
 function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
-    If (Test-Path "$PSScriptRoot\TestResults") {
-        New-Item "$PSScriptRoot\TestResults"
+    [string]$TestResultsFolder = "$PSScriptRoot\TestResults"
+    If (!(Test-Path "$TestResultsFolder")) {
+        New-Item "$TestResultsFolder"
     }
     if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
         Move-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$PSScriptRoot\TestResults"
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
+    
+    # Write failing tests playlistfunction Move-Artifacts-T.
+    Write-Host Writing all test failures in `"$TestResultsFolder`" to a playlist file
+
+    Get-ChildItem "$TestResultsFolder" -Filter *.trx | Rename-Item -NewName {$_.name -replace ' ','_' }
+
+    $PlayList = "<Playlist Version=`"1.0`">"
+    Get-ChildItem "$TestResultsFolder" -Filter *.trx | `
+    Foreach-Object{
+	    [xml]$trxContent = Get-Content $_.FullName
+	    if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
+	        foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
+		        if ($TestResult.outcome -eq "Failed") {
+		            if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -gt 0) {
+		                foreach($TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
+			                if ($TestDefinition.name -eq $TestResult.testName) {
+				                $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
+			                }
+		                }
+                    } else {
+			            Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
+			            Continue
+		            }
+		        }
+	        }
+	    } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
+            $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
+        } else {
+		    Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
+        }
+    }
+    $PlayList += "</Playlist>"
+    $OutPlaylistPath = $TestResultsFolder + "\" + $PlaylistFileName + ".playlist"
+    $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
+    Write-Host Playlist file written to `"$OutPlaylistPath`".
     if ($Server) {
-        Move-Item "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$PSScriptRoot\TestResults\$JobName Server.log" -force
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
     }
     if ($Studio) {
-        Move-Item "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$PSScriptRoot\TestResults\$JobName Studio.log" -force
+        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
     }
     if ($Server -and $DotCover) {
         $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
@@ -232,12 +286,12 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
         if (!($locked)) {
             Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\$JobName Server DotCover.dcvr
-            Move-Item $ServerSnapshot "$PSScriptRoot\TestResults\$JobName Server DotCover.dcvr" -force
+            Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
         } else {
             Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\dotCover.log") {
-            Move-Item "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$PSScriptRoot\TestResults\$JobName Server DotCover.log" -force
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobName Server DotCover.log"
         }
     }
     if ($Studio -and $DotCover) {
@@ -268,7 +322,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
             Write-Host Studio coverage snapshot not found at $StudioSnapshot
         }
         if (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log") {
-            Move-Item "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$PSScriptRoot\TestResults\$JobName Studio DotCover.log" -force
+            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobName Studio DotCover.log"
         }
     }
     if ($Server -and $Studio -and $DotCover) {
@@ -277,34 +331,37 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
 }
 
 function Move-ScreenRecordings-To-TestResults {
-    [string]$testResultsFolder = "$PSScriptRoot\TestResults"
-    Write-Host Getting UI test screen recordings from `"$testResultsFolder`"
+    [string]$TestResultsFolder = "$PSScriptRoot\TestResults"
+    Write-Host Getting UI test screen recordings from `"$TestResultsFolder`"
 
     $screenRecordingsFolder = "$PSScriptRoot\TestResults\ScreenRecordings"
     New-Item $screenRecordingsFolder -Force -ItemType Directory
-    copy-item $testResultsFolder\UI\In\* $screenRecordingsFolder -Recurse -Force
-
-    $pngFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
-    foreach ($file in $pngFiles)
-    {
-	    if (-not $file.name.Contains($file.Directory.Name))
+    if (Test-Path $TestResultsFolder\UI\In\*) {
+        Copy-Item $TestResultsFolder\UI\In\* $screenRecordingsFolder -Recurse -Force
+        $pngFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
+        foreach ($file in $pngFiles)
+        {
+	        if (-not $file.name.Contains($file.Directory.Name))
+	        {
+		        Rename-Item -Path $file.FullName -NewName ( $file.Directory.Name + " " + $file.name )
+	        }
+        }
+        $trmxFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
+        foreach ($file in $trmxFiles)
+        {
+            $newRecordingFileName = $file.name -replace ".png",".wmv"
+            Rename-Item -Path ($file.DirectoryName + "\ScreenCapture.wmv") -NewName $newRecordingFileName
+        }
+        $files = Get-ChildItem -Path "$screenRecordingsFolder" -Include *.png, *.wmv -Recurse | where {$_.PSIScontainer -eq $false}
+        foreach ($file in $files)
 	    {
-		    Rename-Item -Path $file.FullName -NewName ( $file.Directory.Name + " " + $file.name )
-	    }
+		    $destinationFolder = (Get-Item $file).Directory.parent.parent.FullName
+		    Move-Item $file.FullName $destinationFolder
+        }
+        Remove-Item -Recurse -Force $screenRecordingsFolder\* -Exclude "*.png","*.wmv"
+    } else {
+        Write-Host $TestResultsFolder\UI\In\* not found.
     }
-    $trmxFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
-    foreach ($file in $trmxFiles)
-    {
-        $newRecordingFileName = $file.name -replace ".png",".wmv"
-        Rename-Item -Path ($file.DirectoryName + "\ScreenCapture.wmv") -NewName $newRecordingFileName
-    }
-    $files = Get-ChildItem -Path "$screenRecordingsFolder" -Include *.png, *.wmv -Recurse | where {$_.PSIScontainer -eq $false}
-    foreach ($file in $files)
-	{
-		$destinationFolder = (Get-Item $file).Directory.parent.parent.FullName
-		Move-Item $file.FullName $destinationFolder
-    }
-    Remove-Item -Recurse -Force $screenRecordingsFolder\* -Exclude "*.png","*.wmv"
 }
 
 function Install-Server {
@@ -414,15 +471,7 @@ function Start-Server {
 
 function Start-Studio {
     $StudioLogFile = "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log"
-    if (Test-Path $StudioLogFile) {
-        #Studio Log File Backup
-        $num = 1
-        while(Test-Path -Path "$StudioLogFile.$num")
-        {
-            $num += 1
-        }
-        $StudioLogFile | Move-Item -Destination "$StudioLogFile.$num"
-    }
+    Copy-On-Write $StudioLogFile
 	if (!$DotCover.IsPresent) {
 		Start-Process "$StudioPath"
 	} else {
@@ -501,26 +550,30 @@ $JobCategories = @()
 if ($JobName -ne $null -and $JobName -ne "") {
     foreach ($Job in $JobName.Split(",")) {
         $JobNames += $Job
-        if ($JobSpecs[$Job].Count -eq 1) {
-            $JobAssemblySpecs += $JobSpecs[$Job]
-            $JobCategories += ""
-        } else {
-            $JobAssemblySpecs += $JobSpecs[$Job][0]
-            $JobCategories += $JobSpecs[$Job][1]
+        if ($JobSpecs.ContainsKey($Job)) {
+            if ($JobSpecs[$Job].Count -eq 1) {
+                $JobAssemblySpecs += $JobSpecs[$Job]
+                $JobCategories += ""
+            } else {
+                $JobAssemblySpecs += $JobSpecs[$Job][0]
+                $JobCategories += $JobSpecs[$Job][1]
+            }
         }
     }
-} else {if ($RunAllJobs.IsPresent) {
-    $JobSpecs.Keys.ForEach({
-        $JobNames += $_
-        if ($JobSpecs[$_].Count -eq 1) {
-            $JobAssemblySpecs += $JobSpecs[$_]
-            $JobCategories += ""
-        } else {
-            $JobAssemblySpecs += $JobSpecs[$_][0]
-            $JobCategories += $JobSpecs[$_][1]
-        }
-    })
-}}
+} else {
+    if ($RunAllJobs.IsPresent) {
+        $JobSpecs.Keys.ForEach({
+            $JobNames += $_
+            if ($JobSpecs[$_].Count -eq 1) {
+                $JobAssemblySpecs += $JobSpecs[$_]
+                $JobCategories += ""
+            } else {
+                $JobAssemblySpecs += $JobSpecs[$_][0]
+                $JobCategories += $JobSpecs[$_][1]
+            }
+        })
+    }
+}
 $TotalNumberOfJobsToRun = $JobNames.length
 if ($TotalNumberOfJobsToRun -gt 0) {
     $DefaultVSTestPath = "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe"
@@ -599,33 +652,30 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if ($TestsPath -ne "" -and !($TestsPath.EndsWith("\"))) { $TestsPath += "\" }
         foreach ($Project in $ProjectSpec.Split(",")) {
             $SolutionFolderPath = FindFile-InParent @($TestsPath + $Project + ".dll")
-            foreach ($file in Get-ChildItem $SolutionFolderPath) {
-                $AssemblyNameToCheck = $file.Name.replace($file.extension, "")
-                if (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck) {
-                    if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
-                        $TestAssembliesDirectories += $file.Directory.FullName
-                    }
-                    if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
-                    } else {
-		                $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
-                    }
-	            }
+            if ($SolutionFolderPath -ne "") {
+                foreach ($file in Get-ChildItem $SolutionFolderPath) {
+                    $AssemblyNameToCheck = $file.Name.replace($file.extension, "")
+                    if (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck) {
+                        if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
+                            $TestAssembliesDirectories += $file.Directory.FullName
+                        }
+                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		                    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+                        } else {
+		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
+                        }
+	                }
+                }
             }
             if ($TestAssembliesList -eq "") {
                 $SolutionFolderPath = FindFile-InParent @($TestsPath + $Project)
-                foreach ($folder in Get-ChildItem $SolutionFolderPath) {
-                    $SolutionFolderPath = FindFile-InParent @($TestsPath + $Project)
-                    if (AssemblyIsNotAlreadyDefinedWithoutWildcards $file.Name) {
-                        if (!$TestAssembliesDirectories.Contains($folder)) {
-                            $TestAssembliesDirectories += $folder.FullName
-                        }
-                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                    $TestAssembliesList = $TestAssembliesList + " `"" + $folder.FullName + "\bin\Debug\" + $folder.Name + ".dll`""
-                        } else {
-		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $folder.FullName + "\bin\Debug\" + $folder.Name + ".dll`""
-                        }
-	                }
+                if (!$TestAssembliesDirectories.Contains($SolutionFolderPath + "\bin\Debug")) {
+                    $TestAssembliesDirectories += $SolutionFolderPath + "\bin\Debug"
+                }
+                if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		            $TestAssembliesList = $TestAssembliesList + " `"" + $SolutionFolderPath + "\bin\Debug\" + (Get-Item $SolutionFolderPath).Name + ".dll`""
+                } else {
+		            $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $SolutionFolderPath + "\bin\Debug\" + (Get-Item $SolutionFolderPath).Name + ".dll`""
                 }
             }
         }
@@ -633,16 +683,64 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	        Write-Host Cannot find any $ProjectSpec project folders or assemblies at $PSScriptRoot.
 	        exit 1
         }
+
+        # Create test settings.
+        if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
+            $TestSettingsFile = "$PSScriptRoot\TestResults\RunTests.testsettings"
+            [system.io.file]::WriteAllText($TestSettingsFile,  @"
+<?xml version=`"1.0`" encoding="UTF-8"?>
+<TestSettings
+  id=`"
+"@ + [guid]::NewGuid() + @"
+`"
+  name=`"$JobName`"
+  enableDefaultDataCollectors=`"false`"
+  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+  <Description>Run Tests With Timeout And Screen Recordings.</Description>
+  <Deployment enabled=`"false`" />
+  <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
+  <Execution>
+    <Timeouts testTimeout=`"600000`" />
+    <AgentRule name=`"LocalMachineDefaultRole`">
+      <DataCollectors>
+        <DataCollector uri=`"datacollector://microsoft/VideoRecorder/1.0`" assemblyQualifiedName=`"Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`" friendlyName=`"Screen and Voice Recorder`">
+          <Configuration>
+            <MediaRecorder sendRecordedMediaForPassedTestCase=`"false`" xmlns="" />
+          </Configuration>
+        </DataCollector>
+      </DataCollectors>
+    </AgentRule>
+  </Execution>
+</TestSettings>
+"@)
+        } else {
+            $TestSettingsFile = "$PSScriptRoot\TestResults\RunTests.testsettings"
+            [system.io.file]::WriteAllText($TestSettingsFile,  @"
+<?xml version=`"1.0`" encoding="UTF-8"?>
+<TestSettings
+  id=`"
+"@ + [guid]::NewGuid() + @"
+`"
+  name=`"$JobName`"
+  enableDefaultDataCollectors=`"false`"
+  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+  <Description>Run Tests With Timeout.</Description>
+  <Deployment enabled=`"false`" />
+  <Execution>
+    <Timeouts testTimeout=`"180000`" />
+  </Execution>
+</TestSettings>
+"@)
+        }
         if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
             # Create full VSTest argument string.
             if ($TestCategories -ne "") {
-                $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList+ " /TestCaseFilter:`"$TestCategories`""
-            } else {
-                $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList
+                $TestCategories = " /TestCaseFilter:`"$TestCategories`""
             }
+            $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + " /Settings:`"" + $TestSettingsFile + "`"" + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$PSScriptRoot\RunTests.bat" -Append -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
+            Out-File -LiteralPath "$PSScriptRoot\TestResults\RunTests.bat" -Append -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
         } else {
             #Resolve test results file name
             $TestResultsFile = $PSScriptRoot + "\TestResults\" + $JobName + " Results.trx"
@@ -653,19 +751,18 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             # Create full MSTest argument string.
             if ($TestCategories -ne "") {
                 $TestCategories = $TestCategories.Replace("(TestCategory", "").Replace("=", "").Replace(")", "")
-                $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + " /category:`"$TestCategories`""
-            } else {
-                $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList
+                $TestCategories = " /category:`"$TestCategories`""
             }
+            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + " /testsettings:`"" + $TestSettingsFile + "`"" + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$PSScriptRoot\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
+            Out-File -LiteralPath "$PSScriptRoot\TestResults\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if ($DotCover.IsPresent -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
             # Write DotCover Runner XML 
             $DotCoverArgs = @"
 <AnalyseParams>
-	<TargetExecutable>$PSScriptRoot\RunTests.bat</TargetExecutable>
+	<TargetExecutable>$PSScriptRoot\TestResults\RunTests.bat</TargetExecutable>
 	<TargetArguments></TargetArguments>
 	<Output>$PSScriptRoot\$JobName DotCover Output.dcvr</Output>
 	<Scope>
@@ -682,67 +779,29 @@ $DotCoverArgs += @"
 	</Scope>
 </AnalyseParams>
 "@
-            Out-File -LiteralPath "$PSScriptRoot\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
+            Out-File -LiteralPath "$PSScriptRoot\TestResults\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
 
             #Write DotCover Runner Batch File
-            Out-File -LiteralPath $PSScriptRoot\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$PSScriptRoot\DotCoverRunner.xml`"" "/LogFile=`"$PSScriptRoot\" + $JobName + "DotCoverReportRunner.xml.log`""
+            Out-File -LiteralPath $PSScriptRoot\TestResults\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$PSScriptRoot\TestResults\DotCoverRunner.xml`"" "/LogFile=`"$PSScriptRoot\TestResults\DotCoverRunner.xml.log`""
         }
-        if (Test-Path "$PSScriptRoot\RunTests.bat") {
-            if (!$DotCover.IsPresent -and ($StartServer.IsPresent -or $StartStudio.IsPresent)) {
-                &"$PSScriptRoot\RunTests.bat"
+        if (Test-Path "$PSScriptRoot\TestResults\RunTests.bat") {
+            if (!$DotCover.IsPresent -and ($StartServer.IsPresent -or $StartStudio.IsPresent) -and $JobName -ne "") {
+                &"$PSScriptRoot\TestResults\RunTests.bat"
                 Cleanup-ServerStudio 10 1
-                Move-Item "$PSScriptRoot\RunTests.bat" "$PSScriptRoot\TestResults\Run $JobName.bat"
             } else {
-                &"$PSScriptRoot\RunDotCover.bat"
+                &"$PSScriptRoot\TestResults\RunDotCover.bat"
                 Cleanup-ServerStudio 1800 10
-                Move-Item "$PSScriptRoot\RunTests.bat" "$PSScriptRoot\TestResults\Run $JobName.bat"
-                Move-Item "$PSScriptRoot\RunDotCover.bat" "$PSScriptRoot\TestResults\Run $JobName DotCover.bat"
-                Move-Item "$PSScriptRoot\DotCoverRunner.xml" "$PSScriptRoot\TestResults\$JobName DotCover Runner.xml"
-                Move-Item "$PSScriptRoot\DotCoverRunner.xml.log" "$PSScriptRoot\TestResults\$JobName DotCover Runner.xml.log"
+                Move-File-To-TestResults "$PSScriptRoot\TestResults\RunDotCover.bat" "Run $JobName DotCover.bat"
+                Move-File-To-TestResults "$PSScriptRoot\TestResults\DotCoverRunner.xml" "$JobName DotCover Runner.xml"
+                Move-File-To-TestResults "$PSScriptRoot\TestResults\DotCoverRunner.xml.log" "$JobName DotCover Runner.xml.log"
             }
+            Move-File-To-TestResults "$PSScriptRoot\TestResults\RunTests.bat" "Run $JobName.bat"
+            Move-File-To-TestResults "$PSScriptRoot\TestResults\RunTests.testsettings" "$JobName.testsettings"
             Move-Artifacts-To-TestResults $DotCover.IsPresent $StartServer.IsPresent $StartStudio.IsPresent
             if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
                 Move-ScreenRecordings-To-TestResults
             }
         }
-    }
-
-    $TestResultsFolder = FindFile-InParent @("*.trx","TestResults\*.trx")
-    if ($TestResultsFolder -ne $null -and $TestResultsFolder -ne "" -and (Test-Path "$TestResultsFolder")) {
-        # Write failing tests playlist.
-        Write-Host Writing all test failures in `"$TestResultsFolder`" to a playlist file
-
-        Get-ChildItem "$TestResultsFolder" -Filter *.trx | Rename-Item -NewName {$_.name -replace ' ','_' }
-
-        $PlayList = "<Playlist Version=`"1.0`">"
-        Get-ChildItem "$TestResultsFolder" -Filter *.trx | `
-        Foreach-Object{
-	        [xml]$trxContent = Get-Content $_.FullName
-	        if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
-	            foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
-		            if ($TestResult.outcome -eq "Failed") {
-		                if ($trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.count -gt 0) {
-		                    foreach($TestDefinition in $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod) {
-			                    if ($TestDefinition.name -eq $TestResult.testName) {
-				                    $PlayList += "<Add Test=`"" + $TestDefinition.className + "." + $TestDefinition.name + "`" />"
-			                    }
-		                    }
-                        } else {
-			                Write-Host Error parsing TestRun.TestDefinitions.UnitTest.TestMethod from trx file at $_.FullName
-			                Continue
-		                }
-		            }
-	            }
-	        } elseif ($trxContent.TestRun.Results.UnitTestResult.outcome -eq "Failed") {
-                $PlayList += "<Add Test=`"" + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.className + "." + $trxContent.TestRun.TestDefinitions.UnitTest.TestMethod.name + "`" />"
-            } else {
-		        Write-Host Error parsing TestRun.Results.UnitTestResult from trx file at $_.FullName
-            }
-        }
-        $PlayList += "</Playlist>"
-        $OutPlaylistPath = $TestResultsFolder + "\" + $PlaylistFileName + ".playlist"
-        $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
-        Write-Host Playlist file written to `"$OutPlaylistPath`".
     }
 } else {
     if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
