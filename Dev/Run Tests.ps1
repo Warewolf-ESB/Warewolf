@@ -567,20 +567,69 @@ $DotCoverArgs += @"
             Out-File -LiteralPath "$PSScriptRoot\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
 
             #Write DotCover Runner Batch File
-            Out-File -LiteralPath $PSScriptRoot\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$PSScriptRoot\DotCoverRunner.xml`""
+            Out-File -LiteralPath $PSScriptRoot\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$PSScriptRoot\DotCoverRunner.xml`"" "/LogFile=`"$PSScriptRoot\" + $JobName + "DotCoverReportRunner.xml.log`""
         }
         if (Test-Path "$PSScriptRoot\RunTests.bat") {
             if (!$DotCover.IsPresent -and ($StartServer.IsPresent -or $StartStudio.IsPresent)) {
                 &"$PSScriptRoot\RunTests.bat"
                 Cleanup-ServerStudio 10 1
-                Rename-Item "$PSScriptRoot\RunTests.bat" "$PSScriptRoot\Run $JobName.bat"
+                Move-Item "$PSScriptRoot\RunTests.bat" "$PSScriptRoot\TestResults\Run $JobName.bat"
             } else {
                 &"$PSScriptRoot\RunDotCover.bat"
                 Cleanup-ServerStudio 1800 10
-                Rename-Item "$PSScriptRoot\RunTests.bat" "$PSScriptRoot\Run $JobName.bat"
-                Rename-Item "$PSScriptRoot\RunDotCover.bat" "$PSScriptRoot\Run $JobName DotCover.bat"
-                Rename-Item "$PSScriptRoot\DotCoverRunner.xml" "$PSScriptRoot\$JobName DotCover Runner.xml"
-                Rename-Item "$PSScriptRoot\DotCoverRunner.xml.log" "$PSScriptRoot\$JobName DotCover Runner.xml.log"
+                Move-Item "$PSScriptRoot\RunTests.bat" "$PSScriptRoot\TestResults\Run $JobName.bat"
+                Move-Item "$PSScriptRoot\RunDotCover.bat" "$PSScriptRoot\TestResults\Run $JobName DotCover.bat"
+                Move-Item "$PSScriptRoot\DotCoverRunner.xml" "$PSScriptRoot\TestResults\$JobName DotCover Runner.xml"
+                Move-Item "$PSScriptRoot\DotCoverRunner.xml.log" "$PSScriptRoot\TestResults\$JobName DotCover Runner.xml.log"
+                if ($StartServer.IsPresent -and $StartStudio.IsPresent) {
+                    $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
+                    Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $PSScriptRoot\TestResults\StudioDotCover.dcvr
+                    if (Test-Path $StudioSnapshot) {
+                        $locked = $true
+                        $RetryCount = 0
+                        while($locked -and $RetryCount -lt 12) {
+                            $RetryCount++
+                            try {
+                               [IO.File]::OpenWrite($StudioSnapshot).close()
+                               $locked = $false
+                            } catch {
+                               Sleep 10
+                            }
+                        }
+                        if (!($locked)) {
+                            Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $PSScriptRoot\TestResults\StudioDotCover.dcvr
+                            Move-Item $StudioSnapshot "$PSScriptRoot\TestResults\StudioDotCover.dcvr" -force
+                        } else {
+                            Write-Host Studio Coverage Snapshot File is locked.
+                        }
+                    } else {
+                        Write-Host Studio coverage snapshot not found at $StudioSnapshot
+                    }
+                    $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
+                    Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\ServerDotCover.dcvr
+                    if (Test-Path $ServerSnapshot) {
+                        $locked = $true
+                        $RetryCount = 0
+                        while($locked -and $RetryCount -lt 12) {
+                            $RetryCount++
+                            try {
+                               [IO.File]::OpenWrite($ServerSnapshot).close()
+                               $locked = $false
+                            } catch {
+                               Sleep 10
+                            }
+                        }
+                        if (!($locked)) {
+                            Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\ServerDotCover.dcvr
+                            Move-Item $ServerSnapshot "$PSScriptRoot\TestResults\ServerDotCover.dcvr" -force
+                        } else {
+                            Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
+                        }
+                    } else {
+                        Write-Host Server coverage snapshot not found at $ServerSnapshot
+                    }
+                    &"$DotCoverPath" "merge" "/Source=`"$PSScriptRoot\TestResults\ServerDotCover.dcvr`";`"$PSScriptRoot\TestResults\StudioDotCover.dcvr`"" "/Output=`"$PSScriptRoot\AssignToolUITestDotCoverOutput.dcvr`"" "/LogFile=`"$PSScriptRoot\TestResults\ServerAndStudioDotCoverSnapshotMerge.log`""
+                }
             }
         }
     }
