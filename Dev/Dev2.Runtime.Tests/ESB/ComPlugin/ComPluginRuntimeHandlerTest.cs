@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class ComPluginRuntimeHandlerTest
     {
-        public const string adodbConnectionClassId = "B298D29A-A6ED-11DE-BA8C-A68E55D89593";
+        public const string notepadplusplusClassId = "B298D29A-A6ED-11DE-BA8C-A68E55D89593";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
             var isolated = new ComPluginRuntimeHandler(mock.Object);
-            var serviceMethodList = isolated.ListMethods(adodbConnectionClassId, true);
+            var serviceMethodList = isolated.ListMethods(notepadplusplusClassId, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, serviceMethodList.Count);
         }
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             memoryStream.WriteByte(Encoding.ASCII.GetBytes(list.SerializeToJsonString(new KnownTypesBinder()))[0]);
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
             var isolated = new ComPluginRuntimeHandler(mock.Object);
-            var result = isolated.ListMethods(adodbConnectionClassId, false);
+            var result = isolated.ListMethods(notepadplusplusClassId, false);
             //------------Assert Results-------------------------
             CollectionAssert.AllItemsAreUnique(result);
             CollectionAssert.AllItemsAreNotNull(result);
@@ -139,7 +139,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
             ComPluginInvokeArgs args = new ComPluginInvokeArgs
             {
-                ClsId = adodbConnectionClassId,
+                ClsId = notepadplusplusClassId,
                 Is32Bit = false,
                 Method = "ToString",
                 Parameters = new List<MethodParameter>()
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
             ComPluginInvokeArgs args = new ComPluginInvokeArgs
             {
-                ClsId = adodbConnectionClassId,
+                ClsId = notepadplusplusClassId,
                 Is32Bit = false,
                 Method = "ToString",
                 Parameters = new List<MethodParameter>()
@@ -274,7 +274,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test---------------------------
             using (var isolated = new Isolated<ComPluginRuntimeHandler>())
             {
-                var result = isolated.Value.ListMethods(adodbConnectionClassId, true);
+                var result = isolated.Value.ListMethods(notepadplusplusClassId, true);
                 CollectionAssert.AllItemsAreUnique(result);
                 Assert.AreNotEqual(0, result.Count);
             }
@@ -295,7 +295,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test-------------------------- -
             var isolated = new ComPluginRuntimeHandler();
 
-            var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
+            var args = new ComPluginInvokeArgs { ClsId = notepadplusplusClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
             var run = isolated.Run(args);
             Assert.IsNull(run);
 
@@ -312,7 +312,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test-------------------------- -
             var isolated = new ComPluginRuntimeHandler();
             string outString;
-            var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
+            var args = new ComPluginInvokeArgs { ClsId = notepadplusplusClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
             var run = isolated.Test(args, out outString);
             Assert.IsNotNull(run);
             Assert.IsNull(outString);
@@ -335,7 +335,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //------------Execute Test-------------------------- -
             var isolated = new ComPluginRuntimeHandler(mock.Object);
             string outString;
-            var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "ToString", Parameters = svc.Method.Parameters, Is32Bit = true };
+            var args = new ComPluginInvokeArgs { ClsId = notepadplusplusClassId, Fullname = svc.Namespace, Method = "ToString", Parameters = svc.Method.Parameters, Is32Bit = true };
             var run = isolated.Test(args, out outString);
             Assert.IsNotNull(run);
             Assert.IsNotNull(outString);
@@ -381,7 +381,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                 ResourceID = resourceID,
                 ResourceName = "Dummy",
                 ResourceType = "ComPluginSource",
-                ClsId = adodbConnectionClassId
+                ClsId = notepadplusplusClassId
             };
         }
 
