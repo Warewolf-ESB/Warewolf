@@ -78,6 +78,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run.ps1">
+      <Link>Properties\Run.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Debug\DebugDispatcher.cs" />
     <Compile Include="Debug\DebugItem.cs" />
     <Compile Include="Debug\DebugItemResult.cs" />

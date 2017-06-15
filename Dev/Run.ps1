@@ -1,11 +1,11 @@
 #Requires -RunAsAdministrator
 Param(
+  [switch]$StartServer,
+  [switch]$StartStudio,
   [string]$ServerPath,
   [string]$StudioPath,
   [string]$TestsPath,
   [string]$ResourcesType,
-  [switch]$StartServer,
-  [switch]$StartStudio,
   [switch]$VSTest,
   [switch]$MSTest,
   [switch]$DotCover,
@@ -135,7 +135,7 @@ function FindFile-InParent([string[]]$FileSpecs) {
 }
 
 function Cleanup-ServerStudio {
-    if ($Args.length > 1) {
+    if ($Args.length > 0) {
         [int]$WaitForCloseTimeout = $Args[0]
     } else {
         [int]$WaitForCloseTimeout = 1800
@@ -197,6 +197,114 @@ function Cleanup-ServerStudio {
         sleep 30
         exit 1
     }
+}
+
+function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
+    If (Test-Path "$PSScriptRoot\TestResults") {
+        New-Item "$PSScriptRoot\TestResults"
+    }
+    if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
+        Move-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$PSScriptRoot\TestResults"
+        Write-Host Moved loose TRX files from VS install directory into TestResults.
+    }
+    if ($Server) {
+        Move-Item "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$PSScriptRoot\TestResults\$JobName Server.log" -force
+    }
+    if ($Studio) {
+        Move-Item "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$PSScriptRoot\TestResults\$JobName Studio.log" -force
+    }
+    if ($Server -and $DotCover) {
+        $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
+        Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\$JobName Server DotCover.dcvr
+        while (!(Test-Path $ServerSnapshot) -and $Timeout++ -lt 10) {
+            sleep 10
+        }
+        $locked = $true
+        $RetryCount = 0
+        while($locked -and $RetryCount -lt 12) {
+            $RetryCount++
+            try {
+                [IO.File]::OpenWrite($ServerSnapshot).close()
+                $locked = $false
+            } catch {
+                Sleep 10
+            }
+        }
+        if (!($locked)) {
+            Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\$JobName Server DotCover.dcvr
+            Move-Item $ServerSnapshot "$PSScriptRoot\TestResults\$JobName Server DotCover.dcvr" -force
+        } else {
+            Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
+        }
+        if (Test-Path "$env:ProgramData\Warewolf\Server Log\dotCover.log") {
+            Move-Item "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$PSScriptRoot\TestResults\$JobName Server DotCover.log" -force
+        }
+    }
+    if ($Studio -and $DotCover) {
+        $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
+        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $PSScriptRoot\TestResults\$JobName Studio DotCover.dcvr
+        while (!(Test-Path $StudioSnapshot) -and $Timeout++ -lt 10) {
+            sleep 10
+        }
+        if (Test-Path $StudioSnapshot) {
+            $locked = $true
+            $RetryCount = 0
+            while($locked -and $RetryCount -lt 12) {
+                $RetryCount++
+                try {
+                    [IO.File]::OpenWrite($StudioSnapshot).close()
+                    $locked = $false
+                } catch {
+                    Sleep 10
+                }
+            }
+            if (!($locked)) {
+                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $PSScriptRoot\TestResults\$JobName Studio DotCover.dcvr
+                Move-Item $StudioSnapshot "$PSScriptRoot\TestResults\$JobName Studio DotCover.dcvr" -force
+            } else {
+                Write-Host Studio Coverage Snapshot File is locked.
+            }
+        } else {
+            Write-Host Studio coverage snapshot not found at $StudioSnapshot
+        }
+        if (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log") {
+            Move-Item "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$PSScriptRoot\TestResults\$JobName Studio DotCover.log" -force
+        }
+    }
+    if ($Server -and $Studio -and $DotCover) {
+        &"$DotCoverPath" "merge" "/Source=`"$PSScriptRoot\TestResults\$JobName Server DotCover.dcvr`";`"$PSScriptRoot\TestResults\$JobName Studio DotCover.dcvr`"" "/Output=`"$PSScriptRoot\$JobName DotCover.dcvr`"" "/LogFile=`"$PSScriptRoot\TestResults\ServerAndStudioDotCoverSnapshotMerge.log`""
+    }
+}
+
+function Move-ScreenRecordings-To-TestResults {
+    [string]$testResultsFolder = "$PSScriptRoot\TestResults"
+    Write-Host Getting UI test screen recordings from `"$testResultsFolder`"
+
+    $screenRecordingsFolder = "$PSScriptRoot\TestResults\ScreenRecordings"
+    New-Item $screenRecordingsFolder -Force -ItemType Directory
+    copy-item $testResultsFolder\UI\In\* $screenRecordingsFolder -Recurse -Force
+
+    $pngFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
+    foreach ($file in $pngFiles)
+    {
+	    if (-not $file.name.Contains($file.Directory.Name))
+	    {
+		    Rename-Item -Path $file.FullName -NewName ( $file.Directory.Name + " " + $file.name )
+	    }
+    }
+    $trmxFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
+    foreach ($file in $trmxFiles)
+    {
+        $newRecordingFileName = $file.name -replace ".png",".wmv"
+        Rename-Item -Path ($file.DirectoryName + "\ScreenCapture.wmv") -NewName $newRecordingFileName
+    }
+    $files = Get-ChildItem -Path "$screenRecordingsFolder" -Include *.png, *.wmv -Recurse | where {$_.PSIScontainer -eq $false}
+    foreach ($file in $files)
+	{
+		$destinationFolder = (Get-Item $file).Directory.parent.parent.FullName
+		Move-Item $file.FullName $destinationFolder
+    }
+    Remove-Item -Recurse -Force $screenRecordingsFolder\* -Exclude "*.png","*.wmv"
 }
 
 function Install-Server {
@@ -581,55 +689,10 @@ $DotCoverArgs += @"
                 Move-Item "$PSScriptRoot\RunDotCover.bat" "$PSScriptRoot\TestResults\Run $JobName DotCover.bat"
                 Move-Item "$PSScriptRoot\DotCoverRunner.xml" "$PSScriptRoot\TestResults\$JobName DotCover Runner.xml"
                 Move-Item "$PSScriptRoot\DotCoverRunner.xml.log" "$PSScriptRoot\TestResults\$JobName DotCover Runner.xml.log"
-                if ($StartServer.IsPresent -and $StartStudio.IsPresent) {
-                    $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
-                    Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $PSScriptRoot\TestResults\StudioDotCover.dcvr
-                    if (Test-Path $StudioSnapshot) {
-                        $locked = $true
-                        $RetryCount = 0
-                        while($locked -and $RetryCount -lt 12) {
-                            $RetryCount++
-                            try {
-                               [IO.File]::OpenWrite($StudioSnapshot).close()
-                               $locked = $false
-                            } catch {
-                               Sleep 10
-                            }
-                        }
-                        if (!($locked)) {
-                            Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $PSScriptRoot\TestResults\StudioDotCover.dcvr
-                            Move-Item $StudioSnapshot "$PSScriptRoot\TestResults\StudioDotCover.dcvr" -force
-                        } else {
-                            Write-Host Studio Coverage Snapshot File is locked.
-                        }
-                    } else {
-                        Write-Host Studio coverage snapshot not found at $StudioSnapshot
-                    }
-                    $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
-                    Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\ServerDotCover.dcvr
-                    if (Test-Path $ServerSnapshot) {
-                        $locked = $true
-                        $RetryCount = 0
-                        while($locked -and $RetryCount -lt 12) {
-                            $RetryCount++
-                            try {
-                               [IO.File]::OpenWrite($ServerSnapshot).close()
-                               $locked = $false
-                            } catch {
-                               Sleep 10
-                            }
-                        }
-                        if (!($locked)) {
-                            Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\ServerDotCover.dcvr
-                            Move-Item $ServerSnapshot "$PSScriptRoot\TestResults\ServerDotCover.dcvr" -force
-                        } else {
-                            Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
-                        }
-                    } else {
-                        Write-Host Server coverage snapshot not found at $ServerSnapshot
-                    }
-                    &"$DotCoverPath" "merge" "/Source=`"$PSScriptRoot\TestResults\ServerDotCover.dcvr`";`"$PSScriptRoot\TestResults\StudioDotCover.dcvr`"" "/Output=`"$PSScriptRoot\AssignToolUITestDotCoverOutput.dcvr`"" "/LogFile=`"$PSScriptRoot\TestResults\ServerAndStudioDotCoverSnapshotMerge.log`""
-                }
+            }
+            Move-Artifacts-To-TestResults $DotCover.IsPresent $StartServer.IsPresent $StartStudio.IsPresent
+            if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
+                Move-ScreenRecordings-To-TestResults
             }
         }
     }
@@ -686,4 +749,5 @@ if ($Cleanup.IsPresent) {
     } else {
         Cleanup-ServerStudio 10 1
     }
+    Move-Artifacts-To-TestResults $DotCover.IsPresent (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
