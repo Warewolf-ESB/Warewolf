@@ -138,6 +138,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run.ps1">
+      <Link>Properties\Run.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="CommunicationContextExtenstions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />

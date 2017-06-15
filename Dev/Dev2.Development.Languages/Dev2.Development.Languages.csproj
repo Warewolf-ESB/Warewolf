@@ -81,6 +81,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run.ps1">
+      <Link>Properties\Run.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Scripting\StringScriptSources.cs" />
     <Compile Include="Scripting\JavaScriptContext.cs" />
     <Compile Include="Scripting\Dev2PythonContext.cs" />

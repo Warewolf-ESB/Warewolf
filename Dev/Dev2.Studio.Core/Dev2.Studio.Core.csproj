@@ -189,6 +189,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run.ps1">
+      <Link>Properties\Run.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Activities\Interegators\WorkerServicePropertyInterigator.cs" />
     <Compile Include="Activities\Interegators\WorkflowPropertyInterigator.cs" />
     <Compile Include="Activities\Services\DesignerManagementService.cs" />

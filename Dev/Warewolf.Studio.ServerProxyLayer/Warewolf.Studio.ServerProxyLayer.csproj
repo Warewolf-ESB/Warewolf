@@ -72,6 +72,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run.ps1">
+      <Link>Properties\Run.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="ProxyBase.cs" />
     <Compile Include="QueryManagerProxy.cs">
       <SubType>Code</SubType>

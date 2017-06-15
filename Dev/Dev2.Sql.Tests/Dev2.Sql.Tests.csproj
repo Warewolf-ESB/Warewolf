@@ -67,6 +67,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run.ps1">
+      <Link>Properties\Run.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="OracleServerTests.cs" />
     <Compile Include="PostgreServerTests.cs" />
