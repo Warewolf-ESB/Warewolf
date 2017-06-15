@@ -45,7 +45,7 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -540,7 +540,7 @@
     <EmbeddedResource Include="Json\Sequence.json" />
     <EmbeddedResource Include="Json\UnAuthorizedHelloWorld.json" />
     <EmbeddedResource Include="Json\AssignWithRecSet.json" />
-    <EmbeddedResource Include="ESB\ComPlugin\SystemWOW6432NodeCLSIDadodbConnection.reg" />
+    <None Include="ESB\ComPlugin\HKEY_CLASSES_ROOT_CLSID_NotepadPlusPlusClass.reg" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Security\secure.config" />
     <None Include="XML\ReadMe.txt" />
