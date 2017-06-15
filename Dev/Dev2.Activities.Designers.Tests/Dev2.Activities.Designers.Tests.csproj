@@ -106,8 +106,8 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-	<None Include="..\Run.ps1">
-      <Link>Properties\Run.ps1</Link>
+	<None Include="..\Run Tests.ps1">
+      <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Dev2.Core.Tests\TestUtils.cs">
