@@ -593,6 +593,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
         $ProjectSpec = $JobAssemblySpecs[$_].ToString()
         $JobName = $JobNames[$_].ToString()
+        $TestCategories = $JobCategories[$_].ToString()
         $TestAssembliesList = ""
         $TestAssembliesDirectories = @()
         if ($TestsPath -ne "" -and !($TestsPath.EndsWith("\"))) { $TestsPath += "\" }
@@ -634,7 +635,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
         if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
             # Create full VSTest argument string.
-            $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList
+            if ($TestCategories -ne "") {
+                $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList+ " /TestCaseFilter:`"$TestCategories`""
+            } else {
+                $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList
+            }
 
             # Write full command including full argument string.
             Out-File -LiteralPath "$PSScriptRoot\RunTests.bat" -Append -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
@@ -646,7 +651,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
 
             # Create full MSTest argument string.
-            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList
+            if ($TestCategories -ne "") {
+                $TestCategories = $TestCategories.Replace("(TestCategory", "").Replace("=", "").Replace(")", "")
+                $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + " /category:`"$TestCategories`""
+            } else {
+                $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList
+            }
 
             # Write full command including full argument string.
             Out-File -LiteralPath "$PSScriptRoot\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
