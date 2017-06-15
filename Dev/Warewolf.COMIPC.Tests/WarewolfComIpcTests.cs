@@ -37,7 +37,7 @@ namespace WarewolfCOMIPC.Test
         public void WarewolfCOMIPCClient_Execute_GetType_ShouldReturnType()
         {
             //------------Setup for test--------------------------
-            var clsid = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
+            var clsid = new Guid(ComPluginRuntimeHandlerTest.notepadplusplusClassId);
 
             //------------Execute Test---------------------------           
             var execute = IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
@@ -51,7 +51,7 @@ namespace WarewolfCOMIPC.Test
         public void GetMethods_GivenConnection_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
-            var classId = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
+            var classId = new Guid(ComPluginRuntimeHandlerTest.notepadplusplusClassId);
 
             //---------------Execute Test ----------------------
             var execute = IpcClient.GetIPCExecutor().Invoke(classId, "", Execute.GetMethods, new ParameterInfoTO[] { });
@@ -67,7 +67,7 @@ namespace WarewolfCOMIPC.Test
         public void ExecuteSpecifiedMethod_GivenConnection_ReturnSuccess()
         {
             //---------------Set up test pack-------------------
-            var classId = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
+            var classId = new Guid(ComPluginRuntimeHandlerTest.notepadplusplusClassId);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
