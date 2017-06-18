@@ -4,7 +4,8 @@ Param(
   [switch]$StartStudio,
   [string]$ServerPath,
   [string]$StudioPath,
-  [string]$TestsPath,
+  [string]$TestsPath=$PSScriptRoot,
+  [string]$TestsResultsPath="$TestsPath\TestResults",
   [string]$ResourcesType,
   [switch]$VSTest,
   [switch]$MSTest,
@@ -211,19 +212,19 @@ function Copy-On-Write([string]$FilePath) {
 }
 
 function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationFileName) {
-    $DestinationFilePath = "$PSScriptRoot\TestResults\$DestinationFileName"
+    $DestinationFilePath = "$TestsResultsPath\$DestinationFileName"
     if (Test-Path $DestinationFilePath) {
         Copy-On-Write $DestinationFilePath
         Move-Item "$SourceFilePath" "$DestinationFilePath"    }
 }
 
 function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
-    [string]$TestResultsFolder = "$PSScriptRoot\TestResults"
+    [string]$TestResultsFolder = "$TestsResultsPath"
     If (!(Test-Path "$TestResultsFolder")) {
         New-Item "$TestResultsFolder"
     }
     if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
-        Move-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$PSScriptRoot\TestResults"
+        Move-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
     
@@ -269,7 +270,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     }
     if ($Server -and $DotCover) {
         $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
-        Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\$JobName Server DotCover.dcvr
+        Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
         while (!(Test-Path $ServerSnapshot) -and $Timeout++ -lt 10) {
             sleep 10
         }
@@ -285,7 +286,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
             }
         }
         if (!($locked)) {
-            Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $PSScriptRoot\TestResults\$JobName Server DotCover.dcvr
+            Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
             Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
         } else {
             Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
@@ -296,7 +297,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     }
     if ($Studio -and $DotCover) {
         $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
-        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $PSScriptRoot\TestResults\$JobName Studio DotCover.dcvr
+        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
         while (!(Test-Path $StudioSnapshot) -and $Timeout++ -lt 10) {
             sleep 10
         }
@@ -313,8 +314,8 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
                 }
             }
             if (!($locked)) {
-                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $PSScriptRoot\TestResults\$JobName Studio DotCover.dcvr
-                Move-Item $StudioSnapshot "$PSScriptRoot\TestResults\$JobName Studio DotCover.dcvr" -force
+                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
+                Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
             } else {
                 Write-Host Studio Coverage Snapshot File is locked.
             }
@@ -326,15 +327,15 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-        &"$DotCoverPath" "merge" "/Source=`"$PSScriptRoot\TestResults\$JobName Server DotCover.dcvr`";`"$PSScriptRoot\TestResults\$JobName Studio DotCover.dcvr`"" "/Output=`"$PSScriptRoot\$JobName DotCover.dcvr`"" "/LogFile=`"$PSScriptRoot\TestResults\ServerAndStudioDotCoverSnapshotMerge.log`""
+        &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$PSScriptRoot\$JobName DotCover.dcvr`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
     }
 }
 
 function Move-ScreenRecordings-To-TestResults {
-    [string]$TestResultsFolder = "$PSScriptRoot\TestResults"
+    [string]$TestResultsFolder = "$TestsResultsPath"
     Write-Host Getting UI test screen recordings from `"$TestResultsFolder`"
 
-    $screenRecordingsFolder = "$PSScriptRoot\TestResults\ScreenRecordings"
+    $screenRecordingsFolder = "$TestsResultsPath\ScreenRecordings"
     New-Item $screenRecordingsFolder -Force -ItemType Directory
     if (Test-Path $TestResultsFolder\UI\In\*) {
         Copy-Item $TestResultsFolder\UI\In\* $screenRecordingsFolder -Recurse -Force
@@ -649,7 +650,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $TestCategories = $JobCategories[$_].ToString()
         $TestAssembliesList = ""
         $TestAssembliesDirectories = @()
-        if ($TestsPath -ne "" -and !($TestsPath.EndsWith("\"))) { $TestsPath += "\" }
+        if (!($TestsPath.EndsWith("\"))) { $TestsPath += "\" }
         foreach ($Project in $ProjectSpec.Split(",")) {
             $SolutionFolderPath = FindFile-InParent @($TestsPath + $Project + ".dll")
             if ($SolutionFolderPath -ne "") {
@@ -686,7 +687,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 
         # Create test settings.
         if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
-            $TestSettingsFile = "$PSScriptRoot\TestResults\RunTests.testsettings"
+            $TestSettingsFile = "$TestsResultsPath\RunTests.testsettings"
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
@@ -714,7 +715,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 </TestSettings>
 "@)
         } else {
-            $TestSettingsFile = "$PSScriptRoot\TestResults\RunTests.testsettings"
+            $TestSettingsFile = "$TestsResultsPath\RunTests.testsettings"
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
@@ -740,12 +741,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + " /Settings:`"" + $TestSettingsFile + "`"" + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$PSScriptRoot\TestResults\RunTests.bat" -Append -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
+            Out-File -LiteralPath "$TestsResultsPath\RunTests.bat" -Append -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
         } else {
             #Resolve test results file name
             $TestResultsFile = $PSScriptRoot + "\TestResults\" + $JobName + " Results.trx"
-            if (!(Test-Path $PSScriptRoot\TestResults)) {
-	            New-Item -ItemType Directory $PSScriptRoot\TestResults
+            if (!(Test-Path $TestsResultsPath)) {
+	            New-Item -ItemType Directory $TestsResultsPath
             }
 
             # Create full MSTest argument string.
@@ -756,13 +757,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + " /testsettings:`"" + $TestSettingsFile + "`"" + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$PSScriptRoot\TestResults\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
+            Out-File -LiteralPath "$TestsResultsPath\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if ($DotCover.IsPresent -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
             # Write DotCover Runner XML 
             $DotCoverArgs = @"
 <AnalyseParams>
-	<TargetExecutable>$PSScriptRoot\TestResults\RunTests.bat</TargetExecutable>
+	<TargetExecutable>$TestsResultsPath\RunTests.bat</TargetExecutable>
 	<TargetArguments></TargetArguments>
 	<Output>$PSScriptRoot\$JobName DotCover Output.dcvr</Output>
 	<Scope>
@@ -779,24 +780,24 @@ $DotCoverArgs += @"
 	</Scope>
 </AnalyseParams>
 "@
-            Out-File -LiteralPath "$PSScriptRoot\TestResults\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
+            Out-File -LiteralPath "$TestsResultsPath\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
 
             #Write DotCover Runner Batch File
-            Out-File -LiteralPath $PSScriptRoot\TestResults\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$PSScriptRoot\TestResults\DotCoverRunner.xml`"" "/LogFile=`"$PSScriptRoot\TestResults\DotCoverRunner.xml.log`""
+            Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`"" "/LogFile=`"$TestsResultsPath\DotCoverRunner.xml.log`""
         }
-        if (Test-Path "$PSScriptRoot\TestResults\RunTests.bat") {
+        if (Test-Path "$TestsResultsPath\RunTests.bat") {
             if (!$DotCover.IsPresent -and ($StartServer.IsPresent -or $StartStudio.IsPresent) -and $JobName -ne "") {
-                &"$PSScriptRoot\TestResults\RunTests.bat"
+                &"$TestsResultsPath\RunTests.bat"
                 Cleanup-ServerStudio 10 1
             } else {
-                &"$PSScriptRoot\TestResults\RunDotCover.bat"
+                &"$TestsResultsPath\RunDotCover.bat"
                 Cleanup-ServerStudio 1800 10
-                Move-File-To-TestResults "$PSScriptRoot\TestResults\RunDotCover.bat" "Run $JobName DotCover.bat"
-                Move-File-To-TestResults "$PSScriptRoot\TestResults\DotCoverRunner.xml" "$JobName DotCover Runner.xml"
-                Move-File-To-TestResults "$PSScriptRoot\TestResults\DotCoverRunner.xml.log" "$JobName DotCover Runner.xml.log"
+                Move-File-To-TestResults "$TestsResultsPath\RunDotCover.bat" "Run $JobName DotCover.bat"
+                Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml" "$JobName DotCover Runner.xml"
+                Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml.log" "$JobName DotCover Runner.xml.log"
             }
-            Move-File-To-TestResults "$PSScriptRoot\TestResults\RunTests.bat" "Run $JobName.bat"
-            Move-File-To-TestResults "$PSScriptRoot\TestResults\RunTests.testsettings" "$JobName.testsettings"
+            Move-File-To-TestResults "$TestsResultsPath\RunTests.bat" "Run $JobName.bat"
+            Move-File-To-TestResults "$TestsResultsPath\RunTests.testsettings" "$JobName.testsettings"
             Move-Artifacts-To-TestResults $DotCover.IsPresent $StartServer.IsPresent $StartStudio.IsPresent
             if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
                 Move-ScreenRecordings-To-TestResults
