@@ -216,8 +216,10 @@ function Copy-On-Write([string]$FilePath) {
 function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationFileName) {
     $DestinationFilePath = "$TestsResultsPath\$DestinationFileName"
     if (Test-Path $DestinationFilePath) {
-        Copy-On-Write $DestinationFilePath
-        Move-Item "$SourceFilePath" "$DestinationFilePath"    }
+        if (Test-Path $DestinationFilePath) {
+            Copy-On-Write $DestinationFilePath        }
+        Move-Item "$SourceFilePath" "$DestinationFilePath"
+    }
 }
 
 function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
@@ -257,7 +259,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     $PlayList += "</Playlist>"
-    $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + ".playlist"
+    $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
     $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
     Write-Host Playlist file written to `"$OutPlaylistPath`".
     if ($Server) {
