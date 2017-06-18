@@ -17,7 +17,8 @@ Param(
   [string]$ServerPassword,
   [string]$JobName="",
   [switch]$RunAllJobs,
-  [switch]$Cleanup
+  [switch]$Cleanup,
+  [switch]$AssemblyFileVersionsTest
 )
 $JobSpecs = @{}
 #CI
@@ -802,14 +803,11 @@ $DotCoverArgs += @"
         }
     }
 } else {
-    if (!($StartServer.IsPresent) -and !($StartStudio.IsPresent)) {
-        Write-Host This script expects commandline parameters. Starting a studio for manually testing against.
-    }
-    Start-Server
-    if (!$StartServer.IsPresent) {
-        Start-Studio
-    } else {
-        Write-Host Starting just a server for manually testing against.
+    if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent) {
+        Start-Server
+        if (!$StartServer.IsPresent) {
+            Start-Studio
+        }
     }
 }
 
@@ -820,4 +818,35 @@ if ($Cleanup.IsPresent) {
         Cleanup-ServerStudio 10 1
     }
     Move-Artifacts-To-TestResults $DotCover.IsPresent (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
+}
+
+if ($AssemblyFileVersionsTest.IsPresent) {
+    Write-Host Testing Warewolf assembly file versions...
+    $HighestReadVersion = "0.0.0.0"
+    $LastReadVersion = "0.0.0.0"
+    foreach ($file in Get-ChildItem -recurse $TestsPath) {
+	    if (($file.Name.EndsWith(".dll") -or ($file.Name.EndsWith(".exe") -and -Not $file.Name.EndsWith(".vshost.exe"))) -and ($file.Name.StartsWith("Dev2.") -or $file.Name.StartsWith("Warewolf.") -or $file.Name.StartsWith("WareWolf"))) {
+		    # Get version.
+		    $ReadVersion = [system.diagnostics.fileversioninfo]::GetVersionInfo($file.FullName).FileVersion
+		
+		    # Find highest version
+		    $SeperateVersionNumbers = $ReadVersion.split(".")
+		    $SeperateVersionNumbersHighest = $HighestReadVersion.split(".")
+		    if ([convert]::ToInt32($SeperateVersionNumbers[0], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[0], 10)`
+		    -or [convert]::ToInt32($SeperateVersionNumbers[1], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[1], 10)`
+		    -or [convert]::ToInt32($SeperateVersionNumbers[2], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[2], 10)`
+		    -or [convert]::ToInt32($SeperateVersionNumbers[3], 10) -gt [convert]::ToInt32($SeperateVersionNumbersHighest[3], 10)){
+			    $HighestReadVersion = $ReadVersion
+		    }
+
+            # Check for invalid.
+            if ($ReadVersion.StartsWith("0.0.") -or $ReadVersion.EndsWith(".0") -or ($LastReadVersion -ne $ReadVersion -and $LastReadVersion -ne "0.0.0.0")) {
+			    $getFullPath = $file.FullName
+	            Write-Host ERROR! Invalid version! $getFullPath $ReadVersion $LastReadVersion
+	            throw "ERROR! `"$getFullPath $ReadVersion`" is either an invalid version or not equal to `"$LastReadVersion`". All Warewolf assembly versions in `"$TestsPath`" must conform and cannot start with 0.0. or end with .0"
+            }
+            $LastReadVersion = $ReadVersion
+	    }
+    }
+    Out-File -LiteralPath FullVersionString -InputObject "FullVersionString=$HighestReadVersion" -Encoding default
 }
