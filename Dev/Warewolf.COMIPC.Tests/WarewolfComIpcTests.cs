@@ -18,8 +18,8 @@ namespace WarewolfCOMIPC.Test
         public static void Add_Component_To_Registry(TestContext tstctx)
         {
             var runtimeTestsAssembly = Assembly.Load("Dev2.Runtime.Tests");
-            var resourceName = "Dev2.Tests.Runtime.ESB.ComPlugin.HKEY_CLASSES_ROOT_CLSID_NotepadPlusPlusClass.reg";
-            var RegistryFilePath = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName + @"\HKEY_CLASSES_ROOT_CLSID_NotepadPlusPlusClass.reg";
+            var resourceName = "Dev2.Tests.Runtime.ESB.ComPlugin.SystemWOW6432NodeCLSIDadodbConnection.reg";
+            var RegistryFilePath = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName + @"\SystemWOW6432NodeCLSIDadodbConnection.reg";
             using (Stream stream = runtimeTestsAssembly.GetManifestResourceStream(resourceName))
             {
                 using (var fileStream = File.Create(RegistryFilePath))

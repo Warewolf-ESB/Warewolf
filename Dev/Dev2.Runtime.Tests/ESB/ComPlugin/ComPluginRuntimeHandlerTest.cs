@@ -38,7 +38,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class ComPluginRuntimeHandlerTest
     {
-        public const string adodbConnectionClassId = "B298D29A-A6ED-11DE-BA8C-A68E55D89593";
+        public const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -52,8 +52,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         {
             var assembly = Assembly.GetExecutingAssembly();
             var assemblyDirectory = new FileInfo(assembly.Location).Directory.FullName;
-            var resourceName = "Dev2.Tests.Runtime.ESB.ComPlugin.HKEY_CLASSES_ROOT_CLSID_NotepadPlusPlusClass.reg";
-            var RegistryFilePath = assemblyDirectory + @"\HKEY_CLASSES_ROOT_CLSID_NotepadPlusPlusClass.reg";
+            var resourceName = "Dev2.Tests.Runtime.ESB.ComPlugin.SystemWOW6432NodeCLSIDadodbConnection.reg";
+            var RegistryFilePath = assemblyDirectory + @"\SystemWOW6432NodeCLSIDadodbConnection.reg";
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 using (var fileStream = File.Create(RegistryFilePath))
