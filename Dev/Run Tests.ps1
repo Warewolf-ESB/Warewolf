@@ -106,6 +106,8 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
+$JobName = $JobName.TrimEnd("1234567890 ")
+
 function FindFile-InParent([string[]]$FileSpecs) {
 	$NumberOfParentsSearched = 0
     $NumberOfFileSpecsSearched = 0
