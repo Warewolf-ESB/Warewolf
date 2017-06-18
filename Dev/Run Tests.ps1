@@ -257,7 +257,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     $PlayList += "</Playlist>"
-    $OutPlaylistPath = $TestsResultsPath + "\" + $PlaylistFileName + ".playlist"
+    $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + ".playlist"
     $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
     Write-Host Playlist file written to `"$OutPlaylistPath`".
     if ($Server) {
@@ -501,10 +501,11 @@ function Start-Studio {
 function AssemblyIsNotAlreadyDefinedWithoutWildcards([string]$AssemblyNameToCheck) {
     $JobAssemblySpecs = @()
     foreach ($Job in $JobSpecs.Values) {
-        if ($Job.Count -eq 1) {
+        if ($Job.Count -eq 2) {
+            $Job = $Job[0]
+        }
+        if (!$Job.Contains("*") -and !$JobAssemblySpecs.Contains($Job)) {
             $JobAssemblySpecs += $Job
-        } else {
-            $JobAssemblySpecs += $Job[0]
         }
     }
     !$JobAssemblySpecs.Contains($AssemblyNameToCheck)
@@ -739,7 +740,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + " /Settings:`"" + $TestSettingsFile + "`"" + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$TestsResultsPath\RunTests.bat" -Append -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
+            Out-File -LiteralPath "$TestsResultsPath\..\RunTests.bat" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
         } else {
             #Resolve test results file name
             $TestResultsFile = $TestsResultsPath + "\" + $JobName + " Results.trx"
@@ -752,15 +753,15 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + " /testsettings:`"" + $TestSettingsFile + "`"" + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$TestsResultsPath\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
+            Out-File -LiteralPath "$TestsResultsPath\..\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if ($DotCover.IsPresent -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
             # Write DotCover Runner XML 
             $DotCoverArgs = @"
 <AnalyseParams>
-	<TargetExecutable>$TestsResultsPath\RunTests.bat</TargetExecutable>
+	<TargetExecutable>$TestsResultsPath\..\RunTests.bat</TargetExecutable>
 	<TargetArguments></TargetArguments>
-	<Output>$PSScriptRoot\$JobName DotCover Output.dcvr</Output>
+	<Output>$TestsResultsPath\$JobName DotCover Output.dcvr</Output>
 	<Scope>
 "@
         foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
@@ -780,9 +781,9 @@ $DotCoverArgs += @"
             #Write DotCover Runner Batch File
             Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`" `"/LogFile=`"$TestsResultsPath\DotCoverRunner.xml.log`""
         }
-        if (Test-Path "$TestsResultsPath\RunTests.bat") {
+        if (Test-Path "$TestsResultsPath\..\RunTests.bat") {
             if (!$DotCover.IsPresent -and ($StartServer.IsPresent -or $StartStudio.IsPresent) -and $JobName -ne "") {
-                &"$TestsResultsPath\RunTests.bat"
+                &"$TestsResultsPath\..\RunTests.bat"
                 Cleanup-ServerStudio 10 1
             } else {
                 &"$TestsResultsPath\RunDotCover.bat"
@@ -791,7 +792,7 @@ $DotCoverArgs += @"
                 Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml" "$JobName DotCover Runner.xml"
                 Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml.log" "$JobName DotCover Runner.xml.log"
             }
-            Move-File-To-TestResults "$TestsResultsPath\RunTests.bat" "Run $JobName.bat"
+            Move-File-To-TestResults "$TestsResultsPath\..\RunTests.bat" "Run $JobName.bat"
             Move-File-To-TestResults "$TestsResultsPath\RunTests.testsettings" "$JobName.testsettings"
             Move-Artifacts-To-TestResults $DotCover.IsPresent $StartServer.IsPresent $StartStudio.IsPresent
             if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
