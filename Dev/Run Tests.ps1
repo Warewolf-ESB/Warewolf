@@ -219,22 +219,18 @@ function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationF
 }
 
 function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
-    [string]$TestResultsFolder = "$TestsResultsPath"
-    If (!(Test-Path "$TestResultsFolder")) {
-        New-Item "$TestResultsFolder"
-    }
     if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
         Move-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
     
     # Write failing tests playlistfunction Move-Artifacts-T.
-    Write-Host Writing all test failures in `"$TestResultsFolder`" to a playlist file
+    Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
 
-    Get-ChildItem "$TestResultsFolder" -Filter *.trx | Rename-Item -NewName {$_.name -replace ' ','_' }
+    Get-ChildItem "$TestsResultsPath" -Filter *.trx | Rename-Item -NewName {$_.name -replace ' ','_' }
 
     $PlayList = "<Playlist Version=`"1.0`">"
-    Get-ChildItem "$TestResultsFolder" -Filter *.trx | `
+    Get-ChildItem "$TestsResultsPath" -Filter *.trx | `
     Foreach-Object{
 	    [xml]$trxContent = Get-Content $_.FullName
 	    if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
@@ -259,7 +255,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     $PlayList += "</Playlist>"
-    $OutPlaylistPath = $TestResultsFolder + "\" + $PlaylistFileName + ".playlist"
+    $OutPlaylistPath = $TestsResultsPath + "\" + $PlaylistFileName + ".playlist"
     $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
     Write-Host Playlist file written to `"$OutPlaylistPath`".
     if ($Server) {
@@ -332,13 +328,13 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
 }
 
 function Move-ScreenRecordings-To-TestResults {
-    [string]$TestResultsFolder = "$TestsResultsPath"
-    Write-Host Getting UI test screen recordings from `"$TestResultsFolder`"
+    [string]$TestsResultsPath = "$TestsResultsPath"
+    Write-Host Getting UI test screen recordings from `"$TestsResultsPath`"
 
     $screenRecordingsFolder = "$TestsResultsPath\ScreenRecordings"
     New-Item $screenRecordingsFolder -Force -ItemType Directory
-    if (Test-Path $TestResultsFolder\UI\In\*) {
-        Copy-Item $TestResultsFolder\UI\In\* $screenRecordingsFolder -Recurse -Force
+    if (Test-Path $TestsResultsPath\UI\In\*) {
+        Copy-Item $TestsResultsPath\UI\In\* $screenRecordingsFolder -Recurse -Force
         $pngFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
         foreach ($file in $pngFiles)
         {
@@ -361,7 +357,7 @@ function Move-ScreenRecordings-To-TestResults {
         }
         Remove-Item -Recurse -Force $screenRecordingsFolder\* -Exclude "*.png","*.wmv"
     } else {
-        Write-Host $TestResultsFolder\UI\In\* not found.
+        Write-Host $TestsResultsPath\UI\In\* not found.
     }
 }
 
@@ -577,6 +573,9 @@ if ($JobName -ne $null -and $JobName -ne "") {
 }
 $TotalNumberOfJobsToRun = $JobNames.length
 if ($TotalNumberOfJobsToRun -gt 0) {
+    If (!(Test-Path "$TestsResultsPath")) {
+        New-Item "$TestsResultsPath"
+    }
     $DefaultVSTestPath = "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe"
     if ($VSTestPath -eq "" -and (Test-Path $DefaultVSTestPath) -and $MSTestPath -eq "") {
         $VSTestPath = $DefaultVSTestPath
