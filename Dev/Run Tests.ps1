@@ -802,22 +802,6 @@ $DotCoverArgs += @"
             }
         }
     }
-} else {
-    if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent) {
-        Start-Server
-        if (!$StartServer.IsPresent) {
-            Start-Studio
-        }
-    }
-}
-
-if ($Cleanup.IsPresent) {
-    if ($DotCover.IsPresent) {
-        Cleanup-ServerStudio 1800 10
-    } else {
-        Cleanup-ServerStudio 10 1
-    }
-    Move-Artifacts-To-TestResults $DotCover.IsPresent (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
 
 if ($AssemblyFileVersionsTest.IsPresent) {
@@ -849,4 +833,20 @@ if ($AssemblyFileVersionsTest.IsPresent) {
 	    }
     }
     Out-File -LiteralPath FullVersionString -InputObject "FullVersionString=$HighestReadVersion" -Encoding default
+}
+
+if ($Cleanup.IsPresent) {
+    if ($DotCover.IsPresent) {
+        Cleanup-ServerStudio 1800 10
+    } else {
+        Cleanup-ServerStudio 10 1
+    }
+    Move-Artifacts-To-TestResults $DotCover.IsPresent (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
+}
+
+if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent) {
+    Start-Server
+    if (!$StartServer.IsPresent) {
+        Start-Studio
+    }
 }
