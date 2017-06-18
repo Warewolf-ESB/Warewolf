@@ -91,8 +91,8 @@ $ServerPathSpecs += "Server\" + $ServerExeName
 $ServerPathSpecs += "DebugServer\" + $ServerExeName
 $ServerPathSpecs += "ReleaseServer\" + $ServerExeName
 $ServerPathSpecs += "Dev2.Server\bin\Debug\" + $ServerExeName
-$StudioPathSpecs += "Bin\Server\" + $ServerExeName
-$StudioPathSpecs += "Dev2.Server\bin\Release\" + $ServerExeName
+$ServerPathSpecs += "Bin\Server\" + $ServerExeName
+$ServerPathSpecs += "Dev2.Server\bin\Release\" + $ServerExeName
 $ServerPathSpecs += "*Server.zip"
 
 $StudioExeName = "Warewolf Studio.exe"
