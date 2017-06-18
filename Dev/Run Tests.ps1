@@ -228,6 +228,9 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
     
+    Move-File-To-TestResults "$TestsResultsPath\..\RunTests.bat" "Run $JobName.bat"
+    Move-File-To-TestResults "$TestsResultsPath\RunTests.testsettings" "$JobName.testsettings"
+
     # Write failing tests playlistfunction Move-Artifacts-T.
     Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
 
@@ -794,9 +797,7 @@ $DotCoverArgs += @"
                 Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml" "$JobName DotCover Runner.xml"
                 Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml.log" "$JobName DotCover Runner.xml.log"
             }
-            Move-File-To-TestResults "$TestsResultsPath\..\RunTests.bat" "Run $JobName.bat"
-            Move-File-To-TestResults "$TestsResultsPath\RunTests.testsettings" "$JobName.testsettings"
-            Move-Artifacts-To-TestResults $DotCover.IsPresent $StartServer.IsPresent $StartStudio.IsPresent
+            Move-Artifacts-To-TestResults $DotCover.IsPresent ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
             if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
                 Move-ScreenRecordings-To-TestResults
             }
