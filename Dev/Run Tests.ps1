@@ -743,7 +743,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestsResultsPath\RunTests.bat" -Append -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
         } else {
             #Resolve test results file name
-            $TestResultsFile = $PSScriptRoot + "\TestResults\" + $JobName + " Results.trx"
+            $TestResultsFile = $TestsResultsPath + "\" + $JobName + " Results.trx"
 
             # Create full MSTest argument string.
             if ($TestCategories -ne "") {
