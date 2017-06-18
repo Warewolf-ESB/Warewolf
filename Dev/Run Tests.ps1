@@ -215,9 +215,8 @@ function Copy-On-Write([string]$FilePath) {
 
 function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationFileName) {
     $DestinationFilePath = "$TestsResultsPath\$DestinationFileName"
-    if (Test-Path $DestinationFilePath) {
-        if (Test-Path $DestinationFilePath) {
-            Copy-On-Write $DestinationFilePath        }
+    if (Test-Path $SourceFilePath) {
+        Copy-On-Write $DestinationFilePath
         Move-Item "$SourceFilePath" "$DestinationFilePath"
     }
 }
