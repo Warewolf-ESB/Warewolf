@@ -801,16 +801,14 @@ $DotCoverArgs += @"
         }
     }
 } else {
-    if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-        Start-Server
+    if (!($StartServer.IsPresent) -and !($StartStudio.IsPresent)) {
+        Write-Host This script expects commandline parameters. Starting a studio for manually testing against.
     }
-    if ($StartStudio.IsPresent) {
+    Start-Server
+    if (!$StartServer.IsPresent) {
         Start-Studio
-    }
-    if (!($StartServer.IsPresent) -and !($StartStudio.IsPresent) -and !($RunAllJobs.IsPresent) -and $JobName -eq "") {
-        Write-Host This script expects commandline parameters. Use -StartStudio and -StudioPath 'path to Warewolf studio exe' to start a studio for run manual testing against.
-        sleep 30
-        exit 1
+    } else {
+        Write-Host Starting just a server for manually testing against.
     }
 }
 
