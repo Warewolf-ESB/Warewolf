@@ -574,7 +574,7 @@ if ($JobName -ne $null -and $JobName -ne "") {
 $TotalNumberOfJobsToRun = $JobNames.length
 if ($TotalNumberOfJobsToRun -gt 0) {
     If (!(Test-Path "$TestsResultsPath")) {
-        New-Item "$TestsResultsPath"
+        New-Item "$TestsResultsPath" -ItemType Directory
     }
     $DefaultVSTestPath = "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe"
     if ($VSTestPath -eq "" -and (Test-Path $DefaultVSTestPath) -and $MSTestPath -eq "") {
@@ -744,9 +744,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         } else {
             #Resolve test results file name
             $TestResultsFile = $PSScriptRoot + "\TestResults\" + $JobName + " Results.trx"
-            if (!(Test-Path $TestsResultsPath)) {
-	            New-Item -ItemType Directory $TestsResultsPath
-            }
 
             # Create full MSTest argument string.
             if ($TestCategories -ne "") {
@@ -809,6 +806,11 @@ $DotCoverArgs += @"
     }
     if ($StartStudio.IsPresent) {
         Start-Studio
+    }
+    if (!($StartServer.IsPresent) -and !($StartStudio.IsPresent) -and !($RunAllJobs.IsPresent) -and $JobName -eq "") {
+        Write-Host This script expects commandline parameters. Use -StartStudio and -StudioPath 'path to Warewolf studio exe' to start a studio for run manual testing against.
+        sleep 30
+        exit 1
     }
 }
 
