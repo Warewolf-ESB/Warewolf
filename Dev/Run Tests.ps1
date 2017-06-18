@@ -10,8 +10,8 @@ Param(
   [switch]$VSTest,
   [switch]$MSTest,
   [switch]$DotCover,
-  [string]$MSTestPath="",
-  [string]$VSTestPath="",
+  [string]$VSTestPath="$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe",
+  [string]$MSTestPath="$env:vs140comntools..\IDE\MSTest.exe",
   [string]$DotCoverPath="$env:LocalAppData\JetBrains\Installations\dotCover08\dotCover.exe",
   [string]$ServerUsername,
   [string]$ServerPassword,
@@ -576,21 +576,18 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     If (!(Test-Path "$TestsResultsPath")) {
         New-Item "$TestsResultsPath" -ItemType Directory
     }
-    $DefaultVSTestPath = "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\VSTest.console.exe"
-    if ($VSTestPath -eq "" -and (Test-Path $DefaultVSTestPath) -and $MSTestPath -eq "") {
-        $VSTestPath = $DefaultVSTestPath
+    if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
+        Write-Host Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath '' or -MSTestPath '' parameters to pass paths to one of those files.
+        sleep 30
+        exit 1
     }
-    $DefaultMSTestPath = "$env:vs140comntools..\IDE\MSTest.exe"
-    if ($MSTestPath -eq "" -and (Test-Path $DefaultMSTestPath)) {
-        $MSTestPath = $DefaultMSTestPath
-    }
-    if (($VSTestPath -eq $null -or $VSTestPath -eq "" -or !(Test-Path $VSTestPath)) -and ($MSTestPath -eq $null -or $MSTestPath -eq "" -or !(Test-Path $MSTestPath))) {
-        Write-Host Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath or -MSTestPath parameters to pass paths to one of those files.
+    if ($DotCover.IsPresent -and !(Test-Path $DotCoverPath)) {
+        Write-Host Error cannot find dotcover.exe. Use -DotCoverPath '' parameter to pass a path to that file.
         sleep 30
         exit 1
     }
 
-    if ($VSTestPath -ne $null -and $VSTestPath -ne "" -and (Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+    if (!$MSTest.IsPresent) {
         # Read playlists and args.
         $TestList = ""
         if ($Args.Count -gt 0) {
@@ -732,7 +729,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 </TestSettings>
 "@)
         }
-        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+        if (!$MSTest.IsPresent) {
             # Create full VSTest argument string.
             if ($TestCategories -ne "") {
                 $TestCategories = " /TestCaseFilter:`"$TestCategories`""
