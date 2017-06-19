@@ -476,6 +476,16 @@ function Start-Server {
 }
 
 function Start-Studio {
+    $StudioPath = FindFile-InParent $StudioPathSpecs
+    if ($StudioPath.EndsWith(".zip")) {
+	    Expand-Archive "$StudioPath" "$PSScriptRoot\Studio" -Force
+	    $StudioPath = "$PSScriptRoot\Studio\" + $StudioExeName
+    }
+	if ($StudioPath -eq "") {
+		Write-Host Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath
+        sleep 30
+		exit 1
+	}
     $StudioLogFile = "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log"
     Copy-On-Write $StudioLogFile
 	if (!$DotCover.IsPresent) {
@@ -535,19 +545,6 @@ if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
         exit 1
     }
     Install-Server
-}
-
-if ($StartStudio.IsPresent) {
-    $StudioPath = FindFile-InParent $StudioPathSpecs
-    if ($StudioPath.EndsWith(".zip")) {
-	    Expand-Archive "$StudioPath" "$PSScriptRoot\Studio" -Force
-	    $StudioPath = "$PSScriptRoot\Studio\" + $StudioExeName
-    }
-	if ($StudioPath -eq "") {
-		Write-Host Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath
-        sleep 30
-		exit 1
-	}
 }
 
 #Unpack jobs
@@ -676,7 +673,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
             if ($TestAssembliesList -eq "") {
                 $SolutionFolderPath = FindFile-InParent @($TestsPath + $Project)
-                if ($SolutionFolderPath) {
+                if ($SolutionFolderPath -ne "") {
                     if (!$TestAssembliesDirectories.Contains($SolutionFolderPath + "\bin\Debug")) {
                         $TestAssembliesDirectories += $SolutionFolderPath + "\bin\Debug"
                     }
@@ -859,6 +856,7 @@ if ($Cleanup.IsPresent) {
 }
 
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and $JobName -eq "") {
+    Install-Server
     Start-Server
     if (!$StartServer.IsPresent) {
         Start-Studio
