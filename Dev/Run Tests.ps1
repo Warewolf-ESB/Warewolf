@@ -18,7 +18,9 @@ Param(
   [string]$JobName="",
   [switch]$RunAllJobs,
   [switch]$Cleanup,
-  [switch]$AssemblyFileVersionsTest
+  [switch]$AssemblyFileVersionsTest,
+  [switch]$NoTestSettings,
+  [switch]$RecordScreen
 )
 $JobSpecs = @{}
 #CI
@@ -585,12 +587,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         New-Item "$TestsResultsPath" -ItemType Directory
     }
     if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
-        Write-Host Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath '' or -MSTestPath '' parameters to pass paths to one of those files.
+        Write-Host Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files.
         sleep 30
         exit 1
     }
     if ($DotCover.IsPresent -and !(Test-Path $DotCoverPath)) {
-        Write-Host Error cannot find dotcover.exe. Use -DotCoverPath '' parameter to pass a path to that file.
+        Write-Host Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file.
         sleep 30
         exit 1
     }
@@ -690,7 +692,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
 
         # Create test settings.
-        if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
+        $TestSettingsFile = ""
+        if ($RecordScreen.IsPresent) {
             $TestSettingsFile = "$TestsResultsPath\RunTests.testsettings"
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
@@ -719,8 +722,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 </TestSettings>
 "@)
         } else {
-            $TestSettingsFile = "$TestsResultsPath\RunTests.testsettings"
-            [system.io.file]::WriteAllText($TestSettingsFile,  @"
+            if (!$NoTestSettings.IsPresent) {
+                $TestSettingsFile = "$TestsResultsPath\RunTests.testsettings"
+                [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
   id=`"
@@ -736,13 +740,17 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   </Execution>
 </TestSettings>
 "@)
+            }
         }
         if (!$MSTest.IsPresent) {
             # Create full VSTest argument string.
             if ($TestCategories -ne "") {
                 $TestCategories = " /TestCaseFilter:`"$TestCategories`""
             }
-            $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + " /Settings:`"" + $TestSettingsFile + "`"" + $TestCategories
+            if($TestSettingsFile -ne "") {
+                $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
+            }
+            $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + $TestSettings + $TestCategories
 
             # Write full command including full argument string.
             Out-File -LiteralPath "$TestsResultsPath\..\RunTests.bat" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
@@ -755,7 +763,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $TestCategories = $TestCategories.Replace("(TestCategory", "").Replace("=", "").Replace(")", "")
                 $TestCategories = " /category:`"$TestCategories`""
             }
-            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + " /testsettings:`"" + $TestSettingsFile + "`"" + $TestCategories
+            if($TestSettingsFile -ne "") {
+                $TestSettings =  " /testsettings:`"" + $TestSettingsFile + "`""
+            }
+            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + $TestSettings + $TestCategories
 
             # Write full command including full argument string.
             Out-File -LiteralPath "$TestsResultsPath\..\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
@@ -784,7 +795,7 @@ $DotCoverArgs += @"
             Out-File -LiteralPath "$TestsResultsPath\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
 
             #Write DotCover Runner Batch File
-            Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`" /LogFile=`"$TestsResultsPath\DotCoverRunner.xml.log`""
+            Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`""
         }
         if (Test-Path "$TestsResultsPath\..\RunTests.bat") {
             if (!$DotCover.IsPresent -and ($StartServer.IsPresent -or $StartStudio.IsPresent) -and $JobName -ne "") {
