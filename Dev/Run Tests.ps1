@@ -795,7 +795,7 @@ $DotCoverArgs += @"
             Out-File -LiteralPath "$TestsResultsPath\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
 
             #Write DotCover Runner Batch File
-            Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`""
+            Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`" /LogFile=\`"$TestsResultsPath\DotCoverRunner.xml.log\`""
         }
         if (Test-Path "$TestsResultsPath\..\RunTests.bat") {
             if (!$DotCover.IsPresent -and ($StartServer.IsPresent -or $StartStudio.IsPresent) -and $JobName -ne "") {
