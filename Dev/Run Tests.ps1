@@ -845,7 +845,7 @@ if ($Cleanup.IsPresent) {
     Move-Artifacts-To-TestResults $DotCover.IsPresent (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
 
-if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent) {
+if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and $JobName -eq "") {
     Start-Server
     if (!$StartServer.IsPresent) {
         Start-Studio
