@@ -676,18 +676,20 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
             if ($TestAssembliesList -eq "") {
                 $SolutionFolderPath = FindFile-InParent @($TestsPath + $Project)
-                if (!$TestAssembliesDirectories.Contains($SolutionFolderPath + "\bin\Debug")) {
-                    $TestAssembliesDirectories += $SolutionFolderPath + "\bin\Debug"
-                }
-                if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		            $TestAssembliesList = $TestAssembliesList + " `"" + $SolutionFolderPath + "\bin\Debug\" + (Get-Item $SolutionFolderPath).Name + ".dll`""
-                } else {
-		            $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $SolutionFolderPath + "\bin\Debug\" + (Get-Item $SolutionFolderPath).Name + ".dll`""
+                if ($SolutionFolderPath) {
+                    if (!$TestAssembliesDirectories.Contains($SolutionFolderPath + "\bin\Debug")) {
+                        $TestAssembliesDirectories += $SolutionFolderPath + "\bin\Debug"
+                    }
+                    if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		                $TestAssembliesList = $TestAssembliesList + " `"" + $SolutionFolderPath + "\bin\Debug\" + (Get-Item $SolutionFolderPath).Name + ".dll`""
+                    } else {
+		                $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $SolutionFolderPath + "\bin\Debug\" + (Get-Item $SolutionFolderPath).Name + ".dll`""
+                    }
                 }
             }
         }
         if ($TestAssembliesList -eq "") {
-	        Write-Host Cannot find any $ProjectSpec project folders or assemblies at $PSScriptRoot.
+	        Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
 	        exit 1
         }
 
