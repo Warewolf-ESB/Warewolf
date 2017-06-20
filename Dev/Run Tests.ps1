@@ -774,6 +774,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
             if ($Parallelize.IsPresent) {
                 $ParallelSwitch = " /Parallel"
+            } else {
+                $ParallelSwitch = ""
             }
             $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + $TestSettings + $TestCategories + $ParallelSwitch
 
