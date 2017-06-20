@@ -20,7 +20,8 @@ Param(
   [switch]$Cleanup,
   [switch]$AssemblyFileVersionsTest,
   [switch]$DisableTimeouts,
-  [switch]$RecordScreen
+  [switch]$RecordScreen,
+  [switch]$Parallelize
 )
 $JobSpecs = @{}
 #CI
@@ -109,12 +110,8 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
-$JobName = $JobName.TrimEnd("1234567890 ")
-if ($JobName.EndsWith(" DotCover")) {
-    $ApplyDotCover = $true
-    $JobName = $JobName.TrimEnd(" DotCover")
-} else {
-    $ApplyDotCover = $DotCover.IsPresent
+if ($Parallelize.IsPresent) {
+    Write-Host You have selected the `'Parallelize`' switch. FYI This script only supports running whole test assemblies in parallel and not each test in parallel. Only works with VSTest.
 }
 
 function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7) {
@@ -217,11 +214,13 @@ function Cleanup-ServerStudio {
 function Copy-On-Write([string]$FilePath) {
     if (Test-Path $FilePath) {
         $num = 1
-        while(Test-Path -Path "$FilePath.$num")
+        $FileExtention = [System.IO.Path]::GetExtension($FilePath)
+        $FilePathWithoutExtention = $FilePath.Substring(0, $FilePath.LastIndexOf('.'))
+        while(Test-Path "$FilePathWithoutExtention.$num$FileExtention")
         {
             $num += 1
         }
-        $FilePath | Move-Item -Destination "$FilePath.$num"
+        $FilePath | Move-Item -Destination "$FilePathWithoutExtention.$num$FileExtention"
     }
 }
 
@@ -270,6 +269,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     }
     $PlayList += "</Playlist>"
     $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
+    Copy-On-Write $OutPlaylistPath
     $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
     Write-Host Playlist file written to `"$OutPlaylistPath`".
     if ($Server) {
@@ -436,7 +436,9 @@ function Install-Server {
 </AnalyseParams>
 "@
 
-        Out-File -LiteralPath "$ServerBinDir\$JobName DotCover Runner.xml" -Encoding default -InputObject $RunnerXML
+        $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
+        Copy-On-Write $DotCoverRunnerXMLPath
+        Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
         $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"" + $ServerBinDir + "\$JobName DotCover Runner.xml\`" /LogFile=\`"$env:ProgramData\Warewolf\Server Log\dotCover.log\`""
         if ($ServerService -eq $null) {
             New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
@@ -509,8 +511,9 @@ function Start-Studio {
 </Scope>
 </AnalyseParams>
 "@
-
-        Out-File -LiteralPath "$StudioBinDir\$JobName DotCover Runner.xml" -Encoding default -InputObject $RunnerXML
+        $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
+        Copy-On-Write $DotCoverRunnerXMLPath
+        Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
 		Start-Process $DotCoverPath "cover `"$StudioBinDir\$JobName DotCover Runner.xml`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`""
     }
     while (!(Test-Path $StudioLogFile)){
@@ -558,6 +561,13 @@ $JobAssemblySpecs = @()
 $JobCategories = @()
 if ($JobName -ne $null -and $JobName -ne "") {
     foreach ($Job in $JobName.Split(",")) {
+        $Job = $Job.TrimEnd("1234567890 ")
+        if ($Job.EndsWith(" DotCover")) {
+            $ApplyDotCover = $true
+            $Job = $Job.TrimEnd(" DotCover")
+        } else {
+            $ApplyDotCover = $DotCover.IsPresent
+        }
         $JobNames += $Job
         if ($JobSpecs.ContainsKey($Job)) {
             if ($JobSpecs[$Job].Count -eq 1) {
@@ -705,6 +715,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $TestSettingsFile = ""
         if ($RecordScreen.IsPresent) {
             $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
+            Copy-On-Write $TestSettingsFile
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
@@ -734,6 +745,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         } else {
             if (!$DisableTimeouts.IsPresent) {
                 $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
+                Copy-On-Write $TestSettingsFile
                 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
@@ -760,7 +772,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
-            $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + $TestSettings + $TestCategories
+            if ($Parallelize.IsPresent) {
+                $ParallelSwitch = " /Parallel"
+            }
+            $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + $TestSettings + $TestCategories + $ParallelSwitch
 
             # Write full command including full argument string.
             Out-File -LiteralPath "$TestsResultsPath\..\Run $JobName.bat" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
@@ -804,10 +819,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	</Scope>
 </AnalyseParams>
 "@
-                Out-File -LiteralPath "$TestsResultsPath\$JobName DotCover Runner.xml" -Encoding default -InputObject $DotCoverArgs
+                $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
+                Copy-On-Write $DotCoverRunnerXMLPath
+                Out-File -LiteralPath $DotCoverRunnerXMLPath -Encoding default -InputObject $DotCoverArgs
 
                 #Write DotCover Runner Batch File
-                Out-File -LiteralPath "$TestsResultsPath\Run $JobName DotCover.bat" -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=\`"$TestsResultsPath\$JobName DotCover Runner.xml.log\`""
+                $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
+                Copy-On-Write $DotCoverRunnerPath
+                Out-File -LiteralPath "$DotCoverRunnerPath" -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=\`"$TestsResultsPath\$JobName DotCover Runner.xml.log\`""
 
                 #Run DotCover Runner Batch File
                 &"$TestsResultsPath\Run $JobName DotCover.bat"
