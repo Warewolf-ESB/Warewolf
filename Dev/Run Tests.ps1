@@ -111,25 +111,28 @@ $StudioPathSpecs += "*Studio.zip"
 
 $JobName = $JobName.TrimEnd("1234567890 ")
 
-function FindFile-InParent([string[]]$FileSpecs) {
-	$NumberOfParentsSearched = 0
-    $NumberOfFileSpecsSearched = 0
+function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7) {
+	$NumberOfParentsSearched = -1
     $FilePath = ""
-	while ($FilePath -eq "" -and $NumberOfParentsSearched++ -lt 7 -and $CurrentDirectory -ne "") {
-        while ($FilePath -eq "" -and $NumberOfFileSpecsSearched++ -lt $FileSpecs.Length) {
-            $FileSpec = $FileSpecs[$NumberOfFileSpecsSearched-1]
-            if ($FileSpec.Substring(1,$FileSpec.Length-1).StartsWith(":\")) {
-		        if (Test-Path "$FileSpec") {
-			        $FilePath = $FileSpec
-		        }
-            } else {
-	            $CurrentDirectory = $PSScriptRoot
-		        if (Test-Path "$CurrentDirectory\$FileSpec") {
-			        $FilePath = "$CurrentDirectory\$FileSpec"
-		        }
+	while ($FilePath -eq "" -and $NumberOfParentsSearched++ -lt $NumberOfParentsToSearch -and $CurrentDirectory -ne "") {
+        $NumberOfFileSpecsSearched = -1
+        while ($FilePath -eq "" -and ++$NumberOfFileSpecsSearched -lt $FileSpecs.Length) {
+            $FileSpec = $FileSpecs[$NumberOfFileSpecsSearched]
+			if ($FileSpec -ne (Split-Path -Path $FileSpec -NoQualifier)) {
+                if (!$CurrentDirectory) {
+				    $CurrentDirectory = Split-Path -Path $FileSpec
+                }
+                $FileSpec = Split-Path -Path $FileSpec -leaf
+			} else {
+                if (!$CurrentDirectory) {
+	                $CurrentDirectory = $PSScriptRoot
+                }
             }
+		    if (Test-Path "$CurrentDirectory\$FileSpec") {
+                $FilePath = "$CurrentDirectory\$FileSpec"                    
+		    }
         }
-        if ($CurrentDirectory -ne $null -and $CurrentDirectory -ne "" -and !($CurrentDirectory.EndsWith(":\"))) {
+        if ($CurrentDirectory -ne $null -and $CurrentDirectory -ne "" -and (Split-Path -Path $CurrentDirectory -NoQualifier) -ne "\") {
 		    if ($FilePath -eq "") {
 			    $CurrentDirectory = (Get-Item $CurrentDirectory).Parent.FullName
 		    }
@@ -655,24 +658,28 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $TestAssembliesDirectories = @()
         if (!($TestsPath.EndsWith("\"))) { $TestsPath += "\" }
         foreach ($Project in $ProjectSpec.Split(",")) {
-            $SolutionFolderPath = FindFile-InParent @($TestsPath + $Project + ".dll")
-            if ($SolutionFolderPath -ne "") {
-                foreach ($file in Get-ChildItem $SolutionFolderPath) {
+            $TestAssembliesFileSpecs = @()
+            $TestAssembliesFileSpecs += $TestsPath + $Project + ".dll"
+            $TestAssembliesFileSpecsInParent = FindFile-InParent $TestAssembliesFileSpecs
+            if ($TestAssembliesFileSpecsInParent -ne "") {
+                foreach ($file in Get-ChildItem $TestAssembliesFileSpecsInParent) {
                     $AssemblyNameToCheck = $file.Name.replace($file.extension, "")
-                    if (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck) {
-                        if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
-                            $TestAssembliesDirectories += $file.Directory.FullName
-                        }
+                    if (!$TestAssembliesFileSpecsInParent.Contains("*") -or (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck)) {
                         if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
 		                    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
                         } else {
 		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
                         }
+                        if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
+                            $TestAssembliesDirectories += $file.Directory.FullName
+                        }
 	                }
                 }
             }
             if ($TestAssembliesList -eq "") {
-                $SolutionFolderPath = FindFile-InParent @($TestsPath + $Project)
+                $ProjectFolderSpec = @()
+                $ProjectFolderSpec += $TestsPath + $Project
+                $SolutionFolderPath = FindFile-InParent $ProjectFolderSpec
                 if ($SolutionFolderPath -ne "") {
                     if (!$TestAssembliesDirectories.Contains($SolutionFolderPath + "\bin\Debug")) {
                         $TestAssembliesDirectories += $SolutionFolderPath + "\bin\Debug"
@@ -770,45 +777,45 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             # Write full command including full argument string.
             Out-File -LiteralPath "$TestsResultsPath\..\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
-        if ($DotCover.IsPresent -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
-            # Write DotCover Runner XML 
-            $DotCoverArgs = @"
+        if (Test-Path "$TestsResultsPath\..\RunTests.bat") {
+            if ($DotCover.IsPresent -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
+                # Write DotCover Runner XML 
+                $DotCoverArgs = @"
 <AnalyseParams>
 	<TargetExecutable>$TestsResultsPath\..\RunTests.bat</TargetExecutable>
 	<TargetArguments></TargetArguments>
 	<Output>$TestsResultsPath\$JobName DotCover Output.dcvr</Output>
 	<Scope>
 "@
-        foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
-            $DotCoverArgs += @"
+            foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
+                $DotCoverArgs += @"
 
         <ScopeEntry>$TestAssembliesDirectory\**\*.dll</ScopeEntry>
         <ScopeEntry>$TestAssembliesDirectory\**\*.exe</ScopeEntry>
 "@
-        }
-$DotCoverArgs += @"
+            }
+    $DotCoverArgs += @"
 
 	</Scope>
 </AnalyseParams>
 "@
-            Out-File -LiteralPath "$TestsResultsPath\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
+                Out-File -LiteralPath "$TestsResultsPath\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
 
-            #Write DotCover Runner Batch File
-            Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`" /LogFile=\`"$TestsResultsPath\DotCoverRunner.xml.log\`""
-        }
-        if (Test-Path "$TestsResultsPath\..\RunTests.bat") {
-            if (!$DotCover.IsPresent -and ($StartServer.IsPresent -or $StartStudio.IsPresent) -and $JobName -ne "") {
-                &"$TestsResultsPath\..\RunTests.bat"
-                Cleanup-ServerStudio 10 1
-            } else {
+                #Write DotCover Runner Batch File
+                Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`" /LogFile=\`"$TestsResultsPath\DotCoverRunner.xml.log\`""
+
+                #Run DotCover Runner Batch File
                 &"$TestsResultsPath\RunDotCover.bat"
                 Cleanup-ServerStudio 1800 10
                 Move-File-To-TestResults "$TestsResultsPath\RunDotCover.bat" "Run $JobName DotCover.bat"
                 Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml" "$JobName DotCover Runner.xml"
                 Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml.log" "$JobName DotCover Runner.xml.log"
+            } else {
+                &"$TestsResultsPath\..\RunTests.bat"
+                Cleanup-ServerStudio 10 1
             }
             Move-Artifacts-To-TestResults $DotCover.IsPresent ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
-            if ($JobName.EndsWith("UI Tests") -or $JobName.EndsWith("UI Specs")) {
+            if ($RecordScreen.IsPresent) {
                 Move-ScreenRecordings-To-TestResults
             }
         }
