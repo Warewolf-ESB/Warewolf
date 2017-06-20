@@ -110,6 +110,12 @@ $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
 $JobName = $JobName.TrimEnd("1234567890 ")
+if ($JobName.EndsWith(" DotCover")) {
+    $ApplyDotCover = $true
+    $JobName = $JobName.TrimEnd(" DotCover")
+} else {
+    $ApplyDotCover = $DotCover.IsPresent
+}
 
 function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7) {
 	$NumberOfParentsSearched = -1
@@ -409,7 +415,7 @@ function Install-Server {
     }
 
     $ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
-    if (!$DotCover.IsPresent) {
+    if (!$ApplyDotCover) {
         if ($ServerService -eq $null) {
             New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
         } else {    
@@ -487,7 +493,7 @@ function Start-Studio {
 	}
     $StudioLogFile = "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log"
     Copy-On-Write $StudioLogFile
-	if (!$DotCover.IsPresent) {
+	if (!$ApplyDotCover) {
 		Start-Process "$StudioPath"
 	} else {
         $StudioBinDir = (Get-Item $StudioPath).Directory.FullName 
@@ -561,6 +567,8 @@ if ($JobName -ne $null -and $JobName -ne "") {
                 $JobAssemblySpecs += $JobSpecs[$Job][0]
                 $JobCategories += $JobSpecs[$Job][1]
             }
+        } else {
+            Write-Warning Unrecognized Job $Job was ignored from the run
         }
     }
 } else {
@@ -587,7 +595,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         sleep 30
         exit 1
     }
-    if ($DotCover.IsPresent -and !(Test-Path $DotCoverPath)) {
+    if ($ApplyDotCover -and !(Test-Path $DotCoverPath)) {
         Write-Host Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file.
         sleep 30
         exit 1
@@ -775,7 +783,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestsResultsPath\..\Run $JobName.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
-            if ($DotCover.IsPresent -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
+            if ($ApplyDotCover -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
                 # Write DotCover Runner XML 
                 $DotCoverArgs = @"
 <AnalyseParams>
@@ -799,7 +807,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 Out-File -LiteralPath "$TestsResultsPath\$JobName DotCover Runner.xml" -Encoding default -InputObject $DotCoverArgs
 
                 #Write DotCover Runner Batch File
-                Out-File -LiteralPath $TestsResultsPath\Run $JobName DotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=\`"$TestsResultsPath\$JobName DotCover Runner.xml.log\`""
+                Out-File -LiteralPath "$TestsResultsPath\Run $JobName DotCover.bat" -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=\`"$TestsResultsPath\$JobName DotCover Runner.xml.log\`""
 
                 #Run DotCover Runner Batch File
                 &"$TestsResultsPath\Run $JobName DotCover.bat"
@@ -808,7 +816,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 &"$TestsResultsPath\..\Run $JobName.bat"
                 Cleanup-ServerStudio 10 1
             }
-            Move-Artifacts-To-TestResults $DotCover.IsPresent ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
+            Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
             if ($RecordScreen.IsPresent) {
                 Move-ScreenRecordings-To-TestResults
             }
@@ -848,7 +856,7 @@ if ($AssemblyFileVersionsTest.IsPresent) {
 }
 
 if ($Cleanup.IsPresent) {
-    if ($DotCover.IsPresent) {
+    if ($ApplyDotCover) {
         Cleanup-ServerStudio 1800 10
     } else {
         Cleanup-ServerStudio 10 1
@@ -856,7 +864,7 @@ if ($Cleanup.IsPresent) {
 	if (!$JobName) {
 		$JobName = "Manual Tests"
 	}
-    Move-Artifacts-To-TestResults $DotCover.IsPresent (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
+    Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
 
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and $JobName -eq "") {
