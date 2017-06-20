@@ -232,19 +232,15 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         Move-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
         Write-Host Moved loose TRX files from VS install directory into TestResults.
     }
-    
-    Move-File-To-TestResults "$TestsResultsPath\..\RunTests.bat" "Run $JobName.bat"
-    Move-File-To-TestResults "$TestsResultsPath\RunTests.testsettings" "$JobName.testsettings"
 
     # Write failing tests playlistfunction Move-Artifacts-T.
     Write-Host Writing all test failures in `"$TestsResultsPath`" to a playlist file
 
-    Get-ChildItem "$TestsResultsPath" -Filter *.trx | Rename-Item -NewName {$_.name -replace ' ','_' }
-
     $PlayList = "<Playlist Version=`"1.0`">"
     Get-ChildItem "$TestsResultsPath" -Filter *.trx | `
     Foreach-Object{
-	    [xml]$trxContent = Get-Content $_.FullName
+        $FullTRXFilePath = $_.FullName
+	    [xml]$trxContent = Get-Content "$FullTRXFilePath"
 	    if ($trxContent.TestRun.Results.UnitTestResult.count -gt 0) {
 	        foreach($TestResult in $trxContent.TestRun.Results.UnitTestResult) {
 		        if ($TestResult.outcome -eq "Failed") {
@@ -434,8 +430,8 @@ function Install-Server {
 </AnalyseParams>
 "@
 
-        Out-File -LiteralPath "$ServerBinDir\DotCoverRunner.xml" -Encoding default -InputObject $RunnerXML
-        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"" + $ServerBinDir + "\DotCoverRunner.xml\`" /LogFile=\`"$env:ProgramData\Warewolf\Server Log\dotCover.log\`""
+        Out-File -LiteralPath "$ServerBinDir\$JobName DotCover Runner.xml" -Encoding default -InputObject $RunnerXML
+        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"" + $ServerBinDir + "\$JobName DotCover Runner.xml\`" /LogFile=\`"$env:ProgramData\Warewolf\Server Log\dotCover.log\`""
         if ($ServerService -eq $null) {
             New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
 	    } else {
@@ -508,8 +504,8 @@ function Start-Studio {
 </AnalyseParams>
 "@
 
-        Out-File -LiteralPath "$StudioBinDir\DotCoverRunner.xml" -Encoding default -InputObject $RunnerXML
-		Start-Process $DotCoverPath "cover `"$StudioBinDir\DotCoverRunner.xml`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`""
+        Out-File -LiteralPath "$StudioBinDir\$JobName DotCover Runner.xml" -Encoding default -InputObject $RunnerXML
+		Start-Process $DotCoverPath "cover `"$StudioBinDir\$JobName DotCover Runner.xml`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`""
     }
     while (!(Test-Path $StudioLogFile)){
         Write-Warning 'Waiting for Studio to start...'
@@ -700,7 +696,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         # Create test settings.
         $TestSettingsFile = ""
         if ($RecordScreen.IsPresent) {
-            $TestSettingsFile = "$TestsResultsPath\RunTests.testsettings"
+            $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
@@ -729,7 +725,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@)
         } else {
             if (!$DisableTimeouts.IsPresent) {
-                $TestSettingsFile = "$TestsResultsPath\RunTests.testsettings"
+                $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
                 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
@@ -759,10 +755,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + $TestSettings + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$TestsResultsPath\..\RunTests.bat" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
+            Out-File -LiteralPath "$TestsResultsPath\..\Run $JobName.bat" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
         } else {
             #Resolve test results file name
             $TestResultsFile = $TestsResultsPath + "\" + $JobName + " Results.trx"
+            Copy-On-Write $TestResultsFile
 
             # Create full MSTest argument string.
             if ($TestCategories -ne "") {
@@ -775,14 +772,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + $TestSettings + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$TestsResultsPath\..\RunTests.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
+            Out-File -LiteralPath "$TestsResultsPath\..\Run $JobName.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
-        if (Test-Path "$TestsResultsPath\..\RunTests.bat") {
+        if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
             if ($DotCover.IsPresent -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
                 # Write DotCover Runner XML 
                 $DotCoverArgs = @"
 <AnalyseParams>
-	<TargetExecutable>$TestsResultsPath\..\RunTests.bat</TargetExecutable>
+	<TargetExecutable>$TestsResultsPath\..\Run $JobName.bat</TargetExecutable>
 	<TargetArguments></TargetArguments>
 	<Output>$TestsResultsPath\$JobName DotCover Output.dcvr</Output>
 	<Scope>
@@ -799,19 +796,16 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	</Scope>
 </AnalyseParams>
 "@
-                Out-File -LiteralPath "$TestsResultsPath\DotCoverRunner.xml" -Encoding default -InputObject $DotCoverArgs
+                Out-File -LiteralPath "$TestsResultsPath\$JobName DotCover Runner.xml" -Encoding default -InputObject $DotCoverArgs
 
                 #Write DotCover Runner Batch File
-                Out-File -LiteralPath $TestsResultsPath\RunDotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\DotCoverRunner.xml`" /LogFile=\`"$TestsResultsPath\DotCoverRunner.xml.log\`""
+                Out-File -LiteralPath $TestsResultsPath\Run $JobName DotCover.bat -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=\`"$TestsResultsPath\$JobName DotCover Runner.xml.log\`""
 
                 #Run DotCover Runner Batch File
-                &"$TestsResultsPath\RunDotCover.bat"
+                &"$TestsResultsPath\Run $JobName DotCover.bat"
                 Cleanup-ServerStudio 1800 10
-                Move-File-To-TestResults "$TestsResultsPath\RunDotCover.bat" "Run $JobName DotCover.bat"
-                Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml" "$JobName DotCover Runner.xml"
-                Move-File-To-TestResults "$TestsResultsPath\DotCoverRunner.xml.log" "$JobName DotCover Runner.xml.log"
             } else {
-                &"$TestsResultsPath\..\RunTests.bat"
+                &"$TestsResultsPath\..\Run $JobName.bat"
                 Cleanup-ServerStudio 10 1
             }
             Move-Artifacts-To-TestResults $DotCover.IsPresent ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
@@ -859,6 +853,9 @@ if ($Cleanup.IsPresent) {
     } else {
         Cleanup-ServerStudio 10 1
     }
+	if (!$JobName) {
+		$JobName = "Manual Tests"
+	}
     Move-Artifacts-To-TestResults $DotCover.IsPresent (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
 
