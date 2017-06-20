@@ -578,6 +578,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 serviceTestStep.StepOutputs = serviceTestOutputs;
+                serviceTestStep.AddNewEmptyRow();
             }
         }
 
