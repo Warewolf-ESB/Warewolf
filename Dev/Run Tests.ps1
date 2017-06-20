@@ -19,7 +19,7 @@ Param(
   [switch]$RunAllJobs,
   [switch]$Cleanup,
   [switch]$AssemblyFileVersionsTest,
-  [switch]$NoTestSettings,
+  [switch]$DisableTimeouts,
   [switch]$RecordScreen
 )
 $JobSpecs = @{}
@@ -728,7 +728,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 </TestSettings>
 "@)
         } else {
-            if (!$NoTestSettings.IsPresent) {
+            if (!$DisableTimeouts.IsPresent) {
                 $TestSettingsFile = "$TestsResultsPath\RunTests.testsettings"
                 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
