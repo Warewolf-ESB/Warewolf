@@ -551,6 +551,11 @@ if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
     Install-Server
 }
 
+if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
+    Remove-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx"
+    Write-Host Removed loose TRX files from VS install directory.
+}
+
 #Unpack jobs
 $JobNames = @()
 $JobAssemblySpecs = @()
