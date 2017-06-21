@@ -689,15 +689,17 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if ($TestAssembliesList -eq "") {
                 $ProjectFolderSpec = @()
                 $ProjectFolderSpec += $TestsPath + $Project
-                $SolutionFolderPath = FindFile-InParent $ProjectFolderSpec
-                if ($SolutionFolderPath -ne "") {
-                    if (!$TestAssembliesDirectories.Contains($SolutionFolderPath + "\bin\Debug")) {
-                        $TestAssembliesDirectories += $SolutionFolderPath + "\bin\Debug"
-                    }
-                    if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                $TestAssembliesList = $TestAssembliesList + " `"" + $SolutionFolderPath + "\bin\Debug\" + (Get-Item $SolutionFolderPath).Name + ".dll`""
-                    } else {
-		                $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $SolutionFolderPath + "\bin\Debug\" + (Get-Item $SolutionFolderPath).Name + ".dll`""
+                $ProjectFolderSpecInParent = FindFile-InParent $ProjectFolderSpec
+                if ($ProjectFolderSpecInParent -ne "") {
+                    foreach ($projectFolder in Get-ChildItem $ProjectFolderSpecInParent -Directory) {
+                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		                    $TestAssembliesList = $TestAssembliesList + " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                        } else {
+		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                        }
+                        if (!$TestAssembliesDirectories.Contains($projectFolder.FullName + "\bin\Debug")) {
+                            $TestAssembliesDirectories += $projectFolder.FullName + "\bin\Debug"
+                        }
                     }
                 }
             }
@@ -801,6 +803,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
+            if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                Start-Server
+                if (!$StartServer.IsPresent) {
+                    Start-Studio
+                }
+            }
             if ($ApplyDotCover -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
                 # Write DotCover Runner XML 
                 $DotCoverArgs = @"
@@ -833,13 +841,17 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
                 Copy-On-Write $DotCoverRunnerPath
                 Out-File -LiteralPath "$DotCoverRunnerPath" -Encoding default -InputObject `"$DotCoverPath`"$FullArgsList
-
+                
                 #Run DotCover Runner Batch File
                 &"$DotCoverRunnerPath"
-                Cleanup-ServerStudio 1800 10
+                if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                    Cleanup-ServerStudio 1800 10
+                }
             } else {
                 &"$TestRunnerPath"
-                Cleanup-ServerStudio 10 1
+                if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                    Cleanup-ServerStudio 10 1
+                }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
             if ($RecordScreen.IsPresent) {
