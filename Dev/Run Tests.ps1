@@ -110,10 +110,6 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
-if ($Parallelize.IsPresent) {
-    Write-Host You have selected the `'Parallelize`' switch. FYI This script only supports running whole test assemblies in parallel and not each test in parallel. Only works with VSTest.
-}
-
 function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7) {
 	$NumberOfParentsSearched = -1
     $FilePath = ""
@@ -547,7 +543,7 @@ if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
         sleep 30
         exit 1
     }
-    if ($DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
+    if ($ApplyDotCover -and $DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
         Write-Host DotCover path not found: $DotCoverPath
         sleep 30
         exit 1
@@ -578,7 +574,7 @@ if ($JobName -ne $null -and $JobName -ne "") {
                 $JobCategories += $JobSpecs[$Job][1]
             }
         } else {
-            Write-Warning Unrecognized Job $Job was ignored from the run
+            Write-Host Unrecognized Job $Job was ignored from the run
         }
     }
 } else {
@@ -773,6 +769,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
             if ($Parallelize.IsPresent) {
+                Write-Host You have selected the `'Parallelize`' switch. FYI This script only supports running whole test assemblies in parallel and not each test in parallel. Only works with VSTest.
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
@@ -780,7 +777,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + $TestSettings + $TestCategories + $ParallelSwitch
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$TestsResultsPath\..\Run $JobName.bat" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
+            $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
+            Copy-On-Write "$TestRunnerPath"
+            Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
         } else {
             #Resolve test results file name
             $TestResultsFile = $TestsResultsPath + "\" + $JobName + " Results.trx"
@@ -797,7 +796,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + $TestSettings + $TestCategories
 
             # Write full command including full argument string.
-            Out-File -LiteralPath "$TestsResultsPath\..\Run $JobName.bat" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
+            $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
+            Copy-On-Write "$TestRunnerPath"
+            Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
             if ($ApplyDotCover -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
@@ -824,17 +825,20 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
                 Copy-On-Write $DotCoverRunnerXMLPath
                 Out-File -LiteralPath $DotCoverRunnerXMLPath -Encoding default -InputObject $DotCoverArgs
+                
+                # Create full DotCover argument string.
+                $FullArgsList = " cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=`"$TestsResultsPath\DotCoverRunner.xml.log`""
 
                 #Write DotCover Runner Batch File
                 $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
                 Copy-On-Write $DotCoverRunnerPath
-                Out-File -LiteralPath "$DotCoverRunnerPath" -Encoding default -InputObject "`"$DotCoverPath`" cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=\`"$TestsResultsPath\$JobName DotCover Runner.xml.log\`""
+                Out-File -LiteralPath "$DotCoverRunnerPath" -Encoding default -InputObject `"$DotCoverPath`"$FullArgsList
 
                 #Run DotCover Runner Batch File
-                &"$TestsResultsPath\Run $JobName DotCover.bat"
+                &"$DotCoverRunnerPath"
                 Cleanup-ServerStudio 1800 10
             } else {
-                &"$TestsResultsPath\..\Run $JobName.bat"
+                &"$TestRunnerPath"
                 Cleanup-ServerStudio 10 1
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
