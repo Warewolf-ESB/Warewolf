@@ -655,12 +655,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
-        if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-            Start-Server
-        }
-        if ($StartStudio.IsPresent) {
-            Start-Studio
-        }
         $ProjectSpec = $JobAssemblySpecs[$_].ToString()
         $JobName = $JobNames[$_].ToString()
         $TestCategories = $JobCategories[$_].ToString()
