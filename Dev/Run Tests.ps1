@@ -25,17 +25,17 @@ Param(
 )
 $JobSpecs = @{}
 #CI
-$JobSpecs["Other Unit Tests"] 				 	= "Dev2.*.Tests,Warewolf.*.Tests"
 $JobSpecs["Other Specs"]		 				= "Dev2.*.Specs,Warewolf.*.Specs", "(TestCategory!=ExampleWorkflowExecution)&(TestCategory!=WorkflowExecution)&(TestCategory!=SubworkflowExecution)"
-$JobSpecs["Tools Specs"]		 				= "Warewolf.ToolsSpecs"
-$JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
-$JobSpecs["COMIPC Unit Tests"]				 	= "Warewolf.COMIPC.Tests"
 $JobSpecs["Example Workflow Execution Specs"] 	= "Dev2.*.Specs,Warewolf.*.Specs", "(TestCategory=ExampleWorkflowExecution)"
-$JobSpecs["Studio View Models Unit Tests"]	 	= "Warewolf.Studio.ViewModels.Tests"
 $JobSpecs["Subworkflow Execution Specs"]		= "Dev2.*.Specs,Warewolf.*.Specs", "(TestCategory=SubworkflowExecution)"
 $JobSpecs["Workflow Execution Specs"]		 	= "Dev2.*.Specs,Warewolf.*.Specs", "(TestCategory=WorkflowExecution)"
+$JobSpecs["Other Unit Tests"] 				 	= "Dev2.*.Tests,Warewolf.*.Tests"
+$JobSpecs["COMIPC Unit Tests"]				 	= "Warewolf.COMIPC.Tests"
+$JobSpecs["Studio View Models Unit Tests"]	 	= "Warewolf.Studio.ViewModels.Tests"
 $JobSpecs["Activity Designers Unit Tests"]	 	= "Dev2.Activities.Designers.Tests"
 $JobSpecs["Activity Unit Tests"]				= "Dev2.Activities.Tests"
+$JobSpecs["Tools Specs"]		 				= "Warewolf.ToolsSpecs"
+$JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
 $JobSpecs["Integration Tests"]				 	= "Dev2.IntegrationTests"
 #Coded UI
 $JobSpecs["Other UI Tests"]					    = "Warewolf.UITests", "(TestCategory!=Tools)&(TestCategory!=Data Tools)&(TestCategory!=Database Tools)&(TestCategory!=Dropbox Tools)&(TestCategory!=File Tools)&(TestCategory!=HTTP Tools)&(TestCategory!=Recordset Tools)&(TestCategory!=Sharepoint Tools)&(TestCategory!=Utility Tools)&(TestCategory!=Explorer)&(TestCategory!=Tabs and Panes)&(TestCategory!=Deploy)&(TestCategory!=Debug Input)&(TestCategory!=Workflow Testing)&(TestCategory!=Default Layout)&(TestCategory!=Resource Tools)&(TestCategory!=Save Dialog)&(TestCategory!=Shortcut Keys)&(TestCategory!=Settings)&(TestCategory!=Dependency Graph)&(TestCategory!=Variables)&(TestCategory!=Email Tools)&(TestCategory!=Plugin Sources)&(TestCategory!=Web Sources)&(TestCategory!=Database Sources)&(TestCategory!=Workflow Mocking Tests)&(TestCategory!=Assign Tool)&(TestCategory!=Control Flow Tools)&(TestCategory!=DotNet Connector Mocking Tests)&(TestCategory!=DotNet Connector Tool)&(TestCategory!=Hello World Mocking Tests)&(TestCategory!=Server Sources)&(TestCategory!=Source Wizards)"
@@ -569,8 +569,8 @@ if ($JobName -ne $null -and $JobName -ne "") {
         } else {
             $ApplyDotCover = $DotCover.IsPresent
         }
-        $JobNames += $Job
         if ($JobSpecs.ContainsKey($Job)) {
+            $JobNames += $Job
             if ($JobSpecs[$Job].Count -eq 1) {
                 $JobAssemblySpecs += $JobSpecs[$Job]
                 $JobCategories += ""
