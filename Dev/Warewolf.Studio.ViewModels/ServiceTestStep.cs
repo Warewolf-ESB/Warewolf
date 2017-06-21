@@ -119,7 +119,11 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (DataListUtil.IsValueRecordset(lastOrDefault?.Variable))
                     {
-                        _stepOutputs.Add(new ServiceTestOutput("", "", "", ""));
+                        var serviceTestOutput = new ServiceTestOutput("", "", "", "")
+                        {
+                            AddNewAction = () => AddNewOutput(_stepOutputs.LastOrDefault().Variable)
+                        };
+                        _stepOutputs.Add(serviceTestOutput);
                     }
                 }
             }
