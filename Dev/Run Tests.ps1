@@ -21,7 +21,10 @@ Param(
   [switch]$AssemblyFileVersionsTest,
   [switch]$DisableTimeouts,
   [switch]$RecordScreen,
-  [switch]$Parallelize
+  [switch]$Parallelize,
+  [string]$Category,
+  [string]$ProjectName,
+  [string]$TestList
 )
 $JobSpecs = @{}
 #CI
@@ -110,6 +113,8 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
+$ApplyDotCover = $DotCover.IsPresent
+
 function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7) {
 	$NumberOfParentsSearched = -1
     $FilePath = ""
@@ -142,18 +147,7 @@ function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7)
     $FilePath
 }
 
-function Cleanup-ServerStudio {
-    if ($Args.length > 0) {
-        [int]$WaitForCloseTimeout = $Args[0]
-    } else {
-        [int]$WaitForCloseTimeout = 1800
-    }
-    if ($Args.length > 1) {
-	    [int]$WaitForCloseRetryCount = $Args[1]
-    } else {
-	    [int]$WaitForCloseRetryCount = 10
-    }
-
+function Cleanup-ServerStudio([int]$WaitForCloseTimeout = 1800,[int]$WaitForCloseRetryCount = 10) {
     #Stop Studio
     $Output = ""
     taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
@@ -566,8 +560,6 @@ if ($JobName -ne $null -and $JobName -ne "") {
         if ($Job.EndsWith(" DotCover")) {
             $ApplyDotCover = $true
             $Job = $Job.TrimEnd(" DotCover")
-        } else {
-            $ApplyDotCover = $DotCover.IsPresent
         }
         if ($JobSpecs.ContainsKey($Job)) {
             $JobNames += $Job
@@ -579,7 +571,7 @@ if ($JobName -ne $null -and $JobName -ne "") {
                 $JobCategories += $JobSpecs[$Job][1]
             }
         } else {
-            Write-Host Unrecognized Job $Job was ignored from the run
+            Write-Warning "Unrecognized Job $Job was ignored from the run"
         }
     }
 } else {
@@ -594,6 +586,15 @@ if ($JobName -ne $null -and $JobName -ne "") {
                 $JobCategories += $JobSpecs[$_][1]
             }
         })
+    }
+}
+if ($ProjectName -ne $null -and $ProjectName -ne "") {
+    $JobNames += "Manual Tests"
+    $JobAssemblySpecs += $ProjectName
+    if ($Category -ne $null -and $Category -ne "") {
+        $JobCategories += $Category
+    } else {
+        $JobCategories += ""
     }
 }
 $TotalNumberOfJobsToRun = $JobNames.length
@@ -637,11 +638,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if ($TestList.StartsWith(",")) {
 	        $TestList = $TestList -replace "^.", " /Tests:"
         }
-    } else {
-        $TestList = ""
-        if ($Args.Count -gt 0) {
-            $TestList = $Args.ForEach({ "," + $_ })
-        } else {
+    } else {        
+        if ($TestList = "") {
             Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
             Foreach-Object{
 	            [xml]$playlistContent = Get-Content $_.FullName
@@ -660,8 +658,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
-        $ProjectSpec = $JobAssemblySpecs[$_].ToString()
         $JobName = $JobNames[$_].ToString()
+        $ProjectSpec = $JobAssemblySpecs[$_].ToString()
         $TestCategories = $JobCategories[$_].ToString()
         $TestAssembliesList = ""
         $TestAssembliesDirectories = @()
@@ -690,14 +688,25 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $ProjectFolderSpec += $TestsPath + $Project
                 $ProjectFolderSpecInParent = FindFile-InParent $ProjectFolderSpec
                 if ($ProjectFolderSpecInParent -ne "") {
-                    foreach ($projectFolder in Get-ChildItem $ProjectFolderSpecInParent -Directory) {
-                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                    $TestAssembliesList = $TestAssembliesList + " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
-                        } else {
-		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                    if ($ProjectFolderSpecInParent.Contains("*")) {
+                        foreach ($projectFolder in Get-ChildItem $ProjectFolderSpecInParent -Directory) {
+                            if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		                        $TestAssembliesList = $TestAssembliesList + " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                            } else {
+		                        $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                            }
+                            if (!$TestAssembliesDirectories.Contains($projectFolder.FullName + "\bin\Debug")) {
+                                $TestAssembliesDirectories += $projectFolder.FullName + "\bin\Debug"
+                            }
                         }
-                        if (!$TestAssembliesDirectories.Contains($projectFolder.FullName + "\bin\Debug")) {
-                            $TestAssembliesDirectories += $projectFolder.FullName + "\bin\Debug"
+                    } else {
+                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		                    $TestAssembliesList = $TestAssembliesList + " `"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
+                        } else {
+		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $ProjectFolderSpecInParent.FullName + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
+                        }
+                        if (!$TestAssembliesDirectories.Contains($ProjectFolderSpecInParent + "\bin\Debug")) {
+                            $TestAssembliesDirectories += $ProjectFolderSpecInParent + "\bin\Debug"
                         }
                     }
                 }
@@ -775,7 +784,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             } else {
                 $ParallelSwitch = ""
             }
-            $FullArgsList = $TestAssembliesList + " /logger:trx " + $TestList + $TestSettings + $TestCategories + $ParallelSwitch
+            $FullArgsList = $TestAssembliesList + " /logger:trx" + $TestList + $TestSettings + $TestCategories + $ParallelSwitch
 
             # Write full command including full argument string.
             $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
@@ -804,7 +813,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
             if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
                 Start-Server
-                if (!$StartServer.IsPresent) {
+                if ($StartStudio.IsPresent) {
                     Start-Studio
                 }
             }
@@ -906,7 +915,5 @@ if ($Cleanup.IsPresent) {
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and $JobName -eq "") {
     Install-Server
     Start-Server
-    if (!$StartServer.IsPresent) {
-        Start-Studio
-    }
+    Start-Studio
 }
