@@ -57,6 +57,7 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/TestResults/**
 /TestResults/**
 /Dev/TestScripts/FullVersionString
+/Dev/*.bat
 *.tmp_proj
 
 ####################################################################################
