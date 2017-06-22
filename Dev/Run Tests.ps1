@@ -429,7 +429,7 @@ function Install-Server {
         $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
-        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"" + $ServerBinDir + "\$JobName DotCover Runner.xml\`" /LogFile=\`"$env:ProgramData\Warewolf\Server Log\dotCover.log\`""
+        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"" + $ServerBinDir + "\$JobName DotCover Runner.xml\`" /LogFile=\`"$TestsResultsPath\dotCover.log\`""
         if ($ServerService -eq $null) {
             New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
 	    } else {
