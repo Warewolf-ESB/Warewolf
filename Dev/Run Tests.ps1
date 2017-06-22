@@ -24,7 +24,9 @@ Param(
   [switch]$Parallelize,
   [string]$Category,
   [string]$ProjectName,
-  [string]$TestList
+  [string]$TestList,
+  [string]$ServerUsername,
+  [string]$ServerPassword
 )
 $JobSpecs = @{}
 #CI
