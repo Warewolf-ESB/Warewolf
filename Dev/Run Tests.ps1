@@ -438,10 +438,13 @@ function Install-Server {
 </AnalyseParams>
 "@
 
+        if ($JobName -eq "") {
+            $JobName = "Manual Tests"
+        }
         $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
-        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"" + $ServerBinDir + "\$JobName DotCover Runner.xml\`" /LogFile=\`"$TestsResultsPath\dotCover.log\`""
+        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"$DotCoverRunnerXMLPath\`" /LogFile=\`"$TestsResultsPath\ServerDotCover.log\`""
         if ($ServerService -eq $null) {
             New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
 	    } else {
@@ -514,7 +517,7 @@ function Start-Studio {
         $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
-		Start-Process $DotCoverPath "cover `"$StudioBinDir\$JobName DotCover Runner.xml`" /LogFile=`"$TestsResultsPath\dotCover.log`""
+		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
     while (!(Test-Path $StudioLogFile)){
         Write-Warning 'Waiting for Studio to start...'
