@@ -66,8 +66,8 @@ $JobSpecs["HTTP Tools UI Tests"]				= "Warewolf.UITests", "(TestCategory=HTTP To
 $JobSpecs["Plugin Sources UI Tests"]			= "Warewolf.UITests", "(TestCategory=Plugin Sources)"
 $JobSpecs["Recordset Tools UI Tests"]			= "Warewolf.UITests", "(TestCategory=Recordset Tools)"
 $JobSpecs["Resource Tools UI Tests"]			= "Warewolf.UITests", "(TestCategory=Resource Tools)"
-$JobSpecs["Save Dialog UI Specs"]				= "Warewolf.UISpecs", "(TestCategory=Save Dialog)"
-$JobSpecs["Save Dialog UI Tests"]				= "Warewolf.UITests", "(TestCategory=SaveDialog)"
+$JobSpecs["Save Dialog UI Specs"]				= "Warewolf.UISpecs", "(TestCategory=SaveDialog)"
+$JobSpecs["Save Dialog UI Tests"]				= "Warewolf.UITests", "(TestCategory=Save Dialog)"
 $JobSpecs["Server Sources UI Tests"]			= "Warewolf.UITests", "(TestCategory=Server Sources)"
 $JobSpecs["Settings UI Tests"]					= "Warewolf.UITests", "(TestCategory=Settings)"
 $JobSpecs["Sharepoint Tools UI Tests"]			= "Warewolf.UITests", "(TestCategory=Sharepoint Tools)"
@@ -773,6 +773,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if (!$MSTest.IsPresent) {
             # Create full VSTest argument string.
             if ($TestCategories -ne "") {
+				if (!$TestCategories.StartsWith("(TestCategory")) {
+					$TestCategories = "(TestCategory=" + $TestCategories  + ")"
+				}
                 $TestCategories = " /TestCaseFilter:`"$TestCategories`""
             }
             if($TestSettingsFile -ne "") {
@@ -797,7 +800,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 
             # Create full MSTest argument string.
             if ($TestCategories -ne "") {
-                $TestCategories = $TestCategories.Replace("(TestCategory", "").Replace("=", "").Replace(")", "")
+				if ($TestCategories.StartsWith("(TestCategory")) {
+					$TestCategories = $TestCategories.Replace("(TestCategory", "").Replace("=", "").Replace(")", "")
+				}
                 $TestCategories = " /category:`"$TestCategories`""
             }
             if($TestSettingsFile -ne "") {
