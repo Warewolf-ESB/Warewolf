@@ -9,6 +9,20 @@ namespace Warewolf.UITests
     [CodedUITest]
     public class WorkflowContainingGridedToolsTests
     {
+        private const string Resource = "AlphaNumericValidator";
+
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void Can_SAve_Tests_With_Grided_Tools()
+        {
+            ExplorerUIMap.Filter_Explorer(Resource);
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Press_F6();
+            UIMap.Click_Create_Test_From_Debug();
+            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+            Assert.IsFalse(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
@@ -48,6 +62,20 @@ namespace Warewolf.UITests
 
         private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
 
+        MainStudioWindow MainStudioWindow
+        {
+            get
+            {
+                if (_MainStudioWindow == null)
+                {
+                    _MainStudioWindow = new MainStudioWindow();
+                }
+
+                return _MainStudioWindow;
+            }
+        }
+
+        private MainStudioWindow _MainStudioWindow;
         ExplorerUIMap ExplorerUIMap
         {
             get
