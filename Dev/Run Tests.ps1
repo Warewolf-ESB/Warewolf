@@ -24,7 +24,10 @@ Param(
   [switch]$Parallelize,
   [string]$Category,
   [string]$ProjectName,
-  [string]$TestList
+  [string]$TestList,
+  [switch]$RunAllUnitTests,
+  [switch]$RunAllServerTests,
+  [switch]$RunAllCodedUITests
 )
 $JobSpecs = @{}
 #CI
@@ -114,6 +117,16 @@ $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
 $ApplyDotCover = $DotCover.IsPresent
+
+if ($RunAllUnitTests.IsPresent) {
+    $JobName = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Tools Specs,UI Binding Tests"
+}
+if ($RunAllServerTests.IsPresent) {
+    $JobName = "Other Specs,Example Workflow Execution Specs,Subworkflow Execution Specs,Workflow Execution Specs"
+}
+if ($RunAllCodedUITests.IsPresent) {
+    $JobName = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
+}
 
 function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7) {
 	$NumberOfParentsSearched = -1
@@ -416,13 +429,12 @@ function Install-Server {
         $ServerBinDir = (Get-Item $ServerPath).Directory.FullName 
         $RunnerXML = @"
 <AnalyseParams>
-<TargetExecutable>$ServerPath</TargetExecutable>
-<TargetArguments></TargetArguments>
-<Output>$env:ProgramData\Warewolf\Server Log\dotCover.dcvr</Output>
-<Scope>
-	<ScopeEntry>$ServerBinDir\**\*.dll</ScopeEntry>
-	<ScopeEntry>$ServerBinDir\**\*.exe</ScopeEntry>
-</Scope>
+    <TargetExecutable>$ServerPath</TargetExecutable>
+    <Output>$env:ProgramData\Warewolf\Server Log\dotCover.dcvr</Output>
+    <Scope>
+	    <ScopeEntry>$ServerBinDir\**\*.dll</ScopeEntry>
+	    <ScopeEntry>$ServerBinDir\**\*.exe</ScopeEntry>
+    </Scope>
 </AnalyseParams>
 "@
 
@@ -491,14 +503,12 @@ function Start-Studio {
         $StudioBinDir = (Get-Item $StudioPath).Directory.FullName 
         $RunnerXML = @"
 <AnalyseParams>
-<TargetExecutable>$StudioPath</TargetExecutable>
-<TargetArguments></TargetArguments>
-<LogFile>$env:LocalAppData\Warewolf\Studio Logs\dotCover.log</LogFile>
-<Output>$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr</Output>
-<Scope>
-	<ScopeEntry>$StudioBinDir\**\*.dll</ScopeEntry>
-	<ScopeEntry>$StudioBinDir\**\*.exe</ScopeEntry>
-</Scope>
+    <TargetExecutable>$StudioPath</TargetExecutable>
+    <Output>$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr</Output>
+    <Scope>
+    	<ScopeEntry>$StudioBinDir\**\*.dll</ScopeEntry>
+    	<ScopeEntry>$StudioBinDir\**\*.exe</ScopeEntry>
+    </Scope>
 </AnalyseParams>
 "@
         $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
@@ -574,19 +584,18 @@ if ($JobName -ne $null -and $JobName -ne "") {
             Write-Warning "Unrecognized Job $Job was ignored from the run"
         }
     }
-} else {
-    if ($RunAllJobs.IsPresent) {
-        $JobSpecs.Keys.ForEach({
-            $JobNames += $_
-            if ($JobSpecs[$_].Count -eq 1) {
-                $JobAssemblySpecs += $JobSpecs[$_]
-                $JobCategories += ""
-            } else {
-                $JobAssemblySpecs += $JobSpecs[$_][0]
-                $JobCategories += $JobSpecs[$_][1]
-            }
-        })
-    }
+}
+if ($RunAllJobs.IsPresent) {
+    $JobSpecs.Keys.ForEach({
+        $JobNames += $_
+        if ($JobSpecs[$_].Count -eq 1) {
+            $JobAssemblySpecs += $JobSpecs[$_]
+            $JobCategories += ""
+        } else {
+            $JobAssemblySpecs += $JobSpecs[$_][0]
+            $JobCategories += $JobSpecs[$_][1]
+        }
+    })
 }
 if ($ProjectName -ne $null -and $ProjectName -ne "") {
     $JobNames += "Manual Tests"
@@ -827,7 +836,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverArgs = @"
 <AnalyseParams>
 	<TargetExecutable>$TestsResultsPath\..\Run $JobName.bat</TargetExecutable>
-	<TargetArguments></TargetArguments>
 	<Output>$TestsResultsPath\$JobName DotCover Output.dcvr</Output>
 	<Scope>
 "@
@@ -840,7 +848,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 }
                 $DotCoverArgs += @"
 
-	</Scope>
+    </Scope>
 </AnalyseParams>
 "@
                 $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
