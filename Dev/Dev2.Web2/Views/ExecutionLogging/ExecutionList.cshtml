@@ -2,7 +2,7 @@
 
 <table id="executionList" class="table">
     <tr>
-        <th data-toggle="tooltip" title="Id" data-placement="right" style="width:1%" onclick="sortTable(0)">Id</th>
+        <th data-toggle="tooltip" title="Execution Id" data-placement="right" style="width:10%" onclick="sortTable(0)">Execution Id</th>
         <th data-toggle="tooltip" title="Execution Time" data-placement="right" style="width:8%" onclick="sortTable(1)">Execution Time</th>
         <th data-toggle="tooltip" title="Status" data-placement="right" style="width:7%" onclick="sortTable(2)">Status</th>
         <th data-toggle="tooltip" title="Start Time" data-placement="right" style="width:15%" onclick="sortTable(3)">Start Time</th>
@@ -10,6 +10,16 @@
         <th data-toggle="tooltip" title="Url" data-placement="right" style="width:28%" onclick="sortTable(5)">Url</th>
         <th data-toggle="tooltip" title="User" data-placement="right" style="width:28%" onclick="sortTable(6)">User</th>
         <th data-toggle="tooltip" title="Result" data-placement="right" style="width:1%" onclick="sortTable(7)">Result</th>
+    </tr>
+    <tr>
+        <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(0)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(1)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(2)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(3)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(4)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(5)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(6)" placeholder="Search.."></td>
+        <td id="filterTableRow"></td>
     </tr>
 
     @foreach (var item in Model)
@@ -86,6 +96,27 @@
             $('#myModal').modal('hide');
         });
     });
+
+    function filterColumn(n) {
+        // Declare variables 
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[n];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 
     function sortTable(n) {
         var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;

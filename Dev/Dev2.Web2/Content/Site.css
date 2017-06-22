@@ -36,7 +36,7 @@ textarea {
     display: block;
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-size: 115%;
+    font-size: 12px;
     overflow: auto;
     width: auto;
 }
@@ -67,9 +67,9 @@ td {
     background-repeat: no-repeat;
     width: 100%;
     font-size: 14px;
-    padding: 5px 5px 5px 5px;
+    padding: 5px;
     border: 1px solid #ddd;
-    margin-bottom: 12px;
+    margin-bottom: 1px;
 }
 
 #executionList {
@@ -94,13 +94,35 @@ td {
 
 
 #filterTable {
-    width: 100%;
+    width: 50%;
 }
 
     #filterTable td {
         padding: 0;
         background-color: transparent
     }
+
+#filterTableRow {
+    padding: 3px;
+}
+
+#protocolList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 17px;
+}
+
+    #protocolList li {
+        position: relative;
+    }
+
+li #protocolList {
+    position: absolute;
+    left: 149px;
+    top: 0;
+    display: none;
+}
 
 #start_dt {
     border: 1px solid #ddd;
