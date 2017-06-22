@@ -504,7 +504,7 @@ function Start-Studio {
         $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
-		Start-Process $DotCoverPath "cover `"$StudioBinDir\$JobName DotCover Runner.xml`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`""
+		Start-Process $DotCoverPath "cover `"$StudioBinDir\$JobName DotCover Runner.xml`" /LogFile=`"$TestsResultsPath\dotCover.log`""
     }
     while (!(Test-Path $StudioLogFile)){
         Write-Warning 'Waiting for Studio to start...'
@@ -831,14 +831,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	<Output>$TestsResultsPath\$JobName DotCover Output.dcvr</Output>
 	<Scope>
 "@
-            foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
-                $DotCoverArgs += @"
+                foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
+                    $DotCoverArgs += @"
 
         <ScopeEntry>$TestAssembliesDirectory\**\*.dll</ScopeEntry>
         <ScopeEntry>$TestAssembliesDirectory\**\*.exe</ScopeEntry>
 "@
-            }
-    $DotCoverArgs += @"
+                }
+                $DotCoverArgs += @"
 
 	</Scope>
 </AnalyseParams>
