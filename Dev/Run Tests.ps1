@@ -117,9 +117,9 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
-if ($JobName.EndsWith(" DotCover")) {
+if ($JobName.Contains(" DotCover")) {
     $ApplyDotCover = $true
-    $JobName = $JobName.TrimEnd(" DotCover")
+    $JobName = $JobName.Replace(" DotCover", "")
 } else {
     $ApplyDotCover = $DotCover.IsPresent
 }
@@ -861,7 +861,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 Out-File -LiteralPath $DotCoverRunnerXMLPath -Encoding default -InputObject $DotCoverArgs
                 
                 # Create full DotCover argument string.
-                $FullArgsList = " cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=`"$TestsResultsPath\DotCoverRunner.xml.log`""
+                $DotCoverLogFile = "$TestsResultsPath\DotCoverRunner.xml.log"
+                Copy-On-Write $DotCoverLogFile
+                $FullArgsList = " cover `"$DotCoverLogFile`" /LogFile=`"$TestsResultsPath\DotCoverRunner.xml.log`""
 
                 #Write DotCover Runner Batch File
                 $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
