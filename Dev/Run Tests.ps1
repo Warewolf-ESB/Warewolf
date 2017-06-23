@@ -352,39 +352,19 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     if ($Server -and $Studio -and $DotCover) {
         &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$PSScriptRoot\$JobName DotCover.dcvr`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
     }
+    if ($RecordScreen.IsPresent) {
+        Move-ScreenRecordings-To-TestResults
+    }
 }
 
 function Move-ScreenRecordings-To-TestResults {
-    [string]$TestsResultsPath = "$TestsResultsPath"
     Write-Host Getting UI test screen recordings from `"$TestsResultsPath`"
-
-    $screenRecordingsFolder = "$TestsResultsPath\ScreenRecordings"
-    New-Item $screenRecordingsFolder -Force -ItemType Directory
-    if (Test-Path $TestsResultsPath\UI\In\*) {
-        Copy-Item $TestsResultsPath\UI\In\* $screenRecordingsFolder -Recurse -Force
-        $pngFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
-        foreach ($file in $pngFiles)
-        {
-	        if (-not $file.name.Contains($file.Directory.Name))
-	        {
-		        Rename-Item -Path $file.FullName -NewName ( $file.Directory.Name + " " + $file.name )
-	        }
-        }
-        $trmxFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
-        foreach ($file in $trmxFiles)
-        {
-            $newRecordingFileName = $file.name -replace ".png",".wmv"
-            Rename-Item -Path ($file.DirectoryName + "\ScreenCapture.wmv") -NewName $newRecordingFileName
-        }
-        $files = Get-ChildItem -Path "$screenRecordingsFolder" -Include *.png, *.wmv -Recurse | where {$_.PSIScontainer -eq $false}
-        foreach ($file in $files)
-	    {
-		    $destinationFolder = (Get-Item $file).Directory.parent.parent.FullName
-		    Move-Item $file.FullName $destinationFolder
-        }
-        Remove-Item -Recurse -Force $screenRecordingsFolder\* -Exclude "*.png","*.wmv"
+    $ScreenRecordingsFolder = "$TestsResultsPath\ScreenRecordings"
+    if (Test-Path $ScreenRecordingsFolder\In) {
+        Move-Item $ScreenRecordingsFolder\In\* $ScreenRecordingsFolder -Force
+        Remove-Item $ScreenRecordingsFolder\In
     } else {
-        Write-Host $TestsResultsPath\UI\In\* not found.
+        Write-Host $ScreenRecordingsFolder\In not found.
     }
 }
 
@@ -550,14 +530,15 @@ function AssemblyIsNotAlreadyDefinedWithoutWildcards([string]$AssemblyNameToChec
 }
 
 function Resolve-Project-Folder-Specs([string]$ProjectFolderSpec) {
+    $TestAssembliesList = ""
     $ProjectFolderSpecInParent = FindFile-InParent $ProjectFolderSpec
     if ($ProjectFolderSpecInParent -ne "") {
         if ($ProjectFolderSpecInParent.Contains("*")) {
             foreach ($projectFolder in Get-ChildItem $ProjectFolderSpecInParent -Directory) {
                 if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		            $TestAssembliesList = $TestAssembliesList + " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+		            $TestAssembliesList += " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
                 } else {
-		            $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+		            $TestAssembliesList += " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
                 }
                 if (!$TestAssembliesDirectories.Contains($projectFolder.FullName + "\bin\Debug")) {
                     $TestAssembliesDirectories += $projectFolder.FullName + "\bin\Debug"
@@ -565,9 +546,9 @@ function Resolve-Project-Folder-Specs([string]$ProjectFolderSpec) {
             }
         } else {
             if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		        $TestAssembliesList = $TestAssembliesList + " `"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
+		        $TestAssembliesList += " `"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
             } else {
-		        $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
+		        $TestAssembliesList += " /testcontainer:`"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
             }
             if (!$TestAssembliesDirectories.Contains($ProjectFolderSpecInParent + "\bin\Debug")) {
                 $TestAssembliesDirectories += $ProjectFolderSpecInParent + "\bin\Debug"
@@ -578,15 +559,16 @@ function Resolve-Project-Folder-Specs([string]$ProjectFolderSpec) {
 }
 
 function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
+    $TestAssembliesList = ""
     $TestAssembliesFileSpecsInParent = FindFile-InParent $TestAssemblyFileSpecs
     if ($TestAssembliesFileSpecsInParent -ne "") {
         foreach ($file in Get-ChildItem $TestAssembliesFileSpecsInParent) {
             $AssemblyNameToCheck = $file.Name.replace($file.extension, "")
-            if (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck) {
-                if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+            if (!$TestAssembliesFileSpecsInParent.Contains("*") -or (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck)) {
+                if (!$MSTest.IsPresent) {
 		            $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
                 } else {
-		            $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
+		            $TestAssembliesList += " /testcontainer:`"" + $file.FullName + "`""
                 }
                 if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
                     $TestAssembliesDirectories += $file.Directory.FullName
@@ -759,7 +741,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
   <Deployment enabled=`"false`" />
-  <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
+  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
     <Timeouts testTimeout=`"600000`" />
     <AgentRule name=`"LocalMachineDefaultRole`">
@@ -834,7 +816,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /testsettings:`"" + $TestSettingsFile + "`""
             }
-            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + $TestSettings + $TestCategories
+            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
             # Write full command including full argument string.
             $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
@@ -894,9 +876,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
-            if ($RecordScreen.IsPresent) {
-                Move-ScreenRecordings-To-TestResults
-            }
         }
     }
 }
