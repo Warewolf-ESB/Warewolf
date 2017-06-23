@@ -549,6 +549,54 @@ function AssemblyIsNotAlreadyDefinedWithoutWildcards([string]$AssemblyNameToChec
     !$JobAssemblySpecs.Contains($AssemblyNameToCheck)
 }
 
+function Resolve-Project-Folder-Specs([string]$ProjectFolderSpec) {
+    $ProjectFolderSpecInParent = FindFile-InParent $ProjectFolderSpec
+    if ($ProjectFolderSpecInParent -ne "") {
+        if ($ProjectFolderSpecInParent.Contains("*")) {
+            foreach ($projectFolder in Get-ChildItem $ProjectFolderSpecInParent -Directory) {
+                if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		            $TestAssembliesList = $TestAssembliesList + " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                } else {
+		            $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                }
+                if (!$TestAssembliesDirectories.Contains($projectFolder.FullName + "\bin\Debug")) {
+                    $TestAssembliesDirectories += $projectFolder.FullName + "\bin\Debug"
+                }
+            }
+        } else {
+            if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		        $TestAssembliesList = $TestAssembliesList + " `"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
+            } else {
+		        $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
+            }
+            if (!$TestAssembliesDirectories.Contains($ProjectFolderSpecInParent + "\bin\Debug")) {
+                $TestAssembliesDirectories += $ProjectFolderSpecInParent + "\bin\Debug"
+            }
+        }
+        $TestAssembliesDirectories
+    }
+}
+
+function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
+    $TestAssembliesFileSpecsInParent = FindFile-InParent $TestAssemblyFileSpecs
+    if ($TestAssembliesFileSpecsInParent -ne "") {
+        foreach ($file in Get-ChildItem $TestAssembliesFileSpecsInParent) {
+            $AssemblyNameToCheck = $file.Name.replace($file.extension, "")
+            if (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck) {
+                if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		            $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+                } else {
+		            $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
+                }
+                if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
+                    $TestAssembliesDirectories += $file.Directory.FullName
+                }
+	        }
+        }
+        $TestAssembliesDirectories
+    }
+}
+
 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
     if ($ServerPath -ne "" -and !(Test-Path $ServerPath)) {
         Write-Host Server path not found: $ServerPath
@@ -681,50 +729,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if (!($TestsPath.EndsWith("\"))) { $TestsPath += "\" }
         foreach ($Project in $ProjectSpec.Split(",")) {
             $TestAssembliesFileSpecs = @()
-            $TestAssembliesFileSpecs += $TestsPath + $Project + ".dll"
-            $TestAssembliesFileSpecsInParent = FindFile-InParent $TestAssembliesFileSpecs
-            if ($TestAssembliesFileSpecsInParent -ne "") {
-                foreach ($file in Get-ChildItem $TestAssembliesFileSpecsInParent) {
-                    $AssemblyNameToCheck = $file.Name.replace($file.extension, "")
-                    if (!$TestAssembliesFileSpecsInParent.Contains("*") -or (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck)) {
-                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
-                        } else {
-		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
-                        }
-                        if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
-                            $TestAssembliesDirectories += $file.Directory.FullName
-                        }
-	                }
-                }
-            }
+            $TestAssembliesList += $TestAssembliesFileSpecs += $TestsPath + $Project + ".dll"
+            Resolve-Test-Assembly-File-Specs $TestAssembliesFileSpecs
             if ($TestAssembliesList -eq "") {
                 $ProjectFolderSpec = @()
                 $ProjectFolderSpec += $TestsPath + $Project
-                $ProjectFolderSpecInParent = FindFile-InParent $ProjectFolderSpec
-                if ($ProjectFolderSpecInParent -ne "") {
-                    if ($ProjectFolderSpecInParent.Contains("*")) {
-                        foreach ($projectFolder in Get-ChildItem $ProjectFolderSpecInParent -Directory) {
-                            if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                        $TestAssembliesList = $TestAssembliesList + " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
-                            } else {
-		                        $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
-                            }
-                            if (!$TestAssembliesDirectories.Contains($projectFolder.FullName + "\bin\Debug")) {
-                                $TestAssembliesDirectories += $projectFolder.FullName + "\bin\Debug"
-                            }
-                        }
-                    } else {
-                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                    $TestAssembliesList = $TestAssembliesList + " `"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
-                        } else {
-		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
-                        }
-                        if (!$TestAssembliesDirectories.Contains($ProjectFolderSpecInParent + "\bin\Debug")) {
-                            $TestAssembliesDirectories += $ProjectFolderSpecInParent + "\bin\Debug"
-                        }
-                    }
-                }
+                $TestAssembliesList += Resolve-Project-Folder-Specs $ProjectFolderSpec
             }
         }
         if ($TestAssembliesList -eq "") {
