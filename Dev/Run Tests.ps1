@@ -116,7 +116,12 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
-$ApplyDotCover = $DotCover.IsPresent
+if ($JobName.EndsWith(" DotCover")) {
+    $ApplyDotCover = $true
+    $JobName = $JobName.TrimEnd(" DotCover")
+} else {
+    $ApplyDotCover = $DotCover.IsPresent
+}
 
 if ($RunAllUnitTests.IsPresent) {
     $JobName = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Tools Specs,UI Binding Tests"
@@ -570,10 +575,6 @@ $JobCategories = @()
 if ($JobName -ne $null -and $JobName -ne "") {
     foreach ($Job in $JobName.Split(",")) {
         $Job = $Job.TrimEnd("1234567890 ")
-        if ($Job.EndsWith(" DotCover")) {
-            $ApplyDotCover = $true
-            $Job = $Job.TrimEnd(" DotCover")
-        }
         if ($JobSpecs.ContainsKey($Job)) {
             $JobNames += $Job
             if ($JobSpecs[$Job].Count -eq 1) {
