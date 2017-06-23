@@ -616,11 +616,6 @@ if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
     Install-Server
 }
 
-if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
-    Remove-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx"
-    Write-Host Removed loose TRX files from VS install directory.
-}
-
 #Unpack jobs
 $JobNames = @()
 $JobAssemblySpecs = @()
@@ -670,10 +665,16 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         sleep 30
         exit 1
     }
+
     if ($ApplyDotCover -and !(Test-Path $DotCoverPath)) {
         Write-Host Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file.
         sleep 30
         exit 1
+    }
+
+    if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
+        Remove-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx"
+        Write-Host Removed loose TRX files from VS install directory.
     }
 
     if (!$MSTest.IsPresent) {
@@ -1051,7 +1052,6 @@ if ($Cleanup.IsPresent) {
 }
 
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
-    Install-Server
     Start-Server
     Start-Studio
 }
