@@ -573,7 +573,7 @@ function Resolve-Project-Folder-Specs([string]$ProjectFolderSpec) {
                 $TestAssembliesDirectories += $ProjectFolderSpecInParent + "\bin\Debug"
             }
         }
-        $TestAssembliesDirectories
+        $TestAssembliesList,$TestAssembliesDirectories
     }
 }
 
@@ -593,7 +593,7 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
                 }
 	        }
         }
-        $TestAssembliesDirectories
+        $TestAssembliesList,$TestAssembliesDirectories
     }
 }
 
@@ -730,11 +730,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         foreach ($Project in $ProjectSpec.Split(",")) {
             $TestAssembliesFileSpecs = @()
             $TestAssembliesList += $TestAssembliesFileSpecs += $TestsPath + $Project + ".dll"
-            Resolve-Test-Assembly-File-Specs $TestAssembliesFileSpecs
+            $TestAssembliesList,$TestAssembliesDirectories = Resolve-Test-Assembly-File-Specs $TestAssembliesFileSpecs
             if ($TestAssembliesList -eq "") {
                 $ProjectFolderSpec = @()
                 $ProjectFolderSpec += $TestsPath + $Project
-                $TestAssembliesList += Resolve-Project-Folder-Specs $ProjectFolderSpec
+                $TestAssembliesList,$TestAssembliesDirectories = Resolve-Project-Folder-Specs $ProjectFolderSpec
             }
         }
         if ($TestAssembliesList -eq "") {
