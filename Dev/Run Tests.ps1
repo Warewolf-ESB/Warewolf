@@ -920,7 +920,131 @@ if ($AssemblyFileVersionsTest.IsPresent) {
 
 if ($RunWarewolfServiceTests.IsPresent) {
     $WarewolfServiceData = (ConvertFrom-Json (wget http://localhost:3142/public/apis.json)).Apis
-    $WarewolfServiceData.ForEach({ConvertFrom-Json (wget ("http://" + $_.BaseUrl.TrimEnd(".json") + ".tests"))[0]})
+    $WarewolfServiceTestData = @()
+    foreach ($WarewolfService in $WarewolfServiceData) {
+        $WarewolfServiceTestData += (ConvertFrom-Json (wget ("http://" + $WarewolfService.BaseUrl.TrimEnd(".json") + ".tests")))
+    }
+    if (Test-Path "$PSScriptRoot\..\Compile.ps1") {
+        Out-File -LiteralPath $PSScriptRoot\RunWarewolfServiceTests.sln -InputObject @"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunWarewolfServiceTests", "RunWarewolfServiceTests\RunWarewolfServiceTests.csproj", "{F907841D-BD06-43DD-80F1-C6CD954D8FDB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F907841D-BD06-43DD-80F1-C6CD954D8FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F907841D-BD06-43DD-80F1-C6CD954D8FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F907841D-BD06-43DD-80F1-C6CD954D8FDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F907841D-BD06-43DD-80F1-C6CD954D8FDB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
+"@ -Encoding default -Force
+        Out-File -LiteralPath "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj" -InputObject @"
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '`$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '`$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F907841D-BD06-43DD-80F1-C6CD954D8FDB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RunWarewolfServiceTests</RootNamespace>
+    <AssemblyName>RunWarewolfServiceTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'`$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'`$(VSToolsPath)' == ''">`$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v`$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>`$(ProgramFiles)\Common Files\microsoft shared\VSTT\`$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '`$(Configuration)|`$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '`$(Configuration)|`$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('`$(VisualStudioVersion)' == '10.0' or '`$(VisualStudioVersion)' == '') and '`$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="RunWarewolfServiceTests.cs" />
+  </ItemGroup>
+  <Import Project="`$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('`$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="`$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
+"@ -Encoding default -Force
+        $WarewolfServiceUnitTests = @"
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace RunWarewolfServiceTests
+{
+    [TestClass]
+    public class RunWarewolfServiceTests
+    {
+"@
+        foreach ($TestResult in $WarewolfServiceTestData) {
+            $TestResultName = $TestResult.'Test Name'.Replace(" ", "_")
+            $TestResultAssert = $TestResult.Result.Replace("Passed", "Assert.IsTrue(true);").Replace("Failed", "Assert.Fail();")
+            $WarewolfServiceUnitTests += @"
+
+            [TestMethod]
+            public void $TestResultName()
+            {
+                $TestResultAssert
+            }
+
+"@
+        }
+        $WarewolfServiceUnitTests += @"
+
+    }
+}
+"@
+        Out-File -LiteralPath "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs" -InputObject $WarewolfServiceUnitTests -Encoding default -Force
+        &"$PSScriptRoot\..\Compile.ps1" -RunWarewolfServiceTests -ProjectSpecificOutputs
+        if (!$MSTest.IsPresent) {
+            &"$VSTestPath" "`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`""
+        } else {
+            &"$MSTestPath" "/testcontainer:`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`""
+        }
+    } else {
+        Write-Host $WarewolfServiceTestData
+    }
 }
 
 if ($Cleanup.IsPresent) {
