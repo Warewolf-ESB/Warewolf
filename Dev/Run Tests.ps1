@@ -27,7 +27,8 @@ Param(
   [string]$TestList,
   [switch]$RunAllUnitTests,
   [switch]$RunAllServerTests,
-  [switch]$RunAllCodedUITests
+  [switch]$RunAllCodedUITests,
+  [switch]$RunWarewolfServiceTests
 )
 $JobSpecs = @{}
 #CI
@@ -525,7 +526,7 @@ function Start-Studio {
 		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
     while (!(Test-Path $StudioLogFile)){
-        Write-Warning 'Waiting for Studio to start...'
+        Write-Warning "Waiting for Studio to start..."
         Sleep 3
     }
 	Write-Host Studio has started.
@@ -917,6 +918,11 @@ if ($AssemblyFileVersionsTest.IsPresent) {
     Out-File -LiteralPath FullVersionString -InputObject "FullVersionString=$HighestReadVersion" -Encoding default
 }
 
+if ($RunWarewolfServiceTests.IsPresent) {
+    $WarewolfServiceData = (ConvertFrom-Json (wget http://localhost:3142/public/apis.json)).Apis
+    $WarewolfServiceData.ForEach({ConvertFrom-Json (wget ("http://" + $_.BaseUrl.TrimEnd(".json") + ".tests"))[0]})
+}
+
 if ($Cleanup.IsPresent) {
     if ($ApplyDotCover) {
         Cleanup-ServerStudio 1800 10
@@ -929,7 +935,7 @@ if ($Cleanup.IsPresent) {
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
 
-if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "") {
+if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
     Install-Server
     Start-Server
     Start-Studio
