@@ -545,9 +545,9 @@ namespace Warewolf.Studio.ViewModels
 
         private void AddOutputs(List<IDebugItem> outputs, ServiceTestStep serviceTestStep)
         {
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
             if (outputs != null && outputs.Count > 0)
-            {
-                var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+            {                
                 foreach (var output in outputs)
                 {
                     var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
@@ -577,8 +577,16 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestOutputs.Add(serviceTestOutput);
                     }
                 }
-                serviceTestStep.StepOutputs = serviceTestOutputs;
             }
+            else
+            {
+                serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                {
+                    AssertOp = "",
+                    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                });
+            }
+            serviceTestStep.StepOutputs = serviceTestOutputs;
         }
 
         private void SetInputs(IDebugState inputState)
@@ -1282,6 +1290,18 @@ namespace Warewolf.Studio.ViewModels
 
                         return serviceTestStep;
                     }
+                }
+                else
+                {
+                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+                    var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityDisplayName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
+                    serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                    {
+                        AssertOp = "",
+                        AddStepOutputRow = s => { testStep.AddNewOutput(s); }
+                    });
+                    testStep.StepOutputs = serviceTestOutputs;
+                    SelectedServiceTest.TestSteps.Add(testStep);
                 }
             }
             return null;
