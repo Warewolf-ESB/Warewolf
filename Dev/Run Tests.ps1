@@ -857,7 +857,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 # Create full DotCover argument string.
                 $DotCoverLogFile = "$TestsResultsPath\DotCoverRunner.xml.log"
                 Copy-On-Write $DotCoverLogFile
-                $FullArgsList = " cover `"$DotCoverLogFile`" /LogFile=`"$TestsResultsPath\DotCoverRunner.xml.log`""
+                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile`""
 
                 #Write DotCover Runner Batch File
                 $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
