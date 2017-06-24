@@ -350,7 +350,9 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-        &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$PSScriptRoot\$JobName DotCover.dcvr`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
+		$MergedSnapshot = "$PSScriptRoot\$JobName DotCover.dcvr"
+		Copy-On-Write "$MergedSnapshot"
+        &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$MergedSnapshot`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
@@ -431,7 +433,7 @@ function Install-Server {
         if ($JobName -eq "") {
             $JobName = "Manual Tests"
         }
-        $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
+        $DotCoverRunnerXMLPath = "$TestsResultsPath\Server DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
         $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"$DotCoverRunnerXMLPath\`" /LogFile=\`"$TestsResultsPath\ServerDotCover.log\`""
@@ -504,7 +506,7 @@ function Start-Studio {
     </Scope>
 </AnalyseParams>
 "@
-        $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
+        $DotCoverRunnerXMLPath = "$TestsResultsPath\Studio DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
 		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
