@@ -92,7 +92,7 @@ $JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewo
 $JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.SecuritySpecs", "ConflictingViewPermissionsSecurity"
 $JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.SecuritySpecs", "NoConflictingPermissionsSecurity"
 $JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.SecuritySpecs", "OverlappingUserGroupsPermissionsSecurity"
-$JobSpecs["Resource Permissions Security Specs"]								    = "Warewolf.SecuritySpecs", "ResourcePermissionsSecurity"
+$JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.SecuritySpecs", "ResourcePermissionsSecurity"
 $JobSpecs["Server Permissions Security Specs"]									= "Warewolf.SecuritySpecs", "ServerPermissionsSecurity"
 
 $ServerExeName = "Warewolf Server.exe"
