@@ -396,19 +396,6 @@ function Install-Server {
 		    }
     }
 
-    if ($ServerPath -eq "") {
-        $ServerPath = FindFile-InParent $ServerPathSpecs
-        if ($ServerPath.EndsWith(".zip")) {
-			    Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
-			    $ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
-		    }
-        if ($ServerPath -eq "") {
-            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
-            sleep 30
-            exit 1
-        }
-    }
-
     $ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
     if (!$ApplyDotCover) {
         if ($ServerService -eq $null) {
@@ -582,10 +569,17 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 }
 
 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-    if ($ServerPath -ne "" -and !(Test-Path $ServerPath)) {
-        Write-Host Server path not found: $ServerPath
-        sleep 30
-        exit 1
+    if ($ServerPath -eq "") {
+        $ServerPath = FindFile-InParent $ServerPathSpecs
+        if ($ServerPath.EndsWith(".zip")) {
+			    Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
+			    $ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
+		    }
+        if ($ServerPath -eq "") {
+            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
+            sleep 30
+            exit 1
+        }
     }
     if ($StudioPath -ne "" -and !(Test-Path $StudioPath)) {
         Write-Host Studio path not found: $StudioPath
