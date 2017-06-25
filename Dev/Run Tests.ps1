@@ -708,15 +708,19 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if (!($TestsPath.EndsWith("\"))) { $TestsPath += "\" }
         foreach ($Project in $ProjectSpec.Split(",")) {
             $TestAssembliesFileSpecs = @()
-            $TestAssembliesList += $TestAssembliesFileSpecs += $TestsPath + $Project + ".dll"
-            $TestAssembliesList,$TestAssembliesDirectories = Resolve-Test-Assembly-File-Specs $TestAssembliesFileSpecs
+            $TestAssembliesFileSpecs += $TestsPath + $Project + ".dll"
+            $UnPackTestAssembliesList,$UnPackTestAssembliesDirectories = Resolve-Test-Assembly-File-Specs $TestAssembliesFileSpecs
+            $TestAssembliesList += $UnPackTestAssembliesList
+            $TestAssembliesDirectories += $UnPackTestAssembliesDirectories
             if ($TestAssembliesList -eq "") {
                 $ProjectFolderSpec = @()
                 $ProjectFolderSpec += $TestsPath + $Project
-                $TestAssembliesList,$TestAssembliesDirectories = Resolve-Project-Folder-Specs $ProjectFolderSpec
+                $UnPackTestAssembliesList,$UnPackTestAssembliesDirectories = Resolve-Project-Folder-Specs $ProjectFolderSpec
+            $TestAssembliesList += $UnPackTestAssembliesList
+            $TestAssembliesDirectories += $UnPackTestAssembliesDirectories
             }
         }
-        if ($TestAssembliesList -eq "") {
+        if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	        Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
 	        exit 1
         }
