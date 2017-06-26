@@ -984,6 +984,9 @@ Global
 	EndGlobalSection
 EndGlobal
 "@ -Encoding default -Force
+        if (!(Test-Path $PSScriptRoot\RunWarewolfServiceTests)) {
+            New-Item "$PSScriptRoot\RunWarewolfServiceTests"
+        }
         Out-File -LiteralPath "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj" -InputObject @"
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
