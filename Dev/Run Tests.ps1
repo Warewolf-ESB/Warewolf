@@ -1033,7 +1033,7 @@ namespace RunWarewolfServiceTests
         foreach ($TestResult in $WarewolfServiceTestData) {
             $TestResultName = $TestResult.'Test Name'.Replace(" ", "_")
             $TestResultMessage = $TestResult.Message
-            $TestResultAssert = $TestResult.Result.Replace("Passed", "Assert.IsTrue(true);").Replace("Failed", "Assert.Fail($TestResultMessage);")
+            $TestResultAssert = $TestResult.Result.Replace("Passed", "Assert.IsTrue(true);").Replace("Failed", "Assert.Fail(`"$TestResultMessage`");").Replace("Invalid", "Assert.Inconclusive(`"$TestResultMessage`");")
             $WarewolfServiceUnitTests += @"
 
             [TestMethod]
@@ -1056,9 +1056,8 @@ namespace RunWarewolfServiceTests
             &"$MSTestPath" "/testcontainer:`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`""
         }
         Remove-Item "$PSScriptRoot\RunWarewolfServiceTests.sln"
-        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj"
-        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs"
-        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll"
+        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests"
+        if (Test-Path "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll") { Remove-Item "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll" }
     } else {
         Write-Host $WarewolfServiceTestData
     }
