@@ -968,7 +968,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     }
     $CompileScriptPath = FindFile-InParent Compile.ps1
     if (Test-Path "$CompileScriptPath") {
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests.sln" -ItemType 'file' -Value @"
+        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests.sln" -ItemType File -Value @"
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
@@ -989,9 +989,9 @@ Global
 EndGlobal
 "@
         if (!(Test-Path $PSScriptRoot\RunWarewolfServiceTests)) {
-            New-Item "$PSScriptRoot\RunWarewolfServiceTests"
+            New-Item "$PSScriptRoot\RunWarewolfServiceTests" -ItemType Directory
         }
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj" -ItemType 'file' -Value @"
+        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj" -ItemType File -Value @"
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
@@ -1055,7 +1055,7 @@ namespace RunWarewolfServiceTests
     }
 }
 "@
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs" -ItemType 'file' -Value $WarewolfServiceUnitTests
+        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs" -ItemType File -Value $WarewolfServiceUnitTests
         &"$CompileScriptPath" -RunWarewolfServiceTests -ProjectSpecificOutputs
         if (!$MSTest.IsPresent) {
             &"$VSTestPath" "`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`""
@@ -1063,7 +1063,7 @@ namespace RunWarewolfServiceTests
             &"$MSTestPath" "/testcontainer:`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`""
         }
         Remove-Item "$PSScriptRoot\RunWarewolfServiceTests.sln"
-        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests"
+        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests" -Recurse
         if (Test-Path "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll") { Remove-Item "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll" }
     } else {
         Write-Host $WarewolfServiceTestData
