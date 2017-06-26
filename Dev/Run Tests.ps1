@@ -947,14 +947,20 @@ if ($RunWarewolfServiceTests.IsPresent) {
     }
     Write-Warning "Connecting to $WarewolfServerURL"
     try {
-        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 60 -UseBasicParsing
+        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing
     } catch {
         throw $_.Exception
     }
     $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
     foreach ($WarewolfService in $WarewolfServiceData) {
-        $WarewolfServiceTestData += (ConvertFrom-Json (wget ("http://" + $WarewolfService.BaseUrl.TrimEnd(".json") + ".tests") -TimeoutSec 60 -UseBasicParsing))
+        $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd(".json") + ".tests"
+        Write-Warning "Connecting to $WarewolfServiceTestURL"
+        try {
+            $WarewolfServiceTestData += (ConvertFrom-Json (wget $WarewolfServiceTestURL -TimeoutSec 180 -UseBasicParsing))
+        } catch {
+            Write-Warning $_.Exception
+        }
     }
     $CompileScriptPath = FindFile-InParent Compile.ps1
     if (Test-Path "$CompileScriptPath") {
