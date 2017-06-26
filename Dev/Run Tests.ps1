@@ -1032,7 +1032,8 @@ namespace RunWarewolfServiceTests
 "@
         foreach ($TestResult in $WarewolfServiceTestData) {
             $TestResultName = $TestResult.'Test Name'.Replace(" ", "_")
-            $TestResultAssert = $TestResult.Result.Replace("Passed", "Assert.IsTrue(true);").Replace("Failed", "Assert.Fail();")
+            $TestResultMessage = $TestResult.Message
+            $TestResultAssert = $TestResult.Result.Replace("Passed", "Assert.IsTrue(true);").Replace("Failed", "Assert.Fail($TestResultMessage);")
             $WarewolfServiceUnitTests += @"
 
             [TestMethod]
