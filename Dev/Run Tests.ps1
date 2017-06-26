@@ -371,6 +371,18 @@ function Move-ScreenRecordings-To-TestResults {
 }
 
 function Install-Server {
+    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        $ServerPath = FindFile-InParent $ServerPathSpecs
+        if ($ServerPath.EndsWith(".zip")) {
+			Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
+			$ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
+		}
+        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
+            sleep 30
+            exit 1
+        }
+    }
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
 	    $message = "What type of resources would you like to install the server with?"
@@ -467,10 +479,17 @@ function Start-Server {
 }
 
 function Start-Studio {
-    $StudioPath = FindFile-InParent $StudioPathSpecs
-    if ($StudioPath.EndsWith(".zip")) {
-	    Expand-Archive "$StudioPath" "$PSScriptRoot\Studio" -Force
-	    $StudioPath = "$PSScriptRoot\Studio\" + $StudioExeName
+    if ($StudioPath -eq "" -or !(Test-Path $StudioPath)) {
+        $StudioPath = FindFile-InParent $StudioPathSpecs
+        if ($StudioPath.EndsWith(".zip")) {
+	        Expand-Archive "$StudioPath" "$PSScriptRoot\Studio" -Force
+	        $StudioPath = "$PSScriptRoot\Studio\" + $StudioExeName
+        }
+        if ($ServerPath -eq "" -or !(Test-Path $StudioPath)) {
+            Write-Host Studio path not found: $StudioPath
+            sleep 30
+            exit 1
+        }
     }
 	if ($StudioPath -eq "") {
 		Write-Host Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath
@@ -568,32 +587,6 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
     }
 }
 
-if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-    if ($ServerPath -eq "") {
-        $ServerPath = FindFile-InParent $ServerPathSpecs
-        if ($ServerPath.EndsWith(".zip")) {
-			    Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
-			    $ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
-		    }
-        if ($ServerPath -eq "") {
-            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
-            sleep 30
-            exit 1
-        }
-    }
-    if ($StudioPath -ne "" -and !(Test-Path $StudioPath)) {
-        Write-Host Studio path not found: $StudioPath
-        sleep 30
-        exit 1
-    }
-    if ($ApplyDotCover -and $DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
-        Write-Host DotCover path not found: $DotCoverPath
-        sleep 30
-        exit 1
-    }
-    Install-Server
-}
-
 #Unpack jobs
 $JobNames = @()
 $JobAssemblySpecs = @()
@@ -644,7 +637,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         exit 1
     }
 
-    if ($ApplyDotCover -and !(Test-Path $DotCoverPath)) {
+    if ($ApplyDotCover -and $DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
         Write-Host Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file.
         sleep 30
         exit 1
@@ -653,6 +646,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
         Remove-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx"
         Write-Host Removed loose TRX files from VS install directory.
+    }
+
+    if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+        Install-Server
     }
 
     if (!$MSTest.IsPresent) {
@@ -912,7 +909,12 @@ if ($AssemblyFileVersionsTest.IsPresent) {
 }
 
 if ($RunWarewolfServiceTests.IsPresent) {
-    $WarewolfServiceData = (ConvertFrom-Json (wget http://localhost:3142/public/apis.json)).Apis
+    try {
+        $ConnectToWarewolfServer = wget http://localhost:3142/public/apis.json
+    } catch {
+        throw "Cannot connect to Warewolf server under test or don't have view permissions."
+    }
+    $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
     foreach ($WarewolfService in $WarewolfServiceData) {
         $WarewolfServiceTestData += (ConvertFrom-Json (wget ("http://" + $WarewolfService.BaseUrl.TrimEnd(".json") + ".tests")))
@@ -1031,6 +1033,7 @@ if ($Cleanup.IsPresent) {
 }
 
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
+    Install-Server
     Start-Server
     Start-Studio
 }
