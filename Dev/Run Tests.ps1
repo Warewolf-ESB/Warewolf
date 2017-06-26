@@ -958,10 +958,15 @@ if ($RunWarewolfServiceTests.IsPresent) {
     $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
     foreach ($WarewolfService in $WarewolfServiceData) {
-        $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd(".json") + ".tests"
+        $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd("n").TrimEnd("o").TrimEnd("s").TrimEnd("j").TrimEnd(".") + ".tests"
         Write-Warning "Connecting to $WarewolfServiceTestURL"
         try {
-            $WarewolfServiceTestData += (ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing))
+            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing)
+            if ($ServiceTestResults -ne $null -and $ServiceTestResults -ne "" -and $ServiceTestResults.Count -gt 0) {
+                #$ServiceTestResults | add-member -Name "Name" -value $WarewolfService.Name -MemberType NoteProperty
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ServiceName" -Value $WarewolfService.Name -PassThru}
+                $WarewolfServiceTestData += $ServiceTestResults
+            }
         } catch {
             Write-Warning $_.Exception
         }
@@ -1038,7 +1043,7 @@ namespace RunWarewolfServiceTests
     {
 "@
         foreach ($TestResult in $WarewolfServiceTestData) {
-            $TestResultName = $TestResult.'Test Name'.Replace(" ", "_")
+            $TestResultName = $TestResult.ServiceName.Replace(" ", "_") + "_" + $TestResult.'Test Name'.Replace(" ", "_")
             $TestResultMessage = $TestResult.Message
             $TestResultAssert = $TestResult.Result.Replace("Passed", "Assert.IsTrue(true);").Replace("Failed", "Assert.Fail(`"$TestResultMessage`");").Replace("Invalid", "Assert.Inconclusive(`"$TestResultMessage`");")
             $WarewolfServiceUnitTests += @"
