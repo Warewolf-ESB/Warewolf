@@ -357,6 +357,11 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
     }
+    if (Test-Path "$TestResultsPath\..\*.bat") {
+        foreach ($testRunner in (Get-ChildItem "$TestResultsPath\..\*.bat")) {
+	        Move-File-To-TestResults $testRunner.FullName $testRunner.Name
+        }
+    }
 }
 
 function Move-ScreenRecordings-To-TestResults {
@@ -926,21 +931,25 @@ if ($AssemblyFileVersionsTest.IsPresent) {
 }
 
 if ($RunWarewolfServiceTests.IsPresent) {
-    $WarewolfServerURL = "http://localhost:3142/public/apis.json"
-    try {
-        if ($ServerUsername -eq "") {
-            $ConnectToWarewolfServer = wget $WarewolfServerURL
-        } else {
-            $pair = "$($ServerUsername):$($ServerPassword)"
-            $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
-            $basicAuthValue = "Basic $encodedCreds"
-            $Headers = @{
-                Authorization = $basicAuthValue
-            }
-            $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers
+    if ($ServerPath -eq "") {
+        $ServerPath = "http://localhost:3142"
+    }
+    $WarewolfServerURL = "$ServerPath/public/apis.json"
+    if ($ServerUsername -eq "") {
+        $Headers = @{}
+    } else {
+        $pair = "$($ServerUsername):$($ServerPassword)"
+        $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
+        $basicAuthValue = "Basic $encodedCreds"
+        $Headers = @{
+            Authorization = $basicAuthValue
         }
+    }
+    Write-Warning "Connecting to $WarewolfServerURL"
+    try {
+        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 60
     } catch {
-        throw "Cannot connect to Warewolf server under test or don't have view permissions."
+        throw $_.Exception
     }
     $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
