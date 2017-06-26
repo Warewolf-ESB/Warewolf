@@ -926,8 +926,19 @@ if ($AssemblyFileVersionsTest.IsPresent) {
 }
 
 if ($RunWarewolfServiceTests.IsPresent) {
+    $WarewolfServerURL = "http://localhost:3142/public/apis.json"
     try {
-        $ConnectToWarewolfServer = wget http://localhost:3142/public/apis.json
+        if ($ServerUsername -eq "") {
+            $ConnectToWarewolfServer = wget $WarewolfServerURL
+        } else {
+            $pair = "$($ServerUsername):$($ServerPassword)"
+            $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
+            $basicAuthValue = "Basic $encodedCreds"
+            $Headers = @{
+                Authorization = $basicAuthValue
+            }
+            $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers
+        }
     } catch {
         throw "Cannot connect to Warewolf server under test or don't have view permissions."
     }
