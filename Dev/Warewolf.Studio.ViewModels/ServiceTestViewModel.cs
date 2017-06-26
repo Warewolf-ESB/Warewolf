@@ -545,9 +545,9 @@ namespace Warewolf.Studio.ViewModels
 
         private void AddOutputs(List<IDebugItem> outputs, ServiceTestStep serviceTestStep)
         {
-            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
             if (outputs != null && outputs.Count > 0)
-            {                
+            {
+                var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                 foreach (var output in outputs)
                 {
                     var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
@@ -577,18 +577,9 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestOutputs.Add(serviceTestOutput);
                     }
                 }
+                serviceTestStep.StepOutputs = serviceTestOutputs;
             }
-            else
-            {
-                serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
-                {
-                    AssertOp = "",
-                    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
-                });
-            }
-            serviceTestStep.StepOutputs = serviceTestOutputs;
         }
-
         private void SetInputs(IDebugState inputState)
         {
             if (inputState != null)
@@ -922,6 +913,11 @@ namespace Warewolf.Studio.ViewModels
                     }
                     else
                     {
+                        var act2 = activity as DsfNativeActivity<bool>;
+                        if (act2 != null)
+                        {
+                            AddChildActivity(act2, testStep);
+                        }
                         if (activity.GetType() == typeof(DsfForEachActivity))
                         {
                             AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
@@ -1195,6 +1191,30 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
+            else
+            {
+
+                var computedValue = modelItem.GetCurrentValue();
+                var boolAct = computedValue as DsfActivityAbstract<bool>;
+                var activityUniqueID = boolAct?.UniqueID;
+                if (activityUniqueID != null)
+                {
+                    var activityDisplayName = boolAct.DisplayName;
+                    var type = computedValue.GetType();
+                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+                    if (type == typeof(DsfActivity))
+                    {
+                        var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityDisplayName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
+                        serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                        {
+                            AssertOp = "",
+                            AddStepOutputRow = s => { testStep.AddNewOutput(s); }
+                        });
+                        testStep.StepOutputs = serviceTestOutputs;
+                        SelectedServiceTest.TestSteps.Add(testStep);
+                    }
+                }
+            }
         }
 
         private IServiceTestStep BuildParentsFromModelItem(ModelItem modelItem)
@@ -1290,18 +1310,6 @@ namespace Warewolf.Studio.ViewModels
 
                         return serviceTestStep;
                     }
-                }
-                else
-                {
-                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                    var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityDisplayName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
-                    serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
-                    {
-                        AssertOp = "",
-                        AddStepOutputRow = s => { testStep.AddNewOutput(s); }
-                    });
-                    testStep.StepOutputs = serviceTestOutputs;
-                    SelectedServiceTest.TestSteps.Add(testStep);
                 }
             }
             return null;
