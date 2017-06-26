@@ -947,7 +947,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     }
     Write-Warning "Connecting to $WarewolfServerURL"
     try {
-        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 60
+        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 60 -UseBasicParsing
     } catch {
         throw $_.Exception
     }
