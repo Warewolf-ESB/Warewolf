@@ -1193,25 +1193,28 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-
                 var computedValue = modelItem.GetCurrentValue();
                 var boolAct = computedValue as DsfActivityAbstract<bool>;
                 var activityUniqueID = boolAct?.UniqueID;
-                if (activityUniqueID != null)
+                var activityDisplayName = boolAct.DisplayName;
+                var type = computedValue.GetType();
+                var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+                var alreadyAdded = CheckForExists(activityUniqueID, new List<string>(), activityDisplayName, type);
+                if (alreadyAdded == null)
                 {
-                    var activityDisplayName = boolAct.DisplayName;
-                    var type = computedValue.GetType();
-                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                    if (type == typeof(DsfActivity))
+                    if (activityUniqueID != null)
                     {
-                        var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityDisplayName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
-                        serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                        if (type == typeof(DsfActivity))
                         {
-                            AssertOp = "",
-                            AddStepOutputRow = s => { testStep.AddNewOutput(s); }
-                        });
-                        testStep.StepOutputs = serviceTestOutputs;
-                        SelectedServiceTest.TestSteps.Add(testStep);
+                            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityDisplayName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
+                            serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                            {
+                                AssertOp = "",
+                                AddStepOutputRow = s => { testStep.AddNewOutput(s); }
+                            });
+                            testStep.StepOutputs = serviceTestOutputs;
+                            SelectedServiceTest.TestSteps.Add(testStep);
+                        }
                     }
                 }
             }
@@ -1312,7 +1315,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
-            return null;
+            return exists;
         }
 
         private bool ServiceTestStepWithOutputs(string uniqueID, string displayName, List<string> outputs, Type type, ModelItem item, out IServiceTestStep serviceTestStep)
@@ -2292,6 +2295,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Dev2Logger.Error("IServiceTestModelTO DeleteTest(IServiceTestModel model)", ex);
                 }
+            }
+            if (_tests.Count == 1 && _tests.Single().GetType() == typeof(DummyServiceTest))
+            {
+                CanSave = false;
             }
         }
 
