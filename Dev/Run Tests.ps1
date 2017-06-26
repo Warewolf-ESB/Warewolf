@@ -666,7 +666,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     }
 
     if (!$MSTest.IsPresent) {
-        Set-Location -Path "$TestsResultsPath"
         # Read playlists and args.
         if ($TestList = "") {
             if ($Args.Count -gt 0) {
@@ -791,6 +790,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
         }
         if (!$MSTest.IsPresent) {
+            #Resolve test results file name
+            Set-Location -Path "$TestsResultsPath"
+
             # Create full VSTest argument string.
             if ($TestCategories -ne "") {
 				if (!$TestCategories.StartsWith("(TestCategory")) {
