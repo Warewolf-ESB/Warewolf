@@ -954,7 +954,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
     foreach ($WarewolfService in $WarewolfServiceData) {
-        $WarewolfServiceTestData += (ConvertFrom-Json (wget ("http://" + $WarewolfService.BaseUrl.TrimEnd(".json") + ".tests")))
+        $WarewolfServiceTestData += (ConvertFrom-Json (wget ("http://" + $WarewolfService.BaseUrl.TrimEnd(".json") + ".tests") -TimeoutSec 60 -UseBasicParsing))
     }
     $CompileScriptPath = FindFile-InParent Compile.ps1
     if (Test-Path "$CompileScriptPath") {
