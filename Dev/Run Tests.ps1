@@ -968,7 +968,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     }
     $CompileScriptPath = FindFile-InParent Compile.ps1
     if (Test-Path "$CompileScriptPath") {
-        Out-File -LiteralPath $PSScriptRoot\RunWarewolfServiceTests.sln -InputObject @"
+        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests.sln" -ItemType 'file' -Value @"
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
@@ -987,11 +987,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
-"@ -Encoding default -Force
+"@
         if (!(Test-Path $PSScriptRoot\RunWarewolfServiceTests)) {
             New-Item "$PSScriptRoot\RunWarewolfServiceTests"
         }
-        Out-File -LiteralPath "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj" -InputObject @"
+        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj" -ItemType 'file' -Value @"
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
@@ -1027,7 +1027,7 @@ EndGlobal
   <Import Project="`$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('`$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="`$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
-"@ -Encoding default -Force
+"@
         $WarewolfServiceUnitTests = @"
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -1055,7 +1055,7 @@ namespace RunWarewolfServiceTests
     }
 }
 "@
-        Out-File -LiteralPath "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs" -InputObject $WarewolfServiceUnitTests -Encoding default -Force
+        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs" -ItemType 'file' -Value $WarewolfServiceUnitTests
         &"$CompileScriptPath" -RunWarewolfServiceTests -ProjectSpecificOutputs
         if (!$MSTest.IsPresent) {
             &"$VSTestPath" "`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`""
