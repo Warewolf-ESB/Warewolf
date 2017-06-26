@@ -791,7 +791,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
         if (!$MSTest.IsPresent) {
             #Resolve test results file name
-            Set-Location -Path "$TestsResultsPath"
+            Set-Location -Path "$TestsResultsPath\.."
 
             # Create full VSTest argument string.
             if ($TestCategories -ne "") {
