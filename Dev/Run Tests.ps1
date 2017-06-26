@@ -934,7 +934,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     if ($ServerPath -eq "") {
         $ServerPath = "http://localhost:3142"
     }
-    $WarewolfServerURL = "$ServerPath/public/apis.json"
+    $WarewolfServerURL = "$ServerPath/secure/apis.json"
     if ($ServerUsername -eq "") {
         $Headers = @{}
     } else {
@@ -957,7 +957,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
         $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd(".json") + ".tests"
         Write-Warning "Connecting to $WarewolfServiceTestURL"
         try {
-            $WarewolfServiceTestData += (ConvertFrom-Json (wget $WarewolfServiceTestURL -TimeoutSec 180 -UseBasicParsing))
+            $WarewolfServiceTestData += (ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing))
         } catch {
             Write-Warning $_.Exception
         }
