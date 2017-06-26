@@ -545,9 +545,9 @@ namespace Warewolf.Studio.ViewModels
 
         private void AddOutputs(List<IDebugItem> outputs, ServiceTestStep serviceTestStep)
         {
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
             if (outputs != null && outputs.Count > 0)
             {
-                var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                 foreach (var output in outputs)
                 {
                     var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
@@ -577,8 +577,16 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestOutputs.Add(serviceTestOutput);
                     }
                 }
-                serviceTestStep.StepOutputs = serviceTestOutputs;
             }
+            else
+            {
+                serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                {
+                    AssertOp = "",
+                    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                });
+            }
+            serviceTestStep.StepOutputs = serviceTestOutputs;
         }
         private void SetInputs(IDebugState inputState)
         {
@@ -1206,14 +1214,16 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (type == typeof(DsfActivity))
                         {
-                            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), activityDisplayName, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
+                            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), type.Name, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
                             serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
                             {
                                 AssertOp = "",
-                                AddStepOutputRow = s => { testStep.AddNewOutput(s); }
+                                AddStepOutputRow = s => { testStep.AddNewOutput(s); },
+                                IsSearchCriteriaEnabled = true
                             });
                             testStep.StepOutputs = serviceTestOutputs;
                             SelectedServiceTest.TestSteps.Add(testStep);
+                            SetStepIcon(type, testStep);
                         }
                     }
                 }
@@ -1688,6 +1698,12 @@ namespace Warewolf.Studio.ViewModels
             var testNumber = GetNewTestNumber(SelectedServiceTest.TestName);
             var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest, testNumber);
             AddAndSelectTest(duplicateTest);
+            foreach (var testStep in duplicateTest.TestSteps)
+            {
+                var test = testStep as ServiceTestStep;
+                var typeName = testStep.ActivityType;
+                SetStepIcon(typeName, test);
+            }
         }
 
         #endregion
