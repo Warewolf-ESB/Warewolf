@@ -1063,9 +1063,10 @@ namespace RunWarewolfServiceTests
         New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs" -ItemType File -Value $WarewolfServiceUnitTests
         &"$CompileScriptPath" -RunWarewolfServiceTests -ProjectSpecificOutputs
         if (!$MSTest.IsPresent) {
-            &"$VSTestPath" "`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`""
+            Set-Location $PSScriptRoot
+            &"$VSTestPath" "`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`"" "/logger:trx"
         } else {
-            &"$MSTestPath" "/testcontainer:`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`""
+            &"$MSTestPath" "/testcontainer:`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`"" "/resultsfile:`"$PSScriptRoot\TestResults\TestResults.trx`""
         }
         Remove-Item "$PSScriptRoot\RunWarewolfServiceTests.sln"
         Remove-Item "$PSScriptRoot\RunWarewolfServiceTests" -Recurse
