@@ -370,7 +370,7 @@ function Move-ScreenRecordings-To-TestResults {
     }
 }
 
-function Install-Server {
+function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = FindFile-InParent $ServerPathSpecs
         if ($ServerPath.EndsWith(".zip")) {
@@ -414,7 +414,7 @@ function Install-Server {
             New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
         } else {    
 		    Write-Host Configuring service to $ServerPath
-		    sc.exe config "Warewolf Server" binPath= "$ServerPath"
+		    $ServiceOuput = sc.exe config "Warewolf Server" binPath= "$ServerPath"
         }
     } else {
         $ServerBinDir = (Get-Item $ServerPath).Directory.FullName 
@@ -440,14 +440,14 @@ function Install-Server {
             New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
 	    } else {
 		    Write-Host Configuring service to $BinPathWithDotCover
-		    sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
+		    $ServiceOuput = sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
 	    }
     }
     if ($ServerUsername -ne "" -and $ServerPassword -eq "") {
-        sc.exe config "Warewolf Server" obj= "$ServerUsername"
+        $ServiceOuput = sc.exe config "Warewolf Server" obj= "$ServerUsername"
     }
     if ($ServerUsername -ne "" -and $ServerPassword -ne "") {
-        sc.exe config "Warewolf Server" obj= "$ServerUsername" password= "$ServerPassword"
+        $ServiceOuput = sc.exe config "Warewolf Server" obj= "$ServerUsername" password= "$ServerPassword"
     }
 
     $ResourcePathSpecs = @()
@@ -460,9 +460,10 @@ function Install-Server {
     if ($ResourcesPath -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
         Copy-Item -Path "$ResourcesDirectory" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
     }
+    $ServerPath,$ResourcesType
 }
 
-function Start-Server {
+function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = FindFile-InParent $ServerPathSpecs
         if ($ServerPath.EndsWith(".zip")) {
@@ -661,7 +662,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     }
 
     if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-        Install-Server
+        $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     }
 
     if (!$MSTest.IsPresent) {
@@ -834,7 +835,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
             if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-                Start-Server
+                Start-Server $ServerPath $ResourcesType
                 if ($StartStudio.IsPresent) {
                     Start-Studio
                 }
@@ -1045,7 +1046,7 @@ if ($Cleanup.IsPresent) {
 }
 
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
-    Install-Server
-    Start-Server
+    $ServerPath,$ResourcesType = Install-Server
+    Start-Server $ServerPath $ResourcesType
     Start-Studio
 }
