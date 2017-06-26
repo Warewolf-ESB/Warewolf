@@ -463,6 +463,18 @@ function Install-Server {
 }
 
 function Start-Server {
+    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        $ServerPath = FindFile-InParent $ServerPathSpecs
+        if ($ServerPath.EndsWith(".zip")) {
+			Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
+			$ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
+		}
+        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
+            sleep 30
+            exit 1
+        }
+    }
     Write-Host Cleaning up old resources in Warewolf ProgramData and copying in new resources from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*").
     Cleanup-ServerStudio 10 1
     Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
