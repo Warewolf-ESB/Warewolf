@@ -1094,7 +1094,7 @@ if ($Cleanup.IsPresent) {
 }
 
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
-    $ServerPath,$ResourcesType = Install-Server
+    $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     Start-Server $ServerPath $ResourcesType
     Start-Studio
 }
