@@ -541,6 +541,35 @@ namespace Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapCl
                 return this.mSwitch;
             }
         }
+        
+        public Comment4 Comment4
+        {
+            get
+            {
+                if ((this.mComment4 == null))
+                {
+                    this.mComment4 = new Comment4(this);
+                }
+                return this.mComment4;
+            }
+        }
+        
+        public WpfCustom Connector4
+        {
+            get
+            {
+                if ((this.mConnector4 == null))
+                {
+                    this.mConnector4 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mConnector4.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mConnector4.SearchProperties[WpfControl.PropertyNames.Instance] = "4";
+                    this.mConnector4.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mConnector4;
+            }
+        }
         #endregion
         
         #region Fields
@@ -549,6 +578,10 @@ namespace Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapCl
         private Sequence mSequence;
         
         private WpfCustom mSwitch;
+        
+        private Comment4 mComment4;
+        
+        private WpfCustom mConnector4;
         #endregion
     }
     
@@ -1012,6 +1045,45 @@ namespace Warewolf.UITests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapCl
         
         #region Fields
         private WpfRow mAssignObject;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Comment4 : WpfCustom
+    {
+        
+        public Comment4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CommentDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Comment(CommentDesigner)";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom LargeView
+        {
+            get
+            {
+                if ((this.mLargeView == null))
+                {
+                    this.mLargeView = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+                    this.mLargeView.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+                    this.mLargeView.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mLargeView;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mLargeView;
         #endregion
     }
 }

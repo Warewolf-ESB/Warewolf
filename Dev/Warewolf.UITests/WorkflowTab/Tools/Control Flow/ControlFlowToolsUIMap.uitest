@@ -520,6 +520,50 @@
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants />
                                                             </UIObject>
+                                                            <UIObject ControlType="Custom" Id="Comment4" FriendlyName="DsfCommentActivity" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.CommentDesigner</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">Comment(CommentDesigner)</PropertyCondition>
+                                                                <PropertyCondition Name="Instance">4</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="Custom" Id="LargeView" FriendlyName="LargeViewContent" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                    <PropertyCondition Name="ClassName">Uia.Large</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">LargeViewContent</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                            <UIObject ControlType="Custom" Id="Connector4" FriendlyName="Connector4" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.ConnectorWithoutStartDot</PropertyCondition>
+                                                                <PropertyCondition Name="Instance">4</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
                                                           </Descendants>
                                                         </UIObject>
                                                       </Descendants>
