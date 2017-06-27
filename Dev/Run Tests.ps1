@@ -586,6 +586,7 @@ function Resolve-Project-Folder-Specs([string]$ProjectFolderSpec) {
 
 function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
     $TestAssembliesList = ""
+    $TestAssembliesDirectories = @()
     $TestAssembliesFileSpecsInParent = FindFile-InParent $TestAssemblyFileSpecs
     if ($TestAssembliesFileSpecsInParent -ne "") {
         foreach ($file in Get-ChildItem $TestAssembliesFileSpecsInParent) {
@@ -727,13 +728,17 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestAssembliesFileSpecs += $TestsPath + $Project + ".dll"
             $UnPackTestAssembliesList,$UnPackTestAssembliesDirectories = Resolve-Test-Assembly-File-Specs $TestAssembliesFileSpecs
             $TestAssembliesList += $UnPackTestAssembliesList
-            $TestAssembliesDirectories += $UnPackTestAssembliesDirectories
+            if ($UnPackTestAssembliesDirectories.Count -gt 0) {
+                $TestAssembliesDirectories += $UnPackTestAssembliesDirectories
+            }
             if ($TestAssembliesList -eq "") {
                 $ProjectFolderSpec = @()
                 $ProjectFolderSpec += $TestsPath + $Project
                 $UnPackTestAssembliesList,$UnPackTestAssembliesDirectories = Resolve-Project-Folder-Specs $ProjectFolderSpec
-            $TestAssembliesList += $UnPackTestAssembliesList
-            $TestAssembliesDirectories += $UnPackTestAssembliesDirectories
+                $TestAssembliesList += $UnPackTestAssembliesList
+                if ($UnPackTestAssembliesDirectories.Count -gt 0) {
+                    $TestAssembliesDirectories += $UnPackTestAssembliesDirectories
+                }
             }
         }
         if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
