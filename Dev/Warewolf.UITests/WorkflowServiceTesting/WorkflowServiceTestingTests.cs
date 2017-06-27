@@ -8,10 +8,16 @@ using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses
 namespace Warewolf.UITests.WorkflowServiceTesting
 {
     [CodedUITest]
-    public class WorkflowTestingTests
+    public class WorkflowServiceTestingTests
     {
-        const string HelloWorld = "Hello World";
-        const string xPath = "Utility - XPath";
+        public const string HelloWorld = "Hello World";
+        public const string xPath = "Utility - XPath";
+        public const string RandomWorkFlow = "RandomToolWorkFlow";
+        public const string RandomNewWorkFlow = "RandomToolNewWorkFlow";
+        public const string DiceRoll = "Dice Roll";
+        public const string Nestedwf = "NestedWF";
+        public const string Resource = "Resource For MockRadioButton";
+        public const string DotnetWfWithObjOutput = "DotnetWfWithObjOutput";
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
