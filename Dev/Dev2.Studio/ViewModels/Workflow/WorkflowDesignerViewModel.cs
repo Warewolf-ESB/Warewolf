@@ -1662,6 +1662,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage] //This method is used to prevent the drill down on the designer
         private static void ViewOnKeyDown(object sender, KeyEventArgs e)
         {
+            var _sender = sender as Grid;
             if (e.OriginalSource != null)
             {
                 var origSource = e.OriginalSource.GetType();
@@ -1671,6 +1672,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         e.Handled = true;
                     }
+                }
+                if (e.Key == Key.Delete && (_sender.DataContext.GetType() == typeof(ServiceTestViewModel)))
+                {
+                    e.Handled = true;
                 }
             }
         }
