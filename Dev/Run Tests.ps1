@@ -752,24 +752,24 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
             Copy-On-Write $TestSettingsFile
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings
-  id=`"
+  id="
 "@ + [guid]::NewGuid() + @"
-`"
-  name=`"$JobName`"
-  enableDefaultDataCollectors=`"false`"
-  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+"
+  name="$JobName"
+  enableDefaultDataCollectors="false"
+  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
-  <Deployment enabled=`"false`" />
-  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />
+  <Deployment enabled="false" />
+  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
   <Execution>
-    <Timeouts testTimeout=`"600000`" />
-    <AgentRule name=`"LocalMachineDefaultRole`">
+    <Timeouts testTimeout="600000" />
+    <AgentRule name="LocalMachineDefaultRole">
       <DataCollectors>
-        <DataCollector uri=`"datacollector://microsoft/VideoRecorder/1.0`" assemblyQualifiedName=`"Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`" friendlyName=`"Screen and Voice Recorder`">
+        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
           <Configuration>
-            <MediaRecorder sendRecordedMediaForPassedTestCase=`"false`" xmlns="" />
+            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
           </Configuration>
         </DataCollector>
       </DataCollectors>
