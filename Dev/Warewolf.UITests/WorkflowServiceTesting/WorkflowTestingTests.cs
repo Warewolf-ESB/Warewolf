@@ -95,6 +95,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             WorkflowServiceTestingUIMap.Select_First_Test();
             WorkflowServiceTestingUIMap.Click_Duplicate_Test_Button();
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Height > 0 && WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Width > 0, "Step icon is not visible after duplicate.");
         }
 
         #region Additional test attributes
