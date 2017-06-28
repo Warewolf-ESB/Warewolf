@@ -296,7 +296,7 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         [Then(@"Source explorer first item is checked")]
         public void SourceExplorerFirstItemIsChecked()
         {
-            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked, "Checked resource is unchecked after clicking refresh button.");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked, "Explorer first resources is unchecked.");
         }
 
         [Then(@"I validate I can not Deploy ""(.*)""")]
