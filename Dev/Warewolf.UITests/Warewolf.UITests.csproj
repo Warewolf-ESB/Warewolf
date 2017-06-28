@@ -475,7 +475,6 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
-    <Content Include="AssertActionTemplates.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
