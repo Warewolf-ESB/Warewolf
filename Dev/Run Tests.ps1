@@ -1114,7 +1114,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
 "@ + $TestResult.EndTime + @"
 " testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
 "@ + $TestResult.Result + @"
-" testListId="$TestListID" relativeResultsDirectory="">
+" testListId="$TestListID" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
 "@
 	    if ($TestResult.Result -eq "Failed") {
             Add-Type -AssemblyName System.Web
