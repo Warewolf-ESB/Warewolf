@@ -502,10 +502,16 @@ namespace Warewolf.Studio.ViewModels
                     var childItemContent = childItem.Content;
                     var outputs = childItemContent.Outputs;
 
-                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                    var contentId = childItemContent.ID;
+                    if (childItemContent.ActualType.ToString() == "DsfActivity")
+                    {
+                        contentId = childItemContent.WorkSurfaceMappingId;
+                    }
+
+                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == contentId);
                     if (exists == null)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
+                        var childStep = new ServiceTestStep(contentId, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
                         {
                             StepDescription = childItemContent.DisplayName,
                             Parent = parent,
