@@ -57,7 +57,10 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/TestResults/**
 /TestResults/**
 /Dev/TestScripts/FullVersionString
+/Dev/*.bat
 *.tmp_proj
+/Dev/RunWarewolfServiceTests/**
+/Dev/RunWarewolfServiceTests.sln
 
 ####################################################################################
 # DotCover
