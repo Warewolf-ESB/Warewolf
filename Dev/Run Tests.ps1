@@ -968,7 +968,6 @@ if ($RunWarewolfServiceTests.IsPresent) {
         try {
             $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing)
             if ($ServiceTestResults -ne $null -and $ServiceTestResults -ne "" -and $ServiceTestResults.Count -gt 0) {
-                #$ServiceTestResults | add-member -Name "Name" -value $WarewolfService.Name -MemberType NoteProperty
                 $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ServiceName" -Value $WarewolfService.Name -PassThru}
                 $WarewolfServiceTestData += $ServiceTestResults
             }
@@ -976,109 +975,122 @@ if ($RunWarewolfServiceTests.IsPresent) {
             Write-Warning $_.Exception
         }
     }
-    $CompileScriptPath = FindFile-InParent Compile.ps1
-    if (Test-Path "$CompileScriptPath") {
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests.sln" -ItemType File -Value @"
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunWarewolfServiceTests", "RunWarewolfServiceTests\RunWarewolfServiceTests.csproj", "{F907841D-BD06-43DD-80F1-C6CD954D8FDB}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F907841D-BD06-43DD-80F1-C6CD954D8FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F907841D-BD06-43DD-80F1-C6CD954D8FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-EndGlobal
-"@
-        if (!(Test-Path $PSScriptRoot\RunWarewolfServiceTests)) {
-            New-Item "$PSScriptRoot\RunWarewolfServiceTests" -ItemType Directory
-        }
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj" -ItemType File -Value @"
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '`$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '`$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F907841D-BD06-43DD-80F1-C6CD954D8FDB}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RunWarewolfServiceTests</RootNamespace>
-    <AssemblyName>RunWarewolfServiceTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'`$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'`$(VSToolsPath)' == ''">`$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v`$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>`$(ProgramFiles)\Common Files\microsoft shared\VSTT\`$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '`$(Configuration)|`$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-    <Compile Include="RunWarewolfServiceTests.cs" />
-  </ItemGroup>
-  <Import Project="`$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('`$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="`$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-</Project>
-"@
-        $WarewolfServiceUnitTests = @"
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace RunWarewolfServiceTests
-{
-    [TestClass]
-    public class RunWarewolfServiceTests
-    {
-"@
-        foreach ($TestResult in $WarewolfServiceTestData) {
-            $TestResultName = $TestResult.ServiceName.Replace(" ", "_") + "_" + $TestResult.'Test Name'.Replace(" ", "_")
-            $TestResultMessage = $TestResult.Message
-            $TestResultAssert = $TestResult.Result.Replace("Passed", "Assert.IsTrue(true);").Replace("Failed", "Assert.Fail(`"$TestResultMessage`");").Replace("Invalid", "Assert.Inconclusive(`"$TestResultMessage`");")
-            $WarewolfServiceUnitTests += @"
-
-            [TestMethod]
-            public void $TestResultName()
-            {
-                $TestResultAssert
-            }
-"@
-        }
-        $WarewolfServiceUnitTests += @"
-
+    
+    $TestResultNames = @()
+    $TestResultMessages = @()
+    $TestResultOutcomes = @()
+    $TestResultGuids = @()
+    $TestResultExeGuids = @()
+    foreach ($TestResult in $WarewolfServiceTestData) {
+        $TestResultNames += $TestResult.ServiceName.Replace(" ", "_") + "_" + $TestResult.'Test Name'.Replace(" ", "_")
+        $TestResultMessages += $TestResult.Message
+        $TestResultOutcomes += $TestResult.Result
+        $TestResultGuids += [guid]::NewGuid()
+        $TestResultExeGuids += [guid]::NewGuid()
     }
-}
+
+    $TRXFileContents = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="
+"@ + [guid]::NewGuid() + @"
+" name="Warewolf Service Tests" runUser="DEV2\IntegrationTester" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Default Test Settings" id="
+"@ + [guid]::NewGuid() + @"
+">
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+    <Deployment  enabled="false" />
+    <Properties />
+  </TestSettings>
+  <Times creation="2017-06-26T09:29:41.5783623+02:00" queuing="2017-06-26T09:29:42.3983196+02:00" start="2017-06-26T09:29:42.4963142+02:00" finish="2017-06-26T09:29:42.9172945+02:00" />
+  <ResultSummary outcome="Completed">
+    <Counters total="
+"@ + $TestResultNames.Count + @"
+" executed="
+"@ + $TestResultNames.Count + @"
+" passed="
+"@ + $TestResultNames.Count + @"
+" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
 "@
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs" -ItemType File -Value $WarewolfServiceUnitTests
-        &"$CompileScriptPath" -RunWarewolfServiceTests -ProjectSpecificOutputs
-        if (!$MSTest.IsPresent) {
-            Set-Location $PSScriptRoot
-            &"$VSTestPath" "`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`"" "/logger:trx"
-        } else {
-            &"$MSTestPath" "/testcontainer:`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`"" "/resultsfile:`"$PSScriptRoot\TestResults\TestResults.trx`""
-        }
-        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests.sln"
-        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests" -Recurse
-        if (Test-Path "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll") { Remove-Item "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll" }
-    } else {
-        Write-Host $WarewolfServiceTestData
+    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
+        $TRXFileContents += @"
+
+    <UnitTest name="
+"@ + $TestResultNames[$i] + @"
+" storage="runwarewolfservicetests.dll" id="
+"@ + $TestResultGuids[$i] + @"
+">
+      <Execution id="
+"@ + $TestResultExeGuids[$i] + @"
+" />
+      <TestMethod codeBase="RunWarewolfServiceTests.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="RunWarewolfServiceTests.RunWarewolfServiceTests, RunWarewolfServiceTests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" name="Blank_Input" />
+    </UnitTest>
+"@
+                }
+                $TRXFileContents += @"
+
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestLists>
+  <TestEntries>
+"@
+    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
+        $TRXFileContents += @"
+
+    <TestEntry testId="
+"@ + $TestResultGuids[$i] + @"
+" executionId="
+"@ + $TestResultExeGuids[$i] + @"
+" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+"@
     }
+    $TRXFileContents += @"
+
+  </TestEntries>
+  <Results>
+"@
+    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
+        $TRXFileContents += @"
+
+    <UnitTestResult executionId="
+"@ + $TestResultExeGuids[$i] + @"
+" testId="
+"@ + $TestResultGuids[$i] + @"
+" testName="
+"@ + $TestResultNames[$i] + @"
+" computerName="ASH" duration="00:00:00.0100462" startTime="2017-06-26T09:29:42.5693118+02:00" endTime="2017-06-26T09:29:42.8302967+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
+"@ + $TestResultOutcomes[$i] + @"
+" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
+"@
+	    if ($TestResultOutcomes[$i] -eq "Failed") {
+            Add-Type -AssemblyName System.Web
+            $TestResultMessage = [System.Web.HttpUtility]::HtmlEncode($TestResultMessages[$i])		    
+		    $TRXFileContents += @"
+      <Output>
+        <ErrorInfo>
+          <Message>$TestResultMessage</Message>
+          <StackTrace></StackTrace>
+        </ErrorInfo>
+      </Output>
+"@
+	    }
+	    $TRXFileContents += @"
+    </UnitTestResult>
+"@
+    }
+    $TRXFileContents += @"
+
+  </Results>
+</TestRun>
+"@
+    Copy-On-Write "$TestsResultsPath\TestResults.trx"
+    New-Item -Force -Path "$TestsResultsPath\TestResults.trx" -ItemType File -Value $TRXFileContents
 }
 
 if ($Cleanup.IsPresent) {
