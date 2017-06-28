@@ -992,10 +992,10 @@ if ($RunWarewolfServiceTests.IsPresent) {
                 if ($TestDurationSeconds -ge 60) {
                     $TestDuration = New-TimeSpan -Seconds $TestDurationSeconds
                 } else {
-                    $TestDuration = "00:00:" + [math]::round($TestDurationSeconds, 7).ToString("00.0000000")
+                    $TestDuration = "00:00:" + $TestDurationSeconds.ToString("00.0000000")
                 }
                 $ServiceTestResults | Foreach-object { $_.'Test Name' = $WarewolfService.Name.Replace(" ", "_") + "_" + $_.'Test Name'.Replace(" ", "_") }
-                $ServiceTestResults | Foreach-object { $_.Result = $_.Result.Replace("Invalid", "Error") }
+                $ServiceTestResults | Foreach-object { $_.Result = $_.Result.Replace("Invalid", "Failed") }
                 $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ID" -Value ([guid]::NewGuid()) -PassThru}
                 $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ExecutionID" -Value ([guid]::NewGuid()) -PassThru}
                 $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "Duration" -Value $TestDuration.ToString() -PassThru}
@@ -1039,9 +1039,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
 "@ + $WarewolfServiceTestData.Count + @"
 " passed="
 "@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Passed")}, 'Split')[0].Count + @"
-" error="
-"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Error")}, 'Split')[0].Count + @"
-" failed="
+" error="0" failed="
 "@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Failed")}, 'Split')[0].Count + @"
 " timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
   </ResultSummary>
