@@ -1204,7 +1204,7 @@ namespace Warewolf.Studio.ViewModels
                 var computedValue = modelItem.GetCurrentValue();
                 var boolAct = computedValue as DsfActivityAbstract<bool>;
                 var activityUniqueID = boolAct?.UniqueID;
-                var activityDisplayName = boolAct.DisplayName;
+                var activityDisplayName = boolAct?.DisplayName;
                 var type = computedValue.GetType();
                 var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                 var alreadyAdded = CheckForExists(activityUniqueID, new List<string>(), activityDisplayName, type);
