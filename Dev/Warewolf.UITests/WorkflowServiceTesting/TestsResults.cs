@@ -6,7 +6,7 @@ using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses
 namespace Warewolf.UITests
 {
     [CodedUITest]
-    public class TestResults
+    public static class TestResults
     {
         public static void GetSelectedTestPendingResult(WpfListItem test, int instance = 1)
         {
@@ -15,25 +15,25 @@ namespace Warewolf.UITests
                 case 2:
                     var test2 = test as Test2;
                     Assert.IsNotNull(test2);
-                    var isPending2 = test2.Pending.Width != 1 && test2.Pending.Width != 1 && test2.Pending.Width != 1 && test2.Pending.Width != 1;
+                    var isPending2 = test2.Pending.Width != 1;
                     Assert.IsTrue(isPending2, "Test 2 status is not set to Pending");
                     break;
                 case 3:
                     var test3 = test as Test3;
                     Assert.IsNotNull(test3);
-                    var isPending3 = test3.Pending.Width != 1 && test3.Pending.Width != 1 && test3.Pending.Width != 1 && test3.Pending.Width != 1;
+                    var isPending3 = test3.Pending.Width != 1;
                     Assert.IsTrue(isPending3, "Test 3 status is not set to Pending");
                     break;
                 case 4:
                     var test4 = test as Test4;
                     Assert.IsNotNull(test4);
-                    var isPending4 = test4.Pending.Width != 1 && test4.Pending.Width != 1 && test4.Pending.Width != 1 && test4.Pending.Width != 1;
+                    var isPending4 = test4.Pending.Width != 1;
                     Assert.IsTrue(isPending4, "Test 4 status is not set to Pending");
                     break;
                 default:
                     var test1 = test as Test1;
                     Assert.IsNotNull(test1);
-                    var isPending = test1.Pending.Width != 1 && test1.Pending.Width != 1 && test1.Pending.Width != 1 && test1.Pending.Width != 1;
+                    var isPending = test1.Pending.Width != 1;
                     Assert.IsTrue(isPending, "Test 1 status is not set to Pending");
                     break;
             }
