@@ -104,6 +104,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run Tests.ps1">
+      <Link>Properties\Run Tests.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="Communication\EsbExecuteRequest.cs" />
     <Compile Include="Communication\ExecuteMessage.cs" />

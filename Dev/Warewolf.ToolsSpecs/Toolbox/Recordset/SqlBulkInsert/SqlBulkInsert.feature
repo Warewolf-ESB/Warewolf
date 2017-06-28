@@ -265,7 +265,7 @@ Scenario: Import data into Table Batch size is 1
 	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
 	And Batch size is 1
 	When the tool is executed
-	Then  number of inserts is 3
+	Then number of inserts is 3
 	And the execution has "NO" error
 	And the debug inputs as  
 	| # |                                                       | To Field | Type   | Batch Size | Timeout | Check Constraints | Keep Table Lock | Fire Triggers | Keep Identity | Use Internal Transaction | Skip Blank Rows |

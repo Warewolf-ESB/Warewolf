@@ -181,9 +181,13 @@
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile>
+    </Compile><Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')"/>
     <None Include="..\TestScripts\**\*.*">
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+	<None Include="..\Run Tests.ps1">
+      <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="DynamicProxy\Constants.cs" />
@@ -356,7 +360,6 @@
     <Compile Include="Isolated.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceCatalogImpl\Common.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceCopyProvider.cs" />
     <Compile Include="ResourceCatalogImpl\ResourceDeleteProvider.cs" />

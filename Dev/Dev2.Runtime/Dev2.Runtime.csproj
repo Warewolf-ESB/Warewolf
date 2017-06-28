@@ -128,6 +128,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run Tests.ps1">
+      <Link>Properties\Run Tests.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="ESB\Control\EnvironmentOutputMappingManager.cs" />
     <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\IEnvironmentOutputMappingManager.cs" />

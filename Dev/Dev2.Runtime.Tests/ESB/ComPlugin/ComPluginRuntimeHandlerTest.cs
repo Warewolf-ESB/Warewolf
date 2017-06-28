@@ -26,6 +26,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TestingDotnetDllCascading;
 using WarewolfCOMIPC.Client;
+using System.Diagnostics;
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {
@@ -35,16 +36,34 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
     /// </summary>
     [TestClass]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class ComComPluginRuntimeHandlerTest
+    public class ComPluginRuntimeHandlerTest
     {
+        public const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
 
-        private const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
         // ReSharper disable once UnusedMember.Global
         public TestContext TestContext { get; set; }
+
+        [ClassInitialize]
+        public static void Add_Component_To_Registry(TestContext tstctx)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var assemblyDirectory = new FileInfo(assembly.Location).Directory.FullName;
+            var resourceName = "Dev2.Tests.Runtime.ESB.ComPlugin.SystemWOW6432NodeCLSIDadodbConnection.reg";
+            var RegistryFilePath = assemblyDirectory + @"\SystemWOW6432NodeCLSIDadodbConnection.reg";
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (var fileStream = File.Create(RegistryFilePath))
+                {
+                    stream.CopyTo(fileStream);
+                }
+            }
+            Process regeditProcess = Process.Start("regedit.exe", "/s " + RegistryFilePath);
+            regeditProcess.WaitForExit();
+        }
 
         #region FetchNamespaceListObject
 
@@ -113,16 +132,9 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void BuildValuedTypeParams_GivenValid_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
-            var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
-            var memoryStream = new MemoryStream();
-            var serializeObject = JsonConvert.SerializeObject(GetType());
-            memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
-            pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
             var type = typeof(ComPluginRuntimeHandler);
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
             ComPluginInvokeArgs args = new ComPluginInvokeArgs
@@ -139,26 +151,17 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                     }
                 }
             };
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var enumerable = methodInfo.Invoke("BuildValuedTypeParams",new object[] { args }) as IEnumerable<object>;
+            var enumerable = methodInfo.Invoke("BuildValuedTypeParams", new object[] { args }) as IEnumerable<object>;
             //---------------Test Result -----------------------
             Assert.AreEqual(1,enumerable?.Count());
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void BuildValuedTypeParams_GivenValidObjectparam_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
-            var pipeMock = new Mock<INamedPipeClientStreamWrapper>();
-            var memoryStream = new MemoryStream();
-            var serializeObject = JsonConvert.SerializeObject(GetType());
-            memoryStream.WriteByte(Encoding.ASCII.GetBytes(serializeObject)[0]);
-            pipeMock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
-            var client = IpcClient.GetIPCExecutor(pipeMock.Object);
             var type = typeof(ComPluginRuntimeHandler);
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
             ComPluginInvokeArgs args = new ComPluginInvokeArgs
@@ -176,10 +179,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                     }
                 }
             };
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(client);
             //---------------Execute Test ----------------------
-            var enumerable = methodInfo.Invoke("BuildValuedTypeParams",new object[] { args }) as IEnumerable<object>;
+            var enumerable = methodInfo.Invoke("BuildValuedTypeParams", new object[] { args }) as IEnumerable<object>;
             //---------------Test Result -----------------------
             Assert.AreEqual(1,enumerable?.Count());
         }
@@ -267,7 +268,6 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_ListMethods")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void ComPluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------

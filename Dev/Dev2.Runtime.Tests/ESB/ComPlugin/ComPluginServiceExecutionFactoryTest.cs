@@ -63,11 +63,10 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//Verfiy that the ID is actually registered
         public void ListMethods_GivenAdodbConnection_ShouldContainOpen()
         {
             //---------------Set up test pack-------------------
-            const string adodbConGuid = "00000514-0000-0010-8000-00AA006D2EA4";
+            const string adodbConGuid = ComPluginRuntimeHandlerTest.adodbConnectionClassId;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var ns = ComPluginServiceExecutionFactory.GetNamespaces(new ComPluginSource { ClsId = adodbConGuid });

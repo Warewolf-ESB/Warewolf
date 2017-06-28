@@ -19,12 +19,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
+[assembly: AssemblyVersion("0.0.*")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("cad859cb-6eb6-49b6-a2a5-2fdf2323f1a8")]
 

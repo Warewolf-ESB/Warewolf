@@ -42,6 +42,7 @@ bin
 /Dev/Warewolf.Tests/**
 /Dev/Warewolf.Specs/**
 /Dev/Warewolf.UIBindingTests/**
+UIMapEditorBackups
 
 ####################################################################################
 # SonarQube
@@ -56,7 +57,10 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/TestResults/**
 /TestResults/**
 /Dev/TestScripts/FullVersionString
+/Dev/*.bat
 *.tmp_proj
+/Dev/RunWarewolfServiceTests/**
+/Dev/RunWarewolfServiceTests.sln
 
 ####################################################################################
 # DotCover
