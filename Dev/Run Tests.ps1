@@ -1069,7 +1069,8 @@ if ($RunWarewolfServiceTests.IsPresent) {
 " testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
 "@
 	    if ($TestResultOutcomes[$i] -eq "Failed") {
-		    $TestResultMessage = $TestResultMessages[$i]
+            Add-Type -AssemblyName System.Web
+            $TestResultMessage = [System.Web.HttpUtility]::HtmlEncode($TestResultMessages[$i])		    
 		    $TRXFileContents += @"
       <Output>
         <ErrorInfo>
