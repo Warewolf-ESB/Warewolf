@@ -125,6 +125,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC.Client", "Wa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{2909743E-72FF-48BF-A081-E61A73D2E6EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Interfaces", "Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj", "{37149E8E-FEF2-47C0-8391-80DCCE86D26D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -524,6 +526,14 @@ Global
 		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{2909743E-72FF-48BF-A081-E61A73D2E6EC}.Release|x86.Build.0 = Release|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Debug|x86.Build.0 = Debug|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|x86.ActiveCfg = Release|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
