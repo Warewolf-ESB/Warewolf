@@ -674,9 +674,10 @@
                                                             <SearchConfiguration>Expand</SearchConfiguration>
                                                           </SearchConfigurations>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ExplorerItemViewModel</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants>
