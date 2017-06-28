@@ -152,14 +152,6 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.Decision.DisplayNameEdit, new Point(77, 8));
         }
 
-        [Then(@"I Click Run all tests button")]
-        [When(@"I Click Run all tests button")]
-        [Given(@"I Click Run all tests button")]
-        public void ThenIClickRunAllTestsButton()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.RunAllButton);
-        }
-
         [Then(@"Test tab is open")]
         [Given(@"Test tab is open")]
         [When(@"Test tab is open")]
@@ -167,12 +159,6 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists);
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.Exists);
-        }
-
-        [When(@"I Click AssigName From DesignSurface")]
-        public void Click_AssigName_From_DesignSurface()
-        {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UserControl_1Custom.ScrollViewerPane.ActivityBuilderCustom.WorkflowItemPresenteCustom.FlowchartCustom.MultiAssign1);
         }
 
         public void Click_MockRadioButton_On_Decision_TestStep()
@@ -213,12 +199,12 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
 
         public void SetConstructorAssertValue(string value)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.AssertValueCell.AssertValueComboBox.AssertionValue.Text = value;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.Step.UIUI_StepOutputs_ctor_Table.UIItemRow.AssertValueCell.AssertValueComboBox.AssertionValue.Text = value;
         }
 
         public void SetConstructorVariable(string value)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.UIWarewolfStudioViewMoExpander.UIUI_StepOutputs_ctor_Table.UIItemRow.ResultsCell.ResultEdit.Text = value;
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.UIItemTreeItem.Step.UIUI_StepOutputs_ctor_Table.UIItemRow.ResultsCell.ResultEdit.Text = value;
         }
 
         public void Click_TestViewDotNet_DLL_Constructor_DeleteButton()
@@ -933,23 +919,6 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
         {
             var currentTest = GetCurrentTest(instance);
             Mouse.Click(currentTest);
-        }
-
-        public void Click_RunAll_Button(string BrokenRule = null)
-        {
-            string DuplicateNameError = "DuplicateNameError";
-            string UnsavedResourceError = "UnsavedResourceError";
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.RunAllButton, new Point(35, 10));
-            Assert.AreEqual("Window", DialogsUIMap.MessageBoxWindow.ControlType.ToString(), "Messagebox does not exist after clicking RunAll button");
-
-            if (!string.IsNullOrEmpty(BrokenRule))
-            {
-                if (BrokenRule.ToUpper().Equals(UnsavedResourceError))
-                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", DialogsUIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Message is not Equal to Please save currently edited Test(s) before running the t" +
-                            "ests.");
-                if (BrokenRule.ToUpper().Equals(DuplicateNameError))
-                    Assert.AreEqual("Please save currently edited Test(s) before running the tests.", DialogsUIMap.MessageBoxWindow.UIPleasesavecurrentlyeText.DisplayText, "Messagebox does not show duplicated name error");
-            }
         }
 
         [When(@"I Click Decision On Workflow Service Test View")]

@@ -341,7 +341,7 @@
     <Compile Include="WorkflowServiceTesting\WorkflowServiceTestingUIMap.Designer.cs">
       <DependentUpon>WorkflowServiceTestingUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowServiceTesting\WorkflowTestingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\WorkflowServiceTestingTests.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="WorkflowTab\Tools\Control Flow\Sequence.cs" />
