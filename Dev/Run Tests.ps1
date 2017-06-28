@@ -942,7 +942,6 @@ if ($RunWarewolfServiceTests.IsPresent) {
     $WarewolfServerURL = "$ServerPath/secure/apis.json"
     if ($ServerUsername -eq "") {
         $Headers = @{}
-        $ServerUsername = "Unknown User"
     } else {
         $pair = "$($ServerUsername):$($ServerPassword)"
         $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
@@ -953,65 +952,49 @@ if ($RunWarewolfServiceTests.IsPresent) {
     }
     Write-Warning "Connecting to $WarewolfServerURL"
     $TestStartDateTime = Get-Date -Format o
-    if (!$DisableTimeouts.IsPresent) {
-        $ConnectTimeout = 180
-    } else {
-        $ConnectTimeout = 0
-    }
     try {
-        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
+        if (!$DisableTimeouts.IsPresent) {
+            $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing
+        } else {
+            $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -UseBasicParsing
+        }
     } catch {
         throw $_.Exception
     }
-    try {
-        $TryGetWarewolfServerVersion = wget "$ServerPath/secure/getserverversion.json" -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
-    } catch {
-        Write-Warning $_.Exception
-    }
-    $WarewolfServerVersion = "0.0.0.0"
-    if ($TryGetWarewolfServerVersion.StatusCode -eq 200) {
-        $WarewolfServerVersion = $TryGetWarewolfServerVersion.Content.Trim("`"")
-    }
-
     $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
     foreach ($WarewolfService in $WarewolfServiceData) {
         $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd("n").TrimEnd("o").TrimEnd("s").TrimEnd("j").TrimEnd(".") + ".tests"
         Write-Warning "Connecting to $WarewolfServiceTestURL"
         try {
-            if (!$DisableTimeouts.IsPresent) {
-                $TestTimeout = 180
-            } else {
-                $TestTimeout = 0
-            }
-            $TestStart = Get-Date
-            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec $TestTimeout -UseBasicParsing)
-            $ServiceTestDuration = New-TimeSpan -start $TestStart -end (Get-Date)
+            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing)
             if ($ServiceTestResults -ne $null -and $ServiceTestResults -ne "" -and $ServiceTestResults.Count -gt 0) {
-                [double]$TestDurationSeconds = $ServiceTestDuration.TotalSeconds / $ServiceTestResults.Count
-                if ($TestDurationSeconds -ge 60) {
-                    $TestDuration = New-TimeSpan -Seconds $TestDurationSeconds
-                } else {
-                    $TestDuration = "00:00:" + [math]::round($TestDurationSeconds, 7).ToString("00.0000000")
-                }
-                $ServiceTestResults | Foreach-object { $_.'Test Name' = $WarewolfService.Name.Replace(" ", "_") + "_" + $_.'Test Name'.Replace(" ", "_") }
-                $ServiceTestResults | Foreach-object { $_.Result = $_.Result.Replace("Invalid", "Error") }
-                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ID" -Value ([guid]::NewGuid()) -PassThru}
-                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ExecutionID" -Value ([guid]::NewGuid()) -PassThru}
-                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "Duration" -Value $TestDuration.ToString() -PassThru}
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ServiceName" -Value $WarewolfService.Name -PassThru}
                 $WarewolfServiceTestData += $ServiceTestResults
             }
         } catch {
             Write-Warning $_.Exception
         }
     }
+    
+    $TestResultNames = @()
+    $TestResultMessages = @()
+    $TestResultOutcomes = @()
+    $TestResultGuids = @()
+    $TestResultExeGuids = @()
+    foreach ($TestResult in $WarewolfServiceTestData) {
+        $TestResultNames += $TestResult.ServiceName.Replace(" ", "_") + "_" + $TestResult.'Test Name'.Replace(" ", "_")
+        $TestResultMessages += $TestResult.Message
+        $TestResultOutcomes += $TestResult.Result
+        $TestResultGuids += [guid]::NewGuid()
+        $TestResultExeGuids += [guid]::NewGuid()
+    }
 
-    $TestListID = [guid]::NewGuid().ToString()
     $TRXFileContents = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <TestRun id="
 "@ + [guid]::NewGuid() + @"
-" name="Warewolf Service Tests" runUser="$ServerUsername" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+" name="Warewolf Service Tests" runUser="DEV2\IntegrationTester" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <TestSettings name="Default Test Settings" id="
 "@ + [guid]::NewGuid() + @"
 ">
@@ -1025,48 +1008,34 @@ if ($RunWarewolfServiceTests.IsPresent) {
   </TestSettings>
   <Times creation="
 "@ + $TestStartDateTime + @"
-" queuing="
-"@ + $TestStartDateTime + @"
-" start="
+" queuing="2017-06-26T09:29:42.3983196+02:00" start="
 "@ + $TestStartDateTime + @"
 " finish="
 "@ + (Get-Date -Format o) + @"
 " />
   <ResultSummary outcome="Completed">
     <Counters total="
-"@ + $WarewolfServiceTestData.Count + @"
+"@ + $TestResultNames.Count + @"
 " executed="
-"@ + $WarewolfServiceTestData.Count + @"
+"@ + $TestResultNames.Count + @"
 " passed="
-"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Passed")}, 'Split')[0].Count + @"
-" error="
-"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Error")}, 'Split')[0].Count + @"
-" failed="
-"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Failed")}, 'Split')[0].Count + @"
-" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+"@ + $TestResultNames.Count + @"
+" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
   </ResultSummary>
   <TestDefinitions>
 "@
-    foreach ($TestResult in $WarewolfServiceTestData) {
+    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
         $TRXFileContents += @"
 
     <UnitTest name="
-"@ + $TestResult.'Test Name' + @"
-" storage="
-"@ + $TestResult.'Test Name' + @"
-.dll" id="
-"@ + $TestResult.ID + @"
+"@ + $TestResultNames[$i] + @"
+" storage="runwarewolfservicetests.dll" id="
+"@ + $TestResultGuids[$i] + @"
 ">
       <Execution id="
-"@ + $TestResult.ExecutionID + @"
+"@ + $TestResultExeGuids[$i] + @"
 " />
-      <TestMethod codeBase="
-"@ + $TestResult.'Test Name' + @"
-.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="
-"@ + $TestResult.'Test Name' + @"
-, Version=$WarewolfServerVersion, Culture=neutral, PublicKeyToken=null" name="
-"@ + $TestResult.'Test Name' + @"
-" />
+      <TestMethod codeBase="RunWarewolfServiceTests.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="RunWarewolfServiceTests.RunWarewolfServiceTests, RunWarewolfServiceTests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" name="Blank_Input" />
     </UnitTest>
 "@
                 }
@@ -1074,19 +1043,18 @@ if ($RunWarewolfServiceTests.IsPresent) {
 
   </TestDefinitions>
   <TestLists>
-    <TestList name="Results Not in a List" id="$TestListID" />
-    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda"/>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
   </TestLists>
   <TestEntries>
 "@
-    foreach ($TestResult in $WarewolfServiceTestData) {
+    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
         $TRXFileContents += @"
 
     <TestEntry testId="
-"@ + $TestResult.ID + @"
+"@ + $TestResultGuids[$i] + @"
 " executionId="
-"@ + $TestResult.ExecutionID + @"
-" testListId="$TestListID" />
+"@ + $TestResultExeGuids[$i] + @"
+" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
 "@
     }
     $TRXFileContents += @"
@@ -1094,24 +1062,22 @@ if ($RunWarewolfServiceTests.IsPresent) {
   </TestEntries>
   <Results>
 "@
-    foreach ($TestResult in $WarewolfServiceTestData) {
+    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
         $TRXFileContents += @"
 
     <UnitTestResult executionId="
-"@ + $TestResult.ExecutionID + @"
+"@ + $TestResultExeGuids[$i] + @"
 " testId="
-"@ + $TestResult.ID + @"
+"@ + $TestResultGuids[$i] + @"
 " testName="
-"@ + $TestResult.'Test Name' + @"
-" computerName="$ServerPath" duration="
-"@ + $TestResult.Duration + @"
-" startTime="2017-06-26T09:29:42.5693118+02:00" endTime="2017-06-26T09:29:42.8302967+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
-"@ + $TestResult.Result + @"
-" testListId="$TestListID" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
+"@ + $TestResultNames[$i] + @"
+" computerName="ASH" duration="00:00:00.0100462" startTime="2017-06-26T09:29:42.5693118+02:00" endTime="2017-06-26T09:29:42.8302967+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
+"@ + $TestResultOutcomes[$i] + @"
+" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
 "@
-	    if ($TestResult.Result -eq "Failed") {
+	    if ($TestResultOutcomes[$i] -eq "Failed") {
             Add-Type -AssemblyName System.Web
-            $TestResultMessage = [System.Web.HttpUtility]::HtmlEncode($TestResult.Message)		    
+            $TestResultMessage = [System.Web.HttpUtility]::HtmlEncode($TestResultMessages[$i])		    
 		    $TRXFileContents += @"
       <Output>
         <ErrorInfo>
