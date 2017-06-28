@@ -999,6 +999,11 @@ if ($RunWarewolfServiceTests.IsPresent) {
                 $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ID" -Value ([guid]::NewGuid()) -PassThru}
                 $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ExecutionID" -Value ([guid]::NewGuid()) -PassThru}
                 $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "Duration" -Value $TestDuration.ToString() -PassThru}
+                $ServiceTestResults | Foreach-object { 
+                    $_ | Add-Member -MemberType noteproperty -Name "StartTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                    $TestStart += $TestDuration
+                    $_ | Add-Member -MemberType noteproperty -Name "EndTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                }
                 $WarewolfServiceTestData += $ServiceTestResults
             }
         } catch {
@@ -1103,9 +1108,13 @@ if ($RunWarewolfServiceTests.IsPresent) {
 "@ + $TestResult.'Test Name' + @"
 " computerName="$ServerPath" duration="
 "@ + $TestResult.Duration + @"
-" startTime="2017-06-26T09:29:42.5693118+02:00" endTime="2017-06-26T09:29:42.8302967+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
+" startTime="
+"@ + $TestResult.StartTime + @"
+" endTime="
+"@ + $TestResult.EndTime + @"
+" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
 "@ + $TestResult.Result + @"
-" testListId="$TestListID" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
+" testListId="$TestListID" relativeResultsDirectory="">
 "@
 	    if ($TestResult.Result -eq "Failed") {
             Add-Type -AssemblyName System.Web
