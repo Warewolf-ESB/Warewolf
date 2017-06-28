@@ -33,7 +33,7 @@ namespace Warewolf.UITests.WorkflowTab.Tools.Control_Flow
             ExplorerUIMap.Filter_Explorer("MovingSwitchArmsWithoutADialogUITest");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             ControlFlowToolsUIMap.Drag_Switch_Arm_To_Fourth_Comment_Tool();
-            Playback.Wait(5000);
+            Playback.Wait(500);
             Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector4.Height > 200, "Connector was not moved to fourth comment after drag was attempted.");
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.DecisionOrSwitchDialog), "Dialog exists after moving switch arm.");
         }
