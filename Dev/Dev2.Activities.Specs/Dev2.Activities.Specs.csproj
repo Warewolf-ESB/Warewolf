@@ -49,7 +49,7 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -77,7 +77,7 @@
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
     <Compile Include="ISpecExternalProcessExecutor.cs" />
     <Compile Include="SpecExternalProcessExecutor.cs" />
-    <Compile Include="TestFramework\StudioTestFramework2.feature.cs">
+    <Compile Include="TestFramework\StudioTestFramework.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StudioTestFramework.feature</DependentUpon>
@@ -293,7 +293,7 @@
     </None>
     <None Include="TestFramework\StudioTestFramework.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StudioTestFramework2.feature.cs</LastGenOutput>
+      <LastGenOutput>StudioTestFramework.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
