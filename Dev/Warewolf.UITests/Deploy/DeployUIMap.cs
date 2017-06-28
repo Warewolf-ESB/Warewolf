@@ -284,12 +284,19 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
                 Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
         }
 
-        [Given(@"I Select localhost from the source tab")]
-        [When(@"I Select localhost from the source tab")]
-        [Then(@"I Select localhost from the source tab")]
+        [Given(@"I Select localhost checkbox from the source tab")]
+        [When(@"I Select localhost checkbox from the source tab")]
+        [Then(@"I Select localhost checkbox from the source tab")]
         public void WhenISelectLocalhostFromTheSourceTab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.EnvironmentNameCheckCheckBox);
+        }
+
+        [Given(@"Source explorer first item is checked")]
+        [Then(@"Source explorer first item is checked")]
+        public void SourceExplorerFirstItemIsChecked()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked, "Checked resource is unchecked after clicking refresh button.");
         }
 
         [Then(@"I validate I can not Deploy ""(.*)""")]
