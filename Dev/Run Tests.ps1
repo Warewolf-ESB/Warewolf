@@ -951,6 +951,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
         }
     }
     Write-Warning "Connecting to $WarewolfServerURL"
+    $TestStartDateTime = Get-Date -Format o
     try {
         if (!$DisableTimeouts.IsPresent) {
             $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing
@@ -1005,7 +1006,13 @@ if ($RunWarewolfServiceTests.IsPresent) {
     <Deployment  enabled="false" />
     <Properties />
   </TestSettings>
-  <Times creation="2017-06-26T09:29:41.5783623+02:00" queuing="2017-06-26T09:29:42.3983196+02:00" start="2017-06-26T09:29:42.4963142+02:00" finish="2017-06-26T09:29:42.9172945+02:00" />
+  <Times creation="
+"@ + $TestStartDateTime + @"
+" queuing="2017-06-26T09:29:42.3983196+02:00" start="
+"@ + $TestStartDateTime + @"
+" finish="
+"@ + (Get-Date -Format o) + @"
+" />
   <ResultSummary outcome="Completed">
     <Counters total="
 "@ + $TestResultNames.Count + @"
