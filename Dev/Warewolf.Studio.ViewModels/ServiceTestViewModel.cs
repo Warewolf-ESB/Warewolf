@@ -160,6 +160,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.OriginatingResourceID == ResourceModel.ID)
                         {
+                            UpdateInputValues(debugItemContent);
                             ProcessInputsAndOutputs(debugItemContent);
                         }
                         else if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.ActualType == typeof(DsfActivity).Name)
@@ -171,6 +172,20 @@ namespace Warewolf.Studio.ViewModels
                             ProcessRegularDebugItem(debugItemContent, debugState);
                         }
                     }
+                }
+            }
+        }
+
+        private void UpdateInputValues(IDebugState debugItemContent)
+        {
+            foreach (var item in debugItemContent.Inputs)
+            {
+                foreach (var res in item?.ResultsList)
+                {
+                    string variable = res?.Variable?.Replace("[[", "");
+                    variable = variable?.Replace("]]", "");
+                    var inputsValue = WorkflowDesignerViewModel?.GetWorkflowInputs(variable);
+                    res.Value = inputsValue;
                 }
             }
         }
