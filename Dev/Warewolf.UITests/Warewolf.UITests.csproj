@@ -80,6 +80,7 @@
       <DependentUpon>DBSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="WorkflowServiceTesting\ComDllTestingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\WorkflowContainingGridedToolsTests.cs" />
     <Compile Include="WorkflowTab\DebugOutput\DebugOutputWindowTests.cs" />
     <Compile Include="DependencyGraph\DependencyGraphUIMap.cs">
       <DependentUpon>DependencyGraphUIMap.uitest</DependentUpon>
@@ -393,6 +394,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Run Tests.ps1">
+      <Link>Properties\Run Tests.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
     <None Include="ComPluginSource\ComPluginSourceUIMap.uitest">
       <SubType>Designer</SubType>
@@ -470,7 +475,6 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
-    <Content Include="AssertActionTemplates.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

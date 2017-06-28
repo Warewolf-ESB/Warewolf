@@ -10,14 +10,16 @@ Param(
   [switch]$UITesting,
   [switch]$Server,
   [switch]$Studio,
-  [switch]$Release
+  [switch]$Release,
+  [switch]$RunWarewolfServiceTests
 )
 $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\UITesting.sln",
                       "$PSScriptRoot\Dev\Server.sln",
                       "$PSScriptRoot\Dev\Studio.sln",
-                      "$PSScriptRoot\Dev\Release.sln"
-$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent)
+                      "$PSScriptRoot\Dev\Release.sln",
+                      "$PSScriptRoot\Dev\RunWarewolfServiceTests.sln"
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($RunWarewolfServiceTests.IsPresent)
 if ($Target -ne "") {
 	$Target = "/t:" + $Target
 }
@@ -187,22 +189,24 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 
 #Compile Solutions
 foreach ($SolutionFile in $KnownSolutionFiles) {
-    $GetSolutionFileInfo = Get-Item $SolutionFile
-    $SolutionFileName = $GetSolutionFileInfo.Name
-    $SolutionFileExtension = $GetSolutionFileInfo.Extension
-    $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension)
-    if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
-        if ($ProjectSpecificOutputs.IsPresent) {
-            $OutputProperty = ""
-        } else {
-            $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+    if (Test-Path $SolutionFile) {
+        $GetSolutionFileInfo = Get-Item $SolutionFile
+        $SolutionFileName = $GetSolutionFileInfo.Name
+        $SolutionFileExtension = $GetSolutionFileInfo.Extension
+        $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension)
+        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
+            if ($ProjectSpecificOutputs.IsPresent) {
+                $OutputProperty = ""
+            } else {
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+            }
+            &"$NuGetPath" "restore" "$SolutionFile"
+            &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
+            if ($LASTEXITCODE -ne 0) {
+                sleep 30
+                exit 1
+            }
         }
-        &"$NuGetPath" "restore" "$SolutionFile"
-        &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
-    }
-    if ($LASTEXITCODE -ne 0) {
-        sleep 30
-        exit 1
     }
 }
 exit 0

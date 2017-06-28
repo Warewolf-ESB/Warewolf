@@ -578,6 +578,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
                 serviceTestStep.StepOutputs = serviceTestOutputs;
+                serviceTestStep.AddNewEmptyRow();
             }
         }
 
@@ -1849,8 +1850,9 @@ namespace Warewolf.Studio.ViewModels
                 Save(serviceTestModels);
                 UpdateTestsFromResourceUpdate();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 // MarkTestsAsDirty(true);
             }
             finally
@@ -2259,6 +2261,10 @@ namespace Warewolf.Studio.ViewModels
                     _tests.Remove(test);
                     OnPropertyChanged(() => Tests);
                     SelectedServiceTest = null;
+                    if (Tests.Count == 1 && Tests.Single().GetType() == typeof(DummyServiceTest))
+                        {
+                            CanSave = false;
+                        }
                 }
                 catch (Exception ex)
                 {

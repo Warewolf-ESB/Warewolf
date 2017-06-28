@@ -35,11 +35,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             return scenarioContext.Get<DropBoxDeleteViewModel>("deleteViewModel");
         }
 
-        Mock<IServer> GeEnvrionmentModel()
-        {
-            return scenarioContext.Get<Mock<IServer>>("mockEnvironmentModel");
-        }
-
         [Given(@"I drag Delete Dropbox Tool onto the design surface")]
         public void GivenIDragDeleteDropboxToolOntoTheDesignSurface()
         {
@@ -47,7 +42,6 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
             var modelItem = ModelItemUtils.CreateModelItem(dropBoxDeleteTool);
             var mockEnvironmentRepo = new Mock<IServerRepository>();
             var mockEnvironmentModel = new Mock<IServer>();
-            var mockExecutionEnvironment = new Mock<IExecutionEnvironment>();
             var mockResourcRepositorySetUp = new Mock<IResourceRepository>();
             var mockEventAggregator = new Mock<IEventAggregator>();
             var dropBoxSourceManager = new Mock<IDropboxSourceManager>();

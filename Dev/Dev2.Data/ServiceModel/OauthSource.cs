@@ -115,8 +115,11 @@ namespace Dev2.Data.ServiceModel
         /// <param name="other">An object to compare with this object.</param>
         public override bool Equals(IOAuthSource other)
         {
-            // ReSharper disable once PossibleNullReferenceException
-            return AppKey == other.AppKey && AccessToken == other.AccessToken;
+            if (other != null)
+            {
+                return AppKey == other.AppKey && AccessToken == other.AccessToken;
+            }
+            return false;
         }
 
         protected override string GetConnectionString()

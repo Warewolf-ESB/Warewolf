@@ -1900,6 +1900,7 @@ namespace Dev2.Activities.Specs.Composition
             environmentModel.Connect();
 
             var sharepointList = table.Rows[0]["List"];
+            sharepointList += "_" + ScenarioContext.Current.Get<int>("recordsetNameRandomizer").ToString();
             var result = table.Rows[0]["Result"];
             SharepointUpdateListItemActivity createListItemActivity = new SharepointUpdateListItemActivity
             {
@@ -1962,16 +1963,6 @@ namespace Dev2.Activities.Specs.Composition
                 }
             });
 
-            _commonSteps.AddVariableToVariableList("[[AccTesting().Title]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().Name]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().IntField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().CurrencyField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().DateField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().DateTimeField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().BoolField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().MultilineTextField]]");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().Loc]] ");
-            _commonSteps.AddVariableToVariableList("[[AccTesting().RequiredField]]");
             _commonSteps.AddActivityToActivityList(parentName, activityName, createListItemActivity);
 
         }
@@ -2801,6 +2792,32 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
+        [Given(@"""(.*)"" contains a recordset name randomizing Assign ""(.*)"" as")]
+        [Then(@"""(.*)"" contains a recordset name randomizing Assign ""(.*)"" as")]
+        public void ThenContainsARecordsetNameRandomizingAssignAs(string parentName, string assignName, Table table)
+        {
+            var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+            var recordsetNameRandomizer = new Random().Next(60) + 1;
+            ScenarioContext.Current.Add("recordsetNameRandomizer", recordsetNameRandomizer);
+
+            foreach (var tableRow in table.Rows)
+            {
+                var value = tableRow["value"];
+                var variable = tableRow["variable"];
+
+                var endOfRecordsetName = variable.IndexOf('(');
+                variable = variable.Substring(0, endOfRecordsetName) + "_" + recordsetNameRandomizer.ToString() + variable.Substring(endOfRecordsetName, variable.Length - endOfRecordsetName);
+
+                List<ActivityDTO> fieldCollection;
+                _scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+
+                _commonSteps.AddVariableToVariableList(variable);
+
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+            }
+            _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+        }
+
         [Given(@"""(.*)"" contains an Assign for Json ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign for Json ""(.*)"" as")]
         public void GivenContainsAnAssignForJsonAs(string parentName, string assignName, Table table)
@@ -2898,24 +2915,22 @@ namespace Dev2.Activities.Specs.Composition
             var dropBoxSource = GetDropBoxSource();
             uploadActivity.SelectedSource = dropBoxSource;
             var localFile = table.Rows[0]["Local File"];
+            var localFileUniqueNameGuid = CommonSteps.GetGuid();
+            localFile = CommonSteps.AddGuidToPath(localFile, localFileUniqueNameGuid);
+            ScenarioContext.Current.Add("localFileUniqueNameGuid", localFileUniqueNameGuid);
+            Console.WriteLine("Generated new local file path as " + localFileUniqueNameGuid + ".");
             var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
             var dropboxFile = table.Rows[0]["DropboxFile"];
+            var serverPathToUniqueNameGuid = CommonSteps.GetGuid();
+            dropboxFile = CommonSteps.AddGuidToPath(dropboxFile, serverPathToUniqueNameGuid);
+            ScenarioContext.Current.Add("serverPathToUniqueNameGuid", serverPathToUniqueNameGuid);
+            Console.WriteLine("Generated new server path for dropbox server path as " + serverPathToUniqueNameGuid + ".");
             var result = table.Rows[0]["Result"];
             uploadActivity.FromPath = localFile;
             uploadActivity.OverWriteMode = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
             uploadActivity.ToPath = dropboxFile;
 
-            try
-            {
-                using (File.Create(localFile))
-                {
-
-                }
-            }
-            catch (Exception e)
-            {
-                Assert.Fail(e.Message);
-            }
+            File.Create(localFile).Close();
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, uploadActivity);
         }
@@ -2926,7 +2941,6 @@ namespace Dev2.Activities.Specs.Composition
             var listActivity = new DsfDropboxFileListActivity()
             {
                 DisplayName = dotNetServiceName,
-
             };
             var dropBoxSource = GetDropBoxSource();
             listActivity.SelectedSource = dropBoxSource;
@@ -2951,7 +2965,6 @@ namespace Dev2.Activities.Specs.Composition
             listActivity.IsRecursive = b;
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, listActivity);
-
         }
 
 
@@ -2975,7 +2988,8 @@ namespace Dev2.Activities.Specs.Composition
             var dropBoxSource = GetDropBoxSource();
             downloadActivity.SelectedSource = dropBoxSource;
             downloadActivity.FromPath = table.Rows[0]["Local File"];
-            downloadActivity.ToPath = table.Rows[0]["DropboxFile"];
+            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
+            downloadActivity.ToPath = CommonSteps.AddGuidToPath(table.Rows[0]["DropboxFile"], serverPathUniqueNameGuid);
             var overwriteOrAdd = table.Rows[0]["OverwriteOrAdd"];
             downloadActivity.OverwriteFile = overwriteOrAdd.ToLower() == "Overwrite".ToLower();
             var result = table.Rows[0]["Result"];
@@ -2996,6 +3010,8 @@ namespace Dev2.Activities.Specs.Composition
             var dropBoxSource = GetDropBoxSource();
             deleteActivity.SelectedSource = dropBoxSource;
             var dropboxFile = table.Rows[0]["DropboxFile"];
+            var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
+            dropboxFile = CommonSteps.AddGuidToPath(dropboxFile, serverPathUniqueNameGuid);
             deleteActivity.DeletePath = dropboxFile;
             var result = table.Rows[0]["Result"];
             _commonSteps.AddVariableToVariableList(result);

@@ -70,6 +70,10 @@
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+	<None Include="..\Run Tests.ps1">
+      <Link>Properties\Run Tests.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="PerfCounterBuilderTest.cs" />
     <Compile Include="PerfCounterOps.cs" />
     <Compile Include="PerformanceCounterPersistenceTest.cs" />

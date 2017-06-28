@@ -705,17 +705,17 @@ Scenario: Run a passing Test with RabbitMq Object return
 	And I Add "RabbitMQ Consume" as TestStep
 	And I Clear existing StepOutputs
 	And I add StepOutputs item as 
-	| Variable Name      | Condition | Value                |
+	| Variable Name      | Condition | Value |
 	| [[@AllMessages()]] | Contains  | A0003 |
     And I add StepOutputs item as 
-    | Variable Name      | Condition | Value            |
-    | [[@AllMessages()]] | Contains  | Bob |
+    | Variable Name      | Condition | Value |
+    | [[@AllMessages()]] | Contains  | Bob   |
 	And I add StepOutputs item as 
-	| Variable Name      | Condition | Value         |
-	| [[@AllMessages()]] | Contains  | 32 |
+	| Variable Name      | Condition | Value |
+	| [[@AllMessages()]] | Contains  | 32    |
 	And I Add outputs as
-	| Variable Name  | Condition | Value         |
-	| @AllMessages() | Contains  | 32 |
+	| Variable Name  | Condition | Value |
+	| @AllMessages() | Contains  | 32    |
 	And save is enabled
 	And test status is pending	
 	And test is enabled	
@@ -2662,7 +2662,7 @@ Scenario: Test WF with Sharepoint Read List Item
 
 Scenario: Test WF with Sharepoint Update List Item
 	Given I have a workflow "ShapointUpdateListItemTestWF"	
-	   And "ShapointCreateListItemsTestWF" contains an Assign "MyAssign" as
+	   And "ShapointCreateListItemsTestWF" contains a recordset name randomizing Assign "MyAssign" as
 	    | variable                            | value                                                                |
 	    | [[AccTesting().Title]]              | Mrs                                                                  |
 	    | [[AccTesting().Name]]               | Minnie                                                               |
@@ -2855,22 +2855,22 @@ Scenario: Test Workflow with ForEach which contains assign Mock
 	  When I delete "Test 1"
 	  
 Scenario: Test Workflow with ForEach which contains assign Assert
-      Given I have a workflow "TestWFForEachAssert"
-	  And "TestWFForEachAssert" contains an Assign "Rec To Convert" as
-	    | variable    | value |
-	    | [[Warewolf]] | bob   |
-	  And "TestWFForEachAssert" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
-	  And "ForEachTest" contains an Assign "MyAssign" as
-	    | variable    | value |
-	    | [[rec().a]] | Test  |
-      And I save workflow "TestWFForEachAssert"
-	  Then the test builder is open with "TestWFForEachAssert"
-	  And I click New Test
-	  And I Add "ForEachTest" as TestStep All Assert
-	  When I save
-	  And I run the test
-	  Then test result is Passed
-	  When I delete "Test 1"
+	Given I have a workflow "TestWFForEachAssert"
+	And "TestWFForEachAssert" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[Warewolf]] | bob   |
+	And "TestWFForEachAssert" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
+	And "ForEachTest" contains an Assign "MyAssign" as
+	  | variable    | value |
+	  | [[rec().a]] | Test  |
+	   And I save workflow "TestWFForEachAssert"
+	Then the test builder is open with "TestWFForEachAssert"
+	And I click New Test
+	And I Add "ForEachTest" as TestStep All Assert
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
 
 Scenario: Test Workflow with Loop Constructs - Select and Apply example workflow
 	Given the test builder is open with "Select and Apply"
@@ -2885,60 +2885,60 @@ Scenario: Test Workflow with Loop Constructs - Select and Apply example workflow
 #Storage Category
 
 Scenario: Test Wf With Dropbox Upload Tool
-Given I have a workflow "TestWFWithDropBoxUpload"	
-And "TestWFWithDropBoxUpload" contains a DropboxUpload "UploadTool" Setup as
-| Local File      | OverwriteOrAdd | DropboxFile | Result  |
-| C:\Home.Dropbox | Overwrite      | source.xml  | [[res]] |
-And I save workflow "TestWFWithDropBoxUpload"
-Then the test builder is open with "TestWFWithDropBoxUpload"
-And I click New Test
-And I Add "UploadTool" as TestStep 
-When I save
-And I run the test
-Then test result is Passed
-When I delete "Test 1"
+	Given I have a workflow "TestWFWithDropBoxUpload"	
+	And "TestWFWithDropBoxUpload" contains a DropboxUpload "UploadTool" Setup as
+	| Local File      | OverwriteOrAdd | DropboxFile | Result  |
+	| C:\Home.Dropbox | Overwrite      | source.xml  | [[res]] |
+	And I save workflow "TestWFWithDropBoxUpload"
+	Then the test builder is open with "TestWFWithDropBoxUpload"
+	And I click New Test
+	And I Add "UploadTool" as TestStep 
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
 
 Scenario: Test Wf With Dropbox Delete Tool
-Given I have a workflow "TestWFWithDropBoxDelete"	
-And "TestWFWithDropBoxDelete" contains a DropboxUpload "UploadTool" Setup as
-| Local File     | OverwriteOrAdd | DropboxFile  | Result  |
-| C:\Home.Delete | Overwrite      | ToDelete.xml | [[res]] |
-And "TestWFWithDropBoxDelete" contains a DropboxDelete "DeleteTool" Setup as
-| DropboxFile     |  Result  |
-| ToDelete.xml|  [[res]] |
-And I save workflow "TestWFWithDropBoxDelete"
-Then the test builder is open with "TestWFWithDropBoxDelete"
-And I click New Test
-And I Add "UploadTool" as TestStep 
-And I Add "DeleteTool" as TestStep 
-When I save
-And I run the test
-Then test result is Passed
-When I delete "Test 1"
+	Given I have a workflow "TestWFWithDropBoxDelete"	
+	And "TestWFWithDropBoxDelete" contains a DropboxUpload "UploadTool" Setup as
+	| Local File     | OverwriteOrAdd | DropboxFile  | Result  |
+	| C:\Home.Delete | Overwrite      | ToDelete.xml | [[res]] |
+	And "TestWFWithDropBoxDelete" contains a DropboxDelete "DeleteTool" Setup as
+	| DropboxFile  |  Result  |
+	| ToDelete.xml |  [[res]] |
+	And I save workflow "TestWFWithDropBoxDelete"
+	Then the test builder is open with "TestWFWithDropBoxDelete"
+	And I click New Test
+	And I Add "UploadTool" as TestStep 
+	And I Add "DeleteTool" as TestStep 
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
 
 Scenario: Test Wf With Dropbox Download Tool
-Given I have a workflow "TestWFWithDropBoxDowload"	
-And "TestWFWithDropBoxDowload" contains a DropboxUpload "UploadTool" Setup as
-| Local File      | OverwriteOrAdd | DropboxFile | Result  |
-| C:\Home.Delete | Overwrite      | Download.xml  | [[res]] |
-And "TestWFWithDropBoxDowload" contains a DropboxDownLoad "DownloadTool" Setup as
-| Local File     | OverwriteOrAdd | DropboxFile  | Result  |
-| C:\Home.Delete | Overwrite      | Download.xml | [[res]] |
-And I save workflow "TestWFWithDropBoxDowload"
-Then the test builder is open with "TestWFWithDropBoxDowload"
-And I click New Test
-And I Add "UploadTool" as TestStep 
-And I Add "DownloadTool" as TestStep 
-When I save
-And I run the test
-Then test result is Passed
-When I delete "Test 1"
+	Given I have a workflow "TestWFWithDropBoxDowload"	
+	And "TestWFWithDropBoxDowload" contains a DropboxUpload "UploadTool" Setup as
+	| Local File      | OverwriteOrAdd | DropboxFile  | Result  |
+	| C:\Home.Delete | Overwrite       | Download.xml | [[res]] |
+	And "TestWFWithDropBoxDowload" contains a DropboxDownLoad "DownloadTool" Setup as
+	| Local File     | OverwriteOrAdd | DropboxFile  | Result  |
+	| C:\Home.Delete | Overwrite      | Download.xml | [[res]] |
+	And I save workflow "TestWFWithDropBoxDowload"
+	Then the test builder is open with "TestWFWithDropBoxDowload"
+	And I click New Test
+	And I Add "UploadTool" as TestStep 
+	And I Add "DownloadTool" as TestStep 
+	When I save
+	And I run the test
+	Then test result is Passed
+	When I delete "Test 1"
 
 Scenario: Test Wf With Dropbox List Tool
 	Given I have a workflow "TestWFWithDropBoxList"	
 	And "TestWFWithDropBoxList" contains a DropboxUpload "UploadTool" Setup as
-	| Local File      | OverwriteOrAdd | DropboxFile | Result  |
-	| C:\Home.Delete | Overwrite      | Home/Download.xml  | [[res]] |
+	| Local File     | OverwriteOrAdd | DropboxFile       | Result  |
+	| C:\Home.Delete | Overwrite      | Home/Download.xml | [[res]] |
 	And "TestWFWithDropBoxList" contains a DropboxList "ListTool" Setup as
 	| Read  | LoadSubFolders | DropboxFile | Result          |
 	| Files | true           | Home        | [[res().Files]] |
