@@ -156,6 +156,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UnitTestUtils", "Dev2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingDotnetDllCascading", "TestingDotnetDllCascading\TestingDotnetDllCascading.csproj", "{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Interfaces", "Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj", "{37149E8E-FEF2-47C0-8391-80DCCE86D26D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -389,6 +391,10 @@ Global
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37149E8E-FEF2-47C0-8391-80DCCE86D26D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
