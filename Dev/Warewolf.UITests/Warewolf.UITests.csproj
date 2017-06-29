@@ -80,6 +80,7 @@
       <DependentUpon>DBSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="WorkflowServiceTesting\ComDllTestingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\WorkflowContainingGridedToolsTests.cs" />
     <Compile Include="WorkflowTab\DebugOutput\DebugOutputWindowTests.cs" />
     <Compile Include="DependencyGraph\DependencyGraphUIMap.cs">
       <DependentUpon>DependencyGraphUIMap.uitest</DependentUpon>
