@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
 using Warewolf.UITests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UITests.SharepointSource.SharepointSourceUIMapClasses;
 using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
@@ -30,7 +31,9 @@ namespace Warewolf.UITests.SharepointSource
             Assert.IsTrue(SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.PasswordTextBox.Exists);
             SharepointSourceUIMap.Enter_Sharepoint_ServerSource_User_Credentials();
             SharepointSourceUIMap.Click_Sharepoint_Server_Source_TestConnection();
-            SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.DrawHighlight();
+            Point point;
+            SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.Spinner.WaitForControlCondition(control=> { return !control.TryGetClickablePoint(out point); }, 60000);
+            Assert.IsTrue(SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.SuccessfulTestImage.TryGetClickablePoint(out point), "Failed to connect to Sharepoint server.");
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
             //Save Source
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
@@ -42,7 +45,8 @@ namespace Warewolf.UITests.SharepointSource
             Assert.IsTrue(SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.Exists, "Sharepoint Source Tab does not exist.");
             SharepointSourceUIMap.Click_WindowsButton_On_SharepointSource();
             SharepointSourceUIMap.Click_Sharepoint_Server_Source_TestConnection();
-            SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.TestConnectionButton.DrawHighlight();
+            SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.Spinner.WaitForControlCondition(control => { return !control.TryGetClickablePoint(out point); }, 60000);
+            Assert.IsTrue(SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.SuccessfulTestImage.TryGetClickablePoint(out point), "Failed to connect to Sharepoint server.");
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             SharepointSourceUIMap.Click_Close_SharepointSource_Tab_Button();
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
