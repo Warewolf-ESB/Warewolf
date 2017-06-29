@@ -11,15 +11,14 @@ Param(
   [switch]$Server,
   [switch]$Studio,
   [switch]$Release,
-  [switch]$RunWarewolfServiceTests
+  [switch]$RegenerateSpecFlowFeatureFiles
 )
 $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\UITesting.sln",
                       "$PSScriptRoot\Dev\Server.sln",
                       "$PSScriptRoot\Dev\Studio.sln",
-                      "$PSScriptRoot\Dev\Release.sln",
-                      "$PSScriptRoot\Dev\RunWarewolfServiceTests.sln"
-$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($RunWarewolfServiceTests.IsPresent)
+                      "$PSScriptRoot\Dev\Release.sln"
+$NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent)
 if ($Target -ne "") {
 	$Target = "/t:" + $Target
 }
@@ -185,6 +184,28 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     $Line7 | Out-File -LiteralPath $FSharpVersionFile -Encoding utf8 -Append
     Write-Host F Sharp version file written to `"$FSharpVersionFile`".
     Write-Host Warewolf version written successfully! For more info about Warewolf versioning see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
+}
+
+if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
+	&"nuget.exe" "restore" "$PSScriptRoot\Dev\AcceptanceTesting.sln"
+	if ($LASTEXITCODE -ne 0) {
+        sleep 30
+		exit 1
+	}
+	foreach ($ProjectDir in get-ChildItem "Dev\*Specs") {
+		$FullPath = $ProjectDir.FullName
+		$ProjectName = $ProjectDir.Name
+		if (Test-Path "$FullPath\$ProjectName.csproj") {
+			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
+		}
+	}
+	foreach ($ProjectDir in get-ChildItem "Dev\Warewolf.UIBindingTests.*") {
+		$FullPath = $ProjectDir.FullName
+		$ProjectName = $ProjectDir.Name
+		if (Test-Path "$FullPath\$ProjectName.csproj") {
+			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
+		}
+	}
 }
 
 #Compile Solutions
