@@ -25,7 +25,7 @@ namespace Warewolf.UITests.DebugOutputTests
             WorkflowTabUIMap.Drag_Explorer_workflow_Onto_Workflow_Design_Surface();
             UIMap.Press_F6();
             var helloWorldIsHighlighted = WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.HelloWorldWorkFlow.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
-            Assert.IsTrue(helloWorldIsHighlighted);
+            Assert.IsTrue(helloWorldIsHighlighted, "Sub-workflow is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace Warewolf.UITests.DebugOutputTests
             WorkflowTabUIMap.Drag_Toolbox_Web_Request_Onto_DesignSurface();
             UIMap.Press_F6();
             var webRequest = UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
-            Assert.IsTrue(webRequest);
+            Assert.IsTrue(webRequest, "Web request tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace Warewolf.UITests.DebugOutputTests
             Assert.IsTrue(assignFocus);
             ExplorerUIMap.Click_DesicionStep_InDebugOutput();
             var assignHasNoFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
-            Assert.IsTrue(assignHasNoFocus);
+            Assert.IsTrue(assignHasNoFocus, "Assign tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace Warewolf.UITests.DebugOutputTests
             Assert.IsTrue(assignFocus);
             ExplorerUIMap.Click_DesicionStep_InDebugOutput();
             var assignHasNoFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
-            Assert.IsTrue(assignHasNoFocus);
+            Assert.IsTrue(assignHasNoFocus, "Dropbox delete tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace Warewolf.UITests.DebugOutputTests
             WorkflowTabUIMap.Drag_Toolbox_SelectAndApply_Onto_DesignSurface();
             UIMap.Press_F6();
             var selectAndApplyFocus = LoopConstructToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SelectAndApply.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
-            Assert.IsTrue(selectAndApplyFocus);
+            Assert.IsTrue(selectAndApplyFocus, "Select and Apply tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
 
         }
 
@@ -91,7 +91,7 @@ namespace Warewolf.UITests.DebugOutputTests
             WorkflowTabUIMap.Drag_Toolbox_Dropbox_Download_Onto_DesignSurface();
             UIMap.Press_F6();
             var dropboxDownloadHasFocus = DropboxToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDownload.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
-            Assert.IsTrue(dropboxDownloadHasFocus);
+            Assert.IsTrue(dropboxDownloadHasFocus, "Dropbox download tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
 
         }
 
@@ -103,7 +103,7 @@ namespace Warewolf.UITests.DebugOutputTests
             WorkflowTabUIMap.Drag_Toolbox_Dropbox_Delete_Onto_DesignSurface();
             UIMap.Press_F6();
             var dropboxDeleteHasFocus = DropboxToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxDelete.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
-            Assert.IsTrue(dropboxDeleteHasFocus);
+            Assert.IsTrue(dropboxDeleteHasFocus, "Dropbox delete tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
 
 
         }
@@ -115,7 +115,7 @@ namespace Warewolf.UITests.DebugOutputTests
             DropboxToolsUIMap.Drag_Toolbox_Dropbox_Upload_Onto_DesignSurface();
             UIMap.Press_F6();
             var dropboxUploadHasFocus = DropboxToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxUpload.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
-            Assert.IsTrue(dropboxUploadHasFocus);
+            Assert.IsTrue(dropboxUploadHasFocus, "Dropbox upload tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
 
 
         }
@@ -127,7 +127,7 @@ namespace Warewolf.UITests.DebugOutputTests
             WorkflowTabUIMap.Drag_Toolbox_Dropbox_FileList_Onto_DesignSurface();
             UIMap.Press_F6();
             var dropboxListHasFocus = DropboxToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.DropboxFileList.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
-            Assert.IsTrue(dropboxListHasFocus);
+            Assert.IsTrue(dropboxListHasFocus, "Dropbox list tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
 
         }
 
