@@ -942,6 +942,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     $WarewolfServerURL = "$ServerPath/secure/apis.json"
     if ($ServerUsername -eq "") {
         $Headers = @{}
+        $ServerUsername = "Unknown User"
     } else {
         $pair = "$($ServerUsername):$($ServerPassword)"
         $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
@@ -951,134 +952,193 @@ if ($RunWarewolfServiceTests.IsPresent) {
         }
     }
     Write-Warning "Connecting to $WarewolfServerURL"
+    $TestStartDateTime = Get-Date -Format o
+    if (!$DisableTimeouts.IsPresent) {
+        $ConnectTimeout = 180
+    } else {
+        $ConnectTimeout = 0
+    }
     try {
-        if (!$DisableTimeouts.IsPresent) {
-            $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing
-        } else {
-            $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -UseBasicParsing
-        }
+        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
     } catch {
         throw $_.Exception
     }
+    try {
+        $TryGetWarewolfServerVersion = wget "$ServerPath/secure/getserverversion.json" -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
+    } catch {
+        Write-Warning $_.Exception
+    }
+    $WarewolfServerVersion = "0.0.0.0"
+    if ($TryGetWarewolfServerVersion.StatusCode -eq 200) {
+        $WarewolfServerVersion = $TryGetWarewolfServerVersion.Content.Trim("`"")
+    }
+
     $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
     foreach ($WarewolfService in $WarewolfServiceData) {
         $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd("n").TrimEnd("o").TrimEnd("s").TrimEnd("j").TrimEnd(".") + ".tests"
         Write-Warning "Connecting to $WarewolfServiceTestURL"
         try {
-            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing)
+            if (!$DisableTimeouts.IsPresent) {
+                $TestTimeout = 180
+            } else {
+                $TestTimeout = 0
+            }
+            $TestStart = Get-Date
+            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec $TestTimeout -UseBasicParsing)
+            $ServiceTestDuration = New-TimeSpan -start $TestStart -end (Get-Date)
             if ($ServiceTestResults -ne $null -and $ServiceTestResults -ne "" -and $ServiceTestResults.Count -gt 0) {
-                #$ServiceTestResults | add-member -Name "Name" -value $WarewolfService.Name -MemberType NoteProperty
-                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ServiceName" -Value $WarewolfService.Name -PassThru}
+                [double]$TestDurationSeconds = $ServiceTestDuration.TotalSeconds / $ServiceTestResults.Count
+                if ($TestDurationSeconds -ge 60) {
+                    $TestDuration = New-TimeSpan -Seconds $TestDurationSeconds
+                } else {
+                    $TestDuration = "00:00:" + $TestDurationSeconds.ToString("00.0000000")
+                }
+                $ServiceTestResults | Foreach-object { $_.'Test Name' = $WarewolfService.Name.Replace(" ", "_") + "_" + $_.'Test Name'.Replace(" ", "_") }
+                $ServiceTestResults | Foreach-object { $_.Result = $_.Result.Replace("Invalid", "Failed") }
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ID" -Value ([guid]::NewGuid()) -PassThru}
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ExecutionID" -Value ([guid]::NewGuid()) -PassThru}
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "Duration" -Value $TestDuration.ToString() -PassThru}
+                $ServiceTestResults | Foreach-object { 
+                    $_ | Add-Member -MemberType noteproperty -Name "StartTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                    $TestStart += $TestDuration
+                    $_ | Add-Member -MemberType noteproperty -Name "EndTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                }
                 $WarewolfServiceTestData += $ServiceTestResults
             }
         } catch {
             Write-Warning $_.Exception
         }
     }
-    $CompileScriptPath = FindFile-InParent Compile.ps1
-    if (Test-Path "$CompileScriptPath") {
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests.sln" -ItemType File -Value @"
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunWarewolfServiceTests", "RunWarewolfServiceTests\RunWarewolfServiceTests.csproj", "{F907841D-BD06-43DD-80F1-C6CD954D8FDB}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F907841D-BD06-43DD-80F1-C6CD954D8FDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F907841D-BD06-43DD-80F1-C6CD954D8FDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-EndGlobal
-"@
-        if (!(Test-Path $PSScriptRoot\RunWarewolfServiceTests)) {
-            New-Item "$PSScriptRoot\RunWarewolfServiceTests" -ItemType Directory
-        }
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.csproj" -ItemType File -Value @"
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '`$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '`$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F907841D-BD06-43DD-80F1-C6CD954D8FDB}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RunWarewolfServiceTests</RootNamespace>
-    <AssemblyName>RunWarewolfServiceTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'`$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'`$(VSToolsPath)' == ''">`$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v`$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>`$(ProgramFiles)\Common Files\microsoft shared\VSTT\`$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '`$(Configuration)|`$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
-    <Compile Include="RunWarewolfServiceTests.cs" />
-  </ItemGroup>
-  <Import Project="`$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('`$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="`$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-</Project>
-"@
-        $WarewolfServiceUnitTests = @"
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace RunWarewolfServiceTests
-{
-    [TestClass]
-    public class RunWarewolfServiceTests
-    {
+    $TestListID = [guid]::NewGuid().ToString()
+    $TRXFileContents = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="
+"@ + [guid]::NewGuid() + @"
+" name="Warewolf Service Tests" runUser="$ServerUsername" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Default Test Settings" id="
+"@ + [guid]::NewGuid() + @"
+">
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+    <Deployment  enabled="false" />
+    <Properties />
+  </TestSettings>
+  <Times creation="
+"@ + $TestStartDateTime + @"
+" queuing="
+"@ + $TestStartDateTime + @"
+" start="
+"@ + $TestStartDateTime + @"
+" finish="
+"@ + (Get-Date -Format o) + @"
+" />
+  <ResultSummary outcome="Completed">
+    <Counters total="
+"@ + $WarewolfServiceTestData.Count + @"
+" executed="
+"@ + $WarewolfServiceTestData.Count + @"
+" passed="
+"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Passed")}, 'Split')[0].Count + @"
+" error="0" failed="
+"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Failed")}, 'Split')[0].Count + @"
+" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
 "@
-        foreach ($TestResult in $WarewolfServiceTestData) {
-            $TestResultName = $TestResult.ServiceName.Replace(" ", "_") + "_" + $TestResult.'Test Name'.Replace(" ", "_")
-            $TestResultMessage = $TestResult.Message
-            $TestResultAssert = $TestResult.Result.Replace("Passed", "Assert.IsTrue(true);").Replace("Failed", "Assert.Fail(`"$TestResultMessage`");").Replace("Invalid", "Assert.Inconclusive(`"$TestResultMessage`");")
-            $WarewolfServiceUnitTests += @"
+    foreach ($TestResult in $WarewolfServiceTestData) {
+        $TRXFileContents += @"
 
-            [TestMethod]
-            public void $TestResultName()
-            {
-                $TestResultAssert
-            }
+    <UnitTest name="
+"@ + $TestResult.'Test Name' + @"
+" storage="
+"@ + $TestResult.'Test Name' + @"
+.dll" id="
+"@ + $TestResult.ID + @"
+">
+      <Execution id="
+"@ + $TestResult.ExecutionID + @"
+" />
+      <TestMethod codeBase="
+"@ + $TestResult.'Test Name' + @"
+.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="
+"@ + $TestResult.'Test Name' + @"
+, Version=$WarewolfServerVersion, Culture=neutral, PublicKeyToken=null" name="
+"@ + $TestResult.'Test Name' + @"
+" />
+    </UnitTest>
 "@
-        }
-        $WarewolfServiceUnitTests += @"
+                }
+                $TRXFileContents += @"
 
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="$TestListID" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda"/>
+  </TestLists>
+  <TestEntries>
+"@
+    foreach ($TestResult in $WarewolfServiceTestData) {
+        $TRXFileContents += @"
+
+    <TestEntry testId="
+"@ + $TestResult.ID + @"
+" executionId="
+"@ + $TestResult.ExecutionID + @"
+" testListId="$TestListID" />
+"@
     }
-}
+    $TRXFileContents += @"
+
+  </TestEntries>
+  <Results>
 "@
-        New-Item -Force -Path "$PSScriptRoot\RunWarewolfServiceTests\RunWarewolfServiceTests.cs" -ItemType File -Value $WarewolfServiceUnitTests
-        &"$CompileScriptPath" -RunWarewolfServiceTests -ProjectSpecificOutputs
-        if (!$MSTest.IsPresent) {
-            Set-Location $PSScriptRoot
-            &"$VSTestPath" "`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`"" "/logger:trx"
-        } else {
-            &"$MSTestPath" "/testcontainer:`"$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll`"" "/resultsfile:`"$PSScriptRoot\TestResults\TestResults.trx`""
-        }
-        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests.sln"
-        Remove-Item "$PSScriptRoot\RunWarewolfServiceTests" -Recurse
-        if (Test-Path "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll") { Remove-Item "$PSScriptRoot\RunWarewolfServiceTests\bin\Debug\RunWarewolfServiceTests.dll" }
-    } else {
-        Write-Host $WarewolfServiceTestData
+    foreach ($TestResult in $WarewolfServiceTestData) {
+        $TRXFileContents += @"
+
+    <UnitTestResult executionId="
+"@ + $TestResult.ExecutionID + @"
+" testId="
+"@ + $TestResult.ID + @"
+" testName="
+"@ + $TestResult.'Test Name' + @"
+" computerName="$ServerPath" duration="
+"@ + $TestResult.Duration + @"
+" startTime="
+"@ + $TestResult.StartTime + @"
+" endTime="
+"@ + $TestResult.EndTime + @"
+" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
+"@ + $TestResult.Result + @"
+" testListId="$TestListID" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
+"@
+	    if ($TestResult.Result -eq "Failed") {
+            Add-Type -AssemblyName System.Web
+            $TestResultMessage = [System.Web.HttpUtility]::HtmlEncode($TestResult.Message)		    
+		    $TRXFileContents += @"
+      <Output>
+        <ErrorInfo>
+          <Message>$TestResultMessage</Message>
+          <StackTrace></StackTrace>
+        </ErrorInfo>
+      </Output>
+"@
+	    }
+	    $TRXFileContents += @"
+    </UnitTestResult>
+"@
     }
+    $TRXFileContents += @"
+
+  </Results>
+</TestRun>
+"@
+    Copy-On-Write "$TestsResultsPath\TestResults.trx"
+    New-Item -Force -Path "$TestsResultsPath\TestResults.trx" -ItemType File -Value $TRXFileContents
 }
 
 if ($Cleanup.IsPresent) {
