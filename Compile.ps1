@@ -31,7 +31,7 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     }
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-	Write-Host MSBuild not found. Download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe
+	Write-Host MSBuild not found. Download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe and http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
     sleep 10
     exit 1
 }
