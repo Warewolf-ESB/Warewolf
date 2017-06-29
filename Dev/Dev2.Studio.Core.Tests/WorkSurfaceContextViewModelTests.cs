@@ -1197,6 +1197,11 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
+        public string GetWorkflowInputs(string field)
+        {
+            throw new NotImplementedException();
+        }
+
         public IServer Server
         {
             get { throw new NotImplementedException(); }
