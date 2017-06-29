@@ -5,7 +5,7 @@ Param(
   [string]$NuGet="",
   [string]$Config="Debug",
   [switch]$AutoVersion,
-  [switch]$ProjectSpecificOutputs,
+  [switch]$SolutionWideOutputs,
   [switch]$AcceptanceTesting,
   [switch]$UITesting,
   [switch]$Server,
@@ -195,10 +195,10 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         $SolutionFileExtension = $GetSolutionFileInfo.Extension
         $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension)
         if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
-            if ($ProjectSpecificOutputs.IsPresent) {
-                $OutputProperty = ""
-            } else {
+            if ($SolutionWideOutputs.IsPresent) {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+            } else {
+                $OutputProperty = ""
             }
             &"$NuGetPath" "restore" "$SolutionFile"
             &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
