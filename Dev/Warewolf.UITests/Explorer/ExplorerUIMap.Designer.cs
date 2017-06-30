@@ -577,12 +577,31 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
                 return this.mFirstRemoteServer;
             }
         }
+        
+        public WpfTreeItem SecondRemoteServer
+        {
+            get
+            {
+                if ((this.mSecondRemoteServer == null))
+                {
+                    this.mSecondRemoteServer = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mSecondRemoteServer.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.EnvironmentViewModel";
+                    this.mSecondRemoteServer.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "3";
+                    this.mSecondRemoteServer.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mSecondRemoteServer;
+            }
+        }
         #endregion
         
         #region Fields
         private localhost mlocalhost;
         
         private FirstRemoteServer mFirstRemoteServer;
+        
+        private WpfTreeItem mSecondRemoteServer;
         #endregion
     }
     
