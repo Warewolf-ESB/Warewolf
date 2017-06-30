@@ -637,18 +637,6 @@ if ($JobName -ne $null -and $JobName -ne "") {
         }
     }
 }
-if ($RunAllJobs.IsPresent) {
-    $JobSpecs.Keys.ForEach({
-        $JobNames += $_
-        if ($JobSpecs[$_].Count -eq 1) {
-            $JobAssemblySpecs += $JobSpecs[$_]
-            $JobCategories += ""
-        } else {
-            $JobAssemblySpecs += $JobSpecs[$_][0]
-            $JobCategories += $JobSpecs[$_][1]
-        }
-    })
-}
 if ($ProjectName -ne $null -and $ProjectName -ne "") {
     $JobNames += "Manual Tests"
     $JobAssemblySpecs += $ProjectName
