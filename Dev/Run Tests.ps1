@@ -86,14 +86,14 @@ $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UITests", "(TestCategory=Web So
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UITests", "(TestCategory=Workflow Mocking Tests)"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UITests", "(TestCategory=Workflow Testing)"
 #Security
-$JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.SecuritySpecs", "ConflictingContributeViewExecutePermissionsSecurity"
-$JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.SecuritySpecs", "ConflictingExecutePermissionsSecurity"
-$JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewolf.SecuritySpecs", "ConflictingViewExecutePermissionsSecurity"
-$JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.SecuritySpecs", "ConflictingViewPermissionsSecurity"
-$JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.SecuritySpecs", "NoConflictingPermissionsSecurity"
-$JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.SecuritySpecs", "OverlappingUserGroupsPermissionsSecurity"
-$JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.SecuritySpecs", "ResourcePermissionsSecurity"
-$JobSpecs["Server Permissions Security Specs"]									= "Warewolf.SecuritySpecs", "ServerPermissionsSecurity"
+$JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.SecuritySpecs", "(TestCategory=ConflictingContributeViewExecutePermissionsSecurity)"
+$JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.SecuritySpecs", "(TestCategory=ConflictingExecutePermissionsSecurity)"
+$JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewolf.SecuritySpecs", "(TestCategory=ConflictingViewExecutePermissionsSecurity)"
+$JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.SecuritySpecs", "(TestCategory=ConflictingViewPermissionsSecurity)"
+$JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.SecuritySpecs", "(TestCategory=NoConflictingPermissionsSecurity)"
+$JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.SecuritySpecs", "(TestCategory=OverlappingUserGroupsPermissionsSecurity)"
+$JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.SecuritySpecs", "(TestCategory=ResourcePermissionsSecurity)"
+$JobSpecs["Server Permissions Security Specs"]									= "Warewolf.SecuritySpecs", "(TestCategory=ServerPermissionsSecurity)"
 
 $ServerExeName = "Warewolf Server.exe"
 $ServerPathSpecs = @()
