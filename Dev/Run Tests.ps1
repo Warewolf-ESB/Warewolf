@@ -131,10 +131,10 @@ if ($RunAllUnitTests.IsPresent -or $RunAllJobs.IsPresent) {
     }
 }
 if ($RunAllServerTests.IsPresent -or $RunAllJobs.IsPresent) {
-    $JobName = "Other Specs,Example Workflow Execution Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests"
+    $JobName = "Other Specs,Example Workflow Execution Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs"
     if ($RunAllJobs.IsPresent) {
         Invoke-Expression -Command ($PSCommandPath + " -JobName 'Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests' -StartServer -ResourcesType ServerTests")
-        Invoke-Expression -Command ($PSCommandPath + " -JobName 'Example Workflow Execution Specs' -StartServer -ResourcesType Release")
+        Invoke-Expression -Command ($PSCommandPath + " -JobName 'Example Workflow Execution Specs,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs' -StartServer -ResourcesType Release")
     }
 }
 if ($RunAllCodedUITests.IsPresent -or $RunAllJobs.IsPresent) {
