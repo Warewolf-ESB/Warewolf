@@ -136,9 +136,32 @@ namespace Warewolf.UITests.ServerSource
             }
         }
 
-    #region Additional test attributes
+        [TestMethod]
+        [TestCategory("Server Sources")]
+        public void Try_Change_A_Connected_Server_Source_Auth_And_Reconnect()
+        {
+            var ServerSourceName = "ChangingServerAuthUITest";
+            ExplorerUIMap.ConnectToChangingServerAuthUITest();
+            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
+            ServerSourceUIMap.Select_Server_Authentication_Public();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
+            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
+            ExplorerUIMap.ConnectToChangingServerAuthUITest();
+            ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
+            ServerSourceUIMap.Select_Server_Authentication_Windows();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
+            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+            UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
+            ExplorerUIMap.ConnectToChangingServerAuthUITest();
+            Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.SecondRemoteServer), "Server is duplicated in the explorer after changing auth.");
+        }
 
-    [TestInitialize()]
+        #region Additional test attributes
+
+        [TestInitialize()]
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();

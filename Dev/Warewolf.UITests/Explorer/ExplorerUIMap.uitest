@@ -1359,6 +1359,23 @@
                                 </UIObject>
                               </Descendants>
                             </UIObject>
+                            <UIObject ControlType="TreeItem" Id="SecondRemoteServer" FriendlyName="Infragistics.Controls.Menus.XamDataTreeNodeDataCon..." SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf</WindowTitle>
+                              </WindowTitles>
+                              <SearchConfigurations>
+                                <SearchConfiguration>Expand</SearchConfiguration>
+                              </SearchConfigurations>
+                              <AndCondition>
+                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.EnvironmentViewModel</PropertyCondition>
+                                <PropertyCondition Name="Instance">3</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants />
+                            </UIObject>
                           </Descendants>
                         </UIObject>
                         <UIObject ControlType="Custom" Id="Spinner" FriendlyName="" SpecialControlType="None">

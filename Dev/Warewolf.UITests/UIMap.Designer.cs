@@ -749,6 +749,18 @@ namespace Warewolf.UITests
             }
         }
         
+        public ComboboxListItemAsChangingServerAuthUITest ComboboxListItemAsChangingServerAuthUITest
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsChangingServerAuthUITest == null))
+                {
+                    this.mComboboxListItemAsChangingServerAuthUITest = new ComboboxListItemAsChangingServerAuthUITest(this);
+                }
+                return this.mComboboxListItemAsChangingServerAuthUITest;
+            }
+        }
+        
         public ComboboxListItemAspostgresDB ComboboxListItemAspostgresDB
         {
             get
@@ -1136,6 +1148,8 @@ namespace Warewolf.UITests
         private ComboboxListItemAsRemoteConnectionIntegration mComboboxListItemAsRemoteConnectionIntegration;
         
         private ComboboxListItemAsRestrictedRemoteConnection mComboboxListItemAsRestrictedRemoteConnection;
+        
+        private ComboboxListItemAsChangingServerAuthUITest mComboboxListItemAsChangingServerAuthUITest;
         
         private ComboboxListItemAspostgresDB mComboboxListItemAspostgresDB;
         
@@ -19603,6 +19617,43 @@ namespace Warewolf.UITests
                     this.mText = new WpfText(this);
                     #region Search Criteria
                     this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Restricted Remote Connection";
+                    this.mText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class ComboboxListItemAsChangingServerAuthUITest : WpfCustom
+    {
+        
+        public ComboboxListItemAsChangingServerAuthUITest(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "ChangingServerAuthUITest";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "ChangingServerAuthUITest";
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
