@@ -27,6 +27,7 @@ Param(
   [string]$TestList,
   [switch]$RunAllUnitTests,
   [switch]$RunAllServerTests,
+  [switch]$RunAllReleaseResourcesTests,
   [switch]$RunAllCodedUITests,
   [switch]$RunWarewolfServiceTests
 )
@@ -95,6 +96,24 @@ $JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.
 $JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.SecuritySpecs", "(TestCategory=ResourcePermissionsSecurity)"
 $JobSpecs["Server Permissions Security Specs"]									= "Warewolf.SecuritySpecs", "(TestCategory=ServerPermissionsSecurity)"
 
+$UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Tools Specs,UI Binding Tests"
+$ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests"
+$ReleaseResourcesJobNames = "Example Workflow Execution Specs,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs"
+$UITestJobNames = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
+
+if ($RunAllUnitTests.IsPresent) {
+    $JobName = $UnitTestJobNames
+}
+if ($RunAllServerTests.IsPresent) {
+    $JobName = $ServerTestJobNames
+}
+if ($RunAllReleaseResourcesTests.IsPresent) {
+    $JobName = $ReleaseResourcesJobNames
+}
+if ($RunAllCodedUITests.IsPresent) {
+    $JobName = $UITestJobNames
+}
+
 $ServerExeName = "Warewolf Server.exe"
 $ServerPathSpecs = @()
 $ServerPathSpecs += $ServerExeName
@@ -124,26 +143,6 @@ if ($JobName.Contains(" DotCover")) {
     $ApplyDotCover = $DotCover.IsPresent
 }
 
-if ($RunAllUnitTests.IsPresent -or $RunAllJobs.IsPresent) {
-    $JobName = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Tools Specs,UI Binding Tests"
-    if ($RunAllJobs.IsPresent) {
-        Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -DisableTimeouts -Parallelize")
-    }
-}
-if ($RunAllServerTests.IsPresent -or $RunAllJobs.IsPresent) {
-    $JobName = "Other Specs,Example Workflow Execution Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs"
-    if ($RunAllJobs.IsPresent) {
-        Invoke-Expression -Command ("&'$PSCommandPath' -JobName 'Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests' -StartServer -ResourcesType ServerTests")
-        Invoke-Expression -Command ("&'$PSCommandPath' -JobName 'Example Workflow Execution Specs,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs' -StartServer -ResourcesType Release")
-    }
-}
-if ($RunAllCodedUITests.IsPresent -or $RunAllJobs.IsPresent) {
-    $JobName = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
-    if ($RunAllJobs.IsPresent) {
-        Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -StartStudio -ResourcesType UITests")
-        exit 0
-    }
-}
 
 If (!(Test-Path "$TestsResultsPath")) {
     New-Item "$TestsResultsPath" -ItemType Directory
@@ -1162,6 +1161,13 @@ if ($Cleanup.IsPresent) {
 		$JobName = "Manual Tests"
 	}
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
+}
+
+if ($RunAllJobs.IsPresent) {
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$UnitTestJobNames' -DisableTimeouts -Parallelize")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ServerTestJobNames' -StartServer -ResourcesType ServerTests")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ReleaseResourcesJobNames' -StartServer -ResourcesType Release")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
