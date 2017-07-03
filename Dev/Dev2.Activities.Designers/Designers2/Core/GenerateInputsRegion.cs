@@ -4,6 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Common;
+using System.Linq;
+using System.Collections;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
 namespace Dev2.Activities.Designers2.Core
@@ -60,7 +63,9 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _inputs = value;
+
+                var distinct = value.Distinct(new ServiceInputNameComparer()).ToList();
+                _inputs = distinct;
                 OnPropertyChanged();
             }
         }
