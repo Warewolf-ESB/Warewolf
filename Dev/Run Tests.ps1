@@ -27,6 +27,7 @@ Param(
   [string]$TestList,
   [switch]$RunAllUnitTests,
   [switch]$RunAllServerTests,
+  [switch]$RunAllReleaseResourcesTests,
   [switch]$RunAllCodedUITests,
   [switch]$RunWarewolfServiceTests
 )
@@ -86,14 +87,32 @@ $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UITests", "(TestCategory=Web So
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UITests", "(TestCategory=Workflow Mocking Tests)"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UITests", "(TestCategory=Workflow Testing)"
 #Security
-$JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.SecuritySpecs", "ConflictingContributeViewExecutePermissionsSecurity"
-$JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.SecuritySpecs", "ConflictingExecutePermissionsSecurity"
-$JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewolf.SecuritySpecs", "ConflictingViewExecutePermissionsSecurity"
-$JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.SecuritySpecs", "ConflictingViewPermissionsSecurity"
-$JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.SecuritySpecs", "NoConflictingPermissionsSecurity"
-$JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.SecuritySpecs", "OverlappingUserGroupsPermissionsSecurity"
-$JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.SecuritySpecs", "ResourcePermissionsSecurity"
-$JobSpecs["Server Permissions Security Specs"]									= "Warewolf.SecuritySpecs", "ServerPermissionsSecurity"
+$JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.SecuritySpecs", "(TestCategory=ConflictingContributeViewExecutePermissionsSecurity)"
+$JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.SecuritySpecs", "(TestCategory=ConflictingExecutePermissionsSecurity)"
+$JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewolf.SecuritySpecs", "(TestCategory=ConflictingViewExecutePermissionsSecurity)"
+$JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.SecuritySpecs", "(TestCategory=ConflictingViewPermissionsSecurity)"
+$JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.SecuritySpecs", "(TestCategory=NoConflictingPermissionsSecurity)"
+$JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.SecuritySpecs", "(TestCategory=OverlappingUserGroupsPermissionsSecurity)"
+$JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.SecuritySpecs", "(TestCategory=ResourcePermissionsSecurity)"
+$JobSpecs["Server Permissions Security Specs"]									= "Warewolf.SecuritySpecs", "(TestCategory=ServerPermissionsSecurity)"
+
+$UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Tools Specs,UI Binding Tests"
+$ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests"
+$ReleaseResourcesJobNames = "Example Workflow Execution Specs,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs"
+$UITestJobNames = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
+
+if ($RunAllUnitTests.IsPresent) {
+    $JobName = $UnitTestJobNames
+}
+if ($RunAllServerTests.IsPresent) {
+    $JobName = $ServerTestJobNames
+}
+if ($RunAllReleaseResourcesTests.IsPresent) {
+    $JobName = $ReleaseResourcesJobNames
+}
+if ($RunAllCodedUITests.IsPresent) {
+    $JobName = $UITestJobNames
+}
 
 $ServerExeName = "Warewolf Server.exe"
 $ServerPathSpecs = @()
@@ -124,15 +143,6 @@ if ($JobName.Contains(" DotCover")) {
     $ApplyDotCover = $DotCover.IsPresent
 }
 
-if ($RunAllUnitTests.IsPresent) {
-    $JobName = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Tools Specs,UI Binding Tests"
-}
-if ($RunAllServerTests.IsPresent) {
-    $JobName = "Other Specs,Example Workflow Execution Specs,Subworkflow Execution Specs,Workflow Execution Specs"
-}
-if ($RunAllCodedUITests.IsPresent) {
-    $JobName = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
-}
 
 If (!(Test-Path "$TestsResultsPath")) {
     New-Item "$TestsResultsPath" -ItemType Directory
@@ -627,18 +637,6 @@ if ($JobName -ne $null -and $JobName -ne "") {
         }
     }
 }
-if ($RunAllJobs.IsPresent) {
-    $JobSpecs.Keys.ForEach({
-        $JobNames += $_
-        if ($JobSpecs[$_].Count -eq 1) {
-            $JobAssemblySpecs += $JobSpecs[$_]
-            $JobCategories += ""
-        } else {
-            $JobAssemblySpecs += $JobSpecs[$_][0]
-            $JobCategories += $JobSpecs[$_][1]
-        }
-    })
-}
 if ($ProjectName -ne $null -and $ProjectName -ne "") {
     $JobNames += "Manual Tests"
     $JobAssemblySpecs += $ProjectName
@@ -942,6 +940,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     $WarewolfServerURL = "$ServerPath/secure/apis.json"
     if ($ServerUsername -eq "") {
         $Headers = @{}
+        $ServerUsername = "Unknown User"
     } else {
         $pair = "$($ServerUsername):$($ServerPassword)"
         $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
@@ -952,49 +951,70 @@ if ($RunWarewolfServiceTests.IsPresent) {
     }
     Write-Warning "Connecting to $WarewolfServerURL"
     $TestStartDateTime = Get-Date -Format o
+    if (!$DisableTimeouts.IsPresent) {
+        $ConnectTimeout = 180
+    } else {
+        $ConnectTimeout = 0
+    }
     try {
-        if (!$DisableTimeouts.IsPresent) {
-            $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing
-        } else {
-            $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -UseBasicParsing
-        }
+        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
     } catch {
         throw $_.Exception
     }
+    try {
+        $TryGetWarewolfServerVersion = wget "$ServerPath/secure/getserverversion.json" -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
+    } catch {
+        Write-Warning $_.Exception
+    }
+    $WarewolfServerVersion = "0.0.0.0"
+    if ($TryGetWarewolfServerVersion.StatusCode -eq 200) {
+        $WarewolfServerVersion = $TryGetWarewolfServerVersion.Content.Trim("`"")
+    }
+
     $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
     foreach ($WarewolfService in $WarewolfServiceData) {
         $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd("n").TrimEnd("o").TrimEnd("s").TrimEnd("j").TrimEnd(".") + ".tests"
         Write-Warning "Connecting to $WarewolfServiceTestURL"
         try {
-            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec 180 -UseBasicParsing)
+            if (!$DisableTimeouts.IsPresent) {
+                $TestTimeout = 180
+            } else {
+                $TestTimeout = 0
+            }
+            $TestStart = Get-Date
+            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec $TestTimeout -UseBasicParsing)
+            $ServiceTestDuration = New-TimeSpan -start $TestStart -end (Get-Date)
             if ($ServiceTestResults -ne $null -and $ServiceTestResults -ne "" -and $ServiceTestResults.Count -gt 0) {
-                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ServiceName" -Value $WarewolfService.Name -PassThru}
+                [double]$TestDurationSeconds = $ServiceTestDuration.TotalSeconds / $ServiceTestResults.Count
+                if ($TestDurationSeconds -ge 60) {
+                    $TestDuration = New-TimeSpan -Seconds $TestDurationSeconds
+                } else {
+                    $TestDuration = "00:00:" + $TestDurationSeconds.ToString("00.0000000")
+                }
+                $ServiceTestResults | Foreach-object { $_.'Test Name' = $WarewolfService.Name.Replace(" ", "_") + "_" + $_.'Test Name'.Replace(" ", "_") }
+                $ServiceTestResults | Foreach-object { $_.Result = $_.Result.Replace("Invalid", "Failed") }
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ID" -Value ([guid]::NewGuid()) -PassThru}
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ExecutionID" -Value ([guid]::NewGuid()) -PassThru}
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "Duration" -Value $TestDuration.ToString() -PassThru}
+                $ServiceTestResults | Foreach-object { 
+                    $_ | Add-Member -MemberType noteproperty -Name "StartTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                    $TestStart += $TestDuration
+                    $_ | Add-Member -MemberType noteproperty -Name "EndTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                }
                 $WarewolfServiceTestData += $ServiceTestResults
             }
         } catch {
             Write-Warning $_.Exception
         }
     }
-    
-    $TestResultNames = @()
-    $TestResultMessages = @()
-    $TestResultOutcomes = @()
-    $TestResultGuids = @()
-    $TestResultExeGuids = @()
-    foreach ($TestResult in $WarewolfServiceTestData) {
-        $TestResultNames += $TestResult.ServiceName.Replace(" ", "_") + "_" + $TestResult.'Test Name'.Replace(" ", "_")
-        $TestResultMessages += $TestResult.Message
-        $TestResultOutcomes += $TestResult.Result
-        $TestResultGuids += [guid]::NewGuid()
-        $TestResultExeGuids += [guid]::NewGuid()
-    }
 
+    $TestListID = [guid]::NewGuid().ToString()
     $TRXFileContents = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <TestRun id="
 "@ + [guid]::NewGuid() + @"
-" name="Warewolf Service Tests" runUser="DEV2\IntegrationTester" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+" name="Warewolf Service Tests" runUser="$ServerUsername" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <TestSettings name="Default Test Settings" id="
 "@ + [guid]::NewGuid() + @"
 ">
@@ -1008,34 +1028,46 @@ if ($RunWarewolfServiceTests.IsPresent) {
   </TestSettings>
   <Times creation="
 "@ + $TestStartDateTime + @"
-" queuing="2017-06-26T09:29:42.3983196+02:00" start="
+" queuing="
+"@ + $TestStartDateTime + @"
+" start="
 "@ + $TestStartDateTime + @"
 " finish="
 "@ + (Get-Date -Format o) + @"
 " />
   <ResultSummary outcome="Completed">
     <Counters total="
-"@ + $TestResultNames.Count + @"
+"@ + $WarewolfServiceTestData.Count + @"
 " executed="
-"@ + $TestResultNames.Count + @"
+"@ + $WarewolfServiceTestData.Count + @"
 " passed="
-"@ + $TestResultNames.Count + @"
-" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Passed")}, 'Split')[0].Count + @"
+" error="0" failed="
+"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Failed")}, 'Split')[0].Count + @"
+" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
   </ResultSummary>
   <TestDefinitions>
 "@
-    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
+    foreach ($TestResult in $WarewolfServiceTestData) {
         $TRXFileContents += @"
 
     <UnitTest name="
-"@ + $TestResultNames[$i] + @"
-" storage="runwarewolfservicetests.dll" id="
-"@ + $TestResultGuids[$i] + @"
+"@ + $TestResult.'Test Name' + @"
+" storage="
+"@ + $TestResult.'Test Name' + @"
+.dll" id="
+"@ + $TestResult.ID + @"
 ">
       <Execution id="
-"@ + $TestResultExeGuids[$i] + @"
+"@ + $TestResult.ExecutionID + @"
 " />
-      <TestMethod codeBase="RunWarewolfServiceTests.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="RunWarewolfServiceTests.RunWarewolfServiceTests, RunWarewolfServiceTests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" name="Blank_Input" />
+      <TestMethod codeBase="
+"@ + $TestResult.'Test Name' + @"
+.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="
+"@ + $TestResult.'Test Name' + @"
+, Version=$WarewolfServerVersion, Culture=neutral, PublicKeyToken=null" name="
+"@ + $TestResult.'Test Name' + @"
+" />
     </UnitTest>
 "@
                 }
@@ -1043,18 +1075,19 @@ if ($RunWarewolfServiceTests.IsPresent) {
 
   </TestDefinitions>
   <TestLists>
-    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="Results Not in a List" id="$TestListID" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda"/>
   </TestLists>
   <TestEntries>
 "@
-    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
+    foreach ($TestResult in $WarewolfServiceTestData) {
         $TRXFileContents += @"
 
     <TestEntry testId="
-"@ + $TestResultGuids[$i] + @"
+"@ + $TestResult.ID + @"
 " executionId="
-"@ + $TestResultExeGuids[$i] + @"
-" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+"@ + $TestResult.ExecutionID + @"
+" testListId="$TestListID" />
 "@
     }
     $TRXFileContents += @"
@@ -1062,22 +1095,28 @@ if ($RunWarewolfServiceTests.IsPresent) {
   </TestEntries>
   <Results>
 "@
-    for ($i=0; $i -le $TestResultNames.Count-1; $i++) {
+    foreach ($TestResult in $WarewolfServiceTestData) {
         $TRXFileContents += @"
 
     <UnitTestResult executionId="
-"@ + $TestResultExeGuids[$i] + @"
+"@ + $TestResult.ExecutionID + @"
 " testId="
-"@ + $TestResultGuids[$i] + @"
+"@ + $TestResult.ID + @"
 " testName="
-"@ + $TestResultNames[$i] + @"
-" computerName="ASH" duration="00:00:00.0100462" startTime="2017-06-26T09:29:42.5693118+02:00" endTime="2017-06-26T09:29:42.8302967+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
-"@ + $TestResultOutcomes[$i] + @"
-" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
+"@ + $TestResult.'Test Name' + @"
+" computerName="$ServerPath" duration="
+"@ + $TestResult.Duration + @"
+" startTime="
+"@ + $TestResult.StartTime + @"
+" endTime="
+"@ + $TestResult.EndTime + @"
+" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
+"@ + $TestResult.Result + @"
+" testListId="$TestListID" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
 "@
-	    if ($TestResultOutcomes[$i] -eq "Failed") {
+	    if ($TestResult.Result -eq "Failed") {
             Add-Type -AssemblyName System.Web
-            $TestResultMessage = [System.Web.HttpUtility]::HtmlEncode($TestResultMessages[$i])		    
+            $TestResultMessage = [System.Web.HttpUtility]::HtmlEncode($TestResult.Message)		    
 		    $TRXFileContents += @"
       <Output>
         <ErrorInfo>
@@ -1110,6 +1149,13 @@ if ($Cleanup.IsPresent) {
 		$JobName = "Manual Tests"
 	}
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
+}
+
+if ($RunAllJobs.IsPresent) {
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$UnitTestJobNames' -DisableTimeouts -Parallelize")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ServerTestJobNames' -StartServer -ResourcesType ServerTests")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ReleaseResourcesJobNames' -StartServer -ResourcesType Release")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
