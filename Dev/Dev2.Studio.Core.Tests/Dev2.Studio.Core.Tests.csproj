@@ -235,7 +235,6 @@
     <Compile Include="ConverterTests\DateTimeToStringConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
-    <Compile Include="ConverterTests\IntEnsureMinConverterTests.cs" />
     <Compile Include="ConverterTests\IntInRangeToVisibilityConverterTests.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilderTest.cs" />
     <Compile Include="DataList\InputOutputViewModelEqualityComparerTest.cs" />
@@ -307,7 +306,6 @@
     <Compile Include="Factories\DsfActivityFactoryTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloader.cs" />
     <Compile Include="Helpers\VersionCheckerTests.cs" />
-    <Compile Include="IDataListVerifyPart.cs" />
     <Compile Include="InputOutputViewModelTest.cs" />
     <Compile Include="ShellViewModelPersistenceMock.cs" />
     <Compile Include="MainViewModelTest.cs" />
@@ -335,7 +333,6 @@
     <Compile Include="Utils\TestModelItemFactory.cs" />
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
-    <Compile Include="WindowNavigationBehavior.cs" />
     <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
     <Compile Include="Workflows\WorkflowDesignerViewModelMock.cs" />
