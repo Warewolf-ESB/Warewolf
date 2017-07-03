@@ -11,6 +11,10 @@ Param(
   [switch]$Server,
   [switch]$Studio,
   [switch]$Release,
+<<<<<<< Updated upstream
+=======
+  [switch]$RunWarewolfServiceTests,
+>>>>>>> Stashed changes
   [switch]$RegenerateSpecFlowFeatureFiles
 )
 $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
