@@ -230,8 +230,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACManagerApi", "GACManager
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingDotnetDllCascading", "TestingDotnetDllCascading\TestingDotnetDllCascading.csproj", "{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B92A973-AA53-4E0C-9E2E-13F40A352C80}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev2.Scheduler.Tests\Dev2.Scheduler.Tests.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Tests", "Dev2.Common.Tests\Dev2.Common.Tests.csproj", "{B0564C7A-9DA8-4751-B5D4-D446138E0987}"
@@ -1059,12 +1057,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C6750CCC-03BB-42BF-8EB7-0D9ACB927923} = {2B92A973-AA53-4E0C-9E2E-13F40A352C80}
-		{BD257381-0CA0-49B8-9FC6-BCEAD24022CA} = {2B92A973-AA53-4E0C-9E2E-13F40A352C80}
-		{821BF055-C1EF-4E32-9854-96684CAFB617} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
-		{6A1B0257-1363-43A4-AAF2-4D151081DE6C} = {2B92A973-AA53-4E0C-9E2E-13F40A352C80}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c
