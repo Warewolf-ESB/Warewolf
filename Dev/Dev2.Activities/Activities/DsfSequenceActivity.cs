@@ -204,7 +204,16 @@ namespace Dev2.Activities
                     act.Execute(dataObject, update);
                     if (dataObject.IsServiceTestExecution)
                     {
-                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList(),Guid.Parse(act.UniqueID));
+                        var contentId = Guid.Parse(act.UniqueID);
+                        if (dsfActivity.GetType().Name == "DsfActivity")
+                        {
+                            var newAct = dsfActivity as DsfActivity;
+                            if (newAct != null)
+                            {
+                                contentId = newAct.GetWorkSurfaceMappingId();
+                            }
+                        }
+                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList(), contentId);
                     }
                 }
             }
