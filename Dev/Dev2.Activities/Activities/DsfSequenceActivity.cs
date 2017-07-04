@@ -194,6 +194,13 @@ namespace Dev2.Activities
             {
                 DispatchDebugState(dataObject, StateType.After, update);
             }
+            if (dataObject.IsServiceTestExecution)
+            {
+                if (_originalUniqueID == Guid.Empty)
+                {
+                    _originalUniqueID = Guid.Parse(UniqueID);
+                }
+            }
             var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
             var serviceTestSteps = serviceTestStep?.Children;
             foreach (var dsfActivity in Activities)
@@ -204,7 +211,16 @@ namespace Dev2.Activities
                     act.Execute(dataObject, update);
                     if (dataObject.IsServiceTestExecution)
                     {
-                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList(),Guid.Parse(act.UniqueID));
+                        var contentId = Guid.Parse(act.UniqueID);
+                        if (dsfActivity.GetType().Name == "DsfActivity")
+                        {
+                            var newAct = dsfActivity as DsfActivity;
+                            if (newAct != null)
+                            {
+                                contentId = newAct.GetWorkSurfaceMappingId();
+                            }
+                        }
+                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList(), contentId);
                     }
                 }
             }

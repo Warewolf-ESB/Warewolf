@@ -156,7 +156,16 @@ namespace Dev2.Activities
                 var states = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
                 if (states != null)
                 {
-                    states = states.Where(state => state.ID == stepToBeAsserted.UniqueId).ToList();
+                    states = states.Where(state =>
+                    {
+                        var idToUse = state.ID;
+                        if (state?.ActualType == "DsfActivity")
+                        {
+                            idToUse = state.WorkSurfaceMappingId;
+                        }
+                        return idToUse == stepToBeAsserted.UniqueId;
+                    }
+                    ).ToList();
                     var debugState = states.LastOrDefault();
                     UpdateDebugStateWithAssertion(dataObject, stepToBeAsserted, debugState);
                 }
