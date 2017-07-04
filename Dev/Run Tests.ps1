@@ -744,6 +744,22 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	        exit 1
         }
 
+        # Setup for remote execution
+        $ControllerNameTag = ""
+        $RemoteExecutionAttribute = ""
+        $AgentRoleTags = ""
+        if ($Parallelize.IsPresent) {
+            $ControllerNameTag = "`n<RemoteController name=`"rsaklfsvrdev:6901`" />"
+            $RemoteExecutionAttribute = " location=`"Remote`""
+            if ($RecordScreen.IsPresent) {
+                $AgentRoleTags = @"
+      <SelectionCriteria>
+        <AgentProperty name="UI" value="" />
+      </SelectionCriteria>
+"@
+            }
+        }
+
         # Create test settings.
         $TestSettingsFile = ""
         if ($RecordScreen.IsPresent) {
@@ -752,22 +768,22 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"
+  id="
 "@ + [guid]::NewGuid() + @"
-`"
-  name=`"$JobName`"
-  enableDefaultDataCollectors=`"false`"
-  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+"
+  name="$JobName"
+  enableDefaultDataCollectors="false"
+  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
-  <Deployment enabled=`"false`" />
-  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />
-  <Execution>
-    <Timeouts testTimeout=`"600000`" />
-    <AgentRule name=`"LocalMachineDefaultRole`">
+  <Deployment enabled="false" />
+  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />$ControllerNameTag
+  <Execution$ExecutionRemoteAttribute>
+    <Timeouts testTimeout="600000" />
+    <AgentRule name="LocalMachineDefaultRole">$AgentRoleTags
       <DataCollectors>
-        <DataCollector uri=`"datacollector://microsoft/VideoRecorder/1.0`" assemblyQualifiedName=`"Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`" friendlyName=`"Screen and Voice Recorder`">
+        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
           <Configuration>
-            <MediaRecorder sendRecordedMediaForPassedTestCase=`"false`" xmlns="" />
+            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
           </Configuration>
         </DataCollector>
       </DataCollectors>
@@ -782,16 +798,16 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"
+  id="
 "@ + [guid]::NewGuid() + @"
-`"
-  name=`"$JobName`"
-  enableDefaultDataCollectors=`"false`"
-  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+"
+  name="$JobName"
+  enableDefaultDataCollectors="false"
+  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout.</Description>
-  <Deployment enabled=`"false`" />
-  <Execution>
-    <Timeouts testTimeout=`"180000`" />
+  <Deployment enabled="false" />$ControllerNameTag
+  <Execution$RemoteExecutionAttribute>
+    <Timeouts testTimeout="180000" />
   </Execution>
 </TestSettings>
 "@)
@@ -812,7 +828,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
             if ($Parallelize.IsPresent) {
-                Write-Host You have selected the `'Parallelize`' switch. FYI This script only supports running whole test assemblies in parallel and not each test in parallel. Only works with VSTest.
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
