@@ -422,6 +422,9 @@
     <None Include="Explorer\ExplorerUIMap.uitest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="remote.testsettings">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest">
       <SubType>Designer</SubType>
