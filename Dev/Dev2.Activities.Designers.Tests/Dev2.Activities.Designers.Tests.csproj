@@ -132,6 +132,7 @@
     <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />
     <Compile Include="Core\DropboxSourceManagerTests.cs" />
+    <Compile Include="Core\GenerateInputsRegionTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\ScriptChooserTests.cs" />
     <Compile Include="Core\ServiceInputNameComparerTests.cs" />
