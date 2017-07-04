@@ -132,7 +132,7 @@ namespace Warewolf.Studio.ViewModels
             if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch") return;
             foreach (var testOutput in value.OfType<ServiceTestOutput>())
             {
-                testOutput.AssertOps = new ObservableCollection<string> {"="};
+                testOutput.AssertOps = new ObservableCollection<string> { "=" };
                 testOutput.CanEditVariable = false;
             }
         }
@@ -182,7 +182,7 @@ namespace Warewolf.Studio.ViewModels
                     UpdateTestPending();
                 }
 
-                OnPropertyChanged(()=> Result);
+                OnPropertyChanged(() => Result);
             }
         }
 
@@ -229,7 +229,7 @@ namespace Warewolf.Studio.ViewModels
                     TestFailing = false;
                     TestInvalid = false;
                 }
-                OnPropertyChanged(()=> TestPassed);
+                OnPropertyChanged(() => TestPassed);
             }
         }
 
@@ -368,7 +368,12 @@ namespace Warewolf.Studio.ViewModels
                         intIndex++;
                         var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
                         var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
-                        if (StepOutputs.FirstOrDefault(output=>output.Variable.Equals(indexedName,StringComparison.InvariantCultureIgnoreCase))==null)
+                        var lastInput = StepOutputs.Last();
+                        if (string.IsNullOrEmpty(lastInput.Variable))
+                        {
+                            lastInput.Variable = indexedName;
+                        }
+                        else
                         {
                             var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
                             StepOutputs?.Add(serviceTestOutput);
@@ -387,6 +392,14 @@ namespace Warewolf.Studio.ViewModels
                                 testOutput.Variable = varName;
                             }
                         }
+                        else
+                        {
+                            var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
+                            {
+                                AddNewAction = () => AddNewOutput(varName)
+                            };
+                            StepOutputs?.Add(serviceTestOutput);
+                        }
                     }
                     else
                     {
@@ -397,6 +410,14 @@ namespace Warewolf.Studio.ViewModels
                         StepOutputs?.Add(serviceTestOutput);
                     }
                 }
+            }
+            else
+            {
+                var serviceTestOutput = new ServiceTestOutput("", "", "", "")
+                {
+                    AddNewAction = () => AddNewOutput("")
+                };
+                StepOutputs?.Add(serviceTestOutput);
             }
         }
     }
