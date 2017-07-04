@@ -21,7 +21,6 @@ namespace Dev2.Activities.Designers2.Core
             IsEnabled = true;
         }
 
-        #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
@@ -51,10 +50,6 @@ namespace Dev2.Activities.Designers2.Core
             set;
         }
 
-        #endregion
-
-        #region Implementation of IGenerateInputArea
-
         public ICollection<IServiceInput> Inputs
         {
             get
@@ -70,10 +65,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        #endregion
-
-        #region Implementation of INotifyPropertyChanged
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -82,6 +74,5 @@ namespace Dev2.Activities.Designers2.Core
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #endregion
     }
 }
