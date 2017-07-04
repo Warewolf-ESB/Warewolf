@@ -700,6 +700,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             return _workflowLink;
         }
 
+        public string GetWorkflowInputs(string field)
+        {
+            var value = string.Empty;
+            var workflowInputDataViewModel = _workflowInputDataViewModel as WorkflowInputDataViewModel;
+            var inputsValue = workflowInputDataViewModel?.WorkflowInputs?.FirstOrDefault(o => o.Field == field);
+            value = inputsValue?.Value;
+            
+            return value;
+        }
+
         public string DisplayWorkflowLink
         {
             get
