@@ -747,15 +747,29 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         # Setup for remote execution
         $ControllerNameTag = ""
         $RemoteExecutionAttribute = ""
-        $AgentRoleTags = ""
+        $AgentRoleTags = "LocalMachineDefaultRole"
+        $AgentRuleNameValue = ""
+        $TestTypeSpecificTags = ""
         if ($Parallelize.IsPresent) {
-            $ControllerNameTag = "`n<RemoteController name=`"rsaklfsvrdev:6901`" />"
+            $ControllerNameTag = "`n  <RemoteController name=`"rsaklfsvrdev:6901`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
+            $AgentRuleNameValue = "Remote"
             if ($RecordScreen.IsPresent) {
                 $AgentRoleTags = @"
+
       <SelectionCriteria>
         <AgentProperty name="UI" value="" />
       </SelectionCriteria>
+"@
+                $TestTypeSpecificTags = @"
+
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
 "@
             }
         }
@@ -772,14 +786,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@ + [guid]::NewGuid() + @"
 "
   name="$JobName"
-  enableDefaultDataCollectors="false"
   xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
   <Deployment enabled="false" />
   <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />$ControllerNameTag
-  <Execution$ExecutionRemoteAttribute>
-    <Timeouts testTimeout="600000" />
-    <AgentRule name="LocalMachineDefaultRole">$AgentRoleTags
+  <Execution$RemoteExecutionAttribute>
+    <Timeouts testTimeout="600000" />$TestTypeSpecificTags
+    <AgentRule name="$AgentRuleNameValue">$AgentRoleTags
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
           <Configuration>
@@ -827,7 +840,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
-            if ($Parallelize.IsPresent) {
+            if ($Parallelize.IsPresent -and !$RecordScreen.IsPresent) {
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
