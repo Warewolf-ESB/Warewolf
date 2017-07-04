@@ -361,46 +361,66 @@ namespace Warewolf.Studio.ViewModels
         {
             if (DataListUtil.IsValueRecordset(varName))
             {
-                if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
+                AddNewRecordsetOutput(varName);
+            }
+            else
+            {
+                var lastRow = StepOutputs.LastOrDefault();
+                if (lastRow != null)
                 {
-                    var extractedIndex = DataListUtil.ExtractIndexRegionFromRecordset(varName);
-                    int intIndex;
-                    if (int.TryParse(extractedIndex, out intIndex))
+                    if (!string.IsNullOrEmpty(lastRow.Variable.Trim()))
                     {
-                        intIndex++;
-                        var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
-                        var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
-                        var lastInput = StepOutputs.Last();
-                        if (string.IsNullOrEmpty(lastInput.Variable))
+                        var serviceTestOutput = new ServiceTestOutput("", "", "", "")
+                        {
+                            AddNewAction = () => AddNewOutput("")
+                        };
+                        StepOutputs?.Add(serviceTestOutput);
+                    }
+                }
+            }
+        }
+
+        private void AddNewRecordsetOutput(string varName)
+        {
+            if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
+            {
+                var extractedIndex = DataListUtil.ExtractIndexRegionFromRecordset(varName);
+                int intIndex;
+                if (int.TryParse(extractedIndex, out intIndex))
+                {
+                    intIndex++;
+                    var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
+                    var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
+                    var lastInput = StepOutputs.LastOrDefault();
+                    if (lastInput != null)
+                    {
+                        if (string.IsNullOrEmpty(lastInput.Variable.Trim()))
                         {
                             lastInput.Variable = indexedName;
                         }
                         else
                         {
-                            var serviceTestOutput = new ServiceTestOutput("", "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
+                            var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
                             StepOutputs?.Add(serviceTestOutput);
                         }
                     }
-                }
-                else
-                {
-                    if (StepOutputs != null && StepOutputs.Count >= 1)
+                    else
                     {
-                        var testOutput = StepOutputs.Last();
-                        if (string.IsNullOrWhiteSpace(testOutput?.Variable) && string.IsNullOrWhiteSpace(testOutput?.Value))
+                        var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
+                        StepOutputs?.Add(serviceTestOutput);
+                    }
+                }
+            }
+            else
+            {
+                if (StepOutputs != null && StepOutputs.Count >= 1)
+                {
+                    var testOutput = StepOutputs.LastOrDefault();
+                    if (string.IsNullOrWhiteSpace(testOutput?.Variable) && string.IsNullOrWhiteSpace(testOutput?.Value))
+                    {
+                        if (testOutput != null)
                         {
-                            if (testOutput != null)
-                            {
-                                testOutput.Variable = varName;
-                            }
-                        }
-                        else
-                        {
-                            var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
-                            {
-                                AddNewAction = () => AddNewOutput(varName)
-                            };
-                            StepOutputs?.Add(serviceTestOutput);
+                            testOutput.Variable = varName;
                         }
                     }
                     else
@@ -412,14 +432,14 @@ namespace Warewolf.Studio.ViewModels
                         StepOutputs?.Add(serviceTestOutput);
                     }
                 }
-            }
-            else
-            {
-                var serviceTestOutput = new ServiceTestOutput("", "", "", "")
+                else
                 {
-                    AddNewAction = () => AddNewOutput("")
-                };
-                StepOutputs?.Add(serviceTestOutput);
+                    var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
+                    {
+                        AddNewAction = () => AddNewOutput(varName)
+                    };
+                    StepOutputs?.Add(serviceTestOutput);
+                }
             }
         }
     }
