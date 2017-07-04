@@ -80,6 +80,7 @@
       <DependentUpon>DBSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="WorkflowServiceTesting\ComDllTestingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\WorkflowContainingGridedToolsTests.cs" />
     <Compile Include="WorkflowTab\DebugOutput\DebugOutputWindowTests.cs" />
     <Compile Include="DependencyGraph\DependencyGraphUIMap.cs">
       <DependentUpon>DependencyGraphUIMap.uitest</DependentUpon>
@@ -341,7 +342,7 @@
     <Compile Include="WorkflowServiceTesting\WorkflowServiceTestingUIMap.Designer.cs">
       <DependentUpon>WorkflowServiceTestingUIMap.uitest</DependentUpon>
     </Compile>
-    <Compile Include="WorkflowServiceTesting\WorkflowTestingTests.cs" />
+    <Compile Include="WorkflowServiceTesting\WorkflowServiceTestingTests.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="WorkflowTab\Tools\Control Flow\Sequence.cs" />
@@ -389,11 +390,7 @@
     <Compile Include="WorkflowTab\Tools\Data\Assign.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TestScripts\**\*.*">
-      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -474,26 +471,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Properties\DefaultWorkspaceLayout.xml" />
-    <Content Include="AssertActionTemplates.txt" />
   </ItemGroup>
-  <Choose>
-    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
-      <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-          <Private>False</Private>
-        </Reference>
-      </ItemGroup>
-    </When>
-  </Choose>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' Or '$(VisualStudioVersion)' == '11.0') And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

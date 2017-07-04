@@ -25,8 +25,11 @@ Param(
   [string]$Category,
   [string]$ProjectName,
   [string]$TestList,
-  [string]$ServerUsername,
-  [string]$ServerPassword
+  [switch]$RunAllUnitTests,
+  [switch]$RunAllServerTests,
+  [switch]$RunAllReleaseResourcesTests,
+  [switch]$RunAllCodedUITests,
+  [switch]$RunWarewolfServiceTests
 )
 $JobSpecs = @{}
 #CI
@@ -84,14 +87,32 @@ $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UITests", "(TestCategory=Web So
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UITests", "(TestCategory=Workflow Mocking Tests)"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UITests", "(TestCategory=Workflow Testing)"
 #Security
-$JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.SecuritySpecs", "ConflictingContributeViewExecutePermissionsSecurity"
-$JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.SecuritySpecs", "ConflictingExecutePermissionsSecurity"
-$JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewolf.SecuritySpecs", "ConflictingViewExecutePermissionsSecurity"
-$JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.SecuritySpecs", "ConflictingViewPermissionsSecurity"
-$JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.SecuritySpecs", "NoConflictingPermissionsSecurity"
-$JobSpecs["OverlappingUserGroupsPermissions Security Specs"]					= "Warewolf.SecuritySpecs", "OverlappingUserGroupsPermissionsSecurity"
-$JobSpecs["ResourcePermissions Security Specs"]								    = "Warewolf.SecuritySpecs", "ResourcePermissionsSecurity"
-$JobSpecs["ServerPermissions Security Specs"]									= "Warewolf.SecuritySpecs", "ServerPermissionsSecurity"
+$JobSpecs["Conflicting Contribute View And Execute Permissions Security Specs"] = "Warewolf.SecuritySpecs", "(TestCategory=ConflictingContributeViewExecutePermissionsSecurity)"
+$JobSpecs["Conflicting Execute Permissions Security Specs"]					    = "Warewolf.SecuritySpecs", "(TestCategory=ConflictingExecutePermissionsSecurity)"
+$JobSpecs["Conflicting View And Execute Permissions Security Specs"]			= "Warewolf.SecuritySpecs", "(TestCategory=ConflictingViewExecutePermissionsSecurity)"
+$JobSpecs["Conflicting View Permissions Security Specs"]						= "Warewolf.SecuritySpecs", "(TestCategory=ConflictingViewPermissionsSecurity)"
+$JobSpecs["No Conflicting Permissions Security Specs"]							= "Warewolf.SecuritySpecs", "(TestCategory=NoConflictingPermissionsSecurity)"
+$JobSpecs["Overlapping User Groups Permissions Security Specs"]					= "Warewolf.SecuritySpecs", "(TestCategory=OverlappingUserGroupsPermissionsSecurity)"
+$JobSpecs["Resource Permissions Security Specs"]								= "Warewolf.SecuritySpecs", "(TestCategory=ResourcePermissionsSecurity)"
+$JobSpecs["Server Permissions Security Specs"]									= "Warewolf.SecuritySpecs", "(TestCategory=ServerPermissionsSecurity)"
+
+$UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,Tools Specs,UI Binding Tests"
+$ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests"
+$ReleaseResourcesJobNames = "Example Workflow Execution Specs,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs"
+$UITestJobNames = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
+
+if ($RunAllUnitTests.IsPresent) {
+    $JobName = $UnitTestJobNames
+}
+if ($RunAllServerTests.IsPresent) {
+    $JobName = $ServerTestJobNames
+}
+if ($RunAllReleaseResourcesTests.IsPresent) {
+    $JobName = $ReleaseResourcesJobNames
+}
+if ($RunAllCodedUITests.IsPresent) {
+    $JobName = $UITestJobNames
+}
 
 $ServerExeName = "Warewolf Server.exe"
 $ServerPathSpecs = @()
@@ -115,7 +136,17 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
-$ApplyDotCover = $DotCover.IsPresent
+if ($JobName.Contains(" DotCover")) {
+    $ApplyDotCover = $true
+    $JobName = $JobName.Replace(" DotCover", "")
+} else {
+    $ApplyDotCover = $DotCover.IsPresent
+}
+
+
+If (!(Test-Path "$TestsResultsPath")) {
+    New-Item "$TestsResultsPath" -ItemType Directory
+}
 
 function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7) {
 	$NumberOfParentsSearched = -1
@@ -329,45 +360,44 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-        &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$PSScriptRoot\$JobName DotCover.dcvr`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
+		$MergedSnapshot = "$PSScriptRoot\$JobName DotCover.dcvr"
+		Copy-On-Write "$MergedSnapshot"
+        &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$MergedSnapshot`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
+    }
+    if ($RecordScreen.IsPresent) {
+        Move-ScreenRecordings-To-TestResults
+    }
+    if (Test-Path "$TestResultsPath\..\*.bat") {
+        foreach ($testRunner in (Get-ChildItem "$TestResultsPath\..\*.bat")) {
+	        Move-File-To-TestResults $testRunner.FullName $testRunner.Name
+        }
     }
 }
 
 function Move-ScreenRecordings-To-TestResults {
-    [string]$TestsResultsPath = "$TestsResultsPath"
     Write-Host Getting UI test screen recordings from `"$TestsResultsPath`"
-
-    $screenRecordingsFolder = "$TestsResultsPath\ScreenRecordings"
-    New-Item $screenRecordingsFolder -Force -ItemType Directory
-    if (Test-Path $TestsResultsPath\UI\In\*) {
-        Copy-Item $TestsResultsPath\UI\In\* $screenRecordingsFolder -Recurse -Force
-        $pngFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
-        foreach ($file in $pngFiles)
-        {
-	        if (-not $file.name.Contains($file.Directory.Name))
-	        {
-		        Rename-Item -Path $file.FullName -NewName ( $file.Directory.Name + " " + $file.name )
-	        }
-        }
-        $trmxFiles = Get-ChildItem -Path "$screenRecordingsFolder" -Filter *.png -Recurse
-        foreach ($file in $trmxFiles)
-        {
-            $newRecordingFileName = $file.name -replace ".png",".wmv"
-            Rename-Item -Path ($file.DirectoryName + "\ScreenCapture.wmv") -NewName $newRecordingFileName
-        }
-        $files = Get-ChildItem -Path "$screenRecordingsFolder" -Include *.png, *.wmv -Recurse | where {$_.PSIScontainer -eq $false}
-        foreach ($file in $files)
-	    {
-		    $destinationFolder = (Get-Item $file).Directory.parent.parent.FullName
-		    Move-Item $file.FullName $destinationFolder
-        }
-        Remove-Item -Recurse -Force $screenRecordingsFolder\* -Exclude "*.png","*.wmv"
+    $ScreenRecordingsFolder = "$TestsResultsPath\ScreenRecordings"
+    if (Test-Path $ScreenRecordingsFolder\In) {
+        Move-Item $ScreenRecordingsFolder\In\* $ScreenRecordingsFolder -Force
+        Remove-Item $ScreenRecordingsFolder\In
     } else {
-        Write-Host $TestsResultsPath\UI\In\* not found.
+        Write-Host $ScreenRecordingsFolder\In not found.
     }
 }
 
-function Install-Server {
+function Install-Server([string]$ServerPath,[string]$ResourcesType) {
+    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        $ServerPath = FindFile-InParent $ServerPathSpecs
+        if ($ServerPath.EndsWith(".zip")) {
+			Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
+			$ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
+		}
+        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
+            sleep 30
+            exit 1
+        }
+    }
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
 	    $message = "What type of resources would you like to install the server with?"
@@ -393,57 +423,46 @@ function Install-Server {
 		    }
     }
 
-    if ($ServerPath -eq "") {
-        $ServerPath = FindFile-InParent $ServerPathSpecs
-        if ($ServerPath.EndsWith(".zip")) {
-			    Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
-			    $ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
-		    }
-        if ($ServerPath -eq "") {
-            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
-            sleep 30
-            exit 1
-        }
-    }
-
     $ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
     if (!$ApplyDotCover) {
         if ($ServerService -eq $null) {
             New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
         } else {    
 		    Write-Host Configuring service to $ServerPath
-		    sc.exe config "Warewolf Server" binPath= "$ServerPath"
+		    $ServiceOuput = sc.exe config "Warewolf Server" binPath= "$ServerPath"
         }
     } else {
         $ServerBinDir = (Get-Item $ServerPath).Directory.FullName 
         $RunnerXML = @"
 <AnalyseParams>
-<TargetExecutable>$ServerPath</TargetExecutable>
-<TargetArguments></TargetArguments>
-<Output>$env:ProgramData\Warewolf\Server Log\dotCover.dcvr</Output>
-<Scope>
-	<ScopeEntry>$ServerBinDir\**\*.dll</ScopeEntry>
-	<ScopeEntry>$ServerBinDir\**\*.exe</ScopeEntry>
-</Scope>
+    <TargetExecutable>$ServerPath</TargetExecutable>
+    <Output>$env:ProgramData\Warewolf\Server Log\dotCover.dcvr</Output>
+    <Scope>
+	    <ScopeEntry>$ServerBinDir\**\*.dll</ScopeEntry>
+	    <ScopeEntry>$ServerBinDir\**\*.exe</ScopeEntry>
+    </Scope>
 </AnalyseParams>
 "@
 
-        $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
+        if ($JobName -eq "") {
+            $JobName = "Manual Tests"
+        }
+        $DotCoverRunnerXMLPath = "$TestsResultsPath\Server DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
-        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"" + $ServerBinDir + "\$JobName DotCover Runner.xml\`" /LogFile=\`"$env:ProgramData\Warewolf\Server Log\dotCover.log\`""
+        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"$DotCoverRunnerXMLPath\`" /LogFile=\`"$TestsResultsPath\ServerDotCover.log\`""
         if ($ServerService -eq $null) {
             New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
 	    } else {
 		    Write-Host Configuring service to $BinPathWithDotCover
-		    sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
+		    $ServiceOuput = sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
 	    }
     }
     if ($ServerUsername -ne "" -and $ServerPassword -eq "") {
-        sc.exe config "Warewolf Server" obj= "$ServerUsername"
+        $ServiceOuput = sc.exe config "Warewolf Server" obj= "$ServerUsername"
     }
     if ($ServerUsername -ne "" -and $ServerPassword -ne "") {
-        sc.exe config "Warewolf Server" obj= "$ServerUsername" password= "$ServerPassword"
+        $ServiceOuput = sc.exe config "Warewolf Server" obj= "$ServerUsername" password= "$ServerPassword"
     }
 
     $ResourcePathSpecs = @()
@@ -456,13 +475,26 @@ function Install-Server {
     if ($ResourcesPath -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
         Copy-Item -Path "$ResourcesDirectory" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
     }
+    $ServerPath,$ResourcesType
+}
 
+function Start-Server([string]$ServerPath,[string]$ResourcesType) {
+    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        $ServerPath = FindFile-InParent $ServerPathSpecs
+        if ($ServerPath.EndsWith(".zip")) {
+			Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
+			$ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
+		}
+        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
+            sleep 30
+            exit 1
+        }
+    }
     Write-Host Cleaning up old resources in Warewolf ProgramData and copying in new resources from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*").
     Cleanup-ServerStudio 10 1
     Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
-}
-
-function Start-Server {
+	
     Start-Service "Warewolf Server"
     Write-Host Server has started.
 
@@ -475,10 +507,17 @@ function Start-Server {
 }
 
 function Start-Studio {
-    $StudioPath = FindFile-InParent $StudioPathSpecs
-    if ($StudioPath.EndsWith(".zip")) {
-	    Expand-Archive "$StudioPath" "$PSScriptRoot\Studio" -Force
-	    $StudioPath = "$PSScriptRoot\Studio\" + $StudioExeName
+    if ($StudioPath -eq "" -or !(Test-Path $StudioPath)) {
+        $StudioPath = FindFile-InParent $StudioPathSpecs
+        if ($StudioPath.EndsWith(".zip")) {
+	        Expand-Archive "$StudioPath" "$PSScriptRoot\Studio" -Force
+	        $StudioPath = "$PSScriptRoot\Studio\" + $StudioExeName
+        }
+        if ($ServerPath -eq "" -or !(Test-Path $StudioPath)) {
+            Write-Host Studio path not found: $StudioPath
+            sleep 30
+            exit 1
+        }
     }
 	if ($StudioPath -eq "") {
 		Write-Host Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath
@@ -493,23 +532,21 @@ function Start-Studio {
         $StudioBinDir = (Get-Item $StudioPath).Directory.FullName 
         $RunnerXML = @"
 <AnalyseParams>
-<TargetExecutable>$StudioPath</TargetExecutable>
-<TargetArguments></TargetArguments>
-<LogFile>$env:LocalAppData\Warewolf\Studio Logs\dotCover.log</LogFile>
-<Output>$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr</Output>
-<Scope>
-	<ScopeEntry>$StudioBinDir\**\*.dll</ScopeEntry>
-	<ScopeEntry>$StudioBinDir\**\*.exe</ScopeEntry>
-</Scope>
+    <TargetExecutable>$StudioPath</TargetExecutable>
+    <Output>$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr</Output>
+    <Scope>
+    	<ScopeEntry>$StudioBinDir\**\*.dll</ScopeEntry>
+    	<ScopeEntry>$StudioBinDir\**\*.exe</ScopeEntry>
+    </Scope>
 </AnalyseParams>
 "@
-        $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
+        $DotCoverRunnerXMLPath = "$TestsResultsPath\Studio DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
-		Start-Process $DotCoverPath "cover `"$StudioBinDir\$JobName DotCover Runner.xml`" /LogFile=`"$env:LocalAppData\Warewolf\Studio Logs\dotCover.log`""
+		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
     while (!(Test-Path $StudioLogFile)){
-        Write-Warning 'Waiting for Studio to start...'
+        Write-Warning "Waiting for Studio to start..."
         Sleep 3
     }
 	Write-Host Studio has started.
@@ -528,28 +565,55 @@ function AssemblyIsNotAlreadyDefinedWithoutWildcards([string]$AssemblyNameToChec
     !$JobAssemblySpecs.Contains($AssemblyNameToCheck)
 }
 
-if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-    if ($ServerPath -ne "" -and !(Test-Path $ServerPath)) {
-        Write-Host Server path not found: $ServerPath
-        sleep 30
-        exit 1
+function Resolve-Project-Folder-Specs([string]$ProjectFolderSpec) {
+    $TestAssembliesList = ""
+    $ProjectFolderSpecInParent = FindFile-InParent $ProjectFolderSpec
+    if ($ProjectFolderSpecInParent -ne "") {
+        if ($ProjectFolderSpecInParent.Contains("*")) {
+            foreach ($projectFolder in Get-ChildItem $ProjectFolderSpecInParent -Directory) {
+                if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		            $TestAssembliesList += " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                } else {
+		            $TestAssembliesList += " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
+                }
+                if (!$TestAssembliesDirectories.Contains($projectFolder.FullName + "\bin\Debug")) {
+                    $TestAssembliesDirectories += $projectFolder.FullName + "\bin\Debug"
+                }
+            }
+        } else {
+            if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
+		        $TestAssembliesList += " `"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
+            } else {
+		        $TestAssembliesList += " /testcontainer:`"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
+            }
+            if (!$TestAssembliesDirectories.Contains($ProjectFolderSpecInParent + "\bin\Debug")) {
+                $TestAssembliesDirectories += $ProjectFolderSpecInParent + "\bin\Debug"
+            }
+        }
+        $TestAssembliesList,$TestAssembliesDirectories
     }
-    if ($StudioPath -ne "" -and !(Test-Path $StudioPath)) {
-        Write-Host Studio path not found: $StudioPath
-        sleep 30
-        exit 1
-    }
-    if ($ApplyDotCover -and $DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
-        Write-Host DotCover path not found: $DotCoverPath
-        sleep 30
-        exit 1
-    }
-    Install-Server
 }
 
-if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
-    Remove-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx"
-    Write-Host Removed loose TRX files from VS install directory.
+function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
+    $TestAssembliesList = ""
+    $TestAssembliesDirectories = @()
+    $TestAssembliesFileSpecsInParent = FindFile-InParent $TestAssemblyFileSpecs
+    if ($TestAssembliesFileSpecsInParent -ne "") {
+        foreach ($file in Get-ChildItem $TestAssembliesFileSpecsInParent) {
+            $AssemblyNameToCheck = $file.Name.replace($file.extension, "")
+            if (!$TestAssembliesFileSpecsInParent.Contains("*") -or (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck)) {
+                if (!$MSTest.IsPresent) {
+		            $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
+                } else {
+		            $TestAssembliesList += " /testcontainer:`"" + $file.FullName + "`""
+                }
+                if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
+                    $TestAssembliesDirectories += $file.Directory.FullName
+                }
+	        }
+        }
+        $TestAssembliesList,$TestAssembliesDirectories
+    }
 }
 
 #Unpack jobs
@@ -559,10 +623,6 @@ $JobCategories = @()
 if ($JobName -ne $null -and $JobName -ne "") {
     foreach ($Job in $JobName.Split(",")) {
         $Job = $Job.TrimEnd("1234567890 ")
-        if ($Job.EndsWith(" DotCover")) {
-            $ApplyDotCover = $true
-            $Job = $Job.TrimEnd(" DotCover")
-        }
         if ($JobSpecs.ContainsKey($Job)) {
             $JobNames += $Job
             if ($JobSpecs[$Job].Count -eq 1) {
@@ -576,19 +636,6 @@ if ($JobName -ne $null -and $JobName -ne "") {
             Write-Warning "Unrecognized Job $Job was ignored from the run"
         }
     }
-} else {
-    if ($RunAllJobs.IsPresent) {
-        $JobSpecs.Keys.ForEach({
-            $JobNames += $_
-            if ($JobSpecs[$_].Count -eq 1) {
-                $JobAssemblySpecs += $JobSpecs[$_]
-                $JobCategories += ""
-            } else {
-                $JobAssemblySpecs += $JobSpecs[$_][0]
-                $JobCategories += $JobSpecs[$_][1]
-            }
-        })
-    }
 }
 if ($ProjectName -ne $null -and $ProjectName -ne "") {
     $JobNames += "Manual Tests"
@@ -601,46 +648,54 @@ if ($ProjectName -ne $null -and $ProjectName -ne "") {
 }
 $TotalNumberOfJobsToRun = $JobNames.length
 if ($TotalNumberOfJobsToRun -gt 0) {
-    If (!(Test-Path "$TestsResultsPath")) {
-        New-Item "$TestsResultsPath" -ItemType Directory
-    }
     if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
         Write-Host Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files.
         sleep 30
         exit 1
     }
-    if ($ApplyDotCover -and !(Test-Path $DotCoverPath)) {
+
+    if ($ApplyDotCover -and $DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
         Write-Host Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file.
         sleep 30
         exit 1
     }
 
+    if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
+        Remove-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx"
+        Write-Host Removed loose TRX files from VS install directory.
+    }
+
+    if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+        $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+    }
+
     if (!$MSTest.IsPresent) {
         # Read playlists and args.
-        $TestList = ""
-        if ($Args.Count -gt 0) {
-            $TestList = $Args.ForEach({ "," + $_ })
-        } else {
-            Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
-            Foreach-Object{
-	            [xml]$playlistContent = Get-Content $_.FullName
-	            if ($playlistContent.Playlist.Add.count -gt 0) {
-	                foreach( $TestName in $playlistContent.Playlist.Add) {
-		                $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
-	                }
-	            } else {        
-                    if ($playlistContent.Playlist.Add.Test -ne $null) {
-                        $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
-                    } else {
-	                    Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
+        if ($TestList = "") {
+            if ($Args.Count -gt 0) {
+                $TestList = $Args.ForEach({ "," + $_ })
+            } else {
+                Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
+                Foreach-Object{
+	                [xml]$playlistContent = Get-Content $_.FullName
+	                if ($playlistContent.Playlist.Add.count -gt 0) {
+	                    foreach( $TestName in $playlistContent.Playlist.Add) {
+		                    $TestList += "," + $TestName.Test.SubString($TestName.Test.LastIndexOf(".") + 1)
+	                    }
+	                } else {        
+                        if ($playlistContent.Playlist.Add.Test -ne $null) {
+                            $TestList = " /Tests:" + $playlistContent.Playlist.Add.Test.SubString($playlistContent.Playlist.Add.Test.LastIndexOf(".") + 1)
+                        } else {
+	                        Write-Host Error parsing Playlist.Add from playlist file at $_.FullName
+                        }
                     }
                 }
             }
+            if ($TestList.StartsWith(",")) {
+	            $TestList = $TestList -replace "^.", " /Tests:"
+            }
         }
-        if ($TestList.StartsWith(",")) {
-	        $TestList = $TestList -replace "^.", " /Tests:"
-        }
-    } else {        
+    } else {
         if ($TestList = "") {
             Get-ChildItem "$PSScriptRoot" -Filter *.playlist | `
             Foreach-Object{
@@ -669,52 +724,22 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         foreach ($Project in $ProjectSpec.Split(",")) {
             $TestAssembliesFileSpecs = @()
             $TestAssembliesFileSpecs += $TestsPath + $Project + ".dll"
-            $TestAssembliesFileSpecsInParent = FindFile-InParent $TestAssembliesFileSpecs
-            if ($TestAssembliesFileSpecsInParent -ne "") {
-                foreach ($file in Get-ChildItem $TestAssembliesFileSpecsInParent) {
-                    $AssemblyNameToCheck = $file.Name.replace($file.extension, "")
-                    if (!$TestAssembliesFileSpecsInParent.Contains("*") -or (AssemblyIsNotAlreadyDefinedWithoutWildcards $AssemblyNameToCheck)) {
-                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                    $TestAssembliesList = $TestAssembliesList + " `"" + $file.FullName + "`""
-                        } else {
-		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $file.FullName + "`""
-                        }
-                        if (!$TestAssembliesDirectories.Contains($file.Directory.FullName)) {
-                            $TestAssembliesDirectories += $file.Directory.FullName
-                        }
-	                }
-                }
+            $UnPackTestAssembliesList,$UnPackTestAssembliesDirectories = Resolve-Test-Assembly-File-Specs $TestAssembliesFileSpecs
+            $TestAssembliesList += $UnPackTestAssembliesList
+            if ($UnPackTestAssembliesDirectories.Count -gt 0) {
+                $TestAssembliesDirectories += $UnPackTestAssembliesDirectories
             }
             if ($TestAssembliesList -eq "") {
                 $ProjectFolderSpec = @()
                 $ProjectFolderSpec += $TestsPath + $Project
-                $ProjectFolderSpecInParent = FindFile-InParent $ProjectFolderSpec
-                if ($ProjectFolderSpecInParent -ne "") {
-                    if ($ProjectFolderSpecInParent.Contains("*")) {
-                        foreach ($projectFolder in Get-ChildItem $ProjectFolderSpecInParent -Directory) {
-                            if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                        $TestAssembliesList = $TestAssembliesList + " `"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
-                            } else {
-		                        $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $projectFolder.FullName + "\bin\Debug\" + $projectFolder.Name + ".dll`""
-                            }
-                            if (!$TestAssembliesDirectories.Contains($projectFolder.FullName + "\bin\Debug")) {
-                                $TestAssembliesDirectories += $projectFolder.FullName + "\bin\Debug"
-                            }
-                        }
-                    } else {
-                        if ((Test-Path $VSTestPath) -and !$MSTest.IsPresent) {
-		                    $TestAssembliesList = $TestAssembliesList + " `"" + $ProjectFolderSpecInParent + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
-                        } else {
-		                    $TestAssembliesList = $TestAssembliesList + " /testcontainer:`"" + $ProjectFolderSpecInParent.FullName + "\bin\Debug\" + (Get-Item $ProjectFolderSpecInParent).Name + ".dll`""
-                        }
-                        if (!$TestAssembliesDirectories.Contains($ProjectFolderSpecInParent + "\bin\Debug")) {
-                            $TestAssembliesDirectories += $ProjectFolderSpecInParent + "\bin\Debug"
-                        }
-                    }
+                $UnPackTestAssembliesList,$UnPackTestAssembliesDirectories = Resolve-Project-Folder-Specs $ProjectFolderSpec
+                $TestAssembliesList += $UnPackTestAssembliesList
+                if ($UnPackTestAssembliesDirectories.Count -gt 0) {
+                    $TestAssembliesDirectories += $UnPackTestAssembliesDirectories
                 }
             }
         }
-        if ($TestAssembliesList -eq "") {
+        if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	        Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
 	        exit 1
         }
@@ -735,7 +760,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
   <Deployment enabled=`"false`" />
-  <NamingScheme baseName=`"UI`" appendTimeStamp=`"false`" useDefault=`"false`" />
+  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />
   <Execution>
     <Timeouts testTimeout=`"600000`" />
     <AgentRule name=`"LocalMachineDefaultRole`">
@@ -773,6 +798,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
         }
         if (!$MSTest.IsPresent) {
+            #Resolve test results file name
+            Set-Location -Path "$TestsResultsPath\.."
+
             # Create full VSTest argument string.
             if ($TestCategories -ne "") {
 				if (!$TestCategories.StartsWith("(TestCategory")) {
@@ -810,7 +838,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /testsettings:`"" + $TestSettingsFile + "`""
             }
-            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`" " + $TestList + $TestSettings + $TestCategories
+            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
             # Write full command including full argument string.
             $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
@@ -819,7 +847,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
             if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-                Start-Server
+                Start-Server $ServerPath $ResourcesType
                 if ($StartStudio.IsPresent) {
                     Start-Studio
                 }
@@ -829,20 +857,19 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverArgs = @"
 <AnalyseParams>
 	<TargetExecutable>$TestsResultsPath\..\Run $JobName.bat</TargetExecutable>
-	<TargetArguments></TargetArguments>
 	<Output>$TestsResultsPath\$JobName DotCover Output.dcvr</Output>
 	<Scope>
 "@
-            foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
-                $DotCoverArgs += @"
+                foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
+                    $DotCoverArgs += @"
 
         <ScopeEntry>$TestAssembliesDirectory\**\*.dll</ScopeEntry>
         <ScopeEntry>$TestAssembliesDirectory\**\*.exe</ScopeEntry>
 "@
-            }
-    $DotCoverArgs += @"
+                }
+                $DotCoverArgs += @"
 
-	</Scope>
+    </Scope>
 </AnalyseParams>
 "@
                 $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
@@ -850,7 +877,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 Out-File -LiteralPath $DotCoverRunnerXMLPath -Encoding default -InputObject $DotCoverArgs
                 
                 # Create full DotCover argument string.
-                $FullArgsList = " cover `"$TestsResultsPath\$JobName DotCover Runner.xml`" /LogFile=`"$TestsResultsPath\DotCoverRunner.xml.log`""
+                $DotCoverLogFile = "$TestsResultsPath\DotCoverRunner.xml.log"
+                Copy-On-Write $DotCoverLogFile
+                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile`""
 
                 #Write DotCover Runner Batch File
                 $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
@@ -869,9 +898,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
-            if ($RecordScreen.IsPresent) {
-                Move-ScreenRecordings-To-TestResults
-            }
         }
     }
 }
@@ -907,6 +933,212 @@ if ($AssemblyFileVersionsTest.IsPresent) {
     Out-File -LiteralPath FullVersionString -InputObject "FullVersionString=$HighestReadVersion" -Encoding default
 }
 
+if ($RunWarewolfServiceTests.IsPresent) {
+    if ($ServerPath -eq "") {
+        $ServerPath = "http://localhost:3142"
+    }
+    $WarewolfServerURL = "$ServerPath/secure/apis.json"
+    if ($ServerUsername -eq "") {
+        $Headers = @{}
+        $ServerUsername = "Unknown User"
+    } else {
+        $pair = "$($ServerUsername):$($ServerPassword)"
+        $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
+        $basicAuthValue = "Basic $encodedCreds"
+        $Headers = @{
+            Authorization = $basicAuthValue
+        }
+    }
+    Write-Warning "Connecting to $WarewolfServerURL"
+    $TestStartDateTime = Get-Date -Format o
+    if (!$DisableTimeouts.IsPresent) {
+        $ConnectTimeout = 180
+    } else {
+        $ConnectTimeout = 0
+    }
+    try {
+        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
+    } catch {
+        throw $_.Exception
+    }
+    try {
+        $TryGetWarewolfServerVersion = wget "$ServerPath/secure/getserverversion.json" -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
+    } catch {
+        Write-Warning $_.Exception
+    }
+    $WarewolfServerVersion = "0.0.0.0"
+    if ($TryGetWarewolfServerVersion.StatusCode -eq 200) {
+        $WarewolfServerVersion = $TryGetWarewolfServerVersion.Content.Trim("`"")
+    }
+
+    $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
+    $WarewolfServiceTestData = @()
+    foreach ($WarewolfService in $WarewolfServiceData) {
+        $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd("n").TrimEnd("o").TrimEnd("s").TrimEnd("j").TrimEnd(".") + ".tests"
+        Write-Warning "Connecting to $WarewolfServiceTestURL"
+        try {
+            if (!$DisableTimeouts.IsPresent) {
+                $TestTimeout = 180
+            } else {
+                $TestTimeout = 0
+            }
+            $TestStart = Get-Date
+            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec $TestTimeout -UseBasicParsing)
+            $ServiceTestDuration = New-TimeSpan -start $TestStart -end (Get-Date)
+            if ($ServiceTestResults -ne $null -and $ServiceTestResults -ne "" -and $ServiceTestResults.Count -gt 0) {
+                [double]$TestDurationSeconds = $ServiceTestDuration.TotalSeconds / $ServiceTestResults.Count
+                if ($TestDurationSeconds -ge 60) {
+                    $TestDuration = New-TimeSpan -Seconds $TestDurationSeconds
+                } else {
+                    $TestDuration = "00:00:" + $TestDurationSeconds.ToString("00.0000000")
+                }
+                $ServiceTestResults | Foreach-object { $_.'Test Name' = $WarewolfService.Name.Replace(" ", "_") + "_" + $_.'Test Name'.Replace(" ", "_") }
+                $ServiceTestResults | Foreach-object { $_.Result = $_.Result.Replace("Invalid", "Failed") }
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ID" -Value ([guid]::NewGuid()) -PassThru}
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ExecutionID" -Value ([guid]::NewGuid()) -PassThru}
+                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "Duration" -Value $TestDuration.ToString() -PassThru}
+                $ServiceTestResults | Foreach-object { 
+                    $_ | Add-Member -MemberType noteproperty -Name "StartTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                    $TestStart += $TestDuration
+                    $_ | Add-Member -MemberType noteproperty -Name "EndTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                }
+                $WarewolfServiceTestData += $ServiceTestResults
+            }
+        } catch {
+            Write-Warning $_.Exception
+        }
+    }
+
+    $TestListID = [guid]::NewGuid().ToString()
+    $TRXFileContents = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="
+"@ + [guid]::NewGuid() + @"
+" name="Warewolf Service Tests" runUser="$ServerUsername" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Default Test Settings" id="
+"@ + [guid]::NewGuid() + @"
+">
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+    <Deployment  enabled="false" />
+    <Properties />
+  </TestSettings>
+  <Times creation="
+"@ + $TestStartDateTime + @"
+" queuing="
+"@ + $TestStartDateTime + @"
+" start="
+"@ + $TestStartDateTime + @"
+" finish="
+"@ + (Get-Date -Format o) + @"
+" />
+  <ResultSummary outcome="Completed">
+    <Counters total="
+"@ + $WarewolfServiceTestData.Count + @"
+" executed="
+"@ + $WarewolfServiceTestData.Count + @"
+" passed="
+"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Passed")}, 'Split')[0].Count + @"
+" error="0" failed="
+"@ + $WarewolfServiceTestData.Result.Where({($_ -eq "Failed")}, 'Split')[0].Count + @"
+" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+"@
+    foreach ($TestResult in $WarewolfServiceTestData) {
+        $TRXFileContents += @"
+
+    <UnitTest name="
+"@ + $TestResult.'Test Name' + @"
+" storage="
+"@ + $TestResult.'Test Name' + @"
+.dll" id="
+"@ + $TestResult.ID + @"
+">
+      <Execution id="
+"@ + $TestResult.ExecutionID + @"
+" />
+      <TestMethod codeBase="
+"@ + $TestResult.'Test Name' + @"
+.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="
+"@ + $TestResult.'Test Name' + @"
+, Version=$WarewolfServerVersion, Culture=neutral, PublicKeyToken=null" name="
+"@ + $TestResult.'Test Name' + @"
+" />
+    </UnitTest>
+"@
+                }
+                $TRXFileContents += @"
+
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="$TestListID" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda"/>
+  </TestLists>
+  <TestEntries>
+"@
+    foreach ($TestResult in $WarewolfServiceTestData) {
+        $TRXFileContents += @"
+
+    <TestEntry testId="
+"@ + $TestResult.ID + @"
+" executionId="
+"@ + $TestResult.ExecutionID + @"
+" testListId="$TestListID" />
+"@
+    }
+    $TRXFileContents += @"
+
+  </TestEntries>
+  <Results>
+"@
+    foreach ($TestResult in $WarewolfServiceTestData) {
+        $TRXFileContents += @"
+
+    <UnitTestResult executionId="
+"@ + $TestResult.ExecutionID + @"
+" testId="
+"@ + $TestResult.ID + @"
+" testName="
+"@ + $TestResult.'Test Name' + @"
+" computerName="$ServerPath" duration="
+"@ + $TestResult.Duration + @"
+" startTime="
+"@ + $TestResult.StartTime + @"
+" endTime="
+"@ + $TestResult.EndTime + @"
+" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="
+"@ + $TestResult.Result + @"
+" testListId="$TestListID" relativeResultsDirectory="ca6d373f-8816-4969-8999-3dac700d7626">
+"@
+	    if ($TestResult.Result -eq "Failed") {
+            Add-Type -AssemblyName System.Web
+            $TestResultMessage = [System.Web.HttpUtility]::HtmlEncode($TestResult.Message)		    
+		    $TRXFileContents += @"
+      <Output>
+        <ErrorInfo>
+          <Message>$TestResultMessage</Message>
+          <StackTrace></StackTrace>
+        </ErrorInfo>
+      </Output>
+"@
+	    }
+	    $TRXFileContents += @"
+    </UnitTestResult>
+"@
+    }
+    $TRXFileContents += @"
+
+  </Results>
+</TestRun>
+"@
+    Copy-On-Write "$TestsResultsPath\TestResults.trx"
+    New-Item -Force -Path "$TestsResultsPath\TestResults.trx" -ItemType File -Value $TRXFileContents
+}
+
 if ($Cleanup.IsPresent) {
     if ($ApplyDotCover) {
         Cleanup-ServerStudio 1800 10
@@ -919,8 +1151,15 @@ if ($Cleanup.IsPresent) {
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
 
-if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and $JobName -eq "") {
-    Install-Server
-    Start-Server
+if ($RunAllJobs.IsPresent) {
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$UnitTestJobNames' -DisableTimeouts -Parallelize")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ServerTestJobNames' -StartServer -ResourcesType ServerTests")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ReleaseResourcesJobNames' -StartServer -ResourcesType Release")
+    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
+}
+
+if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
+    $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+    Start-Server $ServerPath $ResourcesType
     Start-Studio
 }

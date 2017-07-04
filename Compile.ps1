@@ -5,12 +5,13 @@ Param(
   [string]$NuGet="",
   [string]$Config="Debug",
   [switch]$AutoVersion,
-  [switch]$ProjectSpecificOutputs,
+  [switch]$SolutionWideOutputs,
   [switch]$AcceptanceTesting,
   [switch]$UITesting,
   [switch]$Server,
   [switch]$Studio,
-  [switch]$Release
+  [switch]$Release,
+  [switch]$RegenerateSpecFlowFeatureFiles
 )
 $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\UITesting.sln",
@@ -30,7 +31,7 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     }
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-	Write-Host MSBuild not found. Download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe
+	Write-Host MSBuild not found. Download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe and http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
     sleep 10
     exit 1
 }
@@ -185,23 +186,47 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Warewolf version written successfully! For more info about Warewolf versioning see: http://warewolf.io/ESB-blog/artefact-sharing-efficient-ci/
 }
 
+if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
+	&"nuget.exe" "restore" "$PSScriptRoot\Dev\AcceptanceTesting.sln"
+	if ($LASTEXITCODE -ne 0) {
+        sleep 30
+		exit 1
+	}
+	foreach ($ProjectDir in get-ChildItem "Dev\*Specs") {
+		$FullPath = $ProjectDir.FullName
+		$ProjectName = $ProjectDir.Name
+		if (Test-Path "$FullPath\$ProjectName.csproj") {
+			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
+		}
+	}
+	foreach ($ProjectDir in get-ChildItem "Dev\Warewolf.UIBindingTests.*") {
+		$FullPath = $ProjectDir.FullName
+		$ProjectName = $ProjectDir.Name
+		if (Test-Path "$FullPath\$ProjectName.csproj") {
+			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
+		}
+	}
+}
+
 #Compile Solutions
 foreach ($SolutionFile in $KnownSolutionFiles) {
-    $GetSolutionFileInfo = Get-Item $SolutionFile
-    $SolutionFileName = $GetSolutionFileInfo.Name
-    $SolutionFileExtension = $GetSolutionFileInfo.Extension
-    $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension)
-    if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
-        if ($ProjectSpecificOutputs.IsPresent) {
-            $OutputProperty = ""
-        } else {
-            $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
-        }
-        &"$NuGetPath" "restore" "$SolutionFile"
-        &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
-        if ($LASTEXITCODE -ne 0) {
-            sleep 30
-            exit 1
+    if (Test-Path $SolutionFile) {
+        $GetSolutionFileInfo = Get-Item $SolutionFile
+        $SolutionFileName = $GetSolutionFileInfo.Name
+        $SolutionFileExtension = $GetSolutionFileInfo.Extension
+        $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension)
+        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
+            if ($SolutionWideOutputs.IsPresent) {
+                $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
+            } else {
+                $OutputProperty = ""
+            }
+            &"$NuGetPath" "restore" "$SolutionFile"
+            &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
+            if ($LASTEXITCODE -ne 0) {
+                sleep 30
+                exit 1
+            }
         }
     }
 }
