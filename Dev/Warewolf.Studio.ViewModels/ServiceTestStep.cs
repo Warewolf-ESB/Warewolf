@@ -102,26 +102,28 @@ namespace Warewolf.Studio.ViewModels
                     }
                     SetControlFlowValues(value);
                 }
-                AddNewEmptyRow();
+                //AddNewEmptyRow();
                 OnPropertyChanged(() => StepOutputs);
                 IsTestStepExpanded = StepOutputs?.Count > 0;
                 IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
             }
         }
 
-        private void AddNewEmptyRow()
+        public void AddNewEmptyRow()
         {
             if (_stepOutputs?.Count >= 1)
             {
                 var lastOrDefault = _stepOutputs.LastOrDefault(
                         output => !string.IsNullOrWhiteSpace(output.Variable) && !string.IsNullOrWhiteSpace(output.Value));
-                var firstOrDefault = _stepOutputs.FirstOrDefault(
-                        output => !string.IsNullOrWhiteSpace(output.Variable) && !string.IsNullOrWhiteSpace(output.Value));
                 if (lastOrDefault != null)
                 {
-                    if (DataListUtil.IsValueRecordset(firstOrDefault?.Variable))
+                    if (DataListUtil.IsValueRecordset(lastOrDefault?.Variable))
                     {
-                        _stepOutputs.Add(new ServiceTestOutput("", "", "", ""));
+                        var serviceTestOutput = new ServiceTestOutput("", "", "", "")
+                        {
+                            AddNewAction = () => AddNewOutput(_stepOutputs.LastOrDefault().Variable)
+                        };
+                        _stepOutputs.Add(serviceTestOutput);
                     }
                 }
             }
@@ -375,7 +377,7 @@ namespace Warewolf.Studio.ViewModels
                         }
                         else
                         {
-                            var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
+                            var serviceTestOutput = new ServiceTestOutput("", "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
                             StepOutputs?.Add(serviceTestOutput);
                         }
                     }

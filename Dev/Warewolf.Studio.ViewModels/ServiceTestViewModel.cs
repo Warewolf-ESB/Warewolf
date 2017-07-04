@@ -160,6 +160,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.OriginatingResourceID == ResourceModel.ID)
                         {
+                            UpdateInputValues(debugItemContent);
                             ProcessInputsAndOutputs(debugItemContent);
                         }
                         else if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.ActualType == typeof(DsfActivity).Name)
@@ -171,6 +172,20 @@ namespace Warewolf.Studio.ViewModels
                             ProcessRegularDebugItem(debugItemContent, debugState);
                         }
                     }
+                }
+            }
+        }
+
+        private void UpdateInputValues(IDebugState debugItemContent)
+        {
+            foreach (var item in debugItemContent.Inputs)
+            {
+                foreach (var res in item?.ResultsList)
+                {
+                    string variable = res?.Variable?.Replace("[[", "");
+                    variable = variable?.Replace("]]", "");
+                    var inputsValue = WorkflowDesignerViewModel?.GetWorkflowInputs(variable);
+                    res.Value = inputsValue;
                 }
             }
         }
@@ -487,10 +502,16 @@ namespace Warewolf.Studio.ViewModels
                     var childItemContent = childItem.Content;
                     var outputs = childItemContent.Outputs;
 
-                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                    var contentId = childItemContent.ID;
+                    if (childItemContent.ActualType.ToString() == "DsfActivity")
+                    {
+                        contentId = childItemContent.WorkSurfaceMappingId;
+                    }
+
+                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == contentId);
                     if (exists == null)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
+                        var childStep = new ServiceTestStep(contentId, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
                         {
                             StepDescription = childItemContent.DisplayName,
                             Parent = parent,
@@ -1204,7 +1225,7 @@ namespace Warewolf.Studio.ViewModels
                 var computedValue = modelItem.GetCurrentValue();
                 var boolAct = computedValue as DsfActivityAbstract<bool>;
                 var activityUniqueID = boolAct?.UniqueID;
-                var activityDisplayName = boolAct.DisplayName;
+                var activityDisplayName = boolAct?.DisplayName;
                 var type = computedValue.GetType();
                 var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                 var alreadyAdded = CheckForExists(activityUniqueID, new List<string>(), activityDisplayName, type);
@@ -1896,8 +1917,9 @@ namespace Warewolf.Studio.ViewModels
                 Save(serviceTestModels);
                 UpdateTestsFromResourceUpdate();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 // MarkTestsAsDirty(true);
             }
             finally
@@ -2306,6 +2328,10 @@ namespace Warewolf.Studio.ViewModels
                     _tests.Remove(test);
                     OnPropertyChanged(() => Tests);
                     SelectedServiceTest = null;
+                    if (Tests.Count == 1 && Tests.Single().GetType() == typeof(DummyServiceTest))
+                        {
+                            CanSave = false;
+                        }
                 }
                 catch (Exception ex)
                 {

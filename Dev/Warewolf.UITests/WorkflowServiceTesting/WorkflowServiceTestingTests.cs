@@ -8,10 +8,16 @@ using Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses
 namespace Warewolf.UITests.WorkflowServiceTesting
 {
     [CodedUITest]
-    public class WorkflowTestingTests
+    public class WorkflowServiceTestingTests
     {
-        const string HelloWorld = "Hello World";
-        const string xPath = "Utility - XPath";
+        public const string HelloWorld = "Hello World";
+        public const string xPath = "Utility - XPath";
+        public const string RandomWorkFlow = "RandomToolWorkFlow";
+        public const string RandomNewWorkFlow = "RandomToolNewWorkFlow";
+        public const string DiceRoll = "Dice Roll";
+        public const string Nestedwf = "NestedWF";
+        public const string Resource = "Resource For MockRadioButton";
+        public const string DotnetWfWithObjOutput = "DotnetWfWithObjOutput";
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
@@ -95,6 +101,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
             WorkflowServiceTestingUIMap.Select_First_Test();
             WorkflowServiceTestingUIMap.Click_Duplicate_Test_Button();
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Height > 0 && WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Width > 0, "Step icon is not visible after duplicate.");
         }
 
         #region Additional test attributes

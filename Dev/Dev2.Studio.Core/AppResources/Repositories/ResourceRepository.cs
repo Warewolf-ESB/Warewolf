@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
     public class ResourceRepository : IResourceRepository
     {
         readonly HashSet<Guid> _cachedServices;
-        readonly IServer _server;
+        IServer _server;
         private readonly List<IResourceModel> _resourceModels;
         bool _isLoaded;
         readonly IDeployService _deployService = new DeployService();
@@ -184,6 +184,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             Func<IResourceModel, bool> func = expression.Compile();
             return _resourceModels.FindAll(func.Invoke);
+        }
+
+        public void UpdateServer(IServer server)
+        {
+            _server = server;
         }
 
         public IContextualResourceModel LoadContextualResourceModel(Guid resourceId)
