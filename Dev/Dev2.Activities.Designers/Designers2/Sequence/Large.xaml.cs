@@ -50,11 +50,6 @@ namespace Dev2.Activities.Designers2.Sequence
 
         void SetProperties()
         {
-            var viewModel = (SequenceDesignerViewModel)DataContext;
-            if(viewModel != null)
-            {
-                viewModel.ThumbVisibility = Visibility.Collapsed;
-            }
         }
 
         #region Overrides of ActivityDesignerTemplate
