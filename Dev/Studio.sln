@@ -387,9 +387,6 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{21A7E1BF-EABD-4D92-B886-EF5790BE6428} = {7F0E96E6-0D23-4305-8F2C-31CB2CD1D92F}
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
 	EndGlobalSection

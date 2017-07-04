@@ -25,10 +25,6 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {420E71D8-43C5-48B2-978E-0D37C2349407}
-		{5176818D-D7C0-454B-BC12-FD619C57811C} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Dev2.UI.Tests.vsmdi
 	EndGlobalSection
