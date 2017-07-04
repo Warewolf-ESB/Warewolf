@@ -59,13 +59,13 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
 
-                var distinct = value.Distinct(new ServiceInputNameComparer()).ToList();
+                var distinct = value.Distinct().ToList();                
                 _inputs = distinct;
                 OnPropertyChanged();
             }
         }
 
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

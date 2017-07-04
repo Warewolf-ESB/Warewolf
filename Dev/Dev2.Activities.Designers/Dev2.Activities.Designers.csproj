@@ -163,7 +163,6 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Designers2\Core\ServiceInputNameComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\TestScripts\**\*.*">
       <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
