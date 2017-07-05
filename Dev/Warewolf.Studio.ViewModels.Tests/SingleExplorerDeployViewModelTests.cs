@@ -13,6 +13,7 @@ using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Threading;
 
 // ReSharper disable InconsistentNaming
 
@@ -1381,7 +1382,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentViewModels = new ObservableCollection<IEnvironmentViewModel> { sourceEnv.Object };
             _sourceView.SetupGet(model => model.Environments).Returns(environmentViewModels);
             _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
-            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object, new SynchronousAsyncWorker())
             {
                 SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
                 DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
