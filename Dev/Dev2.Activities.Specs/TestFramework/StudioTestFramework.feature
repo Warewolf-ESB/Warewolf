@@ -1606,7 +1606,7 @@ Scenario: Test WF with Oracle
 		Given I have a workflow "oracleTestWF"
 		 And "oracleTestWF" contains a oracle database service "HR.GET_EMP_RS" with mappings as
 		    | ParameterName | ParameterValue |
-		    | P_DEPTNO      | 2              |	 
+		    | P_DEPTNO      | 110            |	 
 		And I save workflow "oracleTestWF"
 		Then the test builder is open with "oracleTestWF"
 		And I click New Test
@@ -1614,13 +1614,11 @@ Scenario: Test WF with Oracle
 		And test name starts with "Test 1"
 		And I Add "HR.GET_EMP_RS" as TestStep
 		And I add StepOutputs as 
-		| Variable Name                        | Condition | Value        |
-		| [[HR_GET_EMP_RS(107).DEPARTMENT_ID]] | =         | 110          |
-		| [[HR_GET_EMP_RS(107).EMPLOYEE_ID]]   | =         | 206          |
-		| [[HR_GET_EMP_RS(107).FIRST_NAME]]    | =         | William      |
-		| [[HR_GET_EMP_RS(107).LAST_NAME]]     | =         | Gietz        |
-		| [[HR_GET_EMP_RS(107).PHONE_NUMBER]]  | =         | 515.123.8181 |
-		| [[HR_GET_EMP_RS(107).MANAGER_ID]]    | =         | 205          |
+		| Variable Name                      | Condition | Value        |
+		| [[HR_GET_EMP_RS(2).EMPLOYEE_ID]]   | =         | 205          |
+		| [[HR_GET_EMP_RS(2).FIRST_NAME]]    | =         | Shelley      |
+		| [[HR_GET_EMP_RS(2).LAST_NAME]]     | =         | Higgins      |
+		| [[HR_GET_EMP_RS(2).EMAIL]]         | =         | SHIGGINS     |
 		When I save
 		And I run the test
 		Then test result is Passed
