@@ -776,8 +776,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
                 $DeploymentTags = @"
   <Deployment>
+    <DeploymentItem filename="..\DebugServer.zip" />
+    <DeploymentItem filename="..\DebugStudio.zip" />
     <DeploymentItem filename="DebugServer.zip" />
     <DeploymentItem filename="DebugStudio.zip" />
+    <DeploymentItem filename="..\Server.zip" />
+    <DeploymentItem filename="..\Studio.zip" />
+    <DeploymentItem filename="Server.zip" />
+    <DeploymentItem filename="Studio.zip" />
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
@@ -967,7 +973,7 @@ $DeploymentTags
                 }
             } else {
                 &"$TestRunnerPath"
-                if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
                     Cleanup-ServerStudio 10 1
                 }
             }
