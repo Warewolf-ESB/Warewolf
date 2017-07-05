@@ -752,17 +752,19 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $TestTypeSpecificTags = ""
         $DeploymentTags = "  <Deployment enabled=`"false`" />"
         $ScriptsTag = ""
-        if ($Parallelize.IsPresent -and $RecordScreen.IsPresent) {            
-            $ControllerNameTag = "`n  <RemoteController name=`"test-vs2017:6901`" />"
-            $RemoteExecutionAttribute = " location=`"Remote`""
-            $AgentRuleNameValue = "Remote"
-            $AgentRoleTags = @"
+        if ($Parallelize.IsPresent) {
+            $HardcodedTestController = "test-vs2017:6901"
+            if ($StartStudio.IsPresent) {
+                $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
+                $RemoteExecutionAttribute = " location=`"Remote`""
+                $AgentRuleNameValue = "Remote"
+                $AgentRoleTags = @"
 
       <SelectionCriteria>
         <AgentProperty name="UI" value="" />
       </SelectionCriteria>
 "@
-            $TestTypeSpecificTags = @"
+                $TestTypeSpecificTags = @"
 
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
@@ -772,20 +774,50 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       </UnitTestRunConfig>
     </TestTypeSpecific>
 "@
-            $DeploymentTags = @"
+                $DeploymentTags = @"
   <Deployment>
     <DeploymentItem filename="DebugServer.zip" />
     <DeploymentItem filename="DebugStudio.zip" />
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
-            $StartupScriptPath = "$TestsResultsPath\startup.bat"
-            $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
-            Copy-On-Write $StartupScriptPath
-            New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -ResourcesType UITests`""
-            Copy-On-Write $CleanupScriptPath
-            New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
-            $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
+                $StartupScriptPath = "$TestsResultsPath\startup.bat"
+                $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+                Copy-On-Write $StartupScriptPath
+                New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -ResourcesType $ResourcesType`""
+                Copy-On-Write $CleanupScriptPath
+                New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
+            } else {
+                if ($StartServer.IsPresent) {            
+                    $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
+                    $RemoteExecutionAttribute = " location=`"Remote`""
+                    $AgentRuleNameValue = "Remote"
+                    $TestTypeSpecificTags = @"
+
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+"@
+                    $DeploymentTags = @"
+  <Deployment>
+    <DeploymentItem filename="DebugServer.zip" />
+    <DeploymentItem filename="Run Tests.ps1" />
+  </Deployment>
+"@
+                    $StartupScriptPath = "$TestsResultsPath\startup.bat"
+                    $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+                    Copy-On-Write $StartupScriptPath
+                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType`""
+                    Copy-On-Write $CleanupScriptPath
+                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                    $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
+                }
+            }
         }
 
         # Create test settings.
@@ -888,7 +920,7 @@ $DeploymentTags
             Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
-            if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+            if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
                 Start-Server $ServerPath $ResourcesType
                 if ($StartStudio.IsPresent) {
                     Start-Studio
