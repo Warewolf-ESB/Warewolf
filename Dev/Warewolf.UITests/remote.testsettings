@@ -2,9 +2,9 @@
 <TestSettings name="Other UI Tests" id="a8e450c7-bf3d-46b6-ac8f-79fa2c90e8f8" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
   <Deployment>
-    <DeploymentItem filename="Run Tests.ps1" />
     <DeploymentItem filename="DebugServer.zip" />
     <DeploymentItem filename="DebugStudio.zip" />
+    <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
   <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
   <Scripts setupScript="C:\Builds\startup.bat" cleanupScript="C:\Builds\cleanup.bat" />

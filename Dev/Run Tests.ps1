@@ -750,18 +750,19 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $AgentRoleTags = "LocalMachineDefaultRole"
         $AgentRuleNameValue = ""
         $TestTypeSpecificTags = ""
-        if ($Parallelize.IsPresent) {
-            $ControllerNameTag = "`n  <RemoteController name=`"rsaklfsvrdev:6901`" />"
+        $DeploymentTags = "  <Deployment enabled=`"false`" />"
+        $ScriptsTag = ""
+        if ($Parallelize.IsPresent -and $RecordScreen.IsPresent) {
+            $ControllerNameTag = "`n  <RemoteController name=`"test-vs2017:6901`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
             $AgentRuleNameValue = "Remote"
-            if ($RecordScreen.IsPresent) {
-                $AgentRoleTags = @"
+            $AgentRoleTags = @"
 
       <SelectionCriteria>
         <AgentProperty name="UI" value="" />
       </SelectionCriteria>
 "@
-                $TestTypeSpecificTags = @"
+            $TestTypeSpecificTags = @"
 
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
@@ -771,7 +772,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       </UnitTestRunConfig>
     </TestTypeSpecific>
 "@
-            }
+            $DeploymentTags = @"
+  <Deployment>
+    <DeploymentItem filename="DebugServer.zip" />
+    <DeploymentItem filename="DebugStudio.zip" />
+    <DeploymentItem filename="Run Tests.ps1" />
+  </Deployment>
+"@
+            $ScriptsTag = "`n  <Scripts setupScript=`"C:\Builds\startup.bat`" cleanupScript=`"C:\Builds\cleanup.bat`" />"
         }
 
         # Create test settings.
@@ -788,8 +796,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   name="$JobName"
   xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
-  <Deployment enabled="false" />
-  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />$ControllerNameTag
+$DeploymentTags
+  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />$ScriptsTag$ControllerNameTag
   <Execution$RemoteExecutionAttribute>
     <Timeouts testTimeout="600000" />$TestTypeSpecificTags
     <AgentRule name="$AgentRuleNameValue">$AgentRoleTags
