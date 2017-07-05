@@ -1099,34 +1099,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ConflictRenameErrors_GivenCalculateAction_ShowsThePopupMessage()
-        {
-            //---------------Set up test pack-------------------            
-            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
-            _serverEnvironmentId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
-            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
-            var popupController = new Mock<IPopupController>();
-            var connectControl = new Mock<IConnectControlViewModel>();
-            connectControl.SetupAllProperties();
-            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
-            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
-            var explorerTreeItems = new List<IExplorerTreeItem>();
-            _statsView.Setup(model => model.New).Returns(explorerTreeItems);
-            _statsView.Setup(model => model.RenameErrors).Returns("Conflicts in resource names");
-            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(singleExplorerDeployViewModel);
-            //---------------Execute Test ----------------------
-            _statsView.Object.CalculateAction.Invoke();
-            //---------------Test Result -----------------------
-            popupController.Verify(controller => controller.ShowDeployNameConflict("Conflicts in resource names"));
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
         public void ConflictItems_GivenCalculateAction_AreEqualToStatViewConflictItems()
         {
             //---------------Set up test pack-------------------            
