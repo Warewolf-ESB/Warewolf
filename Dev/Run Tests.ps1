@@ -752,7 +752,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $TestTypeSpecificTags = ""
         $DeploymentTags = "  <Deployment enabled=`"false`" />"
         $ScriptsTag = ""
-        if ($Parallelize.IsPresent -and $RecordScreen.IsPresent) {
+        if ($Parallelize.IsPresent -and $RecordScreen.IsPresent) {            
             $ControllerNameTag = "`n  <RemoteController name=`"test-vs2017:6901`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
             $AgentRuleNameValue = "Remote"
@@ -779,7 +779,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
-            $ScriptsTag = "`n  <Scripts setupScript=`"C:\Builds\startup.bat`" cleanupScript=`"C:\Builds\cleanup.bat`" />"
+            $StartupScriptPath = "$TestsResultsPath\startup.bat"
+            $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+            Copy-On-Write $StartupScriptPath
+            New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -ResourcesType UITests`""
+            Copy-On-Write $CleanupScriptPath
+            New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+            $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
         }
 
         # Create test settings.
