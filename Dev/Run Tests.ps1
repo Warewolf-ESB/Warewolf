@@ -665,7 +665,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         Write-Host Removed loose TRX files from VS install directory.
     }
 
-    if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+    if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
         $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     }
 
