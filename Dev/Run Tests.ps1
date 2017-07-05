@@ -747,8 +747,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         # Setup for remote execution
         $ControllerNameTag = ""
         $RemoteExecutionAttribute = ""
-        $AgentRoleTags = "LocalMachineDefaultRole"
-        $AgentRuleNameValue = ""
+        $AgentRoleTags = ""
+        $AgentRuleNameValue = "LocalMachineDefaultRole"
         $TestTypeSpecificTags = ""
         $DeploymentTags = "  <Deployment enabled=`"false`" />"
         $ScriptsTag = ""
