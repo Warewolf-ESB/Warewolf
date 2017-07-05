@@ -750,11 +750,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $AgentRoleTags = "LocalMachineDefaultRole"
         $AgentRuleNameValue = ""
         $TestTypeSpecificTags = ""
+        $DeploymentTags = "  <Deployment enabled=`"false`" />"
+        $ScriptsTag = ""
         if ($Parallelize.IsPresent) {
-            $ControllerNameTag = "`n  <RemoteController name=`"rsaklfsvrdev:6901`" />"
-            $RemoteExecutionAttribute = " location=`"Remote`""
-            $AgentRuleNameValue = "Remote"
-            if ($RecordScreen.IsPresent) {
+            $HardcodedTestController = "test-vs2017:6901"
+            if ($StartStudio.IsPresent) {
+                $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
+                $RemoteExecutionAttribute = " location=`"Remote`""
+                $AgentRuleNameValue = "Remote"
                 $AgentRoleTags = @"
 
       <SelectionCriteria>
@@ -771,6 +774,55 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       </UnitTestRunConfig>
     </TestTypeSpecific>
 "@
+                $DeploymentTags = @"
+  <Deployment>
+    <DeploymentItem filename="..\DebugServer.zip" />
+    <DeploymentItem filename="..\DebugStudio.zip" />
+    <DeploymentItem filename="DebugServer.zip" />
+    <DeploymentItem filename="DebugStudio.zip" />
+    <DeploymentItem filename="..\Server.zip" />
+    <DeploymentItem filename="..\Studio.zip" />
+    <DeploymentItem filename="Server.zip" />
+    <DeploymentItem filename="Studio.zip" />
+    <DeploymentItem filename="Run Tests.ps1" />
+  </Deployment>
+"@
+                $StartupScriptPath = "$TestsResultsPath\startup.bat"
+                $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+                Copy-On-Write $StartupScriptPath
+                New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -ResourcesType $ResourcesType`""
+                Copy-On-Write $CleanupScriptPath
+                New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
+            } else {
+                if ($StartServer.IsPresent) {            
+                    $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
+                    $RemoteExecutionAttribute = " location=`"Remote`""
+                    $AgentRuleNameValue = "Remote"
+                    $TestTypeSpecificTags = @"
+
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+"@
+                    $DeploymentTags = @"
+  <Deployment>
+    <DeploymentItem filename="DebugServer.zip" />
+    <DeploymentItem filename="Run Tests.ps1" />
+  </Deployment>
+"@
+                    $StartupScriptPath = "$TestsResultsPath\startup.bat"
+                    $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+                    Copy-On-Write $StartupScriptPath
+                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType`""
+                    Copy-On-Write $CleanupScriptPath
+                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                    $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
+                }
             }
         }
 
@@ -788,8 +840,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   name="$JobName"
   xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
-  <Deployment enabled="false" />
-  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />$ControllerNameTag
+$DeploymentTags
+  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />$ScriptsTag$ControllerNameTag
   <Execution$RemoteExecutionAttribute>
     <Timeouts testTimeout="600000" />$TestTypeSpecificTags
     <AgentRule name="$AgentRuleNameValue">$AgentRoleTags
@@ -874,7 +926,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
-            if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+            if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
                 Start-Server $ServerPath $ResourcesType
                 if ($StartStudio.IsPresent) {
                     Start-Studio
@@ -921,7 +973,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 }
             } else {
                 &"$TestRunnerPath"
-                if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
                     Cleanup-ServerStudio 10 1
                 }
             }
