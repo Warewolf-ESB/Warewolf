@@ -1556,6 +1556,35 @@ Scenario: Test WF with Replace
 		Then The "DeleteConfirmation" popup is shown I click Ok
 		Then workflow "ReplaceTestWF" is deleted as cleanup
 
+Scenario: Test WF with Replace with square brackets
+		Given I have a workflow "ReplaceTestWF"
+		And "ReplaceTestWF" contains an Assign "TestAssign" as
+		 | variable    | value    |
+		  | [[rec().a]] | test     |
+		  | [[rec().b]] | nothing  |
+		  | [[rec().a]] | warewolf |
+		  | [[rec().b]] | nothing  |
+	  And "ReplaceTestWF" contains Replace "TestReplace" into "[[replaceResult]]" as	
+		  | In Fields  | Find | Replace With |
+		  | [[rec(*)]] | e    | [[     |
+		And I save workflow "ReplaceTestWF"
+		Then the test builder is open with "ReplaceTestWF"
+		And I click New Test
+		And a new test is added	
+		And test name starts with "Test 1"
+		And I Add "TestReplace" as TestStep
+		And I add StepOutputs as 
+		| Variable Name     | Condition | Value           |
+		| [[rec(1).a]]      | =         | t[[st     |
+		| [[rec(2).a]]      | =         | war[[wolf |		
+		| [[replaceResult]] | =         | 2               |
+		When I save
+		And I run the test
+		Then test result is Passed
+		When I delete "Test 1"
+		Then The "DeleteConfirmation" popup is shown I click Ok
+		Then workflow "ReplaceTestWF" is deleted as cleanup
+
 #Database Category	  
 Scenario: Test WF with MySql
 		Given I have a workflow "MySqlTestWF"
