@@ -73,10 +73,6 @@ namespace Warewolf.Studio.ViewModels
                 ConflictItems = _stats.Conflicts;
                 NewItems = _stats.New;
                 ShowConflicts = false;
-                if (!string.IsNullOrEmpty(_stats.RenameErrors))
-                {
-                    //PopupController.ShowDeployNameConflict(_stats.RenameErrors);
-                }
                 ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
             };
             SourceConnectControlViewModel = _source.ConnectControlViewModel;
