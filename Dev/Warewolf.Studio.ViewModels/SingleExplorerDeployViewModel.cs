@@ -18,7 +18,6 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Threading;
-using System.Threading.Tasks;
 
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 // ReSharper disable MemberCanBeProtected.Global
@@ -49,10 +48,11 @@ namespace Warewolf.Studio.ViewModels
         IList<IExplorerTreeItem> _newItems;
         string _errorMessage;
         string _deploySuccessMessage;
+        private IAsyncWorker _asyncWorker;
 
         #region Implementation of IDeployViewModel       
 
-        public SingleExplorerDeployViewModel(IDeployDestinationExplorerViewModel destination, IDeploySourceExplorerViewModel source, IEnumerable<IExplorerTreeItem> selectedItems, IDeployStatsViewerViewModel stats, IShellViewModel shell, IPopupController popupController)
+        public SingleExplorerDeployViewModel(IDeployDestinationExplorerViewModel destination, IDeploySourceExplorerViewModel source, IEnumerable<IExplorerTreeItem> selectedItems, IDeployStatsViewerViewModel stats, IShellViewModel shell, IPopupController popupController, IAsyncWorker asyncWorker = null)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object> { { "destination", destination }, { "source", source }, { "selectedItems", selectedItems }, { "stats", stats }, { "popupController", popupController } });
             _destination = destination;
@@ -88,6 +88,7 @@ namespace Warewolf.Studio.ViewModels
             SelectDependenciesCommand = new DelegateCommand(SelectDependencies, () => CanSelectDependencies);
             NewResourcesViewCommand = new DelegateCommand(ViewNewResources);
             OverridesViewCommand = new DelegateCommand(ViewOverrides);
+            _asyncWorker = asyncWorker ?? new AsyncWorker();
             Destination.ServerStateChanged += DestinationServerStateChanged;
             Destination.PropertyChanged += DestinationOnPropertyChanged;
             ShowConflicts = false;
@@ -284,23 +285,24 @@ namespace Warewolf.Studio.ViewModels
                 }
                 else
                 {
-                    await Task.Factory.StartNew(async () =>
-                    {
-                        var selectedItems = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
-                        var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
+                    var selectedItems = Source.SelectedItems.Where(a => a.ResourceType != "Folder");
+                    var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
 
-                        var destinationEnvironmentId = Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID;
-                        var sourceEnv = Source.Environments.First();
-                        var sourceEnvServer = sourceEnv.Server;
-                        var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
-                        var destEnv = Destination.ConnectControlViewModel.SelectedConnection;
+                    var destinationEnvironmentId = Destination.ConnectControlViewModel.SelectedConnection.EnvironmentID;
+                    var sourceEnv = Source.Environments.First();
+                    var sourceEnvServer = sourceEnv.Server;
+                    var notfolders = explorerTreeItems.Select(a => a.ResourceId).ToList();
+                    var destEnv = Destination.ConnectControlViewModel.SelectedConnection;
+
+                    await _asyncWorker.Start(async () =>
+                    {
                         if (ConflictItems != null)
                         {
                             foreach (var conflictItem in ConflictItems)
                             {
                                 if (destEnv?.ProxyLayer?.UpdateManagerProxy != null)
                                 {
-                                    var task = Task.Run(async () => await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
+                                    var task = _asyncWorker.Start(async () => await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
                                         conflictItem.DestinationId, conflictItem.DestinationName,
                                         conflictItem.SourceName));
                                     task.Wait();
@@ -328,16 +330,17 @@ namespace Warewolf.Studio.ViewModels
                             _shell.DeployResources(sourceEnvServer.EnvironmentID, destinationEnvironmentId, notfolders, Destination.DeployTests);
                         }
 
-                        DeploySuccessfull = true;
-                        DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
-                        var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);
-                        if (showDeploySuccessful == MessageBoxResult.OK)
-                        {
-                            DeploySuccessfull = false;
-                        }
-
                         await Destination.RefreshSelectedEnvironment();
                     });
+
+                    DeploySuccessfull = true;
+                    DeploySuccessMessage = $"{notfolders.Count} Resource{(notfolders.Count == 1 ? "" : "s")} Deployed Successfully.";
+                    var showDeploySuccessful = PopupController.ShowDeploySuccessful(DeploySuccessMessage);
+                    if (showDeploySuccessful == MessageBoxResult.OK)
+                    {
+                        DeploySuccessfull = false;
+                    }
+
                     UpdateServerCompareChanged(this, Guid.Empty);
                     _stats.ReCalculate();
                     Source.SelectedEnvironment.AsList().Apply(o => o.IsResourceChecked = false);
