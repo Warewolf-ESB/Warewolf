@@ -201,7 +201,7 @@ and parseAtom (lang:string) =
         | _ -> at
             
 and parseLanguageExpressionWithoutUpdate  (lang:string) : LanguageExpression=
-    if( lang.Contains"[[")
+    if( lang.Contains"[[" && lang.Contains"]]")
     then 
         let exp = ParseCache.TryFind lang
         match exp with 

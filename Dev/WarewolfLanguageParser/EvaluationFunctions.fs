@@ -211,7 +211,7 @@ and Clean(buffer : LanguageExpression) =
 
 ///Simple parse. convert a string to a language expression
 and parseLanguageExpressionWithoutUpdate (lang : string) : LanguageExpression = 
-    if (lang.Contains "[[") then 
+    if (lang.Contains "[[" && lang.Contains "]]") then 
         let exp = ParseCache.TryFind lang
         match exp with
         | Some a -> a
