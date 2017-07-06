@@ -400,8 +400,11 @@ namespace Warewolf.Studio.ViewModels
                         }
                         else
                         {
-                            var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
-                            StepOutputs?.Add(serviceTestOutput);
+                            if (!string.IsNullOrEmpty(lastInput.Value.Trim()))
+                            {
+                                var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
+                                StepOutputs?.Add(serviceTestOutput);
+                            }
                         }
                     }
                     else
