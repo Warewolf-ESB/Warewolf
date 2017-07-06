@@ -389,7 +389,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = FindFile-InParent $ServerPathSpecs
         if ($ServerPath.EndsWith(".zip")) {
-			Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
+			Expand-Archive "$PSScriptRoot\*Server.zip" "$PSScriptRoot\Server" -Force
 			$ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
 		}
         if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
@@ -665,7 +665,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         Write-Host Removed loose TRX files from VS install directory.
     }
 
-    if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+    if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
         $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     }
 
@@ -744,6 +744,88 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	        exit 1
         }
 
+        # Setup for remote execution
+        $ControllerNameTag = ""
+        $RemoteExecutionAttribute = ""
+        $AgentRoleTags = ""
+        $AgentRuleNameValue = "LocalMachineDefaultRole"
+        $TestTypeSpecificTags = ""
+        $DeploymentTags = "  <Deployment enabled=`"false`" />"
+        $ScriptsTag = ""
+        if ($Parallelize.IsPresent) {
+            $HardcodedTestController = "test-vs2017:6901"
+            if ($StartStudio.IsPresent) {
+                $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
+                $RemoteExecutionAttribute = " location=`"Remote`""
+                $AgentRuleNameValue = "Remote"
+                $AgentRoleTags = @"
+
+      <SelectionCriteria>
+        <AgentProperty name="UI" value="" />
+      </SelectionCriteria>
+"@
+                $TestTypeSpecificTags = @"
+
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+"@
+                $DeploymentTags = @"
+  <Deployment>
+    <DeploymentItem filename="..\DebugServer.zip" />
+    <DeploymentItem filename="..\DebugStudio.zip" />
+    <DeploymentItem filename="DebugServer.zip" />
+    <DeploymentItem filename="DebugStudio.zip" />
+    <DeploymentItem filename="..\Server.zip" />
+    <DeploymentItem filename="..\Studio.zip" />
+    <DeploymentItem filename="Server.zip" />
+    <DeploymentItem filename="Studio.zip" />
+    <DeploymentItem filename="Run Tests.ps1" />
+  </Deployment>
+"@
+                $StartupScriptPath = "$TestsResultsPath\startup.bat"
+                $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+                Copy-On-Write $StartupScriptPath
+                New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -ResourcesType $ResourcesType`""
+                Copy-On-Write $CleanupScriptPath
+                New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
+            } else {
+                if ($StartServer.IsPresent) {            
+                    $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
+                    $RemoteExecutionAttribute = " location=`"Remote`""
+                    $AgentRuleNameValue = "Remote"
+                    $TestTypeSpecificTags = @"
+
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+"@
+                    $DeploymentTags = @"
+  <Deployment>
+    <DeploymentItem filename="DebugServer.zip" />
+    <DeploymentItem filename="Run Tests.ps1" />
+  </Deployment>
+"@
+                    $StartupScriptPath = "$TestsResultsPath\startup.bat"
+                    $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+                    Copy-On-Write $StartupScriptPath
+                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType`""
+                    Copy-On-Write $CleanupScriptPath
+                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                    $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
+                }
+            }
+        }
+
         # Create test settings.
         $TestSettingsFile = ""
         if ($RecordScreen.IsPresent) {
@@ -752,22 +834,21 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"
+  id="
 "@ + [guid]::NewGuid() + @"
-`"
-  name=`"$JobName`"
-  enableDefaultDataCollectors=`"false`"
-  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+"
+  name="$JobName"
+  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout And Screen Recordings.</Description>
-  <Deployment enabled=`"false`" />
-  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />
-  <Execution>
-    <Timeouts testTimeout=`"600000`" />
-    <AgentRule name=`"LocalMachineDefaultRole`">
+$DeploymentTags
+  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />$ScriptsTag$ControllerNameTag
+  <Execution$RemoteExecutionAttribute>
+    <Timeouts testTimeout="600000" />$TestTypeSpecificTags
+    <AgentRule name="$AgentRuleNameValue">$AgentRoleTags
       <DataCollectors>
-        <DataCollector uri=`"datacollector://microsoft/VideoRecorder/1.0`" assemblyQualifiedName=`"Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`" friendlyName=`"Screen and Voice Recorder`">
+        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
           <Configuration>
-            <MediaRecorder sendRecordedMediaForPassedTestCase=`"false`" xmlns="" />
+            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
           </Configuration>
         </DataCollector>
       </DataCollectors>
@@ -782,16 +863,16 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings
-  id=`"
+  id="
 "@ + [guid]::NewGuid() + @"
-`"
-  name=`"$JobName`"
-  enableDefaultDataCollectors=`"false`"
-  xmlns=`"http://microsoft.com/schemas/VisualStudio/TeamTest/2010`">
+"
+  name="$JobName"
+  enableDefaultDataCollectors="false"
+  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>Run Tests With Timeout.</Description>
-  <Deployment enabled=`"false`" />
-  <Execution>
-    <Timeouts testTimeout=`"180000`" />
+  <Deployment enabled="false" />$ControllerNameTag
+  <Execution$RemoteExecutionAttribute>
+    <Timeouts testTimeout="180000" />
   </Execution>
 </TestSettings>
 "@)
@@ -811,8 +892,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
-            if ($Parallelize.IsPresent) {
-                Write-Host You have selected the `'Parallelize`' switch. FYI This script only supports running whole test assemblies in parallel and not each test in parallel. Only works with VSTest.
+            if ($Parallelize.IsPresent -and !$RecordScreen.IsPresent) {
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
@@ -846,7 +926,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
-            if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+            if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
                 Start-Server $ServerPath $ResourcesType
                 if ($StartStudio.IsPresent) {
                     Start-Studio
@@ -893,7 +973,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 }
             } else {
                 &"$TestRunnerPath"
-                if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
                     Cleanup-ServerStudio 10 1
                 }
             }

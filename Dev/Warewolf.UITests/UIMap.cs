@@ -33,11 +33,7 @@ namespace Warewolf.UITests
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.Disabled;
             Playback.PlaybackSettings.ShouldSearchFailFast = false;
             Playback.PlaybackSettings.ContinueOnError = false;
-#if DEBUG
             Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
-#else  
-            Playback.PlaybackSettings.ThinkTimeMultiplier = 2;
-#endif
             Playback.PlaybackSettings.MaximumRetryCount = _lenientMaximumRetryCount;
             Playback.PlaybackSettings.SearchTimeout = _lenientSearchTimeout;
             Playback.PlaybackSettings.MatchExactHierarchy = true;
@@ -90,7 +86,7 @@ namespace Warewolf.UITests
         [Given("The Warewolf Studio is running")]
         public void AssertStudioIsRunning()
         {
-            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\TestScripts\\Studio\\Startup.bat\" as an administrator and wait for it to complete before running any coded UI tests");
+            Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Run Tests.ps1\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "{Tab}", ModifierKeys.None);
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
 #if !DEBUG
