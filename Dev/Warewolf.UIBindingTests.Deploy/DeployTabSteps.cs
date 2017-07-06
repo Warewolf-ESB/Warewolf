@@ -588,7 +588,7 @@ namespace Warewolf.UIBindingTests.Deploy
         [Then(@"the User is prompted to ""(.*)"" one of the resources")]
         public void ThenTheUserIsPromptedToOneOfTheResources(string p0)
         {
-            GetPopup().Verify(a => a.ShowDeployNameConflict(It.IsAny<string>()));
+            GetPopup().Verify(a => a.ShowDeployResourceNameConflict(It.IsAny<string>()));
             GetViewModel().PopupController = GetPopup().Object;
         }
 
