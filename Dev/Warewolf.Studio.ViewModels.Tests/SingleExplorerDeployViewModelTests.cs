@@ -1483,7 +1483,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentViewModels = new ObservableCollection<IEnvironmentViewModel> { sourceEnv.Object };
             _sourceView.SetupGet(model => model.Environments).Returns(environmentViewModels);
             _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
-            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object, new SynchronousAsyncWorker())
             {
                 SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
                 DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
@@ -1502,7 +1502,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             popupController.Verify(controller => controller.ShowDeployConflict(It.IsAny<int>()), Times.AtLeastOnce);
             popupController.Verify(controller => controller.ShowDeploySuccessful(It.IsAny<string>()), Times.AtLeastOnce);
+            Assert.IsFalse(singleExplorerDeployViewModel.DeploySuccessfull);
             Assert.IsFalse(singleExplorerDeployViewModel.IsDeploying);
+            Assert.IsFalse(singleExplorerDeployViewModel.DeployInProgress);
         }
     }
 }
