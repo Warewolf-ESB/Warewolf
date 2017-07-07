@@ -59,6 +59,13 @@ namespace Warewolf.Storage
             _inner.AssignWithFrame(new AssignValue(name, valuerep), update);
         }
 
+        public void AssignStrict(string exp, string value, int update)
+        {
+            var name = UpdateDataSourceWithIterativeValue(_datasource, update, exp);
+            var valuerep = UpdateDataSourceWithIterativeValue(_datasource, update, value);
+            _inner.AssignStrict(name, valuerep, update);
+        }
+
         public int GetLength(string recordSetName)
         {
             return _inner.GetLength(recordSetName);
@@ -241,5 +248,7 @@ namespace Warewolf.Storage
         {
             _datasource = ds;
         }
+
+       
     }
 }
