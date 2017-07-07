@@ -177,7 +177,7 @@ namespace WarewolfParsingTest
             var exp = "[[myValue]]";
 
             //------------Execute Test---------------------------
-            var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), 1, emptyenv);
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), 1, emptyenv);
             //------------Assert Results-------------------------
             Assert.IsNotNull(envTemp.Scalar);
             Assert.AreEqual(1, envTemp.Scalar.Count);
@@ -195,10 +195,14 @@ namespace WarewolfParsingTest
             var exp = "[[myValue]]";
 
             //------------Execute Test---------------------------
-            var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), 1, emptyenv);
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), 1, emptyenv);
+            //PublicFunctions.AssignWithFrame(new AssignValue(exp, value), 1, emptyenv);
             //------------Assert Results-------------------------
+           
             Assert.IsNotNull(envTemp.Scalar);
             Assert.AreEqual(1, envTemp.Scalar.Count);
+            var a = PublicFunctions.EvalEnvExpression(exp, 0, false, envTemp);
+            var valueFromEnv = ExecutionEnvironment.WarewolfEvalResultToString(a);
             Assert.AreEqual(value, envTemp.Scalar["myValue"].ToString());
         }
 
@@ -213,7 +217,7 @@ namespace WarewolfParsingTest
             var exp = "[[myValue().name]]";
 
             //------------Execute Test---------------------------
-            var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), 1, emptyenv);
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), 1, emptyenv);
             //------------Assert Results-------------------------
             Assert.IsNotNull(envTemp.RecordSets);
             Assert.AreEqual(1, envTemp.RecordSets.Count);
@@ -225,6 +229,7 @@ namespace WarewolfParsingTest
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("Assign")]
+        [ExpectedException(typeof(Exception))]
         public void Assign_Given_Value_ContainsOpeningLanguageBracktes_Should_Assign_Value_Correclty_JsonObjects()
         {
             //------------Setup for test--------------------------
@@ -233,34 +238,14 @@ namespace WarewolfParsingTest
             var exp = "[[@myValue().name]]";
 
             //------------Execute Test---------------------------
-            var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), 1, emptyenv);
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), 1, emptyenv);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(envTemp.JsonObjects);
-            Assert.AreEqual(1, envTemp.JsonObjects.Count);
+            Assert.IsNotNull(envTemp.RecordSets);
+            Assert.AreEqual(1, envTemp.RecordSets.Count);
             var a = PublicFunctions.EvalEnvExpression(exp, 0, false, envTemp);
             var valueFromEnv = ExecutionEnvironment.WarewolfEvalResultToString(a);
             Assert.AreEqual(value, valueFromEnv);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("Assign")]
-        public void AssignJson_Given_Value_ContainsOpeningLanguageBracktes_Should_Assign_Value_Correclty()
-        {
-            //------------Setup for test--------------------------
-            var emptyenv = CreateEmptyEnvironment();
-            var value = "na[[thi";
-            var exp = "[[@myValue().name]]";
-
-            //------------Execute Test---------------------------
-            var envTemp = AssignEvaluation.evalJsonAssign(new AssignValue(exp, value), 1, emptyenv);
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(envTemp.JsonObjects);
-            Assert.AreEqual(1, envTemp.JsonObjects.Count);
-            var a = PublicFunctions.EvalEnvExpression(exp, 0, false, envTemp);
-            var valueFromEnv = ExecutionEnvironment.WarewolfEvalResultToString(a);
-            Assert.AreEqual(value, valueFromEnv);
-        }
+        }        
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
