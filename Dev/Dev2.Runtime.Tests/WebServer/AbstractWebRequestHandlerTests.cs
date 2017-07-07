@@ -1233,7 +1233,7 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 RunTestResult = RunResult.TestPassed
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
+            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1251,7 +1251,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestFailed,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
+            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1268,7 +1268,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestInvalid,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
+            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1285,7 +1285,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestResourceDeleted,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
+            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1302,7 +1302,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestResourcePathUpdated,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
+            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
@@ -1319,7 +1319,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 RunTestResult = RunResult.TestPending,
                 Message = ""
             };
-            var privateObject = new PrivateType(typeof(ServiceTestModelTOResultBuilder));
+            var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
             var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
             //------------Assert Results-------------------------
