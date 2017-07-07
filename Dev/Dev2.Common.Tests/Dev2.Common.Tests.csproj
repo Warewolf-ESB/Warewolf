@@ -72,7 +72,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ExtensionMethodsTest.cs" />
-    <Compile Include="LanguagebracketsValidatorTests.cs" />
     <Compile Include="MapperTests.cs" />
     <Compile Include="DistinctByTests.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />
