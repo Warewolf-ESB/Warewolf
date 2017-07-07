@@ -131,16 +131,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 IList<string> toSearch = FieldsToSearch.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                foreach(var s in toSearch)
+                foreach (var s in toSearch)
                 {
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(new DebugEvalResult(s, "In Field(s)", dataObject.Environment, update));
-                        if(Find != null)
+                        if (Find != null)
                         {
                             AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment, update));
                         }
-                        if(ReplaceWith != null)
+                        if (ReplaceWith != null)
                         {
                             AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With", dataObject.Environment, update));
                         }
@@ -193,24 +193,43 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             dataObject.Environment.AssignDataShape(Result);
                                         }
                                     }
+                                    try
+                                    {
                                         dataObject.Environment.ApplyUpdate(s, a =>
+                                        {
+                                            replacementCount = 0;
+                                            var replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount);
+                                            if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
+                                            {
+                                                dataObject.Environment.Assign(Result, replacementCount.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
+                                            }
+                                            replacementTotal += replacementCount;
+                                            counter++;
+                                            return DataStorage.WarewolfAtom.NewDataString(replace);
+                                        }, update);
+
+                                    }
+                                    catch (Exception)
                                     {
                                         replacementCount = 0;
-                                        var replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount);
+                                        var toReplaceIn = dataObject.Environment.Eval(s, update);
+                                        var a = ExecutionEnvironment.WarewolfEvalResultToString(toReplaceIn);
+                                        var replace = replaceOperation.Replace(a, findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount);
                                         if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
                                         {
-                                            dataObject.Environment.Assign(Result, replacementCount.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
-                                        }   
+                                            dataObject.Environment.AssignStrict(Result, replacementCount.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
+                                        }
                                         replacementTotal += replacementCount;
                                         counter++;
-                                        return DataStorage.WarewolfAtom.NewDataString(replace);
-                                    }, update);
+                                        dataObject.Environment.AssignStrict(s, replace, update == 0 ? counter : update);
+                                    }
+
                                 }
                                 if (DataListUtil.IsValueScalar(Result))
                                 {
                                     dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
                                 }
-                                
+
                                 if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                                 {
                                     if (!string.IsNullOrEmpty(Result))
@@ -224,28 +243,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
                     }
-                    
+
                 }
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    if(!string.IsNullOrEmpty(Result))
+                    if (!string.IsNullOrEmpty(Result))
                     {
                         AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                     }
                 }
                 // now push the result to the server
             }
-                // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception ex)
+            // ReSharper disable EmptyGeneralCatchClause
+            catch (Exception ex)
             {
                 Dev2Logger.Error("DSFReplace", ex);
                 allErrors.AddError(ex.Message);
             }
             finally
             {
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
@@ -255,7 +274,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.Environment.Assign(Result, null, update);
                 }
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
@@ -271,7 +290,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -280,7 +299,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -293,22 +312,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
 
-                    if(t.Item1 == FieldsToSearch)
+                    if (t.Item1 == FieldsToSearch)
                     {
                         FieldsToSearch = t.Item2;
                     }
 
-                    if(t.Item1 == Find)
+                    if (t.Item1 == Find)
                     {
                         Find = t.Item2;
                     }
 
-                    if(t.Item1 == ReplaceWith)
+                    if (t.Item1 == ReplaceWith)
                     {
                         ReplaceWith = t.Item2;
                     }
@@ -319,7 +338,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
-            if(itemUpdate != null)
+            if (itemUpdate != null)
             {
                 Result = itemUpdate.Item2;
             }
