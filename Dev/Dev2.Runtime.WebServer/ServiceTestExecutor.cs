@@ -52,7 +52,7 @@ namespace Dev2.Runtime.WebServer
             string executePayload;
             if (result != null)
             {
-                var resObj = result.BuildTestResultForWebRequest();
+                var resObj = result.BuildTestResultJSONForWebRequest();
                 executePayload = serializer.Serialize(resObj);
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
                 dataObject.Environment = null;
@@ -75,10 +75,18 @@ namespace Dev2.Runtime.WebServer
             }
             else
             {
-                var objArray = dataObject.RunSingleTestBatch(serviceName, userPrinciple, workspaceGuid, serializer, catalog,
-                    ref formatter);
+                if (!serviceName.EndsWith(".tests.trx"))
+                {
+                    var objArray = dataObject.RunSingleTestBatchAndReturnJSON(serviceName, userPrinciple, workspaceGuid, serializer, catalog,
+                        ref formatter);
+                    executePayload = serializer.Serialize(objArray);
+                }
+                else
+                {
+                    executePayload = dataObject.RunSingleTestBatchAndReturnTRX(serviceName, userPrinciple, workspaceGuid, serializer, catalog,
+                        ref formatter);
+                }
 
-                executePayload = serializer.Serialize(objArray);
             }
 
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
