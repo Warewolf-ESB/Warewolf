@@ -270,7 +270,7 @@ namespace Dev2.Runtime.WebServer
             List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, catalog);
 
             formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-            return ServiceTestModelTRXResultBuilder.BuildTestResultTRX(testResults);
+            return ServiceTestModelTRXResultBuilder.BuildTestResultTRX(serviceName, testResults);
         }
 
         private static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog catalog)

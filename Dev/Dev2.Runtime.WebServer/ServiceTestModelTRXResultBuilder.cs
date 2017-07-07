@@ -8,11 +8,11 @@ namespace Dev2.Runtime.WebServer
 {
     internal static class ServiceTestModelTRXResultBuilder
     {
-        public static string BuildTestResultTRX(List<IServiceTestModelTO> testResults)
+        public static string BuildTestResultTRX(string ServiceName, List<IServiceTestModelTO> TestResults)
         {
             List<Guid> testIDs = new List<Guid>();
             List<Guid> executionIDs = new List<Guid>();
-            foreach (var TestResult in testResults)
+            foreach (var TestResult in TestResults)
             {
                 testIDs.Add(Guid.NewGuid());
                 executionIDs.Add(Guid.NewGuid());
@@ -24,9 +24,9 @@ namespace Dev2.Runtime.WebServer
             var WarewolfServerVersion = "0.0.0.0";
             var WarewolfServerHostname = "localhost";
             var WarewolfServerUsername = "User";
-            var TotalTests = testResults.Count;
-            var TotalPassed = testResults.FindAll((result) => { return result.TestPassed; }).Count;
-            var TotalFailed = testResults.FindAll((result) => { return result.TestFailing; }).Count + testResults.FindAll((result) => { return result.TestInvalid; }).Count;
+            var TotalTests = TestResults.Count;
+            var TotalPassed = TestResults.FindAll((result) => { return result.TestPassed; }).Count;
+            var TotalFailed = TestResults.FindAll((result) => { return result.TestFailing; }).Count + TestResults.FindAll((result) => { return result.TestInvalid; }).Count;
 
             StringBuilder TRXFileContents = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             TRXFileContents.Append("<TestRun id=\"" + Guid.NewGuid().ToString() + "\" name=\"Warewolf Service Tests\" ");
@@ -41,16 +41,17 @@ namespace Dev2.Runtime.WebServer
     </ResultSummary>
     <TestDefinitions>");
             int testIDIndex = 0;
-            foreach (var TestResult in testResults)
+            foreach (var TestResult in TestResults)
             {
                 TRXFileContents.Append(@"
         <UnitTest name=""");
-                TRXFileContents.Append(TestResult.TestName + "\" storage=\"" + TestResult.TestName.Replace(" ", "_") + ".dll\" id=\"" + testIDs[testIDIndex] + @""">
+                TRXFileContents.Append(TestResult.TestName.Replace(" ", "_") + "\" storage=\"" + TestResult.TestName.Replace(" ", "_").Replace(" ", "_") + ".dll\" id=\"" + testIDs[testIDIndex] + @""">
             <Execution id=""");
                 TRXFileContents.Append(executionIDs[testIDIndex] + @""" />
-            <TestMethod codeBase=""");
-                TRXFileContents.Append(TestResult.TestName + ".dll\" adapterTypeName=\"Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture = neutral, PublicKeyToken=b03f5f7f11d50a3a\" className=\"");
-                TRXFileContents.Append(TestResult.TestName + ", Version=" + WarewolfServerVersion + ", Culture=neutral, PublicKeyToken=null\" name=\"" + TestResult.TestName + @""" />
+            <TestMethod ");
+                TRXFileContents.Append("codeBase=\"" + ServiceName.Replace(" ", "_") + ".dll\" adapterTypeName=\"Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=14.0.0.0, Culture = neutral, PublicKeyToken=b03f5f7f11d50a3a\" ");
+                TRXFileContents.Append("className=\"" + ServiceName.Replace(" ", "_") + ", Version=" + WarewolfServerVersion + ", Culture=neutral, PublicKeyToken=null\" ");
+                TRXFileContents.Append("name=\"" + TestResult.TestName.Replace(" ", "_") + @""" />
         </UnitTest>");
                 testIDIndex += 1;
             }
@@ -63,7 +64,7 @@ namespace Dev2.Runtime.WebServer
     </TestLists>
     <TestEntries>");
             testIDIndex = 0;
-            foreach (var TestResult in testResults)
+            foreach (var TestResult in TestResults)
             {
                 TRXFileContents.Append("\n        <TestEntry testId=\"");
                 TRXFileContents.Append(testIDs[testIDIndex] + "\" executionId=\"");
@@ -75,12 +76,12 @@ namespace Dev2.Runtime.WebServer
     </TestEntries>
     <Results>");
             testIDIndex = 0;
-            foreach (var TestResult in testResults)
+            foreach (var TestResult in TestResults)
             {
                 TRXFileContents.Append("\n    <UnitTestResult ");
                 TRXFileContents.Append("executionId=\"" + executionIDs[testIDIndex] + "\" ");
                 TRXFileContents.Append("testId=\"" + testIDs[testIDIndex] + "\" ");
-                TRXFileContents.Append("testName=\"" + TestResult.TestName + "\" computerName=\"" + WarewolfServerHostname + "\" ");
+                TRXFileContents.Append("testName=\"" + TestResult.TestName.Replace(" ", "_") + "\" computerName=\"" + WarewolfServerHostname + "\" ");
                 TRXFileContents.Append("duration=\"" + TestDuration + "\" ");
                 TRXFileContents.Append("startTime=\"" + TestStartDateTime + "\" ");
                 TRXFileContents.Append("endTime=\"" + DateTime.Now.ToString("o", CultureInfo.InvariantCulture) + "\" ");

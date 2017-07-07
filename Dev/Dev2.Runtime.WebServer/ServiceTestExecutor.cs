@@ -75,7 +75,8 @@ namespace Dev2.Runtime.WebServer
             }
             else
             {
-                if (!serviceName.EndsWith(".tests.trx"))
+                const string TrxExtension = ".tests.trx";
+                if (!serviceName.EndsWith(TrxExtension, StringComparison.CurrentCultureIgnoreCase))
                 {
                     var objArray = dataObject.RunSingleTestBatchAndReturnJSON(serviceName, userPrinciple, workspaceGuid, serializer, catalog,
                         ref formatter);
@@ -83,7 +84,7 @@ namespace Dev2.Runtime.WebServer
                 }
                 else
                 {
-                    executePayload = dataObject.RunSingleTestBatchAndReturnTRX(serviceName, userPrinciple, workspaceGuid, serializer, catalog,
+                    executePayload = dataObject.RunSingleTestBatchAndReturnTRX(serviceName.Replace(TrxExtension, string.Empty), userPrinciple, workspaceGuid, serializer, catalog,
                         ref formatter);
                 }
 
