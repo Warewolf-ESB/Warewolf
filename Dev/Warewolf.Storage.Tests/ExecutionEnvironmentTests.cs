@@ -591,6 +591,7 @@ namespace Warewolf.Storage.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
+        [ExpectedException(typeof(Exception))]
         public void GivenInvalidExpression_ExecutionEnvironmentEval_ShouldThrowException()
         {
             Assert.IsNotNull(_environment);
@@ -604,9 +605,8 @@ namespace Warewolf.Storage.Tests
         {
             Assert.IsNotNull(_environment);
             const string expression = "[[rec(0).a]";
-            var invalidScalar = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(expression));
             var warewolfEvalResult = _environment.Eval(expression, 0);
-            Assert.AreEqual(invalidScalar, warewolfEvalResult);
+            Assert.AreEqual(_warewolfEvalNothingResult, warewolfEvalResult);
         }
 
         [TestMethod]
@@ -650,10 +650,10 @@ namespace Warewolf.Storage.Tests
         [Owner("Sanele Mthembu")]
         public void GivenInvalidScalar_ExecutionEnvironmentEvalForJason_ShouldException()
         {
+
             Assert.IsNotNull(_environment);
             var warewolfEvalResult = _environment.EvalForJson(InvalidScalar);
-            var invalidScalar = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(InvalidScalar));
-            Assert.AreEqual(invalidScalar, warewolfEvalResult);
+            Assert.AreEqual(_warewolfEvalNothingResult, warewolfEvalResult);
             warewolfEvalResult = _environment.EvalForJson("[[rec().a]]");
             Assert.IsNotNull(warewolfEvalResult);
         }
