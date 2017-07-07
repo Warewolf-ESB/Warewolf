@@ -360,7 +360,7 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-		$MergedSnapshot = "$PSScriptRoot\$JobName DotCover.dcvr"
+		$MergedSnapshot = "$TestsResultsPath\$JobName Merged Server and Studio DotCover.dcvr"
 		Copy-On-Write "$MergedSnapshot"
         &"$DotCoverPath" "merge" "/Source=`"$TestsResultsPath\$JobName Server DotCover.dcvr`";`"$TestsResultsPath\$JobName Studio DotCover.dcvr`"" "/Output=`"$MergedSnapshot`"" "/LogFile=`"$TestsResultsPath\ServerAndStudioDotCoverSnapshotMerge.log`""
     }
@@ -389,8 +389,8 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = FindFile-InParent $ServerPathSpecs
         if ($ServerPath.EndsWith(".zip")) {
-			Expand-Archive "$PSScriptRoot\*Server.zip" "$PSScriptRoot\Server" -Force
-			$ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
+			Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
+			$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
 		}
         if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
             Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
@@ -479,18 +479,6 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 }
 
 function Start-Server([string]$ServerPath,[string]$ResourcesType) {
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = FindFile-InParent $ServerPathSpecs
-        if ($ServerPath.EndsWith(".zip")) {
-			Expand-Archive "$PSScriptRoot\*Server.zip" "$CurrentDirectory\Server" -Force
-			$ServerPath = "$PSScriptRoot\Server\" + $ServerExeName
-		}
-        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
-            sleep 30
-            exit 1
-        }
-    }
     Write-Host Cleaning up old resources in Warewolf ProgramData and copying in new resources from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*").
     Cleanup-ServerStudio 10 1
     Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
@@ -510,8 +498,8 @@ function Start-Studio {
     if ($StudioPath -eq "" -or !(Test-Path $StudioPath)) {
         $StudioPath = FindFile-InParent $StudioPathSpecs
         if ($StudioPath.EndsWith(".zip")) {
-	        Expand-Archive "$StudioPath" "$PSScriptRoot\Studio" -Force
-	        $StudioPath = "$PSScriptRoot\Studio\" + $StudioExeName
+	        Expand-Archive "$StudioPath" "$TestsResultsPath\Studio" -Force
+	        $StudioPath = "$TestsResultsPath\Studio\" + $StudioExeName
         }
         if ($ServerPath -eq "" -or !(Test-Path $StudioPath)) {
             Write-Host Studio path not found: $StudioPath
