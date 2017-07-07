@@ -738,10 +738,29 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $AgentRoleTags = ""
         $AgentRuleNameValue = "LocalMachineDefaultRole"
         $TestTypeSpecificTags = ""
-        $DeploymentTags = "  <Deployment enabled=`"false`" />"
+        $DeploymentTags = "`n  <Deployment enabled=`"false`" />"
         $ScriptsTag = ""
+        $DataCollectorTags = ""
+        $NamingSchemeTag = ""
+        $TestRunName = "Run $JobName With Timeout"
+        $TestsTimeout = "600000"
         if ($Parallelize.IsPresent) {
             $HardcodedTestController = "test-vs2017:6901"
+            if ($RecordScreen.IsPresent) {
+                $DataCollectorTags = @"
+
+      <DataCollectors>
+        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
+          <Configuration>
+            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
+          </Configuration>
+        </DataCollector>
+      </DataCollectors>
+"@
+                $NamingSchemeTag = "`n  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />"
+                $TestRunName += " and Screen Recording"
+                $TestsTimeout = "180000"
+            }
             if ($StartStudio.IsPresent) {
                 $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
                 $RemoteExecutionAttribute = " location=`"Remote`""
@@ -816,7 +835,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 
         # Create test settings.
         $TestSettingsFile = ""
-        if ($RecordScreen.IsPresent) {
+        if (!$DisableTimeouts.IsPresent -or $RecordScreen.IsPresent) {
             $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
             Copy-On-Write $TestSettingsFile
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
@@ -827,44 +846,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "
   name="$JobName"
   xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>Run Tests With Timeout And Screen Recordings.</Description>
-$DeploymentTags
-  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />$ScriptsTag$ControllerNameTag
+  <Description>$TestRunName.</Description>$DeploymentTags$NamingSchemeTag$ScriptsTag$ControllerNameTag
   <Execution$RemoteExecutionAttribute>
-    <Timeouts testTimeout="600000" />$TestTypeSpecificTags
-    <AgentRule name="$AgentRuleNameValue">$AgentRoleTags
-      <DataCollectors>
-        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
-          <Configuration>
-            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
-          </Configuration>
-        </DataCollector>
-      </DataCollectors>
+    <Timeouts testTimeout="$TestsTimeout" />$TestTypeSpecificTags
+    <AgentRule name="$AgentRuleNameValue">$AgentRoleTags$DataCollectorTags
     </AgentRule>
   </Execution>
 </TestSettings>
 "@)
-        } else {
-            if (!$DisableTimeouts.IsPresent) {
-                $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
-                Copy-On-Write $TestSettingsFile
-                [system.io.file]::WriteAllText($TestSettingsFile,  @"
-<?xml version=`"1.0`" encoding="UTF-8"?>
-<TestSettings
-  id="
-"@ + [guid]::NewGuid() + @"
-"
-  name="$JobName"
-  enableDefaultDataCollectors="false"
-  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>Run Tests With Timeout.</Description>
-  <Deployment enabled="false" />$ControllerNameTag
-  <Execution$RemoteExecutionAttribute>
-    <Timeouts testTimeout="180000" />
-  </Execution>
-</TestSettings>
-"@)
-            }
         }
         if (!$MSTest.IsPresent) {
             #Resolve test results file name
@@ -880,7 +869,7 @@ $DeploymentTags
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
-            if ($Parallelize.IsPresent -and !$RecordScreen.IsPresent) {
+            if ($Parallelize.IsPresent -and !$StartStudio.IsPresent) {
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
@@ -1042,7 +1031,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
     $WarewolfServiceData = (ConvertFrom-Json $ConnectToWarewolfServer).Apis
     $WarewolfServiceTestData = @()
     foreach ($WarewolfService in $WarewolfServiceData) {
-        $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.TrimEnd("n").TrimEnd("o").TrimEnd("s").TrimEnd("j").TrimEnd(".") + ".tests"
+        $WarewolfServiceTestURL = "http://" + $WarewolfService.BaseUrl.Replace(".json", ".tests")
         Write-Warning "Connecting to $WarewolfServiceTestURL"
         try {
             if (!$DisableTimeouts.IsPresent) {
