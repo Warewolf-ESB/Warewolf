@@ -67,11 +67,12 @@
     </Compile>
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="JsonResource.cs" />
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ExtensionMethodsTest.cs" />
+    <Compile Include="LanguagebracketsValidatorTests.cs" />
     <Compile Include="MapperTests.cs" />
     <Compile Include="DistinctByTests.cs" />
     <Compile Include="Utils\TextUtilsTests.cs" />

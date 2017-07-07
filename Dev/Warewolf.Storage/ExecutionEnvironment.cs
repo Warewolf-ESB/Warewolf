@@ -114,6 +114,20 @@ namespace Warewolf.Storage
             CommitAssign();
         }
 
+        public void AssignStrict(string exp, string value, int update)
+        {
+            if (string.IsNullOrEmpty(exp))
+            {
+                return;
+            }
+
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), update, _env);
+
+            _env = envTemp;
+            CommitAssign();
+        }
+
+
         public void AssignWithFrame(IAssignValue values, int update)
         {
             try
