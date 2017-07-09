@@ -818,7 +818,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
                     $DeploymentTags = @"
   <Deployment>
+    <DeploymentItem filename="..\DebugServer.zip" />
     <DeploymentItem filename="DebugServer.zip" />
+    <DeploymentItem filename="..\Server.zip" />
+    <DeploymentItem filename="Server.zip" />
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
