@@ -127,17 +127,26 @@ namespace Dev2.Workspaces
 
         public Guid GetWorkspaceID(WindowsIdentity identity)
         {
-            var userID = identity.Name;
-            if(identity.User != null)
-            {
-                userID = identity.User.Value;
-            }
             Guid workspaceID;
-            if(!_userMap.TryGetValue(userID, out workspaceID))
+            try
             {
-                workspaceID = Guid.NewGuid();
-                _userMap.TryAdd(userID, workspaceID);
-                WriteUserMap(_userMap);
+                var userID = identity.Name;
+                if (identity.User != null)
+                {
+                    userID = identity.User.Value;
+                }
+                
+                if (!_userMap.TryGetValue(userID, out workspaceID))
+                {
+                    workspaceID = Guid.NewGuid();
+                    _userMap.TryAdd(userID, workspaceID);
+                    WriteUserMap(_userMap);
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex.Message);
+                workspaceID = ServerWorkspaceID;
             }
             return workspaceID;
         }

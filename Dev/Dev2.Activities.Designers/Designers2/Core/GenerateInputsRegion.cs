@@ -4,6 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Common;
+using System.Linq;
+using System.Collections;
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
 namespace Dev2.Activities.Designers2.Core
@@ -18,7 +21,6 @@ namespace Dev2.Activities.Designers2.Core
             IsEnabled = true;
         }
 
-        #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
@@ -48,10 +50,6 @@ namespace Dev2.Activities.Designers2.Core
             set;
         }
 
-        #endregion
-
-        #region Implementation of IGenerateInputArea
-
         public ICollection<IServiceInput> Inputs
         {
             get
@@ -60,14 +58,13 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                _inputs = value;
+
+                var distinct = value.Distinct().ToList();                
+                _inputs = distinct;
                 OnPropertyChanged();
             }
         }
 
-        #endregion
-
-        #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -77,6 +74,5 @@ namespace Dev2.Activities.Designers2.Core
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #endregion
     }
 }
