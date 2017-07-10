@@ -33,7 +33,7 @@ namespace Warewolf.Core
             {
                 return true;
             }
-            return string.Equals(Name, other.Name) && RequiredField.Equals(other.RequiredField) && ActionName.Equals(other.ActionName) && EmptyIsNull.Equals(other.EmptyIsNull);
+            return string.Equals(Name, other.Name) && RequiredField.Equals(other.RequiredField) && (ActionName?.Equals(other.ActionName) ?? true) && EmptyIsNull.Equals(other.EmptyIsNull);
         }
 
         /// <summary>
