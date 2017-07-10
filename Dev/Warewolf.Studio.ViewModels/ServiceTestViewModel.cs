@@ -1848,6 +1848,32 @@ namespace Warewolf.Studio.ViewModels
             }
             return true;
         }
+
+        private bool IsValidName(IEnumerable<string> testNames)
+        {
+            foreach (var name in testNames)
+            {
+                ErrorMessage = string.Empty;
+                if (string.IsNullOrEmpty(name))
+                {
+                    ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'name'");
+                    var popupController = CustomContainer.Get<IPopupController>();
+                    popupController?.Show(Resources.Languages.Core.ServiceTestEmptyTestNameHeader,
+                        Resources.Languages.Core.ServiceTestRunAllUnsavedTestsHeader, MessageBoxButton.OK, MessageBoxImage.Error, null,
+                        false, true, false, false, false, false);
+                }
+                else if (NameHasInvalidCharacters(name))
+                {
+                    ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'name'");
+                }
+                else if (name.Trim() != name)
+                {
+                    ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
+                }
+                return string.IsNullOrEmpty(ErrorMessage);
+            }
+            return true;
+        }
         private static bool NameHasInvalidCharacters(string name)
         {
             return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
@@ -1931,6 +1957,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void Save(List<IServiceTestModel> serviceTestModels)
         {
+            if (!IsValidName(Tests.Select(p => p.TestName).ToList())) return;
             MarkPending(serviceTestModels);
             var serviceTestModelTos = serviceTestModels.Select(CreateServiceTestModelTO).ToList();
 
@@ -2329,9 +2356,9 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => Tests);
                     SelectedServiceTest = null;
                     if (Tests.Count == 1 && Tests.Single().GetType() == typeof(DummyServiceTest))
-                        {
-                            CanSave = false;
-                        }
+                    {
+                        CanSave = false;
+                    }
                 }
                 catch (Exception ex)
                 {
