@@ -299,7 +299,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile><Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')"/>
-	<None Include="..\Run Tests.ps1">
+	  <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -365,7 +365,6 @@
     </Compile>
     <Compile Include="CustomControls\Progress\ProgressFileDownloader.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\Logging\EnumHelper.cs" />
     <Compile Include="Settings\Logging\ILogSettings.cs" />
     <Compile Include="Settings\Logging\LoggingView.xaml.cs">
