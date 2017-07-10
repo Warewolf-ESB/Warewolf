@@ -1858,8 +1858,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'name'");
                     var popupController = CustomContainer.Get<IPopupController>();
-                    popupController?.Show(Resources.Languages.Core.ServiceTestEmptyTestNameHeader,
-                        Resources.Languages.Core.ServiceTestEmptyTestNameHeader, MessageBoxButton.OK, MessageBoxImage.Error, null,
+                    popupController?.Show(Resources.Languages.Core.ServiceTestEmptyTestNameHeader,"Empty Test Name"
+                        , MessageBoxButton.OK, MessageBoxImage.Error, null,
                         false, true, false, false, false, false);
                 }
                 else if (NameHasInvalidCharacters(name))
