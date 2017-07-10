@@ -206,6 +206,74 @@ and evalJsonAssign (value : IAssignValue) (update : int) (env : WarewolfEnvironm
 and evalAssign (exp : string) (value : string) (update : int) (env : WarewolfEnvironment) = 
     evalAssignWithFrame (new WarewolfParserInterop.AssignValue(exp, value)) update env
 
+and evalMultiAssignOpStrict (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
+    let l = EvaluationFunctions.parseLanguageExpressionStrict value.Name update    
+    let left = 
+        match l with
+        | ComplexExpression a -> 
+            if List.exists (fun a -> 
+                   match a with
+                   | ScalarExpression _ -> true
+                   | RecordSetExpression _ -> true
+                   | _ -> false) a
+            then l
+            else LanguageExpression.WarewolfAtomExpression(languageExpressionToString l |> DataString)
+        | _ -> l    
+    let rightParse = 
+        if value.Value = null then LanguageExpression.WarewolfAtomExpression Nothing
+        else EvaluationFunctions.parseLanguageExpressionStrict value.Value update    
+    let right = 
+        if value.Value = null then WarewolfAtomResult Nothing
+        //else eval env update false value.Value  
+        else WarewolfAtomResult(DataString value.Value) 
+    let shouldUseLast = 
+        match rightParse with
+        | RecordSetExpression a -> 
+            match a.Index with
+            | IntIndex _ -> true
+            | Star -> false
+            | Last -> true
+            | _ -> true
+        | ComplexExpression a -> let exp = languageExpressionToString rightParse
+                                 not (exp.Contains("(*)"))
+        | _ -> true
+    
+    match right with
+    | WarewolfAtomResult x -> 
+        match left with
+        | ScalarExpression a -> addToScalars env a x
+        | RecordSetExpression b -> addToRecordSetFramed env b x
+        | RecordSetNameExpression c ->
+                                    if env.RecordSets.ContainsKey(value.Name) then env
+                                    else evalJsonAssign value  update env
+        | JsonIdentifierExpression d -> failwith (sprintf "invalid variable assigned to %s" value.Name)
+        | WarewolfAtomExpression _ -> failwith (sprintf "invalid variable assigned to %s" value.Name)
+        | _ -> 
+            let expression = (evalToExpression env update value.Name)
+            if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
+            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value))
+    | WarewolfAtomListresult x -> 
+        match left with
+        | ScalarExpression a -> addToScalars env a (Seq.last x)
+        | RecordSetExpression b -> 
+            match b.Index with
+            | Star -> addToRecordSetFramedWithAtomList env b x shouldUseLast update (Some value)
+            | Last -> addToRecordSetFramedWithAtomList env b x true update (Some value)
+            | _ -> 
+                try 
+                    addToRecordSetFramed env b x.[0]
+                with :? Dev2.Common.Common.NullValueInVariableException as ex -> 
+                    raise 
+                        (new Dev2.Common.Common.NullValueInVariableException("The expression result is  null", 
+                                                                             value.Value))
+        | WarewolfAtomExpression _ -> failwith "invalid variable assigned to"
+        | _ -> 
+            let expression = (evalToExpression env update value.Name)
+            if System.String.IsNullOrEmpty(expression) || (expression) = "[[]]" || (expression) = value.Name then env
+            else evalMultiAssignOp env update (new WarewolfParserInterop.AssignValue(expression, value.Value))
+    | _ -> failwith "assigning an entire recordset to a variable is not defined"
+
+
 and evalMultiAssignOp (env : WarewolfEnvironment) (update : int) (value : IAssignValue) = 
     let l = EvaluationFunctions.parseLanguageExpression value.Name update    
     let left = 
@@ -409,6 +477,11 @@ and updateColumnWithValue (rset : WarewolfRecordset) (columnName : string) (valu
 
 and evalAssignWithFrame (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     let envass = evalMultiAssignOp env update value
+    let recsets = envass.RecordSets
+    { envass with RecordSets = recsets }
+
+and evalAssignWithFrameStrict (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
+    let envass = evalMultiAssignOpStrict env update value
     let recsets = envass.RecordSets
     { envass with RecordSets = recsets }
 

@@ -65,6 +65,9 @@ let EvalMultiAssign (values : IAssignValue seq) (update : int) (env : WarewolfEn
 let EvalAssignWithFrame (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
     AssignEvaluation.evalAssignWithFrame value update env
 
+let EvalAssignWithFrameStrict (value : IAssignValue) (update : int) (env : WarewolfEnvironment) = 
+    AssignEvaluation.evalAssignWithFrameStrict value update env
+
 let EvalAssignFromList (value : string) (data : WarewolfAtom seq) (env : WarewolfEnvironment) (update : int) 
     (shouldUseLast : bool) = AssignEvaluation.evalMultiAssignList env data value update shouldUseLast
 
