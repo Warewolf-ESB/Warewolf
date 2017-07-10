@@ -24,7 +24,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         [TestCategory("Workflow Testing")]
         public void Creating_A_Test_With_Blank_Name()
         {
-            UIMap.Click_View_Tests_In_Explorer_Context_Menu("RecBug");
+            UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "First 'Hello World' test does not exist as expected.");
             WorkflowServiceTestingUIMap.Click_Create_New_Tests(true, 4);
             WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestNameTextbox.Text = "";
