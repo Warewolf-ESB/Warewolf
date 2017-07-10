@@ -49,7 +49,7 @@ namespace Warewolf.UITests.Scheduler
         {
             Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.ScheduleNewTaskListItem.SchedulerNewTaskButton);
             Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.EnableorDisablethescCheckBox);
-            Assert.IsTrue(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton));
+            Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton.Exists, "Delete Button does not exist on Scheduler Tab.");
             Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.EnableorDisablethescCheckBox);
             Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton));
         }
@@ -59,9 +59,9 @@ namespace Warewolf.UITests.Scheduler
         public void Delete_SchedulerTask_Removes_Task_From_List_UITests()
         {
             Keyboard.SendKeys(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList, "N", ModifierKeys.Control);
-            Assert.IsTrue(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem), "A new item was not added correctly.");
+            Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.Exists, "A new item was not added correctly.");
             Mouse.Click(SchedulerUIMap.MainStudioWindow.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContent.SchedulerView.SchedulesList.NewTask1ResourceListItem.EnableorDisablethescCheckBox);
-            Assert.IsTrue(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton));
+            Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton.Exists, "Delete Button does not exist on Scheduler Tab.");
             Mouse.Click(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem.DeleteButton);
             DialogsUIMap.Click_MessageBox_Yes();
             Assert.IsFalse(UIMap.ControlExistsNow(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewTask1ResourceListItem), "A new item was not deleted correctly.");

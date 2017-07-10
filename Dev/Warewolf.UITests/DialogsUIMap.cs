@@ -47,8 +47,8 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         [Then(@"Explorer Items appear on the Save Dialog Explorer Tree")]
         public void ExplorerItemsAppearOnTheSaveDialogExplorerTree()
         {
-            Assert.IsTrue(UIMap.ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem));
-            Assert.IsTrue(UIMap.ControlExistsNow(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem));
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.Exists);
+            Assert.IsTrue(SaveDialogWindow.ExplorerView.ExplorerTree.localhost.SecondItem.Exists);
         }
 
         [When("I Enter Config File In Select Files Window")]

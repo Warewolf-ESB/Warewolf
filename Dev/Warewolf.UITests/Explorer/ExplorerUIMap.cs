@@ -163,8 +163,8 @@ namespace Warewolf.UITests.Explorer.ExplorerUIMapClasses
         [Then(@"Explorer Items appear on the Explorer Tree")]
         public void ExplorerItemsAppearOnTheExplorerTree()
         {
-            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem), "First item does not Exist on the Explorer");
-            Assert.IsTrue(UIMap.ControlExistsNow(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem), "Second item does not Exist on the Explorer");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "First item does not Exist on the Explorer");
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.Exists, "Second item does not Exist on the Explorer");
         }
 
         [Given(@"Filter Textbox is cleared")]
