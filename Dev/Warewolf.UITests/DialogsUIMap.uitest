@@ -40,42 +40,7 @@
     </Group>
   </Configuration>
   <InitializeActions />
-  <ExecuteActions>
-    <AssertAction UIObjectName="DialogsUIMap.MessageBoxWindow">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>Window</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-    <AssertAction UIObjectName="DialogsUIMap.MessageBoxWindow.UITheTestNamealreadyexText">
-      <ParameterName />
-      <PropertyName>ControlType</PropertyName>
-      <ExpectedValue>Text</ExpectedValue>
-      <MessageOnValidationFailure />
-      <Type>String</Type>
-      <PropertyCondition>AreEqual</PropertyCondition>
-    </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod2">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Assertion</MarkerRegionType>
-    </TestStepMarkerAction>
-  </ExecuteActions>
+  <ExecuteActions />
   <CleanupActions />
   <OnErrorActions />
   <Maps>
