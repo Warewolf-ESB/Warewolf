@@ -127,14 +127,16 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             if (_action?.SelectedAction != null)
             {
                 var selectedActionInputs = _action.SelectedAction.Inputs;
-                var selectedAction = ((DbAction)((ActionRegion.DbActionRegion)_action).SelectedAction).Name;
+                var selectedAction = ((DbAction)_action.SelectedAction).Name;
                 var isTheSameActionWithPrvious = Inputs.All(input => input.ActionName?.Equals(selectedAction) ?? false);
                 if (Inputs.Any() && isTheSameActionWithPrvious)
                 {
-                    if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputValueComparer()))
+                    if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputNameValueComparer()))
                     {
-                        var newInputs = Inputs.Except(selectedActionInputs);
-                        foreach (var serviceInput in newInputs)
+                        var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
+                        var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
+                        _datatalistMapper.MapInputsToDatalist(serviceInputs);
+                        foreach (var serviceInput in serviceInputs)
                         {
                             Inputs.Add(serviceInput);
                         }
@@ -269,11 +271,24 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         #endregion
     }
 
-    internal class ServiceInputValueComparer : IEqualityComparer<IServiceInput>
+    internal class ServiceInputNameValueComparer : IEqualityComparer<IServiceInput>
     {
         public bool Equals(IServiceInput x, IServiceInput y)
         {
             return x.Value.Equals(y.Value) && x.Name.Equals(y.Name);
+        }
+
+        public int GetHashCode(IServiceInput obj)
+        {
+            return obj.GetHashCode();
+        }
+    }
+
+    internal class ServiceInputNameComparer : IEqualityComparer<IServiceInput>
+    {
+        public bool Equals(IServiceInput x, IServiceInput y)
+        {
+            return x.Name.Equals(y.Name);
         }
 
         public int GetHashCode(IServiceInput obj)
