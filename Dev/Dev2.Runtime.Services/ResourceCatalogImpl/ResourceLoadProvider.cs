@@ -423,14 +423,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             List<IResource> resources;
             if(_workspaceResources.TryGetValue(workspaceID, out resources))
             {
-                foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
             }
 
             if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
             {
                 if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                 {
-                    foundResource = resources.FirstOrDefault(resource => resource.ResourceID == resourceID);
+                    foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
                 }
             }
             return GetResourceContents(foundResource);

@@ -70,7 +70,14 @@ namespace WarewolfCOMIPC
                     {
                         var newException = new Exception("Error executing COM",e);
                         var sw = new StreamWriter(pipe);
-                        serializer.Serialize(sw, newException);
+                        try
+                        {
+                            serializer.Serialize(sw, newException);
+                        }
+                        catch
+                        {
+                            Console.WriteLine("IpcClient Data not read nor Deserialized to Server Pipe Stream");
+                        } 
                         sw.Flush();
                         Console.WriteLine("Execution errored " + data.MethodToCall);
                     }

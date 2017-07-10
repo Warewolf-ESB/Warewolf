@@ -105,7 +105,18 @@ namespace WarewolfCOMIPC.Client
                         }
                         var ipCreturn = result as string;
                         var reader = new StringReader(ipCreturn ?? "");
-                        return serializer.Deserialize(reader, typeof(Type));
+
+                        try
+                        {
+                           return serializer.Deserialize(reader, typeof(Type));
+                        }
+                        catch (Exception ex)
+                        {
+                            // Do nothing was not an exception
+                            var baseException = ex.GetBaseException();
+                            return new KeyValuePair<bool, string>(true, baseException.Message);
+                        }
+                        
 
                     }
                 case Execute.GetMethods:
