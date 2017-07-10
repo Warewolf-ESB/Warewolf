@@ -145,8 +145,8 @@ namespace Dev2.Workspaces
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex.Message);
                 workspaceID = ServerWorkspaceID;
+                Dev2Logger.Error(ex.Message, workspaceID.ToString());
             }
             return workspaceID;
         }
