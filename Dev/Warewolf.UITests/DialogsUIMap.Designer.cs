@@ -535,7 +535,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
                 {
                     this.mUITheTestNamealreadyexText = new WpfText(this);
                     #region Search Criteria
-                    this.mUITheTestNamealreadyexText.SearchProperties[WpfText.PropertyNames.Name] = "The Test Name already exists. Please choose a unique name.";
+                    this.mUITheTestNamealreadyexText.SearchProperties[WpfText.PropertyNames.Name] = "Empty Test Name";
                     this.mUITheTestNamealreadyexText.WindowTitles.Add("WarewolfMessageBox");
                     #endregion
                 }
