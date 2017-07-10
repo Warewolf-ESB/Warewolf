@@ -1849,7 +1849,7 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        private bool IsValidName(IEnumerable<string> testNames)
+        private bool AllNamesValid(IEnumerable<string> testNames)
         {
             foreach (var name in testNames)
             {
@@ -1957,7 +1957,7 @@ namespace Warewolf.Studio.ViewModels
 
         private void Save(List<IServiceTestModel> serviceTestModels)
         {
-            if (!IsValidName(Tests.Select(p => p.TestName).ToList())) return;
+            if (!AllNamesValid(Tests.Select(p => p.TestName).ToList())) return;
             MarkPending(serviceTestModels);
             var serviceTestModelTos = serviceTestModels.Select(CreateServiceTestModelTO).ToList();
 
