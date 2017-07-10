@@ -270,30 +270,4 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         #endregion
     }
-
-    internal class ServiceInputNameValueComparer : IEqualityComparer<IServiceInput>
-    {
-        public bool Equals(IServiceInput x, IServiceInput y)
-        {
-            return x.Value.Equals(y.Value) && x.Name.Equals(y.Name);
-        }
-
-        public int GetHashCode(IServiceInput obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
-
-    internal class ServiceInputNameComparer : IEqualityComparer<IServiceInput>
-    {
-        public bool Equals(IServiceInput x, IServiceInput y)
-        {
-            return x.Name.Equals(y.Name);
-        }
-
-        public int GetHashCode(IServiceInput obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
 }
