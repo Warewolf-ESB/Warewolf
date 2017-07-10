@@ -30,57 +30,7 @@ namespace Warewolf.UITests.DialogsUIMapClasses
     public partial class DialogsUIMap
     {
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfWindow messageBoxWindow = this.MessageBoxWindow;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'WarewolfMessageBox' window equals 'Window'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.MessageBoxWindowControlType, messageBoxWindow.ControlType.ToString());
-        }
-        
-        /// <summary>
-        /// AssertMethod2 - Use 'AssertMethod2ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod2()
-        {
-            #region Variable Declarations
-            WpfText uITheTestNamealreadyexText = this.MessageBoxWindow.UITheTestNamealreadyexText;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'The Test Name already exists. Please choose a uniq...' label equals 'Text'
-            Assert.AreEqual(this.AssertMethod2ExpectedValues.UITheTestNamealreadyexTextControlType, uITheTestNamealreadyexText.ControlType.ToString());
-        }
-        
         #region Properties
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
-            }
-        }
-        
-        public virtual AssertMethod2ExpectedValues AssertMethod2ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod2ExpectedValues == null))
-                {
-                    this.mAssertMethod2ExpectedValues = new AssertMethod2ExpectedValues();
-                }
-                return this.mAssertMethod2ExpectedValues;
-            }
-        }
-        
         public MessageBoxWindow MessageBoxWindow
         {
             get
@@ -227,10 +177,6 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         #endregion
         
         #region Fields
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
-        private AssertMethod2ExpectedValues mAssertMethod2ExpectedValues;
-        
         private MessageBoxWindow mMessageBoxWindow;
         
         private SaveDialogWindow mSaveDialogWindow;
@@ -254,36 +200,6 @@ namespace Warewolf.UITests.DialogsUIMapClasses
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'WarewolfMessageBox' window equals 'Window'
-        /// </summary>
-        public string MessageBoxWindowControlType = "Window";
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod2'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class AssertMethod2ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'The Test Name already exists. Please choose a uniq...' label equals 'Text'
-        /// </summary>
-        public string UITheTestNamealreadyexTextControlType = "Text";
         #endregion
     }
     
