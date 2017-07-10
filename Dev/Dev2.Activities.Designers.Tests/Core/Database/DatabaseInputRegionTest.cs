@@ -185,6 +185,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsNotNull(methodInfo);
             methodInfo.Invoke(inputRegion, new object[] { });
             //---------------Test Result -----------------------
+            actionRegion.VerifyAll();
         }
 
         [TestMethod]
@@ -200,7 +201,16 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var modelItem = ModelItemUtils.CreateModelItem(act);
             var actionRegion = new Mock<IActionToolRegion<IDbAction>>();
-            actionRegion.Setup(region => region.SelectedAction).Returns(ValueFunction);
+            actionRegion.Setup(region => region.SelectedAction).Returns(new DbAction
+            {
+                Name = "PrintName",
+                Inputs = new List<IServiceInput>
+                {
+                    new ServiceInput("name",""),
+                    new ServiceInput("surname",""),
+                },
+                SourceId = Guid.NewGuid()
+            });
 
             //---------------Assert Precondition----------------
 
@@ -219,6 +229,58 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void UpdateOnActionSelection_GivenHasExistingInputs_ShouldNotOverrideExistingInputs()
+        {
+            //---------------Set up test pack-------------------
+            var mock = new Mock<IDataListViewModel>();
+            mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
+            DataListSingleton.SetDataList(mock.Object);
+
+            var id = Guid.NewGuid();
+            var act = new DsfSqlServerDatabaseActivity()
+            {
+                SourceId = id,
+                Inputs = new List<IServiceInput>()
+                {
+                    new ServiceInput("MyAge","[[MyAge]]"){ActionName = "PrintName"}
+                }
+            };
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            var actionRegion = new Mock<IActionToolRegion<IDbAction>>();
+            actionRegion.Setup(region => region.SelectedAction).Returns(new DbAction
+            {
+                Name = "PrintName",
+                Inputs = new List<IServiceInput>
+                {
+                    new ServiceInput("name",""){ActionName = "PrintName"},
+                    new ServiceInput("surname",""){ActionName = "PrintName"},
+                    new ServiceInput("MyAge","10"){ActionName = "PrintName"}
+                },
+                SourceId = Guid.NewGuid()
+            });
+
+            //---------------Assert Precondition----------------
+
+            // ReSharper disable once PossibleNullReferenceException
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            Assert.AreEqual(0, countBefore);
+            //---------------Execute Test ----------------------
+            var inputRegion = new DatabaseInputRegion(modelItem, actionRegion.Object);
+            Assert.AreEqual("MyAge", inputRegion.Inputs.ToList()[0].Name);
+            Assert.AreEqual("[[MyAge]]", inputRegion.Inputs.ToList()[0].Value);
+            var methodInfo = typeof(DatabaseInputRegion).GetMethod("UpdateOnActionSelection", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.IsNotNull(methodInfo);
+            methodInfo.Invoke(inputRegion, new object[] { });
+            //---------------Test Result -----------------------
+            Assert.AreEqual("[[MyAge]]", inputRegion.Inputs.ToList()[0].Value);
+            Assert.AreEqual("MyAge", inputRegion.Inputs.ToList()[0].Name);
+            Assert.AreEqual("[[name]]", inputRegion.Inputs.ToList()[1].Value);
+            Assert.AreEqual("[[surname]]", inputRegion.Inputs.ToList()[2].Value);
+
+        }
+
         private IDbAction ValueFunction()
         {
             return new DbAction
@@ -226,8 +288,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 Name = "PrintName",
                 Inputs = new List<IServiceInput>
                 {
-                    new ServiceInput("name",""),
-                    new ServiceInput("surname",""),
+                    new ServiceInput("name",""){ActionName = "PrintName"},
+                    new ServiceInput("surname",""){ActionName = "PrintName"},
                 },
                 SourceId = Guid.NewGuid()
             };
