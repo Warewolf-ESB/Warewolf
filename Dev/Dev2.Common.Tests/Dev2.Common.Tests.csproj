@@ -67,7 +67,7 @@
     </Compile>
     <Compile Include="DebugStateTreeBuilderTests.cs" />
     <Compile Include="JsonResource.cs" />
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

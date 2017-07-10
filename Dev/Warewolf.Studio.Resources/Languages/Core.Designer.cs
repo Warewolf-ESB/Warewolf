@@ -1045,6 +1045,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please provide a Test Name for Test(s) with blank names.
+        /// </summary>
+        public static string ServiceTestEmptyTestNameHeader {
+            get {
+                return ResourceManager.GetString("ServiceTestEmptyTestNameHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource moved or renamed.
         /// </summary>
         public static string ServiceTestResourceCategoryChangedHeader {
