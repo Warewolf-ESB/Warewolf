@@ -13,6 +13,8 @@ namespace Warewolf.Storage.Interfaces
 
         void Assign(string exp, string value, int update);
 
+        void AssignStrict(string exp, string value, int update);
+
         void AssignWithFrame(IAssignValue values, int update);
 
         int GetLength(string recordSetName);

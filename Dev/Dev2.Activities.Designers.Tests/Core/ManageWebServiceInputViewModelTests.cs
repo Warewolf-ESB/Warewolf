@@ -301,7 +301,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             ManageWebServiceInputViewModel vm = new ManageWebServiceInputViewModel(webget, mod);
             var lst = new List<IServiceInput>();
             vm.InputArea.Inputs = lst;
-            Assert.AreEqual(lst, vm.InputArea.Inputs);
+            Assert.AreEqual(lst.Count, vm.InputArea.Inputs.Count);
             var lsto = new List<IServiceOutputMapping>();
             vm.OutputArea.Outputs = lsto;
             Assert.AreEqual(lsto, vm.OutputArea.Outputs);
