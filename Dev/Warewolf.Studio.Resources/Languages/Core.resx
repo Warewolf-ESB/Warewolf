@@ -278,6 +278,9 @@ The window will be reloaded when you click OK.</value>
   <data name="ServiceTestDuplicateTestNameMessage" xml:space="preserve">
     <value>The Test Name already exists. Please choose a unique name.</value>
   </data>
+  <data name="ServiceTestEmptyTestNameHeader" xml:space="preserve">
+    <value>Please provide a Test Name for Test(s) with blank names</value>
+  </data>
   <data name="ServiceTestDuplicateTestNameHeader" xml:space="preserve">
     <value>Duplicate Test Name</value>
   </data>

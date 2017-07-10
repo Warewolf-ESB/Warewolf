@@ -351,7 +351,25 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(vm.RunSelectedTestInBrowserCommand.CanExecute(null));
 		}
 
-		[TestMethod]
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Save_GivenEmptyTestName_ShouldReturn()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            //---------------Execute Test ----------------------
+            vm.CreateTestCommand.Execute(null);
+            var DummyTest = typeof(DummyServiceTest);
+            var test1 = vm.Tests.FirstOrDefault(p => p.GetType() != DummyTest);
+            test1.TestName = string.Empty;
+            vm.Save();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(vm.ErrorMessage, "Cannot be null");
+        }
+
+        [TestMethod]
 		[Owner("Nkosinathi Sangweni")]
 		public void Save_GivenThrowsNoException_ShouldMarkAllTestsAsNotDirty()
 		{
