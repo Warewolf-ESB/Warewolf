@@ -918,7 +918,8 @@ namespace Warewolf.Studio.ViewModels
                 _isResourceChecked = value ?? false;
 
                 OnPropertyChanged(() => IsResourceChecked);
-                AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = _isResourceChecked);
+                Task.Run(() => { AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = _isResourceChecked); });
+                
                 SelectAll?.Invoke();
                 IsResourceCheckedEnabled = true;
                 OnPropertyChanged(() => IsResourceCheckedEnabled);
@@ -1228,7 +1229,9 @@ namespace Warewolf.Studio.ViewModels
                 var existingItem = parent?.Children?.FirstOrDefault(model => model.ResourcePath.ToLowerInvariant() == explorerItem.ResourcePath.ToLower());
                 if(existingItem != null)
                 {
+                    var isResourceChecked = existingItem.IsResourceChecked;
                     existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
+                    existingItem.IsResourceChecked = isResourceChecked;
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
                     explorerItemModels.Add(existingItem);
                 }

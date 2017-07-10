@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
+using Dev2.Threading;
 
 // ReSharper disable InconsistentNaming
 
@@ -50,7 +51,7 @@ namespace Warewolf.UIBindingTests.Deploy
             var src = new DeploySourceExplorerViewModelForTesting(shell, GetMockAggegator(), GetStatsVm(dest)) { Children = new List<IExplorerItemViewModel> { CreateExplorerVms() } };
             ScenarioContext.Current["Src"] = src;
             var popupController = GetPopup().Object;
-            var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, popupController);
+            var vm = new SingleExplorerDeployViewModel(dest, src, new List<IExplorerTreeItem>(), stats, shell, popupController,  new SynchronousAsyncWorker());
             ScenarioContext.Current[viewModelString] = vm;
             ScenarioContext.Current[statsString] = stats;
         }
@@ -587,7 +588,7 @@ namespace Warewolf.UIBindingTests.Deploy
         [Then(@"the User is prompted to ""(.*)"" one of the resources")]
         public void ThenTheUserIsPromptedToOneOfTheResources(string p0)
         {
-            GetPopup().Verify(a => a.ShowDeployNameConflict(It.IsAny<string>()));
+            GetPopup().Verify(a => a.ShowDeployResourceNameConflict(It.IsAny<string>()));
             GetViewModel().PopupController = GetPopup().Object;
         }
 
