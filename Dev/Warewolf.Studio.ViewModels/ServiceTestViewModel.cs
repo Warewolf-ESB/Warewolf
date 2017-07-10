@@ -1861,16 +1861,18 @@ namespace Warewolf.Studio.ViewModels
                     popupController?.Show(Resources.Languages.Core.ServiceTestEmptyTestNameHeader,"Empty Test Name"
                         , MessageBoxButton.OK, MessageBoxImage.Error, null,
                         false, true, false, false, false, false);
+                    return false;
                 }
                 else if (NameHasInvalidCharacters(name))
                 {
                     ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'name'");
+                    return false;
                 }
                 else if (name.Trim() != name)
                 {
                     ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
+                    return false;
                 }
-                return string.IsNullOrEmpty(ErrorMessage);
             }
             return true;
         }

@@ -353,7 +353,40 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void Save_GivenEmptyTestName_ShouldReturn()
+        public void AllNamesValid_GivenEmptyItemIn_ListOfTestName_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            var privateObj = new PrivateObject(vm);
+            var names = new List<string> { "", "Test2" };
+            var results = privateObj.Invoke("AllNamesValid", names);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(results);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(false, results);
+        }
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void AllNamesValid_GivenListOfTestName_ShouldReturnTrue()
+        {
+            //---------------Set up test pack-------------------
+            var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(vm);
+            var privateObj = new PrivateObject(vm);
+            var names = new List<string> { "Test1", "Test2"};
+            var results = privateObj.Invoke("AllNamesValid", names);
+            //---------------Execute Test ----------------------
+            Assert.IsNotNull(results);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(true, results);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void Save_GivenEmptyTestName_SetErrorMessage()
         {
             //---------------Set up test pack-------------------
             var vm = new ServiceTestViewModel(CreateResourceModelWithMoreSave(), new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
