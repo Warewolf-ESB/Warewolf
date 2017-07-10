@@ -764,17 +764,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestRunName += " and Screen Recording"
         }
         if ($Parallelize.IsPresent) {
-            if ($StartStudio.IsPresent) {
-                $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
-                $RemoteExecutionAttribute = " location=`"Remote`""
-                $AgentRuleNameValue = "Remote"
-                $AgentRoleTags = @"
-
-      <SelectionCriteria>
-        <AgentProperty name="UI" value="" />
-      </SelectionCriteria>
-"@
-                $TestTypeSpecificTags = @"
+            $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
+            $RemoteExecutionAttribute = " location=`"Remote`""
+            $AgentRuleNameValue = "Remote"
+            $TestTypeSpecificTags = @"
 
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
@@ -784,7 +777,28 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       </UnitTestRunConfig>
     </TestTypeSpecific>
 "@
-                $DeploymentTags = @"
+            if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
+                if ($ServerUsername -ne "") {
+                    $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
+                } else {
+                    $ServerUsernameParam = ""
+                }
+                if ($ServerPassword -ne "") {
+                    $ServerPasswordParam = " -ServerPassword '" + $ServerPassword + "'"
+                } else {
+                    $ServerPasswordParam = ""
+                }
+                $StartupScriptPath = "$TestsResultsPath\startup.bat"
+                $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+                $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
+                if ($StartStudio.IsPresent) {
+                    $AgentRoleTags = @"
+
+      <SelectionCriteria>
+        <AgentProperty name="UI" value="" />
+      </SelectionCriteria>
+"@
+                    $DeploymentTags = @"
   <Deployment>
     <DeploymentItem filename="..\DebugServer.zip" />
     <DeploymentItem filename="..\DebugStudio.zip" />
@@ -797,28 +811,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
-                $StartupScriptPath = "$TestsResultsPath\startup.bat"
-                $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
-                Copy-On-Write $StartupScriptPath
-                New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -ResourcesType $ResourcesType`""
-                Copy-On-Write $CleanupScriptPath
-                New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
-                $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
-            } else {
-                if ($StartServer.IsPresent) {            
-                    $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
-                    $RemoteExecutionAttribute = " location=`"Remote`""
-                    $AgentRuleNameValue = "Remote"
-                    $TestTypeSpecificTags = @"
-
-    <TestTypeSpecific>
-      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
-        <AssemblyResolution>
-          <TestDirectory useLoadContext="true" />
-        </AssemblyResolution>
-      </UnitTestRunConfig>
-    </TestTypeSpecific>
-"@
+                    Copy-On-Write $StartupScriptPath
+                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
+                    Copy-On-Write $CleanupScriptPath
+                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                } else {
                     $DeploymentTags = @"
   <Deployment>
     <DeploymentItem filename="..\DebugServer.zip" />
@@ -828,20 +825,17 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
-                    $StartupScriptPath = "$TestsResultsPath\startup.bat"
-                    $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
                     Copy-On-Write $StartupScriptPath
-                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType`""
+                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
                     Copy-On-Write $CleanupScriptPath
                     New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
-                    $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
                 }
             }
         }
 
         # Create test settings.
         $TestSettingsFile = ""
-        if (!$DisableTimeouts.IsPresent -or $RecordScreen.IsPresent) {
+        if (!$DisableTimeouts.IsPresent) {
             $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
             Copy-On-Write $TestSettingsFile
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
@@ -854,7 +848,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>$TestRunName.</Description>$DeploymentTags$NamingSchemeTag$ScriptsTag$ControllerNameTag
   <Execution$RemoteExecutionAttribute>
-    <Timeouts testTimeout="$TestsTimeout" />$TestTypeSpecificTags
+    <Timeouts testTimeout="$TestsTimeout"/>$TestTypeSpecificTags
     <AgentRule name="$AgentRuleNameValue">$AgentRoleTags$DataCollectorTags
     </AgentRule>
   </Execution>
