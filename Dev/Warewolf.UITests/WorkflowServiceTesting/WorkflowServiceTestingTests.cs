@@ -18,13 +18,14 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         public const string Nestedwf = "NestedWF";
         public const string Resource = "Resource For MockRadioButton";
         public const string DotnetWfWithObjOutput = "DotnetWfWithObjOutput";
+        public const string EmptyWorkflow = "EmptyWorkflow";
 
 
         [TestMethod]
         [TestCategory("Workflow Testing")]
         public void Creating_A_Test_With_Blank_Name()
         {
-            UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
+            UIMap.Click_View_Tests_In_Explorer_Context_Menu(EmptyWorkflow);
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Exists, "First 'Hello World' test does not exist as expected.");
             WorkflowServiceTestingUIMap.Click_Create_New_Tests(true, 4);
             WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestNameTextbox.Text = "";
