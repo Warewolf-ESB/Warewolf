@@ -743,11 +743,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $DataCollectorTags = ""
         $NamingSchemeTag = ""
         $TestRunName = "Run $JobName With Timeout"
-        $TestsTimeout = "600000"
-        if ($Parallelize.IsPresent) {
-            $HardcodedTestController = "test-vs2017:6901"
-            if ($RecordScreen.IsPresent) {
-                $DataCollectorTags = @"
+        if ($StartStudio.IsPresent) {
+            $TestsTimeout = "360000"
+        } else {
+            $TestsTimeout = "180000"
+        }
+        $HardcodedTestController = "test-vs2017:6901"
+        if ($RecordScreen.IsPresent) {
+            $DataCollectorTags = @"
 
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
@@ -757,10 +760,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         </DataCollector>
       </DataCollectors>
 "@
-                $NamingSchemeTag = "`n  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />"
-                $TestRunName += " and Screen Recording"
-                $TestsTimeout = "180000"
-            }
+            $NamingSchemeTag = "`n  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />"
+            $TestRunName += " and Screen Recording"
+        }
+        if ($Parallelize.IsPresent) {
             if ($StartStudio.IsPresent) {
                 $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
                 $RemoteExecutionAttribute = " location=`"Remote`""
