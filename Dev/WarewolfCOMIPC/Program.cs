@@ -77,15 +77,8 @@ namespace WarewolfCOMIPC
                         catch
                         {
                             Console.WriteLine("IpcClient Data not read nor Deserialized to Server Pipe Stream");
-                        }
-                        try
-                        {
-                            sw.Flush();
-                        }
-                        catch
-                        {
-                            Console.WriteLine("IpcClient Data not Flushed to Server Pipe Stream");
-                        }
+                        } 
+                        sw.Flush();
                         Console.WriteLine("Execution errored " + data.MethodToCall);
                     }
                     AcceptMessagesFromPipe(pipe);
