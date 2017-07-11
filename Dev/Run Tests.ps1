@@ -748,7 +748,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         } else {
             $TestsTimeout = "180000"
         }
-        $HardcodedTestController = "test-vs2017:6901"
+        $HardcodedTestController = "rsaklfsvrdev:6901"
         if ($RecordScreen.IsPresent) {
             $DataCollectorTags = @"
 
