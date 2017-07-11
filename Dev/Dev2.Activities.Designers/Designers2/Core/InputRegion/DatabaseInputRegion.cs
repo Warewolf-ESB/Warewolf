@@ -128,23 +128,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 var selectedActionInputs = _action.SelectedAction.Inputs;
                 var selectedAction = ((DbAction)_action.SelectedAction).Name;
-                var isTheSameActionWithPrvious = Inputs.All(input => input.ActionName?.Equals(selectedAction) ?? false);
-                if (Inputs.Any() && isTheSameActionWithPrvious)
+                var isTheSameActionWithPrevious = Inputs.All(input => input.ActionName?.Equals(selectedAction) ?? false);
+                if (Inputs.Any() && isTheSameActionWithPrevious)
                 {
-                    if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputNameValueComparer()))
-                    {
-                        var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
-                        var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
-                        _datatalistMapper.MapInputsToDatalist(serviceInputs);
-                        foreach (var serviceInput in serviceInputs)
-                        {
-                            Inputs.Add(serviceInput);
-                        }
-                    }
+                    InputsFromSameAction(selectedActionInputs);
                 }
                 else
                 {
-
                     Inputs = selectedActionInputs;
                     _datatalistMapper.MapInputsToDatalist(Inputs);
                     IsInputsEmptyRows = Inputs.Count < 1;
@@ -153,6 +143,20 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
             }
             OnPropertyChanged("Inputs");
+        }
+
+        private void InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
+        {
+            if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputNameValueComparer()))
+            {
+                var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
+                var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
+                _datatalistMapper.MapInputsToDatalist(serviceInputs);
+                foreach (var serviceInput in serviceInputs)
+                {
+                    Inputs.Add(serviceInput);
+                }
+            }
         }
 
         public bool IsInputsEmptyRows

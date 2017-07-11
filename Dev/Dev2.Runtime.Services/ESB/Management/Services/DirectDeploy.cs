@@ -80,9 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             else
             {
                 StringBuilder destinationEnvironment;
-
                 values.TryGetValue("destinationEnvironmentId", out destinationEnvironment);
-
 
                 if (destinationEnvironment == null)
                 {
@@ -90,80 +88,83 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    var destination = serializer.Deserialize<Data.ServiceModel.Connection>(destinationEnvironment);
-                    var canConnectToServer = Connections.CanConnectToServer(destination);
-                    if (!canConnectToServer.IsValid)
-                    {
-                        toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder(canConnectToServer.ErrorMessage) }, "An Error has occurred"));
-                    }
-                    else
-                    {
-                        var proxy = Connections.CreateHubProxy(destination);
-
-                        var roles = new StringBuilder("*");
-
-                        StringBuilder deployTests;
-
-                        values.TryGetValue("deployTests", out deployTests);
-                        bool doTestDeploy;
-
-                        if (deployTests == null)
-                        {
-                            toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder("deployTests is null") }, "An Error has occurred"));
-                        }
-                        else
-                        {
-                            doTestDeploy = bool.Parse(deployTests.ToString());
-
-                            StringBuilder resourceIDsToDeploy;
-
-                            values.TryGetValue("resourceIDsToDeploy", out resourceIDsToDeploy);
-                            var idsToDeploy = new List<Guid>();
-                            idsToDeploy.AddRange(serializer.Deserialize<List<Guid>>(resourceIDsToDeploy));
-                            if (idsToDeploy.Any())
-                            {
-                                var counter = 0;
-                                var count = idsToDeploy.Count;
-                                var amountToTake = 10;
-                                while (counter < count)
-                                {
-                                    int diff = count - counter;
-                                    if (diff < 10)
-                                    {
-                                        amountToTake = diff;
-                                    }
-                                    var throttledIds = idsToDeploy.Skip(counter).Take(amountToTake);
-                                    var taskList = new List<Task>();
-                                    foreach (var resourceId in throttledIds)
-                                    {
-                                        var lastTask = GetTaskForDeploy(resourceId, roles, serializer, proxy, doTestDeploy, toReturn);
-                                        taskList.Add(lastTask);
-                                    }
-                                    Task.WaitAll(taskList.ToArray());
-                                    counter = counter + 10;
-                                }
-                            }
-                            else
-                            {
-                                toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder("No resources specified") }, "An Error has occurred"));
-                            }
-                        }
-                    }
+                    ExecuteDeployResult(values, toReturn, serializer, destinationEnvironment);
                 }
             }
 
             return serializer.SerializeToBuilder(toReturn);
         }
 
+        private void ExecuteDeployResult(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, StringBuilder destinationEnvironment)
+        {
+            var destination = serializer.Deserialize<Data.ServiceModel.Connection>(destinationEnvironment);
+            var canConnectToServer = Connections.CanConnectToServer(destination);
+            if (!canConnectToServer.IsValid)
+            {
+                toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder(canConnectToServer.ErrorMessage) }, "An Error has occurred"));
+            }
+            else
+            {
+                var proxy = Connections.CreateHubProxy(destination);
+                var roles = new StringBuilder("*");
+                StringBuilder deployTests;
+                values.TryGetValue("deployTests", out deployTests); 
+
+                if (deployTests == null)
+                {
+                    toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder("deployTests is null") }, "An Error has occurred"));
+                }
+                else
+                {
+                    ShouldExecuteDeploy(values, toReturn, serializer, proxy, roles, deployTests);
+                }
+            }
+        }
+
+        private void ShouldExecuteDeploy(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, IHubProxy proxy, StringBuilder roles, StringBuilder deployTests)
+        {
+            bool doTestDeploy = bool.Parse(deployTests.ToString());
+            StringBuilder resourceIDsToDeploy;
+            values.TryGetValue("resourceIDsToDeploy", out resourceIDsToDeploy);
+            var idsToDeploy = new List<Guid>();
+            idsToDeploy.AddRange(serializer.Deserialize<List<Guid>>(resourceIDsToDeploy));
+            if (idsToDeploy.Any())
+            {
+                var counter = 0;
+                var count = idsToDeploy.Count;
+                var amountToTake = 10;
+                while (counter < count)
+                {
+                    int diff = count - counter;
+                    if (diff < 10)
+                    {
+                        amountToTake = diff;
+                    }
+                    var throttledIds = idsToDeploy.Skip(counter).Take(amountToTake);
+                    var taskList = new List<Task>();
+                    foreach (var resourceId in throttledIds)
+                    {
+                        var lastTask = GetTaskForDeploy(resourceId, roles, serializer, proxy, doTestDeploy, toReturn);
+                        taskList.Add(lastTask);
+                    }
+                    Task.WaitAll(taskList.ToArray());
+                    counter = counter + 10;
+                }
+            }
+            else
+            {
+                toReturn.Add(new DeployResult(new ExecuteMessage { HasError = true, Message = new StringBuilder("No resources specified") }, "An Error has occurred"));
+            }
+        }
 
         public async Task GetTaskForDeploy(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, IHubProxy proxy, bool doTestDeploy, List<DeployResult> toReturn)
         {
             var lastTask = Task.Run(async () =>
             {
-                var results = await DeployResourceAsync(resourceId, roles, serializer, proxy, doTestDeploy);
+                var results = await DeployResourceAsync(resourceId, roles, serializer, proxy, doTestDeploy).ConfigureAwait(false);
                 toReturn.AddRange(results);
             });
-            await lastTask;
+            await lastTask.ConfigureAwait(false);
         }
 
         public IConnections Connections
@@ -226,8 +227,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Type = typeof(Envelope)
             };
             var messageId = Guid.NewGuid();
-            await proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId);
-            string fragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
+            await proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).ConfigureAwait(false);
+            string fragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
             var execResult = serializer.Deserialize<ExecuteMessage>(fragmentInvokeResult) ?? new ExecuteMessage { HasError = true, Message = new StringBuilder("Deploy Failed") };
             toReturn.Add(new DeployResult(execResult, resource.ResourceName));
 
@@ -247,8 +248,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Type = typeof(Envelope)
                 };
                 var deployMessageId = Guid.NewGuid();
-                await proxy.Invoke<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId);
-                string deployFragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = deployMessageId });
+                await proxy.Invoke<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
+                string deployFragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = deployMessageId }).ConfigureAwait(false);
                 var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult) ?? new ExecuteMessage { HasError = true, Message = new StringBuilder("Deploy Failed") };
                 toReturn.Add(new DeployResult(deployExecResult, $"{resource.ResourceName} Tests"));
             }
@@ -257,7 +258,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService deployResourceDynamicService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            DynamicService deployResourceDynamicService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification = new StringBuilder("<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
 
             ServiceAction deployResourceServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
