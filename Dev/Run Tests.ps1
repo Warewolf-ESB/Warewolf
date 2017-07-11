@@ -777,6 +777,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       </UnitTestRunConfig>
     </TestTypeSpecific>
 "@
+            $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
