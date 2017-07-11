@@ -8,7 +8,7 @@
   </Deployment>
   <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
   <Scripts setupScript="C:\Builds\startup.bat" cleanupScript="C:\Builds\cleanup.bat" />
-  <RemoteController name="test-vs2017:6901" />
+  <RemoteController name="rsaklfsvrdev:6901" />
   <Execution location="Remote">
     <Timeouts testTimeout="600000" />
     <TestTypeSpecific>
