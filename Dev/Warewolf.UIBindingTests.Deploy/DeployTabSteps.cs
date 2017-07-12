@@ -597,7 +597,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
             var services = deployStatsViewerViewModel.Services.ToString();
-            Assert.AreEqual(services, expectedServicesCount);
+            Assert.AreEqual(services, expectedServicesCount, services + " services out of " + expectedServicesCount + " are selected in deploy. " + deployStatsViewerViewModel.RenameErrors);
         }
 
         [Then(@"Sources is ""(.*)""")]
@@ -605,7 +605,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
             var sources = deployStatsViewerViewModel.Sources.ToString();
-            Assert.AreEqual(sources, expectedSourcesCount);
+            Assert.AreEqual(sources, expectedSourcesCount, sources + " sources out of " + expectedSourcesCount + " are selected in deploy. " + deployStatsViewerViewModel.RenameErrors);
         }
 
         [Then(@"Calculation is invoked")]
@@ -622,7 +622,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
             var actualCount = deployStatsViewerViewModel.New.Count.ToString();
-            Assert.AreEqual(expectedCount, actualCount);
+            Assert.AreEqual(expectedCount, actualCount, actualCount + " new items out of " + expectedCount + " are in deploy. " + deployStatsViewerViewModel.RenameErrors);
         }
 
         [Given(@"Override is ""(.*)""")]

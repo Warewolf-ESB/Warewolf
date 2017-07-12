@@ -1873,6 +1873,10 @@ namespace Warewolf.Studio.ViewModels
                     ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
                     return false;
                 }
+                else
+                {
+                    continue;
+                }
             }
             return true;
         }
@@ -1959,7 +1963,10 @@ namespace Warewolf.Studio.ViewModels
 
         private void Save(List<IServiceTestModel> serviceTestModels)
         {
-            if (!AllNamesValid(Tests.Select(p => p.TestName).ToList())) return;
+            if (!AllNamesValid(Tests.Select(p => p.TestName).ToList()))
+            {
+                return;
+            }
             MarkPending(serviceTestModels);
             var serviceTestModelTos = serviceTestModels.Select(CreateServiceTestModelTO).ToList();
 
