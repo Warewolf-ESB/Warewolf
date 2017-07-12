@@ -35,7 +35,6 @@ namespace Warewolf.Studio.ViewModels
                 _destination.ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
             }
             Status = @"";
-
         }
 
         private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
@@ -65,6 +64,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Connectors);
             }
         }
+
         public int Services
         {
             get
@@ -77,6 +77,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Services);
             }
         }
+
         public int Sources
         {
             get
@@ -89,6 +90,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Sources);
             }
         }
+
         public int Unknown
         {
             get
@@ -101,6 +103,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Unknown);
             }
         }
+
         public int NewResources
         {
             get
@@ -113,6 +116,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => NewResources);
             }
         }
+
         public int Overrides
         {
             get
@@ -125,6 +129,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Overrides);
             }
         }
+
         public string Status
         {
             get
@@ -137,6 +142,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => Status);
             }
         }
+
         public void ReCalculate()
         {
             if (_items != null)
@@ -196,8 +202,7 @@ namespace Warewolf.Studio.ViewModels
             _items = items;
             if (items != null)
             {
-                Connectors = items.Count(a =>
-                                        !string.IsNullOrEmpty(a.ResourceType)
+                Connectors = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
                                         && a.ResourceType.Contains(@"Service")
                                         && a.ResourceType != @"WorkflowService"
                                         && a.ResourceType != @"ReservedService");
