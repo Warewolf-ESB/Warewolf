@@ -3216,23 +3216,20 @@ Scenario: Workflow with AsyncLogging and ForEach
 	 And the delta between "first time" and "second time" is less than "2600" milliseconds
 	  
 #PostgreSQL
-Scenario Outline: Database PostgreSql Database service inputs and outputs
-     Given I have a workflow "<WorkflowName>"
-	 And "<WorkflowName>" contains a postgre tool using "<ServiceName>" with mappings as
+Scenario: Database PostgreSql Database service inputs and outputs
+     Given I have a workflow "PostgreSqlGetCountries"
+	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  | Prefix           | s             | Id                  | <nameVariable>  |
-	  |                  |               | Name                | <emailVariable> |
-      When "<WorkflowName>" is executed
-     Then the workflow execution has "<errorOccured>" error
-	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as
+	  | Prefix           | s             | Id                  | [[countries(*).Id]]  |
+	  |                  |               | Name                | [[countries(*).Name]] |
+      When "PostgreSqlGetCountries" is executed
+     Then the workflow execution has "NO" error
+	 And the "get_countries" in Workflow "PostgreSqlGetCountries" debug outputs as
 	  |                                       |
 	  | [[countries(1).Id]] = 1               |
 	  | [[countries(2).Id]] = 3               |
 	  | [[countries(1).Name]] = United States |
 	  | [[countries(2).Name]] = South Africa  |
-Examples: 
-    | WorkflowName           | ServiceName   | nameVariable        | emailVariable         | errorOccured |
-    | PostgreSqlGetCountries | get_countries | [[countries(*).Id]] | [[countries(*).Name]] | NO           |
 
 Scenario Outline: Database MySqlDB Database service using * indexes
      Given I have a workflow "<WorkflowName>"

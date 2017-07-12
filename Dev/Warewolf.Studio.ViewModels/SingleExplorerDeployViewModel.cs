@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
         IList<IExplorerTreeItem> _newItems;
         string _errorMessage;
         string _deploySuccessMessage;
-        private IAsyncWorker _asyncWorker;
+        readonly IAsyncWorker _asyncWorker;
 
         #region Implementation of IDeployViewModel       
 
@@ -300,8 +300,7 @@ namespace Warewolf.Studio.ViewModels
                                 {
                                     var task = _asyncWorker.Start(async () => await destEnv.ProxyLayer.UpdateManagerProxy.MoveItem(
                                         conflictItem.DestinationId, conflictItem.DestinationName,
-                                        conflictItem.SourceName));
-                                    task.Wait();
+                                        conflictItem.SourceName)).ConfigureAwait(false);
                                 }
                             }
                         }
