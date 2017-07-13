@@ -85,6 +85,7 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("OracleServer_FetchDatabases")]
         [ExpectedException(typeof(Exception))]
+        [DeploymentItem("Oracle.ManagedDataAccess.dll")]
         // ReSharper disable InconsistentNaming
         public void OracleServer_FetchDatabases_ConnectionNotInitialized_ThrowsConnectFirstException()
             // ReSharper restore InconsistentNaming
