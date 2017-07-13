@@ -39,6 +39,7 @@ namespace Dev2.Diagnostics.Test
             //------------Assert Results-------------------------
             Assert.IsNotNull(value);
         }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GetMappingElement_Scenerio_Result()
@@ -53,6 +54,7 @@ namespace Dev2.Diagnostics.Test
   <level value=""Level0"" />
   <eventLogEntryType value=""ERROR"" />
 </mapping>");
+
         }
     }
 }
