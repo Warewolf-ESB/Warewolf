@@ -21,10 +21,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var executionId = values["ExecutionId"];
             var serializer = new Dev2JsonSerializer();
-            var tmpObjects = BuildTempObjects().FirstOrDefault(r => r.ExecutionId == executionId.ToString() && r.Message.StartsWith("Execution Result"));            
-            var replace = tmpObjects.Message.Replace("Execution Result [ ", "").Replace(" ]", "");
+            var buildTempObjects = BuildTempObjects();
+            var tmpObjects = buildTempObjects.FirstOrDefault(r => r.ExecutionId == executionId.ToString() && r.Message.StartsWith("Execution Result"));
+            dynamic replace = "";
+            if (tmpObjects != null)
+            {
+                replace = tmpObjects.Message.Replace("Execution Result :", "").Replace(" ]", "");
+            }
             var logEntry = new LogEntry { Result = replace };
             return serializer.SerializeToBuilder(logEntry);
+
         }
 
         public DynamicService CreateServiceEntry()
@@ -37,6 +43,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return findServices;
         }
-       
+
     }
 }

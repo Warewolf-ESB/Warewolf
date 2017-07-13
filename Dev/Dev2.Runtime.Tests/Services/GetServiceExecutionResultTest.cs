@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Runtime.ESB.Management.Services;
@@ -61,17 +63,67 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithExecutionId_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
-            const string LogFilePath = @"TextFiles\LogFileWithFlatResults.txt";
+            const string LogFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetServiceExecutionResult { ServerLogFilePath = LogFilePath };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(getLogDataService);
             //------------Execute Test---------------------------
-            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("be4f2201-63ea-42ac-b90d-564e7077b533") } };
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("674b2bf6-225d-446b-a645-aee95ed731af") } };
             var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var logEntry = serializer.Deserialize<LogEntry>(logEntriesJson.ToString());
-            Assert.AreEqual("{  \"a\": \"a\"}", logEntry.Result);
+            Assert.AreEqual("", logEntry.Result);
 
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithExecutionId_ShouldFilterLogData_NewFormat()
+        {
+            //------------Setup for test--------------------------
+            const string LogFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
+            var getLogDataService = new GetServiceExecutionResult { ServerLogFilePath = LogFilePath };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(getLogDataService);
+            //------------Execute Test---------------------------
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", new StringBuilder("674b2bf6-225d-446b-a645-aee95ed731af") } };
+            var logEntriesJson = getLogDataService.Execute(stringBuilders, null);
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var logEntry = serializer.Deserialize<LogEntry>(logEntriesJson.ToString());
+            Assert.IsNotNull(logEntry);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("GetLogDataService_GetLogEntryValues")]
+        public void GetLogEntryValues_GivenLogEntry_ExpectCorrectResult()
+        {
+            //------------Setup for test--------------------------
+            const string logEntry = @"2017-07-13 08:02:52,799 DEBUG - [52cea226-d594-49eb-9c37-0598bd2803f5] - Request URL [ http://RSAKLFPETERB:3142/Examples\Loop Constructs - Select and Apply.XML ]";
+            LogDataServiceBase dataServiceBase = new LogDataServiceBase();
+            //---------------Assert Precondition----------------
+            Assert.AreEqual(dataServiceBase.GetAuthorizationContextForService(), AuthorizationContext.Administrator);
+            //------------Execute Test---------------------------
+            var privateObject = new PrivateObject(dataServiceBase);
+            var invoke = (string[])privateObject.Invoke("GetLogEntryValues", BindingFlags.NonPublic | BindingFlags.Instance, logEntry);
+            Assert.AreEqual(5, invoke.Length);
+        }
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("GetLogDataService_GetLogEntryValues")]
+        public void GetLogEntryValues_GivenLogEntry_ExpectCorrectResult_NewFormat()
+        {
+            //------------Setup for test--------------------------
+            const string logEntry = @"2017-07-13 10:16:55,613 DEBUG - [03659971-6b50-42e7-af3e-1177fc2e86ed] - Mapping Inputs from Environment";
+            LogDataServiceBase dataServiceBase = new LogDataServiceBase();
+            //---------------Assert Precondition----------------
+            Assert.AreEqual(dataServiceBase.GetAuthorizationContextForService(), AuthorizationContext.Administrator);
+            //------------Execute Test---------------------------
+            var privateObject = new PrivateObject(dataServiceBase);
+            var invoke = (string[])privateObject.Invoke("GetLogEntryValues", BindingFlags.NonPublic | BindingFlags.Instance, logEntry);
+            Assert.AreEqual(5, invoke.Length);
         }
     }
 }

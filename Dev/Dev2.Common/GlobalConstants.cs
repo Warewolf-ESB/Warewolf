@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Security.Principal;
 using Warewolf.Resource.Errors;
+using System.Text.RegularExpressions;
 
 namespace Dev2.Common
 {
@@ -58,6 +59,9 @@ namespace Dev2.Common
 
         // ReSharper restore UnusedMember.Global
 
+        public static string LogFileRegex = @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s+(\w+)\s+[-]\s+[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s+[-]\s+"
+            ;
+
         public static string DefaultServerLogFileConfig = "<log4net>" +
                                              "<appender name=\"LogFileAppender\" type=\"Log4Net.Async.AsyncRollingFileAppender,Log4Net.Async\">" +
                                             "<file type=\"log4net.Util.PatternString\" value=\"%envFolderPath{CommonApplicationData}\\Warewolf\\Server Log\\wareWolf-Server.log\" />" +
@@ -72,7 +76,7 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">" +
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
@@ -98,7 +102,7 @@ namespace Dev2.Common
                                              "<logName value=\"Warewolf\"/>" +
                                              "<applicationName value=\"Warewolf Server\"/>" +
                                              "<layout type=\"log4net.Layout.PatternLayout\">" +
-                                                "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                                "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                               "</layout>" +
                                              "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
@@ -123,7 +127,7 @@ namespace Dev2.Common
     "<layout type=\"log4net.Layout.PatternLayout\">" +
     "<header value=\"[Header]&#xD;&#xA;\" />" +
                                              "<footer value=\"[Footer]&#xD;&#xA;\" />" +
-                                             "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                             "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                              "</layout>" +
                                              "<!-- Alternate layout using XML			" +
                                              "<layout type=\"log4net.Layout.XMLLayout\" /> -->" +
@@ -149,7 +153,7 @@ namespace Dev2.Common
                                              "<logName value=\"Warewolf\"/>" +
                                              "<applicationName value=\"Warewolf Studio\"/>" +
                                              "<layout type=\"log4net.Layout.PatternLayout\">" +
-                                                "<conversionPattern value=\"%date [%thread] %-5level - %message%newline\" />" +
+                                                "<conversionPattern value=\"%date %-5level - %message%newline\" />" +
                                               "</layout>" +
                                              "</appender>" +
                                              "<!-- Setup the root category, add the appenders and set the default level -->" +
@@ -640,7 +644,7 @@ where pn.nspname = 'public';
             }
         }
 
-        
+
 
 
         // ReSharper restore UnusedMember.Global

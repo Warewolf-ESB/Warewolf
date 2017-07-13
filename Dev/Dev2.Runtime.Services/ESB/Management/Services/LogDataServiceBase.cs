@@ -14,14 +14,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         private string _serverLogFilePath;
         public string ServerLogFilePath
         {
-            get
-            {
-                return _serverLogFilePath ?? EnvironmentVariables.ServerLogFile;
-            }
-            set
-            {
-                _serverLogFilePath = value;
-            }
+            get => _serverLogFilePath ?? EnvironmentVariables.ServerLogFile;
+            set => _serverLogFilePath = value;
         }
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -50,8 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             foreach (var singleEntry in logData)
             {
-                var matches = Regex.Split(singleEntry,
-                    @"(\d+[-.\/]\d+[-.\/]\d+ \d+[:]\d+[:]\d+,\d+)\s[[](\w+[-]\w+[-]\w+[-]\w+[-]\w+)[]]\s(\w+)\s+[-]\s+");
+                var matches = GetLogEntryValues(singleEntry);
                 if (matches.Length > 1)
                 {
                     var match = matches;
@@ -59,8 +52,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var cleanUrl = match[4].Replace("Request URL [ ", "").Replace(" ]", "");
                     var tmpObj = new
                     {
-                        ExecutionId = match[2],
-                        LogType = match[3],
+                        ExecutionId = match[3],
+                        LogType = match[2],
                         DateTime = match[1],
                         Message = isUrl ? "" : match[4],
                         Url = isUrl ? cleanUrl : "",
@@ -69,6 +62,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
             return tmpObjects;
+        }
+
+        private string[] GetLogEntryValues(string singleEntry)
+        {
+            return Regex.Split(singleEntry, GlobalConstants.LogFileRegex);
         }
     }
 }
