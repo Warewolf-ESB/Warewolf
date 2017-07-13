@@ -1207,7 +1207,7 @@ namespace Dev2.Studio.ViewModels
         public async void OpenResourceAsync(Guid resourceId, IServer server)
         {
             var environmentModel = ServerRepository.Get(server.EnvironmentID);
-            if (environmentModel != null)
+            if (environmentModel != null && environmentModel.ResourceRepository != null)
             {
                 var contextualResourceModel = await environmentModel.ResourceRepository.LoadContextualResourceModelAsync(resourceId);
                 _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
