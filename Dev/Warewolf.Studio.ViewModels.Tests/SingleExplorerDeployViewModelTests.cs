@@ -13,6 +13,7 @@ using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Threading;
 
 // ReSharper disable InconsistentNaming
 
@@ -1098,34 +1099,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ConflictRenameErrors_GivenCalculateAction_ShowsThePopupMessage()
-        {
-            //---------------Set up test pack-------------------            
-            _updateRepositoryMock.SetupProperty(manager => manager.ServerSaved);
-            _serverMock.SetupGet(it => it.UpdateRepository).Returns(_updateRepositoryMock.Object);
-            _serverMock.SetupGet(it => it.DisplayName).Returns("some text");
-            _serverEnvironmentId = Guid.NewGuid();
-            _serverMock.SetupGet(it => it.EnvironmentID).Returns(_serverEnvironmentId);
-            _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
-            var popupController = new Mock<IPopupController>();
-            var connectControl = new Mock<IConnectControlViewModel>();
-            connectControl.SetupAllProperties();
-            _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
-            _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
-            var explorerTreeItems = new List<IExplorerTreeItem>();
-            _statsView.Setup(model => model.New).Returns(explorerTreeItems);
-            _statsView.Setup(model => model.RenameErrors).Returns("Conflicts in resource names");
-            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(singleExplorerDeployViewModel);
-            //---------------Execute Test ----------------------
-            _statsView.Object.CalculateAction.Invoke();
-            //---------------Test Result -----------------------
-            popupController.Verify(controller => controller.ShowDeployNameConflict("Conflicts in resource names"));
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
         public void ConflictItems_GivenCalculateAction_AreEqualToStatViewConflictItems()
         {
             //---------------Set up test pack-------------------            
@@ -1381,7 +1354,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentViewModels = new ObservableCollection<IEnvironmentViewModel> { sourceEnv.Object };
             _sourceView.SetupGet(model => model.Environments).Returns(environmentViewModels);
             _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
-            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object, new SynchronousAsyncWorker())
             {
                 SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
                 DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
@@ -1510,7 +1483,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentViewModels = new ObservableCollection<IEnvironmentViewModel> { sourceEnv.Object };
             _sourceView.SetupGet(model => model.Environments).Returns(environmentViewModels);
             _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
-            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object)
+            var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, explorerTreeItems, _statsView.Object, _shellVm.Object, popupController.Object, new SynchronousAsyncWorker())
             {
                 SourceConnectControlViewModel = { SelectedConnection = _serverMock.Object },
                 DestinationConnectControlViewModel = { SelectedConnection = _differentServerMock.Object },
@@ -1529,7 +1502,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             popupController.Verify(controller => controller.ShowDeployConflict(It.IsAny<int>()), Times.AtLeastOnce);
             popupController.Verify(controller => controller.ShowDeploySuccessful(It.IsAny<string>()), Times.AtLeastOnce);
+            Assert.IsFalse(singleExplorerDeployViewModel.DeploySuccessfull);
             Assert.IsFalse(singleExplorerDeployViewModel.IsDeploying);
+            Assert.IsFalse(singleExplorerDeployViewModel.DeployInProgress);
         }
     }
 }

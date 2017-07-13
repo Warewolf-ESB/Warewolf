@@ -111,6 +111,57 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("", testFrameworkViewModel.SelectedServiceTest.ErrorContainsText);
         }
 
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ServiceTestViewModel_PopulateFromDebug")]
+        public void ServiceTestViewModel_PopulateFromDebug_WithNoError_UpdateInputs()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var contextualResourceModel = CreateResourceModel();
+            contextualResourceModel.DataList = "<DataList/>";
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(contextualResourceModel.ID);
+            var mockWorkflowDesignerViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkflowDesignerViewModel.SetupProperty(model => model.ItemSelectedAction);
+            var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object);
+            testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
+            var debugTreeViewItemViewModels = new List<IDebugTreeViewItemViewModel>();
+            var debugStateTreeViewItemViewModel = new DebugStateTreeViewItemViewModel(new TestServerRespository());
+            var debugState = new DebugState
+            {
+                HasError = false,
+                ErrorMessage = "",
+                StateType = StateType.End
+            };
+            debugStateTreeViewItemViewModel.Content = debugState;
+
+            string expectedValue = "This is a long message to test that the Test Editor accepts a new line input that can be validated against the Test Editor input field.\n" +
+                "This is a long message to test that the Test Editor accepts a new line input that can be validated against the Test Editor input field.";
+
+            DebugItem debugItem = new DebugItem();
+            DebugItemResult debugItemResult = new DebugItemResult();
+            debugItemResult.Variable = "[[input]]";
+            debugItemResult.Value = expectedValue;
+            debugItemResult.Operator = "=";
+            debugItem.ResultsList.Add(debugItemResult);
+            debugStateTreeViewItemViewModel.Content.Inputs.Add(debugItem);
+
+            debugTreeViewItemViewModels.Add(debugStateTreeViewItemViewModel);
+            //------------Execute Test---------------------------
+            testFrameworkViewModel.PrepopulateTestsUsingDebug(debugTreeViewItemViewModels);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(testFrameworkViewModel.SelectedServiceTest);
+            Assert.IsFalse(testFrameworkViewModel.SelectedServiceTest.ErrorExpected);
+            Assert.IsTrue(testFrameworkViewModel.SelectedServiceTest.NoErrorExpected);
+            Assert.AreEqual("", testFrameworkViewModel.SelectedServiceTest.ErrorContainsText);
+        }
+
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void PrepopulateTestsUsingDebug_DebugItemDesicion_ShouldHaveAddServiceTestStep()
