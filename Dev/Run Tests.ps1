@@ -496,7 +496,7 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     #Wait for the ServerStarted file to appear.
     $TimeoutCounter = 0
     $ServerStartedFilePath = (Get-Item $ServerPath).Directory.FullName + "\ServerStarted"
-    while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 10) {
+    while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 100) {
         sleep 3
     }
     if (!(Test-Path $ServerStartedFilePath)) {
