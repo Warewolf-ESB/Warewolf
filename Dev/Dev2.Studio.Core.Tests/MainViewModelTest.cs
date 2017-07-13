@@ -1970,7 +1970,10 @@ namespace Dev2.Core.Tests
             ShellViewModel.WorksurfaceContextManager = mockWM.Object;
             ShellViewModel.WorksurfaceContextManager.EditMySqlResource(source.Object);
             mockWM.Verify(manager => manager.EditMySqlResource(It.IsAny<IDbSource>(), null));
-            ShellViewModel.EditMySqlResource(source.Object);
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                ShellViewModel.EditMySqlResource(source.Object);
+            });
         }
 
         [TestMethod]
