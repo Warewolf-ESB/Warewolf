@@ -882,7 +882,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
-            if ($Parallelize.IsPresent -and !$StartStudio.IsPresent) {
+            if ($Parallelize.IsPresent -and !$StartStudio.IsPresent -and $DisableTimeouts.IsPresent) {
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
