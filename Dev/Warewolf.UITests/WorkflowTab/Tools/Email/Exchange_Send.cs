@@ -16,7 +16,6 @@ namespace Warewolf.UITests.Tools
         [TestCategory("Email Tools")]
         public void ExchangeSendTool_Small_And_LargeView_Then_NewSource_UITest()
         {
-
             Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.Exists, "Exchange Email tool does not exist after dragging in from the toolbox");
             // Small View
             Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.SmallViewContent.SourcesComboBox.Enabled, "Source Combobox is not enabled.");
@@ -48,23 +47,8 @@ namespace Warewolf.UITests.Tools
             Assert.IsTrue(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.Exists, "Port textbox does not exist after opening Email source tab");
             ExchangeSourceUIMap.Enter_Text_Into_Exchange_Tab();
             ExchangeSourceUIMap.Click_ExchangeSource_TestConnection_Button();
-            Assert.IsTrue(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.ItemImage.Exists, "Connection test Failed");
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
-            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            ExchangeSourceUIMap.Click_ExchangeSource_CloseTabButton();
-            //Edit Source
-            EmailToolsUIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
-            EmailToolsUIMap.Select_Source_From_ExchangeSendTool();
-            EmailToolsUIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
-            Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.SmallViewContent.ItemButton.Enabled, "Edit Source Button is not enabled after selecting source.");
-            EmailToolsUIMap.Click_EditSourceButton_On_ExchangeSendToolSmallView();
-            Assert.IsTrue(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.Exists, "Exchange Source Tab does not exist.");
-            ExchangeSourceUIMap.Edit_Timeout_On_ExchangeSource();
-            ExchangeSourceUIMap.Click_ExchangeSource_TestConnection_Button();
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            ExchangeSourceUIMap.Click_ExchangeSource_CloseTabButton();
-            EmailToolsUIMap.Click_EditSourceButton_On_ExchangeSendToolSmallView();
-            Assert.AreEqual("2000", ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
+            System.Drawing.Point point;
+            Assert.IsFalse(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.ItemImage.TryGetClickablePoint(out point), "Connection test Passed");
         }
 
         [TestMethod]

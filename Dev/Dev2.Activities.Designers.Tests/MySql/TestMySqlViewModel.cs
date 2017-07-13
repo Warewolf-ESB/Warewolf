@@ -210,7 +210,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             Assert.IsTrue(mySql.OutputsRegion.IsEnabled);
             Assert.IsTrue(mySql.InputArea.IsEnabled);
             Assert.IsTrue(mySql.ErrorRegion.IsEnabled);
-            Assert.AreEqual(2, mySql.ManageServiceInputViewModel.InputArea.Inputs.Count);
+            Assert.AreEqual(1, mySql.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.AreEqual(0, mySql.ManageServiceInputViewModel.Errors.Count);
         }
@@ -242,7 +242,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             Assert.IsTrue(mySql.OutputsRegion.IsEnabled);
             Assert.IsTrue(mySql.InputArea.IsEnabled);
             Assert.IsTrue(mySql.ErrorRegion.IsEnabled);
-            Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
+            Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.Count == 1);
             Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
             Assert.AreEqual(0, mySql.ManageServiceInputViewModel.Errors.Count);
@@ -299,7 +299,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
             Assert.IsTrue(mySql.OutputsRegion.IsEnabled);
             Assert.IsTrue(mySql.InputArea.IsEnabled);
             Assert.IsTrue(mySql.ErrorRegion.IsEnabled);
-            Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
+            Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.Count == 1);
             Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(mySql.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
         }

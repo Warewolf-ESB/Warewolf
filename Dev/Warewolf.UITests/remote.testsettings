@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings name="Other UI Tests" id="a8e450c7-bf3d-46b6-ac8f-79fa2c90e8f8" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>Run Tests With Timeout And Screen Recordings.</Description>
+  <Deployment>
+    <DeploymentItem filename="DebugServer.zip" />
+    <DeploymentItem filename="DebugStudio.zip" />
+    <DeploymentItem filename="Run Tests.ps1" />
+  </Deployment>
+  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
+  <Scripts setupScript="C:\Builds\startup.bat" cleanupScript="C:\Builds\cleanup.bat" />
+  <RemoteController name="rsaklfsvrdev:6901" />
+  <Execution location="Remote">
+    <Timeouts testTimeout="600000" />
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+    <AgentRule name="Remote">
+      <SelectionCriteria>
+        <AgentProperty name="UI" value="" />
+      </SelectionCriteria>
+      <DataCollectors>
+        <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
+          <Configuration>
+            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
+          </Configuration>
+        </DataCollector>
+      </DataCollectors>
+    </AgentRule>
+  </Execution>
+  <Properties />
+</TestSettings>

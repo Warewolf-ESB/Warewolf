@@ -5,26 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UITests", "Warewolf.UITests\Warewolf.UITests.csproj", "{91A84D74-7D50-4046-A8FE-82E52B5DBEE5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{380CF0B0-6BA2-41E1-B275-62B61CEDFD73}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5176818D-D7C0-454B-BC12-FD619C57811C}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
-		TestScripts\Tests\CodedUITestBuilder.config.bat = TestScripts\Tests\CodedUITestBuilder.config.bat
-		TestScripts\Tests\Compile All.bat = TestScripts\Tests\Compile All.bat
-		TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1 = TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{420E71D8-43C5-48B2-978E-0D37C2349407}"
-	ProjectSection(SolutionItems) = preProject
-		Dev2.Server\Decrypt Server Resources.ps1 = Dev2.Server\Decrypt Server Resources.ps1
-		TestScripts\Scorched Get (excluding nuget packages).bat = TestScripts\Scorched Get (excluding nuget packages).bat
-		Studio.Run.bat = Studio.Run.bat
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UISpecs", "Warewolf.UISpecs\Warewolf.UISpecs.csproj", "{227596D7-ACEE-48AB-8A27-2B20AF449C97}"
 EndProject
 Global
@@ -44,10 +24,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {420E71D8-43C5-48B2-978E-0D37C2349407}
-		{5176818D-D7C0-454B-BC12-FD619C57811C} = {380CF0B0-6BA2-41E1-B275-62B61CEDFD73}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Dev2.UI.Tests.vsmdi

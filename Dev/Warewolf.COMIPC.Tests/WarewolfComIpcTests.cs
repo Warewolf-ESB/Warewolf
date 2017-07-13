@@ -40,10 +40,10 @@ namespace WarewolfCOMIPC.Test
             var clsid = new Guid(ComPluginRuntimeHandlerTest.adodbConnectionClassId);
 
             //------------Execute Test---------------------------           
-            var execute = IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
+            var execute = (KeyValuePair<bool, string>)IpcClient.GetIPCExecutor().Invoke(clsid, "", Execute.GetType,  new ParameterInfoTO[] { });
 
             //------------Assert Results-------------------------
-            Assert.IsNotNull(execute);
+            Assert.IsNotNull(execute.Value);
         }
 
         [TestMethod]
@@ -71,11 +71,11 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            var execute = IpcClient.GetIPCExecutor().Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
+             KeyValuePair<bool, string> execute = (KeyValuePair<bool, string>)IpcClient.GetIPCExecutor().Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
 
             //---------------Test Result -----------------------
-            var actual = execute as string;
-            Assert.IsNotNull(actual);
+            
+            Assert.IsNotNull(execute.Value);
         }
     }
 }

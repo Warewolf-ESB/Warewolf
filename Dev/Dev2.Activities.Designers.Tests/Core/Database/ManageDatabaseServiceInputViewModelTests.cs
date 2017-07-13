@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsTrue(called);
             Assert.IsTrue(calledOk);
         }
-        
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -122,7 +122,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
         public void ManageDatabaseServiceInputViewModelTestAction_Exception()
         {
             //------------Setup for test--------------------------
-            var mod = new SqlServerModel(){ThrowsTestError = true};
+            var mod = new SqlServerModel() { ThrowsTestError = true };
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
@@ -193,7 +193,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
-            inputview.Model = new DatabaseService(){Source = new DbSourceDefinition(), Action = new DbAction(){Inputs = new List<IServiceInput>(),Name ="bob"},};
+            inputview.Model = new DatabaseService() { Source = new DbSourceDefinition(), Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" }, };
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
 
@@ -228,7 +228,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
-            inputview.Model = new DatabaseService(){Source = new DbSourceDefinition(), Action = new DbAction(){Inputs = new List<IServiceInput>(),Name ="bob"},};
+            inputview.Model = new DatabaseService() { Source = new DbSourceDefinition(), Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" }, };
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
 
@@ -242,7 +242,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsTrue(sqlServer.InputArea.IsEnabled);
             Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,sqlServer.OutputsRegion.Outputs.Count);
+            Assert.AreEqual(1, sqlServer.OutputsRegion.Outputs.Count);
         }
 
         [TestMethod]
@@ -288,7 +288,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             var lst = new List<IServiceInput>();
             vm.InputArea.Inputs = lst;
-            Assert.AreEqual(lst, vm.InputArea.Inputs);
+            Assert.AreEqual(lst.Count, vm.InputArea.Inputs.Count);
             var lsto = new List<IServiceOutputMapping>();
             vm.OutputArea.Outputs = lsto;
             Assert.AreEqual(lsto, vm.OutputArea.Outputs);
