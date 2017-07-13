@@ -262,7 +262,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             var oldResourceId = dataObject.ResourceID;
-           
+
             InitializeDebug(dataObject);
 
             try
@@ -278,7 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     dataObject.ResourceID = resourceId;
                 }
-                
+
                 if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
                     DispatchDebugState(dataObject, StateType.Before, 0);
@@ -333,7 +333,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                     }
-                    
+
                 }
             }
             finally
@@ -363,7 +363,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RunWorkflowAsync = false;
                 dataObject.RemoteInvokerID = Guid.Empty.ToString();
                 dataObject.EnvironmentID = Guid.Empty;
-                dataObject.ResourceID = oldResourceId;                
+                dataObject.ResourceID = oldResourceId;
             }
         }
 
@@ -584,7 +584,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
                 IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
-                return outputs.Select(definition => definition.MapsTo).ToList();
+                return outputs.Select(definition => definition.RawValue).ToList();
             }
             return Outputs.Select(mapping => mapping.MappedTo).ToList();
         }

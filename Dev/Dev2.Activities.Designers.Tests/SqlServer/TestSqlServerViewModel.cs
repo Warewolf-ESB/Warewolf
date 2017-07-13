@@ -264,7 +264,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
             Assert.IsTrue(sqlServer.InputArea.IsEnabled);
             Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
-            Assert.AreEqual(2, sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count);
+            Assert.AreEqual(1, sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.AreEqual(0, sqlServer.ManageServiceInputViewModel.Errors.Count);
         }
@@ -297,7 +297,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
             Assert.IsTrue(sqlServer.InputArea.IsEnabled);
             Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
-            Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
+            Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 1);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
             Assert.AreEqual(0, sqlServer.ManageServiceInputViewModel.Errors.Count);
@@ -332,7 +332,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             Assert.IsTrue(sqlServer.OutputsRegion.IsEnabled);
             Assert.IsTrue(sqlServer.InputArea.IsEnabled);
             Assert.IsTrue(sqlServer.ErrorRegion.IsEnabled);
-            Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 2);
+            Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Count == 1);
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.First().Name == "[[a]]");
             Assert.IsTrue(sqlServer.ManageServiceInputViewModel.InputArea.Inputs.Last().Name == "[[a]]");
         }

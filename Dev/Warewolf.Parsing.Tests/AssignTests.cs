@@ -18,8 +18,8 @@ namespace WarewolfParsingTest
         public void AssignEvaluationRecsets_AssignARecset_Last_WithFraming()
         {
             //------------Setup for test--------------------------
-            var data =  CreateEnvironmentWithData();
-            
+            var data = CreateEnvironmentWithData();
+
             //------------Execute Test---------------------------
             EvaluationFunctions.evalScalar("a", data);
 
@@ -38,7 +38,7 @@ namespace WarewolfParsingTest
             var x = EvaluationFunctions.getIntFromAtom(DataStorage.WarewolfAtom.NewInt(1));
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(x,1);
+            Assert.AreEqual(x, 1);
         }
 
 
@@ -91,7 +91,25 @@ namespace WarewolfParsingTest
             Assert.AreEqual(x.IsRecordSetExpression, true);
             var rec = x as LanguageAST.LanguageExpression.RecordSetExpression;
             // ReSharper disable once PossibleNullReferenceException
-            Assert.IsTrue( rec.Item.Index.IsIndexExpression);
+            Assert.IsTrue(rec.Item.Index.IsIndexExpression);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionStrict")]
+        public void ParseLanguageExpressionStrict_IndexExpression()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionStrict("[[rec([[a]]).a]]", 1);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsRecordSetExpression, true);
+            var rec = x as LanguageAST.LanguageExpression.RecordSetExpression;
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(rec.Item.Index.IsIndexExpression);
         }
 
         [TestMethod]
@@ -104,6 +122,24 @@ namespace WarewolfParsingTest
 
             //------------Execute Test---------------------------
             var x = EvaluationFunctions.parseLanguageExpression("[[rec(1).a]]", 3);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsRecordSetExpression, true);
+            var rec = x as LanguageAST.LanguageExpression.RecordSetExpression;
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(rec.Item.Index.IsIntIndex);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionStrict")]
+        public void ParseLanguageExpressionStrict_IndexExpression_PassAnUpdate()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionStrict("[[rec(1).a]]", 3);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(x.IsRecordSetExpression, true);
@@ -131,6 +167,24 @@ namespace WarewolfParsingTest
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionStrict")]
+        public void ParseLanguageExpression_RecsetExpression_PassAnUpdate()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionStrict("[[rec(1)]]", 3);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsRecordSetNameExpression, true);
+            var rec = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(rec.Item.Index.IsIntIndex);
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("AssignEvaluationRecsets_AssignARecset")]
         public void ParseLanguage_RecsetIndexExpression()
@@ -148,6 +202,163 @@ namespace WarewolfParsingTest
             Assert.IsTrue(rec.Item.Index.IsIndexExpression);
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionStrict")]
+        public void ParseLanguageExpression_RecsetIndexExpression()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionStrict("[[rec([[a]])]]", 1);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsRecordSetNameExpression, true);
+            var rec = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(rec.Item.Index.IsIndexExpression);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionWithoutUpdateStrict")]
+        public void ParseLanguageExpressionWithoutUpdateStrict_RecsetIndexExpression()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionWithoutUpdateStrict("[[rec([[a]])]]");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsRecordSetNameExpression, true);
+            var rec = x as LanguageAST.LanguageExpression.RecordSetNameExpression;
+            // ReSharper disable once PossibleNullReferenceException
+            Assert.IsTrue(rec.Item.Index.IsIndexExpression);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionStrict")]
+        public void ParseLanguageExpression_InvalidScalar()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionStrict("[[rec", 1);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsWarewolfAtomExpression, true);           
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionWithoutUpdateStrict")]
+        public void ParseLanguageExpressionWithoutUpdateStrict_InvalidScalar()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionWithoutUpdateStrict("[[rec");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsWarewolfAtomExpression, true);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionStrict")]
+        public void ParseLanguageExpression_InvalidRecordSet()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionStrict("[[rec()", 1);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsWarewolfAtomExpression, true);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionWithoutUpdateStrict")]
+        public void ParseLanguageExpressionWithoutUpdateStrict_InvalidRecordSet()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionWithoutUpdateStrict("[[rec()");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsWarewolfAtomExpression, true);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionStrict")]
+        public void ParseLanguageExpression_InvalidnamedRecordSet()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionStrict("[[rec([[a]])", 1);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsWarewolfAtomExpression, true);
+        }
+
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionWithoutUpdateStrict")]
+        public void ParseLanguageExpressionWithoutUpdateStrict_InvalidnamedRecordSet()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionWithoutUpdateStrict("[[rec([[a]])");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsWarewolfAtomExpression, true);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionStrict")]
+        public void ParseLanguageExpression_InvalidIndexRecordSet()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionStrict("[[rec(1)", 1);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsWarewolfAtomExpression, true);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("EvaluationFunctions_parseLanguageExpressionWithoutUpdateStrict")]
+        public void ParseExpressionWithoutUpdateStrict_InvalidIndexRecordSetUpdate()
+        {
+            //------------Setup for test--------------------------
+            var data = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var x = EvaluationFunctions.parseLanguageExpressionWithoutUpdateStrict("[[rec(1)");
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x.IsWarewolfAtomExpression, true);
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -158,13 +369,94 @@ namespace WarewolfParsingTest
             var data = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            var x = AssignEvaluation.evalDataShape( "[[b]]", 1,data);
+            var x = AssignEvaluation.evalDataShape("[[b]]", 1, data);
 
             //------------Assert Results-------------------------
 
             // ReSharper disable once PossibleNullReferenceException
             Assert.IsTrue(x.Scalar.ContainsKey("b"));
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Assign")]
+        public void Assign_Given_Value_StartsWithOpeningLanguageBracktes_Should_Assign_Value_Correclty_Scalar()
+        {
+            //------------Setup for test--------------------------
+            var emptyenv = CreateEmptyEnvironment();
+            var value = "[[nathi";
+            var exp = "[[myValue]]";
+
+            //------------Execute Test---------------------------
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), 1, emptyenv);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(envTemp.Scalar);
+            Assert.AreEqual(1, envTemp.Scalar.Count);
+            Assert.AreEqual(value, envTemp.Scalar["myValue"].ToString());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Assign")]
+        public void Assign_Given_Value_ContainsOpeningLanguageBracktes_Should_Assign_Value_Correclty_Scalar()
+        {
+            //------------Setup for test--------------------------
+            var emptyenv = CreateEmptyEnvironment();
+            var value = "na[[thi";
+            var exp = "[[myValue]]";
+
+            //------------Execute Test---------------------------
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), 1, emptyenv);
+            //PublicFunctions.AssignWithFrame(new AssignValue(exp, value), 1, emptyenv);
+            //------------Assert Results-------------------------
+           
+            Assert.IsNotNull(envTemp.Scalar);
+            Assert.AreEqual(1, envTemp.Scalar.Count);
+            var a = PublicFunctions.EvalEnvExpression(exp, 0, false, envTemp);
+            var valueFromEnv = ExecutionEnvironment.WarewolfEvalResultToString(a);
+            Assert.AreEqual(value, envTemp.Scalar["myValue"].ToString());
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Assign")]
+        public void Assign_Given_Value_ContainsOpeningLanguageBracktes_Should_Assign_Value_Correclty_RecordSets()
+        {
+            //------------Setup for test--------------------------
+            var emptyenv = CreateEmptyEnvironment();
+            var value = "na[[thi";
+            var exp = "[[myValue().name]]";
+
+            //------------Execute Test---------------------------
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), 1, emptyenv);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(envTemp.RecordSets);
+            Assert.AreEqual(1, envTemp.RecordSets.Count);
+            var a = PublicFunctions.EvalEnvExpression(exp, 0, false, envTemp);
+            var valueFromEnv = ExecutionEnvironment.WarewolfEvalResultToString(a);
+            Assert.AreEqual(value, valueFromEnv);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("Assign")]
+        [ExpectedException(typeof(Exception))]
+        public void Assign_Given_Value_ContainsOpeningLanguageBracktes_Should_Assign_Value_Correclty_JsonObjects()
+        {
+            //------------Setup for test--------------------------
+            var emptyenv = CreateEmptyEnvironment();
+            var value = "na[[thi";
+            var exp = "[[@myValue().name]]";
+
+            //------------Execute Test---------------------------
+            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), 1, emptyenv);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(envTemp.RecordSets);
+            Assert.AreEqual(1, envTemp.RecordSets.Count);
+            var a = PublicFunctions.EvalEnvExpression(exp, 0, false, envTemp);
+            var valueFromEnv = ExecutionEnvironment.WarewolfEvalResultToString(a);
+            Assert.AreEqual(value, valueFromEnv);
+        }        
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -214,7 +506,7 @@ namespace WarewolfParsingTest
 
             //------------Execute Test---------------------------
             var x = AssignEvaluation.evalDataShape("1", 1, data);
-             x = AssignEvaluation.evalDataShape("[[Rec().d.x]]", 1, x);
+            x = AssignEvaluation.evalDataShape("[[Rec().d.x]]", 1, x);
 
             //------------Assert Results-------------------------
 
@@ -222,7 +514,7 @@ namespace WarewolfParsingTest
             Assert.IsTrue(x.RecordSets.ContainsKey("Rec"));
             Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("d"));
             Assert.IsTrue(x.RecordSets["Rec"].Data.ContainsKey("a"));
-        }     
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -243,6 +535,12 @@ namespace WarewolfParsingTest
             Assert.AreEqual("dora", token);
         }
 
+        private static DataStorage.WarewolfEnvironment CreateEmptyEnvironment()
+        {
+            ExecutionEnvironment env = new ExecutionEnvironment();
+            PrivateObject p = new PrivateObject(env);
+            return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+        }
         private static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
 

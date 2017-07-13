@@ -77,12 +77,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Testing.SFTPServer", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2.Util.csproj", "{1990550D-EA6F-4DAC-9B5E-8571E86923ED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{C6750CCC-03BB-42BF-8EB7-0D9ACB927923}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Scorched Get (excluding nuget packages).bat = TestScripts\Scorched Get (excluding nuget packages).bat
-		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Integration.Tests", "Dev2.IntegrationTests\Dev2.Integration.Tests.csproj", "{2C7F0E32-C4C4-422D-A767-92F3B3510392}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Sql", "Dev2.Sql\Dev2.Sql.csproj", "{2B734597-C85D-4295-9782-C722F4645ED9}"
@@ -193,12 +187,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Sha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Decision", "Warewolf.UIBindingTests.Decision\Warewolf.UIBindingTests.Decision.csproj", "{40809B6B-E7E1-42D0-A3AF-6A6BC267D92B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionScripts", "VersionScripts", "{BD257381-0CA0-49B8-9FC6-BCEAD24022CA}"
-	ProjectSection(SolutionItems) = preProject
-		AssemblyCommonInfo.ps1 = AssemblyCommonInfo.ps1
-		ReadOutVersion.ps1 = ReadOutVersion.ps1
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics.Tests", "Dev2.Diagnostics.Tests\Dev2.Diagnostics.Tests.csproj", "{BF41B889-B0EE-436C-9511-5943C77582E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Core.Tests", "Warewolf.Core.Tests\Warewolf.Core.Tests.csproj", "{8742EC99-037F-4F9A-95F6-6957B37E07CA}"
@@ -208,15 +196,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Studio.ServerProxyLayer.Tests", "Warewolf.Studio.ServerProxyLayer.Tests\Warewolf.Studio.ServerProxyLayer.Tests.csproj", "{DFE9341F-EDD8-4038-B278-0CDFA936DBCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ToolsSpecs", "Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{821BF055-C1EF-4E32-9854-96684CAFB617}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Tests\CodedUITestBuilder.bat = TestScripts\Tests\CodedUITestBuilder.bat
-		TestScripts\Tests\CodedUITestBuilder.config.bat = TestScripts\Tests\CodedUITestBuilder.config.bat
-		TestScripts\Tests\Compile All.bat = TestScripts\Tests\Compile All.bat
-		TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1 = TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1
-		TestScripts\Tests\Write Failing Tests Playlist.ps1 = TestScripts\Tests\Write Failing Tests Playlist.ps1
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage.Tests", "Warewolf.Storage.Tests\Warewolf.Storage.Tests.csproj", "{4166D6CE-C1F9-4CFD-B14B-59B0BA5C3BBF}"
 EndProject
@@ -250,8 +229,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GACManagerApi", "GACManagerApi\GACManagerApi.csproj", "{2909743E-72FF-48BF-A081-E61A73D2E6EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingDotnetDllCascading", "TestingDotnetDllCascading\TestingDotnetDllCascading.csproj", "{A4F1DAA7-9EAB-4E46-9E73-BAE87179F737}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B92A973-AA53-4E0C-9E2E-13F40A352C80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Scheduler.Tests", "Dev2.Scheduler.Tests\Dev2.Scheduler.Tests.csproj", "{211601FA-019A-4F23-9A30-5FE5344E1BE1}"
 EndProject
@@ -1080,12 +1057,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C6750CCC-03BB-42BF-8EB7-0D9ACB927923} = {2B92A973-AA53-4E0C-9E2E-13F40A352C80}
-		{BD257381-0CA0-49B8-9FC6-BCEAD24022CA} = {2B92A973-AA53-4E0C-9E2E-13F40A352C80}
-		{821BF055-C1EF-4E32-9854-96684CAFB617} = {C6750CCC-03BB-42BF-8EB7-0D9ACB927923}
-		{6A1B0257-1363-43A4-AAF2-4D151081DE6C} = {2B92A973-AA53-4E0C-9E2E-13F40A352C80}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c

@@ -424,6 +424,39 @@ namespace Warewolf.UITests.SharepointSource.SharepointSourceUIMapClasses
                 return this.mCancelTestButton;
             }
         }
+        
+        public WpfCustom Spinner
+        {
+            get
+            {
+                if ((this.mSpinner == null))
+                {
+                    this.mSpinner = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
+                    this.mSpinner.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SettingsProgress_Indicator";
+                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSpinner;
+            }
+        }
+        
+        public WpfImage SuccessfulTestImage
+        {
+            get
+            {
+                if ((this.mSuccessfulTestImage == null))
+                {
+                    this.mSuccessfulTestImage = new WpfImage(this);
+                    #region Search Criteria
+                    this.mSuccessfulTestImage.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mSuccessfulTestImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mSuccessfulTestImage;
+            }
+        }
         #endregion
         
         #region Fields
@@ -440,6 +473,10 @@ namespace Warewolf.UITests.SharepointSource.SharepointSourceUIMapClasses
         private WpfRadioButton mWindowsRadioButton;
         
         private WpfButton mCancelTestButton;
+        
+        private WpfCustom mSpinner;
+        
+        private WpfImage mSuccessfulTestImage;
         #endregion
     }
 }

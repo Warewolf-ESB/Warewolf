@@ -1436,19 +1436,27 @@ namespace Dev2.Activities.Specs.Composition
             }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
-            var outputState = toolSpecificDebug.FirstOrDefault();
-            if (toolSpecificDebug.Count > 1)
+            IDebugState outputState;
+            if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
             {
-                if (toolSpecificDebug.Any(state => state.StateType == StateType.End))
-                {
-                    outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
-                }
+                outputState = toolSpecificDebug.FirstOrDefault(state => state.StateType == StateType.End);
+            }
+            else
+            {
+                outputState = toolSpecificDebug.FirstOrDefault();
             }
 
-
-            // ReSharper disable once PossibleNullReferenceException
-            _commonSteps.ThenTheDebugOutputAs(table, outputState.Outputs
-                                                    .SelectMany(s => s.ResultsList).ToList(), isDataMergeDebug);
+            if (outputState != null && outputState.Outputs != null)
+            {
+                var SelectResults = outputState.Outputs.SelectMany(s => s.ResultsList);
+                if (SelectResults != null && SelectResults.ToList() != null)
+                {
+                    _commonSteps.ThenTheDebugOutputAs(table, SelectResults.ToList(), isDataMergeDebug);
+                    return;
+                }
+                Assert.Fail(outputState.Outputs.ToList() + " debug outputs found on " + workflowName + " does not include " + toolName + ".");
+            }
+            Assert.Fail("No debug output found for " + workflowName + ".");
         }
 
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug output contains as")]

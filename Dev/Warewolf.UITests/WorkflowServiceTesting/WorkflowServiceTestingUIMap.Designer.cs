@@ -10533,12 +10533,26 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
                 return this.mFavFoodItem;
             }
         }
+        
+        public StepTitleBar StepTitleBar
+        {
+            get
+            {
+                if ((this.mStepTitleBar == null))
+                {
+                    this.mStepTitleBar = new StepTitleBar(this);
+                }
+                return this.mStepTitleBar;
+            }
+        }
         #endregion
         
         #region Fields
         private UIItemTreeItem mUIItemTreeItem;
         
         private FavFoodItem mFavFoodItem;
+        
+        private StepTitleBar mStepTitleBar;
         #endregion
     }
     
@@ -10557,29 +10571,29 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
         }
         
         #region Properties
-        public UIWarewolfStudioViewMoExpander1 UIWarewolfStudioViewMoExpander
+        public Step Step
         {
             get
             {
-                if ((this.mUIWarewolfStudioViewMoExpander == null))
+                if ((this.mStep == null))
                 {
-                    this.mUIWarewolfStudioViewMoExpander = new UIWarewolfStudioViewMoExpander1(this);
+                    this.mStep = new Step(this);
                 }
-                return this.mUIWarewolfStudioViewMoExpander;
+                return this.mStep;
             }
         }
         #endregion
         
         #region Fields
-        private UIWarewolfStudioViewMoExpander1 mUIWarewolfStudioViewMoExpander;
+        private Step mStep;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfStudioViewMoExpander1 : WpfExpander
+    public class Step : WpfExpander
     {
         
-        public UIWarewolfStudioViewMoExpander1(UITestControl searchLimitContainer) : 
+        public Step(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -10871,29 +10885,29 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
         }
         
         #region Properties
-        public UIWarewolfStudioViewMoExpander2 UIWarewolfStudioViewMoExpander
+        public Step1 Step
         {
             get
             {
-                if ((this.mUIWarewolfStudioViewMoExpander == null))
+                if ((this.mStep == null))
                 {
-                    this.mUIWarewolfStudioViewMoExpander = new UIWarewolfStudioViewMoExpander2(this);
+                    this.mStep = new Step1(this);
                 }
-                return this.mUIWarewolfStudioViewMoExpander;
+                return this.mStep;
             }
         }
         #endregion
         
         #region Fields
-        private UIWarewolfStudioViewMoExpander2 mUIWarewolfStudioViewMoExpander;
+        private Step1 mStep;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
-    public class UIWarewolfStudioViewMoExpander2 : WpfExpander
+    public class Step1 : WpfExpander
     {
         
-        public UIWarewolfStudioViewMoExpander2(UITestControl searchLimitContainer) : 
+        public Step1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -11180,6 +11194,110 @@ namespace Warewolf.UITests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCla
         
         #region Fields
         private WpfEdit mValueEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class StepTitleBar : WpfExpander
+    {
+        
+        public StepTitleBar(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_Assign a value to Name if blank (1)_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public Step2 Step
+        {
+            get
+            {
+                if ((this.mStep == null))
+                {
+                    this.mStep = new Step2(this);
+                }
+                return this.mStep;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Step2 mStep;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Step2 : WpfButton
+    {
+        
+        public Step2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public Textbox3 Textbox3
+        {
+            get
+            {
+                if ((this.mTextbox3 == null))
+                {
+                    this.mTextbox3 = new Textbox3(this);
+                }
+                return this.mTextbox3;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Textbox3 mTextbox3;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    public class Textbox3 : WpfText
+    {
+        
+        public Textbox3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfImage Icon
+        {
+            get
+            {
+                if ((this.mIcon == null))
+                {
+                    this.mIcon = new WpfImage(this);
+                    #region Search Criteria
+                    this.mIcon.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mIcon.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+                    this.mIcon.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mIcon;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfImage mIcon;
         #endregion
     }
     

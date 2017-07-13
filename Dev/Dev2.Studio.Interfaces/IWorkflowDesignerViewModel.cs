@@ -8,9 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Data.Interfaces;
 using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 
@@ -35,5 +37,7 @@ namespace Dev2.Studio.Interfaces
         void BindToModel();
         void AddMissingWithNoPopUpAndFindUnusedDataListItems();
         ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID);
+
+        string GetWorkflowInputs(string field);
     }
 }
