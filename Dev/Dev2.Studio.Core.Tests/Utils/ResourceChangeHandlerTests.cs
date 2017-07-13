@@ -81,6 +81,7 @@ namespace Dev2.Core.Tests.Utils
             CustomContainer.Register<IShellViewModel>(shell.Object);
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
             shell.Setup(a => a.ActiveServer).Returns(server.Object);
+            shell.Setup(a => a.OpenResourceAsync(It.IsAny<Guid>(), server.Object));
             mockResourceModelDependant.Setup(model => model.ResourceName).Returns("MyResource");
             mockResourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(mockResourceModelDependant.Object);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
@@ -92,7 +93,6 @@ namespace Dev2.Core.Tests.Utils
             //------------Assert Results-------------------------
             shell.Verify(model => model.OpenResourceAsync(It.IsAny<Guid>(), server.Object));
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
