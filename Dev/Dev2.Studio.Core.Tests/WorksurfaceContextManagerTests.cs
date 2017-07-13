@@ -12,6 +12,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
+using System.Windows;
 
 namespace Dev2.Core.Tests
 {
@@ -687,7 +688,10 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            });
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IExchangeSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -717,7 +721,10 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            };
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -747,7 +754,10 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            };
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<ISharepointServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -777,7 +787,10 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            };
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -807,7 +820,10 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            };
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IRabbitMQServiceSourceDefinition>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -836,7 +852,10 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            };
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -862,7 +881,10 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            };
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
 
@@ -888,7 +910,10 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            };
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
