@@ -16,6 +16,7 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("OracleServer_Connect")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [DeploymentItem("Oracle.ManagedDataAccess.dll")]
         // ReSharper disable InconsistentNaming
         public void OracleServer_Connect_ConnectionStringIsNull_ThrowsArgumentNullException()
             // ReSharper restore InconsistentNaming
@@ -39,6 +40,7 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("OracleServer_Connect")]
         [ExpectedException(typeof(ArgumentException))]
+        [DeploymentItem("Oracle.ManagedDataAccess.dll")]
         // ReSharper disable InconsistentNaming
         public void OracleServer_Connect_ConnectionStringIsInvalid_ThrowsArgumentException()
             // ReSharper restore InconsistentNaming
@@ -62,6 +64,7 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("OracleServer_FetchDataTable")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [DeploymentItem("Oracle.ManagedDataAccess.dll")]
         // ReSharper disable InconsistentNaming
         public void OracleServer_FetchDataTable_CommandIsNull_ThrowsArgumentNullException()
             // ReSharper restore InconsistentNaming
@@ -109,6 +112,7 @@ namespace Dev2.Sql.Tests
         [Owner("Trevor Williams-Ros")]
         [TestCategory("OracleServer_FetchStoredProcedures")]
         [ExpectedException(typeof(ArgumentNullException))]
+        [DeploymentItem("Oracle.ManagedDataAccess.dll")]
         // ReSharper disable InconsistentNaming
         public void OracleServer_FetchStoredProcedures_FunctionProcessorIsNull_ThrowsArgumentNullException()
             // ReSharper restore InconsistentNaming
