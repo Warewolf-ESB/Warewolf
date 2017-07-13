@@ -630,6 +630,43 @@ namespace BusinessDesignStudio.Unit.Tests
 
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("ResourceRepository_UpdateActiveServer")]
+        public void WorkFlowService_UpdateActiveServer_IsNotNull()
+        {
+            var retVal = new StringBuilder();
+            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
+            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                retVal = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+
+            mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
+            mockEnvironmentModel.Setup(x => x.LoadResources());
+
+            Mock<IServer> mockNewEnvironmentModel = new Mock<IServer>();
+            Mock<IEnvironmentConnection> connNew = new Mock<IEnvironmentConnection>();
+            connNew.Setup(c => c.IsConnected).Returns(true);
+            connNew.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            connNew.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
+            {
+                retVal = o;
+            });
+
+            mockNewEnvironmentModel.Setup(e => e.Connection).Returns(connNew.Object);
+
+            ResourceRepository.UpdateServer(mockNewEnvironmentModel.Object);
+        }
+
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModel_SaveTests")]
         public void ResourceModel_SaveTests_ExecuteMessageIsSuccessful_NoException()

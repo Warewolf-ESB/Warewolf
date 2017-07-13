@@ -102,26 +102,28 @@ namespace Warewolf.Studio.ViewModels
                     }
                     SetControlFlowValues(value);
                 }
-                AddNewEmptyRow();
+                //AddNewEmptyRow();
                 OnPropertyChanged(() => StepOutputs);
                 IsTestStepExpanded = StepOutputs?.Count > 0;
                 IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
             }
         }
 
-        private void AddNewEmptyRow()
+        public void AddNewEmptyRow()
         {
             if (_stepOutputs?.Count >= 1)
             {
                 var lastOrDefault = _stepOutputs.LastOrDefault(
                         output => !string.IsNullOrWhiteSpace(output.Variable) && !string.IsNullOrWhiteSpace(output.Value));
-                var firstOrDefault = _stepOutputs.FirstOrDefault(
-                        output => !string.IsNullOrWhiteSpace(output.Variable) && !string.IsNullOrWhiteSpace(output.Value));
                 if (lastOrDefault != null)
                 {
-                    if (DataListUtil.IsValueRecordset(firstOrDefault?.Variable))
+                    if (DataListUtil.IsValueRecordset(lastOrDefault?.Variable))
                     {
-                        _stepOutputs.Add(new ServiceTestOutput("", "", "", ""));
+                        var serviceTestOutput = new ServiceTestOutput("", "", "", "")
+                        {
+                            AddNewAction = () => AddNewOutput(_stepOutputs.LastOrDefault().Variable)
+                        };
+                        _stepOutputs.Add(serviceTestOutput);
                     }
                 }
             }
@@ -132,7 +134,7 @@ namespace Warewolf.Studio.ViewModels
             if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch") return;
             foreach (var testOutput in value.OfType<ServiceTestOutput>())
             {
-                testOutput.AssertOps = new ObservableCollection<string> {"="};
+                testOutput.AssertOps = new ObservableCollection<string> { "=" };
                 testOutput.CanEditVariable = false;
             }
         }
@@ -182,7 +184,7 @@ namespace Warewolf.Studio.ViewModels
                     UpdateTestPending();
                 }
 
-                OnPropertyChanged(()=> Result);
+                OnPropertyChanged(() => Result);
             }
         }
 
@@ -229,7 +231,7 @@ namespace Warewolf.Studio.ViewModels
                     TestFailing = false;
                     TestInvalid = false;
                 }
-                OnPropertyChanged(()=> TestPassed);
+                OnPropertyChanged(() => TestPassed);
             }
         }
 
@@ -359,33 +361,69 @@ namespace Warewolf.Studio.ViewModels
         {
             if (DataListUtil.IsValueRecordset(varName))
             {
-                if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
+                AddNewRecordsetOutput(varName);
+            }
+            else
+            {
+                var lastRow = StepOutputs.LastOrDefault();
+                if (lastRow != null)
                 {
-                    var extractedIndex = DataListUtil.ExtractIndexRegionFromRecordset(varName);
-                    int intIndex;
-                    if (int.TryParse(extractedIndex, out intIndex))
+                    if (!string.IsNullOrEmpty(lastRow.Variable.Trim()))
                     {
-                        intIndex++;
-                        var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
-                        var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
-                        if (StepOutputs.FirstOrDefault(output=>output.Variable.Equals(indexedName,StringComparison.InvariantCultureIgnoreCase))==null)
+                        var serviceTestOutput = new ServiceTestOutput("", "", "", "")
                         {
-                            var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
-                            StepOutputs?.Add(serviceTestOutput);
-                        }
+                            AddNewAction = () => AddNewOutput("")
+                        };
+                        StepOutputs?.Add(serviceTestOutput);
                     }
                 }
-                else
+            }
+        }
+
+        private void AddNewRecordsetOutput(string varName)
+        {
+            if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
+            {
+                var extractedIndex = DataListUtil.ExtractIndexRegionFromRecordset(varName);
+                int intIndex;
+                if (int.TryParse(extractedIndex, out intIndex))
                 {
-                    if (StepOutputs != null && StepOutputs.Count >= 1)
+                    intIndex++;
+                    var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);
+                    var indexedName = DataListUtil.ReplaceRecordsetBlankWithIndex(blankName, intIndex);
+                    var lastInput = StepOutputs.LastOrDefault();
+                    if (lastInput != null)
                     {
-                        var testOutput = StepOutputs.Last();
-                        if (string.IsNullOrWhiteSpace(testOutput?.Variable) && string.IsNullOrWhiteSpace(testOutput?.Value))
+                        if (string.IsNullOrEmpty(lastInput.Variable.Trim()))
                         {
-                            if (testOutput != null)
+                            lastInput.Variable = indexedName;
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(lastInput.Value.Trim()))
                             {
-                                testOutput.Variable = varName;
+                                var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
+                                StepOutputs?.Add(serviceTestOutput);
                             }
+                        }
+                    }
+                    else
+                    {
+                        var serviceTestOutput = new ServiceTestOutput(indexedName, "", "", "") { AddNewAction = () => AddNewOutput(indexedName) };
+                        StepOutputs?.Add(serviceTestOutput);
+                    }
+                }
+            }
+            else
+            {
+                if (StepOutputs != null && StepOutputs.Count >= 1)
+                {
+                    var testOutput = StepOutputs.LastOrDefault();
+                    if (string.IsNullOrWhiteSpace(testOutput?.Variable) && string.IsNullOrWhiteSpace(testOutput?.Value))
+                    {
+                        if (testOutput != null)
+                        {
+                            testOutput.Variable = varName;
                         }
                     }
                     else
@@ -396,6 +434,14 @@ namespace Warewolf.Studio.ViewModels
                         };
                         StepOutputs?.Add(serviceTestOutput);
                     }
+                }
+                else
+                {
+                    var serviceTestOutput = new ServiceTestOutput(varName, "", "", "")
+                    {
+                        AddNewAction = () => AddNewOutput(varName)
+                    };
+                    StepOutputs?.Add(serviceTestOutput);
                 }
             }
         }

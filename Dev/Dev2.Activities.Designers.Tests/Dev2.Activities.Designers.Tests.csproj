@@ -102,11 +102,7 @@
     <None Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </None>
-    <None Include="..\TestScripts\**\*.*">
-      <Link>Properties\TestScripts\%(RecursiveDir)%(FileName)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -132,6 +128,7 @@
     <Compile Include="Core\DotNet\DotNetActionRegionTest.cs" />
     <Compile Include="Core\DotNet\DotNetNamespaceRegionTest.cs" />
     <Compile Include="Core\DropboxSourceManagerTests.cs" />
+    <Compile Include="Core\GenerateInputsRegionTests.cs" />
     <Compile Include="Core\ManageWebServiceInputViewModelTests.cs" />
     <Compile Include="Core\ScriptChooserTests.cs" />
     <Compile Include="Core\WcfInputRegionTests.cs" />

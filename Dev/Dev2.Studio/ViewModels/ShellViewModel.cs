@@ -703,6 +703,7 @@ namespace Dev2.Studio.ViewModels
         public void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer)
         {
             var environmentModel = ServerRepository.Get(environmentId);
+            environmentModel?.ResourceRepository?.UpdateServer(activeServer);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
             if (contextualResourceModel != null)

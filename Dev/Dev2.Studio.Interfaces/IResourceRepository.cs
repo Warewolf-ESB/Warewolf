@@ -37,7 +37,7 @@ namespace Dev2.Studio.Interfaces
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         void Add(IResourceModel resource);
         void ForceLoad();
-
+        void UpdateServer(IServer server);
         bool IsLoaded { get; }
         bool DoesResourceExistInRepo(IResourceModel resource);
         ExecuteMessage SaveToServer(IResourceModel instanceObj);

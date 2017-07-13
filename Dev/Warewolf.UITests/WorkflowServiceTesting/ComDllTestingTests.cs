@@ -6,9 +6,6 @@ using Warewolf.UITests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UITests.WorkflowServiceTesting
 {
-    /// <summary>
-    /// Summary description for CodedUITest1
-    /// </summary>
     [CodedUITest]
     public class ComDllTestingTests
     {
@@ -73,16 +70,13 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         #region Additional test attributes
-
-        //Use TestInitialize to run code before running each test
+        
         [TestInitialize()]
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
         }
-
-        #endregion
 
         UIMap UIMap
         {
@@ -127,5 +121,7 @@ namespace Warewolf.UITests.WorkflowServiceTesting
         }
 
         private ResourcesToolsUIMap _ResourcesToolsUIMap;
+
+        #endregion
     }
 }
