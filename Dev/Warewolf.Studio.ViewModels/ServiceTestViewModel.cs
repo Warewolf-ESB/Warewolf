@@ -160,6 +160,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.OriginatingResourceID == ResourceModel.ID)
                         {
+                            UpdateInputValues(debugItemContent);
                             ProcessInputsAndOutputs(debugItemContent);
                         }
                         else if (debugItemContent.ActivityType == ActivityType.Workflow && debugItemContent.ActualType == typeof(DsfActivity).Name)
@@ -171,6 +172,20 @@ namespace Warewolf.Studio.ViewModels
                             ProcessRegularDebugItem(debugItemContent, debugState);
                         }
                     }
+                }
+            }
+        }
+
+        private void UpdateInputValues(IDebugState debugItemContent)
+        {
+            foreach (var item in debugItemContent.Inputs)
+            {
+                foreach (var res in item?.ResultsList)
+                {
+                    string variable = res?.Variable?.Replace("[[", "");
+                    variable = variable?.Replace("]]", "");
+                    var inputsValue = WorkflowDesignerViewModel?.GetWorkflowInputs(variable);
+                    res.Value = inputsValue;
                 }
             }
         }
@@ -487,10 +502,16 @@ namespace Warewolf.Studio.ViewModels
                     var childItemContent = childItem.Content;
                     var outputs = childItemContent.Outputs;
 
-                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == childItemContent.ID);
+                    var contentId = childItemContent.ID;
+                    if (childItemContent.ActualType.ToString() == "DsfActivity")
+                    {
+                        contentId = childItemContent.WorkSurfaceMappingId;
+                    }
+
+                    var exists = parent.Children.FirstOrDefault(a => a.UniqueId == contentId);
                     if (exists == null)
                     {
-                        var childStep = new ServiceTestStep(childItemContent.ID, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
+                        var childStep = new ServiceTestStep(contentId, childItemContent.ActualType, serviceTestOutputs, StepType.Assert)
                         {
                             StepDescription = childItemContent.DisplayName,
                             Parent = parent,
@@ -545,9 +566,9 @@ namespace Warewolf.Studio.ViewModels
 
         private void AddOutputs(List<IDebugItem> outputs, ServiceTestStep serviceTestStep)
         {
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
             if (outputs != null && outputs.Count > 0)
             {
-                var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
                 foreach (var output in outputs)
                 {
                     var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
@@ -577,10 +598,17 @@ namespace Warewolf.Studio.ViewModels
                         serviceTestOutputs.Add(serviceTestOutput);
                     }
                 }
-                serviceTestStep.StepOutputs = serviceTestOutputs;
             }
+            else
+            {
+                serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                {
+                    AssertOp = "",
+                    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                });
+            }
+            serviceTestStep.StepOutputs = serviceTestOutputs;
         }
-
         private void SetInputs(IDebugState inputState)
         {
             if (inputState != null)
@@ -914,6 +942,11 @@ namespace Warewolf.Studio.ViewModels
                     }
                     else
                     {
+                        var act2 = activity as DsfNativeActivity<bool>;
+                        if (act2 != null)
+                        {
+                            AddChildActivity(act2, testStep);
+                        }
                         if (activity.GetType() == typeof(DsfForEachActivity))
                         {
                             AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
@@ -1187,6 +1220,35 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
+            else
+            {
+                var computedValue = modelItem.GetCurrentValue();
+                var boolAct = computedValue as DsfActivityAbstract<bool>;
+                var activityUniqueID = boolAct?.UniqueID;
+                var activityDisplayName = boolAct?.DisplayName;
+                var type = computedValue.GetType();
+                var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+                var alreadyAdded = CheckForExists(activityUniqueID, new List<string>(), activityDisplayName, type);
+                if (alreadyAdded == null)
+                {
+                    if (activityUniqueID != null)
+                    {
+                        if (type == typeof(DsfActivity))
+                        {
+                            var testStep = new ServiceTestStep(Guid.Parse(activityUniqueID), type.Name, serviceTestOutputs, StepType.Mock) { StepDescription = activityDisplayName };
+                            serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                            {
+                                AssertOp = "",
+                                AddStepOutputRow = s => { testStep.AddNewOutput(s); },
+                                IsSearchCriteriaEnabled = true
+                            });
+                            testStep.StepOutputs = serviceTestOutputs;
+                            SelectedServiceTest.TestSteps.Add(testStep);
+                            SetStepIcon(type, testStep);
+                        }
+                    }
+                }
+            }
         }
 
         private IServiceTestStep BuildParentsFromModelItem(ModelItem modelItem)
@@ -1284,7 +1346,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
             }
-            return null;
+            return exists;
         }
 
         private bool ServiceTestStepWithOutputs(string uniqueID, string displayName, List<string> outputs, Type type, ModelItem item, out IServiceTestStep serviceTestStep)
@@ -1657,6 +1719,12 @@ namespace Warewolf.Studio.ViewModels
             var testNumber = GetNewTestNumber(SelectedServiceTest.TestName);
             var duplicateTest = ServiceTestCommandHandler.DuplicateTest(SelectedServiceTest, testNumber);
             AddAndSelectTest(duplicateTest);
+            foreach (var testStep in duplicateTest.TestSteps)
+            {
+                var test = testStep as ServiceTestStep;
+                var typeName = testStep.ActivityType;
+                SetStepIcon(typeName, test);
+            }
         }
 
         #endregion
@@ -1780,6 +1848,38 @@ namespace Warewolf.Studio.ViewModels
             }
             return true;
         }
+
+        private bool AllNamesValid(IEnumerable<string> testNames)
+        {
+            foreach (var name in testNames)
+            {
+                ErrorMessage = string.Empty;
+                if (string.IsNullOrEmpty(name))
+                {
+                    ErrorMessage = string.Format(ErrorResource.CannotBeNull, "'name'");
+                    var popupController = CustomContainer.Get<IPopupController>();
+                    popupController?.Show(Resources.Languages.Core.ServiceTestEmptyTestNameHeader,"Empty Test Name"
+                        , MessageBoxButton.OK, MessageBoxImage.Error, null,
+                        false, true, false, false, false, false);
+                    return false;
+                }
+                else if (NameHasInvalidCharacters(name))
+                {
+                    ErrorMessage = string.Format(ErrorResource.ContainsInvalidCharecters, "'name'");
+                    return false;
+                }
+                else if (name.Trim() != name)
+                {
+                    ErrorMessage = string.Format(ErrorResource.ContainsLeadingOrTrailingWhitespace, "'name'");
+                    return false;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return true;
+        }
         private static bool NameHasInvalidCharacters(string name)
         {
             return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
@@ -1849,8 +1949,9 @@ namespace Warewolf.Studio.ViewModels
                 Save(serviceTestModels);
                 UpdateTestsFromResourceUpdate();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 // MarkTestsAsDirty(true);
             }
             finally
@@ -1862,6 +1963,10 @@ namespace Warewolf.Studio.ViewModels
 
         private void Save(List<IServiceTestModel> serviceTestModels)
         {
+            if (!AllNamesValid(Tests.Select(p => p.TestName).ToList()))
+            {
+                return;
+            }
             MarkPending(serviceTestModels);
             var serviceTestModelTos = serviceTestModels.Select(CreateServiceTestModelTO).ToList();
 
@@ -2259,11 +2364,19 @@ namespace Warewolf.Studio.ViewModels
                     _tests.Remove(test);
                     OnPropertyChanged(() => Tests);
                     SelectedServiceTest = null;
+                    if (Tests.Count == 1 && Tests.Single().GetType() == typeof(DummyServiceTest))
+                    {
+                        CanSave = false;
+                    }
                 }
                 catch (Exception ex)
                 {
                     Dev2Logger.Error("IServiceTestModelTO DeleteTest(IServiceTestModel model)", ex);
                 }
+            }
+            if (_tests.Count == 1 && _tests.Single().GetType() == typeof(DummyServiceTest))
+            {
+                CanSave = false;
             }
         }
 

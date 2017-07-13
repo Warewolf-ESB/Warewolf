@@ -25,22 +25,8 @@ namespace Warewolf.UITests
             Assert.IsTrue(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.Exists, "Port textbox does not exist after opening Email source tab");
             ExchangeSourceUIMap.Enter_Text_Into_Exchange_Tab();
             ExchangeSourceUIMap.Click_ExchangeSource_TestConnection_Button();
-            Assert.IsTrue(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.ItemImage.Exists, "Connection test Failed");
-            //Save Source
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
-            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
-            ExplorerUIMap.Filter_Explorer(SourceName);
-            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
-            ExchangeSourceUIMap.Click_ExchangeSource_CloseTabButton();
-            //Edit Source
-            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
-            Assert.IsTrue(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.Exists, "Exchange Source Tab does not exist.");
-            ExchangeSourceUIMap.Edit_Timeout_On_ExchangeSource();
-            ExchangeSourceUIMap.Click_ExchangeSource_TestConnection_Button();
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            ExchangeSourceUIMap.Click_ExchangeSource_CloseTabButton();
-            ExplorerUIMap.Select_Source_From_ExplorerContextMenu(SourceName);
-            Assert.AreEqual("2000", ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.TimeoutTextBoxEdit.Text);
+            System.Drawing.Point point;
+            Assert.IsFalse(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.ItemImage.TryGetClickablePoint(out point), "Connection test Passed");
         }
 
         #region Additional test attributes
