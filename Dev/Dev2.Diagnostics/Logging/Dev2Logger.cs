@@ -32,69 +32,69 @@ namespace Dev2.Common
 
         public static void Debug(object message, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Debug(message);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Debug(customMessage);
         }
 
         public static void Debug(object message, Exception exception, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Debug(message, exception);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Debug(customMessage, exception);
         }
 
         public static void Error(object message, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Error(message);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Error(customMessage);
         }
 
         public static void Error(object message, Exception exception, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Error(message, exception);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Error(customMessage, exception);
 
         }
 
         public static void Warn(object message, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Warn(message);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Warn(customMessage);
         }
 
         public static void Warn(object message, Exception exception, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Warn(message, exception);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Warn(customMessage, exception);
 
         }
 
         public static void Fatal(object message, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Fatal(message);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Fatal(customMessage);
         }
 
         public static void Fatal(object message, Exception exception, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Fatal(message, exception);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Fatal(customMessage, exception);
         }
 
         public static void Info(object message, string executionId)
         {
-            UpdateCustomFields(executionId);
-            _log.Info(message);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Info(customMessage);
         }
 
         public static void Info(object message, Exception exception, string executionId)
         {
-           UpdateCustomFields(executionId);
-            _log.Info(message, exception);
+            var customMessage = UpdateCustomMessage(message, executionId);
+            _log.Info(customMessage, exception);
         }
 
-        private static void UpdateCustomFields(string executionId)
+        private static string UpdateCustomMessage(object message, string executionId)
         {
-            GlobalContext.Properties["eid"] = executionId;
+            return $"[{executionId}] - {message}";
         }
 
         public static void UpdateLoggingConfig(string level)
@@ -277,41 +277,5 @@ namespace Dev2.Common
             errorMappingElement.Add(new XElement("eventLogEntryType", new XAttribute("value", eventLogType)));
             return errorMappingElement;
         }
-
-        public static void AddCustomThreadProperty(string settingsConfigFile)
-        {
-            var settingsDocument = XDocument.Load(settingsConfigFile);
-            var log4netElement = settingsDocument.Element("log4net");
-            if (log4netElement != null)
-            {
-                var appenderElements = log4netElement.Elements("appender");
-                var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
-                var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type")?.Value == "log4net.Appender.EventLogAppender");
-                var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name")?.Value == "LogFileAppender");
-
-                if (eventAppender != null)
-                {
-                    UpdateConversionPattern(eventAppender);
-                }
-
-                if (fileAppender != null)
-                {
-                    UpdateConversionPattern(fileAppender);
-                }
-                settingsDocument.Save(settingsConfigFile);
-            }
-        }
-
-        private static void UpdateConversionPattern(XElement appender)
-        {
-            var conversionPattern = appender.Element("layout")?.Element("conversionPattern");
-            var value = conversionPattern?.Attribute("value");
-            if(value != null)
-            {
-                value.Value = "%date [%property{eid}] %-5level - %message%newline";
-            }
-        }
     }
-
-
 }

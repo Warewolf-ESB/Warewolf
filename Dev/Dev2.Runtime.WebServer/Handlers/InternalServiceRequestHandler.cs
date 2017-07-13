@@ -35,8 +35,8 @@ namespace Dev2.Runtime.WebServer.Handlers
         public IPrincipal ExecutingUser { private get; set; }
 
         public InternalServiceRequestHandler()
-            :this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
-        {            
+            : this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
+        {
         }
         public InternalServiceRequestHandler(IResourceCatalog catalog, IAuthorizationService authorizationService)
         {
@@ -119,6 +119,11 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             var serializer = new Dev2JsonSerializer();
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
+            if (!dataObject.ExecutionID.HasValue)
+            {
+                dataObject.ExecutionID = Guid.NewGuid();
+            }
+
             if (isDebug)
             {
                 dataObject.IsDebug = true;
@@ -126,7 +131,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.StartTime = DateTime.Now;
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
-            
+
             var resource = request.ResourceID != Guid.Empty ? _catalog.GetResource(workspaceID, request.ResourceID) : _catalog.GetResource(workspaceID, request.ServiceName);
             var isManagementResource = false;
             if (!string.IsNullOrEmpty(request.TestName))
@@ -174,7 +179,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
                         else if (dataObject.IsServiceTestExecution)
                         {
-                            
+
                             if (_authorizationService != null)
                             {
                                 var authorizationService = _authorizationService;
