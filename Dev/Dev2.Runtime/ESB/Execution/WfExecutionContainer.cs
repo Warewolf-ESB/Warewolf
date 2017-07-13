@@ -51,7 +51,9 @@ namespace Dev2.Runtime.ESB.Execution
             var user = Thread.CurrentPrincipal;
             if (string.IsNullOrEmpty(DataObject.WebUrl))
             {
-                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}{DataObject.ServiceName}.{DataObject.ReturnType}";
+                var dataObjectWebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}";
+                var replace = dataObjectWebUrl.Replace(@"\", "/").Replace("//","/");
+                DataObject.WebUrl = replace;
             }
             if (!DataObject.IsSubExecution)
             {
