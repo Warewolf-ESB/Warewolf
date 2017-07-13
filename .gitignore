@@ -56,7 +56,6 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/packages/**
 /Dev/TestResults/**
 /TestResults/**
-/Dev/TestScripts/FullVersionString
 /Dev/*.bat
 *.tmp_proj
 /Dev/RunWarewolfServiceTests/**

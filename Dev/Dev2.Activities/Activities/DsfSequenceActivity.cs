@@ -194,6 +194,13 @@ namespace Dev2.Activities
             {
                 DispatchDebugState(dataObject, StateType.After, update);
             }
+            if (dataObject.IsServiceTestExecution)
+            {
+                if (_originalUniqueID == Guid.Empty)
+                {
+                    _originalUniqueID = Guid.Parse(UniqueID);
+                }
+            }
             var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
             var serviceTestSteps = serviceTestStep?.Children;
             foreach (var dsfActivity in Activities)

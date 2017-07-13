@@ -116,23 +116,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Sharepoint", "Ware
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Security", "Warewolf.Security\Warewolf.Security.csproj", "{CA5E9373-46FE-41B9-AB2E-BD637F48B456}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{7F0E96E6-0D23-4305-8F2C-31CB2CD1D92F}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Scorched Get (excluding nuget packages).bat = TestScripts\Scorched Get (excluding nuget packages).bat
-		TestScripts\Scorched Get.bat = TestScripts\Scorched Get.bat
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Core.Tests", "Warewolf.Core.Tests\Warewolf.Core.Tests.csproj", "{8742EC99-037F-4F9A-95F6-6957B37E07CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Testing", "Warewolf.Testing\Warewolf.Testing.csproj", "{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics.Tests", "Dev2.Diagnostics.Tests\Dev2.Diagnostics.Tests.csproj", "{BF41B889-B0EE-436C-9511-5943C77582E1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{21A7E1BF-EABD-4D92-B886-EF5790BE6428}"
-	ProjectSection(SolutionItems) = preProject
-		TestScripts\Tests\Compile All.bat = TestScripts\Tests\Compile All.bat
-		TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1 = TestScripts\Tests\Regenerate All SpecFlow Feature Files.ps1
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ToolsSpecs", "Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj", "{CAD4D820-C619-4099-AA9C-DCACD23ADB89}"
 EndProject
@@ -398,9 +386,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{21A7E1BF-EABD-4D92-B886-EF5790BE6428} = {7F0E96E6-0D23-4305-8F2C-31CB2CD1D92F}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
