@@ -724,7 +724,7 @@ namespace Dev2.Core.Tests
             Application.Current.Dispatcher.Invoke(() =>
             {
                 sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-            };
+            });
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -757,7 +757,7 @@ namespace Dev2.Core.Tests
             Application.Current.Dispatcher.Invoke(() =>
             {
                 sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-            };
+            });
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<ISharepointServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -790,7 +790,7 @@ namespace Dev2.Core.Tests
             Application.Current.Dispatcher.Invoke(() =>
             {
                 sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-            };
+            });
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -823,7 +823,7 @@ namespace Dev2.Core.Tests
             Application.Current.Dispatcher.Invoke(() =>
             {
                 sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-            };
+            });
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IRabbitMQServiceSourceDefinition>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -855,7 +855,7 @@ namespace Dev2.Core.Tests
             Application.Current.Dispatcher.Invoke(() =>
             {
                 sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-            };
+            });
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -884,7 +884,7 @@ namespace Dev2.Core.Tests
             Application.Current.Dispatcher.Invoke(() =>
             {
                 sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-            };
+            });
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
 
@@ -913,7 +913,7 @@ namespace Dev2.Core.Tests
             Application.Current.Dispatcher.Invoke(() =>
             {
                 sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
-            };
+            });
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
