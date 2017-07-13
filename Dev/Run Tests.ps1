@@ -224,7 +224,7 @@ function Cleanup-ServerStudio([int]$WaitForCloseTimeout = 1800,[int]$WaitForClos
     foreach ($FileOrFolder in $ToClean) {
 	    Remove-Item $FileOrFolder -Recurse -ErrorAction SilentlyContinue
 	    if (Test-Path $FileOrFolder) {
-		    Write-Host Cannot delete $FileOrFolder
+		    Write-Error -Message "Cannot delete $FileOrFolder"
 		    $ExitCode = 1
 	    }	
     }
@@ -393,7 +393,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 			$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
 		}
         if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-            Write-Host Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath
+            Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
             sleep 30
             exit 1
         }
@@ -492,6 +492,18 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($Output.Length -lt 4 -or !($Output[3].EndsWith("RUNNING "))) {
         sc.exe start "Warewolf Server"
     }
+
+    #Wait for the ServerStarted file to appear.
+    $TimeoutCounter = 0
+    $ServerStartedFilePath = (Get-Item $ServerPath).Directory.FullName + "\ServerStarted"
+    while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 10) {
+        sleep 3
+    }
+    if (!(Test-Path $ServerStartedFilePath)) {
+        Write-Error -Message "Server Cannot Start."
+        sleep 30
+        exit 1
+    }
 }
 
 function Start-Studio {
@@ -502,13 +514,13 @@ function Start-Studio {
 	        $StudioPath = "$TestsResultsPath\Studio\" + $StudioExeName
         }
         if ($ServerPath -eq "" -or !(Test-Path $StudioPath)) {
-            Write-Host Studio path not found: $StudioPath
+            Write-Error -Message "Studio path not found: $StudioPath"
             sleep 30
             exit 1
         }
     }
 	if ($StudioPath -eq "") {
-		Write-Host Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath
+		Write-Error -Message "Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath"
         sleep 30
 		exit 1
 	}
@@ -637,13 +649,13 @@ if ($ProjectName -ne $null -and $ProjectName -ne "") {
 $TotalNumberOfJobsToRun = $JobNames.length
 if ($TotalNumberOfJobsToRun -gt 0) {
     if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
-        Write-Host Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files.
+        Write-Error -Message "Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files."
         sleep 30
         exit 1
     }
 
     if ($ApplyDotCover -and $DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
-        Write-Host Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file.
+        Write-Error -Message "Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file."
         sleep 30
         exit 1
     }
@@ -1050,15 +1062,15 @@ if ($RunWarewolfServiceTests.IsPresent) {
                 } else {
                     $TestDuration = "00:00:" + $TestDurationSeconds.ToString("00.0000000")
                 }
-                $ServiceTestResults | Foreach-object { $_.'Test Name' = $WarewolfService.Name.Replace(" ", "_") + "_" + $_.'Test Name'.Replace(" ", "_") }
-                $ServiceTestResults | Foreach-object { $_.Result = $_.Result.Replace("Invalid", "Failed") }
-                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ID" -Value ([guid]::NewGuid()) -PassThru}
-                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "ExecutionID" -Value ([guid]::NewGuid()) -PassThru}
-                $ServiceTestResults | Foreach-object { $_ | Add-Member -MemberType noteproperty -Name "Duration" -Value $TestDuration.ToString() -PassThru}
                 $ServiceTestResults | Foreach-object { 
+                    $_.'Test Name' = $WarewolfService.Name.Replace(" ", "_") + "_" + $_.'Test Name'.Replace(" ", "_")
+                    $_.Result = $_.Result.Replace("Invalid", "Failed")
+                    $_ | Add-Member -MemberType noteproperty -Name "ID" -Value ([guid]::NewGuid()) -PassThru
+                    $_ | Add-Member -MemberType noteproperty -Name "ExecutionID" -Value ([guid]::NewGuid()) -PassThru
+                    $_ | Add-Member -MemberType noteproperty -Name "Duration" -Value $TestDuration.ToString() -PassThru
                     $_ | Add-Member -MemberType noteproperty -Name "StartTime" -Value (Get-Date $TestStart -Format o) -PassThru
-                    $TestStart += $TestDuration
-                    $_ | Add-Member -MemberType noteproperty -Name "EndTime" -Value (Get-Date $TestStart -Format o) -PassThru
+                    $TestEnd = $TestStart + $TestDuration
+                    $_ | Add-Member -MemberType noteproperty -Name "EndTime" -Value (Get-Date $TestEnd -Format o) -PassThru
                 }
                 $WarewolfServiceTestData += $ServiceTestResults
             }
