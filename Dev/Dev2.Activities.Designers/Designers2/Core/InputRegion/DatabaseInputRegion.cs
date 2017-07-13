@@ -12,6 +12,7 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
+using Warewolf.Core;
 
 // ReSharper disable ExplicitCallerInfoArgument
 
@@ -34,13 +35,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
 
         public DatabaseInputRegion(ModelItem modelItem, IActionToolRegion<IDbAction> action)
-            :this(new ActionInputDatatalistMapper())
+            : this(new ActionInputDatatalistMapper())
         {
             ToolRegionName = "DatabaseInputRegion";
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
-            var inputsFromModel = _modelItem.GetProperty<List<IServiceInput>>("Inputs");
+            var inputsFromModel = _modelItem.GetProperty<ICollection<IServiceInput>>("Inputs");
             var serviceInputs = inputsFromModel ?? new List<IServiceInput>();
             var inputs = new ObservableCollection<IServiceInput>();
             inputs.CollectionChanged += InputsCollectionChanged;
@@ -69,9 +70,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
+
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _modelItem.SetProperty("Inputs", Inputs.ToList());
+            _modelItem.SetProperty("Inputs", Inputs);
         }
 
         private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
@@ -121,16 +123,40 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void UpdateOnActionSelection()
         {
-            Inputs = new List<IServiceInput>();
             IsEnabled = false;
             if (_action?.SelectedAction != null)
             {
-                Inputs = _action.SelectedAction.Inputs;
-                _datatalistMapper.MapInputsToDatalist(Inputs);
-                IsInputsEmptyRows = Inputs.Count < 1;
-                IsEnabled = true;
+                var selectedActionInputs = _action.SelectedAction.Inputs;
+                var selectedAction = ((DbAction)_action.SelectedAction).Name;
+                var isTheSameActionWithPrevious = Inputs.All(input => input.ActionName?.Equals(selectedAction) ?? false);
+                if (Inputs.Any() && isTheSameActionWithPrevious)
+                {
+                    InputsFromSameAction(selectedActionInputs);
+                }
+                else
+                {
+                    Inputs = selectedActionInputs;
+                    _datatalistMapper.MapInputsToDatalist(Inputs);
+                    IsInputsEmptyRows = Inputs.Count < 1;
+                    IsEnabled = true;
+                }
+
             }
             OnPropertyChanged("Inputs");
+        }
+
+        private void InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
+        {
+            if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputNameValueComparer()))
+            {
+                var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
+                var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
+                _datatalistMapper.MapInputsToDatalist(serviceInputs);
+                foreach (var serviceInput in serviceInputs)
+                {
+                    Inputs.Add(serviceInput);
+                }
+            }
         }
 
         public bool IsInputsEmptyRows
@@ -242,7 +268,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     _modelItem.SetProperty("Inputs", _inputs.ToList());
                     OnPropertyChanged();
                 }
-               
+
             }
         }
 

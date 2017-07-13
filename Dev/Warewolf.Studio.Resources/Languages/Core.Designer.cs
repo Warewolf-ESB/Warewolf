@@ -946,7 +946,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=Lc2neiss3Kwc5jBrMcX9nq9v2XfPlRyomaE4bW69.
+        ///   Looks up a localized string similar to https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=vAAI14uAhYGFGzHMc8pxad2H2ktF7ykuh5vHREql.
         /// </summary>
         public static string SendErrorReportUrl {
             get {
@@ -1041,6 +1041,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ServiceTestDuplicateTestNameMessage {
             get {
                 return ResourceManager.GetString("ServiceTestDuplicateTestNameMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please provide a Test Name for Test(s) with blank names.
+        /// </summary>
+        public static string ServiceTestEmptyTestNameHeader {
+            get {
+                return ResourceManager.GetString("ServiceTestEmptyTestNameHeader", resourceCulture);
             }
         }
         

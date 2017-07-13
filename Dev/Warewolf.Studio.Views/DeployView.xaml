@@ -131,7 +131,8 @@
 
                     <StackPanel Grid.Row="2"
                                 HorizontalAlignment="Left"
-                                Orientation="Horizontal">
+                                Orientation="Horizontal"
+                                IsEnabled="{Binding DeployInProgress, Converter={StaticResource BoolToEnabledConverterNegative}}">
                         <Button AutomationProperties.AutomationId="UI_SelectDepbtn_AutoID"
                                 x:Name="Dependencies"
                                 Content="Select All Dependencies"
@@ -201,6 +202,7 @@
                                 ToolTip="{x:Static languages:Tooltips.DeployCommandTooltip}"
                                 Style="{StaticResource ButtonOrangeStyle}"
                                 Margin="{StaticResource ControlBorderRight}"
+                                IsEnabled="{Binding DeployInProgress, Converter={StaticResource BoolToEnabledConverterNegative}}"
                                 MaxWidth="50"
                                 MinWidth="50" 
                                 x:Name="Deploy">
