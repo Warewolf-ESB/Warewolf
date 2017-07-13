@@ -164,6 +164,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void PrepopulateTestsUsingDebug_DebugItemDesicion_ShouldHaveAddServiceTestStep()
         {
             //---------------Set up test pack-------------------
@@ -212,6 +213,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void PrepopulateTestsUsingDebug_DebugIDesicion_ShouldHaveAddServiceTestStepShouldHaveArmOptions()
         {
             //---------------Set up test pack-------------------
@@ -258,6 +260,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void AddChildDebugItems_GivenTestStepNotContainsStep_ShouldAddStep()
         {
             //---------------Set up test pack-------------------
@@ -314,6 +317,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStatesWithMockAssign.json", "JsonResources")]
         public void AddChildDebugItems_GivenMockStep_ShouldAddStep()
         {
             //---------------Set up test pack-------------------
@@ -359,6 +363,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void AddChildDebugItems_GivenTestStepContainsStep_ShouldNotAddStep()
         {
             //---------------Set up test pack-------------------
@@ -415,6 +420,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void AddChildDebugItems_GivenDecision_ShouldNotAddStepFromDebugState()
         {
             //---------------Set up test pack-------------------
@@ -485,6 +491,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
+        [DeploymentItem("JsonResources\\sequenceState.json", "JsonResources")]
         public void AddChildDebugItems_GivenSequence_ShouldAddtestStepFromDebugState()
         {
             //---------------Set up test pack-------------------
@@ -527,7 +535,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddChildDebugItems", BindingFlags.NonPublic | BindingFlags.Instance);
-            var testSteps = new ObservableCollection<IServiceTestStep>() { };
 
             //AddChildDebugItems(IDebugState debugItemContent, IDebugTreeViewItemViewModel debugState, ObservableCollection<IServiceTestStep> testSteps, IServiceTestStep parent)
             //---------------Assert Precondition----------------
@@ -546,6 +553,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
+        [DeploymentItem("JsonResources\\sequenceState.json", "JsonResources")]
         public void SwitchFromDebug_GivenDebugState_ShouldAddtestStepFromDebugState()
         {
             //---------------Set up test pack-------------------
@@ -602,6 +611,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DotnetllDebugStates.json", "JsonResources")]
+        [DeploymentItem("JsonResources\\dotnetDllState.json", "JsonResources")]
         public void EnhancedDotNetDllFromDebug_GivenDebugState_ShouldAddtestStepFromDebugState()
         {
             //---------------Set up test pack-------------------
@@ -660,6 +671,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
+        [DeploymentItem("JsonResources\\sequenceState.json", "JsonResources")]
         public void AddChildDebugItems_GivenSequenceWithChildren_ShouldAddStepWithOutputsFromDebugState()
         {
             Thread.Sleep(10);
@@ -708,30 +721,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
-            try
-            {
-                methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, default(IServiceTestStep) });
-            }
-            catch (Exception ex) when (ex is TargetInvocationException)//weird error during a test run
-            {
-                //Assert.AreEqual(1, testSteps.Count);
-                //Assert.AreEqual("DsfSequenceActivity", testSteps[0].ActivityType);
-                //Assert.AreEqual("Sequence", testSteps[0].StepDescription);
-                //Assert.AreEqual(0, testSteps[0].StepOutputs.Count);
-                //Assert.AreEqual("549601d4-c800-4176-89b7-4eba3bac46fa".ToGuid(), testSteps[0].UniqueId);
-                //Assert.AreEqual(StepType.Assert, testSteps[0].Type);
-
-                //Assert.AreEqual(1, testSteps[0].Children.Count);
-                //Assert.AreEqual(1, testSteps[0].Children[0].StepOutputs.Count);
-            }
-
-            //---------------Test Result -----------------------
-
-
+            methodInfo.Invoke(testFrameworkViewModel, new object[] { sequenceSate, seq, default(IServiceTestStep) });
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void SetInputs_GivenDebugStates_ShouldAddTestInputValues()
         {
             //---------------Set up test pack-------------------
@@ -771,6 +766,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void SetOutputs_GivenDebugStates_ShouldAddTestOutput()
         {
             //---------------Set up test pack-------------------
@@ -808,8 +804,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(1, testFrameworkViewModel.SelectedServiceTest.Outputs.Count);
             Assert.AreEqual("Hello Nathi.", testFrameworkViewModel.SelectedServiceTest.Outputs.First().Value);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void SetOutputs_GivenDebugStatesMultipleOutputs_ShouldAddAllTestOutputs()
         {
             //---------------Set up test pack-------------------
@@ -1417,6 +1415,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void ProcessInputsAndOutputs_GivenStepDebugStates_ShouldNotAdd()
         {
             //---------------Set up test pack-------------------
@@ -1457,6 +1456,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void ProcessInputsAndOutputs_GivenInputStepDebugStates_ShouldAddInput()
         {
             //---------------Set up test pack-------------------
@@ -1499,6 +1499,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("JsonResources\\DebugStates.json", "JsonResources")]
         public void ProcessInputsAndOutputs_GivenOutputStepDebugStates_ShouldAddOutput()
         {
             //---------------Set up test pack-------------------
