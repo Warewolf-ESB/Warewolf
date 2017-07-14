@@ -755,6 +755,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $DataCollectorTags = ""
         $NamingSchemeTag = ""
         $TestRunName = "Run $JobName With Timeout"
+		$DeploymentTimeoutAttribute = ""
         if ($StartStudio.IsPresent) {
             $TestsTimeout = "360000"
         } else {
@@ -774,6 +775,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
             $NamingSchemeTag = "`n  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />"
             $TestRunName += " and Screen Recording"
+			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`""
         }
         if ($Parallelize.IsPresent) {
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
@@ -861,7 +863,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>$TestRunName.</Description>$DeploymentTags$NamingSchemeTag$ScriptsTag$ControllerNameTag
   <Execution$RemoteExecutionAttribute>
-    <Timeouts testTimeout="$TestsTimeout"/>$TestTypeSpecificTags
+    <Timeouts testTimeout="$TestsTimeout"$DeploymentTimeoutAttribute/>$TestTypeSpecificTags
     <AgentRule name="$AgentRuleNameValue">$AgentRoleTags$DataCollectorTags
     </AgentRule>
   </Execution>
