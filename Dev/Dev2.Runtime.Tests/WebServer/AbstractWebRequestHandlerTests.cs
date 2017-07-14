@@ -537,10 +537,7 @@ namespace Dev2.Tests.Runtime.WebServer
             testCatalog.Verify(catalog => catalog.Fetch(It.IsAny<Guid>()), Times.Exactly(3));
             resourceCatalog.Verify(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(3));
             Assert.IsInstanceOfType(responseWriter, typeof(StringResponseWriter));
-
         }
-
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -1225,7 +1222,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultForWebRequest_GivenTestResultPassed_ShouldSetMessage()
+        public void BuildTestResultJSONForWebRequest_GivenTestResultPassed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1235,14 +1232,14 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
-            var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
+            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Passed\""));
         }
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultForWebRequest_GivenTestResultFailed_ShouldSetMessage()
+        public void BuildTestResultJSONForWebRequest_GivenTestResultFailed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1253,13 +1250,13 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
-            var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
+            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Failed\""));
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
+        public void BuildTestResultJSONForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1270,13 +1267,13 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
-            var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
+            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Invalid\""));
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
+        public void BuildTestResultJSONForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1287,13 +1284,13 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
-            var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
+            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"ResourceDelete\""));
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
+        public void BuildTestResultJSONForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1304,13 +1301,13 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
-            var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
+            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"ResourcpathUpdated\""));
         }
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void BuildTestResultForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
+        public void BuildTestResultJSONForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
             IServiceTestModelTO to = new ServiceTestModelTO();
@@ -1321,7 +1318,7 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var privateObject = new PrivateType(typeof(ServiceTestModelJObjectResultBuilder));
             //------------Execute Test---------------------------            
-            var result = privateObject.InvokeStatic("BuildTestResultForWebRequest", to);
+            var result = privateObject.InvokeStatic("BuildTestResultJSONForWebRequest", to);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.ToString().Contains("\"Result\": \"Pending\""));
         }

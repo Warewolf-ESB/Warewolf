@@ -36,7 +36,7 @@ namespace Dev2.Runtime.WebServer
                 {
                     var typeOf = serviceName.Substring(loc + 1);
                     EmitionTypes myType;
-                    if (Enum.TryParse(typeOf, out myType))
+                    if (Enum.TryParse(typeOf.ToUpper(), out myType))
                     {
                         dataObject.ReturnType = myType;
                     }
@@ -239,10 +239,12 @@ namespace Dev2.Runtime.WebServer
         {
             foreach (var testsResourceId in dataObject.TestsResourceIds)
             {
+                var allTests = testCatalog.Fetch(testsResourceId);
+                var taskList = new List<Task>();
                 var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
                 var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
-                List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, resourcePath, userPrinciple, workspaceGuid, serializer, testCatalog);
-
+                List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, resourcePath, userPrinciple, workspaceGuid, serializer, testCatalog, testsResourceId);
+                
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var objArray = (from testRunResult in testResults
                                 where testRunResult != null
@@ -256,7 +258,7 @@ namespace Dev2.Runtime.WebServer
         
         public static IEnumerable<JObject> RunSingleTestBatchAndReturnJSON(this IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog catalog, ref DataListFormat formatter)
         {
-            List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, catalog);
+            List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, catalog, dataObject.TestsResourceIds.FirstOrDefault());
 
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             return (from testRunResult in testResults
@@ -267,24 +269,26 @@ namespace Dev2.Runtime.WebServer
 
         public static string RunSingleTestBatchAndReturnTRX(this IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog catalog, ref DataListFormat formatter)
         {
-            List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, catalog);
+            List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, catalog, dataObject.TestsResourceIds.FirstOrDefault());
 
             formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             return ServiceTestModelTRXResultBuilder.BuildTestResultTRX(serviceName, testResults);
         }
 
-        private static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog catalog)
+        private static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog catalog, Guid testsResourceId)
         {
-            var allTests = catalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
+            var allTests = catalog.Fetch(testsResourceId);
             var taskList = new List<Task>();
             var testResults = new List<IServiceTestModelTO>();
-            foreach (var test in allTests.Where(to => to.Enabled))
+            foreach (var test in allTests)
             {
+                dataObject.ResourceID = testsResourceId;
                 var dataObjectClone = dataObject.Clone();
                 dataObjectClone.Environment = new ExecutionEnvironment();
                 dataObjectClone.TestName = test.TestName;
-                var lastTask = ServiceTestExecutor.GetTaskForTestExecution(serviceName, userPrinciple, workspaceGuid, serializer,
-                    testResults, dataObjectClone);
+
+                var lastTask = ServiceTestExecutor.GetTaskForTestExecution(serviceName, userPrinciple, workspaceGuid,
+                    serializer, testResults, dataObjectClone);
                 taskList.Add(lastTask);
             }
             Task.WaitAll(taskList.ToArray());
