@@ -79,6 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
         {
             //------------Setup for test--------------------------
