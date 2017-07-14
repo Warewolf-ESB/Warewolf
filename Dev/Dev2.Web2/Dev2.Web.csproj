@@ -153,6 +153,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\DetailsModal.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -204,6 +205,7 @@
     <Content Include="Views\ExecutionLogging\Index.cshtml" />
     <Content Include="Views\ExecutionLogging\ExecutionList.cshtml" />
     <Content Include="Views\ExecutionLogging\ExecutionFilters.cshtml" />
+    <Content Include="Views\ExecutionLogging\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
