@@ -12,6 +12,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
+using System.Windows;
 
 namespace Dev2.Core.Tests
 {
@@ -603,6 +604,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenWcfSourceResourceType_ShouldEditWcfSource()
         {
             //---------------Set up test pack-------------------
@@ -663,6 +666,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenExchangeSourceResourceType_ShouldEditExchangeSource()
         {
             //---------------Set up test pack-------------------
@@ -685,7 +690,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IExchangeSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -693,6 +698,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenDropBoxSourceResourceType_ShouldEditDropBoxSource()
         {
             //---------------Set up test pack-------------------
@@ -715,7 +722,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -723,6 +730,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenSharepointServerSourceResourceType_ShouldEditSharepointServerSource()
         {
             //---------------Set up test pack-------------------
@@ -745,7 +754,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<ISharepointServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -753,6 +762,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenOauthSourceResourceType_ShouldEditOauthSource()
         {
             //---------------Set up test pack-------------------
@@ -775,7 +786,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IOAuthSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -783,6 +794,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenRabbitMQSourceResourceType_ShouldEditRabbitMQSource()
         {
             //---------------Set up test pack-------------------
@@ -805,7 +818,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IRabbitMQServiceSourceDefinition>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -813,6 +826,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenServerType_ShouldEditServer()
         {
             //---------------Set up test pack-------------------
@@ -834,7 +849,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
@@ -842,6 +857,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenDev2ServerType_ShouldDev2Server()
         {
             //---------------Set up test pack-------------------
@@ -860,14 +877,17 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
 
             Assert.IsTrue(workSurfaceViewModels);
         }
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void DisplayResourceWizard_GivenServerSourceType_ShouldServerSource()
         {
             //---------------Set up test pack-------------------
@@ -886,7 +906,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);

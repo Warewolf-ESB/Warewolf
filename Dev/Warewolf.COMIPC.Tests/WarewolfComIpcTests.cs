@@ -34,6 +34,7 @@ namespace WarewolfCOMIPC.Test
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
+        [DeploymentItem("WarewolfCOMIPC.exe")]
         public void WarewolfCOMIPCClient_Execute_GetType_ShouldReturnType()
         {
             //------------Setup for test--------------------------
@@ -48,6 +49,7 @@ namespace WarewolfCOMIPC.Test
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("WarewolfCOMIPC.exe")]
         public void GetMethods_GivenConnection_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------

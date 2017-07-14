@@ -73,14 +73,12 @@ namespace Dev2.Tests.Runtime.Services
             {
                 AssemblyLocation = assembly.Location,
                 AssemblyName = assembly.FullName,
-                FullName = type.FullName,
-
+                FullName = type.FullName
             };
             var pluginSource = new PluginSource()
             {
                 AssemblyName = type.AssemblyQualifiedName,
-                AssemblyLocation = assembly.Location,
-
+                AssemblyLocation = assembly.Location
             };
 
             var pluginSourceDefinition = new PluginSourceDefinition();

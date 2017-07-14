@@ -268,6 +268,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_ListMethods")]
+        [DeploymentItem("WarewolfCOMIPC.exe")]
         public void ComPluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------

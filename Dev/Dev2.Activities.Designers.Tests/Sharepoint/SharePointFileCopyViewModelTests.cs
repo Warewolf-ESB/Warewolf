@@ -28,8 +28,6 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SharePointCopyFileDesignerViewModel_Constructor_NullModelItem_ThrowsException()
         {
@@ -44,8 +42,6 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SharePointCopyFileDesignerViewModel_Constructor_NullAsyncWorker_ThrowsException()
         {
@@ -59,8 +55,6 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SharePointCopyFileDesignerViewModel_Constructor_NullEnvironmentModel_ThrowsException()
         {
@@ -74,8 +68,6 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
         public void SharePointCopyFileDesignerViewModel_InitilizeProperties_ReturnsSuccess()
         {
             //------------Setup for test--------------------------
@@ -92,8 +84,6 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
         public void SharePointCopyFileDesignerViewModel_SetProperties_ReturnsSuccess()
         {
             //------------Setup for test--------------------------
@@ -119,8 +109,6 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
         public void SharePointFileUploadDesignerViewModel_SetPropertiesNullSource_ReturnsSuccess()
         {
             //------------Setup for test--------------------------
@@ -145,8 +133,6 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
         public void SharePointFileUploadDesignerViewModel_SetPropertiesNullLocalPathFrom_ReturnsSuccess()
         {
             //------------Setup for test--------------------------
@@ -168,8 +154,6 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
-        [TestCategory(Category)]
         public void SharePointFileUploadDesignerViewModel_SetPropertiesNullLocalPathTo_ReturnsSuccess()
         {
             //------------Setup for test--------------------------
