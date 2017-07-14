@@ -102,9 +102,9 @@ namespace Dev2.Runtime.WebServer
             {
                 executePayload = SetupErrors(dataObject, allErrors);
             }
-            
-            Dev2Logger.Debug("Execution Result [ " + executePayload.RemoveNewLines() + " ]", dataObject.ExecutionID.ToString());
-            
+
+            Dev2Logger.Debug("Execution Result [ " + (executePayload ?? "").RemoveNewLines() + " ]", dataObject.ExecutionID.ToString());
+
             if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {
                 if (executePayload.IsJSON())
@@ -121,7 +121,7 @@ namespace Dev2.Runtime.WebServer
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
-        private static string SetupErrors(IDSFDataObject dataObject,  ErrorResultTO allErrors)
+        private static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
         {
             string executePayload;
             if (dataObject.ReturnType == EmitionTypes.XML)
