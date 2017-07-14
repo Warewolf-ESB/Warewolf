@@ -33,7 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-        public string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
+        public const string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
 
         [TestMethod]
         public void ExecuteCommandLineShouldHaveInputProperty()
@@ -79,7 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
+        [DeploymentItem(CommandLineToolName)]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
         {
             //------------Setup for test--------------------------
