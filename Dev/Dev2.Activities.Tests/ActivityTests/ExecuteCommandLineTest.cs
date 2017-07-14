@@ -103,6 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
         {
             //------------Setup for test--------------------------
@@ -136,6 +137,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsolePathHasNoSpacesIsNotWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
@@ -216,6 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
@@ -252,6 +255,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
         {
             //------------Setup for test--------------------------
@@ -333,9 +337,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
         }
-
-
+        
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
         {
             // ------------Setup for test--------------------------
@@ -368,6 +372,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereOutputToRecordWithNoIndexWithConsoleOutputsExpectOutputForResultAppendedToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -441,6 +446,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -474,6 +480,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
         {
             //------------Setup for test--------------------------
@@ -503,6 +510,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToScalarExpectOutputResultOfLastCommandinScalar()
         {
             //------------Setup for test--------------------------

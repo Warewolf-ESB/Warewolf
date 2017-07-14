@@ -496,7 +496,7 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     #Wait for the ServerStarted file to appear.
     $TimeoutCounter = 0
     $ServerStartedFilePath = (Get-Item $ServerPath).Directory.FullName + "\ServerStarted"
-    while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 10) {
+    while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 100) {
         sleep 3
     }
     if (!(Test-Path $ServerStartedFilePath)) {
@@ -754,6 +754,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $ScriptsTag = ""
         $DataCollectorTags = ""
         $NamingSchemeTag = ""
+        $BucketsTag = ""
         $TestRunName = "Run $JobName With Timeout"
         if ($StartStudio.IsPresent) {
             $TestsTimeout = "360000"
@@ -828,6 +829,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
                     Copy-On-Write $CleanupScriptPath
                     New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                    
+                    $BucketsTag = @"  
+    <Buckets size="1"/>
+"@
                 } else {
                     $DeploymentTags = @"
   <Deployment>
@@ -860,8 +865,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   name="$JobName"
   xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>$TestRunName.</Description>$DeploymentTags$NamingSchemeTag$ScriptsTag$ControllerNameTag
-  <Execution$RemoteExecutionAttribute>
-    <Timeouts testTimeout="$TestsTimeout"/>$TestTypeSpecificTags
+  <Execution$RemoteExecutionAttribute>$BucketsTag
+    <Timeouts testTimeout="$TestsTimeout" deploymentTimeout="600000"/>$TestTypeSpecificTags
     <AgentRule name="$AgentRuleNameValue">$AgentRoleTags$DataCollectorTags
     </AgentRule>
   </Execution>
@@ -882,7 +887,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
-            if ($Parallelize.IsPresent -and !$StartStudio.IsPresent) {
+            if ($Parallelize.IsPresent -and !$StartStudio.IsPresent -and $DisableTimeouts.IsPresent) {
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
