@@ -65,12 +65,12 @@ namespace Dev2.Runtime.WebServer
         }
 
         public static DataListFormat ExecuteTests(string serviceName, IDSFDataObject dataObject, DataListFormat formatter,
-            IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog catalog, IResourceCatalog resourceCatalog, ref string executePayload)
+            IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
         {
             if (dataObject.TestsResourceIds?.Any() ?? false)
             {
                 formatter = dataObject.RunMultipleTestBatches(userPrinciple, workspaceGuid, serializer, formatter,
-                    resourceCatalog, catalog, ref executePayload);
+                    resourceCatalog, testCatalog, ref executePayload);
                 dataObject.ResourceID = Guid.Empty;
             }
             else
@@ -78,13 +78,13 @@ namespace Dev2.Runtime.WebServer
                 const string TrxExtension = ".tests.trx";
                 if (!serviceName.EndsWith(TrxExtension, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    var objArray = dataObject.RunSingleTestBatchAndReturnJSON(serviceName, userPrinciple, workspaceGuid, serializer, catalog,
+                    var objArray = dataObject.RunSingleTestBatchAndReturnJSON(serviceName, userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog,
                         ref formatter);
                     executePayload = serializer.Serialize(objArray);
                 }
                 else
                 {
-                    executePayload = dataObject.RunSingleTestBatchAndReturnTRX(serviceName.Replace(TrxExtension, string.Empty), userPrinciple, workspaceGuid, serializer, catalog,
+                    executePayload = dataObject.RunSingleTestBatchAndReturnTRX(serviceName.Replace(TrxExtension, string.Empty), userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog,
                         ref formatter);
                 }
 
