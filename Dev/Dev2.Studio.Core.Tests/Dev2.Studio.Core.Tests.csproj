@@ -188,7 +188,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -480,6 +480,9 @@
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Other Unit Tests.testsettings">
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

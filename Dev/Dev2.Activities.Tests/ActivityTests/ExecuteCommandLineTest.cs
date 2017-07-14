@@ -33,7 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
-        public string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
+        public const string CommandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
 
         [TestMethod]
         public void ExecuteCommandLineShouldHaveInputProperty()
@@ -79,31 +79,29 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [DeploymentItem(CommandLineToolName)]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\"";
-            activity.CommandFileName = randomString;
-            activity.CommandResult = "[[OutVar1]]";
+            activity.CommandFileName = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            activity.CommandResult = "[[Result]]";
             TestStartNode = new FlowStep
             {
                 Action = activity
             };
             string actual;
             string error;
-            TestData = "<root><OutVar1 /></root>";
+            TestData = "<root><Result /></root>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
-            // remove test datalist ;)
-            Assert.IsNull(actual);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            Assert.AreEqual("This is output from the user", actual, "Executing an exe with execute commandline activity did not return the expected output.");
         }
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
         {
             //------------Setup for test--------------------------
@@ -137,7 +135,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsolePathHasNoSpacesIsNotWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
@@ -218,7 +215,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
         {
             //------------Setup for test--------------------------
@@ -255,7 +251,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
         {
             //------------Setup for test--------------------------
@@ -337,9 +332,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
         }
-        
+
+
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
         {
             // ------------Setup for test--------------------------
@@ -372,7 +367,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereOutputToRecordWithNoIndexWithConsoleOutputsExpectOutputForResultAppendedToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -446,7 +440,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
         {
             //------------Setup for test--------------------------
@@ -480,7 +473,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
         {
             //------------Setup for test--------------------------
@@ -510,7 +502,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [DeploymentItem("ConsoleAppToTestExecuteCommandLineActivity.exe")]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToScalarExpectOutputResultOfLastCommandinScalar()
         {
             //------------Setup for test--------------------------
