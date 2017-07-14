@@ -14,8 +14,14 @@ namespace Dev2.Runtime.ESB.Management.Services
         private string _serverLogFilePath;
         public string ServerLogFilePath
         {
-            get => _serverLogFilePath ?? EnvironmentVariables.ServerLogFile;
-            set => _serverLogFilePath = value;
+            get
+            {
+                return _serverLogFilePath ?? EnvironmentVariables.ServerLogFile;
+            }
+            set
+            {
+                _serverLogFilePath = value;
+            }
         }
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
