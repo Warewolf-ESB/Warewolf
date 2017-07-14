@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithLogDataContainingURl_ShouldReturnLogDataObjectWithUrl()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithUrl.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //------------Execute Test---------------------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
@@ -113,9 +113,9 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsNotNull(logEntriesJson);
             var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
             Assert.IsNotNull(logEntriesObject);
-            var value = logEntriesObject[0].Url;
+            var value = logEntriesObject[10].Url;
             Assert.IsFalse(string.IsNullOrEmpty(value));
-            Assert.AreEqual("http://rsaklfsanele:3142/secure/Unassigned/Unsaved 1.json?<DataList></DataList>&wid=3667c210-7322-441f-b4e5-f465e46ae22d", value);
+            Assert.AreEqual("http://RSAKLFPETERB:3142/Examples\\Loop Constructs - Select and Apply.XML", value);
 
         }
 
@@ -125,7 +125,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithStartDate_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
@@ -140,7 +140,7 @@ namespace Dev2.Tests.Runtime.Services
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(3, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
 
         }
 
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithEndDate_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
@@ -165,7 +165,7 @@ namespace Dev2.Tests.Runtime.Services
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(4, logEntriesObject.Count);
+            Assert.AreEqual(10, logEntriesObject.Count);
 
         }
 
@@ -175,7 +175,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithStatus_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
@@ -198,7 +198,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithUser_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
@@ -211,7 +211,7 @@ namespace Dev2.Tests.Runtime.Services
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
-            Assert.AreEqual(10, logEntriesObject.Count);
+            Assert.AreEqual(1, logEntriesObject.Count);
         }
 
         [TestMethod]
@@ -220,7 +220,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithExecutionId_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
@@ -229,7 +229,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(11, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
-            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionId", "163e510e-19e8-4689-8492-2c8dd08d22d7".ToStringBuilder()}};
+            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionId", "674b2bf6-225d-446b-a645-aee95ed731af".ToStringBuilder()}};
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
@@ -242,7 +242,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithExecutionTime_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
@@ -251,7 +251,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(11, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
-            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionTime", "3".ToStringBuilder()}};
+            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionTime", "601".ToStringBuilder()}};
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
@@ -264,7 +264,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetLogDataService_Execute_WithBadUser_ShouldFilterLogData()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithTenRecords.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormat.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //---------------Assert Precondition----------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
