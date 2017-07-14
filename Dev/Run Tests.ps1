@@ -745,6 +745,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
 
         # Setup for remote execution
+		$TestSettingsId = [guid]::NewGuid()
         $ControllerNameTag = ""
         $RemoteExecutionAttribute = ""
         $AgentRoleTags = ""
@@ -775,7 +776,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
             $NamingSchemeTag = "`n  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />"
             $TestRunName += " and Screen Recording"
-			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`""
+			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
         }
         if ($Parallelize.IsPresent) {
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
@@ -855,12 +856,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Copy-On-Write $TestSettingsFile
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
-<TestSettings
-  id="
-"@ + [guid]::NewGuid() + @"
-"
-  name="$JobName"
-  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestSettings id="$TestSettingsId" name="$JobName" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" abortRunOnError="false">
   <Description>$TestRunName.</Description>$DeploymentTags$NamingSchemeTag$ScriptsTag$ControllerNameTag
   <Execution$RemoteExecutionAttribute>
     <Timeouts testTimeout="$TestsTimeout"$DeploymentTimeoutAttribute/>$TestTypeSpecificTags
