@@ -35,6 +35,7 @@ namespace WarewolfCOMIPC.Test
         [Owner("Hagashen Naidu")]
         [TestCategory("WarewolfCOMIPCClient_Execute")]
         [DeploymentItem("WarewolfCOMIPC.exe")]
+        [DeploymentItem("Dev2.Runtime.Tests.dll")]
         public void WarewolfCOMIPCClient_Execute_GetType_ShouldReturnType()
         {
             //------------Setup for test--------------------------
@@ -50,6 +51,7 @@ namespace WarewolfCOMIPC.Test
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("WarewolfCOMIPC.exe")]
+        [DeploymentItem("Dev2.Runtime.Tests.dll")]
         public void GetMethods_GivenConnection_ShouldReturnMethodList()
         {
             //---------------Set up test pack-------------------
@@ -66,6 +68,7 @@ namespace WarewolfCOMIPC.Test
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Dev2.Runtime.Tests.dll")]
         public void ExecuteSpecifiedMethod_GivenConnection_ReturnSuccess()
         {
             //---------------Set up test pack-------------------
