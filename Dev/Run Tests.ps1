@@ -757,6 +757,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $NamingSchemeTag = ""
         $TestRunName = "Run $JobName With Timeout"
 		$DeploymentTimeoutAttribute = ""
+		$BucketsTag = ""
         if ($StartStudio.IsPresent) {
             $TestsTimeout = "360000"
         } else {
@@ -793,6 +794,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     </TestTypeSpecific>
 "@
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
+			$BucketsTag = @"
+
+    <Buckets size="1" threshold="1"/>
+"@
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
@@ -815,6 +820,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       </SelectionCriteria>
 "@
                     $DeploymentTags = @"
+
   <Deployment>
     <DeploymentItem filename="..\DebugServer.zip" />
     <DeploymentItem filename="..\DebugStudio.zip" />
@@ -833,6 +839,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
                 } else {
                     $DeploymentTags = @"
+
   <Deployment>
     <DeploymentItem filename="..\DebugServer.zip" />
     <DeploymentItem filename="DebugServer.zip" />
@@ -858,7 +865,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings id="$TestSettingsId" name="$JobName" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" abortRunOnError="false">
   <Description>$TestRunName.</Description>$DeploymentTags$NamingSchemeTag$ScriptsTag$ControllerNameTag
-  <Execution$RemoteExecutionAttribute>
+  <Execution$RemoteExecutionAttribute>$BucketsTag
     <Timeouts testTimeout="$TestsTimeout"$DeploymentTimeoutAttribute/>$TestTypeSpecificTags
     <AgentRule name="$AgentRuleNameValue">$AgentRoleTags$DataCollectorTags
     </AgentRule>
