@@ -793,7 +793,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     </TestTypeSpecific>
 "@
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
-			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600`" agentNotRespondingTimeout=`"600`""
+			$DeploymentTimeoutAttribute = " deploymentTimeout=`"6000`" agentNotRespondingTimeout=`"6000`""
 			$BucketsTag = @"
 
     <Buckets size="1" threshold="1"/>
