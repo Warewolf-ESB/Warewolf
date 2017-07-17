@@ -23,6 +23,8 @@ Feature: New Oracle Source
 ## Ensure user is able to select database from the database dropdown 
 
 @OracleDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New Oracle Source" tab is opened
@@ -58,6 +60,8 @@ Scenario: Creating New DB Source General Testing
    And title is "SavedDBSource"
    
 @OracleDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRDEV"
@@ -77,6 +81,8 @@ Scenario: Creating New DB Source as User Auth
 	Then the save dialog is opened
 
  @OracleDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"	  
@@ -88,7 +94,9 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  
- @OracleDbSource
+@OracleDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRDEV"	
@@ -102,6 +110,8 @@ Scenario: Incorrect Server Address Shows correct error message
 	  And the error message is "Login failed for user 'test'"
 	  	
 @OracleDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRDEV"
@@ -122,6 +132,8 @@ Scenario: Editing saved DB Source Remembers credentials
 	Then "Save" is "Enabled"
 
 @OracleDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRDEV"

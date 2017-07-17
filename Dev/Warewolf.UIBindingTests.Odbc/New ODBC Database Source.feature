@@ -23,6 +23,8 @@ Feature: New ODBC Source
 ## Ensure user is able to select database from the database dropdown 
 
 @ODBCSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New ODBC Source" tab is opened
@@ -45,6 +47,8 @@ Scenario: Creating New DB Source General Testing
    And title is "SavedDBSource"
 
 @ODBCSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    And "Save" is "Disabled"
@@ -56,6 +60,8 @@ Scenario: Cancel DB Source Test
    And "Save" is "Disabled"
 
 @ODBCSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Creating New ODBC DB Source as Windows Auth
 	Given I open New Database Source
 	And "Save" is "Disabled"
