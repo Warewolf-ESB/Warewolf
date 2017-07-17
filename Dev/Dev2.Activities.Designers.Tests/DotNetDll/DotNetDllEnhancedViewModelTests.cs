@@ -422,6 +422,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IPluginServiceModel>();
+            CustomContainer.Register(new Mock<IShellViewModel>().Object);
             var type = typeof(Human);
             var guid = Guid.NewGuid();
             mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>

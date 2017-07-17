@@ -64,14 +64,14 @@ namespace Dev2.Core.Tests
         #endregion Variables
 
         #region Methods used by tests
-        protected Mock<IServerRepository> EmptyEnvRepo { get; set; } 
+        protected Mock<IServerRepository> EmptyEnvRepo { get; set; }
         protected void CreateFullExportsAndVmWithEmptyRepo()
         {
             CreateResourceRepo();
             var mockEnv = new Mock<IServerRepository>();
             mockEnv.SetupProperty(g => g.ActiveServer); // Start tracking changes
             mockEnv.Setup(g => g.All()).Returns(new List<IServer>());
-            
+
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             mockEnv.Setup(repository => repository.Source).Returns(mockEnvironmentModel.Object);
@@ -106,8 +106,8 @@ namespace Dev2.Core.Tests
             // ReSharper disable ObjectCreationAsStatement
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
-            ShellViewModel = new ShellViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object);
+            var explorerViewModel = new Mock<IExplorerViewModel>();
+            ShellViewModel = new ShellViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo, new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object, explorerViewModel.Object);
             var activeEnvironment = new Mock<IServer>();
             activeEnvironment.Setup(server => server.DisplayName).Returns("localhost");
             ActiveEnvironment = activeEnvironment;
