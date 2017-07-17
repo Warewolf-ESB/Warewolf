@@ -777,7 +777,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
             $NamingSchemeTag = "`n  <NamingScheme baseName=`"ScreenRecordings`" appendTimeStamp=`"false`" useDefault=`"false`" />"
             $TestRunName += " and Screen Recording"
-			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
         }
         if ($Parallelize.IsPresent) {
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
@@ -794,6 +793,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     </TestTypeSpecific>
 "@
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
+			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
 			$BucketsTag = @"
 
     <Buckets size="1" threshold="1"/>
@@ -1090,17 +1090,6 @@ if ($RunWarewolfServiceTests.IsPresent) {
 <TestRun id="
 "@ + [guid]::NewGuid() + @"
 " name="Warewolf Service Tests" runUser="$ServerUsername" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <TestSettings name="Default Test Settings" id="
-"@ + [guid]::NewGuid() + @"
-">
-    <Execution>
-      <TestTypeSpecific />
-      <AgentRule name="Execution Agents">
-      </AgentRule>
-    </Execution>
-    <Deployment  enabled="false" />
-    <Properties />
-  </TestSettings>
   <Times creation="
 "@ + $TestStartDateTime + @"
 " queuing="
