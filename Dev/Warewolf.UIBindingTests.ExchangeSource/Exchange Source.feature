@@ -6,6 +6,7 @@ Feature: Exchange Source
 
 @ExchangeSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Creating new exchange source
 	Given I open a new exchange source
 	Then "New Exchange Source" tab is Opened
@@ -17,6 +18,7 @@ Scenario: Creating new exchange source
 	When I Type To Email as "test@gmsil.com"
 
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Testing new exchange source
 Given I open a new exchange source
 	Then "New Exchange Source" tab is Opened
@@ -30,6 +32,7 @@ Given I open a new exchange source
 
 @ExchangeSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Fail Send Shows correct error message
 	Given I open a new exchange source
 	Then "New Exchange Source" tab is Opened
