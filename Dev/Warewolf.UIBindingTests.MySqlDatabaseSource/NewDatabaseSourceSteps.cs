@@ -85,16 +85,10 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Given(@"I open New Database Source")]
         public void GivenIOpenNewDatabaseSource()
         {
-            if (ScenarioContext.Current.ContainsKey(Utils.ViewNameKey))
-            {
-                var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-                Assert.IsNotNull(manageDatabaseSourceControl);
-                Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
-            }
-            else
-            {
-                Assert.Fail("This test attempted to open a database source that has not been initialized yet. You must execute \"SetupForSystem\" test step before this test step can be used.");
-            }
+            Assert.IsTrue(ScenarioContext.Current.ContainsKey(Utils.ViewNameKey), "This test attempted to open a database source that has not been initialized yet. You must execute \"SetupForSystem\" test step before this test step can be used.");
+            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+            Assert.IsNotNull(manageDatabaseSourceControl);
+            Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
         }
 
         [Given(@"I open ""(.*)""")]
