@@ -192,19 +192,18 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
         sleep 30
 		exit 1
 	}
-	foreach ($ProjectDir in get-ChildItem "Dev\*Specs") {
+	foreach ($ProjectDir in ((Get-ChildItem "$PSScriptRoot\Dev\*Specs") + (Get-ChildItem "$PSScriptRoot\Dev\Warewolf.UIBindingTests.*"))) {
 		$FullPath = $ProjectDir.FullName
 		$ProjectName = $ProjectDir.Name
 		if (Test-Path "$FullPath\$ProjectName.csproj") {
+            Write-Host Restoring $ProjectName
 			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
-		}
+		} else {
+            Write-Warning -Message "Project file not found in folder $FullPath`nExpected it to be $FullPath\$ProjectName.csproj"
+        }
 	}
-	foreach ($ProjectDir in get-ChildItem "Dev\Warewolf.UIBindingTests.*") {
-		$FullPath = $ProjectDir.FullName
-		$ProjectName = $ProjectDir.Name
-		if (Test-Path "$FullPath\$ProjectName.csproj") {
-			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
-		}
+	foreach ($FeatureFile in (Get-ChildItem "$PSScriptRoot\Dev\**\*.feature.cs")) {
+        (Get-Content $FeatureFile).replace('TestCategoryAttribute("MSTest:DeploymentItem:', 'DeploymentItem("') | Set-Content $FeatureFile
 	}
 }
 
