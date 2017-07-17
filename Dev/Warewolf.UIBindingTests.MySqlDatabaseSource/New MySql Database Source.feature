@@ -24,7 +24,7 @@ Feature: New MySql Database Source
 
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New MySQL Source" tab is opened
@@ -62,7 +62,7 @@ Scenario: Creating New DB Source General Testing
    
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRDEV"
@@ -86,7 +86,7 @@ Scenario: Creating New DB Source as User Auth
 	
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -102,7 +102,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -119,7 +119,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRDEV"
@@ -137,7 +137,7 @@ Scenario: Incorrect Server Address Shows correct error message
 	  
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Testing as Windows and swapping it resets the test connection 
 	  Given I open New Database Source
 	  And "Save" is "Disabled"
@@ -165,7 +165,7 @@ Scenario: Testing as Windows and swapping it resets the test connection
 	  
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRDEV"
@@ -193,7 +193,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRDEV"
@@ -216,7 +216,7 @@ Scenario: Editing saved DB Source Remembers credentials
 	
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRDEV"
@@ -233,7 +233,7 @@ Scenario: Cancel DB Source Test
    
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Changing database type after testing connection
    Given I open New Database Source
    Then "New MySQL Source" tab is opened
@@ -261,7 +261,7 @@ Scenario: Changing database type after testing connection
    
 @MySqlDbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf Studio.exe
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Creating New MySQL DB Source as Windows Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRDEV"
