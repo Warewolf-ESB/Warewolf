@@ -22,6 +22,7 @@ Feature: New MySql Database Source
 ## Ensure Database dropdown is visible when test connection is successfull
 ## Ensure user is able to select database from the database dropdown 
 
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Creating New DB Source General Testing
@@ -31,8 +32,8 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRDEV |
-   | RSAKLFSVRPDC |
+   | RSAKLFSVRDEV    |
+   | RSAKLFSVRPDC    |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
    And I type Select The Server as "RSAKLFSVRDEV"
@@ -59,6 +60,7 @@ Scenario: Creating New DB Source General Testing
    Then "SavedDBSource *" is the tab Header
    And title is "SavedDBSource"
    
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Creating New DB Source as User Auth
@@ -82,6 +84,7 @@ Scenario: Creating New DB Source as User Auth
 	When I save the source
 	Then the save dialog is opened
 	
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
@@ -97,6 +100,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
@@ -113,6 +117,7 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Incorrect Server Address Shows correct error message
@@ -130,6 +135,7 @@ Scenario: Incorrect Server Address Shows correct error message
 	  And "Save" is "Disabled"
 	  And the error message is "Login failed for user 'test'"
 	  
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Testing as Windows and swapping it resets the test connection 
@@ -157,6 +163,7 @@ Scenario: Testing as Windows and swapping it resets the test connection
 	  Then Username field is "Visible"
 	  And Password field is "Visible"
 	  
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
@@ -184,6 +191,7 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	And "Test Connection" is "Disabled"
 	And "Save" is "Disabled"
 	
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Editing saved DB Source Remembers credentials
@@ -206,6 +214,7 @@ Scenario: Editing saved DB Source Remembers credentials
 	When Test Connecton is "Successful"
 	Then "Save" is "Enabled"
 	
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Cancel DB Source Test
@@ -222,6 +231,7 @@ Scenario: Cancel DB Source Test
    Then "Test Connection" is "Enabled"
    And "Save" is "Disabled"
    
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Changing database type after testing connection
@@ -249,6 +259,7 @@ Scenario: Changing database type after testing connection
    And I select "test" as Database
    Then "Save" is "Enabled"
    
+@DbSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 @MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Creating New MySQL DB Source as Windows Auth
