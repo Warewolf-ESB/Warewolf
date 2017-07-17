@@ -5,6 +5,7 @@ Feature: DecDialog
 	I want to be shown the decision window setup
 
 @DecDialog
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario Outline: Ensure Inputs are enabled on decision window load
 	Given I have a workflow New Workflow
 	And drop a Decision tool onto the design surface

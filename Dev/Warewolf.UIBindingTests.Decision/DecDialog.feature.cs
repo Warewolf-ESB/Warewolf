@@ -72,27 +72,28 @@ namespace Warewolf.UIBindingTests.Decision
         public virtual void EnsureInputsAreEnabledOnDecisionWindowLoad(string no, string inputs, string variable, string variable2, string value2, string variable3, string value3, string matchType, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "DecDialog"};
+                    "DecDialog",
+                    "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure Inputs are enabled on decision window load", @__tags);
-#line 8
-this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given("I have a workflow New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 10
- testRunner.And("drop a Decision tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a workflow New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
- testRunner.Then("the Decision window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("drop a Decision tool onto the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.And(string.Format("\"{0}\" fields are \"Enabled\"", inputs), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the Decision window is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 13
- testRunner.And(string.Format("the decision match variables \"{0}\"and match \"{1}\" and to match\"{2}\"", variable, variable2, variable3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("\"{0}\" fields are \"Enabled\"", inputs), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.And(string.Format("MatchType  is \"{0}\"", matchType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the decision match variables \"{0}\"and match \"{1}\" and to match\"{2}\"", variable, variable2, variable3), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
+ testRunner.And(string.Format("MatchType  is \"{0}\"", matchType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 16
  testRunner.Then(string.Format("the inputs are \"{0}\"", inputs), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -103,6 +104,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Inputs", "Visible, Visible, Visible")]
@@ -123,6 +125,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Inputs", "Visible, Visible")]
@@ -143,6 +146,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DecDialog")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Inputs", "Visible, Visible, Visible, Visible")]

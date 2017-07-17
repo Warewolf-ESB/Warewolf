@@ -24,6 +24,7 @@ Feature: DeployTab
 #Wolf-1106 Deploying items from one server to the next with the same name
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploy Tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -34,6 +35,7 @@ Scenario: Deploy Tab
 	 And the validation message is "Source and Destination cannot be the same."	  
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploy is successfull
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -46,6 +48,7 @@ Scenario: Deploy is successfull
 	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Conflicting resources on Source and Destination server cancel deploy
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -58,7 +61,8 @@ Scenario: Conflicting resources on Source and Destination server cancel deploy
 	 | # | Source Resource                  | Destination Resource |
 	 | 1 | Examples\Control Flow - Sequence | Examples\\Control Flow - Sequence  |
 	 Then deploy is not successfull
-
+	 
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Conflicting resources on Source and Destination server OK deploy
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -74,6 +78,7 @@ Scenario: Conflicting resources on Source and Destination server OK deploy
 	 And the Deploy validation message is "1 Resource Deployed Successfully."
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Conflicting resources on Source and Destination server deploy is not successful
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -86,6 +91,7 @@ Scenario: Conflicting resources on Source and Destination server deploy is not s
 	 Then deploy is not successfull
 
 @DeployTab	 
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploying a connector with a source
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -105,6 +111,7 @@ Scenario: Deploying a connector with a source
 	 And the Deploy validation message is "2 Resources Deployed Successfully."
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Selected for deploy items type is showing on deploy tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -120,6 +127,7 @@ Scenario: Selected for deploy items type is showing on deploy tab
 	 And Sources is "1"
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploy Summary is showing new and overiding resources 
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -141,6 +149,7 @@ Scenario: Deploy Summary is showing new and overiding resources
 	
 #Wolf-1106
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploying items from one server to the next with the same name
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -154,6 +163,7 @@ Scenario: Deploying items from one server to the next with the same name
 
 #Wolf-312
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Warning message no longer appears
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -169,6 +179,7 @@ Scenario: Warning message no longer appears
 
 #wolf-117
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -183,6 +194,7 @@ Scenario: Deploying to an Older server version
 	 And deploy is successfull
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploy Based on permission Deploy To
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -196,6 +208,7 @@ Scenario: Deploy Based on permission Deploy To
 	 And the validation message is "Destination server permission Deploy To not allowed."
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploy Based on permission Deploy From
 	 Given I have deploy tab opened
 	 And I cannot deploy from source
@@ -207,6 +220,7 @@ Scenario: Deploy Based on permission Deploy From
 	 And destination "DestinationServer" is connected
 
 @DeployTab
+@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 Scenario: Deploy resource Tests message
 	 Given I have deploy tab opened
 	 When I select Destination Server as "DestinationServer"

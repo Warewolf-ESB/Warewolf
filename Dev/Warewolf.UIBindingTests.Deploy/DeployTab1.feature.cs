@@ -74,25 +74,27 @@ namespace Warewolf.UIBindingTests.Deploy
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeployTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Tab", new string[] {
-                        "DeployTab"});
-#line 27
-this.ScenarioSetup(scenarioInfo);
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 28
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 29
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 30
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
-  testRunner.Then("I select Destination Server as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
-  testRunner.And("destination \"localhost\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("I select Destination Server as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
-  testRunner.Then("\"Deploy\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("destination \"localhost\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
+  testRunner.Then("\"Deploy\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 35
   testRunner.And("the validation message is \"Source and Destination cannot be the same.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -103,29 +105,31 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeployIsSuccessfull()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy is successfull", new string[] {
-                        "DeployTab"});
-#line 37
-this.ScenarioSetup(scenarioInfo);
-#line 38
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 39
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 40
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 41
-  testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
-  testRunner.When("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 44
-  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
-  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 46
+  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 48
   testRunner.And("the Deploy validation message is \"1 Resource Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -136,25 +140,27 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerCancelDeploy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server cancel deploy", new string[] {
-                        "DeployTab"});
-#line 49
-this.ScenarioSetup(scenarioInfo);
-#line 50
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 51
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 52
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 53
-  testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName confilcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 54
-  testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
-  testRunner.When("I click Cancel on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 56
+  testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName confilcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 57
+  testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 58
+  testRunner.When("I click Cancel on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 59
   testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -165,9 +171,9 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "Examples\\Control Flow - Sequence",
                         "Examples\\Control Flow - Sequence"});
-#line 57
-  testRunner.Then("Resource exists in the destination server popup is shown", ((string)(null)), table1, "Then ");
 #line 60
+  testRunner.Then("Resource exists in the destination server popup is shown", ((string)(null)), table1, "Then ");
+#line 63
   testRunner.Then("deploy is not successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -177,24 +183,26 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Conflicting resources on Source and Destination server OK deploy")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerOKDeploy()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server OK deploy", ((string[])(null)));
-#line 62
-this.ScenarioSetup(scenarioInfo);
-#line 63
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 64
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server OK deploy", new string[] {
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 66
-  testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName confilcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 67
-  testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 68
-  testRunner.When("I click OK on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 69
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
+  testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName confilcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 71
+  testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 72
+  testRunner.When("I click OK on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 73
   testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -205,11 +213,11 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "Examples\\Control Flow - Sequence",
                         "Examples\\Control Flow - Sequence"});
-#line 70
-  testRunner.Then("Resource exists in the destination server popup is shown", ((string)(null)), table2, "Then ");
-#line 73
-  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 74
+  testRunner.Then("Resource exists in the destination server popup is shown", ((string)(null)), table2, "Then ");
+#line 77
+  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 78
   testRunner.And("the Deploy validation message is \"1 Resource Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -220,29 +228,31 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerDeployIsNotSuccessful()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server deploy is not successful", new string[] {
-                        "DeployTab"});
-#line 77
-this.ScenarioSetup(scenarioInfo);
-#line 78
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 79
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
-  testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 82
-  testRunner.Then("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 83
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 84
-  testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 85
-  testRunner.When("I click Cancel on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 86
+  testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 87
+  testRunner.Then("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 88
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 89
+  testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 90
+  testRunner.When("I click Cancel on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 91
   testRunner.Then("deploy is not successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -253,43 +263,45 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeployingAConnectorWithASource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying a connector with a source", new string[] {
-                        "DeployTab"});
-#line 89
-this.ScenarioSetup(scenarioInfo);
-#line 90
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 91
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
-  testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 94
-  testRunner.Then("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 95
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 96
-  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 97
-  testRunner.Then("New Resource is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
-  testRunner.When("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
-  testRunner.Then("\"Deploy\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 100
-  testRunner.And("Select All Dependencies is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 101
-  testRunner.When("I Select All Dependecies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 102
-  testRunner.Then("I select \"DemoDB\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
-  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("New Resource is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 104
-  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 105
+  testRunner.Then("\"Deploy\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 106
+  testRunner.And("Select All Dependencies is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+  testRunner.When("I Select All Dependecies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 108
+  testRunner.Then("I select \"DemoDB\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 109
+  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 110
+  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 111
   testRunner.And("the Deploy validation message is \"2 Resources Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -300,35 +312,37 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void SelectedForDeployItemsTypeIsShowingOnDeployTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selected for deploy items type is showing on deploy tab", new string[] {
-                        "DeployTab"});
-#line 108
-this.ScenarioSetup(scenarioInfo);
-#line 109
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 110
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
-  testRunner.Then("I select Destination Server as \"DestinationServer\" with items", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 113
-  testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 114
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 115
-  testRunner.When("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 116
-  testRunner.And("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 117
-  testRunner.And("I select \"DemoDB\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 118
-  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 119
-  testRunner.Then("Services is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("I select Destination Server as \"DestinationServer\" with items", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 120
+  testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 121
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+  testRunner.When("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 123
+  testRunner.And("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
+  testRunner.And("I select \"DemoDB\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
+  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 126
+  testRunner.Then("Services is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 127
   testRunner.And("Sources is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -339,45 +353,47 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeploySummaryIsShowingNewAndOveridingResources()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Summary is showing new and overiding resources", new string[] {
-                        "DeployTab"});
-#line 123
-this.ScenarioSetup(scenarioInfo);
-#line 124
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 125
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
-  testRunner.Then("I select Destination Server as \"DestinationServer\" with items", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 128
-  testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 129
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 130
-  testRunner.And("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 131
-  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 132
-  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 133
-  testRunner.And("Override is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 134
-  testRunner.When("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
-  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("I select Destination Server as \"DestinationServer\" with items", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 136
-  testRunner.And("Override is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 137
-  testRunner.When("I Unselect \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 138
-  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 139
-  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
+  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 141
+  testRunner.And("Override is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
+  testRunner.When("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 143
+  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 144
+  testRunner.And("Override is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 145
+  testRunner.When("I Unselect \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 146
+  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 147
+  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 148
   testRunner.And("Override is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -388,30 +404,32 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeployingItemsFromOneServerToTheNextWithTheSameName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying items from one server to the next with the same name", new string[] {
-                        "DeployTab"});
-#line 144
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
+#line 153
 this.ScenarioSetup(scenarioInfo);
-#line 145
+#line 154
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 146
+#line 155
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 156
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 148
+#line 157
   testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName different ID con" +
                     "filcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 149
+#line 158
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 150
+#line 159
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 151
+#line 160
   testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 152
+#line 161
   testRunner.When("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 153
+#line 162
   testRunner.Then("the User is prompted to \"Rename or Delete\" one of the resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -422,33 +440,35 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void WarningMessageNoLongerAppears()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Warning message no longer appears", new string[] {
-                        "DeployTab"});
-#line 157
-this.ScenarioSetup(scenarioInfo);
-#line 158
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 159
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
-  testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 162
-  testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 163
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
-  testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 165
-  testRunner.When("I click OK on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 166
-  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
 #line 167
-  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 168
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 169
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 170
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 171
+  testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 172
+  testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 173
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 174
+  testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 175
+  testRunner.When("I click OK on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 176
+  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 177
+  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 178
   testRunner.And("the Deploy validation message is \"1 Resource Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -459,34 +479,36 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeployingToAnOlderServerVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying to an Older server version", new string[] {
-                        "DeployTab"});
-#line 172
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
+#line 183
 this.ScenarioSetup(scenarioInfo);
-#line 173
+#line 184
  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 174
+#line 185
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 186
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
+#line 187
   testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 177
+#line 188
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
+#line 189
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 179
+#line 190
   testRunner.And("destination Server Version is \"0.0.0.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 180
+#line 191
   testRunner.And("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
+#line 192
   testRunner.When("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 182
+#line 193
   testRunner.Then("a warning message appears \"Deploying to an older server version could result in r" +
                     "esources not working on destination server\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 183
+#line 194
   testRunner.And("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -497,31 +519,33 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeployBasedOnPermissionDeployTo()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Based on permission Deploy To", new string[] {
-                        "DeployTab"});
-#line 186
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
+#line 198
 this.ScenarioSetup(scenarioInfo);
-#line 187
+#line 199
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 188
+#line 200
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 189
+#line 201
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
+#line 202
   testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
+#line 203
   testRunner.And("I cannot deploy to destination", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 204
   testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 193
+#line 205
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 194
+#line 206
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 195
+#line 207
   testRunner.Then("\"Deploy\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 196
+#line 208
   testRunner.And("the validation message is \"Destination server permission Deploy To not allowed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -532,27 +556,29 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeployBasedOnPermissionDeployFrom()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Based on permission Deploy From", new string[] {
-                        "DeployTab"});
-#line 199
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
+#line 212
 this.ScenarioSetup(scenarioInfo);
-#line 200
+#line 213
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 201
+#line 214
   testRunner.And("I cannot deploy from source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 215
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
+#line 216
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
+#line 217
   testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 205
+#line 218
    testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 206
+#line 219
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 207
+#line 220
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -563,25 +589,27 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public virtual void DeployResourceTestsMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy resource Tests message", new string[] {
-                        "DeployTab"});
-#line 210
+                        "DeployTab",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll"});
+#line 224
 this.ScenarioSetup(scenarioInfo);
-#line 211
+#line 225
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 212
+#line 226
   testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 213
+#line 227
   testRunner.Then("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 214
+#line 228
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 215
+#line 229
   testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 230
   testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 217
+#line 231
   testRunner.And("the Deploy validation message is \"1 Resource Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
