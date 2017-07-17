@@ -11,6 +11,8 @@ Feature: ComPluginSource
 ## load all dependancies after filter cleared 
 
 @MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: New COMPlugin Source File
 	Given I open New COMPlugin Source
 	Then "New COM Plugin Source" tab is opened
@@ -29,6 +31,8 @@ Scenario: New COMPlugin Source File
 	And "Testing Resource Save" tab is opened
 	
 @MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Change Plugin Source Assembly Input
 	Given I open "Test File" plugin source
 	Then title is "Test File"
@@ -38,6 +42,8 @@ Scenario: Change Plugin Source Assembly Input
 	When I save Plugin source
 	
 @MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: load all dependancies after filter cleared 
 	Given I open New COMPlugin Source
 	And DLLs is "loading"

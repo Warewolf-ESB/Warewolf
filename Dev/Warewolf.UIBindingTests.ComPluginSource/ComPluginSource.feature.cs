@@ -74,6 +74,9 @@ namespace Warewolf.UIBindingTests.ComPluginSource
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("SpecFlow.Assist.Dynamic.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("Warewolf Studio.exe")]
         public virtual void NewCOMPluginSourceFile()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New COMPlugin Source File", new string[] {
@@ -120,6 +123,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("SpecFlow.Assist.Dynamic.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("Warewolf Studio.exe")]
         public virtual void ChangePluginSourceAssemblyInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Plugin Source Assembly Input", new string[] {
@@ -147,6 +153,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("SpecFlow.Assist.Dynamic.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("Warewolf Studio.exe")]
         public virtual void LoadAllDependanciesAfterFilterCleared()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("load all dependancies after filter cleared", new string[] {
