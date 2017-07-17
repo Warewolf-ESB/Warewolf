@@ -73,7 +73,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source General Testing")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -81,7 +81,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         public virtual void CreatingNewDBSourceGeneralTesting()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source General Testing", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -142,19 +142,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 54
    testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
-   testRunner.When("I save the source as \"SavedDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("I save the source as \"SavedMySqlDbSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 56
    testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 57
-   testRunner.Then("\"SavedDBSource\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("\"SavedMySqlDbSource\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 58
-   testRunner.And("title is \"SavedDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("title is \"SavedMySqlDbSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
    testRunner.When("I type Server as \"RSA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 60
-   testRunner.Then("\"SavedDBSource *\" is the tab Header", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.Then("\"SavedMySqlDbSource *\" is the tab Header", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 61
-   testRunner.And("title is \"SavedDBSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("title is \"SavedMySqlDbSource\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -163,7 +163,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New DB Source as User Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -171,7 +171,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatingNewDBSourceAsUserAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New DB Source as User Auth", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -224,7 +224,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Incorrect Server Address Doesnt Allow Save Windows Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -232,7 +232,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void IncorrectServerAddressDoesntAllowSaveWindowsAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Incorrect Server Address Doesnt Allow Save Windows Auth", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -269,7 +269,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Incorrect Server Address Doesnt Allow Save User Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -277,7 +277,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void IncorrectServerAddressDoesntAllowSaveUserAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Incorrect Server Address Doesnt Allow Save User Auth", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -316,7 +316,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Incorrect Server Address Shows correct error message")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -324,7 +324,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void IncorrectServerAddressShowsCorrectErrorMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Incorrect Server Address Shows correct error message", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -365,7 +365,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Testing as Windows and swapping it resets the test connection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -373,7 +373,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void TestingAsWindowsAndSwappingItResetsTheTestConnection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing as Windows and swapping it resets the test connection", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -434,7 +434,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing saved DB Source Remembers Previous Auth Selection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -442,7 +442,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EditingSavedDBSourceRemembersPreviousAuthSelection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing saved DB Source Remembers Previous Auth Selection", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -503,7 +503,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Editing saved DB Source Remembers credentials")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -511,7 +511,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EditingSavedDBSourceRemembersCredentials()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing saved DB Source Remembers credentials", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -562,7 +562,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel DB Source Test")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -570,7 +570,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CancelDBSourceTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cancel DB Source Test", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -609,7 +609,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing database type after testing connection")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -617,7 +617,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ChangingDatabaseTypeAfterTestingConnection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing database type after testing connection", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
@@ -679,7 +679,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating New MySQL DB Source as Windows Auth")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "New MySql Database Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DbSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MySqlDbSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("MSTest:DeploymentItem:Warewolf")]
@@ -687,7 +687,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CreatingNewMySQLDBSourceAsWindowsAuth()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating New MySQL DB Source as Windows Auth", new string[] {
-                        "DbSource",
+                        "MySqlDbSource",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
                             "1.dll",
                         "MSTest:DeploymentItem:Warewolf",
