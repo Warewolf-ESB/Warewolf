@@ -73,41 +73,43 @@ namespace Warewolf.UIBindingTests.ComPluginSource
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("New COMPlugin Source File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("SpecFlow.Assist.Dynamic.dll")]
         public virtual void NewCOMPluginSourceFile()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New COMPlugin Source File", ((string[])(null)));
-#line 13
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New COMPlugin Source File", new string[] {
+                        "MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll"});
 #line 14
- testRunner.Given("I open New COMPlugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 15
- testRunner.Then("\"New COM Plugin Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open New COMPlugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
+ testRunner.Then("\"New COM Plugin Source\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 17
  testRunner.And("title is \"New COM Plugin Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Clicks"});
             table1.AddRow(new string[] {
                         "Development"});
-#line 17
+#line 18
  testRunner.When("I click", ((string)(null)), table1, "When ");
-#line 20
- testRunner.Then("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 21
- testRunner.When("I change Assembly to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 22
- testRunner.Then("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 23
- testRunner.When("I change Assembly to \"SomethingElse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
  testRunner.Then("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 22
+ testRunner.When("I change Assembly to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 23
+ testRunner.Then("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 24
+ testRunner.When("I change Assembly to \"SomethingElse\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
- testRunner.When("I save as \"Testing Resource Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
- testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I save as \"Testing Resource Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 27
- testRunner.Then("title is \"Testing Resource Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the save dialog is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 28
+ testRunner.Then("title is \"Testing Resource Save\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 29
  testRunner.And("\"Testing Resource Save\" tab is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -117,22 +119,24 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Plugin Source Assembly Input")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("SpecFlow.Assist.Dynamic.dll")]
         public virtual void ChangePluginSourceAssemblyInput()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Plugin Source Assembly Input", ((string[])(null)));
-#line 30
-this.ScenarioSetup(scenarioInfo);
-#line 31
- testRunner.Given("I open \"Test File\" plugin source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Plugin Source Assembly Input", new string[] {
+                        "MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll"});
 #line 32
- testRunner.Then("title is \"Test File\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 33
- testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I open \"Test File\" plugin source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
- testRunner.When("I click \"Development\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("title is \"Test File\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
- testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
+ testRunner.When("I click \"Development\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 38
  testRunner.When("I save Plugin source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -142,20 +146,22 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("load all dependancies after filter cleared")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ComPluginSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ComPluginSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("SpecFlow.Assist.Dynamic.dll")]
         public virtual void LoadAllDependanciesAfterFilterCleared()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("load all dependancies after filter cleared", ((string[])(null)));
-#line 38
-this.ScenarioSetup(scenarioInfo);
-#line 39
- testRunner.Given("I open New COMPlugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 40
- testRunner.And("DLLs is \"loading\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("load all dependancies after filter cleared", new string[] {
+                        "MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll"});
 #line 41
- testRunner.And("I filter for \"Development\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 42
- testRunner.And("\"Development\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I open New COMPlugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 43
+ testRunner.And("DLLs is \"loading\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
+ testRunner.And("I filter for \"Development\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
+ testRunner.And("\"Development\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
  testRunner.When("I \"clear\" the filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();

@@ -10,6 +10,7 @@ Feature: ComPluginSource
 ## Refresh New COMPlugin Source
 ## load all dependancies after filter cleared 
 
+@MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll
 Scenario: New COMPlugin Source File
 	Given I open New COMPlugin Source
 	Then "New COM Plugin Source" tab is opened
@@ -27,6 +28,7 @@ Scenario: New COMPlugin Source File
 	Then title is "Testing Resource Save"
 	And "Testing Resource Save" tab is opened
 	
+@MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll
 Scenario: Change Plugin Source Assembly Input
 	Given I open "Test File" plugin source
 	Then title is "Test File"
@@ -34,7 +36,8 @@ Scenario: Change Plugin Source Assembly Input
 	When I click "Development"
 	And "Save" is "Enabled"
 	When I save Plugin source
-
+	
+@MSTest:DeploymentItem:SpecFlow.Assist.Dynamic.dll
 Scenario: load all dependancies after filter cleared 
 	Given I open New COMPlugin Source
 	And DLLs is "loading"
