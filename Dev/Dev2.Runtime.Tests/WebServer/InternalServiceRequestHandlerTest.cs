@@ -46,7 +46,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Setup for test--------------------------
             Mock<IPrincipal> principle = new Mock<IPrincipal>();
             principle.Setup(p => p.Identity.Name).Returns("FakeUser");
-            
+
             var eer = new EsbExecuteRequest
             {
                 ServiceName = "Ping",
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.WebServer
             ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
-            
+
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = null };
 
             //------------Execute Test---------------------------
@@ -201,7 +201,9 @@ namespace Dev2.Tests.Runtime.WebServer
             var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
             //------------Execute Test---------------------------
             var processRequest = internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
+            authorizationService.Verify(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString()), Times.Once);
             Assert.IsNotNull(processRequest);
+
         }
     }
 }
