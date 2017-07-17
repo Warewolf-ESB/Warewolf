@@ -74,27 +74,31 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Exchange Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
         public virtual void CreatingNewExchangeSource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating new exchange source", new string[] {
-                        "ExchangeSource"});
-#line 8
-this.ScenarioSetup(scenarioInfo);
+                        "ExchangeSource",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+                            "1.dll"});
 #line 9
- testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 10
- testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 11
- testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
- testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
- testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
- testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
+ testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 17
  testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -104,28 +108,32 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Testing new exchange source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Exchange Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
         public virtual void TestingNewExchangeSource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing new exchange source", ((string[])(null)));
-#line 18
-this.ScenarioSetup(scenarioInfo);
-#line 19
-testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing new exchange source", new string[] {
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+                            "1.dll"});
 #line 20
- testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 21
- testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
- testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
- testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
- testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
- testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
- testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 27
+ testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 28
+ testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
  testRunner.Then("I click on the Test Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -136,34 +144,38 @@ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.Sp
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Exchange Source")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExchangeSource")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+            "1.dll")]
         public virtual void FailSendShowsCorrectErrorMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fail Send Shows correct error message", new string[] {
-                        "ExchangeSource"});
-#line 30
-this.ScenarioSetup(scenarioInfo);
-#line 31
- testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
- testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                        "ExchangeSource",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
+                            "1.dll"});
 #line 33
- testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 34
- testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I open a new exchange source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
- testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("\"New Exchange Source\" tab is Opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
- testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Title is \"New Exchange Source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
- testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type Auto Discover as \"https://outlook.office365.com/EWS/Exchange.asmx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
- testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Type User Name as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
- testRunner.And("Send is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I Type Password as \"TestUser\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 40
+ testRunner.When("I Type TimeOut as \"1000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 41
+ testRunner.When("I Type To Email as \"test@gmsil.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 42
+ testRunner.And("Send is \"Unsuccessful\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
  testRunner.Then("Send is \"The request failed. The remote server returned an error: (401) Unauthori" +
                     "zed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 41
+#line 44
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
