@@ -9,6 +9,8 @@ Feature: PluginSource
 ## Editing Plugin Source
 
 
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: New Plugin Source File
 	Given I open New Plugin Source
 	Then "New DotNet Plugin Source" tab is opened
@@ -33,7 +35,9 @@ Scenario: New Plugin Source File
 	Then title is "Testing Resource Save"
 	And "Testing Resource Save" tab is opened
 	
-
+	
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: New Plugin Source GAC
 Given I open New Plugin Source
 	Then "New DotNet Plugin Source" tab is opened
@@ -51,6 +55,8 @@ Given I open New Plugin Source
 	And "Testing Resource Save" tab is opened
 
 	 
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
 Scenario: Editing Plugin Source
 	Given I open "Test" plugin source
 	Then title is "Test"
