@@ -93,7 +93,7 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             }
             else
             {
-                Assert.Fail("This test attempted to open a database source that has not been initialized yet. you must execute \"SetupForSystem\" test step before this test step can be used.");
+                Assert.Fail("This test attempted to open a database source that has not been initialized yet. You must execute \"SetupForSystem\" test step before this test step can be used.");
             }
         }
 
