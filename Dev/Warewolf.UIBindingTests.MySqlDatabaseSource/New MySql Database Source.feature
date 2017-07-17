@@ -22,7 +22,7 @@ Feature: New MySql Database Source
 ## Ensure Database dropdown is visible when test connection is successfull
 ## Ensure user is able to select database from the database dropdown 
 
-@MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New MySQL Source" tab is opened

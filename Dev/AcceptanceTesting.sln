@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -240,8 +240,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Rab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.WcfSource", "Warewolf.UIBindingTests.WcfSource\Warewolf.UIBindingTests.WcfSource.csproj", "{2F4FD767-6A03-433F-912F-27BFA11B8CBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ServiceTestView", "Warewolf.UIBindingTests.ServiceTestViewModel\Warewolf.UIBindingTests.ServiceTestView.csproj", "{B1009DCB-5D4E-4846-8739-6944D0E0C956}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.OracleSource", "Warewolf.UIBindingTests.OracleSource\Warewolf.UIBindingTests.OracleSource.csproj", "{AD36DD08-061E-438F-8A78-6DCBEEFEE3FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.SqlDatabaseSource", "Warewolf.UIBindingTests.SqlDatabaseSource\Warewolf.UIBindingTests.SqlDatabaseSource.csproj", "{01AB268C-BBC3-488A-B4EB-F23E3EF55C78}"
@@ -265,6 +263,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Parsing.Tests", "Warewolf.Parsing.Tests\Warewolf.Parsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ServiceTestView", "Warewolf.UIBindingTests.ServiceTestView\Warewolf.UIBindingTests.ServiceTestView.csproj", "{B1009DCB-5D4E-4846-8739-6944D0E0C956}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -958,13 +958,6 @@ Global
 		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|x86.ActiveCfg = Release|Any CPU
 		{2F4FD767-6A03-433F-912F-27BFA11B8CBF}.Release|x86.Build.0 = Release|Any CPU
-		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|x86.Build.0 = Debug|Any CPU
-		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|x86.ActiveCfg = Release|Any CPU
-		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|x86.Build.0 = Release|Any CPU
 		{AD36DD08-061E-438F-8A78-6DCBEEFEE3FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD36DD08-061E-438F-8A78-6DCBEEFEE3FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD36DD08-061E-438F-8A78-6DCBEEFEE3FA}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1054,6 +1047,14 @@ Global
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|Any CPU.ActiveCfg = Debug|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.ActiveCfg = Debug|x86
 		{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}.Release|x86.Build.0 = Debug|x86
+		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1009DCB-5D4E-4846-8739-6944D0E0C956}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
