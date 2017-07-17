@@ -23,6 +23,7 @@ Feature: New MySql Database Source
 ## Ensure user is able to select database from the database dropdown 
 
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New MySQL Source" tab is opened
@@ -58,7 +59,8 @@ Scenario: Creating New DB Source General Testing
    Then "SavedDBSource *" is the tab Header
    And title is "SavedDBSource"
    
-@MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRDEV"
@@ -79,8 +81,9 @@ Scenario: Creating New DB Source as User Auth
 	Then "Save" is "Enabled" 
 	When I save the source
 	Then the save dialog is opened
-
-@MySqlDbSource
+	
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -93,8 +96,9 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  When Test Connecton is "Unsuccessful"
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
-
- @MySqlDbSource
+	  
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -109,7 +113,8 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  
- @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRDEV"
@@ -124,8 +129,9 @@ Scenario: Incorrect Server Address Shows correct error message
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  And the error message is "Login failed for user 'test'"
-
-@MySqlDbSource
+	  
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Testing as Windows and swapping it resets the test connection 
 	  Given I open New Database Source
 	  And "Save" is "Disabled"
@@ -150,8 +156,9 @@ Scenario: Testing as Windows and swapping it resets the test connection
 	  When I Select Authentication Type as "User"
 	  Then Username field is "Visible"
 	  And Password field is "Visible"
-
-@MySqlDbSource
+	  
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRDEV"
@@ -177,7 +184,8 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	And "Test Connection" is "Disabled"
 	And "Save" is "Disabled"
 	
-@MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRDEV"
@@ -197,8 +205,9 @@ Scenario: Editing saved DB Source Remembers credentials
 	And "Test Connection" is "Enabled"
 	When Test Connecton is "Successful"
 	Then "Save" is "Enabled"
-
-@MySqlDbSource
+	
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRDEV"
@@ -212,9 +221,9 @@ Scenario: Cancel DB Source Test
    Then the validation message as "Test Cancelled" 
    Then "Test Connection" is "Enabled"
    And "Save" is "Disabled"
-
-
-@MySqlDbSource
+   
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Changing database type after testing connection
    Given I open New Database Source
    Then "New MySQL Source" tab is opened
@@ -239,9 +248,9 @@ Scenario: Changing database type after testing connection
    Then Database dropdown is "Visible"
    And I select "test" as Database
    Then "Save" is "Enabled"
-
-
-@MySqlDbSource
+   
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf Studio.exe
 Scenario: Creating New MySQL DB Source as Windows Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRDEV"
