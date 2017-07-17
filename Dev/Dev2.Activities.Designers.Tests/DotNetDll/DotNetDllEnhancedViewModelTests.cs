@@ -780,6 +780,8 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IPluginServiceModel>();
+            var shellVm = new Mock<IShellViewModel>();
+            CustomContainer.Register(shellVm.Object);
             mock.Setup(model => model.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
             mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem>());
             mock.Setup(model => model.GetConstructors(It.IsAny<IPluginSource>(), It.IsAny<INamespaceItem>())).Returns(new List<IPluginConstructor>());
