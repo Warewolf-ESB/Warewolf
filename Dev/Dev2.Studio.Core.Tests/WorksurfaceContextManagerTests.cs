@@ -12,8 +12,6 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
-using System.Windows;
-using Caliburn.Micro;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Core;
 using Action = System.Action;
@@ -94,7 +92,7 @@ namespace Dev2.Core.Tests
             var sharePointSource = new Mock<IOAuthSource>();
             sharePointSource.SetupAllProperties();
             var viewMock = new Mock<IView>();
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
             var beforeCount = ShellViewModel.Items.Count;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
@@ -459,7 +457,7 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
 
             var beforeCount = ShellViewModel.Items.Count;
             //---------------Assert Precondition----------------
@@ -523,7 +521,7 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
             var beforeCount = ShellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
@@ -637,8 +635,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        
-        
+
+
         public void DisplayResourceWizard_GivenWcfSourceResourceType_ShouldEditWcfSource()
         {
             //---------------Set up test pack-------------------
@@ -699,8 +697,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        
-        
+
+
         public void DisplayResourceWizard_GivenExchangeSourceResourceType_ShouldEditExchangeSource()
         {
             //---------------Set up test pack-------------------
@@ -731,8 +729,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        
-        
+
+
         public void DisplayResourceWizard_GivenDropBoxSourceResourceType_ShouldEditDropBoxSource()
         {
             //---------------Set up test pack-------------------
@@ -763,8 +761,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        
-        
+
+
         public void DisplayResourceWizard_GivenSharepointServerSourceResourceType_ShouldEditSharepointServerSource()
         {
             //---------------Set up test pack-------------------
@@ -827,8 +825,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        
-        
+
+
         public void DisplayResourceWizard_GivenRabbitMQSourceResourceType_ShouldEditRabbitMQSource()
         {
             //---------------Set up test pack-------------------
@@ -840,7 +838,7 @@ namespace Dev2.Core.Tests
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.ServerID).Returns(Guid.NewGuid);
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
             var beforeCount = ShellViewModel.Items.Count;
             var server = new Mock<IServer>();
             server.Setup(server1 => server1.UpdateRepository).Returns(new Mock<IStudioUpdateManager>().Object);
@@ -859,8 +857,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        
-        
+
+
         public void DisplayResourceWizard_GivenServerType_ShouldEditServer()
         {
             //---------------Set up test pack-------------------
@@ -876,7 +874,7 @@ namespace Dev2.Core.Tests
             var envModel = new Mock<IServer>();
             envRepo.Setup(repository => repository.Get(It.IsAny<Guid>())).Returns(envModel.Object);
             var beforeCount = ShellViewModel.Items.Count;
-            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel);
+            var sorksurfaceContextManager = new WorksurfaceContextManager(false, ShellViewModel, new Mock<IServerRepository>().Object, new Mock<IViewFactory>().Object);
             SetActiveServerAction.Invoke();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sorksurfaceContextManager);
@@ -924,8 +922,8 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        
-        
+
+
         public void DisplayResourceWizard_GivenServerSourceType_ShouldServerSource()
         {
             //---------------Set up test pack-------------------
