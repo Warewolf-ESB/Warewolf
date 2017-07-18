@@ -12,6 +12,11 @@ Feature: Email Source
 
 
 @EmailSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Create New Email source
 	Given I open New Email Source
 	Then "New Email Source" tab is opened
@@ -28,6 +33,11 @@ Scenario: Create New Email source
 	And "Save" is "Disabled"
 
 @EmailSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: From Defaults to User Name But Not After Change
 	Given I open New Email Source
 	Then "New Email Source" tab is opened
@@ -37,6 +47,11 @@ Scenario: From Defaults to User Name But Not After Change
 	Then "User Name" input is "warewolf@dev2.co.za"
 
 @EmailSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Enable Send and Enable Save With Validation
 	Given I open New Email Source
 	Then "New Email Source" tab is opened
@@ -56,6 +71,11 @@ Scenario: Enable Send and Enable Save With Validation
 	And the save dialog is opened
 	
 @EmailSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Fail Send
 	Given I open New Email Source
 	Then "New Email Source" tab is opened
@@ -75,6 +95,11 @@ Scenario: Fail Send
 	And "Save" is "Disabled"
 
 @EmailSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Edit saves From and To
 	Given I open "Test Email Source"
 	Then "Test Email Source" tab is opened
