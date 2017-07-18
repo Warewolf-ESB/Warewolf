@@ -20,7 +20,6 @@ using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
-using System.Windows.Threading;
 
 // ReSharper disable RedundantAssignment
 
@@ -450,15 +449,12 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             var viewModel = new ManageSqlServerSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
                 new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            manageDatabaseSourceControl.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(() =>
+            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
+            if (manageDatabaseSourceViewModel != null)
             {
-                var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
-                if (manageDatabaseSourceViewModel != null)
-                {
-                    Utils.ResetViewModel<ManageSqlServerSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
-                    manageDatabaseSourceViewModel.DatabaseName = null;
-                }
-            }));
+                Utils.ResetViewModel<ManageSqlServerSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                manageDatabaseSourceViewModel.DatabaseName = null;
+            }
         }
 
         [AfterFeature("DbSource")]
