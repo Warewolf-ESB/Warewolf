@@ -5,11 +5,6 @@ Feature: Sharepoint
 	I want to be able to interact with a sharepoint server
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Sharepoint Source 
    Given I open New Sharepoint Source 
    Then "New SharePoint Service Source" tab is opened
@@ -29,11 +24,6 @@ Scenario: Creating New Sharepoint Source
    And "Testing Sharepoint Resource Save" tab is opened
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Sharepoint Source under auth type as user
    Given I open New Sharepoint Source
    And I type Address as "http://rsaklfsvrdev"
@@ -50,11 +40,6 @@ Scenario: Creating New Sharepoint Source under auth type as user
    Then the save dialog is opened
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect address anonymous auth type not allowing save
    Given I open New Sharepoint Source
    And I type Address as "sdfsdfd"
@@ -66,11 +51,6 @@ Scenario: Incorrect address anonymous auth type not allowing save
    And "Save" is "Disabled"
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect address Shows correct error message
    Given I open New Sharepoint Source
    And I type Address as "sdfsdfd"
@@ -83,11 +63,6 @@ Scenario: Incorrect address Shows correct error message
    And the error message is "Unable to contact Server : Test Failed: Value does not fall within the expected range."
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect address user auth type is not allowing to save
    Given I open New Sharepoint Source
    And I type Address as "sdfsdfd"
@@ -101,11 +76,6 @@ Scenario: Incorrect address user auth type is not allowing to save
    And "Save" is "Disabled"
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Testing Auth type as Anonymous and swaping it resets the test connection 
    Given I open New Sharepoint Source
    And "Save" is "Disabled"
@@ -131,11 +101,6 @@ Scenario: Testing Auth type as Anonymous and swaping it resets the test connecti
    And "Save" is "Disabled" 
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved Sharepoint Source 
    Given I open "Test" Sharepoint source
    Then "Test" tab is opened
@@ -157,11 +122,6 @@ Scenario: Editing saved Sharepoint Source
    When I save the source
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
  Scenario: Editing saved Sharepoint Source auth type
    Given I open "Test" Sharepoint source
    Then "Test" tab is opened
@@ -181,11 +141,6 @@ Scenario: Editing saved Sharepoint Source
    Then "Save" is "Enabled" 
 
 @SharepointSource
-@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
-@MSTest:DeploymentItem:Warewolf_Studio.exe
-@MSTest:DeploymentItem:Newtonsoft.Json.dll
-@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
-@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Cancel Test
    Given I open New Sharepoint Source 
    Then "New SharePoint Service Source" tab is opened
