@@ -849,7 +849,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(sorksurfaceContextManager);
             Assert.AreEqual(2, beforeCount);
             //---------------Execute Test ----------------------
-            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new Action(()=>sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object)));
+            sorksurfaceContextManager.DisplayResourceWizard(resourceModelMock.Object);
             //---------------Test Result -----------------------
             var workSurfaceViewModels = ShellViewModel.Items.Any(model => model.WorkSurfaceViewModel is ViewModels.SourceViewModel<IServerSource>);
             Assert.IsTrue(workSurfaceViewModels);
