@@ -79,6 +79,9 @@ namespace Warewolf.UIBindingTests.Deploy
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeployTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Tab", new string[] {
@@ -87,22 +90,25 @@ namespace Warewolf.UIBindingTests.Deploy
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 31
-this.ScenarioSetup(scenarioInfo);
-#line 32
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
 #line 33
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 34
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 35
-  testRunner.Then("I select Destination Server as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
-  testRunner.And("destination \"localhost\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
-  testRunner.Then("\"Deploy\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("I select Destination Server as \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
+  testRunner.And("destination \"localhost\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
+  testRunner.Then("\"Deploy\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 40
   testRunner.And("the validation message is \"Source and Destination cannot be the same.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -118,6 +124,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeployIsSuccessfull()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy is successfull", new string[] {
@@ -126,26 +135,29 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 45
-this.ScenarioSetup(scenarioInfo);
-#line 46
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 47
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
 #line 49
-  testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 50
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 51
-  testRunner.When("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
-  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 53
-  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 54
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+  testRunner.When("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 56
+  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 57
+  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 58
   testRunner.And("the Deploy validation message is \"1 Resource Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -161,6 +173,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerCancelDeploy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server cancel deploy", new string[] {
@@ -169,22 +184,25 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 61
-this.ScenarioSetup(scenarioInfo);
-#line 62
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 63
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
-  testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName confilcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 66
-  testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
 #line 67
-  testRunner.When("I click Cancel on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 68
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 69
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 70
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+  testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName confilcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 72
+  testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 73
+  testRunner.When("I click Cancel on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 74
   testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -195,9 +213,9 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "Examples\\Control Flow - Sequence",
                         "Examples\\Control Flow - Sequence"});
-#line 69
+#line 75
   testRunner.Then("Resource exists in the destination server popup is shown", ((string)(null)), table1, "Then ");
-#line 72
+#line 78
   testRunner.Then("deploy is not successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -212,6 +230,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerOKDeploy()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server OK deploy", new string[] {
@@ -219,22 +240,25 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 78
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 86
 this.ScenarioSetup(scenarioInfo);
-#line 79
+#line 87
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 80
+#line 88
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 89
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 90
   testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName confilcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 83
+#line 91
   testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 92
   testRunner.When("I click OK on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 85
+#line 93
   testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -245,11 +269,11 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "Examples\\Control Flow - Sequence",
                         "Examples\\Control Flow - Sequence"});
-#line 86
+#line 94
   testRunner.Then("Resource exists in the destination server popup is shown", ((string)(null)), table2, "Then ");
-#line 89
+#line 97
   testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 90
+#line 98
   testRunner.And("the Deploy validation message is \"1 Resource Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -265,6 +289,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void ConflictingResourcesOnSourceAndDestinationServerDeployIsNotSuccessful()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Conflicting resources on Source and Destination server deploy is not successful", new string[] {
@@ -273,26 +300,29 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 97
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 107
 this.ScenarioSetup(scenarioInfo);
-#line 98
+#line 108
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 99
+#line 109
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 100
+#line 110
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
+#line 111
   testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 102
+#line 112
   testRunner.Then("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 103
+#line 113
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 104
+#line 114
   testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 105
+#line 115
   testRunner.When("I click Cancel on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 106
+#line 116
   testRunner.Then("deploy is not successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -308,6 +338,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeployingAConnectorWithASource()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying a connector with a source", new string[] {
@@ -316,40 +349,43 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 113
-this.ScenarioSetup(scenarioInfo);
-#line 114
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 115
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
-  testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 118
-  testRunner.Then("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 119
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
-  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
-  testRunner.Then("New Resource is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 122
-  testRunner.When("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 123
-  testRunner.Then("\"Deploy\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 124
-  testRunner.And("Select All Dependencies is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
 #line 125
-  testRunner.When("I Select All Dependecies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 126
-  testRunner.Then("I select \"DemoDB\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 127
-  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 128
-  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 129
+  testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 130
+  testRunner.Then("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 131
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 132
+  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 133
+  testRunner.Then("New Resource is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 134
+  testRunner.When("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 135
+  testRunner.Then("\"Deploy\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 136
+  testRunner.And("Select All Dependencies is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 137
+  testRunner.When("I Select All Dependecies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 138
+  testRunner.Then("I select \"DemoDB\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 139
+  testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 140
+  testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 141
   testRunner.And("the Deploy validation message is \"2 Resources Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -365,6 +401,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void SelectedForDeployItemsTypeIsShowingOnDeployTab()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Selected for deploy items type is showing on deploy tab", new string[] {
@@ -373,32 +412,35 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 136
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 150
 this.ScenarioSetup(scenarioInfo);
-#line 137
+#line 151
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 138
+#line 152
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
+#line 153
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
+#line 154
   testRunner.Then("I select Destination Server as \"DestinationServer\" with items", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 141
+#line 155
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 142
+#line 156
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 143
+#line 157
   testRunner.When("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 144
+#line 158
   testRunner.And("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 145
+#line 159
   testRunner.And("I select \"DemoDB\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
+#line 160
   testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 147
+#line 161
   testRunner.Then("Services is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 148
+#line 162
   testRunner.And("Sources is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -414,6 +456,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeploySummaryIsShowingNewAndOveridingResources()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Summary is showing new and overiding resources", new string[] {
@@ -422,42 +467,45 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 155
-this.ScenarioSetup(scenarioInfo);
-#line 156
-  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 157
-  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 158
-  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 159
-  testRunner.Then("I select Destination Server as \"DestinationServer\" with items", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 160
-  testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 161
-  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
-  testRunner.And("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 163
-  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
-  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 165
-  testRunner.And("Override is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 166
-  testRunner.When("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 167
-  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 168
-  testRunner.And("Override is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 169
-  testRunner.When("I Unselect \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 170
-  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
 #line 171
-  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 172
+  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 173
+  testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 174
+  testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 175
+  testRunner.Then("I select Destination Server as \"DestinationServer\" with items", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 176
+  testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 177
+  testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 178
+  testRunner.And("I select \"FetchPlayers\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
+  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 180
+  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 181
+  testRunner.And("Override is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 182
+  testRunner.When("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 183
+  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 184
+  testRunner.And("Override is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 185
+  testRunner.When("I Unselect \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 186
+  testRunner.And("Calculation is invoked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 187
+  testRunner.Then("New Resource is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 188
   testRunner.And("Override is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -473,6 +521,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeployingItemsFromOneServerToTheNextWithTheSameName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying items from one server to the next with the same name", new string[] {
@@ -481,27 +532,30 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 179
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 197
 this.ScenarioSetup(scenarioInfo);
-#line 180
+#line 198
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 181
+#line 199
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
+#line 200
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 183
+#line 201
   testRunner.Then("I select Destination Server as \"DestinationServer\" with SameName different ID con" +
                     "filcts", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 184
+#line 202
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 185
+#line 203
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 186
+#line 204
   testRunner.And("I select \"Control Flow - Sequence\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 187
+#line 205
   testRunner.When("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 188
+#line 206
   testRunner.Then("the User is prompted to \"Rename or Delete\" one of the resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -517,6 +571,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void WarningMessageNoLongerAppears()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Warning message no longer appears", new string[] {
@@ -525,30 +582,33 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 195
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 215
 this.ScenarioSetup(scenarioInfo);
-#line 196
+#line 216
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 197
+#line 217
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 198
+#line 218
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 199
+#line 219
   testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 200
+#line 220
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 201
+#line 221
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 202
+#line 222
   testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 203
+#line 223
   testRunner.When("I click OK on Resource exists in the destination server popup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 204
+#line 224
   testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 205
+#line 225
   testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 206
+#line 226
   testRunner.And("the Deploy validation message is \"1 Resource Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -564,6 +624,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeployingToAnOlderServerVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploying to an Older server version", new string[] {
@@ -572,31 +635,34 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 213
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 235
 this.ScenarioSetup(scenarioInfo);
-#line 214
+#line 236
  testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 215
+#line 237
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 216
+#line 238
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 239
   testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 218
+#line 240
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 219
+#line 241
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
+#line 242
   testRunner.And("destination Server Version is \"0.0.0.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
+#line 243
   testRunner.And("I select \"Utility - Date and Time\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 222
+#line 244
   testRunner.When("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 223
+#line 245
   testRunner.Then("a warning message appears \"Deploying to an older server version could result in r" +
                     "esources not working on destination server\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 224
+#line 246
   testRunner.And("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -612,6 +678,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeployBasedOnPermissionDeployTo()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Based on permission Deploy To", new string[] {
@@ -620,28 +689,31 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 231
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 255
 this.ScenarioSetup(scenarioInfo);
-#line 232
+#line 256
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 233
+#line 257
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 234
+#line 258
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 235
+#line 259
   testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 236
+#line 260
   testRunner.And("I cannot deploy to destination", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 237
+#line 261
   testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 238
+#line 262
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 239
+#line 263
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 240
+#line 264
   testRunner.Then("\"Deploy\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 241
+#line 265
   testRunner.And("the validation message is \"Destination server permission Deploy To not allowed.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -657,6 +729,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeployBasedOnPermissionDeployFrom()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy Based on permission Deploy From", new string[] {
@@ -665,24 +740,27 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 248
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 274
 this.ScenarioSetup(scenarioInfo);
-#line 249
+#line 275
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 250
+#line 276
   testRunner.And("I cannot deploy from source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 251
+#line 277
   testRunner.And("selected Source Server is \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 252
+#line 278
   testRunner.And("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 253
+#line 279
   testRunner.And("I select \"bob\" from Source Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 254
+#line 280
    testRunner.Then("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 255
+#line 281
   testRunner.When("selected Destination Server is \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 256
+#line 282
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -698,6 +776,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
             "1.dll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+            "ll")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItem("InfragisticsWPF4.DockManager.v15.1.dll")]
         public virtual void DeployResourceTestsMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy resource Tests message", new string[] {
@@ -706,22 +787,25 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll",
                         "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15." +
-                            "1.dll"});
-#line 263
+                            "1.dll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.d" +
+                            "ll",
+                        "MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll"});
+#line 291
 this.ScenarioSetup(scenarioInfo);
-#line 264
+#line 292
   testRunner.Given("I have deploy tab opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 265
+#line 293
   testRunner.When("I select Destination Server as \"DestinationServer\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 266
+#line 294
   testRunner.Then("source is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 267
+#line 295
   testRunner.And("destination \"DestinationServer\" is connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 268
+#line 296
   testRunner.And("I deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 269
+#line 297
   testRunner.Then("deploy is successfull", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 270
+#line 298
   testRunner.And("the Deploy validation message is \"1 Resource Deployed Successfully.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

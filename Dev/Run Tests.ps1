@@ -444,8 +444,12 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 </AnalyseParams>
 "@
 
-        if ($JobName -eq "") {
-            $JobName = "Manual Tests"
+        if (!$JobName) {
+			if ($ProjectName) {
+				$JobName = $ProjectName
+			} else {
+				$JobName = "Manual Tests"
+			}
         }
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Server DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
@@ -637,8 +641,8 @@ if ($JobName -ne $null -and $JobName -ne "") {
         }
     }
 }
-if ($ProjectName -ne $null -and $ProjectName -ne "") {
-    $JobNames += "Manual Tests"
+if ($ProjectName) {
+    $JobNames += $ProjectName
     $JobAssemblySpecs += $ProjectName
     if ($Category -ne $null -and $Category -ne "") {
         $JobCategories += $Category
@@ -1210,7 +1214,11 @@ if ($Cleanup.IsPresent) {
         Cleanup-ServerStudio 10 1
     }
 	if (!$JobName) {
-		$JobName = "Manual Tests"
+		if ($ProjectName) {
+			$JobName = $ProjectName
+		} else {
+			$JobName = "Manual Tests"
+		}
 	}
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
