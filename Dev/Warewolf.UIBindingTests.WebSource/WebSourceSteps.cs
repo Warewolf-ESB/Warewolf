@@ -17,6 +17,8 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using System.Windows.Threading;
+using System.Threading;
 // ReSharper disable RedundantAssignment
 
 namespace Warewolf.UIBindingTests.WebSource
@@ -46,13 +48,16 @@ namespace Warewolf.UIBindingTests.WebSource
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             task.Start();
             var manageWebserviceSourceViewModel = new ManageWebserviceSourceViewModel(mockStudioUpdateManager.Object, task, mockEventAggregator.Object, new SynchronousAsyncWorker(), mockExecutor.Object);
-            manageWebserviceSourceControl.DataContext = manageWebserviceSourceViewModel;
-            Utils.ShowTheViewForTesting(manageWebserviceSourceControl);
-            FeatureContext.Current.Add(Utils.ViewNameKey, manageWebserviceSourceControl);
-            FeatureContext.Current.Add(Utils.ViewModelNameKey, manageWebserviceSourceViewModel);
-            FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
-            FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
-            FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            manageWebserviceSourceControl.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(() =>
+            { 
+                manageWebserviceSourceControl.DataContext = manageWebserviceSourceViewModel;
+                Utils.ShowTheViewForTesting(manageWebserviceSourceControl);
+                FeatureContext.Current.Add(Utils.ViewNameKey, manageWebserviceSourceControl);
+                FeatureContext.Current.Add(Utils.ViewModelNameKey, manageWebserviceSourceViewModel);
+                FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
+                FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
+                FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            }));
         }
 
         [BeforeScenario("WebSource")]
