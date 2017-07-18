@@ -462,16 +462,13 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.Test();
-        }
-
-       
+        }       
 
         [Then(@"Authentication type ""(.*)"" is ""(.*)""")]
         public void ThenAuthenticationTypeIs(string p0, string p1)
         {
             Utils.CheckControlEnabled(p0, p1, ScenarioContext.Current.Get<ICheckControlEnabledView>(Utils.ViewNameKey), Utils.ViewNameKey);
         }
-
 
         [Then(@"database dropdown is ""(.*)""")]
         public void ThenDatabaseDropdownIs(string p0)
