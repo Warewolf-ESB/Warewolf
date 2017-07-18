@@ -22,6 +22,7 @@ using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Messages;
@@ -32,6 +33,7 @@ using Dev2.Workspaces;
 using Moq;
 using Newtonsoft.Json;
 using Dev2.Studio.Interfaces.Enums;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.Core.Tests
 {
@@ -86,8 +88,17 @@ namespace Dev2.Core.Tests
             // ReSharper disable ObjectCreationAsStatement
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
-            ShellViewModel = new ShellViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, null, PopupController.Object);
+            var vieFactory = new Mock<IViewFactory>();
+            var viewMock = new Mock<IView>();
+            vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>()))
+                .Returns(viewMock.Object);
+            ShellViewModel = new ShellViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,new Mock<IVersionChecker>().Object, vieFactory.Object, false, null, PopupController.Object);
+        }
+
+        protected void CreateFullExportsAndVm(IExplorerViewModel viewModel)
+        {
+            CreateFullExportsAndVm();
+            ShellViewModel.ExplorerViewModel = viewModel;
         }
 
         protected void CreateFullExportsAndVm()
@@ -107,7 +118,11 @@ namespace Dev2.Core.Tests
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
             var explorerViewModel = new Mock<IExplorerViewModel>();
-            ShellViewModel = new ShellViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo, new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object, explorerViewModel.Object);
+            var vieFactory = new Mock<IViewFactory>();
+            var viewMock = new Mock<IView>();
+            vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>()))
+                .Returns(viewMock.Object);
+            ShellViewModel = new ShellViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo, new Mock<IVersionChecker>().Object, vieFactory.Object, false, BrowserPopupController.Object, PopupController.Object, explorerViewModel.Object);
             var activeEnvironment = new Mock<IServer>();
             activeEnvironment.Setup(server => server.DisplayName).Returns("localhost");
             ActiveEnvironment = activeEnvironment;

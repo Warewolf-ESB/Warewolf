@@ -181,8 +181,10 @@
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile><Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')"/>
-	<None Include="..\Run Tests.ps1">
+    </Compile>
+    <Compile Include="IViewFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
