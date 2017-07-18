@@ -8,6 +8,7 @@ Feature: DecDialog
 @MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
 Scenario Outline: Ensure Inputs are enabled on decision window load
 	Given I have a workflow New Workflow
 	And drop a Decision tool onto the design surface
