@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Helpers;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Views;
 
