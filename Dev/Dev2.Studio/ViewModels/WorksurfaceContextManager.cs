@@ -40,6 +40,8 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.ViewModels;
 using Infragistics.Windows.DockManager.Events;
+using Microsoft.Practices.Prism.Mvvm;
+using ServiceStack.Net30.Collections.Concurrent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 // ReSharper disable InconsistentNaming
@@ -136,6 +138,7 @@ namespace Dev2.Studio.ViewModels
         {
             _createDesigners = createDesigners;
             _shellViewModel = shellViewModel;
+            SetUpEditHandlers();
         }
 
         public void Handle(RemoveResourceAndCloseTabMessage message)
@@ -731,63 +734,55 @@ namespace Dev2.Studio.ViewModels
                 AddWorkSurfaceContext(resourceModel);
                 return;
             }
-            switch (resourceModel.ServerResourceType)
+
+            Action<IContextualResourceModel> editAction;
+            if (_editHandler.TryGetValue(resourceModel.ServerResourceType, out editAction))
             {
-                case "SqlDatabase":
-                    EditSqlServerSource(resourceModel);
-                    break;
-                case "ODBC":
-                    EditOdbcSource(resourceModel);
-                    break;
-                case "Oracle":
-                    EditOracleSource(resourceModel);
-                    break;
-                case "PostgreSQL":
-                    EditPostgreSqlSource(resourceModel);
-                    break;
-                case "MySqlDatabase":
-                    EditMySqlSource(resourceModel);
-                    break;
-                case "WebSource":
-                    EditWebSource(resourceModel);
-                    break;
-                case "PluginSource":
-                    EditPluginSource(resourceModel);
-                    break;
-                case "ComPluginSource":
-                    EditComPluginSource(resourceModel);
-                    break;
-                case "WcfSource":
-                    EditWcfSource(resourceModel);
-                    break;
-                case "EmailSource":
-                    EditEmailSource(resourceModel);
-                    break;
-                case "ExchangeSource":
-                    EditExchangeSource(resourceModel);
-                    break;
-                case "DropBoxSource":
-                    EditDropBoxSource(resourceModel);
-                    break;
-                case "SharepointServerSource":
-                    EditSharePointSource(resourceModel);
-                    break;
-                case "OauthSource":
-                    EditDropBoxSource(resourceModel);
-                    break;
-                case "RabbitMQSource":
-                    EditRabbitMQSource(resourceModel);
-                    break;
-                case "Server":
-                case "Dev2Server":
-                case "ServerSource":
-                    EditServer(resourceModel);
-                    break;
-                default:
-                    AddWorkSurfaceContext(resourceModel);
-                    break;
+                editAction.Invoke(resourceModel);
+            }
+            else
+            {
+                AddWorkSurfaceContext(resourceModel);
             }
         }
+        private readonly ConcurrentDictionary<string, Action<IContextualResourceModel>> _editHandler = new ConcurrentDictionary<string, Action<IContextualResourceModel>>();
+        private void SetUpEditHandlers()
+        {
+            _editHandler.TryAdd("Server", EditServer);
+            _editHandler.TryAdd("Dev2Server", EditServer);
+            _editHandler.TryAdd("ServerSource", EditServer);
+
+            _editHandler.TryAdd("RabbitMQSource", EditRabbitMQSource);
+            _editHandler.TryAdd("OauthSource", EditRabbitMQSource);
+            _editHandler.TryAdd("SharepointServerSource", EditSharePointSource);
+            _editHandler.TryAdd("SharepointServerSource", EditSharePointSource);
+            _editHandler.TryAdd("DropBoxSource", EditDropBoxSource);
+            _editHandler.TryAdd("ExchangeSource", EditExchangeSource);
+            _editHandler.TryAdd("EmailSource", EditEmailSource);
+            _editHandler.TryAdd("WcfSource", EditWcfSource);
+            _editHandler.TryAdd("ComPluginSource", EditComPluginSource);
+            _editHandler.TryAdd("PluginSource", EditPluginSource);
+            _editHandler.TryAdd("WebSource", EditWebSource);
+            _editHandler.TryAdd("MySqlDatabase", EditMySqlSource);
+            _editHandler.TryAdd("PostgreSQL", EditPostgreSqlSource);
+            _editHandler.TryAdd("Oracle", EditOracleSource);
+            _editHandler.TryAdd("ODBC", EditOdbcSource);
+            _editHandler.TryAdd("SqlDatabase", EditSqlServerSource);
+            _editHandler.TryAdd("default", AddWorkSurfaceContext);
+
+        }
+        //public abstract class ResourceDisplayer
+        //{
+        //    protected abstract void EditResource(IContextualResourceModel resourceModel, Func<IView> viewFunc);
+        //}
+
+        //public class ServerEditer : ResourceDisplayer
+        //{
+        //    protected override void EditResource(IContextualResourceModel resourceModel, Func<IView> viewFunc)
+        //    {
+        //        EditServer(resourceModel);
+        //    }
+        //}
 
         public void EditSqlServerSource(IContextualResourceModel resourceModel)
         {
