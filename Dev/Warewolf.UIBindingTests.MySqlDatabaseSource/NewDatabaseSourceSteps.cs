@@ -434,17 +434,23 @@ namespace Warewolf.UIBindingTests.MySqlDatabaseSource
             var mockRequestServiceNameViewModel =
                 ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
-            task.Start();
-            var viewModel = new ManageMySqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
-                new SynchronousAsyncWorker());
-            var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (mockRequestServiceNameViewModel != null && mockUpdateManager != null)
             {
-                Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
-                manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Windows;
-                manageDatabaseSourceViewModel.DatabaseName = null;
+                var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
+                task.Start();
+                var viewModel = new ManageMySqlSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
+                    new SynchronousAsyncWorker());
+                var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
+                if (manageDatabaseSourceControl != null)
+                {
+                    var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageMySqlSourceViewModel;
+                    if (manageDatabaseSourceViewModel != null)
+                    {
+                        Utils.ResetViewModel<ManageMySqlSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                        manageDatabaseSourceViewModel.AuthenticationType = AuthenticationType.Windows;
+                        manageDatabaseSourceViewModel.DatabaseName = null;
+                    }
+                }
             }
         }
 
