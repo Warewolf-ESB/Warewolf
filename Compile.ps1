@@ -31,6 +31,19 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     }
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+    $GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
+    if ($GetvswhereCommand) {
+        $VswherePath = $GetvswhereCommand.Path
+    } else {
+        Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+    }
+	$MSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0
+    $StartKey = "installationPath: "
+    $EndKey = " installationVersion: "
+    $SubstringStart = $MSBuildPath.IndexOf($StartKey) + $StartKey.Length
+    $MSBuildPath = $MSBuildPath.Substring($SubStringStart, $MSBuildPath.IndexOf($EndKey) - $SubStringStart) + "\MSBuild\15.0\Bin\MSBuild.exe"
+}
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 	Write-Host MSBuild not found. Download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe
     sleep 10
     exit 1
