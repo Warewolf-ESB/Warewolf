@@ -19,6 +19,7 @@ using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
+using System.Windows.Threading;
 
 // ReSharper disable RedundantAssignment
 
@@ -273,12 +274,15 @@ namespace Warewolf.UIBindingTests.Odbc
                 var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
                 if (manageDatabaseSourceControl != null)
                 {
-                    var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOdbcSourceViewModel;
-                    if (manageDatabaseSourceViewModel != null)
+                    manageDatabaseSourceControl.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(() =>
                     {
-                        Utils.ResetViewModel<ManageOdbcSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
-                        manageDatabaseSourceViewModel.DatabaseName = null;
-                    }
+                        var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOdbcSourceViewModel;
+                        if (manageDatabaseSourceViewModel != null)
+                        {
+                            Utils.ResetViewModel<ManageOdbcSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
+                            manageDatabaseSourceViewModel.DatabaseName = null;
+                        }
+                    }));
                 }
             }
         }
@@ -288,7 +292,10 @@ namespace Warewolf.UIBindingTests.Odbc
         {
             DisposeResources();
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
+            manageDatabaseSourceControl.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(() =>
+            {
+                Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
+            }));
         }
 
         [Then(@"database dropdown is ""(.*)""")]
