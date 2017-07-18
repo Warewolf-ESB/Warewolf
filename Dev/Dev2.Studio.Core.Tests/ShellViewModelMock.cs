@@ -10,6 +10,7 @@
 
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Interfaces;
@@ -19,8 +20,8 @@ namespace Dev2.Core.Tests
 {
     public class ShellViewModelMock : ShellViewModel
     {
-        public ShellViewModelMock(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository, IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
-            : base(eventPublisher, asyncWorker, serverRepository, versionChecker, createDesigners, browserPopupController)
+        public ShellViewModelMock(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository, IVersionChecker versionChecker,IViewFactory factory, bool createDesigners = true, IBrowserPopupController browserPopupController = null)
+            : base(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController)
         {
         }
 
