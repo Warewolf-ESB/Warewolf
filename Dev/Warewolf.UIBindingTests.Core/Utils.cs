@@ -43,7 +43,9 @@ namespace Warewolf.UIBindingTests.Core
             app.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
             {
                 app.MainWindow.Close();
-            }));            
+            }));
+
+            
         }
 
         public static void SetupResourceDictionary()
