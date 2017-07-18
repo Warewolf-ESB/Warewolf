@@ -28,6 +28,8 @@ Feature: DeployTab
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploy Tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -42,6 +44,8 @@ Scenario: Deploy Tab
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploy is successfull
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -58,6 +62,8 @@ Scenario: Deploy is successfull
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Conflicting resources on Source and Destination server cancel deploy
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -75,6 +81,8 @@ Scenario: Conflicting resources on Source and Destination server cancel deploy
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Conflicting resources on Source and Destination server OK deploy
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -94,6 +102,8 @@ Scenario: Conflicting resources on Source and Destination server OK deploy
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Conflicting resources on Source and Destination server deploy is not successful
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -110,6 +120,8 @@ Scenario: Conflicting resources on Source and Destination server deploy is not s
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploying a connector with a source
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -133,6 +145,8 @@ Scenario: Deploying a connector with a source
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Selected for deploy items type is showing on deploy tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -152,6 +166,8 @@ Scenario: Selected for deploy items type is showing on deploy tab
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploy Summary is showing new and overiding resources 
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -176,6 +192,8 @@ Scenario: Deploy Summary is showing new and overiding resources
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploying items from one server to the next with the same name
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -192,6 +210,8 @@ Scenario: Deploying items from one server to the next with the same name
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Warning message no longer appears
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -210,6 +230,8 @@ Scenario: Warning message no longer appears
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploying to an Older server version
 	Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -228,6 +250,8 @@ Scenario: Deploying to an Older server version
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploy Based on permission Deploy To
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -245,6 +269,8 @@ Scenario: Deploy Based on permission Deploy To
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploy Based on permission Deploy From
 	 Given I have deploy tab opened
 	 And I cannot deploy from source
@@ -260,6 +286,8 @@ Scenario: Deploy Based on permission Deploy From
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamRichTextEditor.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.DockManager.v15.1.dll
 Scenario: Deploy resource Tests message
 	 Given I have deploy tab opened
 	 When I select Destination Server as "DestinationServer"
