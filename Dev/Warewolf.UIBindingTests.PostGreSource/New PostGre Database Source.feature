@@ -23,6 +23,11 @@ Feature: New PostgreSql Source
 ## Ensure user is able to select database from the database dropdown 
 
 @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New PostgreSQL Source" tab is opened
@@ -63,6 +68,11 @@ Scenario: Creating New DB Source General Testing
    And title is "SavedDBSource"
    
 @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source as User Auth
     Given I open New Database Source
     And I type Server as "RSAKLFSVRDEV"
@@ -85,6 +95,11 @@ Scenario: Creating New DB Source as User Auth
     Then the save dialog is opened
 
 @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
       Given I open New Database Source
       And I type Server as "RSAKLFSVRTFSBLD"
@@ -99,6 +114,11 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
       And "Save" is "Disabled"
 
  @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
       Given I open New Database Source
       And I type Server as "RSAKLFSVRTFSBLD"
@@ -114,6 +134,11 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
       And "Save" is "Disabled"
 	  
  @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Shows correct error message
       Given I open New Database Source
       And I type Server as "RSAKLFSVRDEV"
@@ -131,6 +156,11 @@ Scenario: Incorrect Server Address Shows correct error message
 
 
 @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
     And Server as "RSAKLFSVRDEV"
@@ -157,6 +187,11 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
     And "Save" is "Disabled"
 	
 @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
     And Server as "RSAKLFSVRDEV"
@@ -178,6 +213,11 @@ Scenario: Editing saved DB Source Remembers credentials
 	Then "Save" is "Enabled"
 
 @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRDEV"
@@ -194,6 +234,11 @@ Scenario: Cancel DB Source Test
 
 
 @PostgresDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Changing database type after testing connection
    Given I open New Database Source
    Then "New PostgreSQL Source" tab is opened

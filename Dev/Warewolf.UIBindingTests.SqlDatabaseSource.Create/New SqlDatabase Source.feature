@@ -23,6 +23,11 @@ Feature: New SqlDatabase Source
 ## Ensure user is able to select database from the database dropdown 
 
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New SQL Server DB Source as Windows Auth
     Given I open New Database Source
     And I type Server as "RSAKLFSVRDEV"
