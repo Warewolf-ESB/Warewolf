@@ -472,8 +472,12 @@ namespace Dev2.Studio.ViewModels
             {
                 throw new ArgumentNullException(nameof(serverRepository));
             }
+            if (versionChecker == null)
+            {
+                throw new ArgumentNullException(nameof(versionChecker));
+            }
 
-            Version = versionChecker ?? throw new ArgumentNullException(nameof(versionChecker));
+            Version = versionChecker;
             VerifyArgument.IsNotNull(@"asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
             _factory = factory;
