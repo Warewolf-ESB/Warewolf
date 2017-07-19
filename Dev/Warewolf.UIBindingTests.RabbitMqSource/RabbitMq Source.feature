@@ -5,6 +5,11 @@ Feature: RabbitMq Source
 	So that I can reuse them
 
 @RabbitMqSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Create New RabbitMq source
 	Given I open New RabbitMq Source
 	Then "New RabbitMQ Source" tab is opened
@@ -18,6 +23,11 @@ Scenario: Create New RabbitMq source
 	And "Save" is "Disabled"
 
 @RabbitMqSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Enable Send and Enable Save
 	Given I open New RabbitMq Source
 	Then "New RabbitMQ Source" tab is opened
@@ -33,6 +43,11 @@ Scenario: Enable Send and Enable Save
 	And the save dialog is opened
 
 @RabbitMqSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Fail Send Shows correct error message
 	Given I open New RabbitMq Source
 	Then "New RabbitMQ Source" tab is opened

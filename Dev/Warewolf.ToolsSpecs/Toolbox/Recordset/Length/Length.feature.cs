@@ -77,20 +77,20 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Length
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1355 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[rs]]",
                         ""});
-            table1.AddRow(new string[] {
+            table1355.AddRow(new string[] {
                         "rs(1).row",
                         "1"});
-            table1.AddRow(new string[] {
+            table1355.AddRow(new string[] {
                         "rs(3).row",
                         "2"});
-            table1.AddRow(new string[] {
+            table1355.AddRow(new string[] {
                         "rs(5).row",
                         "3"});
 #line 7
- testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1, "Given ");
+ testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1355, "Given ");
 #line 12
  testRunner.And("get length on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
@@ -100,23 +100,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1356 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-            table2.AddRow(new string[] {
+            table1356.AddRow(new string[] {
                         "[[rs(1).row]] = 1"});
-            table2.AddRow(new string[] {
+            table1356.AddRow(new string[] {
                         "[[rs(3).row]] = 2"});
-            table2.AddRow(new string[] {
+            table1356.AddRow(new string[] {
                         "[[rs(5).row]] = 3"});
 #line 16
- testRunner.And("the debug inputs as", ((string)(null)), table2, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1356, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1357 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table3.AddRow(new string[] {
+            table1357.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 21
- testRunner.And("the debug output as", ((string)(null)), table3, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1357, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -130,35 +130,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1358 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         ""});
-            table4.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "rs(1).row",
                         "1"});
-            table4.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "rs(2).row",
                         "2"});
-            table4.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "rs(3).row",
                         "3"});
-            table4.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "rs(4).row",
                         "4"});
-            table4.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "rs(5).row",
                         "5"});
-            table4.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "rs(6).row",
                         "6"});
-            table4.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "rs(7).row",
                         "7"});
-            table4.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "rs(8).row",
                         "8"});
 #line 26
- testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table4, "Given ");
+ testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1358, "Given ");
 #line 36
  testRunner.And("get length on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
@@ -168,33 +168,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 39
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1359 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-            table5.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs(1).row]] =  1"});
-            table5.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs(2).row]] =  2"});
-            table5.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs(3).row]] =  3"});
-            table5.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs(4).row]] =  4"});
-            table5.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs(5).row]] =  5"});
-            table5.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs(6).row]] =  6"});
-            table5.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs(7).row]] =  7"});
-            table5.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs(8).row]] =  8"});
 #line 40
- testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1359, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1360 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table6.AddRow(new string[] {
+            table1360.AddRow(new string[] {
                         "[[result]] = 8"});
 #line 50
- testRunner.And("the debug output as", ((string)(null)), table6, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1360, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -208,35 +208,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 54
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1361 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         ""});
-            table7.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "rs(1).row",
                         "1"});
-            table7.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "rs(2).row",
                         "2"});
-            table7.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "rs(3).row",
                         "3"});
-            table7.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "rs(4).row",
                         "4"});
-            table7.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "rs(5).row",
                         "5"});
-            table7.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "rs(6).row",
                         "6"});
-            table7.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "rs(7).row",
                         "7"});
-            table7.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "rs(8).row",
                         "8"});
 #line 55
- testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table7, "Given ");
+ testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1361, "Given ");
 #line 65
  testRunner.And("get length on record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 66
@@ -244,15 +244,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1362 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
 #line 68
- testRunner.And("the debug inputs as", ((string)(null)), table8, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1362, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1363 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
 #line 70
- testRunner.And("the debug output as", ((string)(null)), table9, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1363, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -266,32 +266,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 73
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1364 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         ""});
-            table10.AddRow(new string[] {
+            table1364.AddRow(new string[] {
                         "rs().row",
                         "1"});
-            table10.AddRow(new string[] {
+            table1364.AddRow(new string[] {
                         "rs().row",
                         "2"});
-            table10.AddRow(new string[] {
+            table1364.AddRow(new string[] {
                         "rs().row",
                         "3"});
-            table10.AddRow(new string[] {
+            table1364.AddRow(new string[] {
                         "rs().row",
                         "4"});
-            table10.AddRow(new string[] {
+            table1364.AddRow(new string[] {
                         "rs().row2",
                         "5"});
-            table10.AddRow(new string[] {
+            table1364.AddRow(new string[] {
                         "rs().row2",
                         "6"});
-            table10.AddRow(new string[] {
+            table1364.AddRow(new string[] {
                         "rs().row2",
                         "7"});
 #line 74
- testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table10, "Given ");
+ testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1364, "Given ");
 #line 83
  testRunner.And("get length on record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
@@ -299,15 +299,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 85
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1365 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
 #line 86
- testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1365, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1366 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
 #line 88
- testRunner.And("the debug output as", ((string)(null)), table12, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1366, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -321,32 +321,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 91
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1367 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         ""});
-            table13.AddRow(new string[] {
+            table1367.AddRow(new string[] {
                         "rs().row",
                         "1"});
-            table13.AddRow(new string[] {
+            table1367.AddRow(new string[] {
                         "rs().row",
                         "2"});
-            table13.AddRow(new string[] {
+            table1367.AddRow(new string[] {
                         "rs().row",
                         "3"});
-            table13.AddRow(new string[] {
+            table1367.AddRow(new string[] {
                         "rs().row",
                         "4"});
-            table13.AddRow(new string[] {
+            table1367.AddRow(new string[] {
                         "rs().row2",
                         "5"});
-            table13.AddRow(new string[] {
+            table1367.AddRow(new string[] {
                         "rs().row2",
                         "6"});
-            table13.AddRow(new string[] {
+            table1367.AddRow(new string[] {
                         "rs().row2",
                         "7"});
 #line 92
- testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table13, "Given ");
+ testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1367, "Given ");
 #line 101
  testRunner.And("get length on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 102
@@ -356,31 +356,31 @@ this.ScenarioSetup(scenarioInfo);
 #line 104
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1368 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
-            table14.AddRow(new string[] {
+            table1368.AddRow(new string[] {
                         "[[rs(1).row]] =  1"});
-            table14.AddRow(new string[] {
+            table1368.AddRow(new string[] {
                         "[[rs(2).row]] =  2"});
-            table14.AddRow(new string[] {
+            table1368.AddRow(new string[] {
                         "[[rs(3).row]] =  3"});
-            table14.AddRow(new string[] {
+            table1368.AddRow(new string[] {
                         "[[rs(4).row]] =  4"});
-            table14.AddRow(new string[] {
+            table1368.AddRow(new string[] {
                         "[[rs(4).row2]] =  5"});
-            table14.AddRow(new string[] {
+            table1368.AddRow(new string[] {
                         "[[rs(5).row2]] =  6"});
-            table14.AddRow(new string[] {
+            table1368.AddRow(new string[] {
                         "[[rs(6).row2]] =  7"});
 #line 105
- testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1368, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1369 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table15.AddRow(new string[] {
+            table1369.AddRow(new string[] {
                         "[[result]] = 6"});
 #line 114
- testRunner.And("the debug output as", ((string)(null)), table15, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1369, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -394,35 +394,35 @@ this.ScenarioSetup(scenarioInfo);
 #line 118
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1370 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         ""});
-            table16.AddRow(new string[] {
+            table1370.AddRow(new string[] {
                         "rs(1).row",
                         "1"});
-            table16.AddRow(new string[] {
+            table1370.AddRow(new string[] {
                         "rs(2).row",
                         "2"});
-            table16.AddRow(new string[] {
+            table1370.AddRow(new string[] {
                         "rs(3).row",
                         "3"});
-            table16.AddRow(new string[] {
+            table1370.AddRow(new string[] {
                         "rs(4).row",
                         "4"});
-            table16.AddRow(new string[] {
+            table1370.AddRow(new string[] {
                         "rs(5).row",
                         "5"});
-            table16.AddRow(new string[] {
+            table1370.AddRow(new string[] {
                         "rs(6).row",
                         "6"});
-            table16.AddRow(new string[] {
+            table1370.AddRow(new string[] {
                         "rs(7).row",
                         "7"});
-            table16.AddRow(new string[] {
+            table1370.AddRow(new string[] {
                         "rs(8).row",
                         "8"});
 #line 119
- testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table16, "Given ");
+ testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1370, "Given ");
 #line 129
  testRunner.And("get length on record \"[[rs().&^]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 130
@@ -430,15 +430,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 131
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1371 = new TechTalk.SpecFlow.Table(new string[] {
                         "Recordset"});
 #line 132
- testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1371, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1372 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
 #line 134
- testRunner.And("the debug output as", ((string)(null)), table18, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1372, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -449,32 +449,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 137
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1373 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         ""});
-            table19.AddRow(new string[] {
+            table1373.AddRow(new string[] {
                         "rs().row",
                         "1"});
-            table19.AddRow(new string[] {
+            table1373.AddRow(new string[] {
                         "rs().row",
                         "2"});
-            table19.AddRow(new string[] {
+            table1373.AddRow(new string[] {
                         "rs().row",
                         "3"});
-            table19.AddRow(new string[] {
+            table1373.AddRow(new string[] {
                         "rs().row",
                         "4"});
-            table19.AddRow(new string[] {
+            table1373.AddRow(new string[] {
                         "rs().row2",
                         "5"});
-            table19.AddRow(new string[] {
+            table1373.AddRow(new string[] {
                         "rs().row2",
                         "6"});
-            table19.AddRow(new string[] {
+            table1373.AddRow(new string[] {
                         "rs().row2",
                         "7"});
 #line 138
- testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table19, "Given ");
+ testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1373, "Given ");
 #line 147
  testRunner.And(string.Format("get length on record \"{0}\"", variable), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
@@ -622,14 +622,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 161
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1374 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         ""});
-            table20.AddRow(new string[] {
+            table1374.AddRow(new string[] {
                         "[[rs().row]]",
                         "NULL"});
 #line 162
- testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table20, "Given ");
+ testRunner.Given("I get the length from a recordset that looks like with this shape", ((string)(null)), table1374, "Given ");
 #line 165
  testRunner.And("get length on record \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166

@@ -113,7 +113,7 @@
   <ItemGroup>
     <Compile Include="DeployDestinationViewModelForTesting.cs" />
     <Compile Include="DeploySourceExplorerViewModelForTesting.cs" />
-    <Compile Include="DeployTab1.feature.cs">
+    <Compile Include="DeployTab.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeployTab.feature</DependentUpon>
@@ -122,7 +122,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -131,7 +131,7 @@
     <None Include="App.config" />
     <None Include="DeployTab.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DeployTab1.feature.cs</LastGenOutput>
+      <LastGenOutput>DeployTab.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
