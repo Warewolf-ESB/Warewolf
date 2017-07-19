@@ -59,6 +59,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             Assert.IsNotNull(manageServerControl);
+            Assert.IsNotNull(manageServerControl.DataContext);
         }
 
         [Then(@"""(.*)"" tab is opened")]

@@ -86,6 +86,7 @@ namespace Warewolf.UIBindingTests.WebSource
         {
             var manageWebserviceSourceControl = scenarioContext.Get<ManageWebserviceSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageWebserviceSourceControl);
+            Assert.IsNotNull(manageWebserviceSourceControl.DataContext); 
         }
 
        

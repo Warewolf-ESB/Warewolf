@@ -88,6 +88,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageDatabaseSourceControl);
+            Assert.IsNotNull(manageDatabaseSourceControl.DataContext);
         }
 
         [Given(@"I open ""(.*)""")]

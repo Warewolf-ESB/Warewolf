@@ -54,6 +54,7 @@ namespace Warewolf.UIBindingTests.WcfSource
         {
             var manageWcfSourceControl = ScenarioContext.Current.Get<ManageWcfSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageWcfSourceControl);
+            Assert.IsNotNull(manageWcfSourceControl.DataContext);
         }
 
         [Then(@"""(.*)"" tab is opened")]

@@ -59,6 +59,7 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         {
             var manageExchangeSourceControl = ScenarioContext.Current.Get<ManageExchangeSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageExchangeSourceControl);
+            Assert.IsNotNull(manageExchangeSourceControl.DataContext);
         }
 
         [Then(@"""(.*)"" tab is Opened")]
