@@ -268,6 +268,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.WorkflowDesigner", "Warewolf.UIBindingTests.WorkflowDesigner\Warewolf.UIBindingTests.WorkflowDesigner.csproj", "{3384F47A-61A7-459F-938B-4694A61526B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.Scheduler", "Warewolf.UIBindingTests.Scheduler\Warewolf.UIBindingTests.Scheduler.csproj", "{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1063,6 +1065,13 @@ Global
 		{3384F47A-61A7-459F-938B-4694A61526B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3384F47A-61A7-459F-938B-4694A61526B6}.Release|x86.ActiveCfg = Release|Any CPU
 		{3384F47A-61A7-459F-938B-4694A61526B6}.Release|x86.Build.0 = Release|Any CPU
+		{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}.Debug|x86.Build.0 = Debug|Any CPU
+		{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}.Release|x86.ActiveCfg = Release|Any CPU
+		{544C93C6-067C-4026-BD4A-BE9C7C1E9FB8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
