@@ -108,6 +108,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand _schedulerCommand;
         private ICommand _showCommunityPageCommand;
         readonly IAsyncWorker _asyncWorker;
+        private readonly IViewFactory _factory;
         private ICommand _showStartPageCommand;
         bool _canDebug = true;
         bool _menuExpanded;
@@ -129,7 +130,7 @@ namespace Dev2.Studio.ViewModels
                 NotifyOfPropertyChange(() => ExplorerViewModel);
             }
         }
-        
+
         public bool ShouldUpdateActiveState { get; set; }
 
         public IServer ActiveServer
@@ -458,12 +459,12 @@ namespace Dev2.Studio.ViewModels
 
         [ExcludeFromCodeCoverage]
         public ShellViewModel()
-            : this(EventPublishers.Aggregator, new AsyncWorker(), Core.ServerRepository.Instance, new VersionChecker())
+            : this(EventPublishers.Aggregator, new AsyncWorker(), Core.ServerRepository.Instance, new VersionChecker(), new ViewFactory())
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
-            IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
+            IVersionChecker versionChecker, IViewFactory factory, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
             IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
@@ -471,14 +472,15 @@ namespace Dev2.Studio.ViewModels
             {
                 throw new ArgumentNullException(nameof(serverRepository));
             }
-
             if (versionChecker == null)
             {
                 throw new ArgumentNullException(nameof(versionChecker));
             }
+
             Version = versionChecker;
             VerifyArgument.IsNotNull(@"asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
+            _factory = factory;
             _worksurfaceContextManager = new WorksurfaceContextManager(createDesigners, this);
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
             PopupProvider = popupController ?? new PopupController();
@@ -549,7 +551,7 @@ namespace Dev2.Studio.ViewModels
         }
 
 
-       
+
         public void Handle(ShowDependenciesMessage message)
         {
             Dev2Logger.Info(message.GetType().Name);
@@ -583,7 +585,7 @@ namespace Dev2.Studio.ViewModels
                         contextualResourceModel.ID = resourceId;
                         _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
                     }
-                
+
                 }
             }
         }
@@ -756,7 +758,7 @@ namespace Dev2.Studio.ViewModels
                     case "Dev2Server":
                     case "ServerSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.ServerSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessServerSource(contextualResourceModel, workSurfaceKey,environmentModel,activeServer));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessServerSource(contextualResourceModel, workSurfaceKey, environmentModel, activeServer));
                         break;
                     case "SharepointServerSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.SharepointServerSource;
@@ -1261,37 +1263,44 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
-            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+            var view = _factory.GetViewGivenServerResourceType("PluginSource");
+            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
         public void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
-            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+            var view = _factory.GetViewGivenServerResourceType("WebSource");
+            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
         public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
-            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+            var view = _factory.GetViewGivenServerResourceType("EmailSource");
+            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
         public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
-            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+            var view = _factory.GetViewGivenServerResourceType("ExchangeSource");
+            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
         public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
-            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+            var view = _factory.GetViewGivenServerResourceType("RabbitMQSource");
+            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
         public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
-            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+            var view = _factory.GetViewGivenServerResourceType("WcfSource");
+            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
         public void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
         {
-            _worksurfaceContextManager.EditResource(selectedSource, workSurfaceKey);
+            var view = _factory.GetViewGivenServerResourceType("ComPluginSource");
+            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
         }
 
         public void NewService(string resourcePath)
