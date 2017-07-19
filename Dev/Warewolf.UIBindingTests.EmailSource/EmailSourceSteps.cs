@@ -58,7 +58,6 @@ namespace Warewolf.UIBindingTests.EmailSource
         {
             var manageEmailSourceControl = ScenarioContext.Current.Get<ManageEmailSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageEmailSourceControl);
-            Assert.IsNotNull(manageEmailSourceControl.DataContext); 
         }
 
         [Given(@"I open ""(.*)""")]
