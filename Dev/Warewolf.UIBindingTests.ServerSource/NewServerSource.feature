@@ -5,6 +5,11 @@ Feature: NewServerSource
 	I want to be able to manager connections to Warewolf servers
 
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Create New Server Source
 	Given I open New Server Source
 	Then "New Server Source" tab is opened
@@ -16,6 +21,11 @@ Scenario: Create New Server Source
 	Then validation message is ""
 
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Source as windows
 	Given I open New Server Source	
 	And I type Server as "SANDBOX-1"
@@ -34,6 +44,11 @@ Scenario: Creating New Source as windows
 	Then the save dialog is opened
 
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Source as User And HTTPS
 	Given I open New Server Source
 	And I type Server as "SANDBOX-1"
@@ -54,6 +69,11 @@ Scenario: Creating New Source as User And HTTPS
 	Then the save dialog is opened
 
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating server source Authentication error
 	Given I open New Server Source
 	And I type Server as "SANDBOX-1"
@@ -69,6 +89,11 @@ Scenario: Creating server source Authentication error
 	And "Save" is "Disabled"
 
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating server source Authentication error Shows correct error message
 	Given I open New Server Source
 	And I type Server as "SANDBOX-1"
@@ -85,6 +110,11 @@ Scenario: Creating server source Authentication error Shows correct error messag
 	And the error message is "Connection Error: Unauthorized"
 
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Source as Public
 	Given I open New Server Source
 	And I type Server as "SANDBOX-1"
@@ -103,6 +133,11 @@ Scenario: Creating New Source as Public
 	Then the save dialog is opened
   
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing Saved Server Source Authentication 
 	Given I open "ServerSource" server source
 	Then "ServerSource" tab is opened
@@ -128,6 +163,11 @@ Scenario: Editing Saved Server Source Authentication
 
 
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Source as windows with external server address
 	Given I open New Server Source	
 	And I type Server as "test-warewolf.cloudapp.net"
@@ -146,6 +186,11 @@ Scenario: Creating New Source as windows with external server address
 	Then the save dialog is opened
 
 @ServerSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing Saved Server Source Authentication with external server address 
 	Given I open "TestWarewolf" server source
 	Then "TestWarewolf" tab is opened
