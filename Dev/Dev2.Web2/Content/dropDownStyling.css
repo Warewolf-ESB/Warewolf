@@ -1,38 +1,11 @@
-﻿body {
-}
-
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-indent: 1px;
-    text-overflow: '';
-    color: cornflowerblue;
-}
-
+﻿
 .wrapper-dropdown-5 {
-    /* Size & position */
     position: relative;
-    width: 200px;
-    margin: 0 auto;
-    padding: 12px 15px;
-    /* Styles */
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+    width:100px;
+    padding-left:20px;
+    background: #fff;    
+    border-radius: 3px;
     cursor: pointer;
     outline: none;
     transition: all 0.3s ease-out;
 }
-
-    .wrapper-dropdown-5:after { /* Little arrow */
-        content: "";
-        width: 0;
-        height: 0;
-        position: absolute;
-        top: 50%;
-        right: 15px;
-        margin-top: -3px;
-        border-width: 6px 6px 0 6px;
-        border-style: solid;
-        border-color: #4cbeff transparent;
-    }
