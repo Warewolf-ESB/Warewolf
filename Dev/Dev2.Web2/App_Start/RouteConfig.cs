@@ -16,7 +16,7 @@ namespace Dev2.Web2
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "ExecutionLogging", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

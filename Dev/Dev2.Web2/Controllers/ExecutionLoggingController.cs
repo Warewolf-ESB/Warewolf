@@ -10,14 +10,14 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace Dev2.Web2.Controllers
-{
+{    
     public class ExecutionLoggingController : Controller
     {
         // GET: ExecutionLogging
         public ActionResult Index(ExecutionLoggingRequestViewModel Request)
         {
             var request = CheckRequest(Request);
-
+            
             var serverUrl = String.Format("{0}://{1}:{2}", request.Protocol, request.Server, request.Port);
             var client = new RestClient(serverUrl);
             client.Authenticator = new NtlmAuthenticator();
@@ -27,6 +27,7 @@ namespace Dev2.Web2.Controllers
             var data = response.Data ?? new List<LogEntry>();
 
             var model = new Tuple<List<LogEntry>, ExecutionLoggingRequestViewModel>(data, request);
+            
 
             return View(model);
         }
@@ -34,7 +35,7 @@ namespace Dev2.Web2.Controllers
         private RestRequest BuildRequest(ExecutionLoggingRequestViewModel Request)
         {
             var serverRequest = new RestRequest("services/GetLogDataService", Method.GET);
-            serverRequest.UseDefaultCredentials = true;            
+            serverRequest.UseDefaultCredentials = true;
             //serverRequest.AddQueryParameter("StartDateTime", Request.StartDateTime.ToString());
             //serverRequest.AddQueryParameter("CompletedDateTime", Request.CompletedDateTime.ToString());
             serverRequest.AddQueryParameter("Status", Request.Status);
@@ -61,6 +62,11 @@ namespace Dev2.Web2.Controllers
                 toReturn = new ExecutionLoggingRequestViewModel { Protocol = "https", Server = "localhost", Port = "3143" };
             }
             return toReturn;
+        }
+        
+        public String foo()
+        {
+            return "Response!";
         }
 
         // GET: ExecutionLogging/Details/5
@@ -89,11 +95,6 @@ namespace Dev2.Web2.Controllers
 
         // GET: ExecutionLogging/Create
         public ActionResult Create()
-        {
-            return View();
-        }
-
-        public ActionResult OpenUrl()
         {
             return View();
         }

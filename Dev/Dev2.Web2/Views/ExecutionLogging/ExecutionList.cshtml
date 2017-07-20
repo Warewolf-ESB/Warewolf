@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Dev2.Common.LogEntry>
+<head>
+    <link rel="stylesheet" href="~/Content/DetailsModal.css" type="text/css" />
+</head>
 
 <table id="executionList" class="table">
     <tr>
@@ -41,7 +44,17 @@
                 @Html.DisplayFor(modelItem => item.CompletedDateTime)
             </td>
             <td style="width:30%">
-                <a href="@Url.Action("OpenUrl", new { id=item.Url})">@Html.DisplayFor(modelItem => item.Url)</a>
+                @{
+
+                    if (item.Url == null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Url)
+                    }
+                    else
+                    {
+                        @Html.ActionLink(item.Url.ToString(), "OpenUrl", new { url = item.Url })
+                    }
+                }
             </td>
             <td style="width:30%">
                 @Html.DisplayFor(modelItem => item.User)
@@ -50,55 +63,14 @@
                 @Html.ActionLink("[...]", "Details", new { executionId = item.ExecutionId })
             </td>
         </tr>
-    }
+                    }
 
 </table>
 
-<div id='myModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='myModalContent'></div>
-        </div>
-    </div>
-
-</div>
-
 <script>
-    var TeamDetailPostBackURL = '/Home/Details';
-    (function () {
-        $(".anchorDetail").click(function () {
-            debugger;
-            var $buttonClicked = $(this);
-            var id = $buttonClicked.attr('data-id');
-            var options = { "backdrop": "static", keyboard: true };
-            $.ajax({
-                type: "GET",
-                url: TeamDetailPostBackURL,
-                contentType: "application/json; charset=utf-8",
-                data: { "Id": id },
-                datatype: "json",
-                success: function (data) {
-                    debugger;
-                    $('#myModalContent').html(data);
-                    $('#myModal').modal(options);
-                    $('#myModal').modal('show');
-
-                },
-                error: function () {
-                    alert("Dynamic content load failed.");
-                }
-            });
-        });
-        //$("#closebtn").on('click',function(){
-        //    $('#myModal').modal('hide');
-
-        $("#closbtn").click(function () {
-            $('#myModal').modal('hide');
-        });
-    });
 
     function filterColumn(n) {
-        // Declare variables 
+        // Declare variables
         var input, filter, table, tr, td, i;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
@@ -164,6 +136,56 @@
                     switching = true;
                 }
             }
+        }
+    }
+</script>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Details</h2>
+        </div>
+        <div class="modal-body">
+            <p>Some text in the Modal Body</p>
+            <p>Some other text...</p>
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
         }
     }
 </script>

@@ -1,6 +1,7 @@
 ﻿@model Dev2.Web2.Models.ExecutionLogging.ExecutionLoggingRequestViewModel
 
 <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' />
+<link rel='stylesheet' type='text/css' href='~/Content/dropDownStyling.css'/>
 <script type='text/javascript' src='~/Scripts/filterScript.js'></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 
@@ -15,16 +16,9 @@
                     @Html.LabelFor(model => model.Server)
                 </div>
             </td>
-            <td style="width:3%">
-                <ul id="protocolList" class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="Protocol">@Model.Protocol</span><span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">https</a></li>
-                            <li><a href="#">http</a></li>
-                        </ul>
-                    </li>
-                </ul>
+            <td style="width:auto; padding-left:10px;">
+                @*@Html.DropDownList("Protocol", Model.Protocols, new { style = "border:none; font:4000px;" })*@
+                @Html.DropDownListFor(model=>model.Protocol, Model.Protocols, new { @Class="myDropdown"})
             </td>
             <td style="width:1%; padding-right:5px; font-size:17px;">://</td>
             <td style="width:56%;">@Html.EditorFor(model => model.Server, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })</td>
@@ -33,7 +27,7 @@
             <td style="width:2%"><button type="submit" class="btn btn-default">Update</button></td>
         </tr>
     </table>
-}
+                                }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
