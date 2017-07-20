@@ -1,7 +1,4 @@
 ﻿@model IEnumerable<Dev2.Common.LogEntry>
-@{
-    Layout = "~/Views/Shared/_Layout2.cshtml";
-}
 
 <table id="executionList" class="table">
     <tr>
@@ -19,7 +16,7 @@
         <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(1)" placeholder="Search.."></td>
         <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(2)" placeholder="Search.."></td>
         <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(3)" placeholder="Search.."></td>
-        <td id="filterTableRow"><input type="text" id="myDateinput" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="myDateInput" onkeyup="filterColumn(4)" placeholder="Search.."></td>
         <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(5)" placeholder="Search.."></td>
         <td id="filterTableRow"><input type="text" id="myInput" onkeyup="filterColumn(6)" placeholder="Search.."></td>
         <td id="filterTableRow"></td>
@@ -69,7 +66,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#myDateinput").datepicker();
+        $("#myDateInput").datepicker();
     });
 
 </script>
@@ -78,7 +75,10 @@
     function filterColumn(n) {
         // Declare variables
         var input, filter, table, tr, td, i;
-        input = document.getElementById("myInput");
+        input = document.getElementsById("myInput");
+        if (input == null) {
+            input = document.getElementsById("myDateInput");
+        }
         filter = input.value.toUpperCase();
         table = document.getElementById("executionList");
         tr = table.getElementsByTagName("tr");
