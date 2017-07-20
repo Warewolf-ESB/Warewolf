@@ -783,6 +783,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestRunName += " and Screen Recording"
         }
         if ($Parallelize.IsPresent) {
+			$CleanupScriptLine = "`nrmdir /s /q `"%DeploymentDirectory%`""                    
+			Copy-On-Write $CleanupScriptPath
+			New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"$CleanupScriptLine"
+            $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
             $AgentRuleNameValue = "Remote"
@@ -798,10 +802,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
 			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
-			$BucketsTag = @"
-
-    <Buckets size="1" threshold="1"/>
-"@
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
@@ -839,8 +839,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
                     Copy-On-Write $StartupScriptPath
                     New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
-                    Copy-On-Write $CleanupScriptPath
-                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
                 } else {
                     $DeploymentTags = @"
 
@@ -854,8 +852,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
                     Copy-On-Write $StartupScriptPath
                     New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
-                    Copy-On-Write $CleanupScriptPath
-                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+					$BucketsTag = @"
+
+    <Buckets size="1" threshold="1"/>
+"@
                 }
             }
         }
