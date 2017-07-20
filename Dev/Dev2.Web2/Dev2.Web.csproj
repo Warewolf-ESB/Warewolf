@@ -145,6 +145,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DateSelector.cs" />
     <Compile Include="Models\ExecutionLogging\ExecutionLoggingRequestViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -155,6 +156,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DetailsModal.css" />
     <Content Include="Content\dropDownStyling.css" />
+    <Content Include="Content\jquery-ui-1.9.2.custom.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -175,11 +177,13 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\filterScript.js" />
+    <Content Include="Scripts\jquery-1.8.3.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.9.2.custom.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -206,6 +210,8 @@
     <Content Include="Views\ExecutionLogging\Index.cshtml" />
     <Content Include="Views\ExecutionLogging\ExecutionList.cshtml" />
     <Content Include="Views\ExecutionLogging\ExecutionFilters.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\ExecutionLogging\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
