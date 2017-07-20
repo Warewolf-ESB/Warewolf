@@ -839,6 +839,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
                     Copy-On-Write $StartupScriptPath
                     New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
+					$BucketsTag = @"
+
+    <Buckets size="1" threshold="1"/>
+"@
                 } else {
                     $DeploymentTags = @"
 
@@ -852,10 +856,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
                     Copy-On-Write $StartupScriptPath
                     New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
-					$BucketsTag = @"
-
-    <Buckets size="1" threshold="1"/>
-"@
                 }
             }
         }
