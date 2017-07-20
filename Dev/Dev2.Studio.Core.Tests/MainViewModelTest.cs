@@ -1948,6 +1948,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_EditMySqlSource")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
         public void MainViewModel_EditMySqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -1970,7 +1972,7 @@ namespace Dev2.Core.Tests
             ShellViewModel.WorksurfaceContextManager = mockWM.Object;
             ShellViewModel.WorksurfaceContextManager.EditMySqlResource(source.Object);
             mockWM.Verify(manager => manager.EditMySqlResource(It.IsAny<IDbSource>(), null));
-            ShellViewModel.EditMySqlResource(source.Object);
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new System.Action(()=>ShellViewModel.EditMySqlResource(source.Object)));
         }
 
         [TestMethod]
@@ -3390,15 +3392,22 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()));
+            var resource = CreateResource(ResourceType.WorkflowService);
+            EnvironmentModel
+                .Setup(server => server.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(resource.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(ShellViewModel);
             //---------------Execute Test ----------------------
 
             var task = Task.Run(() => { ShellViewModel.OpenResourceAsync(Guid.Empty, ShellViewModel.ActiveServer); });
+            task.ContinueWith(task1 =>
+            {
+                //---------------Test Result -----------------------
+                EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()));
+            });
             task.Wait();
-            //---------------Test Result -----------------------
-            EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()));
+           
         }
 
         [TestMethod]
@@ -3430,21 +3439,22 @@ namespace Dev2.Core.Tests
         public void DuplicateResource_GivenNotConnected_ShouldPopup()
         {
             //---------------Set up test pack-------------------
-
             CreateFullExportsAndVm();
             var mock = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
             mock.Setup(controller => controller.Show(It.IsAny<string>(), Warewolf.Studio.Resources.Languages.Core.ServerDisconnectedHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
-
             CustomContainer.Register(mock.Object);
             var explorerVm = new Mock<IExplorerItemViewModel>();
+
             //---------------Assert Precondition----------------
             Assert.IsNotNull(ShellViewModel);
             var mock1 = new Mock<IServer>();
             mock1.Setup(se => se.Name).Returns("a");
             mock1.Setup(se => se.DisplayName).Returns("a");
             ShellViewModel.ActiveServer = mock1.Object;
+
             //---------------Execute Test ----------------------
             ShellViewModel.DuplicateResource(explorerVm.Object);
+
             //---------------Test Result -----------------------
             mock.VerifyAll();
         }
