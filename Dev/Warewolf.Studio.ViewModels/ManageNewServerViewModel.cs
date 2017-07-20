@@ -627,8 +627,10 @@ namespace Warewolf.Studio.ViewModels
                     {
                         SelectedPort = "3142";
                     }
-                    OnPropertyChanged(Protocol);
+
                 }
+
+                OnPropertyChanged(() => Protocol);
             }
         }
 
