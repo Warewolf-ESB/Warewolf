@@ -138,8 +138,9 @@
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
-    </Compile><Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')"/>
-	<None Include="..\Run Tests.ps1">
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -172,7 +173,8 @@
     <Compile Include="Security\AuthorizeWebAttribute.cs" />
     <Compile Include="Security\QueryString.cs" />
     <Compile Include="ServiceTestExecutor.cs" />
-    <Compile Include="ServiceTestModelTOResultBuilder.cs" />
+    <Compile Include="ServiceTestModelTRXResultBuilder.cs" />
+    <Compile Include="ServiceTestModelJObjectResultBuilder.cs" />
     <Compile Include="TransferObjects\WebRequestTO.cs" />
     <Compile Include="WebRequestExtentions.cs" />
     <Compile Include="WebServerContext.cs" />

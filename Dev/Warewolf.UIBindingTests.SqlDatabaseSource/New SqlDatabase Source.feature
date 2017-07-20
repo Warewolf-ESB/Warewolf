@@ -23,6 +23,11 @@ Feature: New SqlDatabase Source
 ## Ensure user is able to select database from the database dropdown 
 
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New SQL Server Source" tab is opened
@@ -63,6 +68,11 @@ Scenario: Creating New DB Source General Testing
    And title is "SavedDBSource"
    
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source as User Auth
     Given I open New Database Source
     And I type Server as "RSAKLFSVRDEV"
@@ -85,6 +95,11 @@ Scenario: Creating New DB Source as User Auth
     Then the save dialog is opened
 
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
       Given I open New Database Source
       And I type Server as "RSAKLFSVRTFSBLD"
@@ -98,7 +113,12 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
       Then Database dropdown is "Collapsed"
       And "Save" is "Disabled"
 
- @SQLDbSource
+@SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
       Given I open New Database Source
       And I type Server as "RSAKLFSVRTFSBLD"
@@ -113,7 +133,12 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
       Then Database dropdown is "Collapsed"
       And "Save" is "Disabled"
 	  
- @SQLDbSource
+@SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Shows correct error message
       Given I open New Database Source
       And I type Server as "RSAKLFSVRDEV"
@@ -130,6 +155,11 @@ Scenario: Incorrect Server Address Shows correct error message
 	  And the error message is "Login failed for user 'test'"
 
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Testing as Windows and swapping it resets the test connection 
       Given I open New Database Source
       And "Save" is "Disabled"
@@ -156,6 +186,11 @@ Scenario: Testing as Windows and swapping it resets the test connection
       And Password field is "Visible"
 
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
     And Server as "RSAKLFSVRDEV"
@@ -182,6 +217,11 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
     And "Save" is "Disabled"
 	
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
     And Server as "RSAKLFSVRDEV"
@@ -203,6 +243,11 @@ Scenario: Editing saved DB Source Remembers credentials
 	Then "Save" is "Enabled"
 
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRDEV"
@@ -219,6 +264,11 @@ Scenario: Cancel DB Source Test
 
 
 @SQLDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Changing database type after testing connection
    Given I open New Database Source
    Then "New SQL Server Source" tab is opened

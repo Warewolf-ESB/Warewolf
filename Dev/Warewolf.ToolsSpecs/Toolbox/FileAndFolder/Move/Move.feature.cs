@@ -118,7 +118,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 18
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table773 = new TechTalk.SpecFlow.Table(new string[] {
                         "Source Path",
                         "Username",
                         "Password",
@@ -128,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Destination Password",
                         "Destination Private Key File",
                         "Overwrite"});
-            table1.AddRow(new string[] {
+            table773.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String",
@@ -139,14 +139,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", destinationPrivateKeyFile),
                         string.Format("{0}", selected)});
 #line 19
- testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table773, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table774 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table2.AddRow(new string[] {
+            table774.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 22
- testRunner.And("the debug output as", ((string)(null)), table2, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table774, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1244,7 +1244,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 99
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table775 = new TechTalk.SpecFlow.Table(new string[] {
                         "Source Path",
                         "Username",
                         "Password",
@@ -1252,7 +1252,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Destination Username",
                         "Destination Password",
                         "Overwrite"});
-            table3.AddRow(new string[] {
+            table775.AddRow(new string[] {
                         string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                         string.Format("{0}", username),
                         "String",
@@ -1261,14 +1261,14 @@ this.ScenarioSetup(scenarioInfo);
                         "String",
                         string.Format("{0}", selected)});
 #line 100
- testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table775, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table776 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table4.AddRow(new string[] {
+            table776.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 103
- testRunner.And("the debug output as", ((string)(null)), table4, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table776, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
