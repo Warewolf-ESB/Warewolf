@@ -161,7 +161,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -193,6 +193,7 @@
     <Compile Include="ActivityTests\DropBox2016\Upload\DropBoxUploadTests.cs" />
     <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\DsfEnhancedDotNetDllActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfSwitchTests.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
     <Compile Include="ActivityTests\Scripting\DsfJavascriptActivityTests.cs" />
