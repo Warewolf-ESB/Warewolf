@@ -63,7 +63,7 @@ namespace Warewolf.UITests.WebSource
             //Save Source
             UIMap.MainStudioWindow.SideMenuBar.SaveButton.WaitForControlEnabled(60000);
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save Ribbon Button is not enabled after clicking new web source test button and waiting one minute (60000ms).");
-            Assert.IsTrue(UIMap.ControlExistsNow(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.TestPassedImage), "Expected Test to Pass, but got different results after clicking test button.");
+            Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.TestPassedImage.Exists, "Expected Test to Pass, but got different results after clicking test button.");
         }
 
         #region Additional test attributes

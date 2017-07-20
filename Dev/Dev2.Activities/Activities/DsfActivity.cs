@@ -584,7 +584,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
                 IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
-                return outputs.Select(definition => definition.Value).ToList();
+                return outputs.Select(definition => definition.RawValue).ToList();
             }
             return Outputs.Select(mapping => mapping.MappedTo).ToList();
         }

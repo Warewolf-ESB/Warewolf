@@ -329,7 +329,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var serviceTestOutput = (ServiceTestOutput)testModel.StepOutputs.Last();
             //------------Assert Results-------------------------
             Assert.AreEqual(testModel.StepOutputs.Count, beforeCount + 1);
-            Assert.AreEqual("", testModel.StepOutputs.Single().Variable);
+            Assert.AreEqual("rec(2).a", testModel.StepOutputs.Single().Variable);
             Assert.AreEqual("", testModel.StepOutputs.Single().From);
             Assert.AreEqual("", testModel.StepOutputs.Single().To);
             Assert.AreEqual("", testModel.StepOutputs.Single().Value);

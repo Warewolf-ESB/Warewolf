@@ -163,6 +163,8 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Designers2\Core\InputRegion\ServiceInputNameComparer.cs" />
+    <Compile Include="Designers2\Core\InputRegion\ServiceInputNameValueComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
