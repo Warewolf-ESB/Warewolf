@@ -121,7 +121,7 @@
     <value>0.0.0.6</value>
   </data>
   <data name="SendErrorReportUrl" xml:space="preserve">
-    <value>https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=Lc2neiss3Kwc5jBrMcX9nq9v2XfPlRyomaE4bW69</value>
+    <value>https://warewolf.userecho.com/api/v2/forums/1/topics.json?access_token=vAAI14uAhYGFGzHMc8pxad2H2ktF7ykuh5vHREql</value>
   </data>
   <data name="DeleteConfirmation" xml:space="preserve">
     <value>Are you sure you want to delete {0}?</value>
@@ -277,6 +277,9 @@ The window will be reloaded when you click OK.</value>
   </data>
   <data name="ServiceTestDuplicateTestNameMessage" xml:space="preserve">
     <value>The Test Name already exists. Please choose a unique name.</value>
+  </data>
+  <data name="ServiceTestEmptyTestNameHeader" xml:space="preserve">
+    <value>Please provide a Test Name for Test(s) with blank names</value>
   </data>
   <data name="ServiceTestDuplicateTestNameHeader" xml:space="preserve">
     <value>Duplicate Test Name</value>

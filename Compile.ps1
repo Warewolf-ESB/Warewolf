@@ -1,5 +1,5 @@
 Param(
-  [string]$MSBuildPath="$env:programfiles (x86)\MSBuild\14.0\bin\MSBuild.exe",
+  [string]$MSBuildPath="$env:programfiles (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\MSBuild.exe",
   [string]$Target="",
   [string]$CustomVersion="",
   [string]$NuGet="",
@@ -31,7 +31,20 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
     }
 }
 if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
-	Write-Host MSBuild not found. Download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe and http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
+    $GetvswhereCommand = Get-Command vswhere -ErrorAction SilentlyContinue
+    if ($GetvswhereCommand) {
+        $VswherePath = $GetvswhereCommand.Path
+    } else {
+        Write-Host vswhere.exe not found. Download from: https://github.com/Microsoft/vswhere/releases
+    }
+	$MSBuildPath = &$VswherePath -latest -requires Microsoft.Component.MSBuild -version 15.0
+    $StartKey = "installationPath: "
+    $EndKey = " installationVersion: "
+    $SubstringStart = $MSBuildPath.IndexOf($StartKey) + $StartKey.Length
+    $MSBuildPath = $MSBuildPath.Substring($SubStringStart, $MSBuildPath.IndexOf($EndKey) - $SubStringStart) + "\MSBuild\15.0\Bin\MSBuild.exe"
+}
+if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
+	Write-Host MSBuild not found. Download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe
     sleep 10
     exit 1
 }
@@ -192,19 +205,18 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
         sleep 30
 		exit 1
 	}
-	foreach ($ProjectDir in get-ChildItem "Dev\*Specs") {
+	foreach ($ProjectDir in ((Get-ChildItem "$PSScriptRoot\Dev\*Specs") + (Get-ChildItem "$PSScriptRoot\Dev\Warewolf.UIBindingTests.*"))) {
 		$FullPath = $ProjectDir.FullName
 		$ProjectName = $ProjectDir.Name
 		if (Test-Path "$FullPath\$ProjectName.csproj") {
+            Write-Host Restoring $ProjectName
 			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
-		}
+		} else {
+            Write-Warning -Message "Project file not found in folder $FullPath`nExpected it to be $FullPath\$ProjectName.csproj"
+        }
 	}
-	foreach ($ProjectDir in get-ChildItem "Dev\Warewolf.UIBindingTests.*") {
-		$FullPath = $ProjectDir.FullName
-		$ProjectName = $ProjectDir.Name
-		if (Test-Path "$FullPath\$ProjectName.csproj") {
-			&"$PSScriptRoot\Dev\packages\SpecFlow.2.1.0\tools\specflow.exe" "generateAll" "$FullPath\$ProjectName.csproj" "/force" "/verbose"
-		}
+	foreach ($FeatureFile in (Get-ChildItem "$PSScriptRoot\Dev\**\*.feature.cs")) {
+        (Get-Content $FeatureFile).replace('TestCategoryAttribute("MSTest:DeploymentItem:', 'DeploymentItem("').replace('DeploymentItem("Warewolf_Studio.exe")', 'DeploymentItem("Warewolf Studio.exe")') | Set-Content $FeatureFile
 	}
 }
 
@@ -224,6 +236,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             &"$NuGetPath" "restore" "$SolutionFile"
             &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target
             if ($LASTEXITCODE -ne 0) {
+				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorched get.bat' before retrying. Compiling Warewolf requires at at least MSBuild 4.2, download from: https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
                 sleep 30
                 exit 1
             }

@@ -89,11 +89,9 @@ namespace Warewolf.UITests
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Run Tests.ps1\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "{Tab}", ModifierKeys.None);
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
-#if !DEBUG
             var TimeBefore = System.DateTime.Now;
             WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
             Console.WriteLine("Waited " + (System.DateTime.Now - TimeBefore).Milliseconds.ToString() + "ms for the explorer spinner to disappear.");
-#endif
         }
         
         public void TryPin_Unpinned_Pane_To_Default_Position()
