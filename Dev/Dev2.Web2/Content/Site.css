@@ -72,6 +72,17 @@ td {
     margin-bottom: 1px;
 }
 
+#myDateInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1px;
+}
+
 #executionList {
     border-collapse: collapse;
     width: 100%;

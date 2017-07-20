@@ -64,11 +64,6 @@ namespace Dev2.Web2.Controllers
             return toReturn;
         }
         
-        public String foo()
-        {
-            return "Response!";
-        }
-
         // GET: ExecutionLogging/Details/5
         public ActionResult Details(string executionId)
         {
