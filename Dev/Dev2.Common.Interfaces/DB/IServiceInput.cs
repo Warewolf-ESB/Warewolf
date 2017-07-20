@@ -12,5 +12,6 @@
         string Dev2ReturnType { get; set; }
         string ShortTypeName { get; set; }
         string FullName { get; }
+        string ActionName { get; set; }
     }
 }

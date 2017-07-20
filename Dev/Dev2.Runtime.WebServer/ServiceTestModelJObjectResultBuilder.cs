@@ -1,12 +1,13 @@
 ﻿using System;
 using Dev2.Common.Interfaces;
 using Newtonsoft.Json.Linq;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class ServiceTestModelTOResultBuilder
+    internal static class ServiceTestModelJObjectResultBuilder
     {
-        public static JObject BuildTestResultForWebRequest(this IServiceTestModelTO result)
+        public static JObject BuildTestResultJSONForWebRequest(this IServiceTestModelTO result)
         {
             var resObj = new JObject { { "Test Name", result.TestName } };
             if (result.Result.RunTestResult == RunResult.TestPassed)

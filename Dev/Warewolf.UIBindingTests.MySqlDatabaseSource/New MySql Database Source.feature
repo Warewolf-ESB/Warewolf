@@ -23,6 +23,11 @@ Feature: New MySql Database Source
 ## Ensure user is able to select database from the database dropdown 
 
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source General Testing
    Given I open New Database Source
    Then "New MySQL Source" tab is opened
@@ -30,8 +35,8 @@ Scenario: Creating New DB Source General Testing
    When I type Server as "RSAKLFSVR"
    Then the intellisense contains these options
    | Options         |
-   | RSAKLFSVRDEV |
-   | RSAKLFSVRPDC |
+   | RSAKLFSVRDEV    |
+   | RSAKLFSVRPDC    |
    | RSAKLFSVRTFSBLD |
    | RSAKLFSVRWRWBLD |  
    And I type Select The Server as "RSAKLFSVRDEV"
@@ -50,15 +55,20 @@ Scenario: Creating New DB Source General Testing
    Then Database dropdown is "Visible"
    Then I select "Dev2TestingDB" as Database
    And "Save" is "Enabled"   
-   When I save the source as "SavedDBSource"
+   When I save the source as "SavedMySqlDbSource"
    Then the save dialog is opened
-   Then "SavedDBSource" tab is opened
-   And title is "SavedDBSource"
+   Then "SavedMySqlDbSource" tab is opened
+   And title is "SavedMySqlDbSource"
    When I type Server as "RSA"
-   Then "SavedDBSource *" is the tab Header
-   And title is "SavedDBSource"
+   Then "SavedMySqlDbSource *" is the tab Header
+   And title is "SavedMySqlDbSource"
    
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New DB Source as User Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRDEV"
@@ -79,8 +89,13 @@ Scenario: Creating New DB Source as User Auth
 	Then "Save" is "Enabled" 
 	When I save the source
 	Then the save dialog is opened
-
+	
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -93,8 +108,13 @@ Scenario: Incorrect Server Address Doesnt Allow Save Windows Auth
 	  When Test Connecton is "Unsuccessful"
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
-
- @MySqlDbSource
+	  
+@MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRTFSBLD"
@@ -109,7 +129,12 @@ Scenario: Incorrect Server Address Doesnt Allow Save User Auth
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  
- @MySqlDbSource
+@MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect Server Address Shows correct error message
 	  Given I open New Database Source
 	  And I type Server as "RSAKLFSVRDEV"
@@ -124,8 +149,13 @@ Scenario: Incorrect Server Address Shows correct error message
 	  Then Database dropdown is "Collapsed"
 	  And "Save" is "Disabled"
 	  And the error message is "Login failed for user 'test'"
-
+	  
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Testing as Windows and swapping it resets the test connection 
 	  Given I open New Database Source
 	  And "Save" is "Disabled"
@@ -150,8 +180,13 @@ Scenario: Testing as Windows and swapping it resets the test connection
 	  When I Select Authentication Type as "User"
 	  Then Username field is "Visible"
 	  And Password field is "Visible"
-
+	  
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRDEV"
@@ -178,6 +213,11 @@ Scenario: Editing saved DB Source Remembers Previous Auth Selection
 	And "Save" is "Disabled"
 	
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved DB Source Remembers credentials
 	Given I open "Database Source - Test" 
 	And Server as "RSAKLFSVRDEV"
@@ -197,8 +237,13 @@ Scenario: Editing saved DB Source Remembers credentials
 	And "Test Connection" is "Enabled"
 	When Test Connecton is "Successful"
 	Then "Save" is "Enabled"
-
+	
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Cancel DB Source Test
    Given I open New Database Source
    When I type Server as "RSAKLFSVRDEV"
@@ -212,9 +257,13 @@ Scenario: Cancel DB Source Test
    Then the validation message as "Test Cancelled" 
    Then "Test Connection" is "Enabled"
    And "Save" is "Disabled"
-
-
+   
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Changing database type after testing connection
    Given I open New Database Source
    Then "New MySQL Source" tab is opened
@@ -239,9 +288,13 @@ Scenario: Changing database type after testing connection
    Then Database dropdown is "Visible"
    And I select "test" as Database
    Then "Save" is "Enabled"
-
-
+   
 @MySqlDbSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New MySQL DB Source as Windows Auth
 	Given I open New Database Source
 	And I type Server as "RSAKLFSVRDEV"

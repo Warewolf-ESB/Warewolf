@@ -91,21 +91,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1625 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table1.AddRow(new string[] {
+            table1625.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
 #line 14
- testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1625, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1626 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table2.AddRow(new string[] {
+            table1626.AddRow(new string[] {
                         "[[result]] = one"});
 #line 17
- testRunner.And("the debug output as", ((string)(null)), table2, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1626, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -130,21 +130,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1627 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table3.AddRow(new string[] {
+            table1627.AddRow(new string[] {
                         "Ruby",
                         "\"\""});
 #line 27
- testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1627, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1628 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table4.AddRow(new string[] {
+            table1628.AddRow(new string[] {
                         "[[result]] ="});
 #line 30
- testRunner.And("the debug output as", ((string)(null)), table4, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1628, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -171,21 +171,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 40
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1629 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table5.AddRow(new string[] {
+            table1629.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
 #line 41
- testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1629, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1630 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table6.AddRow(new string[] {
+            table1630.AddRow(new string[] {
                         "[[result]] = two"});
 #line 44
- testRunner.And("the debug output as", ((string)(null)), table6, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1630, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -212,21 +212,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 54
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1631 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table7.AddRow(new string[] {
+            table1631.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
 #line 55
- testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1631, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1632 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table8.AddRow(new string[] {
+            table1632.AddRow(new string[] {
                         "[[result]] = not one or two"});
 #line 58
- testRunner.And("the debug output as", ((string)(null)), table8, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1632, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -253,21 +253,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 68
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1633 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table9.AddRow(new string[] {
+            table1633.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
 #line 69
- testRunner.And("the debug inputs as", ((string)(null)), table9, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1633, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1634 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table10.AddRow(new string[] {
+            table1634.AddRow(new string[] {
                         "[[result]] = not one or two"});
 #line 72
- testRunner.And("the debug output as", ((string)(null)), table10, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1634, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -292,21 +292,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 81
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1635 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table11.AddRow(new string[] {
+            table1635.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
 #line 82
- testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1635, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1636 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table12.AddRow(new string[] {
+            table1636.AddRow(new string[] {
                         "[[result]] ="});
 #line 85
- testRunner.And("the debug output as", ((string)(null)), table12, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1636, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -335,21 +335,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 96
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1637 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table13.AddRow(new string[] {
+            table1637.AddRow(new string[] {
                         "Ruby",
                         "String = String"});
 #line 97
- testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1637, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1638 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table14.AddRow(new string[] {
+            table1638.AddRow(new string[] {
                         "[[result]] = two"});
 #line 100
- testRunner.And("the debug output as", ((string)(null)), table14, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1638, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -372,21 +372,21 @@ this.ScenarioSetup(scenarioInfo);
 #line 108
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1639 = new TechTalk.SpecFlow.Table(new string[] {
                         "Language",
                         "Script"});
-            table15.AddRow(new string[] {
+            table1639.AddRow(new string[] {
                         "Ruby",
                         "[[my(-1).val]] ="});
 #line 109
- testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1639, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1640 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table16.AddRow(new string[] {
+            table1640.AddRow(new string[] {
                         "[[result]] ="});
 #line 112
- testRunner.And("the debug output as", ((string)(null)), table16, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1640, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

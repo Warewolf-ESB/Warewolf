@@ -33,7 +33,7 @@ namespace Warewolf.Core
             {
                 return true;
             }
-            return string.Equals(Name, other.Name) && RequiredField.Equals(other.RequiredField) && EmptyIsNull.Equals(other.EmptyIsNull);
+            return string.Equals(Name, other.Name) && RequiredField.Equals(other.RequiredField) && (ActionName?.Equals(other.ActionName) ?? true) && EmptyIsNull.Equals(other.EmptyIsNull);
         }
 
         /// <summary>
@@ -167,5 +167,6 @@ namespace Warewolf.Core
                 return fullName;
             }
         }
+        public string ActionName { get; set; }
     }
 }

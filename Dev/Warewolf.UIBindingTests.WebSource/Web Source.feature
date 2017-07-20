@@ -5,6 +5,11 @@ Feature: Web Source
 	I want to be able to manage web sources easily
 
 @WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Web Source 
    Given I open New Web Source 
    Then "New Web Service Source" tab is opened
@@ -29,6 +34,11 @@ Scenario: Creating New Web Source
    Then the browser window opens with "http://RSAKLFSVRTFSBLD/IntegrationTestSite/GetCountries.ashx?extension=json&prefix=a"
 	
 @WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Creating New Web Source under auth type as user
    Given I open New Web Source
    And I type Address as "http://RSAKLFSVRTFSBLD/IntegrationTestSite"
@@ -46,6 +56,11 @@ Scenario: Creating New Web Source under auth type as user
    Then the save dialog is opened
 	
 @WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect address anonymous auth type not allowing save
    Given I open New Web Source
    And I type Address as "sdfsdfd"
@@ -58,6 +73,11 @@ Scenario: Incorrect address anonymous auth type not allowing save
    And "Save" is "Enabled"
    	
 @WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Incorrect address Shows correct error message
    Given I open New Web Source
    And I type Address as "sdfsdfd"
@@ -70,7 +90,12 @@ Scenario: Incorrect address Shows correct error message
    And "Save" is "Enabled"
    And the error message is "Illegal characters in path."
 
-@WebSource     
+@WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll  
 Scenario: Incorrect address user auth type is not allowing to save
    Given I open New Web Source
    And I type Address as "sdfsdfd"
@@ -85,6 +110,11 @@ Scenario: Incorrect address user auth type is not allowing to save
    And "Save" is "Enabled"
 
 @WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Testing Auth type as Anonymous and swaping it resets the test connection 
    Given I open New Web Source
    And "Save" is "Disabled"
@@ -111,6 +141,11 @@ Scenario: Testing Auth type as Anonymous and swaping it resets the test connecti
    And "Save" is "Enabled" 
 	 	 
 @WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Editing saved Web Source 
    Given I open "Test" web source
    Then "Test" tab is opened
@@ -134,6 +169,11 @@ Scenario: Editing saved Web Source
    When I save the source
  
  @WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
  Scenario: Editing saved Web Source auth type
    Given I open "Test" web source
    Then "Test" tab is opened
@@ -154,6 +194,11 @@ Scenario: Editing saved Web Source
    Then "Save" is "Enabled" 
 
 @WebSource
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Cancel Seb Source Test
    Given I open New Web Source 
    Then "New Web Service Source" tab is opened
@@ -164,8 +209,12 @@ Scenario: Cancel Seb Source Test
    Then "Cancel Test" is "Disabled"
    And Validation message is thrown
    And Validation message is "Test Cancelled"
-
-#wolf-1034
+   
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
+@MSTest:DeploymentItem:Warewolf_Studio.exe
+@MSTest:DeploymentItem:Newtonsoft.Json.dll
+@MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
+@MSTest:DeploymentItem:System.Windows.Interactivity.dll
 Scenario: Web Source returns text
    Given I open New Web Source
    Then "New Web Service Source" tab is opened
