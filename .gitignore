@@ -27,6 +27,7 @@
 *.sln.DotSettings
 *.sln.DotSettings.user
 *.stackdump
+*.lnk
 
 ####################################################################################
 # Visual Studio

@@ -444,8 +444,12 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 </AnalyseParams>
 "@
 
-        if ($JobName -eq "") {
-            $JobName = "Manual Tests"
+        if (!$JobName) {
+			if ($ProjectName) {
+				$JobName = $ProjectName
+			} else {
+				$JobName = "Manual Tests"
+			}
         }
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Server DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
@@ -496,7 +500,7 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     #Wait for the ServerStarted file to appear.
     $TimeoutCounter = 0
     $ServerStartedFilePath = (Get-Item $ServerPath).Directory.FullName + "\ServerStarted"
-    while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 10) {
+    while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 100) {
         sleep 3
     }
     if (!(Test-Path $ServerStartedFilePath)) {
@@ -637,8 +641,8 @@ if ($JobName -ne $null -and $JobName -ne "") {
         }
     }
 }
-if ($ProjectName -ne $null -and $ProjectName -ne "") {
-    $JobNames += "Manual Tests"
+if ($ProjectName) {
+    $JobNames += $ProjectName
     $JobAssemblySpecs += $ProjectName
     if ($Category -ne $null -and $Category -ne "") {
         $JobCategories += $Category
@@ -745,6 +749,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
 
         # Setup for remote execution
+		$TestSettingsId = [guid]::NewGuid()
         $ControllerNameTag = ""
         $RemoteExecutionAttribute = ""
         $AgentRoleTags = ""
@@ -755,6 +760,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         $DataCollectorTags = ""
         $NamingSchemeTag = ""
         $TestRunName = "Run $JobName With Timeout"
+		$DeploymentTimeoutAttribute = ""
+		$BucketsTag = ""
         if ($StartStudio.IsPresent) {
             $TestsTimeout = "360000"
         } else {
@@ -776,6 +783,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestRunName += " and Screen Recording"
         }
         if ($Parallelize.IsPresent) {
+			$CleanupScriptLine = "`nrmdir /s /q `"%DeploymentDirectory%`""                    
+			Copy-On-Write $CleanupScriptPath
+			New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"$CleanupScriptLine"
+            $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
             $AgentRuleNameValue = "Remote"
@@ -790,6 +801,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     </TestTypeSpecific>
 "@
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
+			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
@@ -812,6 +824,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       </SelectionCriteria>
 "@
                     $DeploymentTags = @"
+
   <Deployment>
     <DeploymentItem filename="..\DebugServer.zip" />
     <DeploymentItem filename="..\DebugStudio.zip" />
@@ -826,10 +839,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
                     Copy-On-Write $StartupScriptPath
                     New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
-                    Copy-On-Write $CleanupScriptPath
-                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+					$BucketsTag = @"
+
+    <Buckets size="1" threshold="1"/>
+"@
                 } else {
                     $DeploymentTags = @"
+
   <Deployment>
     <DeploymentItem filename="..\DebugServer.zip" />
     <DeploymentItem filename="DebugServer.zip" />
@@ -840,8 +856,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
                     Copy-On-Write $StartupScriptPath
                     New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
-                    Copy-On-Write $CleanupScriptPath
-                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
                 }
             }
         }
@@ -853,15 +867,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Copy-On-Write $TestSettingsFile
             [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
-<TestSettings
-  id="
-"@ + [guid]::NewGuid() + @"
-"
-  name="$JobName"
-  xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestSettings id="$TestSettingsId" name="$JobName" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" abortRunOnError="false">
   <Description>$TestRunName.</Description>$DeploymentTags$NamingSchemeTag$ScriptsTag$ControllerNameTag
-  <Execution$RemoteExecutionAttribute>
-    <Timeouts testTimeout="$TestsTimeout"/>$TestTypeSpecificTags
+  <Execution$RemoteExecutionAttribute>$BucketsTag
+    <Timeouts testTimeout="$TestsTimeout"$DeploymentTimeoutAttribute/>$TestTypeSpecificTags
     <AgentRule name="$AgentRuleNameValue">$AgentRoleTags$DataCollectorTags
     </AgentRule>
   </Execution>
@@ -882,7 +891,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if($TestSettingsFile -ne "") {
                 $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
             }
-            if ($Parallelize.IsPresent -and !$StartStudio.IsPresent) {
+            if ($Parallelize.IsPresent -and !$StartStudio.IsPresent -and $DisableTimeouts.IsPresent) {
                 $ParallelSwitch = " /Parallel"
             } else {
                 $ParallelSwitch = ""
@@ -1085,17 +1094,6 @@ if ($RunWarewolfServiceTests.IsPresent) {
 <TestRun id="
 "@ + [guid]::NewGuid() + @"
 " name="Warewolf Service Tests" runUser="$ServerUsername" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <TestSettings name="Default Test Settings" id="
-"@ + [guid]::NewGuid() + @"
-">
-    <Execution>
-      <TestTypeSpecific />
-      <AgentRule name="Execution Agents">
-      </AgentRule>
-    </Execution>
-    <Deployment  enabled="false" />
-    <Properties />
-  </TestSettings>
   <Times creation="
 "@ + $TestStartDateTime + @"
 " queuing="
@@ -1216,7 +1214,11 @@ if ($Cleanup.IsPresent) {
         Cleanup-ServerStudio 10 1
     }
 	if (!$JobName) {
-		$JobName = "Manual Tests"
+		if ($ProjectName) {
+			$JobName = $ProjectName
+		} else {
+			$JobName = "Manual Tests"
+		}
 	}
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }

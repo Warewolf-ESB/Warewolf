@@ -1047,7 +1047,6 @@ namespace Dev2.Studio.ViewModels
 
         private void ProcessDBSource(DatabaseSourceViewModelBase dbSourceViewModel, WorkSurfaceKey workSurfaceKey)
         {
-
             var vm = new SourceViewModel<IDbSource>(EventPublisher, dbSourceViewModel, PopupProvider, new ManageDatabaseSourceControl(), ActiveServer);
             var key = workSurfaceKey;
             if (key != null)
@@ -1207,7 +1206,7 @@ namespace Dev2.Studio.ViewModels
         public async void OpenResourceAsync(Guid resourceId, IServer server)
         {
             var environmentModel = ServerRepository.Get(server.EnvironmentID);
-            if (environmentModel != null)
+            if (environmentModel != null && environmentModel.ResourceRepository != null)
             {
                 var contextualResourceModel = await environmentModel.ResourceRepository.LoadContextualResourceModelAsync(resourceId);
                 _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);

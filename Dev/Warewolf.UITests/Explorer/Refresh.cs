@@ -32,25 +32,6 @@ namespace Warewolf.UITests
 
         [TestMethod]
         [TestCategory("Explorer")]
-        [Ignore]//Spinner disappears too fast for assert
-        public void RefreshExplorerAfterConnectingToRemoteRefreshesTheRemoteUITest()
-        {
-            try
-            {
-                ExplorerUIMap.Collapse_Localhost();
-                ExplorerUIMap.Select_RemoteConnectionIntegration_From_Explorer();
-                Point point;
-                Mouse.Click(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
-                Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.Spinner.TryGetClickablePoint(out point), "Remote spinner is not showing after clicking refresh on remote server.");
-            }
-            finally
-            {
-                ExplorerUIMap.Expand_Localhost();
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Explorer")]
         public void RefreshExplorerAfterConnectingToRemoteDoesNotRefreshLocalhost()
         {
             try
