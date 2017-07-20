@@ -20,9 +20,8 @@
                     @Html.LabelFor(model => model.Server)
                 </div>
             </td>
-            <td style="width:auto; padding-left:10px;">
-                @*@Html.DropDownList("Protocol", Model.Protocols, new { style = "border:none; font:4000px;" })*@
-                @Html.DropDownListFor(model => model.Protocol, Model.Protocols, new { @Class = "myDropdown" })
+            <td style="width:auto;">
+                @Html.DropDownList("Protocol", Model.Protocols, new { style = "border:none; color:blue;font-size:large", @class = "form-control" })
             </td>
             <td style="width:1%; padding-right:5px; font-size:17px;">://</td>
             <td style="width:56%;">@Html.EditorFor(model => model.Server, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })</td>
@@ -32,6 +31,7 @@
         </tr>
     </table>
 }
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
