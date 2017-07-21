@@ -84,6 +84,7 @@ namespace Dev2.Runtime.ESB.Control
 
                 if (resource?.DataList != null)
                 {
+                    Dev2Logger.Debug("Remote Invoke", dataObject.ExecutionID.ToString());
                     Dev2Logger.Debug("Mapping Inputs from Environment", dataObject.ExecutionID.ToString());
                     ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObject, dataObject.RawPayload, resource.DataList.ToString());
                 }

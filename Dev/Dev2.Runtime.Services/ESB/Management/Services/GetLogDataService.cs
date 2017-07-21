@@ -60,9 +60,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                             logEntry.Url = s.Url;
                         }
                     }
-                    logEntry.ExecutionTime =
-                        (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
-                    logEntries.Add(logEntry);
+                    if (logEntry.StartDateTime != DateTime.MinValue)
+                    {
+                        logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
+                        logEntries.Add(logEntry);
+                    }
                 }
 
                 return FilterResults(values, logEntries, serializer);
@@ -91,7 +93,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         private StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
-        {            
+        {
             var startTime = GetDate("StartDateTime", values);
             var endTime = GetDate("CompletedDateTime", values);
             var status = GetValue("Status", values);
@@ -112,8 +114,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private static DateTime ParseDate(string s)
         {
-            return !string.IsNullOrEmpty(s) ? 
-                DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) : 
+            return !string.IsNullOrEmpty(s) ?
+                DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) :
                 new DateTime();
         }
 

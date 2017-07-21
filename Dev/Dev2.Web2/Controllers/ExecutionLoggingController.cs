@@ -36,8 +36,8 @@ namespace Dev2.Web2.Controllers
         {
             var serverRequest = new RestRequest("services/GetLogDataService", Method.GET);
             serverRequest.UseDefaultCredentials = true;
-            //serverRequest.AddQueryParameter("StartDateTime", Request.StartDateTime.ToString());
-            //serverRequest.AddQueryParameter("CompletedDateTime", Request.CompletedDateTime.ToString());
+            serverRequest.AddQueryParameter("StartDateTime", Request.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss,fff"));
+            serverRequest.AddQueryParameter("CompletedDateTime", Request.CompletedDateTime.ToString("yyyy-MM-dd HH:mm:ss,fff"));
             serverRequest.AddQueryParameter("Status", Request.Status);
             serverRequest.AddQueryParameter("User", Request.User);
             serverRequest.AddQueryParameter("Url", Request.Url);
@@ -96,8 +96,15 @@ namespace Dev2.Web2.Controllers
 
         public ActionResult OpenUrl(string url)
         {
-            OpenInBrowser(new Uri(url));
-            return View();
+            try
+            {
+                OpenInBrowser(new Uri(url));
+                return View("Index");
+            }
+            catch (Exception ex)
+            {
+                return View("Index");
+            }
         }
 
         public void OpenInBrowser(Uri url)
