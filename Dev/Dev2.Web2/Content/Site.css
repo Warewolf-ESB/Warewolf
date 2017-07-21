@@ -46,8 +46,8 @@ th {
     color: black;
     font-weight: normal;
     font-family: Source Sans Pro;
-    font-size: 16px;
-    padding: 10px 15px;
+    font-size: 15px;
+    padding: 8px 12px;
     text-align: left;
 }
 
@@ -67,94 +67,6 @@ td {
 }
 
 #myInput {
-    background-image: url('/css/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-}
-
-#filterId {
-    background-image: url('/css/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-}
-
-#filterTime {
-    background-image: url('/css/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-}
-
-#filterStatus {
-    background-image: url('/css/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-}
-
-#filterStart {
-    background-image: url('/css/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-}
-
-#filterComplete {
-    background-image: url('/css/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-}
-
-#filterUrl {
-    background-image: url('/css/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-}
-
-#filterUser {
-    background-image: url('/css/searchicon.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 14px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 1px;
-}
-
-#myDateInput {
     background-image: url('/css/searchicon.png');
     background-position: 10px 10px;
     background-repeat: no-repeat;
@@ -302,12 +214,12 @@ li #protocolList {
 }
 
 .filters {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .filter-container {
     float: left;
-    width: 15%;
+    width: 14%;
     padding-right: 10px;
 }
 
@@ -322,6 +234,7 @@ li #protocolList {
         border-radius: 2px;
         font-size: 14px;
         width: 100%;
+        padding-left: 5px;
     }
 
         .filter-container input:focus {

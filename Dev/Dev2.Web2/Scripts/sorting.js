@@ -10,7 +10,7 @@
         switching = false;
         rows = table.getElementsByTagName("TR");
         /*Loop through all table rows (except the first, which contains table headers):*/
-        for (i = 2; i < (rows.length - 1); i++) {
+        for (i = 1; i < (rows.length - 1); i++) {
             //start by saying there should be no switching:
             shouldSwitch = false;
             /*Get the two elements you want to compare, one from current row and one from the next:*/
