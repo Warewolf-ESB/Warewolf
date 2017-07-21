@@ -63,19 +63,18 @@ namespace Dev2.Web2.Controllers
             }
             return toReturn;
         }
-        
-        // GET: ExecutionLogging/Details/5
+
+        [HttpPost]
         public ActionResult Details(string executionId)
         {
             var serverUrl = String.Format("{0}://{1}:{2}", "https", "localhost", "3143");
             var client = new RestClient(serverUrl);
             client.Authenticator = new NtlmAuthenticator();
-
+            executionId = executionId.Replace("\n", "").Trim();
             var serverRequest = GetResult(executionId);
 
             var response = client.Execute<LogEntry>(serverRequest);
             var data = response.Data ?? new LogEntry();
-
             return PartialView("Details", data);
         }
 

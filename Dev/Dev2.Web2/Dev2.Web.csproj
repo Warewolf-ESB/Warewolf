@@ -212,6 +212,7 @@
     <Content Include="Views\ExecutionLogging\Index.cshtml" />
     <Content Include="Views\ExecutionLogging\ExecutionList.cshtml" />
     <Content Include="Views\ExecutionLogging\ExecutionFilters.cshtml" />
+    <Content Include="Views\ExecutionLogging\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

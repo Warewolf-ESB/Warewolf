@@ -10,6 +10,47 @@
         $("#filterStart").datepicker()
     });
 </script>
+
+@section scripts
+{
+    <script>
+        var TeamDetailPostBackURL = '/ExecutionLogging/Index';
+        $(function () {
+            $(".anchorDetail").click(function () {
+                debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "Id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+            //$("#closebtn").on('click',function(){
+            //    $('#myModal').modal('hide');
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+
+    </script>
+
+}
+
 <body>
     <div class='container'>
         <div class='filters'>
@@ -87,11 +128,46 @@
                         @Html.DisplayFor(modelItem => item.User)
                     </td>
                     <td>
-                        @Html.ActionLink("[...]", "Details", new { executionId = item.ExecutionId })
+                        <a class="details" href="javascript:;">View</a>
                     </td>
                 </tr>
                             }
         </table>
     </div>
-    
+
 </body>
+
+<div id="dialog" style="display: none">
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            title: "Result"
+        });
+        $("#executionList .details").click(function () {
+            var executionId = $(this).closest("tr").find("td").eq(0).html();
+            $.ajax({
+                type: "POST",
+                url: "/ExecutionLogging/Details",
+                data: '{executionId: "' + executionId + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#dialog').html(response);
+                    $('#dialog').dialog('open');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+
+
