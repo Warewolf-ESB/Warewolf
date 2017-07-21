@@ -48,7 +48,8 @@
                     }
                     else
                     {
-                        @Html.ActionLink(item.Url.ToString(), "OpenUrl", new { url = item.Url })
+                        <a href="@item.Url">@item.Url</a>
+                        @*@Html.ActionLink(item.Url.ToString(), "OpenUrl", new { url = item.Url })*@
                     }
                 }
             </td>
