@@ -783,9 +783,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestRunName += " and Screen Recording"
         }
         if ($Parallelize.IsPresent) {
-			$CleanupScriptLine = "`nrmdir /s /q `"%DeploymentDirectory%`""                    
+            $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+			$CleanupScriptLine = "rmdir /s /q `"%DeploymentDirectory%`""                    
 			Copy-On-Write $CleanupScriptPath
-			New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"$CleanupScriptLine"
+			New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$CleanupScriptLine"
             $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
@@ -803,6 +804,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
 			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$CleanupScriptLine"
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
                 } else {
@@ -814,7 +816,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     $ServerPasswordParam = ""
                 }
                 $StartupScriptPath = "$TestsResultsPath\startup.bat"
-                $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
                 $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
                 if ($StartStudio.IsPresent) {
                     $AgentRoleTags = @"
