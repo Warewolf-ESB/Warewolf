@@ -4,12 +4,11 @@
     <link rel="stylesheet" href="~/Content/DetailsModal.css" type="text/css" />
 </head>
 <script type='text/javascript'>
-    //<![CDATA[
     jQuery(document).ready(function ($) {
         $('.filter').multifilter();
-        $("#filterComplete").datepicker()
+        $("#filterComplete").datepicker();
+        $("#filterStart").datepicker()
     });
-    //]]>
 </script>
 <body>
     <div class='container'>
@@ -24,10 +23,10 @@
                 <input autocomplete='off' class='filter' name='Status' placeholder='Status' data-col='Status' />
             </div>
             <div class='filter-container'>
-                <input autocomplete='off' class='filter' name='Start Time' placeholder='Start Time' data-col='Start Time' />
+                <input id="filterStart" autocomplete='off' class='filter' name='Start Time' placeholder='Start Time' onchange="filterStart()" data-col='Start Time' />
             </div>
             <div class='filter-container'>
-                <input id="filterComplete" autocomplete='off' class='filter' name='Completed Time' placeholder='Completed Time' onchange="filterComplete(4)" data-col='Completed Time' />
+                <input id="filterComplete" autocomplete='off' class='filter' name='Completed Time' placeholder='Completed Time' onchange="filterComplete()" data-col='Completed Time' />
             </div>
             <div class='filter-container'>
                 <input autocomplete='off' class='filter' name='Url' placeholder='Url' data-col='Url' />
