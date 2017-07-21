@@ -19,7 +19,7 @@
                 </div>
             </td>
             <td style="width:11%;padding-left:5px">
-                @Html.DropDownList("Protocol", Model.Protocols, new { id = "protocolDropdown", @class = "form-control" })
+                @Html.DropDownListFor(m=>m.Protocol, Model.Protocols, new { id = "protocolDropdown", @class = "form-control" })
             </td>
             <td style="width:1%; padding-left:5px; padding-right:5px; font-size:17px;">://</td>
             <td style="width:56%;">@Html.EditorFor(model => model.Server, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })</td>
