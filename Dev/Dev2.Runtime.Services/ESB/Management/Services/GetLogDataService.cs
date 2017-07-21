@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     };
                     foreach (var s in groupedEntry)
                     {
-                        if (s.Message.StartsWith("Remote Invoke"))
+                        if (s.Message.StartsWith("Started Execution"))
                         {
                             logEntry.StartDateTime = ParseDate(s.DateTime);
                         }
@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         {
                             logEntry.Result = "ERROR";
                         }
-                        if (s.Message.StartsWith("Execution Result"))
+                        if (s.Message.StartsWith("Completed Execution"))
                         {
                             logEntry.CompletedDateTime = ParseDate(s.DateTime);
                         }
@@ -60,9 +60,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                             logEntry.Url = s.Url;
                         }
                     }
-                    logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
-                    if (int.Parse(logEntry.ExecutionTime) > 0)
+                    if (logEntry.StartDateTime != DateTime.MinValue)
                     {
+                        logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
                         logEntries.Add(logEntry);
                     }
                 }
@@ -93,7 +93,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         private StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
-        {            
+        {
             var startTime = GetDate("StartDateTime", values);
             var endTime = GetDate("CompletedDateTime", values);
             var status = GetValue("Status", values);
@@ -114,8 +114,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         private static DateTime ParseDate(string s)
         {
-            return !string.IsNullOrEmpty(s) ? 
-                DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) : 
+            return !string.IsNullOrEmpty(s) ?
+                DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) :
                 new DateTime();
         }
 
