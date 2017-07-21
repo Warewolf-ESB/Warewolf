@@ -51,9 +51,7 @@ namespace Dev2.Runtime.ESB.Execution
             var user = Thread.CurrentPrincipal;
             if (string.IsNullOrEmpty(DataObject.WebUrl))
             {
-                var dataObjectWebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}";
-                var replace = dataObjectWebUrl.Replace(@"\", "/").Replace("//","/");
-                DataObject.WebUrl = replace;
+                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}";
             }
             if (!DataObject.IsSubExecution)
             {
@@ -64,7 +62,9 @@ namespace Dev2.Runtime.ESB.Execution
             DataObject.ServiceName = ServiceAction.ServiceName;
 
             if (DataObject.ServerID == Guid.Empty)
+            {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
+            }
 
             Dev2Logger.Info($"Started Execution for Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", DataObject.ExecutionID.ToString());
             if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))

@@ -72,6 +72,83 @@ td {
     margin-bottom: 1px;
 }
 
+#filterId {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1px;
+}
+
+#filterTime {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1px;
+}
+
+#filterStatus {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1px;
+}
+
+#filterStart {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1px;
+}
+
+#filterComplete {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1px;
+}
+
+#filterUrl {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1px;
+}
+
+#filterUser {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 1px;
+}
+
 #myDateInput {
     background-image: url('/css/searchicon.png');
     background-position: 10px 10px;
@@ -149,14 +226,15 @@ li #protocolList {
     position: absolute;
     text-align: center;
 }
-.datepickerdropdown td {
-    padding: 2px;
-}
+
+    .datepickerdropdown td {
+        padding: 2px;
+    }
 
     .datepickerdropdown table {
         border-collapse: collapse;
         margin: auto;
-        height:20px;
+        height: 20px;
     }
 
     .datepickerdropdown input {
@@ -217,3 +295,30 @@ li #protocolList {
     font-family: sans-serif;
     font-size: 11px;
 }
+
+.filters {
+    margin-bottom: 20px;
+}
+
+.filter-container {
+    float: left;
+    width: 15%;
+    padding-right: 10px;
+}
+
+    .filter-container:last-of-type {
+        padding-right: 0;
+    }
+
+    .filter-container input {
+        -webkit-appearance: none;
+        border: 1px solid #b31d14;
+        background: #c8c8c8;
+        border-radius: 2px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+        .filter-container input:focus {
+            outline: none;
+        }
