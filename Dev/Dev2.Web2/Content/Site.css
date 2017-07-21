@@ -60,6 +60,11 @@ td {
 * {
     box-sizing: border-box;
 }
+#protocolDropdown {
+    border: none;
+    color: blue;
+    font-size: large;
+}
 
 #myInput {
     background-image: url('/css/searchicon.png');

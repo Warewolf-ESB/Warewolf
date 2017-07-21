@@ -52,6 +52,28 @@
                 </tr>
             </thead>
 
+<table id="executionList" class="table">
+    <tr>
+        <th data-toggle="tooltip" title="Execution Id" data-placement="right" style="width:10%" onclick="sortTable(0)">Execution Id</th>
+        <th data-toggle="tooltip" title="Execution Time" data-placement="right" style="width:8%" onclick="sortTable(1)">Execution Time</th>
+        <th data-toggle="tooltip" title="Status" data-placement="right" style="width:7%" onclick="sortTable(2)">Status</th>
+        <th data-toggle="tooltip" title="Start Time" data-placement="right" style="width:15%" onclick="sortTable(3)">Start Time</th>
+        <th data-toggle="tooltip" title="Completed Time" data-placement="right" style="width:15%" onclick="sortTable(4)">Completed Time</th>
+        <th data-toggle="tooltip" title="Url" data-placement="right" style="width:28%" onclick="sortTable(5)">Url</th>
+        <th data-toggle="tooltip" title="User" data-placement="right" style="width:28%" onclick="sortTable(6)">User</th>
+        <th data-toggle="tooltip" title="Result" data-placement="right" style="width:1%" onclick="sortTable(7)">Result</th>
+    </tr>
+    <tr>
+        <td id="filterTableRow"><input type="text" id="filterId" onkeyup="filterId(0)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="filterTime" onkeyup="filterTime(1)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="filterStatus" onkeyup="filterStatus(2)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="filterStart" onkeyup="filterStart(3)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="filterComplete" onkeyup="filterComplete(4)" onchange="filterComplete(4)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="filterUrl" onkeyup="filterUrl(5)" placeholder="Search.."></td>
+        <td id="filterTableRow"><input type="text" id="filterUser" onkeyup="filterUser(6)" placeholder="Search.."></td>
+        <td id="filterTableRow"></td>
+    </tr>
+
             @foreach (var item in Model)
             {
                 <tr>
@@ -93,5 +115,51 @@
 
         </table>
     </div>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="width:1%">
+                @Html.DisplayFor(modelItem => item.ExecutionId)
+            </td>
+            <td style="width:5%">
+                @Html.DisplayFor(modelItem => item.ExecutionTime)
+            </td>
+            <td style="width:5%">
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td style="width:10%">
+                @Html.DisplayFor(modelItem => item.StartDateTime)
+            </td>
+            <td style="width:10%">
+                @Html.DisplayFor(modelItem => item.CompletedDateTime)
+            </td>
+            <td style="width:30%">
+                @{
+                    if (item.Url == null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Url)
+                    }
+                    else
+                    {
+                        <a href="@item.Url">@item.Url</a>
+                        @*@Html.ActionLink(item.Url.ToString(), "OpenUrl", new { url = item.Url })*@
+                    }
+                }
+            </td>
+            <td style="width:30%">
+                @Html.DisplayFor(modelItem => item.User)
+            </td>
+            <td>
+                @Html.ActionLink("[...]", "Details", new { executionId = item.ExecutionId })
+            </td>
+        </tr>
+                    }
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#filterComplete").datepicker();
+    });
 
 </body>
+</script>
