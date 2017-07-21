@@ -165,6 +165,8 @@
     <Compile Include="Interfaces\IDatetimeParserHelper.cs" />
     <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
+    <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
+    <Compile Include="WebServiceHeaderBuilder.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
     <Compile Include="MaintainerApi.cs" />
     <Compile Include="Mapper.cs" />
