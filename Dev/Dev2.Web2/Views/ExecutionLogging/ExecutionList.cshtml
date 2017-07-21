@@ -1,116 +1,97 @@
 ﻿@model IEnumerable<Dev2.Common.LogEntry>
+
 <head>
     <link rel="stylesheet" href="~/Content/DetailsModal.css" type="text/css" />
 </head>
-
-<table id="executionList" class="table">
-    <tr>
-        <th data-toggle="tooltip" title="Execution Id" data-placement="right" style="width:10%" onclick="sortTable(0)">Execution Id</th>
-        <th data-toggle="tooltip" title="Execution Time" data-placement="right" style="width:8%" onclick="sortTable(1)">Execution Time</th>
-        <th data-toggle="tooltip" title="Status" data-placement="right" style="width:7%" onclick="sortTable(2)">Status</th>
-        <th data-toggle="tooltip" title="Start Time" data-placement="right" style="width:15%" onclick="sortTable(3)">Start Time</th>
-        <th data-toggle="tooltip" title="Completed Time" data-placement="right" style="width:15%" onclick="sortTable(4)">Completed Time</th>
-        <th data-toggle="tooltip" title="Url" data-placement="right" style="width:28%" onclick="sortTable(5)">Url</th>
-        <th data-toggle="tooltip" title="User" data-placement="right" style="width:28%" onclick="sortTable(6)">User</th>
-        <th data-toggle="tooltip" title="Result" data-placement="right" style="width:1%" onclick="sortTable(7)">Result</th>
-    </tr>
-    <tr>
-        <td id="filterTableRow"><input type="text" id="filterId" onkeyup="filterId(0)" placeholder="Search.."></td>
-        <td id="filterTableRow"><input type="text" id="filterTime" onkeyup="filterTime(1)" placeholder="Search.."></td>
-        <td id="filterTableRow"><input type="text" id="filterStatus" onkeyup="filterStatus(2)" placeholder="Search.."></td>
-        <td id="filterTableRow"><input type="text" id="filterStart" onkeyup="filterStart(3)" placeholder="Search.."></td>
-        <td id="filterTableRow"><input type="text" id="filterComplete" onkeyup="filterComplete(4)" placeholder="Search.."></td>
-        <td id="filterTableRow"><input type="text" id="filterUrl" onkeyup="filterUrl(5)" placeholder="Search.."></td>
-        <td id="filterTableRow"><input type="text" id="filterUser" onkeyup="filterUser(6)" placeholder="Search.."></td>
-        <td id="filterTableRow"></td>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td style="width:1%">
-                @Html.DisplayFor(modelItem => item.ExecutionId)
-            </td>
-            <td style="width:5%">
-                @Html.DisplayFor(modelItem => item.ExecutionTime)
-            </td>
-            <td style="width:5%">
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td style="width:10%">
-                @Html.DisplayFor(modelItem => item.StartDateTime)
-            </td>
-            <td style="width:10%">
-                @Html.DisplayFor(modelItem => item.CompletedDateTime)
-            </td>
-            <td style="width:30%">
-                @{
-                    if (item.Url == null)
-                    {
-                        @Html.DisplayFor(modelItem => item.Url)
-                    }
-                    else
-                    {
-                        @Html.ActionLink(item.Url.ToString(), "OpenUrl", new { url = item.Url })
-                    }
-                }
-            </td>
-            <td style="width:30%">
-                @Html.DisplayFor(modelItem => item.User)
-            </td>
-            <td>
-                @Html.ActionLink("[...]", "Details", new { executionId = item.ExecutionId })
-            </td>
-        </tr>
-                    }
-</table>
-
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2>Details</h2>
-        </div>
-        <div class="modal-body">
-            <p>Some text in the Modal Body</p>
-            <p>Some other text...</p>
-        </div>
-        <div class="modal-footer">
+<script type='text/javascript'>
+    //<![CDATA[
+    jQuery(document).ready(function ($) {
+        $('.filter').multifilter()
+    })
+    //]]>
+</script>
+<body>
+    <div class='container'>
+        <div class='filters'>
+            <div class='filter-container'>
+                <input autocomplete='off' class='filter' name='Execution Id' placeholder='Execution Id' data-col='Execution Id' />
+            </div>
+            <div class='filter-container'>
+                <input autocomplete='off' class='filter' name='Execution Time' placeholder='Execution Time' data-col='Execution Time' />
+            </div>
+            <div class='filter-container'>
+                <input autocomplete='off' class='filter' name='Status' placeholder='Status' data-col='Status' />
+            </div>
+            <div class='filter-container'>
+                <input autocomplete='off' class='filter' name='Start Time' placeholder='Start Time' data-col='Start Time' />
+            </div>
+            <div class='filter-container'>
+                <input autocomplete='off' class='filter' name='Completed Time' placeholder='Completed Time' data-col='Completed Time' />
+            </div>
+            <div class='filter-container'>
+                <input autocomplete='off' class='filter' name='Url' placeholder='Url' data-col='Url' />
+            </div>
+            <div class='filter-container'>
+                <input autocomplete='off' class='filter' name='User' placeholder='User' data-col='User' />
+            </div>
+            <div class='clearfix'></div>
         </div>
     </div>
+    <div class='container'>
+        <table id="executionList" class="table">
+            <thead>
+                <tr data-toggle="tooltip" data-placement="right">
+                    <th title="Execution Id" style="width:20%" onclick="sortTable(0)">Execution Id</th>
+                    <th title="Execution Time" style="width:8%" onclick="sortTable(1)">Execution Time</th>
+                    <th title="Status" style="width:7%" onclick="sortTable(2)">Status</th>
+                    <th title="Start Time" style="width:10%" onclick="sortTable(3)">Start Time</th>
+                    <th title="Completed Time" style="width:10%" onclick="sortTable(4)">Completed Time</th>
+                    <th title="Url" style="width:28%" onclick="sortTable(5)">Url</th>
+                    <th title="User" style="width:28%" onclick="sortTable(6)">User</th>
+                    <th title="Result" style="width:1%" onclick="sortTable(7)">Result</th>
+                </tr>
+            </thead>
 
-</div>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="width:1%">
+                        @Html.DisplayFor(modelItem => item.ExecutionId)
+                    </td>
+                    <td style="width:5%">
+                        @Html.DisplayFor(modelItem => item.ExecutionTime)
+                    </td>
+                    <td style="width:5%">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td style="width:10%">
+                        @Html.DisplayFor(modelItem => item.StartDateTime)
+                    </td>
+                    <td style="width:10%">
+                        @Html.DisplayFor(modelItem => item.CompletedDateTime)
+                    </td>
+                    <td style="width:30%">
+                        @{
+                            if (item.Url == null)
+                            {
+                                @Html.DisplayFor(modelItem => item.Url)
+                            }
+                            else
+                            {
+                                @Html.ActionLink(item.Url.ToString(), "OpenUrl", new { url = item.Url })
+                            }
+                        }
+                    </td>
+                    <td style="width:30%">
+                        @Html.DisplayFor(modelItem => item.User)
+                    </td>
+                    <td>
+                        @Html.ActionLink("[...]", "Details", new { executionId = item.ExecutionId })
+                    </td>
+                </tr>
+                            }
 
+        </table>
+    </div>
 
-
-<script>
-
-    // Get the modal
-    var modal = document.getElementById('myModal');
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on the button, open the modal
-    btn.onclick = function () {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
+</body>
