@@ -1,11 +1,17 @@
 ﻿@model Dev2.Web2.Models.ExecutionLogging.ExecutionLoggingRequestViewModel
 
-<link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' />
-<link rel='stylesheet' type='text/css' href='~/Content/dropDownStyling.css' />
+<head>
+    <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' />
+    <link rel='stylesheet' type='text/css' href='~/Content/dropDownStyling.css' />
+    <meta charset='utf-8' />
+    <meta content='en' name='language' />
+    <meta content='width=device-width, initial-scale=1' name='viewport' />
 
-<script type='text/javascript' src='~/Scripts/filterColumns.js'></script>
-<script type='text/javascript' src='~/Scripts/sorting.js'></script>
-<script type='text/javascript' src='~/Scripts/multifilter.js'></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type='text/javascript' src='~/Scripts/sorting.js'></script>
+    <script type='text/javascript' src='~/Scripts/multifilter.js'></script>
+    <script type='text/javascript' src='~/Scripts/jquery-ui-1.9.2.custom.min.js'></script>
+</head>
 
 @using (Html.BeginForm())
 {

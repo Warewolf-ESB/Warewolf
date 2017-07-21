@@ -175,7 +175,6 @@
     <Content Include="images\calendar-icon.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\filterColumns.js" />
     <Content Include="Scripts\filterScript.js" />
     <Content Include="Scripts\jquery-1.8.3.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -213,6 +212,7 @@
     <Content Include="Views\ExecutionLogging\Index.cshtml" />
     <Content Include="Views\ExecutionLogging\ExecutionList.cshtml" />
     <Content Include="Views\ExecutionLogging\ExecutionFilters.cshtml" />
+    <Content Include="Views\ExecutionLogging\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
