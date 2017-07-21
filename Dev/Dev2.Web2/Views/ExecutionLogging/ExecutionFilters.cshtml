@@ -23,10 +23,10 @@
                     @Html.LabelFor(model => model.Server)
                 </div>
             </td>
-            <td style="width:auto;">
-                @Html.DropDownList("Protocol", Model.Protocols, new { style = "border:none; color:blue;font-size:large", @class = "form-control" })
+            <td style="width:11%;padding-left:5px">
+                @Html.DropDownList("Protocol", Model.Protocols, new { id = "protocolDropdown", @class = "form-control" })
             </td>
-            <td style="width:1%; padding-right:5px; font-size:17px;">://</td>
+            <td style="width:1%; padding-left:5px; padding-right:5px; font-size:17px;">://</td>
             <td style="width:56%;">@Html.EditorFor(model => model.Server, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;" } })</td>
             <td style="width:1%; padding-left:3px; padding-right:3px; font-size:17px;">:</td>
             <td style="width:2%">@Html.EditorFor(model => model.Port, new { htmlAttributes = new { @class = "form-control", style = "width: 60px;" } })</td>
