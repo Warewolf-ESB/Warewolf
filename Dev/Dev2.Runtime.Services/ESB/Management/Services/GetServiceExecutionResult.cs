@@ -14,7 +14,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public string HandlesType()
         {
-            return "GetServiceExecutionService";
+            return "GetServiceExecutionResult";
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
