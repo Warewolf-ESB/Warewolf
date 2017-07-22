@@ -791,6 +791,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
         if ($Parallelize.IsPresent) {
             $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+            $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
             $ReverseDeploymentScriptLine = "`nxcopy /Y `"%DeploymentDirectory%`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare`"`nrmdir /S /Q `"%DeploymentDirectory%`""                   
 			Copy-On-Write $CleanupScriptPath
 			New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeploymentScriptLine"
@@ -810,7 +811,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
 			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
-            $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
 			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$ReverseDeploymentScriptLine"
                 if ($ServerUsername -ne "") {
@@ -866,6 +866,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     Copy-On-Write $StartupScriptPath
                     New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
                 }
+            } else {
+
             }
         }
 
