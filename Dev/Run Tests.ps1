@@ -799,7 +799,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if ($Parallelize.IsPresent) {
             $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
             $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
-            $ReverseDeploymentScriptLine = "`nxcopy /Y `"%DeploymentDirectory%`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare`"`nrmdir /S /Q `"%DeploymentDirectory%`""                   
+            $ReverseDeploymentScript = "`nxcopy /S /Y `"%DeploymentDirectory%\TestResults`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare`"`nrmdir /S /Q `"%DeploymentDirectory%`""                   
 			Copy-On-Write $CleanupScriptPath
 			New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeploymentScriptLine"
             $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
