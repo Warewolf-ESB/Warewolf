@@ -476,7 +476,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
         }
     }
     $ResourcesDirectory = FindFile-InParent $ResourcePathSpecs
-    if ($ResourcesPath -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
+    if ($ResourcesDirectory -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
         Copy-Item -Path "$ResourcesDirectory" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
     }
     $ServerPath,$ResourcesType
@@ -549,11 +549,18 @@ function Start-Studio {
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
 		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
-    while (!(Test-Path $StudioLogFile)){
+    $i = 0
+    while (!(Test-Path $StudioLogFile) -and $i++ -lt 10){
         Write-Warning "Waiting for Studio to start..."
         Sleep 3
     }
-	Write-Host Studio has started.
+    if (Test-Path $StudioLogFile) {
+	    Write-Host Studio has started.
+    } else {
+		Write-Error -Message "Warewolf studio failed to start before the timeout."
+        sleep 30
+		exit 1
+    }
 }
 
 function AssemblyIsNotAlreadyDefinedWithoutWildcards([string]$AssemblyNameToCheck) {
