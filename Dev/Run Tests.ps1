@@ -803,6 +803,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
 			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
+            $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
+            $ReverseDeploymentScriptLine = "`nxcopy /Y `"%DeploymentDirectory%`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare`"`nrmdir /S /Q `"%DeploymentDirectory%`"" 
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
 			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$CleanupScriptLine"
                 if ($ServerUsername -ne "") {
@@ -839,7 +841,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   </Deployment>
 "@
                     Copy-On-Write $StartupScriptPath
-                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
+                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`"$ReverseDeploymentScriptLine"
 					$BucketsTag = @"
 
     <Buckets size="1" threshold="1"/>
@@ -856,7 +858,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   </Deployment>
 "@
                     Copy-On-Write $StartupScriptPath
-                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
+                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`"$ReverseDeploymentScriptLine"
                 }
             }
         }
