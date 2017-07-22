@@ -180,7 +180,14 @@ function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7)
     $FilePath
 }
 
-function Cleanup-ServerStudio([int]$WaitForCloseTimeout = 1800,[int]$WaitForCloseRetryCount = 10) {
+function Cleanup-ServerStudio([bool]$Force=$true) {
+    if ($Force) {
+        $WaitForCloseTimeout = 10
+        $WaitForCloseRetryCount = 1
+    } else {
+        $WaitForCloseTimeout = 1800
+        $WaitForCloseRetryCount = 10
+    }
     #Stop Studio
     $Output = ""
     taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
@@ -484,7 +491,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 
 function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     Write-Host Cleaning up old resources in Warewolf ProgramData and copying in new resources from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*").
-    Cleanup-ServerStudio 10 1
+    Cleanup-ServerStudio
     Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
     Start-Service "Warewolf Server"
@@ -979,12 +986,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 #Run DotCover Runner Batch File
                 &"$DotCoverRunnerPath"
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-                    Cleanup-ServerStudio 1800 10
+                    Cleanup-ServerStudio $false
                 }
             } else {
                 &"$TestRunnerPath"
                 if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
-                    Cleanup-ServerStudio 10 1
+                    Cleanup-ServerStudio
                 }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
@@ -1220,9 +1227,9 @@ if ($RunWarewolfServiceTests.IsPresent) {
 
 if ($Cleanup.IsPresent) {
     if ($ApplyDotCover) {
-        Cleanup-ServerStudio 1800 10
+        Cleanup-ServerStudio $false
     } else {
-        Cleanup-ServerStudio 10 1
+        Cleanup-ServerStudio
     }
 	if (!$JobName) {
 		if ($ProjectName) {
@@ -1241,8 +1248,10 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
     $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     Start-Server $ServerPath $ResourcesType
-    Start-Studio
+    if (!$StartServer.IsPresent) {
+        Start-Studio
+    }
 }

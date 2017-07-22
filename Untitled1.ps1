@@ -1,0 +1,1 @@
+﻿&'E:\repos\Warewolf\dev\Run Tests.ps1' -StartServer -ResourcesType ServerTests -ServerUsername '.\LocalSystem' -ServerPassword ''
