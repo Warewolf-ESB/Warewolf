@@ -800,7 +800,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if ($Parallelize.IsPresent) {
             $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
             $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
-            $ReverseDeployScript = "`nrmdir /S /Q `"%DeploymentDirectory%`""
+            $ReverseDeployScript = "`nrmdir /S /Q `"%TestRunDirectory%\..\..`""
             $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
@@ -874,10 +874,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 Copy-On-Write $StartupScriptPath
                 New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -$StartCommand -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
 			    Copy-On-Write $CleanupScriptPath
-			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"$ReverseDeployScript"
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"$ReverseDeployScript`nexit 0"
             } else {
 			    Copy-On-Write $CleanupScriptPath
-			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeployScript"
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeployScript`nexit 0"
             }
         }
 
