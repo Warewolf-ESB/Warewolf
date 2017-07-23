@@ -258,6 +258,7 @@ function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationF
     $DestinationFilePath = "$TestsResultsPath\$DestinationFileName"
     if (Test-Path $SourceFilePath) {
         Copy-On-Write $DestinationFilePath
+        Write-Host Moving `"$SourceFilePath`" to `"$DestinationFilePath`"
         Move-Item "$SourceFilePath" "$DestinationFilePath"
     }
 }
