@@ -799,7 +799,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if ($Parallelize.IsPresent) {
             $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
             $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
-            $ReverseDeploymentScript = "`nxcopy /S /Y `"%TestRunDirectory%`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName%`"`nrmdir /S /Q `"%DeploymentDirectory%`""
+            $ReverseDeployScript = "`nrmdir /S /Q `"%DeploymentDirectory%`""
             $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
@@ -817,6 +817,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
 			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
+                $ReverseDeployScript += "`ncopy `"%ProgramData%\Warewolf\Server Log\wareWolf-Server.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Server.log`""
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
                 } else {
@@ -830,6 +831,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $StartupScriptPath = "$TestsResultsPath\startup.bat"
                 $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
                 if ($StartStudio.IsPresent) {
+                    $ReverseDeployScript += "`ncopy `"%LocalAppData%\Warewolf\Studio Logs\Warewolf Studio.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Studio.log`""
                     $AgentRoleTags = @"
 
       <SelectionCriteria>
@@ -871,10 +873,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 Copy-On-Write $StartupScriptPath
                 New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -$StartCommand -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
 			    Copy-On-Write $CleanupScriptPath
-			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$ReverseDeploymentScript"
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"$ReverseDeployScript"
             } else {
 			    Copy-On-Write $CleanupScriptPath
-			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeploymentScript"
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeployScript"
             }
         }
 
