@@ -557,14 +557,14 @@ function Start-Studio {
 		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
     $i = 0
-    while (!(Test-Path $StudioLogFile) -and $i++ -lt 10){
+    while (!(Test-Path $StudioLogFile) -and $i++ -lt 200){
         Write-Warning "Waiting for Studio to start..."
         Sleep 3
     }
     if (Test-Path $StudioLogFile) {
 	    Write-Host Studio has started.
     } else {
-		Write-Error -Message "Warewolf studio failed to start before the timeout."
+		Write-Error -Message "Warewolf studio failed to start within 10 minutes."
         sleep 30
 		exit 1
     }
