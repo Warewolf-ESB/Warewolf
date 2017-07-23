@@ -818,7 +818,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
 			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
-                $ReverseDeployScript += "`ncopy `"%ProgramData%\Warewolf\Server Log\wareWolf-Server.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Server.log`""
+                $ReverseDeployScript += "`ncopy `"%DeploymentDirectory%\TestResults\Manual Tests Server.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Server.log`""
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
                 } else {
@@ -832,7 +832,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $StartupScriptPath = "$TestsResultsPath\startup.bat"
                 $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
                 if ($StartStudio.IsPresent) {
-                    $ReverseDeployScript += "`ncopy `"%LocalAppData%\Warewolf\Studio Logs\Warewolf Studio.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Studio.log`""
+                    $ReverseDeployScript += "`ncopy `"%DeploymentDirectory%\TestResults\Manual Tests Studio.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Studio.log`""
                     $AgentRoleTags = @"
 
       <SelectionCriteria>
