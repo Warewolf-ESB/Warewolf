@@ -799,7 +799,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if ($Parallelize.IsPresent) {
             $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
             $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
-            $ReverseDeploymentScript = "`nxcopy /S /Y `"%ResultsDirectory%`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare`"`nrmdir /S /Q `"%DeploymentDirectory%`""
+            $ReverseDeploymentScript = "`nxcopy /S /Y `"%TestRunDirectory%`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName%`"`nrmdir /S /Q `"%DeploymentDirectory%`""
             $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
@@ -817,7 +817,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
 			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
-			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$ReverseDeploymentScript"
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
                 } else {
@@ -851,12 +850,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
-                    Copy-On-Write $StartupScriptPath
-                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
 					$BucketsTag = @"
 
     <Buckets size="1" threshold="1"/>
 "@
+                    $StartCommand = "StartStudio"
                 } else {
                     $DeploymentTags = @"
 
@@ -868,9 +866,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
-                    Copy-On-Write $StartupScriptPath
-                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
+                    $StartCommand = "StartServer"
                 }
+                Copy-On-Write $StartupScriptPath
+                New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -$StartCommand -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
+			    Copy-On-Write $CleanupScriptPath
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$ReverseDeploymentScript"
             } else {
 			    Copy-On-Write $CleanupScriptPath
 			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeploymentScript"
