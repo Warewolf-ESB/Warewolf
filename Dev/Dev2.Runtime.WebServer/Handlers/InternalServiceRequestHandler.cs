@@ -9,9 +9,11 @@
 */
 
 using System;
+using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
@@ -24,6 +26,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Services.Security;
+using FluentAssertions.Common;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -50,7 +53,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var instanceId = GetInstanceID(ctx);
             var bookmark = GetBookmark(ctx);
             GetDataListID(ctx);
-            var workspaceID = GetWorkspaceID(ctx);
+            var workspaceId = GetWorkspaceID(ctx);
             var formData = new WebRequestTO();
 
             var xml = GetPostData(ctx);
@@ -78,7 +81,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     Thread.CurrentPrincipal = ExecutingUser;
 
-                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
+                    var responseWriter = CreateForm(formData, serviceName, workspaceId, ctx.FetchHeaders(), ctx.Request.User);
                     ctx.Send(responseWriter);
                 });
 
@@ -94,13 +97,33 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceID, Guid dataListID, string connectionId)
+        private string BuildStudioUrl(string payLoad)
+        {
+            try
+            {
+                var xElement = XDocument.Parse(payLoad);
+                xElement.Descendants().Where(e => e.Name == "BDSDebugMode" || e.Name == "DebugSessionID" || e.Name == "EnvironmentID").Remove();
+                var s = xElement.ToString(SaveOptions.DisableFormatting);
+                var buildStudioUrl = s.RemoveNewLines().Replace(" ", "%20");
+                return buildStudioUrl;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, "BuildStudioUrl(string payLoad)");
+                return string.Empty;
+            }
+
+        }
+
+        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, Guid dataListId, string connectionId)
         {
             var channel = new EsbServicesEndpoint();
             var xmlData = string.Empty;
+            var queryString = "";
             if (request.Args != null && request.Args.ContainsKey("DebugPayload"))
             {
                 xmlData = request.Args["DebugPayload"].ToString();
+                queryString = BuildStudioUrl(xmlData);
                 xmlData = xmlData.Replace("<DataList>", "<XmlData>").Replace("</DataList>", "</XmlData>");
             }
 
@@ -118,11 +141,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
             var serializer = new Dev2JsonSerializer();
-            IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
+            IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListId);
             if (!dataObject.ExecutionID.HasValue)
             {
                 dataObject.ExecutionID = Guid.NewGuid();
             }
+            dataObject.QueryString = queryString;
 
             if (isDebug)
             {
@@ -132,7 +156,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
 
-            var resource = request.ResourceID != Guid.Empty ? _catalog.GetResource(workspaceID, request.ResourceID) : _catalog.GetResource(workspaceID, request.ServiceName);
+            var resource = request.ResourceID != Guid.Empty ? _catalog.GetResource(workspaceId, request.ResourceID) : _catalog.GetResource(workspaceId, request.ServiceName);
             var isManagementResource = false;
             if (!string.IsNullOrEmpty(request.TestName))
             {
@@ -194,7 +218,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             }
                         }
 
-                        channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
+                        channel.ExecuteRequest(dataObject, request, workspaceId, out errors);
                     });
 
                     t.Start();
