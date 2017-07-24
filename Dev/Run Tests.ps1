@@ -874,7 +874,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 Copy-On-Write $StartupScriptPath
                 New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -$StartCommand -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
 			    Copy-On-Write $CleanupScriptPath
-			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"$ReverseDeployScript`nexit 0"
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$ReverseDeployScript`nexit 0"
             } else {
 			    Copy-On-Write $CleanupScriptPath
 			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeployScript`nexit 0"
