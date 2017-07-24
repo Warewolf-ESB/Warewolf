@@ -632,9 +632,9 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             var test = serviceTest.SelectedServiceTest;
-            Assert.IsNotNull(test);
-            Assert.IsTrue(test.TestPassed);
-            Assert.IsFalse(test.TestFailing);
+            Assert.IsNotNull(test, "Workflow service test null.");
+            Assert.IsTrue(test.TestPassed, "Workflow service test failed.");
+            Assert.IsFalse(test.TestFailing, "Workflow service test failed.");
         }
 
         [Then(@"I change Decision ""(.*)"" arm to ""(.*)""")]

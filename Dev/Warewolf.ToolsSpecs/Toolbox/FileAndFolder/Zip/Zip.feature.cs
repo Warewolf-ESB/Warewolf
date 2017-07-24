@@ -123,7 +123,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table800 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Source Path",
                         "Username",
                         "Password",
@@ -135,7 +135,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Overwrite",
                         "Archive Password",
                         "Compression Ratio"});
-            table800.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String",
@@ -148,14 +148,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", archivepassword),
                         string.Format("{0}", compression)});
 #line 21
- testRunner.And("the debug inputs as", ((string)(null)), table800, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table801 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table801.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 24
- testRunner.And("the debug output as", ((string)(null)), table801, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -770,7 +770,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip10.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -783,7 +783,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_21()
         {
-            this.ZipFileAtLocation("21", "Local to SFTP", "[[path]]", "c:\\filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://rsaklfsvrdev/filetozip10.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("21", "Local to SFTP", "[[path]]", "c:\\filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://rsaklfsvrdev/filetozip.zip", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -800,7 +800,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip11.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -814,7 +814,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ZipFileAtLocation_22()
         {
             this.ZipFileAtLocation("22", "UNC to SFTP", "[[path]]", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileZipSharedTestingSite\\filetozip4.txt" +
-                    "", "\"\"", "\"\"", "[[path1]]", "sftp://rsaklfsvrdev/filetozip11.txt", "dev2", "Q/ulw&]", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+                    "", "\"\"", "\"\"", "[[path1]]", "sftp://rsaklfsvrdev/filetozip.zip", "dev2", "Q/ulw&]", "True", "", "BestSpeed", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -830,7 +830,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip12.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -843,7 +843,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_23()
         {
-            this.ZipFileAtLocation("23", "FTP to SFTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://rsaklfsvrdev/filetozip12.txt", "dev2", "Q/ulw&]", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("23", "FTP to SFTP", "[[path]]", "ftp://rsaklfsvrpdc:1001/FORTESTING/filetozip4.txt", "\"\"", "\"\"", "[[path1]]", "sftp://rsaklfsvrdev/filetozip.zip", "dev2", "Q/ulw&]", "True", "", "Default", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -859,7 +859,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip13.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -872,7 +872,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_24()
         {
-            this.ZipFileAtLocation("24", "FTPS to SFTP", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/filetozip4.txt", "integrationtester", "I73573r0", "[[path1]]", "sftp://rsaklfsvrdev/filetozip13.txt", "dev2", "Q/ulw&]", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("24", "FTPS to SFTP", "[[path]]", "ftp://rsaklfsvrpdc:1002/FORTESTING/filetozip4.txt", "integrationtester", "I73573r0", "[[path1]]", "sftp://rsaklfsvrdev/filetozip.zip", "dev2", "Q/ulw&]", "True", "", "BestCompression", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -888,7 +888,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip14.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -901,7 +901,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "")]
         public virtual void ZipFileAtLocation_25()
         {
-            this.ZipFileAtLocation("25", "SFTP to SFTP", "[[path]]", "sftp://rsaklfsvrdev/filetozip4.txt", "dev2", "Q/ulw&]", "[[path1]]", "sftp://rsaklfsvrdev/filetozip14.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
+            this.ZipFileAtLocation("25", "SFTP to SFTP", "[[path]]", "sftp://rsaklfsvrdev/filetozip4.txt", "dev2", "Q/ulw&]", "[[path1]]", "sftp://rsaklfsvrdev/filetozip.zip", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "", "", ((string[])(null)));
 #line hidden
         }
         
@@ -917,7 +917,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip141.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://rsaklfsvrdev/filetozip.zip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -930,7 +930,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationPrivateKeyFile", "C:\\Temp\\key.opk")]
         public virtual void ZipFileAtLocation_26()
         {
-            this.ZipFileAtLocation("26", "SFTP to SFTP PK", "[[path]]", "sftp://rsaklfsvrdev/filetozip41.txt", "dev2", "Q/ulw&]", "[[path1]]", "sftp://rsaklfsvrdev/filetozip141.txt", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
+            this.ZipFileAtLocation("26", "SFTP to SFTP PK", "[[path]]", "sftp://rsaklfsvrdev/filetozip41.txt", "dev2", "Q/ulw&]", "[[path1]]", "sftp://rsaklfsvrdev/filetozip.zip", "dev2", "Q/ulw&]", "True", "", "None", "[[result]]", "\"Success\"", "NO", "C:\\Temp\\key.opk", "C:\\Temp\\key.opk", ((string[])(null)));
 #line hidden
         }
         
@@ -1212,7 +1212,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 94
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table802 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Source Path",
                         "Username",
                         "Password",
@@ -1222,7 +1222,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Overwrite",
                         "Archive Password",
                         "Compression Ratio"});
-            table802.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String",
@@ -1233,14 +1233,14 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", archivepassword),
                         string.Format("{0}", compression)});
 #line 95
- testRunner.And("the debug inputs as", ((string)(null)), table802, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table803 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table803.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 98
- testRunner.And("the debug output as", ((string)(null)), table803, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -15,6 +15,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Interfaces;
+using Dev2.Data.PathOperations;
+using Dev2.Data.Interfaces;
+using Dev2.PathOperations;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
 {
@@ -76,13 +79,9 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
                 {
                     Action = zip
                 };
-                // CI
                 scenarioContext.Add("activity", zip);
             }
-            catch(Exception)
-            {
-                //
-            }
+            finally { }
         }
     }
 }

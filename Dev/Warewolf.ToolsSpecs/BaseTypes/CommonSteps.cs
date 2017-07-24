@@ -522,7 +522,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                             }
                             catch (Exception e)
                             {
-                                Assert.Fail("Cannot convert value " + actualValue + " to type " + type + ". There was an exception: " + e.Message);
+                                Assert.Fail("Cannot convert value \"" + actualValue + "\" of variable \"" + variable + "\" to type " + type + ". There was an exception: " + e.Message);
                             }
                         }
                     }
