@@ -122,7 +122,7 @@
                             }
                             else
                             {
-                                <a href="@item.Url" target="_blank">@item.Url</a>
+                                <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
                             }
                         }
                     </td>
@@ -142,23 +142,17 @@
 <div id="dialog" style="display: none">
 </div>
 <script type="text/javascript">
-
-    function ClearFields() {
-
-        document.getElementById("filterId").value = "";
-        document.getElementById("filterTime").value = "";
-        document.getElementById("filterStatus").value = "";
-        document.getElementById("filterStart").value = "";
-        document.getElementById("filterComplete").value = "";
-        document.getElementById("filterUrl").value = "";
-        document.getElementById("filterUser").value = "";
-    }
-
     $(function () {
         $("#dialog").dialog({
             autoOpen: false,
             modal: true,
-            title: "Result"
+            title: "Result",
+            maxWidth: 600,
+            maxHeight: 500,
+            minWidth: 400,
+            minHeight: 300,
+            width: 400,
+            height: 300
         });
         $("#executionList .details").click(function () {
             var executionId = $(this).closest("tr").find("td").eq(0).html();
