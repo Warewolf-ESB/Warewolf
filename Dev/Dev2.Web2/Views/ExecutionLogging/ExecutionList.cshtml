@@ -6,10 +6,21 @@
 <script type='text/javascript'>
     jQuery(document).ready(function ($) {
         $('.filter').multifilter();
-        $("#filterComplete").datepicker();
-        $("#filterStart").datepicker();
+
+        $("#filterStart").datetimepicker({
+            format: 'd/m/Y H:i:s',
+            lang: 'ru'
+        });
+
+        $("#filterComplete").datetimepicker({
+            format: 'd/m/Y H:i:s',
+            lang: 'ru'
+        });
+
         $('#ResetButton').on('click', function (e) {
             $('#executionFilters input').val(null).trigger('change');
+            $('#filterContainStart input').val(null).trigger('change');
+            $('#filterContainComplete input').val(null).trigger('change');
         });
     });
 </script>
