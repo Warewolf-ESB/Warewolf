@@ -718,6 +718,7 @@
     </EmbeddedResource>
     <Content Include="TextFiles\TextFile2.txt" />
     <Content Include="TextFiles\TextFile1.txt" />
+    <EmbeddedResource Include="XML\DebugPayload.xml" />
     <Content Include="XML\GenDev.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

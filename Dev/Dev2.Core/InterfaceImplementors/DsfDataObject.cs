@@ -197,6 +197,7 @@ namespace Dev2.DynamicServices
         public bool IsDebugNested { get; set; }
         public List<Guid> TestsResourceIds { get; set; }
         public bool IsSubExecution { get; set; }
+        public string QueryString { get; set; }
         public bool IsRemoteInvoke => EnvironmentID != Guid.Empty;
 
         public bool IsRemoteInvokeOverridden { get; set; }
@@ -386,6 +387,7 @@ namespace Dev2.DynamicServices
             result.ExecutionID = ExecutionID;
             result.WebUrl = WebUrl;
             result.IsSubExecution = IsSubExecution;
+            result.QueryString = QueryString;
             if (ServiceTest != null)
             {
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();

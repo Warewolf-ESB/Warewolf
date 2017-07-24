@@ -1,0 +1,12 @@
+﻿<DataList>
+  <input>a</input>
+  <rec json:Array="true" xmlns:json="http://james.newtonking.com/projects/json">
+    <field>w</field>
+  </rec>
+  <obj>
+    <Name>nathi</Name>
+  </obj>
+  <BDSDebugMode>true</BDSDebugMode>
+  <DebugSessionID>ba7cd65c-62b6-4aa2-9f84-aaf4421f9ae3</DebugSessionID>
+  <EnvironmentID>00000000-0000-0000-0000-000000000000</EnvironmentID>
+</DataList>
