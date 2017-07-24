@@ -180,7 +180,14 @@ function FindFile-InParent([string[]]$FileSpecs,[int]$NumberOfParentsToSearch=7)
     $FilePath
 }
 
-function Cleanup-ServerStudio([int]$WaitForCloseTimeout = 1800,[int]$WaitForCloseRetryCount = 10) {
+function Cleanup-ServerStudio([bool]$Force=$true) {
+    if ($Force) {
+        $WaitForCloseTimeout = 10
+        $WaitForCloseRetryCount = 1
+    } else {
+        $WaitForCloseTimeout = 1800
+        $WaitForCloseRetryCount = 10
+    }
     #Stop Studio
     $Output = ""
     taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
@@ -251,6 +258,7 @@ function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationF
     $DestinationFilePath = "$TestsResultsPath\$DestinationFileName"
     if (Test-Path $SourceFilePath) {
         Copy-On-Write $DestinationFilePath
+        Write-Host Moving `"$SourceFilePath`" to `"$DestinationFilePath`"
         Move-Item "$SourceFilePath" "$DestinationFilePath"
     }
 }
@@ -476,7 +484,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
         }
     }
     $ResourcesDirectory = FindFile-InParent $ResourcePathSpecs
-    if ($ResourcesPath -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
+    if ($ResourcesDirectory -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
         Copy-Item -Path "$ResourcesDirectory" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
     }
     $ServerPath,$ResourcesType
@@ -484,7 +492,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 
 function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     Write-Host Cleaning up old resources in Warewolf ProgramData and copying in new resources from ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*").
-    Cleanup-ServerStudio 10 1
+    Cleanup-ServerStudio
     Copy-Item -Path ((Get-Item $ServerPath).Directory.FullName + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
     Start-Service "Warewolf Server"
@@ -549,11 +557,18 @@ function Start-Studio {
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
 		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
-    while (!(Test-Path $StudioLogFile)){
+    $i = 0
+    while (!(Test-Path $StudioLogFile) -and $i++ -lt 200){
         Write-Warning "Waiting for Studio to start..."
         Sleep 3
     }
-	Write-Host Studio has started.
+    if (Test-Path $StudioLogFile) {
+	    Write-Host Studio has started.
+    } else {
+		Write-Error -Message "Warewolf studio failed to start within 10 minutes."
+        sleep 30
+		exit 1
+    }
 }
 
 function AssemblyIsNotAlreadyDefinedWithoutWildcards([string]$AssemblyNameToCheck) {
@@ -783,6 +798,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestRunName += " and Screen Recording"
         }
         if ($Parallelize.IsPresent) {
+            $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
+            $ThisComputerHostname = Hostname            $ResultsPathAsAdminShare = $TestsResultsPath.Replace(":","$")
+            $ThoroughCleanupScript = "rmdir /S /Q `"%TestRunDirectory%\..\..`""
+            $ScriptsTag = "`n  <Scripts cleanupScript=`"$CleanupScriptPath`" />"
             $ControllerNameTag = "`n  <RemoteController name=`"$HardcodedTestController`" />"
             $RemoteExecutionAttribute = " location=`"Remote`""
             $AgentRuleNameValue = "Remote"
@@ -798,11 +817,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 "@
             $DeploymentTags = "`n  <Deployment enabled=`"true`" />"
 			$DeploymentTimeoutAttribute = " deploymentTimeout=`"600000`" agentNotRespondingTimeout=`"600000`""
-			$BucketsTag = @"
-
-    <Buckets size="1" threshold="1"/>
-"@
             if ($StartStudio.IsPresent -or $StartServer.IsPresent) {
+                $ReverseDeployScript = "copy `"%DeploymentDirectory%\TestResults\Manual Tests Server.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Server.log`"`n" + $ThoroughCleanupScript
                 if ($ServerUsername -ne "") {
                     $ServerUsernameParam = " -ServerUsername '" + $ServerUsername + "'"
                 } else {
@@ -814,9 +830,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                     $ServerPasswordParam = ""
                 }
                 $StartupScriptPath = "$TestsResultsPath\startup.bat"
-                $CleanupScriptPath = "$TestsResultsPath\cleanup.bat"
                 $ScriptsTag = "`n  <Scripts setupScript=`"$StartupScriptPath`" cleanupScript=`"$CleanupScriptPath`" />"
                 if ($StartStudio.IsPresent) {
+                    $ReverseDeployScript = "copy `"%DeploymentDirectory%\TestResults\Manual Tests Studio.log`" `"\\$ThisComputerHostname\$ResultsPathAsAdminShare\%AgentName% Studio.log`"`n" + $ThoroughCleanupScript
                     $AgentRoleTags = @"
 
       <SelectionCriteria>
@@ -837,10 +853,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
-                    Copy-On-Write $StartupScriptPath
-                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartStudio -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
-                    Copy-On-Write $CleanupScriptPath
-                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+					$BucketsTag = @"
+
+    <Buckets size="1" threshold="1"/>
+"@
+                    $StartCommand = "StartStudio"
                 } else {
                     $DeploymentTags = @"
 
@@ -852,11 +869,15 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     <DeploymentItem filename="Run Tests.ps1" />
   </Deployment>
 "@
-                    Copy-On-Write $StartupScriptPath
-                    New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -StartServer -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
-                    Copy-On-Write $CleanupScriptPath
-                    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`""
+                    $StartCommand = "StartServer"
                 }
+                Copy-On-Write $StartupScriptPath
+                New-Item -Force -Path "$StartupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -$StartCommand -ResourcesType $ResourcesType$ServerUsernameParam$ServerPasswordParam`""
+			    Copy-On-Write $CleanupScriptPath
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "powershell -Command `"&'%DeploymentDirectory%\Run Tests.ps1' -Cleanup`"`n$ReverseDeployScript`nexit 0"
+            } else {
+			    Copy-On-Write $CleanupScriptPath
+			    New-Item -Force -Path "$CleanupScriptPath" -ItemType File -Value "$ReverseDeployScript`nexit 0"
             }
         }
 
@@ -968,12 +989,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 #Run DotCover Runner Batch File
                 &"$DotCoverRunnerPath"
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-                    Cleanup-ServerStudio 1800 10
+                    Cleanup-ServerStudio $false
                 }
             } else {
                 &"$TestRunnerPath"
                 if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
-                    Cleanup-ServerStudio 10 1
+                    Cleanup-ServerStudio
                 }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
@@ -1209,9 +1230,9 @@ if ($RunWarewolfServiceTests.IsPresent) {
 
 if ($Cleanup.IsPresent) {
     if ($ApplyDotCover) {
-        Cleanup-ServerStudio 1800 10
+        Cleanup-ServerStudio $false
     } else {
-        Cleanup-ServerStudio 10 1
+        Cleanup-ServerStudio
     }
 	if (!$JobName) {
 		if ($ProjectName) {
@@ -1230,8 +1251,10 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllJobs.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent) {
     $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
     Start-Server $ServerPath $ResourcesType
-    Start-Studio
+    if (!$StartServer.IsPresent) {
+        Start-Studio
+    }
 }
