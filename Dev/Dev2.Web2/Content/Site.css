@@ -229,7 +229,40 @@ td {
     #updateServer:hover {
         background: #b14f05;
     }
+/*Button*/
 
+
+
+
+/*Dialog*/
+.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute;
+    right: .3em;
+    top: 50%;
+    width: 21px;
+    margin: -10px 0 0 0;
+    padding: 1px;
+    height: 20px;
+}
+
+.ui-dialog-titlebar-close:hover {
+    background: transparent;
+    color: #000;
+    border: none;
+}
+
+.ui-widget-header {
+    border: 1px solid #aaaaaa;
+    background: #f3700d 50% 50% repeat-x;
+    color: #FFFFFF;
+    font-size: medium;
+}
+/*Dialog*/
+
+
+
+
+/*Link*/
 .details {
     font-size: 14px;
     margin-left: 10px;
@@ -237,11 +270,18 @@ td {
 }
 
     .details:hover {
-        font-size: 14px;
-        margin-left: 10px;
         color: #f3700d;
     }
-/*Button*/
+
+.executionUrl {
+    font-size: 12px;
+    color: #333;
+}
+
+    .executionUrl:hover {
+        color: #f3700d;
+    }
+/*Link*/
 
 
 
