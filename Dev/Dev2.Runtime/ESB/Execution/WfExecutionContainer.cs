@@ -11,6 +11,7 @@
 using System;
 using System.Activities;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Threading;
 using Dev2.Activities;
 using Dev2.Common;
@@ -51,7 +52,8 @@ namespace Dev2.Runtime.ESB.Execution
             var user = Thread.CurrentPrincipal;
             if (string.IsNullOrEmpty(DataObject.WebUrl))
             {
-                DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}";
+                var dataObjectWebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
+                DataObject.WebUrl = dataObjectWebUrl.ToLower(CultureInfo.InvariantCulture);
             }
             if (!DataObject.IsSubExecution)
             {
@@ -175,7 +177,7 @@ namespace Dev2.Runtime.ESB.Execution
         {
             return null;
         }
-        
+
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update)
         {
             var exe = CustomContainer.Get<IExecutionManager>();
