@@ -10,6 +10,7 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background: #f4f3ef;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -60,11 +61,6 @@ td {
 * {
     box-sizing: border-box;
 }
-#protocolDropdown {
-    border: none;
-    color: blue;
-    font-size: large;
-}
 
 #myInput {
     background-image: url('/css/searchicon.png');
@@ -111,24 +107,9 @@ td {
     padding: 3px;
 }
 
-#protocolList {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    font-size: 17px;
-}
 
-    #protocolList li {
-        position: relative;
-    }
 
-li #protocolList {
-    position: absolute;
-    left: 149px;
-    top: 0;
-    display: none;
-}
-
+/*DateTime*/
 #start_dt {
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -212,31 +193,149 @@ li #protocolList {
     font-family: sans-serif;
     font-size: 11px;
 }
+/*DateTime*/
 
+
+
+
+/*Button*/
+#ResetButton {
+    width: 50px;
+    height: 23px;
+    align-content: center;
+    padding: 0px;
+    margin-left: 2px;
+    margin-top: 1px;
+    background: #f3700d;
+    color: white;
+    border: none;
+}
+
+    #ResetButton:hover {
+        background: #b14f05;
+    }
+
+#updateServer {
+    width: 60px;
+    height: 33px;
+    align-content: center;
+    padding: 0px;
+    margin-left: 2px;
+    background: #f3700d;
+    color: white;
+    border: none;
+}
+
+    #updateServer:hover {
+        background: #b14f05;
+    }
+
+.details {
+    font-size: 14px;
+    margin-left: 10px;
+    color: #333;
+}
+
+    .details:hover {
+        font-size: 14px;
+        margin-left: 10px;
+        color: #f3700d;
+    }
+/*Button*/
+
+
+
+
+/*Filter*/
 .filters {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .filter-container {
     float: left;
-    width: 14%;
-    padding-right: 10px;
+    padding: 1px;
 }
 
-    .filter-container:last-of-type {
-        padding-right: 0;
-    }
+#filterContainId {
+    width: 18.2%;
+}
 
-    .filter-container input {
-        -webkit-appearance: none;
-        border: 1px solid #b31d14;
-        background: #c8c8c8;
-        border-radius: 2px;
-        font-size: 14px;
-        width: 100%;
-        padding-left: 5px;
-    }
+#filterContainTime {
+    width: 7.7%;
+}
 
-        .filter-container input:focus {
-            outline: none;
-        }
+#filterContainStatus {
+    width: 6.6%;
+}
+
+#filterContainStart {
+    width: 9.4%;
+}
+
+#filterContainComplete {
+    width: 9.5%;
+}
+
+#filterContainUrl {
+    width: 28.4%;
+}
+
+#filterContainUser {
+    width: 16.6%;
+}
+
+.filter-container:last-of-type {
+    padding-right: 0;
+}
+
+.filter-container input {
+    -webkit-appearance: none;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+    padding-left: 5px;
+}
+
+    .filter-container input:focus {
+        outline: none;
+        border: 1px solid #f3700d;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+    }
+/*Filter*/
+
+
+
+
+/*Dropdown*/
+#protocolDropdown {
+    border: 1px solid #ccc;
+    color: black;
+    font-size: 15px;
+    position: relative;
+    background: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease-out;
+}
+
+    #protocolDropdown:focus {
+        outline: 0;
+        border: 1px solid #f3700d;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+    }
+/*Dropdown*/
+
+
+
+
+.form-control:focus {
+    outline: 0;
+    border: 1px solid #f3700d;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+}

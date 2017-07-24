@@ -4,13 +4,10 @@ using RestSharp;
 using RestSharp.Authenticators;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Dev2.Web2.Controllers
-{    
+{
     public class ExecutionLoggingController : Controller
     {
         // GET: ExecutionLogging
@@ -91,38 +88,6 @@ namespace Dev2.Web2.Controllers
         public ActionResult Create()
         {
             return View();
-        }
-
-        public ActionResult OpenUrl(string url)
-        {
-            try
-            {
-                OpenInBrowser(new Uri(url));
-                return View("Index");
-            }
-            catch (Exception ex)
-            {
-                return View("Index");
-            }
-        }
-
-        public void OpenInBrowser(Uri url)
-        {
-            Process start = null;
-            try
-            {
-                start = Process.Start(url.ToString());
-            }
-            catch (TimeoutException)
-            {
-                start?.Kill();
-                start?.Dispose();
-            }
-            catch (System.Runtime.InteropServices.COMException)
-            {
-                start?.Kill();
-                start?.Dispose();
-            }
         }
 
         // POST: ExecutionLogging/Create
