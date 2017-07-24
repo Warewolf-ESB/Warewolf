@@ -108,5 +108,6 @@ namespace Dev2.Interfaces
         Guid? ExecutionID { get; set; }
         string WebUrl { get; set; }
         bool IsSubExecution { get; set; }
+        string QueryString { get; set; }
     }
 }
