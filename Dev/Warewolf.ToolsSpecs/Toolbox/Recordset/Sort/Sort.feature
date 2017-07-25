@@ -1,5 +1,4 @@
-﻿@Recordset
-Feature: Sort
+﻿Feature: Sort
 	In order to sort a recordset
 	As a Warewolf user
 	I want a tool I can use to arrange records in either ascending or descending order 

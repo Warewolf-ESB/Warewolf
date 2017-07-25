@@ -1,5 +1,4 @@
-﻿@Scripting
-@RubyFeature
+﻿@RubyFeature
 Feature: Ruby
 	In order to execute Ruby
 	As a Warewolf user

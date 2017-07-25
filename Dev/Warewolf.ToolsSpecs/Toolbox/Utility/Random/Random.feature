@@ -1,4 +1,4 @@
-﻿@Utility
+﻿@Utils
 Feature: Random
 	In order to generate random values
 	As a Warewolf user

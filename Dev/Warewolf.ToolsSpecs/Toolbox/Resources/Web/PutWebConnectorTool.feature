@@ -1,5 +1,4 @@
-﻿@Resources
-Feature: Put Web Connector Tool
+﻿Feature: Put Web Connector Tool
 	In order to create New Web Put Service Tool in Warewolf
 	As a Warewolf User
 	I want to Create or Edit Warewolf Web Put Request.

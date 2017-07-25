@@ -1,4 +1,4 @@
-﻿@Utility
+﻿@Utils
 Feature: DateandTime
 	In order to work with date and time
 	As a Warewolf user

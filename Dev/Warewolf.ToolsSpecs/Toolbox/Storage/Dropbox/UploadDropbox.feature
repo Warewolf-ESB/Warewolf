@@ -1,5 +1,4 @@
-﻿@Storage
-Feature: UploadDropbox
+﻿Feature: UploadDropbox
 	In order to save content to an Online Server
 	As a Warewolf User
 	I want to be to backup/move files to a dropbox account

@@ -1,5 +1,4 @@
-﻿@Recordset
-Feature: Count
+﻿Feature: Count
 	In order to count records
 	As a Warewolf user
 	I want a tool that takes a record set counts it

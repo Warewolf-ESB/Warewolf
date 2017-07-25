@@ -1,5 +1,4 @@
-﻿@Recordset
-Feature: FindRecordsetIndexMultiple
+﻿Feature: FindRecordsetIndexMultiple
 	In order to search for pieces of data in a recordset
 	As a Warewolf user
 	I want a tool I can use to find an index 

@@ -1,5 +1,4 @@
-﻿@Scripting
-@PythonFeature
+﻿@PythonFeature
 Feature: Python
 	In order to execute Python
 	As a Warewolf user

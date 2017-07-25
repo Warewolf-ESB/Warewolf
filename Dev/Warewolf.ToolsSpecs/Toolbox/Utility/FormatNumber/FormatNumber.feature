@@ -1,4 +1,4 @@
-﻿@Utility
+﻿@Utils
 Feature: FormatNumber
 	In order to round off numbers
 	As a Warewolf user

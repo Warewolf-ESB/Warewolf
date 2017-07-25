@@ -1,4 +1,4 @@
-﻿@FileAndFolder
+﻿@fileFeature
 Feature: Unzip
 	In order to be able to Unzip File or Folder 
 	as a Warewolf user
