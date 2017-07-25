@@ -55,6 +55,12 @@ namespace Dev2.Tests.Runtime.WebServer
             principle.Setup(p => p.Identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
             principle.Setup(p => p.Identity.Name).Verifiable();
+            principle.Setup(p => p.Identity).Returns(mockIdentity.Object).Verifiable();
+            var old = Common.Utilities.OrginalExecutingUser;
+            if (Common.Utilities.OrginalExecutingUser != null)
+            {
+                Common.Utilities.OrginalExecutingUser = principle.Object;
+            }
             ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
             ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
             Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
@@ -71,7 +77,8 @@ namespace Dev2.Tests.Runtime.WebServer
             webPostRequestHandler.ProcessRequest(ctx.Object);
 
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
+            mockIdentity.VerifyGet(identity => identity.Name, Times.AtLeast(1));
+            Common.Utilities.OrginalExecutingUser = old;
         }
     }
 }
