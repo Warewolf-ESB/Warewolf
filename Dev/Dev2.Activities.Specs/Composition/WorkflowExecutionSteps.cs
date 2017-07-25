@@ -1211,7 +1211,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
 
             var end = debugStates.First(wf => wf.Name.Equals("End"));
-            Assert.IsTrue(end.Duration.Ticks > 0);
+            Assert.IsTrue(end.Duration.Ticks > 0, "Workflow debug output end step duration of " + end.Duration.Ticks + " ticks which is less than or equal to 0 ticks. All workflow no matter how simple do take some time to execute.");
         }
 
         [Then(@"""(.*)"" Duration is less or equal to (.*) seconds")]
