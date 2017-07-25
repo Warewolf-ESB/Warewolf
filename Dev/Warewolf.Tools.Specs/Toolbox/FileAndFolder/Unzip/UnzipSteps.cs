@@ -168,7 +168,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
                                                                                 true);
                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
 
-                string resourceName = "Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Unzip.Test.zip";
+                string resourceName = "Warewolf.Tools.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
                 if (scenarioContext.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
                     resourceName = "TestFile.zip";
                 Assembly assembly = Assembly.GetExecutingAssembly();

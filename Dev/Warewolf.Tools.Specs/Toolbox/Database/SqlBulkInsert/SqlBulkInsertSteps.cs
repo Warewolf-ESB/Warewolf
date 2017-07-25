@@ -102,7 +102,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         private void CreateIsolatedSQLTable(string tableNameUniqueNameGuid)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert." + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + ".sql";
+            var resourceName = "Warewolf.Tools.Specs.Toolbox.Recordset.SqlBulkInsert." + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + ".sql";
             string CreateIsolatedSqlTable;
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
