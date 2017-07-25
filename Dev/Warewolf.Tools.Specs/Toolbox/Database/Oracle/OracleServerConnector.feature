@@ -12,62 +12,60 @@ Scenario: Creating Oracle Server Connector
 	And Action is Disable
 	And Inputs is Disable
 	And Outputs is Disable
-	When I Selected "GreenPoint" as Source
+	When I Selected GreenPoint as Source
 	Then Action is Enable
-	When I selected "HR.TESTPROC9" az the action
+	When I selected HR.TESTPROC9 as the Oracle action
 	Then Inputs is Enable 
-	And Inputs appear az 
+	And Oracle Inputs appear as 
 	| Input     | Value | Empty is Null |
-	| EID		|  [[EID]]     | false         |
+	| EID		|  [[EID]]     | false  |
 	And Validate is Enable
-	When I click Validat
-	And Test Inputs appear az
+	When I click Oracle Validate
+	And Test Oracle Inputs appear as
 	| EID		 |
 	| 100        |
-	When I click Testz
-	Then Test Connector and Calculate Outputs outputs appear az
+	When I click Oracle Tests
+	Then Test Connector and Calculate Oracle Outputs appear as
 	| Column1 |
 	| 1       |
-	When I click OKay
-	Then Outputs appear az
-	| Mapped From | Mapped To                     | 
+	When I click Oracle OK
+	Then Oracle Outputs appear as
+	| Mapped From | Mapped To                  | 
 	| Column1     | [[HR_TESTPROC9().Column1]] | 
-
-	Then Recordset Name equalz "HR_TESTPROC9"	
+	Then Oracle Recordset Name equals "HR_TESTPROC9"	
 
 Scenario: Opening Saved workflow with Oracle Server tool
    Given I open workflow with Oracle connector
 	And Source is Enable
-	And Source iss "testingDBSrc"
-	And Action iss "dbo.Pr_CitiesGetCountries"
+	And Oracle Source is "testingDBSrc"
+	And Oracle Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
-	Then Inputs appear az
+	Then Oracle Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
 	And Validate is Enable
-	Then Outputs appear az
+	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equalz "dbo_Pr_CitiesGetCountries"
+	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
 Scenario: Change Source on Existing tool
 	Given I open workflow with Oracle connector
 	And Source is Enable
-	And Source iss "testingDBSrc"
-	#And Action is Enable
-	And Action iss "dbo.Pr_CitiesGetCountries"
+	And Oracle Source is "testingDBSrc"
+	And Oracle Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
-	Then Inputs appear az
+	Then Oracle Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
 	And Validate is Enable
-	Then Outputs appear az
+	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equalz "dbo_Pr_CitiesGetCountries"
-	When Source iz changed from to "GreenPoint"
+	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	When Oracle Source is changed from to GreenPoint
 	Then Action is Enable
 	And Inputs is Enable
 	And Validate is Enable
@@ -75,21 +73,21 @@ Scenario: Change Source on Existing tool
 Scenario: Changing Actions
 	Given I open workflow with Oracle connector
 	And Source is Enable
-	And Source iss "testingDBSrc"	
-	And Action iss "dbo.Pr_CitiesGetCountries"
+	And Oracle Source is "testingDBSrc"	
+	And Oracle Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
-	Then Inputs appear az
+	Then Oracle Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
 	And Validate is Enable
-	Then Outputs appear az
+	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equalz "dbo_Pr_CitiesGetCountries"
-	When Action iz changed from to "dbo.ImportOrder"
+	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	When Oracle Action is changed from to dbo.ImportOrder
 	And Inputs is Enable
-	And Inputs appear az
+	And Oracle Inputs appear as
 	| Input     | Value         | Empty is Null |
 	| ProductId | [[ProductId]] | false         |
 	And Validate is Enable
@@ -97,20 +95,20 @@ Scenario: Changing Actions
 Scenario: Change Recordset Name
 	Given I open workflow with Oracle connector
 	And Source is Enable
-	And Source iss "testingDBSrc"	
-	And Action iss "dbo.Pr_CitiesGetCountries"
+	And Oracle Source is "testingDBSrc"	
+	And Oracle Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
-	Then Inputs appear az
+	Then Oracle Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
 	And Validate is Enable
-	Then Outputs appear az
+	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equalz "dbo_Pr_CitiesGetCountries"
-	When Recordset Name iz changed to "Pr_Cities"
-	Then Outputs appear az
+	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	When Oracle Recordset Name is changed to "Pr_Cities"
+	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                   |
 	| CountryID   | [[Pr_Cities().CountryID]]   |
 	| Description | [[Pr_Cities().Description]] |
