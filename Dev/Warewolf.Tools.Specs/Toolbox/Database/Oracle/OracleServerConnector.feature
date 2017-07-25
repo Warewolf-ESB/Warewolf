@@ -25,7 +25,9 @@ Scenario: Creating Oracle Server Connector
 	| EID	|
 	| 100   |
 	When I click Oracle Tests
-	Then the Database dropdown is visible
+	Then Test Connector and Calculate Oracle Outputs appear as
+	| Column1 |
+	| 1       |
 	When I click Oracle OK
 	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                  | 
