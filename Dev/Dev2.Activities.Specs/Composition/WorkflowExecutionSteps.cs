@@ -376,36 +376,37 @@ namespace Dev2.Activities.Specs.Composition
             }
             catch
             {
-                // ignored
                 Assert.Fail("failed to delete existing counters");
             }
         }
-        // ReSharper disable once EmptyGeneralCatchClause
 
         [Then(@"the perfcounter raw values are")]
         public void ThenThePerfcounterRawValuesAre(Table table)
         {
             var performanceCounterCategory = new PerformanceCounterCategory("Warewolf");
-            var counters = performanceCounterCategory.GetCounters();
             var instanceNames = performanceCounterCategory.GetInstanceNames();
-            foreach (var tableRow in table.Rows)
+            foreach (var instanceName in instanceNames)
             {
-                foreach (var counter in instanceNames)
+                var counters = performanceCounterCategory.GetCounters(instanceName);
+                foreach (var tableRow in table.Rows)
                 {
-                    var performanceCounter = counters.First(a => a.CounterName == tableRow[0]);
-                    if (performanceCounter != null)
+                    foreach (var counter in instanceNames)
                     {
-                        using (var cnt = new PerformanceCounter("Warewolf", tableRow[0], counter, true))
+                        var performanceCounter = counters.First(a => a.CounterName == tableRow[0]);
+                        if (performanceCounter != null)
                         {
-                            if (tableRow[1] == "x")
+                            using (var cnt = new PerformanceCounter("Warewolf", tableRow[0], counter, true))
                             {
-                                Assert.AreNotEqual(cnt.RawValue, 0);
-                            }
-                            else
-                            {
-                                Assert.AreEqual(cnt.RawValue, int.Parse(tableRow[1]));
-                            }
+                                if (tableRow[1] == "x")
+                                {
+                                    Assert.AreNotEqual(cnt.RawValue, 0);
+                                }
+                                else
+                                {
+                                    Assert.AreEqual(cnt.RawValue, int.Parse(tableRow[1]));
+                                }
 
+                            }
                         }
                     }
                 }
