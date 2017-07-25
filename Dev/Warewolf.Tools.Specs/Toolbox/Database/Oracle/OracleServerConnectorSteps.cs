@@ -44,7 +44,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(viewModel);
         }
 
-        [Given(@"Oracle Source is ""(.*)""")]
+        [Given(@"Source iss ""(.*)""")]
         public void GivenSourceIs(string sourceName)
         {
             var selectedSource = GetViewModel().SourceRegion.SelectedSource;
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             return scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
-        [Given(@"Oracle Action is ""(.*)""")]
+        [Given(@"Action iss ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
             var selectedProcedure = GetViewModel().ActionRegion.SelectedAction;
@@ -175,11 +175,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsFalse(viewModel.TestInputCommand.CanExecute(null));
         }
 
-        [When(@"Oracle Source is changed from to GreenPoint")]
+        [When(@"Source iz changed from to ""(.*)""")]
         public void WhenSourceIsChangedFromTo(string sourceName)
         {
-            var viewModel = GetViewModel();
-            viewModel.SourceRegion.SelectedSource = _greenPointSource;
+            if (sourceName == "GreenPoint")
+            {
+                var viewModel = GetViewModel();
+                viewModel.SourceRegion.SelectedSource = _greenPointSource;
+            }
         }
 
         [Given(@"Action is Enable")]
@@ -223,10 +226,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Pending();
         }
 
-        [When(@"Oracle Action is changed from to dbo.ImportOrder")]
-        public void WhenActionIsChangedFromTo()
+        [When(@"Action iz changed from to ""(.*)""")]
+        public void WhenActionIsChangedFromTo(string procName)
         {
-            GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
+            if (procName == "dbo.ImportOrder")
+            {
+                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
+            }
         }
 
         [When(@"I click ""(.*)""")]
@@ -235,15 +241,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Pending();
         }
         
-        [When(@"Oracle Recordset Name is changed to ""(.*)""")]
+        [When(@"Recordset Name iz changed to ""(.*)""")]
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
             GetViewModel().OutputsRegion.RecordsetName = recSetName;
         }
 
-        [When(@"Oracle Inputs appear as")]
-        [Then(@"Oracle Inputs appear as")]
-        [Given(@"Oracle Inputs appear as")]
+        [When(@"Inputs appear az")]
+        [Then(@"Inputs appear az")]
+        [Given(@"Inputs appear az")]
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = GetViewModel();
@@ -260,47 +266,53 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }        
 
-        [When(@"I Selected GreenPoint as Source")]
-        public void WhenISelectAsSource()
+        [When(@"I Selected ""(.*)"" as Source")]
+        public void WhenISelectAsSource(string sourceName)
         {
-            _importOrderAction = new DbAction();
-            _importOrderAction.Name = "HR.TESTPROC9";
-            _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("EID", "") };
-            GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
-            GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
+            if (sourceName == "GreenPoint")
+            {
+                _importOrderAction = new DbAction();
+                _importOrderAction.Name = "HR.TESTPROC9";
+                _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("EID", "") };
+                GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
+                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
+            }
         }
 
-        [When(@"I selected HR.TESTPROC9 as the Oracle action")]
-        public void WhenISelectAsTheAction()
+        [When(@"I selected ""(.*)"" az the action")]
+        public void WhenISelectAsTheAction(string actionName)
         {
-            var dataTable = new DataTable();
-            dataTable.Columns.Add(new DataColumn("Column1"));
-            dataTable.ImportRow(dataTable.LoadDataRow(new object[] { 1 }, true));
-            GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-            GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
+            if (actionName == "HR.TESTPROC9")
+            {
+                var dataTable = new DataTable();
+                dataTable.Columns.Add(new DataColumn("Column1"));
+                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { 1 }, true));
+                GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
+                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
+            }
         }
 
-        [When(@"I click Oracle Tests")]
+        [When(@"I click Testz")]
         public void WhenIClickTest()
         {            
             var testCommand = GetViewModel().ManageServiceInputViewModel.TestAction;
             testCommand();
         }
 
-        [When(@"I click Oracle OK")]
+        [When(@"I click OKay")]
         public void WhenIClickOK()
         {
             GetViewModel().ManageServiceInputViewModel.OkAction();
         }
 
-        [When(@"I click Oracle Validate")]
+        [When(@"I click Validat")]
         public void WhenIClickValidate()
         {
             GetViewModel().TestInputCommand.Execute(null);
         }
 
-        [When(@"Test Oracle Inputs appear as")]
-        [Then(@"Test Oracle Inputs appear as")]
+        [When(@"Test Inputs appear az")]
+        [Then(@"Test Inputs appear az")]
         public void ThenTestInputsAppearAs(Table table)
         {
             int rowNum = 0;
@@ -315,14 +327,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }           
 
-        [Then(@"Test Connector and Calculate Oracle Outputs appear as")]
+        [Then(@"Test Connector and Calculate Outputs outputs appear az")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
             var vm = GetViewModel();
             if (table.Rows.Count == 0)
             {
-                Assert.IsNotNull(vm.OutputsRegion.Outputs != null);
-                Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
+                if (vm.OutputsRegion.Outputs != null)
+                    Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
             }
             else
             {
@@ -331,6 +343,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 {
                     Assert.AreEqual(a.Item1[0], a.Item2.MappedFrom);
                     Assert.AreEqual(a.Item1[1], a.Item2.MappedTo);
+
                 }
             }
         }
@@ -364,6 +377,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
             mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
 
+
+
             _greenPointSource = new DbSourceDefinition
             {
                 Name = "GreenPoint",
@@ -376,7 +391,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Type = enSourceType.Oracle,
                 Id = sourceId
             };
-
             _importOrderAction = new DbAction
             {
                 Name = "dbo.ImportOrder",
@@ -396,7 +410,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
-        [Then(@"Oracle Outputs appear as")]
+        [Then(@"Outputs appear az")]
         public void ThenOutputsAppearAs(Table table)
         {
             var vm = GetViewModel();
@@ -418,7 +432,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(outputMappings);
         }
 
-        [Then(@"Oracle Recordset Name equals ""(.*)""")]
+        [Then(@"Recordset Name equalz ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
             if(string.IsNullOrEmpty(recsetName))            
