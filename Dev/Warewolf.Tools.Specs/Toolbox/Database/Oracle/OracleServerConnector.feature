@@ -17,13 +17,13 @@ Scenario: Creating Oracle Server Connector
 	When I selected HR.TESTPROC9 as the Oracle action
 	Then Inputs is Enable
 	And Oracle Inputs appear as 
-	| Input   | Value   | Empty is Null |
-	| EID     | [[EID]] | false         |
+	| Input     | Value | Empty is Null |
+	| EID		|  [[EID]]     | false  |
 	And Validate is Enable
 	When I click Oracle Validate
 	And Test Oracle Inputs appear as
-	| EID	|
-	| 100   |
+	| EID		 |
+	| 100        |
 	When I click Oracle Tests
 	Then Test Connector and Calculate Oracle Outputs appear as
 	| Column1 |

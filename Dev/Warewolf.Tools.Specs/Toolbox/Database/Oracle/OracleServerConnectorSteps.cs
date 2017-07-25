@@ -277,8 +277,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             dataTable.Columns.Add(new DataColumn("Column1"));
             dataTable.ImportRow(dataTable.LoadDataRow(new object[] { 1 }, true));
             GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-            var oracleDatabaseDesignerViewModel = GetViewModel();
-            oracleDatabaseDesignerViewModel.ActionRegion.SelectedAction = _importOrderAction;
+            GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
         }
 
         [When(@"I click Oracle Tests")]
