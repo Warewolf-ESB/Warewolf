@@ -88,6 +88,11 @@ using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using TestingDotnetDllCascading;
 
+// ReSharper disable NonLocalizedString
+
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedParameter.Global
+
 namespace Dev2.Activities.Specs.Composition
 {
     [Binding]
@@ -104,8 +109,11 @@ namespace Dev2.Activities.Specs.Composition
             AppSettings.LocalHost = "http://localhost:3142";
         }
 
+
         new IDSFDataObject ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
+
+
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
             svc.SetActivity(FlowchartProcess);
             Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
@@ -1125,6 +1133,7 @@ namespace Dev2.Activities.Specs.Composition
             flowSteps.Add(TestStartNode);
             if (activityList != null)
             {
+
                 foreach (var activity in activityList)
                 {
                     if (TestStartNode.Action == null)
