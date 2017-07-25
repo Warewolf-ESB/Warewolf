@@ -83,7 +83,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Given(@"A file ""(.*)"" to split")]
         public void GivenAFileToSplit(string fileName)
         {
-            string resourceName = string.Format("Warewolf.Tools.Specs.Toolbox.Data.DataSplit.{0}",
+            string resourceName = string.Format("Warewolf.ToolsSpecs.Toolbox.Data.DataSplit.{0}",
                                                 fileName);
             var stringToSplit = ReadFile(resourceName);
             scenarioContext.Add("stringToSplit", stringToSplit.Replace("\n","\r\n"));
