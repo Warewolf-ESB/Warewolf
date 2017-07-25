@@ -15,7 +15,7 @@ Scenario: Creating Oracle Server Connector
 	When I Selected GreenPoint as Source
 	Then Action is Enable
 	When I selected HR.TESTPROC9 as the Oracle action
-	Then Inputs is Enable 
+	Then Inputs is Enable
 	And Oracle Inputs appear as 
 	| Input     | Value | Empty is Null |
 	| EID		|  [[EID]]     | false  |

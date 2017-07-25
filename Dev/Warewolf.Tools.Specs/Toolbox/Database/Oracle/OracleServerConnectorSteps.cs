@@ -402,8 +402,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var vm = GetViewModel();
             if (table.Rows.Count == 0)
             {
-                if (vm.OutputsRegion.Outputs != null)
-                    Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
+                Assert.IsNotNull(vm.OutputsRegion.Outputs != null);
+                Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
             }
             else
             {
@@ -421,8 +421,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Oracle Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            if(string.IsNullOrEmpty(recsetName))            
-                Assert.AreEqual(recsetName, GetViewModel().OutputsRegion.RecordsetName);
+            Assert.AreEqual(recsetName, GetViewModel().OutputsRegion.RecordsetName);
         }
 
         #region Private Methods
