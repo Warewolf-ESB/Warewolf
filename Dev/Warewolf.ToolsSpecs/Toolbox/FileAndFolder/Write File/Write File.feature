@@ -1,4 +1,4 @@
-﻿@FileAndFolder
+﻿@fileFeature
 Feature: Write File
 	In order to be able to Write File
 	as a Warewolf user

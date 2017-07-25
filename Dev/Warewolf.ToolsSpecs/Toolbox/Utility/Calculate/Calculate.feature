@@ -1,4 +1,4 @@
-﻿@Utility
+﻿@Utils
 Feature: Calculate
 	In order to perform basic calculations
 	As a Warewolf user

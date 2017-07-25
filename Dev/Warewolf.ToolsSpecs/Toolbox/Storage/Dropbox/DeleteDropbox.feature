@@ -1,5 +1,4 @@
-﻿@Storage
-Feature: DeleteDropbox
+﻿Feature: DeleteDropbox
 	In order to delete from an dropbox Server
 	As a Warewolf User
 	I want to be to delete files on a dropbox account

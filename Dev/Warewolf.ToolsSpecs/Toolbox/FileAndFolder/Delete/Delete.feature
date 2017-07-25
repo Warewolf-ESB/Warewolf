@@ -1,4 +1,4 @@
-﻿@FileAndFolder
+﻿@fileFeature
 Feature: Delete
 	In order to be able to Delete file
 	as a Warewolf user

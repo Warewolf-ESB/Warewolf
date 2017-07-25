@@ -1,5 +1,4 @@
-﻿@Storage
-Feature: ReadDropbox
+﻿Feature: ReadDropbox
 	In order to read a list of directories from an dropbox Server
 	As a Warewolf User
 	I want to be to view files available on a dropbox account

@@ -1,5 +1,4 @@
-﻿@Scripting
-@JavascriptFeature
+﻿@JavascriptFeature
 Feature: Javascript
 	In order to execute javascripts
 	As a Warewolf user

@@ -1,5 +1,4 @@
-﻿@Scripting
-Feature: Script
+﻿Feature: Script
 	In order to execute scripts
 	As a Warewolf user
 	I want a tool that allows me to execute javascripts, ruby or python 
