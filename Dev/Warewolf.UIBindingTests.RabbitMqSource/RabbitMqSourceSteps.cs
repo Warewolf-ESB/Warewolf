@@ -57,7 +57,6 @@ namespace Warewolf.UIBindingTests.RabbitMqSource
         {
             var manageRabbitMqSourceControl = ScenarioContext.Current.Get<ManageRabbitMQSourceControl>(Utils.ViewNameKey);
             Assert.IsNotNull(manageRabbitMqSourceControl);
-            Assert.IsNotNull(manageRabbitMqSourceControl.DataContext);
         }
 
         [Then(@"""(.*)"" tab is opened")]
