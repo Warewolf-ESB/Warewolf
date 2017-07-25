@@ -1,4 +1,4 @@
-﻿@Utils
+﻿@Utility
 Feature: GatherSystemInformation
 	In order to use system information
 	As a warewolf user

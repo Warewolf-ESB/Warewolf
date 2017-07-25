@@ -1,4 +1,4 @@
-﻿@Utils
+﻿@Utility
 Feature: DateandTimeDifference
 	In order to work with date and time
 	As a Warewolf user

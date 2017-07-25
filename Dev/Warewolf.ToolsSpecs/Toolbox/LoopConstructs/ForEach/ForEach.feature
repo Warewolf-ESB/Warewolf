@@ -1,4 +1,5 @@
-﻿Feature: ForEach
+﻿@LoopConstructs
+Feature: ForEach
 	In order to loop through constructs
 	As a Warewolf user
 	I want to a tool that will allow me to execute other tools in an loop

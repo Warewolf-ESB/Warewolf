@@ -1,4 +1,5 @@
-﻿Feature: Unique
+﻿@Recordset
+Feature: Unique
 	In order to find unique records in a recordset
 	As a Warewolf user
 	I want tool that will allow me 

@@ -1,4 +1,4 @@
-﻿@fileFeature
+﻿@FileAndFolder
 Feature: Copy
 	In order to be able to Copy File or Folder 
 	as a Warewolf user

@@ -1,4 +1,5 @@
-﻿Feature: Sequence
+﻿@ControlFlow
+Feature: Sequence
 	In order to execute sequence 
 	As a Warewolf user
 	I want to a tool that will allow me to construct and execute tools and services in sequence

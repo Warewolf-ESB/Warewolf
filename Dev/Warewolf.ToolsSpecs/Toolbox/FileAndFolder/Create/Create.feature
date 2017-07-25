@@ -1,4 +1,4 @@
-﻿@fileFeature
+﻿@FileAndFolder
 Feature: Create
 	In order to be able to create files
 	as a Warewolf user

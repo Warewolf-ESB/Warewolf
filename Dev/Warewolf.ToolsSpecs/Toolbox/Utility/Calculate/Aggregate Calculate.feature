@@ -1,4 +1,4 @@
-﻿@Utils
+﻿@Utility
 Feature: Aggregated Calculation
 	In order to perform aggrgate calculations
 	As a Warewolf user
