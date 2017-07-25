@@ -1,4 +1,5 @@
-﻿Feature: Length
+﻿@Recordset
+Feature: Length
 	In order to get the length of a records
 	As a Warewolf user
 	I want a tool that takes a record set gives me its length

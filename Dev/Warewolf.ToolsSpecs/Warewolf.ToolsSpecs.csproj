@@ -109,7 +109,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-	<None Include="..\Run Tests.ps1">
+    <None Include="..\Run Tests.ps1">
       <Link>Properties\Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -188,12 +188,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Data\Replace\ReplaceSteps.cs" />
-    <Compile Include="Toolbox\Exchange\Email\ExchangeEmail.feature.cs">
+    <Compile Include="Toolbox\Email\Exchange\ExchangeEmail.feature.cs">
       <DependentUpon>ExchangeEmail.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Toolbox\Exchange\Email\ExchangeEmailSteps.cs" />
+    <Compile Include="Toolbox\Email\Exchange\ExchangeEmailSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Copy\Copy.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -260,13 +260,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQSteps.cs" />
-    <Compile Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQ.feature.cs">
+    <Compile Include="Toolbox\Utility\RabbitMQ\Consume\ConsumeRabbitMQSteps.cs" />
+    <Compile Include="Toolbox\Utility\RabbitMQ\Consume\ConsumeRabbitMQ.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ConsumeRabbitMQ.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature.cs">
+    <Compile Include="Toolbox\Utility\RabbitMQ\Publish\PublishRabbitMQ.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PublishRabbitMQ.feature</DependentUpon>
@@ -279,7 +279,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApplySteps.cs" />
-    <Compile Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
+    <Compile Include="Toolbox\Utility\RabbitMQ\Publish\PublishRabbitMQSteps.cs" />
     <Compile Include="Toolbox\Recordset\CountNullHandler\CountNullHandler.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -325,48 +325,48 @@
       <DependentUpon>Sort.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Sort\SortSteps.cs" />
-    <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature.cs">
+    <Compile Include="Toolbox\Database\SqlBulkInsert\SqlBulkInsert.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlBulkInsert.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsertSteps.cs" />
+    <Compile Include="Toolbox\Database\SqlBulkInsert\SqlBulkInsertSteps.cs" />
     <Compile Include="Toolbox\Recordset\Unique\Unique.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Unique.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
-    <Compile Include="Toolbox\Resources\SqlServer\DatabaseConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\SqlServer\SqlServerConnector.feature.cs">
+    <Compile Include="Toolbox\Database\SqlServer\DatabaseConnectorSteps.cs" />
+    <Compile Include="Toolbox\Database\SqlServer\SqlServerConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlServerConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\MySQL\MySqlConnector.feature.cs">
+    <Compile Include="Toolbox\Database\MySQL\MySqlConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MySqlConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\MySQL\MySqlConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature.cs">
+    <Compile Include="Toolbox\Database\MySQL\MySqlConnectorSteps.cs" />
+    <Compile Include="Toolbox\Database\PostgresSql\PostgresSqlConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PostgresSqlConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\PostgresSql\PostgresSqlConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\ODBC\ODBCConnector.feature.cs">
+    <Compile Include="Toolbox\Database\PostgresSql\PostgresSqlConnectorSteps.cs" />
+    <Compile Include="Toolbox\Database\ODBC\ODBCConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ODBCConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\ODBC\ODBCServerConnectorSteps.cs" />
-    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnector.feature.cs">
+    <Compile Include="Toolbox\Database\ODBC\ODBCServerConnectorSteps.cs" />
+    <Compile Include="Toolbox\Database\Oracle\OracleServerConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>OracleServerConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Resources\Oracle\OracleServerConnectorSteps.cs" />
+    <Compile Include="Toolbox\Database\Oracle\OracleServerConnectorSteps.cs" />
     <Compile Include="Toolbox\Resources\Web\DeleteWebConnectorTool.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -459,12 +459,12 @@
       <DependentUpon>DateandTime.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\DateandTime\DateandTimeSteps.cs" />
-    <Compile Include="Toolbox\Utility\Email\Email.feature.cs">
+    <Compile Include="Toolbox\Email\Email\Email.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Email.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Utility\Email\EmailSteps.cs" />
+    <Compile Include="Toolbox\Email\Email\EmailSteps.cs" />
     <Compile Include="Toolbox\Utility\FormatNumber\FormatNumber.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -495,12 +495,12 @@
       <DependentUpon>XPath.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\XPath\XPathSteps.cs" />
-    <Compile Include="Toolbox\WcfService\WcfServiceConnector.feature.cs">
+    <Compile Include="Toolbox\Resources\WcfService\WcfServiceConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WcfServiceConnector.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\WcfService\WcfServiceConnectorSteps.cs" />
+    <Compile Include="Toolbox\Resources\WcfService\WcfServiceConnectorSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -556,7 +556,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Exchange\Email\ExchangeEmail.feature">
+    <None Include="Toolbox\Email\Exchange\ExchangeEmail.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExchangeEmail.feature.cs</LastGenOutput>
     </None>
@@ -611,11 +611,11 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SelectAndApply.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\RabbitMQ\Consume\ConsumeRabbitMQ.feature">
+    <None Include="Toolbox\Utility\RabbitMQ\Consume\ConsumeRabbitMQ.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ConsumeRabbitMQ.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\RabbitMQ\Publish\PublishRabbitMQ.feature">
+    <None Include="Toolbox\Utility\RabbitMQ\Publish\PublishRabbitMQ.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PublishRabbitMQ.feature.cs</LastGenOutput>
     </None>
@@ -651,7 +651,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Sort.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature">
+    <None Include="Toolbox\Database\SqlBulkInsert\SqlBulkInsert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlBulkInsert.feature.cs</LastGenOutput>
     </None>
@@ -659,23 +659,23 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\SqlServer\SqlServerConnector.feature">
+    <None Include="Toolbox\Database\SqlServer\SqlServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SqlServerConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\MySQL\MySqlConnector.feature">
+    <None Include="Toolbox\Database\MySQL\MySqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MySqlConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\PostgresSql\PostgresSqlConnector.feature">
+    <None Include="Toolbox\Database\PostgresSql\PostgresSqlConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PostgresSqlConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\ODBC\ODBCConnector.feature">
+    <None Include="Toolbox\Database\ODBC\ODBCConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ODBCConnector.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Resources\Oracle\OracleServerConnector.feature">
+    <None Include="Toolbox\Database\Oracle\OracleServerConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>OracleServerConnector.feature.cs</LastGenOutput>
     </None>
@@ -743,7 +743,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DateandTime.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Utility\Email\Email.feature">
+    <None Include="Toolbox\Email\Email\Email.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Email.feature.cs</LastGenOutput>
     </None>
@@ -767,13 +767,13 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>XPath.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\WcfService\WcfServiceConnector.feature">
+    <None Include="Toolbox\Resources\WcfService\WcfServiceConnector.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WcfServiceConnector.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Toolbox\Recordset\SqlBulkInsert\Import_data_into_Table_Batch_size_is_1.sql" />
+    <EmbeddedResource Include="Toolbox\Database\SqlBulkInsert\Import_data_into_Table_Batch_size_is_1.sql" />
     <EmbeddedResource Include="Toolbox\Data\DataMerge\NewLineExample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -783,7 +783,7 @@
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\filewithvariables.txt" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\infile1WithCarriageReturn.txt" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\outfile1WithCarriageReturn.txt" />
-    <Content Include="Toolbox\Recordset\SqlBulkInsert\databasesetup.txt" />
+    <Content Include="Toolbox\Database\SqlBulkInsert\databasesetup.txt" />
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_badly_formatted.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

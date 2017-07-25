@@ -1,4 +1,5 @@
-﻿Feature: Delete Web Connector Tool
+﻿@Resources
+Feature: Delete Web Connector Tool
 	In order to create New Web Delete Service Tool in Warewolf
 	As a Warewolf User
 	I want to Create or Edit Warewolf Web Delete Request.

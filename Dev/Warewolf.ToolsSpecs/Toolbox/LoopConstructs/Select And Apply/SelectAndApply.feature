@@ -1,4 +1,5 @@
-﻿Feature: SelectAndApply
+﻿@LoopConstructs
+Feature: SelectAndApply
 	In order to execute select and apply
 	As a Warewolf user
 	I want to add a tool that will allow me to construct and execute tools using an alias within the select and apply

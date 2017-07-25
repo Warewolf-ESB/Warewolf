@@ -1,4 +1,5 @@
-﻿Feature: Command
+﻿@Scripting
+Feature: Command
 	In order to execute command line scripts
 	As a Warewolf user
 	I want a tool that allows me to execute commands 

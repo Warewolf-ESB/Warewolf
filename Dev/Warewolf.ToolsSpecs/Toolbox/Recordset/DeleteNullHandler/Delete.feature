@@ -1,4 +1,5 @@
-﻿Feature: Delete
+﻿@Recordset
+Feature: Delete
 	In order to delete records
 	As a Warewolf user
 	I want a tool that takes a record set and deletes it

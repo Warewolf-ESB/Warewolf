@@ -1,4 +1,5 @@
-﻿Feature: Decision
+﻿@ControlFlow
+Feature: Decision
 	In order to branch based on the data
 	As Warewolf user
 	I want tool that be makes a true or false (yes/no) decision based on the data

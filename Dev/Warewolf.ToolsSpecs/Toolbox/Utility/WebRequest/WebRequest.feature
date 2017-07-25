@@ -1,4 +1,4 @@
-﻿@Utils
+﻿@Utility
 Feature: WebRequest
 	In order to download html content
 	As a Warewolf user

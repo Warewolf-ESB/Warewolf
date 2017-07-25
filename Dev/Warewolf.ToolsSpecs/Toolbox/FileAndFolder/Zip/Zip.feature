@@ -1,4 +1,4 @@
-﻿@fileFeature
+﻿@FileAndFolder
 Feature: Zip
 	In order to be able to Zip File or Folder 
 	as a Warewolf user

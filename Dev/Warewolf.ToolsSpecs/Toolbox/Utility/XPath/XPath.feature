@@ -1,4 +1,4 @@
-﻿@Utils
+﻿@Utility
 Feature: XPath
 	In order to run a query against xml
 	As a Warewolf user

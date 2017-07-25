@@ -1,4 +1,4 @@
-﻿@fileFeature
+﻿@FileAndFolder
 Feature: Move
 	In order to be able to Move a File or Folder 
 	as a Warewolf user

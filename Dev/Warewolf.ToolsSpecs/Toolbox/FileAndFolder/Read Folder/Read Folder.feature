@@ -1,4 +1,4 @@
-﻿@fileFeature
+﻿@FileAndFolder
 Feature: Read Folder
 	In order to be able to Read Folder File or Folder 
 	as a Warewolf user
