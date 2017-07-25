@@ -121,6 +121,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        [DeploymentItem("Warewolf.Resource.resources.dll")]
         public void Execute_GivenStopExecutionAndUnAuthorized_ShouldAddFailureMessage()
         {
             //---------------Set up test pack-------------------
