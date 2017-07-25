@@ -176,7 +176,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [When(@"Oracle Source is changed from to GreenPoint")]
-        public void WhenSourceIsChangedFromTo(string sourceName)
+        public void WhenSourceIsChangedFromTo()
         {
             var viewModel = GetViewModel();
             viewModel.SourceRegion.SelectedSource = _greenPointSource;
@@ -314,26 +314,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 serviceInput.Value = inputValue;
                 rowNum++;
             }
-        }           
-
-        [Then(@"Test Connector and Calculate Oracle Outputs appear as")]
-        public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
-        {
-            var vm = GetViewModel();
-            if (table.Rows.Count == 0)
-            {
-                Assert.IsNotNull(vm.OutputsRegion.Outputs != null);
-                Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
-            }
-            else
-            {
-                var matched = table.Rows.Zip(vm.OutputsRegion.Outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
-                foreach (var a in matched)
-                {
-                    Assert.AreEqual(a.Item1[0], a.Item2.MappedFrom);
-                    Assert.AreEqual(a.Item1[1], a.Item2.MappedTo);
-                }
-            }
         }
 
         [Given(@"I open workflow with Oracle connector")]
@@ -401,6 +381,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenOutputsAppearAs(Table table)
         {
             var vm = GetViewModel();
+            Assert.AreEqual(table.Rows.Count, vm.OutputsRegion.Outputs.Count, "Wrong number of outputs in Oracle view model.");
             if (table.Rows.Count == 0)
             {
                 Assert.IsNotNull(vm.OutputsRegion.Outputs != null);
@@ -419,10 +400,17 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsNotNull(outputMappings);
         }
 
+        [Then(@"the Database dropdown is visible")]
+        public void ThenTheDatabaseDropdownIsVisible()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
         [Then(@"Oracle Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
-            Assert.AreEqual(recsetName, GetViewModel().OutputsRegion.RecordsetName);
+            var oracleDatabaseDesignerViewModel = GetViewModel();
+            Assert.AreEqual(recsetName, oracleDatabaseDesignerViewModel.OutputsRegion.RecordsetName);
         }
 
         #region Private Methods
