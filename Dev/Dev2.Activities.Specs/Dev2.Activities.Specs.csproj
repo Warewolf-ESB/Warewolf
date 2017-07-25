@@ -429,10 +429,6 @@
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.ToolsSpecs\Warewolf.ToolsSpecs.csproj">
-      <Project>{CAD4D820-C619-4099-AA9C-DCACD23ADB89}</Project>
-      <Name>Warewolf.ToolsSpecs</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
       <Name>WarewolfParserInterop</Name>
