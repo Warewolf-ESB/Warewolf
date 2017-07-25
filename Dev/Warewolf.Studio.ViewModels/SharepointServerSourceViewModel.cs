@@ -489,12 +489,11 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(SaveCommand);
             }
         }
+
         public string TestMessage
         {
             get { return _testMessage; }
-            // ReSharper disable UnusedMember.Local
-            private set
-            // ReSharper restore UnusedMember.Local
+            set
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
