@@ -259,7 +259,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             };
         }
 
-        [Then(@"I click Okay on mysql connector tool")]
+        [Then(@"I click OK on mysql connector tool")]
         public void ThenIClickOkayOnMysqlConnectorTool()
         {            
             Assert.IsTrue(ClickOk());

@@ -105,7 +105,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
  testRunner.And("The Connector and Calculate Outputs appear for mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
- testRunner.Then("I click Okay on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I click OK on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 22
  testRunner.And("The recordset name appear as \"SomeRecordSet\" on mysql connector tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

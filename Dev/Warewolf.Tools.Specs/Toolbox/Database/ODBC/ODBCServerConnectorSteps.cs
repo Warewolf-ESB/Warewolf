@@ -195,7 +195,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
 
-        [Given(@"Source iz Enable")]
+        [Given(@"ODBC Source is Enabled")]
         public void GivenSourceIsEnabled()
         {
             var viewModel = GetViewModel();
@@ -224,9 +224,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsFalse(viewModel.ActionRegion.IsEnabled);
         }
 
-        [Given(@"Inputs iz Disable")]
-        [When(@"Inputs iz Disable")]
-        [Then(@"Inputs iz Disable")]
+        [Given(@"ODBC Inputs are Disabled")]
+        [When(@"ODBC Inputs are Disabled")]
+        [Then(@"ODBC Inputs are Disabled")]
         public void GivenInputsIsDisabled()
         {
             var viewModel = GetViewModel();
@@ -234,9 +234,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasNoInputs);
         }
 
-        [Given(@"Outputs iz Disable")]
-        [When(@"Outputs iz Disable")]
-        [Then(@"Outputs iz Disable")]
+        [Given(@"ODBC Outputs are Disabled")]
+        [When(@"ODBC Outputs are Disabled")]
+        [Then(@"ODBC Outputs are Disabled")]
         public void GivenOutputsIsDisabled()
         {
             var viewModel = GetViewModel();
@@ -244,23 +244,20 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasNoOutputs);
         }
 
-        [When(@"Action iz changed to ""(.*)""")]
-        public void WhenActionIsChangedFromTo(string procName)
+        [When(@"ODBC Action is changed to ""(.*)""")]
+        public void WhenActionIsChangedTo(string procName)
         {
-            if (procName == "dbo.ImportOrder")
-            {
-                _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") };
-                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
-            }
+            _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") };
+            GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
         }
 
-        [When(@"Recordset Name iz changed from to ""(.*)""")]
+        [When(@"ODBC Recordset Name is changed to ""(.*)""")]
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
             GetViewModel().OutputsRegion.RecordsetName = recSetName;
         }
 
-        [Given(@"Action iz ""(.*)""")]
+        [Given(@"ODBC Action is ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
             var selectedProcedure = GetViewModel().CommandText = "dbo.Pr_CitiesGetCountries";
@@ -268,18 +265,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual(actionName, selectedProcedure);
         }
 
-        [Given(@"Action iz Enable")]
-        [Then(@"Action iz Enable")]
-        [When(@"Action iz Enable")]
+        [Given(@"ODBC Action is Enabled")]
+        [Then(@"ODBC Action is Enabled")]
+        [When(@"ODBC Action is Enabled")]
         public void ThenActionIsEnabled()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
         }
 
-        [Given(@"Inputs iz Enable")]
-        [When(@"Inputs iz Enable")]
-        [Then(@"Inputs iz Enable")]
+        [Given(@"ODBC Inputs are Enabled")]
+        [When(@"ODBC Inputs are Enabled")]
+        [Then(@"ODBC Inputs are Enabled")]
         public void ThenInputsIsEnabled()
         {
             var viewModel = GetViewModel();
@@ -294,18 +291,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Pending();
         }
 
-        [Given(@"Validate iz Enable")]
-        [When(@"Validate iz Enable")]
-        [Then(@"Validate iz Enable")]
+        [Given(@"Validate ODBC is Enabled")]
+        [When(@"Validate ODBC is Enabled")]
+        [Then(@"Validate ODBC is Enabled")]
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
         }
 
-        [When(@"Inputs appears az")]
-        [Then(@"Inputs appears az")]
-        [Given(@"Inputs appears az")]
+        [When(@"ODBC Inputs appear as")]
+        [Then(@"ODBC Inputs appear as")]
+        [Given(@"ODBC Inputs appear as")]
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = GetViewModel();
@@ -315,65 +312,53 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var inputValue = row["Input"];
                 var value = row["Value"];
                 var serviceInputs = viewModel.InputArea.Inputs.ToList();
-                if (serviceInputs.Count > 0)
-                {
-                    var serviceInput = serviceInputs[rowNum];
-
-                    Assert.AreEqual(inputValue, serviceInput.Name);
-                    Assert.AreEqual(value, serviceInput.Value);
-                }
+                Assert.IsTrue(serviceInputs.Count > 0);
+                var serviceInput = serviceInputs[rowNum];
+                Assert.AreEqual(inputValue, serviceInput.Name);
+                Assert.AreEqual(value, serviceInput.Value);
                 rowNum++;
             }
         }
 
-        [When(@"I Selected ""(.*)"" az Source")]
-        public void WhenISelectAsSource(string sourceName)
+        [When(@"I Select GreenPoint as ODBC Source")]
+        public void WhenISelectAsSource()
         {
-            if (sourceName == "GreenPoint")
-            {
-                _importOrderAction = new DbAction();
-                _importOrderAction.Name = "Command";
-                _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("EID", "") };
-                GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
-                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
-            }
+            _importOrderAction = new DbAction();
+            _importOrderAction.Name = "Command";
+            _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("EID", "") };
+            GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
+            GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
         }
 
-        [Given(@"Source iz ""(.*)""")]
+        [Given(@"ODBC Source is localODBCTest")]
         public void GivenSourceIs(string name)
         {
-            if (name == "localODBCTest")
-            {
-                _importOrderAction = new DbAction();
-                _importOrderAction.Name = "Command";
-                _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
-                GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
-                GetViewModel().SourceRegion.SelectedSource = _testingDbSource;
-            }
+            _importOrderAction = new DbAction();
+            _importOrderAction.Name = "Command";
+            _importOrderAction.Inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
+            GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _importOrderAction });
+            GetViewModel().SourceRegion.SelectedSource = _testingDbSource;
         }
 
-        [When(@"I selected ""(.*)"" as thee action")]
+        [When(@"I select ""(.*)"" as the ODBC action")]
         public void WhenISelectAsTheAction(string actionName)
         {
-            if (actionName == "Command")
-            {
-                var dataTable = new DataTable();
-                dataTable.Columns.Add(new DataColumn("Column1"));
-                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { 1 }, true));
-                GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-                GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
-                GetViewModel().CommandText = actionName;
-            }
+            var dataTable = new DataTable();
+            dataTable.Columns.Add(new DataColumn("Column1"));
+            dataTable.ImportRow(dataTable.LoadDataRow(new object[] { 1 }, true));
+            GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
+            GetViewModel().ActionRegion.SelectedAction = _importOrderAction;
+            GetViewModel().CommandText = actionName;
         }
 
-        [When(@"I click Tezt")]
+        [When(@"I click Test ODBC")]
         public void WhenIClickTest()
         {
             var viewModel = GetViewModel();
             var testCommand = viewModel.ManageServiceInputViewModel.TestAction;            
         }
 
-        [When(@"I clicked OKay")]
+        [When(@"I click OK on ODBC Test")]
         public void WhenIClickOK()
         {
             GetViewModel().ManageServiceInputViewModel.OkAction = new Mock<Action>().Object;
@@ -392,13 +377,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Pending();
         }
 
-        [When(@"I click Validatt")]
+        [When(@"I click Validate ODBC")]
         public void WhenIClickValidate()
         {
             GetViewModel().TestInputCommand.Execute(null);
         }
 
-        [Then(@"Test Inputs appears az")]
+        [Then(@"Test ODBC Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
             int rowNum = 0;
@@ -413,10 +398,22 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Test Connector and Calculate Outputz outputs appear az")]
+        [Then(@"Test ODBC Connector Calculate Outputs outputs appear as")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
+            CheckODBCToolOutputs(table);
+        }
+
+        [Then(@"ODBC Outputs appear as")]
+        public void ThenOutputsAppearAs(Table table)
+        {
+            CheckODBCToolOutputs(table);
+        }
+
+        private void CheckODBCToolOutputs(Table table)
+        {
             var vm = GetViewModel();
+            Assert.AreEqual(table.Rows.Count, vm.OutputsRegion.Outputs.Count, "Wrong number of outputs in ODBC view model.");
             if (table.Rows.Count == 0)
             {
                 if (vm.OutputsRegion.Outputs != null)
@@ -432,40 +429,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Outputs appears az")]
-        public void ThenOutputsAppearAs(Table table)
-        {
-            var vm = GetViewModel();
-            if (table.Rows.Count == 0)
-            {
-                if (vm.OutputsRegion.Outputs != null)
-                    Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
-            }
-            else
-            {
-                var matched = table.Rows.Zip(vm.OutputsRegion.Outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
-                foreach (var a in matched)
-                {
-                    Assert.AreEqual(a.Item1[0], a.Item2.MappedFrom);
-                    Assert.AreEqual(a.Item1[1], a.Item2.MappedTo);
-
-                }
-            }
-        }
-
-        [Then(@"Recordset Name equal ""(.*)""")]
+        [Then(@"ODBC Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
             Assert.AreEqual(recsetName, GetViewModel().OutputsRegion.RecordsetName);
         }
 
-        [When(@"Source iz changed to ""(.*)""")]
+        [When(@"ODBC Source is changed to GreenPoint")]
         public void WhenSourceIsChangedFromTo(string sourceName)
         {
-            if (sourceName == "GreenPoint")
-            {
-                GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
-            }
+            GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
         }
         
         [Given(@"I open New Workflow")]
