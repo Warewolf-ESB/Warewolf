@@ -5,7 +5,7 @@ Feature: OracleServerConnector
 	I want to be shown the database service setup
 
 
-Scenario: Creating Oracle Server Connector
+Scenario: Creating a new Oracle Tool Instance
 	Given I open New Workflow
 	And I drag a Oracle Server database connector
 	And Oracle Source is Enabled
@@ -31,7 +31,7 @@ Scenario: Creating Oracle Server Connector
 	| Column1     | [[HR_TESTPROC9().Column1]] | 
 	Then Oracle Recordset Name equals "HR_TESTPROC9"	
 
-Scenario: Opening Saved workflow with Oracle Server tool
+Scenario: Opening Saved workflow with Existing Oracle tool
    Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"
@@ -47,7 +47,7 @@ Scenario: Opening Saved workflow with Oracle Server tool
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
-Scenario: Change Source on Existing tool
+Scenario: Change Source on Existing Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"
@@ -67,7 +67,7 @@ Scenario: Change Source on Existing tool
 	And Inputs is Enable
 	And Validate is Enable
 
-Scenario: Changing Actions
+Scenario: Changing Actions on Existing Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"	
@@ -89,7 +89,7 @@ Scenario: Changing Actions
 	| ProductId | [[ProductId]] | false         |
 	And Validate is Enable
 
-Scenario: Change Recordset Name
+Scenario: Change Recordset Name on Existing Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"	
