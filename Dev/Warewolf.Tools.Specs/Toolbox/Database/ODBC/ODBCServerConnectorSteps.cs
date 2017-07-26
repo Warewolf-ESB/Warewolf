@@ -312,7 +312,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 var inputValue = row["Input"];
                 var value = row["Value"];
                 var serviceInputs = viewModel.InputArea.Inputs.ToList();
-                Assert.IsTrue(serviceInputs.Count > 0);
+                Assert.IsTrue(serviceInputs.Count > 0, "Number of inputs to ODBC tool is less than or equal 0.");
                 var serviceInput = serviceInputs[rowNum];
                 Assert.AreEqual(inputValue, serviceInput.Name);
                 Assert.AreEqual(value, serviceInput.Value);
