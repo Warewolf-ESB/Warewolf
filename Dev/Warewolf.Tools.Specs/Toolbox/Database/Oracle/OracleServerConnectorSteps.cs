@@ -401,7 +401,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         #region Private Methods
 
-        void AddScenarioContext.Current(OracleDatabaseDesignerViewModel oracleServerDesignerViewModel, Mock<IManageDatabaseInputViewModel> mockDatabaseInputViewModel, Mock<IDbServiceModel> mockDbServiceModel)
+        void AddScenarioContext(OracleDatabaseDesignerViewModel oracleServerDesignerViewModel, Mock<IManageDatabaseInputViewModel> mockDatabaseInputViewModel, Mock<IDbServiceModel> mockDbServiceModel)
         {
             ScenarioContext.Current.Add("viewModel", oracleServerDesignerViewModel);
             ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
