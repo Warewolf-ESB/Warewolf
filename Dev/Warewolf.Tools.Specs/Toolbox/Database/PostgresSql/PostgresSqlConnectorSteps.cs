@@ -313,16 +313,5 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
-
-        [BeforeScenario("@OpeningSavedWorkflowWithPostgresServerTool", "@ChangeTheSourceOnExistingPostgresql", "@ChangeTheActionOnExistingPostgresql", "@ChangeTheRecordsetOnExistingPostgresqlTool")]
-        public void InitChangingFunction()
-        {
-            var mock = new Mock<IDataListViewModel>();
-            mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
-            if (DataListSingleton.ActiveDataList == null)
-            {
-                DataListSingleton.SetDataList(mock.Object);
-            }
-        }
     }
 }
