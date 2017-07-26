@@ -294,7 +294,6 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             scenarioContext.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
             scenarioContext.Add(SourcePasswordHolder, password.Replace('"', ' ').Trim());
-
             CreateSourceFileWithSomeDummyData();
         }
 
@@ -303,7 +302,6 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             scenarioContext.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
             scenarioContext.Add(SourcePasswordHolder, password.Replace('"', ' ').Trim());
-
             CreateSourceFileWithSomeDummyData(1000);
         }
 
