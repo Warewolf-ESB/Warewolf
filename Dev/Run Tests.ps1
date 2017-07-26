@@ -46,7 +46,7 @@ $JobSpecs["Other Tools Specs"]		 			= "Warewolf.Tools.Specs", "(TestCategory!=Sc
 $JobSpecs["Scripting Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Scripting)"
 $JobSpecs["Storage Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Storage)"
 $JobSpecs["Utility Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Utility)"
-$JobSpecs["ControlFlow Tools Specs"]		 	= "Warewolf.Tools.Specs", "(TestCategory=ControlFlow)"
+$JobSpecs["Control Flow Tools Specs"]		 	= "Warewolf.Tools.Specs", "(TestCategory=ControlFlow)"
 $JobSpecs["Data Tools Specs"]		 			= "Warewolf.Tools.Specs", "(TestCategory=Data)"
 $JobSpecs["Database Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Database)"
 $JobSpecs["Email Tools Specs"]		 			= "Warewolf.Tools.Specs", "(TestCategory=Email)"
