@@ -40,13 +40,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
                 Directory.CreateDirectory("c:\\copydir\\1");
                 Directory.CreateDirectory("c:\\copydir\\6");
                 Directory.CreateDirectory("c:\\copydir\\33");
-                // ReSharper disable LocalizableElement
                 File.WriteAllText("c:\\copydir\\bob.txt", "bob");
-
                 File.WriteAllText("c:\\copydir\\1\\bob.txt", "dora");
                 File.WriteAllText("c:\\copydir\\6\\bob.txt", "moon");
                 File.WriteAllText("c:\\copydir\\33\\bob.txt", "dave");
-                // ReSharper restore LocalizableElement
             }
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);

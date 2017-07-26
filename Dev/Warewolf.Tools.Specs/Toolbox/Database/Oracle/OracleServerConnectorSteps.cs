@@ -185,26 +185,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void WhenRecordsetNameIsChangedTo(string recSetName)
         {
             GetViewModel().OutputsRegion.RecordsetName = recSetName;
-        }
-
-        [When(@"Oracle Inputs appear as")]
-        [Then(@"Oracle Inputs appear as")]
-        [Given(@"Oracle Inputs appear as")]
-        public void ThenInputsAppearAs(Table table)
-        {
-            var viewModel = GetViewModel();
-            int rowNum = 0;
-            foreach (var row in table.Rows)
-            {
-                var inputValue = row["Input"];
-                var value = row["Value"];
-                var serviceInputs = viewModel.InputArea.Inputs.ToList();
-                var serviceInput = serviceInputs[rowNum];
-                Assert.AreEqual(inputValue, serviceInput.Name);
-                Assert.AreEqual(value, serviceInput.Value);
-                rowNum++;
-            }
-        }        
+        }     
 
         [When(@"I Selected GreenPoint as Source")]
         public void WhenISelectAsSource()
@@ -246,18 +227,32 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().TestInputCommand.Execute(null);
         }
 
-        [When(@"Test Oracle Inputs appear as")]
+        [Given(@"Test Oracle Inputs appear as")]
         [Then(@"Test Oracle Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
-            int rowNum = 0;
+            AssertOracleInputs(table);
+        }
+        
+        [Given(@"Oracle Inputs appear as")]
+        [Then(@"Oracle Inputs appear as")]
+        public void ThenInputsAppearAs(Table table)
+        {
+            AssertOracleInputs(table);
+        }
+
+        private void AssertOracleInputs(Table table)
+        {
             var viewModel = GetViewModel();
+            int rowNum = 0;
             foreach (var row in table.Rows)
             {
-                var inputValue = row["EID"];
+                var inputValue = row["Input"];
+                var value = row["Value"];
                 var serviceInputs = viewModel.InputArea.Inputs.ToList();
                 var serviceInput = serviceInputs[rowNum];
-                serviceInput.Value = inputValue;
+                Assert.AreEqual(inputValue, serviceInput.Name);
+                Assert.AreEqual(value, serviceInput.Value);
                 rowNum++;
             }
         }
