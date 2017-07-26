@@ -60,7 +60,7 @@ $JobSpecs["File And Folder Rename Tool Specs"]	= "Warewolf.Tools.Specs", "(TestC
 $JobSpecs["Unzip Tool Specs"]		 			= "Warewolf.Tools.Specs", "(TestCategory=Unzip)"
 $JobSpecs["Write File Tool Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=WriteFile)"
 $JobSpecs["Zip Tool Specs"]		 				= "Warewolf.Tools.Specs", "(TestCategory=Zip)"
-$JobSpecs["LoopConstructs Tools Specs"]		 	= "Warewolf.Tools.Specs", "(TestCategory=LoopConstructs)"
+$JobSpecs["Loop Constructs Tools Specs"]		= "Warewolf.Tools.Specs", "(TestCategory=LoopConstructs)"
 $JobSpecs["Recordset Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Recordset)"
 $JobSpecs["Resources Tools Specs"]		 		= "Warewolf.Tools.Specs", "(TestCategory=Resources)"
 $JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
