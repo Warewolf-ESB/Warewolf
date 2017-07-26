@@ -67,6 +67,7 @@ Scenario: Change Source on Existing Oracle Tool
 	And Inputs is Enable
 	And Validate is Enable
 
+@ChangingOracleActions
 Scenario: Changing Actions on Existing Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled

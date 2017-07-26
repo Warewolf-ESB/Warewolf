@@ -15,16 +15,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder
         {
         }
 
-        [AfterScenario("FileAndFolderCopy")]
-        [AfterScenario("FileAndFolderCreate")]
-        [AfterScenario("FileAndFolderDelete")]
-        [AfterScenario("FileAndFolderMove")]
-        [AfterScenario("ReadFile")]
-        [AfterScenario("ReadFolder")]
-        [AfterScenario("FileAndFolderRename")]
-        [AfterScenario("Unzip")]
-        [AfterScenario("WriteFile")]
-        [AfterScenario("Zip")]
+        [AfterScenario("@FileAndFolderCopy", "@FileAndFolderCreate", "@FileAndFolderDelete", "@FileAndFolderMove", "@ReadFile", "@ReadFolder", "@FileAndFolderRename", "@Unzip", "@WriteFile", "@Zip")]
         public void CleanUpFiles()
         {
             try
