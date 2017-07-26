@@ -366,7 +366,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
             oracleServerDesignerViewModel.ManageServiceInputViewModel = mockDatabaseInputViewModel.Object;
 
-            AddScenarioContext.Current(oracleServerDesignerViewModel, mockDatabaseInputViewModel, mockDbServiceModel);
+            AddScenarioContext(oracleServerDesignerViewModel, mockDatabaseInputViewModel, mockDbServiceModel);
         }
 
         [Then(@"Oracle Outputs appear as")]
