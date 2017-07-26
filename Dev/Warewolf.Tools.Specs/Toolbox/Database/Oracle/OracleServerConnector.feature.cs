@@ -79,7 +79,7 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.Oracle
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given("I open New oracleDb Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I open New Workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
  testRunner.And("I drag a Oracle Server database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11

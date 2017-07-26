@@ -6,7 +6,7 @@ Feature: OracleServerConnector
 
 
 Scenario: Creating Oracle Server Connector
-	Given I open New oracleDb Workflow
+	Given I open New Workflow
 	And I drag a Oracle Server database connector
 	And Oracle Source is Enabled
 	And Oracle Action is Disabled
