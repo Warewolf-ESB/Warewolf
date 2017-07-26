@@ -40,7 +40,7 @@ Scenario: Change the source on existing postgresql tool
 	And PostgresSql Source Is "postgressql"
 	And PostgresSql Action Is Enabled
 	And PostgresSql Action Is "getemployees"
-	And Inputs Are Enabled
+	And PostgresSql Inputs Are Enabled
 	Then PostgresSql Inputs appear As
 	| Input | Value     | Empty is Null |
 	| fname | [[fname]] | false         |
@@ -53,7 +53,7 @@ Scenario: Change the action on existing postgresql tool
 	And PostgresSql Source Is "postgressql"
 	And PostgresSql Action Is Enabled
 	And PostgresSql Action Is "getemployees"
-	And Inputs Are Enabled
+	And PostgresSql Inputs Are Enabled
 	Then PostgresSql Inputs appear As
 	| Input | Value     | Empty is Null |
 	| fname | [[fname]] | false         |  
@@ -65,7 +65,7 @@ Scenario: Change the recordset on existing postgresql tool
 	And PostgresSql Source Is "postgressql"
 	And PostgresSql Action Is Enabled
 	And PostgresSql Action Is "getemployees"
-	And Inputs Are Enabled
+	And PostgresSql Inputs Are Enabled
 	Then PostgresSql Inputs appear As
 	| Input | Value     | Empty is Null |
 	| fname | [[fname]] | false         |
