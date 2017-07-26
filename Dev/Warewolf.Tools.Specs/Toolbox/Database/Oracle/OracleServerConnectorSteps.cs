@@ -59,52 +59,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(viewModel.SourceRegion.IsEnabled);
         }
 
-        [Given(@"I open New oracleDb Workflow")]
-        public void GivenIOpenNewOracleDbWorkflow()
-        {
-            var oracleServerActivity = new DsfOracleDatabaseActivity();
-            var modelItem = ModelItemUtils.CreateModelItem(oracleServerActivity);
-
-            var mockInputArea = new Mock<IGenerateInputArea>();
-            var mockOutputArea = new Mock<IGenerateOutputArea>();
-            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
-            var mockDbServiceModel = new Mock<IDbServiceModel>();
-            var mockEnvironmentRepo = new Mock<IServerRepository>();
-            var mockEnvironmentModel = new Mock<IServer>();
-
-            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
-            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
-            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
-
-            _greenPointSource = new DbSourceDefinition
-            {
-                Name = "GreenPoint",
-                Type = enSourceType.Oracle,
-                ServerName = "Localhost",
-                UserName = "system",
-                Password = "P@ssword123",
-                AuthenticationType = Runtime.ServiceModel.Data.AuthenticationType.User
-            };
-
-            var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
-            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
-
-            var mockAction = new Mock<Action>(MockBehavior.Default);
-
-            mockDatabaseInputViewModel.SetupGet(model => model.InputArea).Returns(mockInputArea.Object);
-            mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);
-            mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
-            mockDatabaseInputViewModel.Setup(model => model.OkAction).Returns(mockAction.Object);
-
-            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
-            oracleServerDesignerViewModel.ManageServiceInputViewModel = mockDatabaseInputViewModel.Object;            
-
-            AddScenarioContext(oracleServerDesignerViewModel, mockDatabaseInputViewModel, mockDbServiceModel);
-        }
-
         OracleDatabaseDesignerViewModel GetViewModel()
         {
             return scenarioContext.Get<OracleDatabaseDesignerViewModel>("viewModel");
@@ -375,6 +329,52 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Add("viewModel", oracleDatabaseDesignerViewModel);
             scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
             scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
+        }
+
+        [Given(@"I open New Workflow containing an Oracle Connector")]
+        public void GivenIOpenNewOracleDbWorkflow()
+        {
+            var oracleServerActivity = new DsfOracleDatabaseActivity();
+            var modelItem = ModelItemUtils.CreateModelItem(oracleServerActivity);
+
+            var mockInputArea = new Mock<IGenerateInputArea>();
+            var mockOutputArea = new Mock<IGenerateOutputArea>();
+            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
+            var mockDbServiceModel = new Mock<IDbServiceModel>();
+            var mockEnvironmentRepo = new Mock<IServerRepository>();
+            var mockEnvironmentModel = new Mock<IServer>();
+
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
+            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
+            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
+            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
+
+            _greenPointSource = new DbSourceDefinition
+            {
+                Name = "GreenPoint",
+                Type = enSourceType.Oracle,
+                ServerName = "Localhost",
+                UserName = "system",
+                Password = "P@ssword123",
+                AuthenticationType = Runtime.ServiceModel.Data.AuthenticationType.User
+            };
+
+            var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
+            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
+
+            var mockAction = new Mock<Action>(MockBehavior.Default);
+
+            mockDatabaseInputViewModel.SetupGet(model => model.InputArea).Returns(mockInputArea.Object);
+            mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);
+            mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
+            mockDatabaseInputViewModel.Setup(model => model.OkAction).Returns(mockAction.Object);
+
+            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            oracleServerDesignerViewModel.ManageServiceInputViewModel = mockDatabaseInputViewModel.Object;
+
+            AddScenarioContext(oracleServerDesignerViewModel, mockDatabaseInputViewModel, mockDbServiceModel);
         }
 
         [Then(@"Oracle Outputs appear as")]

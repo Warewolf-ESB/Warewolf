@@ -37,10 +37,6 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         protected void RemovedFilesCreatedForTesting()
         {
-            // ReSharper disable EmptyGeneralCatchClause
-
-
-
             var broker = ActivityIOFactory.CreateOperationsBroker();
             string destLocation;
             if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
@@ -50,16 +46,10 @@ namespace Warewolf.Tools.Specs.BaseTypes
                     scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
                     true);
                 IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                try
+
+                if (dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
                 {
-                    if (dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
-                    {
-                        broker.Delete(dstEndPoint);
-                    }
-                }
-                catch (Exception)
-                {
-                //    throw;
+                    broker.Delete(dstEndPoint);
                 }
             }
 
