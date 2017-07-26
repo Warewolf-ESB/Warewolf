@@ -25,14 +25,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class SQLServerConnectorSteps
     {
-        private readonly ScenarioContext scenarioContext;
-
-        public SQLServerConnectorSteps(ScenarioContext scenarioContext)
-        {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
-            this.scenarioContext = scenarioContext;
-        }
-
         private DbSourceDefinition _greenPointSource;
         private DbAction _importOrderAction;
         private DbSourceDefinition _testingDbSource;
@@ -66,9 +58,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
 
-            scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
-            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
+            FeatureContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            FeatureContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            FeatureContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [When(@"Source is changed from to ""(.*)""")]
@@ -239,9 +231,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
 
-            scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
-            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
+            FeatureContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            FeatureContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            FeatureContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"Sql Server Source is ""(.*)""")]
@@ -419,10 +411,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
 
-            scenarioContext.Add("viewModel", sqlServerDesignerViewModel);
-            scenarioContext.Add("privateObject", privateObject);
-            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
+            FeatureContext.Current.Add("viewModel", sqlServerDesignerViewModel);
+            FeatureContext.Current.Add("privateObject", privateObject);
+            FeatureContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            FeatureContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
@@ -475,22 +467,22 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         SqlServerDatabaseDesignerViewModel GetViewModel()
         {
-            return scenarioContext.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
+            return FeatureContext.Current.Get<SqlServerDatabaseDesignerViewModel>("viewModel");
         }
 
         PrivateObject GetSqlServerPrivateObject()
         {
-            return scenarioContext.Get<PrivateObject>("privateObject");
+            return FeatureContext.Current.Get<PrivateObject>("privateObject");
         }
 
         Mock<IManageDatabaseInputViewModel> GetInputViewModel()
         {
-            return scenarioContext.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
+            return FeatureContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockServiceInputViewModel");
         }
 
         Mock<IDbServiceModel> GetDbServiceModel()
         {
-            return scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return FeatureContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
         [Then(@"the workflow execution has ""(.*)"" error")]
