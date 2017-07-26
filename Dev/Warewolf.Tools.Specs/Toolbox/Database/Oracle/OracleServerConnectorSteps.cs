@@ -52,7 +52,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual(sourceName, selectedSource.Name);
         }
 
-        [Given(@"Source is Enable")]
+        [Given(@"Oracle Source is Enabled")]
         public void GivenSourceIsEnabled()
         {
             var viewModel = GetViewModel();
@@ -139,16 +139,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Pending();
         }
 
-        [Given(@"Action is Disable")]
+        [Given(@"Oracle Action is Disabled")]
         public void GivenActionIsDisabled()
         {
             var viewModel = GetViewModel();
             Assert.IsFalse(viewModel.ActionRegion.IsEnabled);
         }
 
-        [Given(@"Inputs is Disable")]
-        [When(@"Inputs is Disable")]
-        [Then(@"Inputs is Disable")]
+        [Given(@"Oracle Inputs are Disabled")]
+        [When(@"Oracle Inputs are Disabled")]
+        [Then(@"Oracle Inputs are Disabled")]
         public void GivenInputsIsDisabled()
         {
             var viewModel = GetViewModel();
@@ -156,9 +156,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasNoInputs);
         }
 
-        [Given(@"Outputs is Disable")]
-        [When(@"Outputs is Disable")]
-        [Then(@"Outputs is Disable")]
+        [Given(@"Oracle Outputs are Disabled")]
+        [When(@"Oracle Outputs are Disabled")]
+        [Then(@"Oracle Outputs are Disabled")]
         public void GivenOutputsIsDisabled()
         {
             var viewModel = GetViewModel();
@@ -270,7 +270,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().SourceRegion.SelectedSource = _greenPointSource;
         }
 
-        [When(@"I selected HR.TESTPROC9 as the Oracle action")]
+        [When(@"I select HR.TESTPROC9 as the Oracle action")]
         public void WhenISelectAsTheAction()
         {
             var dataTable = new DataTable();
@@ -398,12 +398,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
             var outputMappings = vm.OutputsRegion.Outputs;
             Assert.IsNotNull(outputMappings);
-        }
-
-        [Then(@"the Database dropdown is visible")]
-        public void ThenTheDatabaseDropdownIsVisible()
-        {
-            ScenarioContext.Current.Pending();
         }
 
         [Then(@"Oracle Recordset Name equals ""(.*)""")]

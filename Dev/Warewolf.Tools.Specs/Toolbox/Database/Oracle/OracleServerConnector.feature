@@ -8,13 +8,13 @@ Feature: OracleServerConnector
 Scenario: Creating Oracle Server Connector
 	Given I open New oracleDb Workflow
 	And I drag a Oracle Server database connector
-	And Source is Enable
-	And Action is Disable
-	And Inputs is Disable
-	And Outputs is Disable
+	And Oracle Source is Enabled
+	And Oracle Action is Disabled
+	And Oracle Inputs are Disabled
+	And Oracle Outputs are Disabled
 	When I Selected GreenPoint as Source
 	Then Action is Enable
-	When I selected HR.TESTPROC9 as the Oracle action
+	When I select HR.TESTPROC9 as the Oracle action
 	Then Inputs is Enable
 	And Oracle Inputs appear as 
 	| Input   | Value   | Empty is Null |
@@ -25,7 +25,6 @@ Scenario: Creating Oracle Server Connector
 	| EID	|
 	| 100   |
 	When I click Oracle Tests
-	Then the Database dropdown is visible
 	When I click Oracle OK
 	Then Oracle Outputs appear as
 	| Mapped From | Mapped To                  | 
@@ -34,7 +33,7 @@ Scenario: Creating Oracle Server Connector
 
 Scenario: Opening Saved workflow with Oracle Server tool
    Given I open workflow with Oracle connector
-	And Source is Enable
+	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
@@ -50,7 +49,7 @@ Scenario: Opening Saved workflow with Oracle Server tool
 
 Scenario: Change Source on Existing tool
 	Given I open workflow with Oracle connector
-	And Source is Enable
+	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
@@ -70,7 +69,7 @@ Scenario: Change Source on Existing tool
 
 Scenario: Changing Actions
 	Given I open workflow with Oracle connector
-	And Source is Enable
+	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"	
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
@@ -92,7 +91,7 @@ Scenario: Changing Actions
 
 Scenario: Change Recordset Name
 	Given I open workflow with Oracle connector
-	And Source is Enable
+	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"	
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
 	And Inputs is Enable
