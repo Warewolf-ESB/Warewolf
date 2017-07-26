@@ -13,9 +13,9 @@ Scenario: Creating Oracle Server Connector
 	And Oracle Inputs are Disabled
 	And Oracle Outputs are Disabled
 	When I Selected GreenPoint as Source
-	Then Oracle Action is Enabled
+	Then Action is Enable
 	When I select HR.TESTPROC9 as the Oracle action
-	Then Oracle Inputs are Enabled
+	Then Inputs is Enable
 	And Oracle Inputs appear as 
 	| Input   | Value   | Empty is Null |
 	| EID     | [[EID]] | false         |
@@ -36,7 +36,7 @@ Scenario: Opening Saved workflow with Oracle Server tool
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
-	And Oracle Inputs are Enabled
+	And Inputs is Enable
 	Then Oracle Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
@@ -52,7 +52,7 @@ Scenario: Change Source on Existing tool
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
-	And Oracle Inputs are Enabled
+	And Inputs is Enable
 	Then Oracle Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
@@ -63,8 +63,8 @@ Scenario: Change Source on Existing tool
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
 	When Oracle Source is changed from to GreenPoint
-	Then Oracle Action is Enabled
-	And Oracle Inputs are Enabled
+	Then Action is Enable
+	And Inputs is Enable
 	And Validate is Enable
 
 Scenario: Changing Actions
@@ -72,7 +72,7 @@ Scenario: Changing Actions
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"	
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
-	And Oracle Inputs are Enabled
+	And Inputs is Enable
 	Then Oracle Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
@@ -83,7 +83,7 @@ Scenario: Changing Actions
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
 	When Oracle Action is changed from to dbo.ImportOrder
-	And Oracle Inputs are Enabled
+	And Inputs is Enable
 	And Oracle Inputs appear as
 	| Input     | Value         | Empty is Null |
 	| ProductId | [[ProductId]] | false         |
@@ -94,7 +94,7 @@ Scenario: Change Recordset Name
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"	
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
-	And Oracle Inputs are Enabled
+	And Inputs is Enable
 	Then Oracle Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
