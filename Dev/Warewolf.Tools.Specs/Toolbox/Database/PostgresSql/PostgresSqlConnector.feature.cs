@@ -81,9 +81,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
  testRunner.Given("I drag a PostgresSql Server database connector", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.When("I select \"DemoPostgres\" as the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I select DemoPostgres as the source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.When("I select \"getemployees\" as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I select getemployees as the action", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
@@ -94,9 +94,9 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "false"});
 #line 11
- testRunner.Then("Test Inputs appear", ((string)(null)), table1, "Then ");
+ testRunner.Then("Test PostgresSql Inputs appear As", ((string)(null)), table1, "Then ");
 #line 14
- testRunner.Then("Inputs Are Enabledd for postgresSql", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Inputs Are Enabled for PostgresSql", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "fname"});

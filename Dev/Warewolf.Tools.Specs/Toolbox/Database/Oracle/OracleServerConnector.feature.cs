@@ -121,7 +121,7 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "100"});
 #line 24
- testRunner.And("Test Oracle Inputs appear as", ((string)(null)), table2, "And ");
+ testRunner.Then("Test Oracle Inputs appear as", ((string)(null)), table2, "Then ");
 #line 27
  testRunner.When("I click Oracle Tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
@@ -311,7 +311,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[ProductId]]",
                         "false"});
 #line 88
- testRunner.And("Oracle Inputs appear as", ((string)(null)), table10, "And ");
+ testRunner.Then("Oracle Inputs appear as", ((string)(null)), table10, "Then ");
 #line 91
  testRunner.And("Validate is Enable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

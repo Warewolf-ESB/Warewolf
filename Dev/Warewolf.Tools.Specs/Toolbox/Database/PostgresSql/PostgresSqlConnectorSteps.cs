@@ -71,55 +71,29 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
-        [When(@"I select ""(.*)"" as the source")]
+        [When(@"I select DemoPostgres as the source")]
         public void WhenISelectedAsTheSource(string sourceName)
         {
-            if (sourceName == "DemoPostgres")
-            {
-                _selectedAction = new DbAction();
-                _selectedAction.Name = "getemployees";
-                _selectedAction.Inputs = new List<IServiceInput> { new ServiceInput("fname", "") };
-                GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _selectedAction });
-                GetViewModel().SourceRegion.SelectedSource = _postgresSqlSource;
-            }
+            _selectedAction = new DbAction();
+            _selectedAction.Name = "getemployees";
+            _selectedAction.Inputs = new List<IServiceInput> { new ServiceInput("fname", "") };
+            GetDbServiceModel().Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _selectedAction });
+            GetViewModel().SourceRegion.SelectedSource = _postgresSqlSource;
         }
 
-        [When(@"I select ""(.*)"" as the action")]
+        [When(@"I select getemployees as the action")]
         public void WhenISelectedAsTheAction(string actionName)
         {
-            if (actionName == "getemployees")
-            {
-                var dataTable = new DataTable();
-                dataTable.Columns.Add(new DataColumn("name"));
-                dataTable.Columns.Add(new DataColumn("salary"));
-                dataTable.Columns.Add(new DataColumn("age"));
-                dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill", 4200, 45 }, true));
-                GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
-                GetViewModel().ActionRegion.SelectedAction = _selectedAction;
-            }
+            var dataTable = new DataTable();
+            dataTable.Columns.Add(new DataColumn("name"));
+            dataTable.Columns.Add(new DataColumn("salary"));
+            dataTable.Columns.Add(new DataColumn("age"));
+            dataTable.ImportRow(dataTable.LoadDataRow(new object[] { "Bill", 4200, 45 }, true));
+            GetDbServiceModel().Setup(model => model.TestService(It.IsAny<IDatabaseService>())).Returns(dataTable);
+            GetViewModel().ActionRegion.SelectedAction = _selectedAction;
         }
 
-        [Given(@"I click on Generate Output")]
-        [Then(@"Then the Inputs Window will open")]
-        [Then(@"Test Inputs appear")]
-        public void TestInputsAppear(Table table)
-        {
-            var viewModel = GetViewModel().ToModel();
-
-            var rowNum = 0;
-            foreach (var row in table.Rows)
-            {
-                var inputValue = row["Input"];
-                var value = row["Value"];
-                var serviceInputs = viewModel.Inputs.ToList();
-                var serviceInput = serviceInputs[rowNum];
-                Assert.AreEqual(inputValue, serviceInput.Name);
-                Assert.AreEqual(value, serviceInput.Value);
-                rowNum++;
-            }
-        }
-
-        [Then(@"Inputs Are Enabledd for postgresSql")]
+        [Then(@"Inputs Are Enabled for PostgresSql")]
         public void ThenInputsIsEnabledForPostgresSql()
         {
             var viewModel = GetViewModel();
@@ -151,6 +125,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.TestInputCommand.CanExecute());
         }
+
         [Then(@"button is clicked")]
         public void ThenButtonIsClicked(Table table)
         {
@@ -278,17 +253,29 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasInputs);
         }
 
+        [Given(@"PostgresSql Inputs appear As")]
         [Then(@"PostgresSql Inputs appear As")]
         public void ThenInputsAppearAs(Table table)
         {
+            AssertPostGreSqlInputs(table);
+        }
 
-            var viewModel = GetViewModel();
-            int rowNum = 0;
+        [Given(@"Test PostgresSql Inputs appear As")]
+        [Then(@"Test PostgresSql Inputs appear As")]
+        public void TestInputsAppear(Table table)
+        {
+            AssertPostGreSqlInputs(table);
+        }
+
+        private void AssertPostGreSqlInputs(Table table)
+        {
+            var viewModel = GetViewModel().ToModel();
+            var rowNum = 0;
             foreach (var row in table.Rows)
             {
                 var inputValue = row["Input"];
                 var value = row["Value"];
-                var serviceInputs = viewModel.InputArea.Inputs.ToList();
+                var serviceInputs = viewModel.Inputs.ToList();
                 var serviceInput = serviceInputs[rowNum];
                 Assert.AreEqual(inputValue, serviceInput.Name);
                 Assert.AreEqual(value, serviceInput.Value);

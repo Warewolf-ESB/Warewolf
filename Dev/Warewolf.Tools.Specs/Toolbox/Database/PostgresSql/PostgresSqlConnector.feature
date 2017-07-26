@@ -6,12 +6,12 @@ Feature: PostgresSqlConnector
 
 Scenario: Creating PostgresSql Connector
 	Given I drag a PostgresSql Server database connector
-	When I select "DemoPostgres" as the source
-	When I select "getemployees" as the action
-	Then Test Inputs appear
+	When I select DemoPostgres as the source
+	When I select getemployees as the action
+	Then Test PostgresSql Inputs appear As
 	| Input | Value | Empty is Null |
 	| fname |       | false         |
-	Then Inputs Are Enabledd for postgresSql
+	Then Inputs Are Enabled for PostgresSql
 	Given I Enter a value as the input
 	| fname |
 	| Bill  |

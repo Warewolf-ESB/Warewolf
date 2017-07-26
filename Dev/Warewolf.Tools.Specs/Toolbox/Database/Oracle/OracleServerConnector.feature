@@ -21,7 +21,7 @@ Scenario: Creating a new Oracle Tool Instance
 	| EID     | [[EID]] | false         |
 	And Validate is Enable
 	When I click Oracle Validate
-	And Test Oracle Inputs appear as
+	Then Test Oracle Inputs appear as
 	| EID	|
 	| 100   |
 	When I click Oracle Tests
@@ -85,7 +85,7 @@ Scenario: Changing Actions on Existing Oracle Tool
 	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
 	When Oracle Action is changed from to dbo.ImportOrder
 	And Inputs is Enable
-	And Oracle Inputs appear as
+	Then Oracle Inputs appear as
 	| Input     | Value         | Empty is Null |
 	| ProductId | [[ProductId]] | false         |
 	And Validate is Enable
