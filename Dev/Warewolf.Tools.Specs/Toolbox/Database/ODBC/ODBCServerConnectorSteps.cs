@@ -331,7 +331,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [Given(@"ODBC Source is localODBCTest")]
-        public void GivenSourceIs(string name)
+        public void GivenSourceIs()
         {
             _importOrderAction = new DbAction();
             _importOrderAction.Name = "Command";
