@@ -4,9 +4,9 @@ Feature: OracleServerConnector
 	As a Warewolf User
 	I want to be shown the database service setup
 
-
+@CreatingOracleToolInstance
 Scenario: Creating a new Oracle Tool Instance
-	Given I open New Workflow
+	Given I open New Workflow containing an Oracle Connector
 	And I drag a Oracle Server database connector
 	And Oracle Source is Enabled
 	And Oracle Action is Disabled

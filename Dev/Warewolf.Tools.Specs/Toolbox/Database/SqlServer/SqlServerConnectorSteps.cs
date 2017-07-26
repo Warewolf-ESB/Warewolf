@@ -453,15 +453,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             Assert.IsTrue(true);
         }
-       
-        [BeforeScenario("@ChangingSqlServerFunctions")]
-        public void InitChangingFunction()
-        {
-            var mock = new Mock<IDataListViewModel>();
-            mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
-            if (DataListSingleton.ActiveDataList == null)
-                DataListSingleton.SetDataList(mock.Object);
-        }
 
         #region Private Methods
 

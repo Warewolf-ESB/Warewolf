@@ -8,6 +8,7 @@ using Warewolf.Tools.Specs.BaseTypes;
 
 namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder
 {
+    [Binding]
     class FileAndFolderSpecsCleanup : FileToolsBase
     {
         public FileAndFolderSpecsCleanup(ScenarioContext scenarioContext) : base(scenarioContext)
