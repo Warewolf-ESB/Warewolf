@@ -23,6 +23,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class ODBCServerConnectorSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public ODBCServerConnectorSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private DbSourceDefinition _greenPointSource;
         private DbAction _importOrderAction;
         private DbSourceDefinition _testingDbSource;
@@ -77,7 +85,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Type = enSourceType.ODBC,
                 Id = sourceId
             };
-
             _importOrderAction = new DbAction
             {
                 Name = "dbo.ImportOrder",
@@ -98,9 +105,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDatabaseInputViewModel.Setup(model => model.OkAction).Returns(mockOkAction.Object);
             var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
-            FeatureContext.Current.Add("viewModel", odbcDatabaseDesignerViewModel);
-            FeatureContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            FeatureContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", odbcDatabaseDesignerViewModel);
+            scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
         [Given(@"I open a new Workflow")]
         public void GivenIOpenANewWorkflow()
@@ -169,11 +176,24 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             
             var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem,mockDbServiceModel.Object);
             
-            FeatureContext.Current.Add("viewModel", odbcDatabaseDesignerViewModel);
-            FeatureContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            FeatureContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            FeatureContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", odbcDatabaseDesignerViewModel);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
+
+        [Then(@"Test Connector and Calculate Outputs window is open")]
+        public void ThenTestConnectorAndCalculateOutputsWindowIsOpen()
+        {
+            scenarioContext.Pending();
+        }
+
+        [Then(@"""(.*)"" is ""(.*)""")]
+        public void ThenIs(string p0, string p1)
+        {
+            scenarioContext.Pending();
+        }
+
 
         [Given(@"ODBC Source is Enabled")]
         public void GivenSourceIsEnabled()
@@ -184,17 +204,17 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         ODBCDatabaseDesignerViewModel GetViewModel()
         {
-            return FeatureContext.Current.Get<ODBCDatabaseDesignerViewModel>("viewModel");
+            return scenarioContext.Get<ODBCDatabaseDesignerViewModel>("viewModel");
         }
 
         Mock<IManageServiceInputViewModel> GetInputViewModel()
         {
-            return FeatureContext.Current.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
+            return scenarioContext.Get<Mock<IManageServiceInputViewModel>>("mockServiceInputViewModel");
         }
 
         Mock<IDbServiceModel> GetDbServiceModel()
         {
-            return FeatureContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
         [Given(@"Action iz Disable")]
@@ -262,6 +282,13 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var viewModel = GetViewModel();
             var hasInputs = viewModel.InputArea.Inputs != null || viewModel.InputArea.IsEnabled;
             Assert.IsTrue(hasInputs);
+        }
+
+        [Then(@"Mapping iz Enable")]
+        [Given(@"Mapping iz Enable")]
+        public void GivenMappingIsEnabled()
+        {
+            scenarioContext.Pending();
         }
 
         [Given(@"Validate ODBC is Enabled")]
@@ -336,6 +363,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             GetViewModel().ManageServiceInputViewModel.OkAction = new Mock<Action>().Object;
             GetViewModel().ManageServiceInputViewModel.OkAction();
+        }
+
+        [When(@"""(.*)"" is selected az the data source")]
+        public void WhenIsSelectedAsTheDataSource(string p0)
+        {
+            scenarioContext.Pending();
+        }
+
+        [When(@"testing the action fails")]
+        public void WhenTestingTheActionFails()
+        {
+            scenarioContext.Pending();
         }
 
         [When(@"I click Validate ODBC")]

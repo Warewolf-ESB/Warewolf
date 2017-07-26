@@ -25,6 +25,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class PostgresSqlConnectorSteps
     {
+        private readonly ScenarioContext scenarioContext;
+
+        public PostgresSqlConnectorSteps(ScenarioContext scenarioContext)
+        {
+            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            this.scenarioContext = scenarioContext;
+        }
+
         private DbSourceDefinition _postgresSqlSource;
         private DbAction _selectedAction;
         private DbSourceDefinition _testingDbSource;
@@ -66,9 +74,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
             var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
 
-            FeatureContext.Current.Add("viewModel", postgresDesignerViewModel);
-            FeatureContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            FeatureContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", postgresDesignerViewModel);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [When(@"I select ""(.*)"" as the source")]
@@ -235,9 +243,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockServiceInputViewModel.SetupAllProperties();
             var postgresDesignerViewModel = new PostgreSqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
 
-            FeatureContext.Current.Add("viewModel", postgresDesignerViewModel);
-            FeatureContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
-            FeatureContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
+            scenarioContext.Add("viewModel", postgresDesignerViewModel);
+            scenarioContext.Add("mockServiceInputViewModel", mockServiceInputViewModel);
+            scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
         [Given(@"PostgresSql Source Is Enabled")]
@@ -306,12 +314,12 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
 
         PostgreSqlDatabaseDesignerViewModel GetViewModel()
         {
-            return FeatureContext.Current.Get<PostgreSqlDatabaseDesignerViewModel>("viewModel");
+            return scenarioContext.Get<PostgreSqlDatabaseDesignerViewModel>("viewModel");
         }
 
         Mock<IDbServiceModel> GetDbServiceModel()
         {
-            return FeatureContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
+            return scenarioContext.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
 
         [BeforeScenario("@OpeningSavedWorkflowWithPostgresServerTool", "@ChangeTheSourceOnExistingPostgresql", "@ChangeTheActionOnExistingPostgresql", "@ChangeTheRecordsetOnExistingPostgresqlTool")]
