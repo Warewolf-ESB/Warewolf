@@ -6,82 +6,80 @@ Feature: SqlServerConnector
 
 Scenario: Opening Saved workflow with SQL Server tool
    Given I open workflow with database connector
-	And Source is Enabled
-	And Source is "testingDBSrc"	
-	And Action is "dbo.Pr_CitiesGetCountries"
-	And Inputs is Enabled
-	And Inputs appear as
-	| Input | Value      | Empty is Null |
+	And Sql Server Source is Enabled
+	And Sql Server Source is "testingDBSrc"	
+	And Sql Server Action is "dbo.Pr_CitiesGetCountries"
+	And Sql Server Inputs Are Enabled
+	And Sql Server Inputs appear as
+	| Input | Value       | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
-	And Validate is Enabled
-	Then Outputs appear as
+	And Validate Sql Server is Enabled
+	Then Sql Server Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	And Sql Server Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
 Scenario: Change SQL Server Source on Existing tool
 	Given I open workflow with database connector
-	And Source is Enabled
-	And Source is "testingDBSrc"
-	And Action is "dbo.Pr_CitiesGetCountries"
-	And Inputs is Enabled
-	And Inputs appear as
+	And Sql Server Source is Enabled
+	And Sql Server Source is "testingDBSrc"
+	And Sql Server Action is "dbo.Pr_CitiesGetCountries"
+	And Sql Server Inputs Are Enabled
+	And Sql Server Inputs appear as
 	| Input | Value | Empty is Null |
 	| Prefix | [[Prefix]]    | false         | 
-	And Validate is Enabled
-	Then Outputs appear as
+	And Validate Sql Server is Enabled
+	Then Sql Server Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	And Sql Server Recordset Name equals "dbo_Pr_CitiesGetCountries"
 	When Source is changed from to "GreenPoint"
-	Then Action is Enabled
-	And Inputs is Enabled 
-	And Validate is Enabled 
+	Then Sql Server Action is Enabled
+	And Sql Server Inputs Are Enabled 
+	And Validate Sql Server is Enabled 
 
 @ChangingSqlServerFunctions
 Scenario: Changing SQL Server Actions
 	Given I open workflow with database connector
-	And Source is Enabled
-	And Source is "testingDBSrc"
-	#And Action is Enabled
-	And Action is "dbo.Pr_CitiesGetCountries"
-	And Inputs is Enabled
-	And Inputs appear as
+	And Sql Server Source is Enabled
+	And Sql Server Source is "testingDBSrc"
+	And Sql Server Action is "dbo.Pr_CitiesGetCountries"
+	And Sql Server Inputs Are Enabled
+	And Sql Server Inputs appear as
 	| Input  | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
-	And Validate is Enabled
-	Then Outputs appear as
+	And Validate Sql Server is Enabled
+	Then Sql Server Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	And Sql Server Recordset Name equals "dbo_Pr_CitiesGetCountries"
 	When Action is changed from to "dbo.ImportOrder"
-	And Inputs is Enabled
-	And Inputs appear as
+	And Sql Server Inputs Are Enabled
+	And Sql Server Inputs appear as
 	| Input     | Value         | Empty is Null |
 	| ProductId | [[ProductId]] | false         |
-	And Validate is Enabled	
+	And Validate Sql Server is Enabled	
 
 Scenario: Change SQL Server Recordset Name
 	Given I open workflow with database connector
-	And Source is Enabled
-	And Source is "testingDBSrc"
-	#And Action is Enabled
-	And Action is "dbo.Pr_CitiesGetCountries"
-	And Inputs is Enabled
-	And Inputs appear as
+	And Sql Server Source is Enabled
+	And Sql Server Source is "testingDBSrc"
+	And Sql Server Action is "dbo.Pr_CitiesGetCountries"
+	And Sql Server Inputs Are Enabled
+	And Sql Server Inputs appear as
 	| Input | Value      | Empty is Null |
 	| Prefix | [[Prefix]] | false         |
-	And Validate is Enabled
-	Then Outputs appear as
+	And Validate Sql Server is Enabled
+	Then Sql Server Outputs appear as
 	| Mapped From | Mapped To                                   | 
 	| CountryID   | [[dbo_Pr_CitiesGetCountries().CountryID]]   |
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
-	And Recordset Name equals "dbo_Pr_CitiesGetCountries"
+	And Sql Server Recordset Name equals "dbo_Pr_CitiesGetCountries"
 	When Recordset Name is changed to "Pr_Cities"
-	Then Outputs appear as
+	Then Sql Server Outputs appear as
 	| Mapped From | Mapped To                   |
 	| CountryID   | [[Pr_Cities().CountryID]]   |
 	| Description | [[Pr_Cities().Description]] |
@@ -91,8 +89,8 @@ Scenario: No SQL Server Action to be loaded Error
 	And "NoStoredProceedureToLoad" contains "Testing/SQL/NoSqlStoredProceedure" from server "localhost" with mapping as
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	When "NoStoredProceedureToLoad" is executed
-	Then the sqlsERVER workflow execution has "An" error
-	And The sqlsERVER "Testing/SQL/NoSqlStoredProceedure" in Workflow "NoStoredProceedureToLoad" debug outputs as
+	Then the workflow containing the Sql Server connector has "An" execution error
+	And The Sql Server step "Testing/SQL/NoSqlStoredProceedure" in Workflow "NoStoredProceedureToLoad" debug outputs appear as
 	  |                                                                  |
 	  | Error: The selected database does not contain actions to perform |
 
@@ -102,8 +100,8 @@ Scenario: Passing Null Input values to SQL Server
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	     | [[value]]                  | a         | True          |
 	When "PassingNullInputValue" is executed
-	Then the sqlsERVER workflow execution has "An" error
-	And The sqlsERVER "Acceptance Testing Resources/GreenPoint" in Workflow "PassingNullInputValue" debug outputs as
+	Then the workflow containing the Sql Server connector has "An" execution error
+	And The Sql Server step "Acceptance Testing Resources/GreenPoint" in Workflow "PassingNullInputValue" debug outputs appear as
 	  |                                       |
 	  | Error: Scalar value { value } is NULL |
 
@@ -117,8 +115,8 @@ Scenario: Mapped To Recordsets incorrect
 	| id               | [[dbo_leon bob proc().id]]               |
 	| some column Name | [[dbo_leon bob proc().some column Name]] |
 	When "BadSqlParameterName" is executed
-	Then the sqlsERVER workflow execution has "An" error
-	And The sqlsERVER "Acceptance Testing Resources/GreenPoint" in Workflow "BadSqlParameterName" debug outputs as
+	Then the workflow containing the Sql Server connector has "An" execution error
+	And The Sql Server step "Acceptance Testing Resources/GreenPoint" in Workflow "BadSqlParameterName" debug outputs appear as
 	  |                               |
 	  | Error: Sql Error: parse error |
 
@@ -130,8 +128,8 @@ Scenario: Parameter not found in the collection
 	     | Input Data or [[Variable]] | Parameter      | Empty is Null |
 	     |                            | `p_startswith` | false         |
 	When "BadMySqlParameterName" is executed
-	Then the sqlsERVER workflow execution has "An" error
-	And The sqlsERVER "Testing/MySql/MySqlParameters" in Workflow "BadMySqlParameterName" debug outputs as
+	Then the workflow containing the Sql Server connector has "An" execution error
+	And The Sql Server step "Testing/MySql/MySqlParameters" in Workflow "BadMySqlParameterName" debug outputs appear as
 	  |                                                      |
 	  | Parameter "p_startswith" not found in the collection |
 
@@ -142,8 +140,8 @@ Scenario: Recordset has invalid character
 	     | Input Data or [[Variable]] | Parameter | Empty is Null |
 	     | 1                          | charValue | True          |
 	When "MappingHasIncorrectCharacter" is executed
-	Then the sqlsERVER workflow execution has "An" error
-	And The sqlsERVER "Acceptance Testing Resources/GreenPoint" in Workflow "MappingHasIncorrectCharacter" debug outputs as
+	Then the workflow containing the Sql Server connector has "An" execution error
+	And The Sql Server step "Acceptance Testing Resources/GreenPoint" in Workflow "MappingHasIncorrectCharacter" debug outputs appear as
 	  |                                                                    |
 	  | [[dbo_ConvertTo,Int().result]] : Recordset name has invalid format |
 	  

@@ -11,7 +11,7 @@ Scenario: Creating PostgresSql Server Connector
 	Then Test Inputs appear
 	| Input | Value | Empty is Null |
 	| fname |       | false         |
-	Then Inputs is Enabled for postgresSql
+	Then Inputs Are Enabledd for postgresSql
 	Given I Enter a value as the input
 	| fname |
 	| Bill  |
@@ -19,53 +19,54 @@ Scenario: Creating PostgresSql Server Connector
 	Then button is clicked
 	| name | salary | age |
 	| Bill | 4200   | 45  |
+
 @OpeningSavedWorkflowWithPostgresServerTool
 Scenario: Opening Saved workflow with Postgres Server tool
 	Given I Open workflow with PostgreSql connector
-	And Source Is Enable
-	And Source Is "postgressql"
-	And Action Is Enable
-	And Action Is "getemployees"
-	And Inputs Is Enable
-	Then Inputs appear As
+	And PostgresSql Source Is Enabled
+	And PostgresSql Source Is "postgressql"
+	And PostgresSql Action Is Enabled
+	And PostgresSql Action Is "getemployees"
+	And PostgresSql Inputs Are Enabled
+	Then PostgresSql Inputs appear As
 	| Input | Value     | Empty is Null |
 	| fname | [[fname]] | false         |
-	And Validate Is Enable
+	And Validate PostgresSql Is Enabled
 
 @ChangeTheSourceOnExistingPostgresql	
 Scenario: Change the source on existing postgresql tool
 	Given I Open workflow with PostgreSql connector
-	And Source Is Enable
-	And Source Is "postgressql"
-	And Action Is Enable
-	And Action Is "getemployees"
-	And Inputs Is Enable
-	Then Inputs appear As
+	And PostgresSql Source Is Enabled
+	And PostgresSql Source Is "postgressql"
+	And PostgresSql Action Is Enabled
+	And PostgresSql Action Is "getemployees"
+	And Inputs Are Enabled
+	Then PostgresSql Inputs appear As
 	| Input | Value     | Empty is Null |
 	| fname | [[fname]] | false         |
-	And Validate Is Enable
+	And Validate PostgresSql Is Enabled
 
 @ChangeTheActionOnExistingPostgresql
 Scenario: Change the action on existing postgresql tool
 	Given I Open workflow with PostgreSql connector
-	And Source Is Enable
-	And Source Is "postgressql"
-	And Action Is Enable
-	And Action Is "getemployees"
-	And Inputs Is Enable
-	Then Inputs appear As
+	And PostgresSql Source Is Enabled
+	And PostgresSql Source Is "postgressql"
+	And PostgresSql Action Is Enabled
+	And PostgresSql Action Is "getemployees"
+	And Inputs Are Enabled
+	Then PostgresSql Inputs appear As
 	| Input | Value     | Empty is Null |
 	| fname | [[fname]] | false         |  
-	And Validate Is Enable
+	And Validate PostgresSql Is Enabled
 
 Scenario: Change the recordset on existing postgresql tool
 	Given I Open workflow with PostgreSql connector
-	And Source Is Enable
-	And Source Is "postgressql"
-	And Action Is Enable
-	And Action Is "getemployees"
-	And Inputs Is Enable
-	Then Inputs appear As
+	And PostgresSql Source Is Enabled
+	And PostgresSql Source Is "postgressql"
+	And PostgresSql Action Is Enabled
+	And PostgresSql Action Is "getemployees"
+	And Inputs Are Enabled
+	Then PostgresSql Inputs appear As
 	| Input | Value     | Empty is Null |
 	| fname | [[fname]] | false         |
-	And Validate Is Enable
+	And Validate PostgresSql Is Enabled
