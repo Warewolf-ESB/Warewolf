@@ -42,7 +42,7 @@ $JobSpecs["COMIPC Unit Tests"]				 	= "Warewolf.COMIPC.Tests"
 $JobSpecs["Studio View Models Unit Tests"]	 	= "Warewolf.Studio.ViewModels.Tests"
 $JobSpecs["Activity Designers Unit Tests"]	 	= "Dev2.Activities.Designers.Tests"
 $JobSpecs["Activities Unit Tests"]				= "Dev2.Activities.Tests"
-$JobSpecs["Tools Specs"]		 				= "Warewolf.ToolsSpecs"
+$JobSpecs["Other Tools Specs"]		 			= "Warewolf.ToolsSpecs"
 $JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
 $JobSpecs["Integration Tests"]				 	= "Dev2.IntegrationTests"
 #Coded UI
