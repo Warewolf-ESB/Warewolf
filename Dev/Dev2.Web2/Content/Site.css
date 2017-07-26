@@ -1,4 +1,28 @@
-﻿.container {
+﻿::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #ccc;
+    font-size: 12px;
+    font-style: italic;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: #ccc;
+    font-size: 12px;
+    font-style: italic;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+    color: #ccc;
+    font-size: 12px;
+    font-style: italic;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: #ccc;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.container {
     width: 100%;
 }
 
@@ -83,16 +107,63 @@ td {
     #executionList th {
         cursor: pointer;
         border-right: 1px solid #ddd;
+        padding: 5px 5px 0px 5px;
     }
 
     #executionList tr {
         border-bottom: 1px solid #ddd;
+        padding: 0px;
     }
 
-        #executionList tr.header, #executionList tr:hover {
-            background-color: #f1f1f1;
-        }
+    #executionList td {
+        border-bottom: 1px solid #ddd;
+        padding: 2px;
+        overflow: hidden;
+        white-space: nowrap
+    }
 
+    #executionList .exRow {
+        padding-left: 5px;
+    }
+
+    #executionList .exId {
+        min-width: 240px;
+        max-width: 240px;
+    }
+
+    #executionList .exTime {
+        min-width: 74px;
+        max-width: 74px;
+    }
+
+    #executionList .exStatus {
+        min-width: 62px;
+        max-width: 62px;
+    }
+
+    #executionList .exStart {
+        min-width: 130px;
+        max-width: 130px;
+    }
+
+    #executionList .exComplete {
+        min-width: 130px;
+        max-width: 130px;
+    }
+
+    #executionList .exUrl {
+        width: 100%;
+    }
+
+    #executionList .exUser {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    #executionList .exResult {
+        min-width: 50px;
+        max-width: 50px;
+    }
 
 #filterTable {
     width: 50%;
@@ -200,7 +271,7 @@ td {
 
 /*Button*/
 #ResetButton {
-    width: 50px;
+    width: 45px;
     height: 23px;
     align-content: center;
     padding: 0px;
@@ -292,57 +363,82 @@ td {
 }
 
 .filter-container {
-    float: left;
     padding: 1px;
 }
 
-#filterContainId {
-    width: 18.2%;
-}
+    .filter-container:last-of-type {
+        padding-right: 0;
+    }
 
-#filterContainTime {
-    width: 7.7%;
-}
+    .filter-container input {
+        -webkit-appearance: none;
+        border: 1px solid #ccc;
+        background: white;
+        border-radius: 4px;
+        font-size: 14px;
+        width: 100%;
+        padding-left: 5px;
+    }
 
-#filterContainStatus {
-    width: 6.6%;
-}
+        .filter-container input:focus {
+            outline: none;
+            border: 1px solid #f3700d;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+        }
 
-#filterContainStart {
-    width: 9.4%;
-}
-
-#filterContainComplete {
-    width: 9.5%;
-}
-
-#filterContainUrl {
-    width: 28.4%;
-}
-
-#filterContainUser {
-    width: 16.6%;
-}
-
-.filter-container:last-of-type {
-    padding-right: 0;
-}
-
-.filter-container input {
-    -webkit-appearance: none;
-    border: 1px solid #ccc;
-    background: white;
-    border-radius: 4px;
-    font-size: 14px;
+#executionFilters {
+    border-collapse: collapse;
     width: 100%;
-    padding-left: 5px;
+    margin-bottom: 5px;
 }
 
-    .filter-container input:focus {
-        outline: none;
-        border: 1px solid #f3700d;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(243, 112, 13, .6);
+    #executionFilters td {
+        padding: 2px;
+        background-color: transparent;
+        border: none;
+        overflow: hidden;
+        white-space: nowrap
+    }
+
+    #executionFilters .filterContainId {
+        min-width: 240px;
+        max-width: 240px;
+    }
+
+    #executionFilters .filterContainTime {
+        min-width: 74px;
+        max-width: 74px;
+    }
+
+    #executionFilters .filterContainStatus {
+        min-width: 62px;
+        max-width: 62px;
+    }
+
+    #executionFilters .filterContainStart {
+        min-width: 130px;
+        max-width: 130px;
+    }
+
+    #executionFilters .filterContainComplete {
+        min-width: 130px;
+        max-width: 130px;
+    }
+
+    #executionFilters .filterContainUrl {
+        width: 100%;
+        min-width: 150px;
+    }
+
+    #executionFilters .filterContainUser {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    #executionFilters .filterContainReset {
+        min-width: 50px;
+        max-width: 50px;
     }
 /*Filter*/
 
