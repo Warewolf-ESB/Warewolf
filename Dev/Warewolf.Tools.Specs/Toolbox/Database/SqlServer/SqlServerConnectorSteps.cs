@@ -27,7 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     {
         private readonly ScenarioContext scenarioContext;
 
-        public DatabaseConnectorSteps(ScenarioContext scenarioContext)
+        public SQLServerConnectorSteps(ScenarioContext scenarioContext)
         {
             if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
             this.scenarioContext = scenarioContext;
