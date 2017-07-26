@@ -3,8 +3,106 @@
 <head>
     <link rel="stylesheet" href="~/Content/DetailsModal.css" type="text/css" />
 </head>
-<script type='text/javascript'>
+
+<body>
+    <div>
+        <table id="executionFilters" class="table">
+            <tr>
+                <td class='filter-container filterContainId'>
+                    <input id="filterId" autocomplete='off' class='filter' name='Execution Id' placeholder='Execution Id' data-col='Execution Id' />
+                </td>
+                <td class='filter-container filterContainTime'>
+                    <input id="filterTime" autocomplete='off' class='filter' name='Execution Time' placeholder='Time (ms)' data-col='Execution Time' />
+                </td>
+                <td class='filter-container filterContainStatus'>
+                    <input id="filterStatus" autocomplete='off' class='filter' name='Status' placeholder='Status' data-col='Status' />
+                </td>
+                <td class='filter-container filterContainStart'>
+                    <input id="filterStart" autocomplete='off' class='filter' name='Start Time' placeholder='Start Time' onchange="filterStart()" data-col='Start Time' />
+                </td>
+                <td class='filter-container filterContainComplete'>
+                    <input id="filterComplete" autocomplete='off' class='filter' name='Completed Time' placeholder='Completed Time' onchange="filterComplete()" data-col='Completed Time' />
+                </td>
+                <td class='filter-container filterContainUrl' style="width:100%">
+                    <input id="filterUrl" autocomplete='off' class='filter' name='Url' placeholder='Url' data-col='Url' />
+                </td>
+                <td class='filter-container filterContainUser'>
+                    <input id="filterUser" autocomplete='off' class='filter' name='User' placeholder='User' data-col='User' />
+                </td>
+                <td class='filter-container filterContainReset'>
+                    <button type="button" class="btn btn-default" id="ResetButton">Clear</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table id="executionList" class="table">
+            <thead>
+                <tr data-toggle="tooltip" data-placement="right">
+                    <th class="exId" title="Execution Id" onclick="sortTable(0)">Execution Id</th>
+                    <th class="exTime" title="Execution Time (ms)" onclick="sortTable(1)">Time (ms)</th>
+                    <th class="exStatus" title="Status" onclick="sortTable(2)">Status</th>
+                    <th class="exStart" title="Start Time" onclick="sortTable(3)">Start Time</th>
+                    <th class="exComplete" title="Completed Time" onclick="sortTable(4)">Completed Time</th>
+                    <th class="exUrl" title="Url" onclick="sortTable(5)">Url</th>
+                    <th class="exUser" title="User" onclick="sortTable(6)">User</th>
+                    <th class="exResult" title="Result" onclick="sortTable(7)">Result</th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="exRow">
+                        @Html.DisplayFor(modelItem => item.ExecutionId)
+                    </td>
+                    <td class="exRow">
+                        @Html.DisplayFor(modelItem => item.ExecutionTime)
+                    </td>
+                    <td class="exRow">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td class="exRow">
+                        @Html.DisplayFor(modelItem => item.StartDateTime)
+                    </td>
+                    <td class="exRow">
+                        @Html.DisplayFor(modelItem => item.CompletedDateTime)
+                    </td>
+                    <td class="exRow" >
+                        @{
+                            if (item.Url == null)
+                            {
+                                @Html.DisplayFor(modelItem => item.Url)
+                            }
+                            else
+                            {
+                                <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
+                            }
+                        }
+                    </td>
+                    <td class="exRow">
+                        @Html.DisplayFor(modelItem => item.User)
+                    </td>
+                    <td>
+                        <a class="details" href="javascript:;">[...]</a>
+                    </td>
+                </tr>
+                            }
+        </table>
+    </div>
+
+</body>
+
+<div id="dialog" style="display: none">
+</div>
+
+<script type="text/javascript">
     jQuery(document).ready(function ($) {
+
+        $('.executionUrl').on('click', function () {
+            return confirm('Are you sure you want to execute the process again?');
+        });
+
         $('.filter').multifilter();
 
         $("#filterStart").datetimepicker({
@@ -22,8 +120,41 @@
             $('#filterContainStart input').val(null).trigger('change');
             $('#filterContainComplete input').val(null).trigger('change');
         });
+
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            title: "Result",
+            maxWidth: 600,
+            maxHeight: 500,
+            minWidth: 400,
+            minHeight: 300,
+            width: 400,
+            height: 300
+        });
+        $("#executionList .details").click(function () {
+            var executionId = $(this).closest("tr").find("td").eq(0).html();
+            $.ajax({
+                type: "POST",
+                url: "/ExecutionLogging/Details",
+                data: '{executionId: "' + executionId + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#dialog').html(response);
+                    $('#dialog').dialog('open');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
     });
 </script>
+
 
 @section scripts
 {
@@ -63,130 +194,6 @@
 
 }
 
-<body>
-    <div class='container'>
-        <div id="executionFilters" class='filters'>
-            <div id="filterContainId" class='filter-container'>
-                <input id="filterId" autocomplete='off' class='filter' name='Execution Id' placeholder='Execution Id' data-col='Execution Id' />
-            </div>
-            <div id="filterContainTime" class='filter-container'>
-                <input id="filterTime" autocomplete='off' class='filter' name='Execution Time' placeholder='Execution Time' data-col='Execution Time' />
-            </div>
-            <div id="filterContainStatus" class='filter-container'>
-                <input id="filterStatus" autocomplete='off' class='filter' name='Status' placeholder='Status' data-col='Status' />
-            </div>
-            <div id="filterContainStart" class='filter-container'>
-                <input id="filterStart" autocomplete='off' class='filter' name='Start Time' placeholder='Start Time' onchange="filterStart()" data-col='Start Time' />
-            </div>
-            <div id="filterContainComplete" class='filter-container'>
-                <input id="filterComplete" autocomplete='off' class='filter' name='Completed Time' placeholder='Completed Time' onchange="filterComplete()" data-col='Completed Time' />
-            </div>
-            <div id="filterContainUrl" class='filter-container'>
-                <input id="filterUrl" autocomplete='off' class='filter' name='Url' placeholder='Url' data-col='Url' />
-            </div>
-            <div id="filterContainUser" class='filter-container'>
-                <input id="filterUser" autocomplete='off' class='filter' name='User' placeholder='User' data-col='User' />
-            </div>
-            <div class='clearfix'>
-                <button type="button" class="btn btn-default" id="ResetButton">Clear</button>
-            </div>
-        </div>
-    </div>
-    <div class='container'>
-        <table id="executionList" class="table">
-            <thead>
-                <tr data-toggle="tooltip" data-placement="right">
-                    <th title="Execution Id" style="width:20%" onclick="sortTable(0)">Execution Id</th>
-                    <th title="Execution Time" style="width:8%" onclick="sortTable(1)">Execution Time</th>
-                    <th title="Status" style="width:7%" onclick="sortTable(2)">Status</th>
-                    <th title="Start Time" style="width:10%" onclick="sortTable(3)">Start Time</th>
-                    <th title="Completed Time" style="width:10%" onclick="sortTable(4)">Completed Time</th>
-                    <th title="Url" style="width:28%" onclick="sortTable(5)">Url</th>
-                    <th title="User" style="width:28%" onclick="sortTable(6)">User</th>
-                    <th title="Result" style="width:1%" onclick="sortTable(7)">Result</th>
-                </tr>
-            </thead>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td style="width:1%">
-                        @Html.DisplayFor(modelItem => item.ExecutionId)
-                    </td>
-                    <td style="width:5%">
-                        @Html.DisplayFor(modelItem => item.ExecutionTime)
-                    </td>
-                    <td style="width:5%">
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td style="width:10%">
-                        @Html.DisplayFor(modelItem => item.StartDateTime)
-                    </td>
-                    <td style="width:10%">
-                        @Html.DisplayFor(modelItem => item.CompletedDateTime)
-                    </td>
-                    <td style="width:30%; align-content:center">
-                        @{
-                            if (item.Url == null)
-                            {
-                                @Html.DisplayFor(modelItem => item.Url)
-                            }
-                            else
-                            {
-                                <a class="executionUrl" title="@item.Url" href="@item.Url" target="_blank">@item.Url</a>
-                            }
-                        }
-                    </td>
-                    <td style="width:30%">
-                        @Html.DisplayFor(modelItem => item.User)
-                    </td>
-                    <td>
-                        <a class="details" href="javascript:;">[...]</a>
-                    </td>
-                </tr>
-                            }
-        </table>
-    </div>
-
-</body>
-
-<div id="dialog" style="display: none">
-</div>
-<script type="text/javascript">
-    $(function () {
-        $("#dialog").dialog({
-            autoOpen: false,
-            modal: true,
-            title: "Result",
-            maxWidth: 600,
-            maxHeight: 500,
-            minWidth: 400,
-            minHeight: 300,
-            width: 400,
-            height: 300
-        });
-        $("#executionList .details").click(function () {
-            var executionId = $(this).closest("tr").find("td").eq(0).html();
-            $.ajax({
-                type: "POST",
-                url: "/ExecutionLogging/Details",
-                data: '{executionId: "' + executionId + '" }',
-                contentType: "application/json; charset=utf-8",
-                dataType: "html",
-                success: function (response) {
-                    $('#dialog').html(response);
-                    $('#dialog').dialog('open');
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
-            });
-        });
-    });
-</script>
 
 
 
