@@ -127,7 +127,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Inputs is Enabled for postgresSql")]
+        [Then(@"Inputs Are Enabledd for postgresSql")]
         public void ThenInputsIsEnabledForPostgresSql()
         {
             var viewModel = GetViewModel();
@@ -248,14 +248,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
-        [Given(@"Source Is Enable")]
+        [Given(@"PostgresSql Source Is Enabled")]
         public void GivenSourceIsEnable()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.IsValid);
         }
 
-        [Given(@"Source Is ""(.*)""")]
+        [Given(@"PostgresSql Source Is ""(.*)""")]
         public void GivenSourceIs(string sourceName)
         {
             var selectedSource = GetViewModel().SourceRegion.SelectedSource = _postgresSqlSource;
@@ -263,14 +263,14 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual(sourceName, selectedSource.Name);
         }
 
-        [Given(@"Action Is Enable")]
+        [Given(@"PostgresSql Action Is Enabled")]
         public void GivenActionIsEnable()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.ActionRegion.IsActionEnabled);
         }
 
-        [Given(@"Action Is ""(.*)""")]
+        [Given(@"PostgresSql Action Is ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
             var selectedProcedure = GetViewModel().ActionRegion.SelectedAction = _selectedAction;
@@ -278,7 +278,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual(actionName, selectedProcedure.Name);
         }
 
-        [Given(@"Inputs Is Enable")]
+        [Given(@"PostgresSql Inputs Are Enabled")]
         public void GivenInputsIsEnable()
         {
             var viewModel = GetViewModel();
@@ -286,7 +286,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasInputs);
         }
 
-        [Then(@"Inputs appear As")]
+        [Then(@"PostgresSql Inputs appear As")]
         public void ThenInputsAppearAs(Table table)
         {
 
@@ -304,7 +304,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Validate Is Enable")]
+        [Then(@"Validate PostgresSql Is Enabled")]
         public void ThenValidateIsEnable()
         {
             var viewModel = GetViewModel();
@@ -328,7 +328,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var mock = new Mock<IDataListViewModel>();
             mock.Setup(model => model.ScalarCollection).Returns(new ObservableCollection<IScalarItemModel>());
             if (DataListSingleton.ActiveDataList == null)
+            {
                 DataListSingleton.SetDataList(mock.Object);
+            }
         }
     }
 }

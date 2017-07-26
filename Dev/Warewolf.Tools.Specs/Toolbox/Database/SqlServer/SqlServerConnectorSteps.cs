@@ -23,7 +23,7 @@ using Warewolf.Core;
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
     [Binding]
-    public class DatabaseConnectorSteps
+    public class SQLServerConnectorSteps
     {
         private readonly ScenarioContext scenarioContext;
 
@@ -95,7 +95,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             GetViewModel().OutputsRegion.RecordsetName = recSetName;
         }
 
-        [Given(@"Source is Enabled")]
+        [Given(@"Sql Server Source is Enabled")]
         public void GivenSourceIsEnabled()
         {
             var viewModel = GetViewModel();
@@ -129,18 +129,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [Given(@"Validate is Disabled")]
-        [When(@"Validate is Disabled")]
         [Then(@"Validate is Disabled")]
         public void GivenValidateIsDisabled()
         {
             var viewModel = GetViewModel();
-            //Assert.IsFalse(viewModel.TestInputCommand.CanExecute(null));
-            Assert.Fail();
+            Assert.IsFalse(viewModel.TestInputCommand.CanExecute(null));
         }
 
-        [Given(@"Action is Enabled")]
-        [Then(@"Action is Enabled")]
-        [When(@"Action is Enabled")]
+        [Given(@"Sql Server Action is Enabled")]
+        [Then(@"Sql Server Action is Enabled")]
+        [When(@"Sql Server Action is Enabled")]
         public void ThenActionIsEnabled()
         {
             var viewModel = GetViewModel();
@@ -148,9 +146,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
 
-        [Given(@"Inputs is Enabled")]
-        [When(@"Inputs is Enabled")]
-        [Then(@"Inputs is Enabled")]
+        [Given(@"Sql Server Inputs Are Enabled")]
+        [When(@"Sql Server Inputs Are Enabled")]
+        [Then(@"Sql Server Inputs Are Enabled")]
         public void ThenInputsIsEnabled()
         {
             var viewModel = GetViewModel();
@@ -158,18 +156,18 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(hasInputs);
         }
 
-        [Given(@"Validate is Enabled")]
-        [When(@"Validate is Enabled")]
-        [Then(@"Validate is Enabled")]
+        [Given(@"Validate Sql Server is Enabled")]
+        [When(@"Validate Sql Server is Enabled")]
+        [Then(@"Validate Sql Server is Enabled")]
         public void ThenValidateIsEnabled()
         {
             var viewModel = GetViewModel();
             Assert.IsTrue(viewModel.TestInputCommand.CanExecute(null));
         }
 
-        [Given(@"Inputs appear as")]
-        [When(@"Inputs appear as")]
-        [Then(@"Inputs appear as")]
+        [Given(@"Sql Server Inputs appear as")]
+        [When(@"Sql Server Inputs appear as")]
+        [Then(@"Sql Server Inputs appear as")]
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = GetViewModel();
@@ -246,7 +244,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             scenarioContext.Add("mockDbServiceModel", mockDbServiceModel);
         }
 
-        [Given(@"Source is ""(.*)""")]
+        [Given(@"Sql Server Source is ""(.*)""")]
         public void GivenSourceIs(string sourceName)
         {
             var selectedSource = GetViewModel().SourceRegion.SelectedSource;
@@ -254,7 +252,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.AreEqual<string>(sourceName, selectedSource.Name);
         }
 
-        [Given(@"Action is ""(.*)""")]
+        [Given(@"Sql Server Action is ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
             var selectedProcedure = GetViewModel().ActionRegion.SelectedAction;
@@ -303,10 +301,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void WhenIClickValidate()
         {
             GetViewModel().TestInputCommand.Execute(null);
-            //Assert.Fail();
         }
 
-        [Then(@"Test Inputs appear as")]
+        [Then(@"Test Sql Server Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
             int rowNum = 0;
@@ -321,7 +318,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Test Connector and Calculate Outputs outputs appear as")]
+        [Then(@"Test Connector and Calculate Outputs Sql Server Outputs appear as")]
         public void ThenTestConnectorAndCalculateOutputsOutputsAppearAs(Table table)
         {
             var rowIdx = 0;
@@ -336,7 +333,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Outputs appear as")]
+        [Then(@"Sql Server Outputs appear as")]
         public void ThenOutputsAppearAs(Table table)
         {
             var outputMappings = GetViewModel().OutputsRegion.Outputs;
@@ -353,7 +350,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        [Then(@"Recordset Name equals ""(.*)""")]
+        [Then(@"Sql Server Recordset Name equals ""(.*)""")]
         public void ThenRecordsetNameEquals(string recsetName)
         {
             if(!string.IsNullOrEmpty(recsetName))
@@ -445,14 +442,15 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             Assert.IsTrue(true);
         }
 
-        [Then(@"The sqlsERVER ""(.*)"" in Workflow ""(.*)"" debug outputs as")]
+        [Then(@"The Sql Server step ""(.*)"" in Workflow ""(.*)"" debug outputs appear as")]
         public void ThenTheSqlsERVERInWorkflowDebugOutputsAs(string p0, string p1, Table table)
         {
             var viewModel = GetViewModel().ErrorRegion.Errors;
             if (table != null && viewModel.Count > 0)
                 Assert.IsTrue(table.Rows[0].Values.ToString() == p0);
         }
-        [Then(@"the sqlsERVER workflow execution has ""(.*)"" error")]
+
+        [Then(@"the workflow containing the Sql Server connector has ""(.*)"" execution error")]
         public void ThenTheSqlsERVERWorkflowExecutionHasError(string p0)
         {
             Assert.IsNotNull(GetViewModel().ManageServiceInputViewModel.Errors);

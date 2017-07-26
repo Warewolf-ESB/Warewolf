@@ -337,7 +337,7 @@
       <DependentUpon>Unique.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
-    <Compile Include="Toolbox\Database\SqlServer\DatabaseConnectorSteps.cs" />
+    <Compile Include="Toolbox\Database\SqlServer\SqlServerConnectorSteps.cs" />
     <Compile Include="Toolbox\Database\SqlServer\SqlServerConnector.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
