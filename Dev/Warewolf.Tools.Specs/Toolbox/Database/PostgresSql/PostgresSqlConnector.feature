@@ -4,7 +4,7 @@ Feature: PostgresSqlConnector
 	As a Warewolf User
 	I want to be shown the database service setup
 
-Scenario: Creating PostgresSql Server Connector
+Scenario: Creating PostgresSql Connector
 	Given I drag a PostgresSql Server database connector
 	When I select "DemoPostgres" as the source
 	When I select "getemployees" as the action
@@ -21,7 +21,7 @@ Scenario: Creating PostgresSql Server Connector
 	| Bill | 4200   | 45  |
 
 @OpeningSavedWorkflowWithPostgresServerTool
-Scenario: Opening Saved workflow with Postgres Server tool
+Scenario: Opening Saved workflow with PostgresSql tool
 	Given I Open workflow with PostgreSql connector
 	And PostgresSql Source Is Enabled
 	And PostgresSql Source Is "postgressql"
@@ -34,7 +34,7 @@ Scenario: Opening Saved workflow with Postgres Server tool
 	And Validate PostgresSql Is Enabled
 
 @ChangeTheSourceOnExistingPostgresql	
-Scenario: Change the source on existing postgresql tool
+Scenario: Change the source on existing PostgresSql tool
 	Given I Open workflow with PostgreSql connector
 	And PostgresSql Source Is Enabled
 	And PostgresSql Source Is "postgressql"
@@ -47,7 +47,7 @@ Scenario: Change the source on existing postgresql tool
 	And Validate PostgresSql Is Enabled
 
 @ChangeTheActionOnExistingPostgresql
-Scenario: Change the action on existing postgresql tool
+Scenario: Change the action on existing PostgresSql tool
 	Given I Open workflow with PostgreSql connector
 	And PostgresSql Source Is Enabled
 	And PostgresSql Source Is "postgressql"
@@ -59,7 +59,7 @@ Scenario: Change the action on existing postgresql tool
 	| fname | [[fname]] | false         |  
 	And Validate PostgresSql Is Enabled
 
-Scenario: Change the recordset on existing postgresql tool
+Scenario: Change the recordset on existing PostgresSql tool
 	Given I Open workflow with PostgreSql connector
 	And PostgresSql Source Is Enabled
 	And PostgresSql Source Is "postgressql"

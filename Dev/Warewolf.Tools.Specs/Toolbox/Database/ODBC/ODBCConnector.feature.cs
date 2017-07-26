@@ -70,12 +70,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.ODBC
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating ODBC Server Connector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating ODBC Connector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ODBCConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void CreatingODBCServerConnector()
+        public virtual void CreatingODBCConnector()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating ODBC Server Connector", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating ODBC Connector", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -134,12 +134,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Saved workflow with ODBC Server tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Saved workflow with ODBC tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ODBCConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void OpeningSavedWorkflowWithODBCServerTool()
+        public virtual void OpeningSavedWorkflowWithODBCTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with ODBC Server tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with ODBC tool", ((string[])(null)));
 #line 30
 this.ScenarioSetup(scenarioInfo);
 #line 31
@@ -186,12 +186,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Source on Existing tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Source on Existing ODBC tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ODBCConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void ChangeSourceOnExistingTool()
+        public virtual void ChangeSourceOnExistingODBCTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Source on Existing tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Source on Existing ODBC tool", ((string[])(null)));
 #line 47
 this.ScenarioSetup(scenarioInfo);
 #line 48
@@ -248,12 +248,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Actions")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing ODBC Actions")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ODBCConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void ChangingActions()
+        public virtual void ChangingODBCActions()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Actions", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing ODBC Actions", ((string[])(null)));
 #line 69
 this.ScenarioSetup(scenarioInfo);
 #line 70
@@ -317,12 +317,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Recordset Name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change ODBC Recordset Name")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ODBCConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void ChangeRecordsetName()
+        public virtual void ChangeODBCRecordsetName()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Recordset Name", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change ODBC Recordset Name", ((string[])(null)));
 #line 93
 this.ScenarioSetup(scenarioInfo);
 #line 94

@@ -70,12 +70,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.PostgresSql
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating PostgresSql Server Connector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating PostgresSql Connector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void CreatingPostgresSqlServerConnector()
+        public virtual void CreatingPostgresSqlConnector()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating PostgresSql Server Connector", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating PostgresSql Connector", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -122,13 +122,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Saved workflow with Postgres Server tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Saved workflow with PostgresSql tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("OpeningSavedWorkflowWithPostgresServerTool")]
-        public virtual void OpeningSavedWorkflowWithPostgresServerTool()
+        public virtual void OpeningSavedWorkflowWithPostgresSqlTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with Postgres Server tool", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with PostgresSql tool", new string[] {
                         "OpeningSavedWorkflowWithPostgresServerTool"});
 #line 24
 this.ScenarioSetup(scenarioInfo);
@@ -162,13 +162,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the source on existing postgresql tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the source on existing PostgresSql tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ChangeTheSourceOnExistingPostgresql")]
-        public virtual void ChangeTheSourceOnExistingPostgresqlTool()
+        public virtual void ChangeTheSourceOnExistingPostgresSqlTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the source on existing postgresql tool", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the source on existing PostgresSql tool", new string[] {
                         "ChangeTheSourceOnExistingPostgresql"});
 #line 37
 this.ScenarioSetup(scenarioInfo);
@@ -202,13 +202,13 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the action on existing postgresql tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the action on existing PostgresSql tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ChangeTheActionOnExistingPostgresql")]
-        public virtual void ChangeTheActionOnExistingPostgresqlTool()
+        public virtual void ChangeTheActionOnExistingPostgresSqlTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the action on existing postgresql tool", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the action on existing PostgresSql tool", new string[] {
                         "ChangeTheActionOnExistingPostgresql"});
 #line 50
 this.ScenarioSetup(scenarioInfo);
@@ -242,12 +242,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the recordset on existing postgresql tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change the recordset on existing PostgresSql tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "PostgresSqlConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void ChangeTheRecordsetOnExistingPostgresqlTool()
+        public virtual void ChangeTheRecordsetOnExistingPostgresSqlTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the recordset on existing postgresql tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change the recordset on existing PostgresSql tool", ((string[])(null)));
 #line 62
 this.ScenarioSetup(scenarioInfo);
 #line 63

@@ -70,12 +70,12 @@ namespace Warewolf.Tools.Specs.Toolbox.Database.Oracle
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating Oracle Server Connector")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Creating a new Oracle Tool Instance")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void CreatingOracleServerConnector()
+        public virtual void CreatingANewOracleToolInstance()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating Oracle Server Connector", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating a new Oracle Tool Instance", ((string[])(null)));
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
@@ -140,12 +140,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Saved workflow with Oracle Server tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Opening Saved workflow with Existing Oracle tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void OpeningSavedWorkflowWithOracleServerTool()
+        public virtual void OpeningSavedWorkflowWithExistingOracleTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with Oracle Server tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Opening Saved workflow with Existing Oracle tool", ((string[])(null)));
 #line 34
 this.ScenarioSetup(scenarioInfo);
 #line 35
@@ -190,12 +190,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Source on Existing tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Source on Existing Oracle Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void ChangeSourceOnExistingTool()
+        public virtual void ChangeSourceOnExistingOracleTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Source on Existing tool", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Source on Existing Oracle Tool", ((string[])(null)));
 #line 50
 this.ScenarioSetup(scenarioInfo);
 #line 51
@@ -248,12 +248,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Actions")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Changing Actions on Existing Oracle Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void ChangingActions()
+        public virtual void ChangingActionsOnExistingOracleTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Actions", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Actions on Existing Oracle Tool", ((string[])(null)));
 #line 70
 this.ScenarioSetup(scenarioInfo);
 #line 71
@@ -315,12 +315,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Recordset Name")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Change Recordset Name on Existing Oracle Tool")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "OracleServerConnector")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Database")]
-        public virtual void ChangeRecordsetName()
+        public virtual void ChangeRecordsetNameOnExistingOracleTool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Recordset Name", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change Recordset Name on Existing Oracle Tool", ((string[])(null)));
 #line 92
 this.ScenarioSetup(scenarioInfo);
 #line 93
