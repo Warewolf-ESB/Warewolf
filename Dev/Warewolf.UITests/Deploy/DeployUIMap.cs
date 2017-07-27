@@ -40,6 +40,7 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         public void WhenIValidateTheResourceTreeIsLoaded()
         {
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.Exists);
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
         }
 
         [Given(@"Destination Remote Server Is Connected")]
@@ -185,6 +186,7 @@ namespace Warewolf.UITests.Deploy.DeployUIMapClasses
         [Then(@"I Enter ""(.*)"" Into Deploy Source Filter")]
         public void Enter_DeployViewOnly_Into_Deploy_Source_Filter(string SearchTextboxText)
         {
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.SearchTextbox.Text = SearchTextboxText;
             if (SearchTextboxText.ToLower() == "localhost".ToLower()) return;
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.Exists, "First deploy tab source explorer item does not exist after filter is applied.");
