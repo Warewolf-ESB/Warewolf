@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
+using Warewolf.Tools.Specs.Toolbox.Database;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
@@ -72,7 +73,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [When(@"I select DemoPostgres as the source")]
-        public void WhenISelectedAsTheSource(string sourceName)
+        public void WhenISelectedAsTheSource()
         {
             _selectedAction = new DbAction();
             _selectedAction.Name = "getemployees";
@@ -82,7 +83,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         }
 
         [When(@"I select getemployees as the action")]
-        public void WhenISelectedAsTheAction(string actionName)
+        public void WhenISelectedAsTheAction()
         {
             var dataTable = new DataTable();
             dataTable.Columns.Add(new DataColumn("name"));
@@ -240,7 +241,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Given(@"PostgresSql Action Is ""(.*)""")]
         public void GivenActionIs(string actionName)
         {
-            var selectedProcedure = GetViewModel().ActionRegion.SelectedAction = _selectedAction;
+            var vm = GetViewModel();
+            var selectedProcedure = vm.ActionRegion.SelectedAction = _selectedAction;
             Assert.IsNotNull(selectedProcedure);
             Assert.AreEqual(actionName, selectedProcedure.Name);
         }
@@ -257,30 +259,16 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"PostgresSql Inputs appear As")]
         public void ThenInputsAppearAs(Table table)
         {
-            AssertPostGreSqlInputs(table);
+            var vm = GetViewModel();
+            DatabaseToolsSteps.AssertAgainstServiceInputs(table, vm.InputArea.Inputs);
         }
 
         [Given(@"Test PostgresSql Inputs appear As")]
         [Then(@"Test PostgresSql Inputs appear As")]
         public void TestInputsAppear(Table table)
         {
-            AssertPostGreSqlInputs(table);
-        }
-
-        private void AssertPostGreSqlInputs(Table table)
-        {
-            var viewModel = GetViewModel().ToModel();
-            var rowNum = 0;
-            foreach (var row in table.Rows)
-            {
-                var inputValue = row["Input"];
-                var value = row["Value"];
-                var serviceInputs = viewModel.Inputs.ToList();
-                var serviceInput = serviceInputs[rowNum];
-                Assert.AreEqual(inputValue, serviceInput.Name);
-                Assert.AreEqual(value, serviceInput.Value);
-                rowNum++;
-            }
+            var vm = GetViewModel();
+            DatabaseToolsSteps.AssertAgainstServiceInputs(table, vm.ToModel().Inputs);
         }
 
         [Then(@"Validate PostgresSql Is Enabled")]
