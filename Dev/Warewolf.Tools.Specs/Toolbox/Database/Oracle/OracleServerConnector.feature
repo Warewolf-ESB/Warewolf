@@ -5,7 +5,7 @@ Feature: OracleServerConnector
 	I want to be shown the database service setup
 
 @CreatingOracleToolInstance
-Scenario: Creating a new Oracle Tool Instance
+Scenario: Running Oracle Tool Test
 	Given I open New Workflow containing an Oracle Connector
 	And I drag a Oracle Server database connector
 	And Oracle Source is Enabled
@@ -31,8 +31,8 @@ Scenario: Creating a new Oracle Tool Instance
 	| Column1     | [[HR_TESTPROC9().Column1]] | 
 	Then Oracle Recordset Name equals "HR_TESTPROC9"	
 
-Scenario: Opening Saved workflow with Existing Oracle tool
-   Given I open workflow with Oracle connector
+Scenario: Opening Saved workflow with Oracle tool
+	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"
 	And Oracle Action is "dbo.Pr_CitiesGetCountries"
@@ -47,7 +47,7 @@ Scenario: Opening Saved workflow with Existing Oracle tool
 	| Description | [[dbo_Pr_CitiesGetCountries().Description]] |
 	And Oracle Recordset Name equals "dbo_Pr_CitiesGetCountries"
 
-Scenario: Change Source on Existing Oracle Tool
+Scenario: Change Source on Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"
@@ -68,7 +68,7 @@ Scenario: Change Source on Existing Oracle Tool
 	And Validate is Enable
 
 @ChangingOracleActions
-Scenario: Changing Actions on Existing Oracle Tool
+Scenario: Changing Actions on Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"	
@@ -90,7 +90,7 @@ Scenario: Changing Actions on Existing Oracle Tool
 	| ProductId | [[ProductId]] | false         |
 	And Validate is Enable
 
-Scenario: Change Recordset Name on Existing Oracle Tool
+Scenario: Change Recordset Name on Oracle Tool
 	Given I open workflow with Oracle connector
 	And Oracle Source is Enabled
 	And Oracle Source is "testingDBSrc"	

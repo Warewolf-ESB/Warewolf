@@ -29,14 +29,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         private DbSourceDefinition _testingDbSource;
         private DbAction _getCountriesAction;
 
-        [Given(@"I drag a ODBC Server database connector")]
-        public void GivenIDragAODBCServerDatabaseConnector()
-        {
-            Assert.IsNotNull(GetViewModel<ODBCDatabaseDesignerViewModel>());
-        }
-
         [Given(@"I open workflow with ODBC connector")]
-        public void GivenIOpenWolf()
+        public void GivenIOpenWorkflowWithODBC()
         {
             var sourceId = Guid.NewGuid();
             var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
@@ -45,6 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
                 new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
             };
+
             var odbcServerActivity = new DsfODBCDatabaseActivity
             {
                 SourceId = sourceId,
@@ -78,6 +73,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                 Type = enSourceType.ODBC,
                 Id = sourceId
             };
+
             _importOrderAction = new DbAction
             {
                 Name = "dbo.ImportOrder",
@@ -99,78 +95,6 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object);
 
             ScenarioContext.Current.Add("ViewModel", odbcDatabaseDesignerViewModel);
-            ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
-            ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
-        }
-        [Given(@"I open a new Workflow")]
-        public void GivenIOpenANewWorkflow()
-        {
-            var sourceId = Guid.NewGuid();
-            var inputs = new List<IServiceInput> { new ServiceInput("Prefix", "[[Prefix]]") };
-            var outputs = new List<IServiceOutputMapping>
-            {
-                new ServiceOutputMapping("CountryID", "CountryID", "dbo_Pr_CitiesGetCountries"),
-                new ServiceOutputMapping("Description", "Description", "dbo_Pr_CitiesGetCountries")
-            };
-            var odbcServerActivity = new DsfODBCDatabaseActivity
-            {
-                SourceId = sourceId,
-                CommandText = "dbo.Pr_CitiesGetCountries",
-                Inputs = inputs,
-                Outputs = outputs              
-            };
-            
-            var modelItem = ModelItemUtils.CreateModelItem(odbcServerActivity);            
-            var mockServiceInputViewModel = new Mock<IManageServiceInputViewModel>();
-            var mockDatabaseInputViewModel = new Mock<IManageDatabaseInputViewModel>();
-            var mockDbServiceModel = new Mock<IDbServiceModel>();
-            var mockEnvironmentRepo = new Mock<IServerRepository>();
-            var mockEnvironmentModel = new Mock<IServer>();
-            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
-            mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-            mockEnvironmentModel.Setup(model => model.EnvironmentID).Returns(Guid.Empty);
-            mockEnvironmentModel.Setup(model => model.IsLocalHostCheck()).Returns(false);
-            mockEnvironmentRepo.Setup(repository => repository.ActiveServer).Returns(mockEnvironmentModel.Object);
-            mockEnvironmentRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(mockEnvironmentModel.Object);
-
-            var mockInputArea = new Mock<IGenerateInputArea>();
-            var mockOutputArea = new Mock<IGenerateOutputArea>();
-            
-            mockDatabaseInputViewModel.SetupGet(model => model.InputArea).Returns(mockInputArea.Object);
-            mockDatabaseInputViewModel.SetupGet(model => model.OutputArea).Returns(mockOutputArea.Object);            
-
-            _greenPointSource = new DbSourceDefinition
-            {
-                Name = "GreenPoint",
-                Type = enSourceType.ODBC
-            };
-
-            _testingDbSource = new DbSourceDefinition
-            {
-                Name = "testingDBSrc",
-                Type = enSourceType.ODBC,
-                Id = sourceId
-            };
-            _importOrderAction = new DbAction
-            {
-                Name = "dbo.ImportOrder",
-                Inputs = new List<IServiceInput> { new ServiceInput("ProductId", "") }
-            };
-
-            _getCountriesAction = new DbAction { Name = "dbo.Pr_CitiesGetCountries" };
-            _getCountriesAction.Inputs = inputs;
-            var dbSources = new ObservableCollection<IDbSource> { _testingDbSource, _greenPointSource };
-            mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
-            mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction>
-            {
-                _getCountriesAction, _importOrderAction, new DbAction() {Name = "TestAcstion"}
-            });
-            mockServiceInputViewModel.SetupAllProperties();
-            
-            var odbcDatabaseDesignerViewModel = new ODBCDatabaseDesignerViewModel(modelItem,mockDbServiceModel.Object);
-            
-            ScenarioContext.Current.Add("ViewModel", odbcDatabaseDesignerViewModel);
-            ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
             ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
             ScenarioContext.Current.Add("mockDbServiceModel", mockDbServiceModel);
         }
@@ -353,7 +277,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void WhenIClickTest()
         {
             var viewModel = GetViewModel<ODBCDatabaseDesignerViewModel>();
-            var testCommand = viewModel.ManageServiceInputViewModel.TestAction;            
+            var testCommand = viewModel.ManageServiceInputViewModel.TestAction;
         }
 
         [When(@"I click OK on ODBC Test")]
@@ -413,29 +337,49 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
                     Assert.AreEqual(a.Item1.Keys.FirstOrDefault(), a.Item2.MappedFrom);
                 }
             }
-            //TODO:CheckODBCToolOutputs(table);
         }
 
         [Then(@"ODBC Outputs appear as")]
         public void ThenOutputsAppearAs(Table table)
         {
-            CheckODBCToolOutputs(table);
-        }
-
-        private void CheckODBCToolOutputs(Table table)
-        {
             var vm = GetViewModel<ODBCDatabaseDesignerViewModel>();
             var outputMappings = vm.OutputsRegion.Outputs;
-            Assert.IsNotNull(outputMappings);
+            AssertAgainstOutputs(table, outputMappings);
+        }
+
+        private static void CheckODBCToolTestInputs(Table table, ICollection<IServiceOutputMapping> inputs)
+        {
+            Assert.IsNotNull(inputs);
             //TODO:Assert.AreEqual(table.Rows.Count, outputMappings.Count, "Wrong number of outputs in ODBC view model.");
             if (table.Rows.Count == 0)
             {
-                if (outputMappings != null)
-                    Assert.AreEqual(outputMappings.Count, 0);
+                if (inputs != null)
+                {
+                    Assert.AreEqual(inputs.Count, 0);
+                }
             }
             else
             {
-                var matched = table.Rows.Zip(outputMappings, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
+                var matched = table.Rows.Zip(inputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
+                foreach (var a in matched)
+                {
+                    Assert.AreEqual(a.Item1.Keys.FirstOrDefault(), a.Item2.MappedFrom);
+                }
+            }
+        }
+
+        private static void AssertAgainstOutputs(Table table, ICollection<IServiceOutputMapping> outputs)
+        {
+            if (table.Rows.Count == 0)
+            {
+                if (outputs != null)
+                {
+                    Assert.AreEqual(outputs.Count, 0);
+                }
+            }
+            else
+            {
+                var matched = table.Rows.Zip(outputs, (a, b) => new Tuple<TableRow, IServiceOutputMapping>(a, b));
                 foreach (var a in matched)
                 {
                     Assert.AreEqual(a.Item1[0], a.Item2.MappedFrom);
