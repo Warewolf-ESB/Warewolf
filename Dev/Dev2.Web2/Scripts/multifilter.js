@@ -2,7 +2,7 @@
   "use strict";
   $.fn.multifilter = function(options) {
     var settings = $.extend( {
-      'target'        : $('table'),
+        'target': $('#executionList'),
       'method'    : 'thead' // This can be thead or class
     }, options);
 

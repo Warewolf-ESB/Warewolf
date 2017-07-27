@@ -10,15 +10,15 @@
     <meta content='en' name='language' />
     <meta content='width=device-width, initial-scale=1' name='viewport' />
     <link rel='stylesheet' type='text/css' href='http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' />
+    <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <link rel='stylesheet' type='text/css' href='~/Content/Site.css' />
     <link rel="stylesheet" type="text/css" href="~/Content/jquery.datetimepicker.css" />
-    <link rel="stylesheet" href="~/Content/DetailsModal.css" type="text/css" />
 
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script type='text/javascript' src='~/Scripts/multifilter.js'></script>
     <script type='text/javascript' src="~/Scripts/jquery.datetimepicker.full.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/tsorter.min.js" ></script>
+    <script type="text/javascript" src="~/Scripts/tsorter.min.js"></script>
 </head>
 
 <div id="ExecutionFilters" class="well">
@@ -39,7 +39,7 @@
         </tr>
     </table>
 
-    <div>
+    <div style="padding-top: 5px;">
         <table id="executionFilters" class="table">
             <tr>
                 <td class='filter-container filterContainId'>
@@ -73,13 +73,13 @@
         <table id="executionList" class="tablesorter">
             <thead>
                 <tr>
-                    <th>Execution Id</th>
-                    <th>Time (ms)</th>
-                    <th>Status</th>
-                    <th>Start Time</th>
-                    <th>Completed Time</th>
-                    <th>Url</th>
-                    <th>User</th>
+                    <th class="exId" title="Execution Id">Execution Id</th>
+                    <th class="exTime" title="Execution Time">Execution Time</th>
+                    <th class="exStatus" title="Status">Status</th>
+                    <th class="exStart" title="Start Time">Start Time</th>
+                    <th class="exComplete" title="Completed Time">Completed Time</th>
+                    <th class="exUrl" title="Url">Url</th>
+                    <th class="exUser" title="User">User</th>
                     <th>Result</th>
                 </tr>
             </thead>
@@ -127,14 +127,14 @@
     </div>
 </div>
 
-<div id="dialog" style="display: none">
+<div id="dialog" >
     <p id="exResult"></p>
 </div>
 
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
 
-        $("#executionList").tablesorter(); 
+        $("#executionList").tablesorter();
 
         $('.filter').multifilter();
 
@@ -155,8 +155,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        
-
         $('#updateServer').on('click', function (e) {
             e.preventDefault();
             getLogData();
@@ -164,13 +162,8 @@
 
         $("#executionList .details").click(function (e) {
             e.preventDefault();
-            var protocol = document.getElementById("protocolDropdown").value;
-            var serverName = document.getElementById("serverName").value;
-            var port = document.getElementById("port").value;
-            var serverUrl = protocol + "://" + serverName + ":" + port;
-
+            var serverUrl = getServerUrl();
             var executionId = $(this).closest("tr").find("td").eq(0).html();
-
             var wareWolfUrl = serverUrl + "/services/GetServiceExecutionResult";
 
             $.ajax({
@@ -225,14 +218,19 @@
             $('#filterContainComplete input').val(null).trigger('change');
         });
 
-        //window.onload = getLogData();
-
-        function getLogData() {
+        function getServerUrl() {
             var protocol = document.getElementById("protocolDropdown").value;
             var serverName = document.getElementById("serverName").value;
             var port = document.getElementById("port").value;
             var serverUrl = protocol + "://" + serverName + ":" + port;
 
+            return serverUrl;
+        }
+
+        //document.onload = getLogData();
+
+        function getLogData() {
+            var serverUrl = getServerUrl();
             var wareWolfUrl = serverUrl + "/services/GetLogDataService"
 
             $.ajax({
