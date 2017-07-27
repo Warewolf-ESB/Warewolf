@@ -190,7 +190,6 @@ namespace Dev2.Activities.Designers2.Oracle
                 {
                     DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
                 }
-
             }
             if (Errors.Count <= 0)
             {
